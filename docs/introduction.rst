@@ -55,28 +55,6 @@ For the 2000 and 4000 models the number of pay-as-you-grow tiers remains the sam
   :align: center
   :scale: 40%
 
-While both system controllers are active, they provide a non-blocking 1.6Tbs backplane between the 8 slots. Note that the BX110 linecards currently have a L4/L7 throughput rating of 95Gbs, but that is not a limitation of the backplane. If one of the system controllers were to fail, traffic would immediately switch over to the remaining system controller and the backplane bandwidth would be cut in half to 800Gbps. The backplane ports are aggregated together using link aggregation during normal operation, and traffic will be distributed according to the hashing algorithm of the Link Aggregation Group (LAG) thus utilizing both controllers for forwarding between slots.
-
-A VIPRION chassis in comparison does not have a centralized switch fabric, and all blades are connected across the passive backplane in a full mesh fashion. The backplane in VIPRION was blocking, meaning the front panel bandwidth of a blade was greater than the blades backplane connectivity. Below is an example of the VIPRION C2400 chassis with B2250 blades. Each blade had a single 40Gb connection to every other blade. The total backplane bandwidth is 6 x 40 Gb = 240 Gb.
-
-.. image:: images/rseries_introduction/image4.png
-  :align: center
-  :scale: 70%
-
-The system controllers in VELOS are also the central point of management for the entire chassis. VIPRION required a dedicated out-of-band Ethernet management port and console connection for each blade inserted in the chassis. This meant more cabling, layer2 switch ports, and external terminal servers in order to fully manage the VIPRION chassis as seen below:
-
-.. image:: images/rseries_introduction/image5.png
-  :align: center
-  :scale: 40%
-
-
-With VELOS only the system controllers need to be cabled for out-of-band management and console connections. This reduces the amount of cabling, layer2 switch ports, and external terminal servers required for full chassis management as seen below:
-
-.. image:: images/rseries_introduction/image6.png
-  :align: center
-  :scale: 40%
-
-Additionally, the out-of-band Ethernet ports on the system controllers can be bundled together inside of a Link Aggregation Group.
 
 ----------------------------
 The Kubernetes Control Plane
@@ -94,29 +72,14 @@ The diagram above is somewhat simplified as it shows a single software stack for
 
 The Kubernetes control plane is responsible for deploying workloads to the blades. This would happen when tenants or **chassis partitions** (see next section) are configured. We won’t get too deep into the Kubernetes architecture as its not required to manage the VELOS chassis. Know that the Kubernetes platform layer will allow F5 to introduce exciting new features in the future, but F5 will continue to provide abstracted interfaces for ease of management. By leveraging microservices and containers, F5 may be able to introduce new options such as shared multitenancy and dynamic scaling in the future. These are features that wer not supported on VIPRION.
 
-------------------
-Chassis Partitions
-------------------
-
-Another exciting new feature is the notion of grouping multiple VELOS blades together to form “mini VIPRIONS” within the same VELOS chassis. This will allow for another layer of isolation in addition to tenancy (similar to vCMP guests) that VIPRION didn’t support. This could be used to separate production from dev/test environments or to provide different security zones for different classes of applications. Within a VELOS chassis an administrator can group together one or more blades to form a chassis partition. A chassis may contain multiple chassis partitions and a blade may belong to only one chassis partition at a time. The minimum unit for a chassis partition is one blade and the maximum is 8 blades within the CX410 chassis.
- 
-**Note: Chassis partitions are not related to TMOS admin partitions which are typically used to provide admin separation within a TMOS instance.** 
- 
-A chassis partition runs its own unique F5OS software image, has a unique set of users/authentication, and is accessed via its own GUI, CLI and API. The chassis partition can be further divided to support multiple BIG-IP tenants. A tenant operates in a similar manner to how vCMP guests operated within the VIPRION chassis. It is assigned dedicated vCPU and memory resources and is restricted to specific VLANs for network connectivity. 
-
-Below is an example of a VELOS CX410 chassis divided into 3 chassis partitions (Red, Green, and Blue). These chassis partitions are completely isolated from each other and the system controllers ensure no traffic can bleed from one chassis partition to another.  Once a chassis partition is created individual tenants can be deployed and they will be restricted to only the resources within that chassis partition. 
-
-.. image:: images/rseries_introduction/image8.png
-  :align: center
-  :scale: 40%
 
 -------
 Tenants
 -------
 
-Tenancy is required to deploy any BIG-IP resources. rSeries is a multitenant appliance by default, there is no bare-metal mode, although it can be configured to emulate this mode with a single large tenant. You can configure one big chassis partition and assign all blades in the system to this resource. In fact, there is a “Default” partition that all blades are part of when inserted. You may change the slots assigned to the chassis partition by removing it from default and assigning to a new or existing chassis partition. A tenant could then be assigned to utilize all CPU and memory across that chassis partition. This would emulate a iSeries system running “bare metal” where vCMP is not provisioned. 
+Tenancy is required to deploy any BIG-IP resources. rSeries is a multitenant appliance by default, there is no bare-metal mode, although it can be configured to emulate this mode with a single large tenant. A tenant could then be assigned to utilize all CPU and memory available within the appliance. This would emulate an iSeries system running “bare metal” where vCMP is not provisioned. 
 
-When configuring HA between two VELOS chassis, there is no HA relationship across chassis at the F5OS layer where the system controllers or chassis partitions are configured. All HA is configured at the tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate VIPRION chassis. 
+When configuring HA between two rSeries Applainces, there is no HA relationship or awareness across systems at the F5OS layer. All HA is configured at the BIG-IP tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate iSeries appliances today. 
 
 .. image:: images/rseries_introduction/image9.png
   :align: center
