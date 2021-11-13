@@ -22,7 +22,7 @@ rSeries will continue to provide hardware acceleration and offload capabilities 
 
  * specific software releases
 
-.. image:: images/velos_introduction/image1.png
+.. image:: images//image1.png
   :align: center
   :scale: 70%
 
@@ -38,7 +38,7 @@ Smaller Footprint, Higher Density
 
 The physical architecture of VELOS differs from the VIPRION platform in several ways. First, we’ve shrunk the size of the blades and now support double the number of slots in the same 4RU chassis footprint. The VELOS CX410 chassis supports 8 slots vs. only 4 on the VIPRION C2400 chassis.
 
-.. image:: images/velos_introduction/image2.png
+.. image:: images//image2.png
   :align: center
   :scale: 70%
 
@@ -46,7 +46,7 @@ The second major difference vs. VIPRION is the introduction of centralized/redun
 
 The system controllers are responsible for providing non-blocking connections and layer 2 switching between the 8 slots within the system. The system controllers are star-wired with multiple connections to each slot.  Each BX110 blade has one 100Gb backplane connection to each system controller (200Gb total). Future generation line cards may leverage additional connections. The picture below shows the backplane interconnections of a fully populated 8 slot CX410 chassis with 8 BX110 blades installed. 
 
-.. image:: images/velos_introduction/image3.png
+.. image:: images//image3.png
   :align: center
   :scale: 40%
 
@@ -54,20 +54,20 @@ While both system controllers are active, they provide a non-blocking 1.6Tbs bac
 
 A VIPRION chassis in comparison does not have a centralized switch fabric, and all blades are connected across the passive backplane in a full mesh fashion. The backplane in VIPRION was blocking, meaning the front panel bandwidth of a blade was greater than the blades backplane connectivity. Below is an example of the VIPRION C2400 chassis with B2250 blades. Each blade had a single 40Gb connection to every other blade. The total backplane bandwidth is 6 x 40 Gb = 240 Gb.
 
-.. image:: images/velos_introduction/image4.png
+.. image:: images//image4.png
   :align: center
   :scale: 70%
 
 The system controllers in VELOS are also the central point of management for the entire chassis. VIPRION required a dedicated out-of-band Ethernet management port and console connection for each blade inserted in the chassis. This meant more cabling, layer2 switch ports, and external terminal servers in order to fully manage the VIPRION chassis as seen below:
 
-.. image:: images/velos_introduction/image5.png
+.. image:: images//image5.png
   :align: center
   :scale: 40%
 
 
 With VELOS only the system controllers need to be cabled for out-of-band management and console connections. This reduces the amount of cabling, layer2 switch ports, and external terminal servers required for full chassis management as seen below:
 
-.. image:: images/velos_introduction/image6.png
+.. image:: images//image6.png
   :align: center
   :scale: 40%
 
@@ -81,7 +81,7 @@ In addition to being the centralized layer2 switch fabric for the entire chassis
 
 A combination of Docker Compose and Kubernetes is used within the F5OS layer.  Docker Compose is used to bring up the system controller and chassis partition software stacks as they need to be fully functional early in the startup process. Then Kubernetes takes over and is responsible for deploying workloads to the blades. One of the system controllers will be chosen to serve as primary and the other secondary from a Kubernetes control plane perspective. The central VELOS chassis F5OS API, CLI and GUI are served up from the primary system controller. The floating IP address will always follow the primary controller so CLI, GUI, and API access should not be prevented due to a controller failure.
 
-.. image:: images/velos_introduction/image7.png
+.. image:: images//image7.png
   :align: center
   :scale: 40%
 
@@ -101,7 +101,7 @@ A chassis partition runs its own unique F5OS software image, has a unique set of
 
 Below is an example of a VELOS CX410 chassis divided into 3 chassis partitions (Red, Green, and Blue). These chassis partitions are completely isolated from each other and the system controllers ensure no traffic can bleed from one chassis partition to another.  Once a chassis partition is created individual tenants can be deployed and they will be restricted to only the resources within that chassis partition. 
 
-.. image:: images/velos_introduction/image8.png
+.. image:: images//image8.png
   :align: center
   :scale: 40%
 
@@ -113,7 +113,7 @@ Tenancy is required to deploy any BIG-IP resources. VELOS is a multitenant chass
 
 When configuring HA between two VELOS chassis, there is no HA relationship across chassis at the F5OS layer where the system controllers or chassis partitions are configured. All HA is configured at the tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate VIPRION chassis. 
 
-.. image:: images/velos_introduction/image9.png
+.. image:: images//image9.png
   :align: center
   :scale: 60%
 
