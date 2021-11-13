@@ -24,7 +24,7 @@ rSeries will continue to provide hardware acceleration and offload capabilities 
 
 .. image:: images/rseries_introduction/image1.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 
 
@@ -32,12 +32,14 @@ Customers will be able to migrate existing BIG-IP devices, or vCMP guests into a
 
 In the future BIG-IP MA tenants will be able to be provisioned within the same chassis, which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
----------------------------------
-Smaller Footprint, Higher Density
----------------------------------
+---------------------------------------------------
+More PAYG options, More flexible networking options
+---------------------------------------------------
 
-The physical architecture of rSeries differs from the iSeries platform in several ways. First, we’ve shrunk the size of the blades and now support double the number of slots in the same 4RU chassis footprint. The VELOS CX410 chassis supports 8 slots vs. only 4 on the VIPRION C2400 chassis.
+The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning *vCMP Guests* ontop of a *vCMP Host Layer*, customers will now provision *Tenants* ontop of the *F5OS platfrom layer*. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large tenant on rSeries. 
 
+
+First, we’ve eliminated the 7000 class of appliances in the rSeries lineup and have offered more Pay-As-You-Grow software licensing options for the r5000 and r10000 rSeries appliances. 
 .. image:: images/rseries_introduction/image2.png
   :align: center
   :scale: 70%
@@ -109,7 +111,7 @@ Below is an example of a VELOS CX410 chassis divided into 3 chassis partitions (
 Tenants
 -------
 
-Tenancy is required to deploy any BIG-IP resources. VELOS is a multitenant chassis by default, there is no bare-metal mode, although it can be configured to emulate this mode with a single large tenant. You can configure one big chassis partition and assign all blades in the system to this resource. In fact, there is a “Default” partition that all blades are part of when inserted. You may change the slots assigned to the chassis partition by removing it from default and assigning to a new or existing chassis partition. A tenant could then be assigned to utilize all CPU and memory across that chassis partition. This would emulate a VIPRION system running “bare metal” where vCMP is not provisioned. 
+Tenancy is required to deploy any BIG-IP resources. rSeries is a multitenant appliance by default, there is no bare-metal mode, although it can be configured to emulate this mode with a single large tenant. You can configure one big chassis partition and assign all blades in the system to this resource. In fact, there is a “Default” partition that all blades are part of when inserted. You may change the slots assigned to the chassis partition by removing it from default and assigning to a new or existing chassis partition. A tenant could then be assigned to utilize all CPU and memory across that chassis partition. This would emulate a iSeries system running “bare metal” where vCMP is not provisioned. 
 
 When configuring HA between two VELOS chassis, there is no HA relationship across chassis at the F5OS layer where the system controllers or chassis partitions are configured. All HA is configured at the tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate VIPRION chassis. 
 
