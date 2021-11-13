@@ -42,11 +42,11 @@ The physical architecture of rSeries differs from the iSeries platforms in sever
 More PAYG options
 -----------------
 
-the rSeries family of appliances has multiple hardware and software options similar to the iSeries family of appliances. One of the big changes, is that we’ve eliminated the 7000 class of appliances in the rSeries lineup and have offered more options for Pay-As-You-Grow software licensing options for the r5000 and r10000 rSeries appliances. This allows for expansion of performance and resources by upgrading to the next 
-
-.. image:: images/rseries_introduction/image2.png
+the rSeries family of appliances has multiple hardware and software options similar to the iSeries family of appliances. One of the big changes, is that we’ve eliminated the 7000 class of appliances in the rSeries lineup and have offered more options for Pay-As-You-Grow software licensing options for the r5000 and r10000 rSeries appliances. This allows for expansion of performance and resources by upgrading to the next allowing an easy upgrade via software license ot the next model up within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increase you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change. 
+.
+. image:: images/rseries_introduction/image2.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 The second major difference vs. VIPRION is the introduction of centralized/redundant SX410 system controllers. The picture above shows the two redundant system controllers that ship by default with the VELOS 4RU CX410 chassis:
 
