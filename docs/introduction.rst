@@ -36,10 +36,14 @@ In the future BIG-IP MA tenants will be able to be provisioned within the same c
 More PAYG options, More flexible networking options
 ---------------------------------------------------
 
-The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning *vCMP Guests* ontop of a *vCMP Host Layer*, customers will now provision *Tenants* ontop of the *F5OS platfrom layer*. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large tenant on rSeries. 
+The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** ontop of a **vCMP Host Layer**, customers will now provision *Tenants* ontop of the *F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large tenant on rSeries. 
 
+-----------------
+More PAYG options
+-----------------
 
-First, we’ve eliminated the 7000 class of appliances in the rSeries lineup and have offered more Pay-As-You-Grow software licensing options for the r5000 and r10000 rSeries appliances. 
+the rSeries family of appliances has multiple hardware and software options similar to the iSeries family of appliances. One of the big changes, is that we’ve eliminated the 7000 class of appliances in the rSeries lineup and have offered more options for Pay-As-You-Grow software licensing options for the r5000 and r10000 rSeries appliances. This allows for expansion of performance and resources by upgrading to the next 
+
 .. image:: images/rseries_introduction/image2.png
   :align: center
   :scale: 70%
