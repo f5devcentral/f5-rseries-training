@@ -36,22 +36,20 @@ In the future BIG-IP MA tenants will be able to be provisioned within the same c
 More PAYG options, More flexible networking options
 ---------------------------------------------------
 
-The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** ontop of a **vCMP Host Layer**, customers will now provision *Tenants* ontop of the *F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large tenant on rSeries. 
+The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** ontop of a **vCMP Host Layer**, customers will now provision **Tenants** ontop of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large tenant on rSeries. 
 
 -----------------
 More PAYG options
 -----------------
 
-the rSeries family of appliances has multiple hardware and software options similar to the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platfroms in the rSeries family, but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for for the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to higher model within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
+the rSeries family of appliances has multiple hardware and software options similar to the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platfroms in the rSeries family, but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to higher model within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
 
 
 .. image:: images/rseries_introduction/image2.png
   :align: center
   :scale: 40%
 
-The second major difference vs. VIPRION is the introduction of centralized/redundant SX410 system controllers. The picture above shows the two redundant system controllers that ship by default with the VELOS 4RU CX410 chassis:
-
-The system controllers are responsible for providing non-blocking connections and layer 2 switching between the 8 slots within the system. The system controllers are star-wired with multiple connections to each slot.  Each BX110 blade has one 100Gb backplane connection to each system controller (200Gb total). Future generation line cards may leverage additional connections. The picture below shows the backplane interconnections of a fully populated 8 slot CX410 chassis with 8 BX110 blades installed. 
+For the 2000 and 4000 models the number of pay-as-you-grow tiers remains the same, whith each model having an x600 model and an x800 model just like the previous generation iSeries appliances. You can start with an x600 model and upgrade the the x800 model via a simple licensing change.
 
 .. image:: images/rseries_introduction/image3.png
   :align: center
