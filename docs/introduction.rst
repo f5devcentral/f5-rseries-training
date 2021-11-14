@@ -60,9 +60,9 @@ For the 2000 and 4000 models the number of pay-as-you-grow tiers remains the sam
 The Kubernetes Control Plane
 ----------------------------
 
-In addition to being the centralized layer2 switch fabric for the entire chassis, the system controllers also host the Kubernetes control plane that is responsible for provisioning resources/workloads within the chassis. VELOS utilizes an opensource distribution of Kubernetes called OpenShift, and specifically it uses the OKD project/distribution. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In the future some Kubernetes like features will start to be exposed, but it will likely be done through the VELOS F5OS CLI, GUI, or API’s. 
+rSeries utilizes an opensource Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In the future some Kubernetes like features will start to be exposed, but it will likely be done through the F5OS CLI, GUI, or API’s. 
 
-A combination of Docker Compose and Kubernetes is used within the F5OS layer.  Docker Compose is used to bring up the system controller and chassis partition software stacks as they need to be fully functional early in the startup process. Then Kubernetes takes over and is responsible for deploying workloads to the blades. One of the system controllers will be chosen to serve as primary and the other secondary from a Kubernetes control plane perspective. The central VELOS chassis F5OS API, CLI and GUI are served up from the primary system controller. The floating IP address will always follow the primary controller so CLI, GUI, and API access should not be prevented due to a controller failure.
+A combination of Docker Compose and Kubernetes is used within the F5OS layer. Docker Compose is used to bring up the software stacks as they need to be fully functional early in the startup process. Then Kubernetes takes over and is responsible for deploying workloads to the proper CPU's. 
 
 .. image:: images/rseries_introduction/image7.png
   :align: center
