@@ -33,7 +33,7 @@ Customers will be able to migrate existing BIG-IP devices, or vCMP guests into a
 In the future BIG-IP MA tenants will be able to be provisioned within the same chassis, which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
 ---------------------------------------------------
-More PAYG options, More flexible networking options
+Multitenant by Default
 ---------------------------------------------------
 
 The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** ontop of a **vCMP Host Layer**, customers will now provision **Tenants** ontop of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large tenant on rSeries. 
@@ -79,7 +79,7 @@ Tenants
 
 Tenancy is required to deploy any BIG-IP resources. rSeries is a multitenant appliance by default, there is no bare-metal mode, although it can be configured to emulate this mode with a single large tenant. A tenant could then be assigned to utilize all CPU and memory available within the appliance. This would emulate an iSeries system running “bare metal” where vCMP is not provisioned. 
 
-When configuring HA between two rSeries Applainces, there is no HA relationship or awareness across systems at the F5OS layer. All HA is configured at the BIG-IP tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate iSeries appliances today. 
+When configuring HA between two rSeries Appliances, there is no HA relationship or awareness across systems at the F5OS layer. All HA is configured at the BIG-IP tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate iSeries appliances today. 
 
 .. image:: images/rseries_introduction/image9.png
   :align: center
