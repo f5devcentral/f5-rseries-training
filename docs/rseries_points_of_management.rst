@@ -6,7 +6,7 @@ There are two main points of management within the rSeries Appliances. The **F5O
 
 .. image:: images/rseries_points_of_management/image1.png
   :align: center
-  :scale: 40%
+  :scale: 80%
 
 At the F5OS platform layer initial configuration consists of out-of-band management IP addresses, routing and other system parameters like DNS & NTP. Licensing is also configured at the F5OS layer and is similar to iSeries when vCMP is configured in that it is applied at the appliance level and inherited by all tenants.  Please refer to the **rSeries Systems Administration Guide** on askf5.com for more detailed information.
 
