@@ -8,7 +8,7 @@ rSeries Training Guide
 
    introduction.rst
    rseries_points_of_management.rst
-   rseries_components.rst
+   rseries_appliances.rst
    rseries_networking.rst
    rseries_high_availability.rst
    rseries_multitenancy.rst
