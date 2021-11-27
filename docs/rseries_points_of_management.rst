@@ -14,7 +14,7 @@ Additionally, they each run their own version of software; tenants are able to r
   :align: center
   :scale: 80%
 
-At the F5OS platform layer initial configuration consists of out-of-band management IP addresses, routing and other system parameters like DNS & NTP. Licensing is also configured at the F5OS layer and is similar to iSeries when vCMP is configured in that it is applied at the appliance level and inherited by all tenants. In-band networking (VLANs, Interfaces, Link Aggregation Groups) are also configured within the F5OS platfrom layer. Once networking is setup tenants can be provisioned and deployed from the F5OS interfaces. Once the tenant is deployed it is managed like any other BIG-IP. This is very similar to how vCMP geusts are managed on iSeries or VIPRION.  Please refer to the **rSeries Systems Administration Guide** on askf5.com for more detailed information.
+At the F5OS platform layer initial configuration consists of out-of-band management IP addresses, routing and other system parameters like DNS & NTP. Licensing is also configured at the F5OS layer and is similar to iSeries when vCMP is configured in that it is applied at the appliance level and inherited by all tenants. In-band networking (VLANs, Interfaces, Link Aggregation Groups) are also configured within the F5OS platfrom layer. Once networking is setup tenants can be provisioned and deployed from the F5OS interfaces. Once the tenant is deployed it is managed like any other BIG-IP. This is very similar to how vCMP guests are managed on iSeries or VIPRION.  Please refer to the **rSeries Systems Administration Guide** on askf5.com for more detailed information.
 
 **Link Coming soon!**
 
