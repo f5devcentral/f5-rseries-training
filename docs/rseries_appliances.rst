@@ -44,7 +44,7 @@ The r5000 Series appliance has 2 x 100Gb/40Gb ports that are QSFP28/QSFP+ as wel
 
 Note that adjacent highspeed (40Gb / 100Gb) ports (1.0 & 2.0) must be configured for the same speed. You cannot have one port at 40Gb and the other at 100Gb. Also, the high speed ports do not support unbundling into lower speeds (25Gb / 10Gb), only 40Gb or 100Gb are supported. For the low speed ports (3.0 - 10.0) any combination of 10Gb or 25Gb is supported. The SFP28 ports are backwards compatible with SFP+.
 
-.. image:: images/rseries_appliances/image1b.png
+.. image:: images/rseries_appliances/image2b.png
   :align: center
   :scale: 100%
 
