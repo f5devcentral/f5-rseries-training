@@ -8,6 +8,7 @@ r10000 Series - r10900 / r10800 / r10600
 ========================================
 
 The r10000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r10600 is the base system, and PAYG licensing options exist to upgrade to the r10800 or r10900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
+The r10000 platform has 24 physical CPU cores / 48 vCPU's however some of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r10600 and r10800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 256GB of RAM, and has dual 1TB SSD's.
 
 .. image:: images/rseries_appliances/image1.png
   :align: center
@@ -23,6 +24,7 @@ r5000 Series - r5900 / r5800 / r5600
 ====================================
 
 The r5000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and PAYG licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
+The r5000 platform has 16 physical CPU cores / 32 vCPU's however some of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD.
 
 .. image:: images/rseries_appliances/image2.png
   :align: center
