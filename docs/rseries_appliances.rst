@@ -7,9 +7,15 @@ rSeries Appliances
 r10000 Series - r10900 / r10800 / r10600
 ========================================
 
-The CX410 is a 4RU chassis, that has eight ¼ width slots for the BX110 line cards, as well as 2 larger slots for SX410 system controllers. The system controllers proxy console and out-of-band Ethernet management for all the blades. There is an AC power version of the chassis as well as a DC power version. The DC power version of VELOS is Network Equipment Building Systems (NEBS) compliant. NEBS standards are utilized all over the world for a host of commercial, utility, and defense applications.  The standards are designed to ensure that the equipment continues to work at extremes of temperature, or after an extreme event, like an earthquake or a severe thunderstorm.  
+The r10000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r10600 is the base system, and PAYG licensing options exist to upgrade to the r10800 or r10900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
 
 .. image:: images/rseries_appliances/image1.png
+  :align: center
+  :scale: 100%
+
+The r10000 Series appliance has 4 x 100Gb/40Gb ports that are QSFP28/QSFP+ as well as 16 25Gb/10Gb ports that are SFP+/SFP28.
+
+.. image:: images/rseries_appliances/image1a.png
   :align: center
   :scale: 100%
 
