@@ -11,14 +11,14 @@ The CX410 is a 4RU chassis, that has eight ¼ width slots for the BX110 line car
 
 .. image:: images/rseries_appliances/image1.png
   :align: center
-  :scale: 90%
+  :scale: 100%
 
 r5000 Series - r5900 / r5800 / r5600
 ====================================
 
 .. image:: images/rseries_appliances/image2.png
   :align: center
-  :scale: 90%
+  :scale: 100%
 
 
 r4000 Series - r4800 / r4600
@@ -26,7 +26,7 @@ r4000 Series - r4800 / r4600
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
-  :scale: 90%
+  :scale: 100%
 
 
 r2000 Series - r2800 / r2600
@@ -34,7 +34,7 @@ r2000 Series - r2800 / r2600
 
 .. image:: images/rseries_appliances/image4.png
   :align: center
-  :scale: 90%
+  :scale: 100%
 
 Rack Mounting the Appliances
 ============================
