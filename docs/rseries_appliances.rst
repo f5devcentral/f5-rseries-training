@@ -26,7 +26,7 @@ r4000 Series - r4800 / r4600
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
-  :scale: 100%
+  :scale: 120%
 
 
 r2000 Series - r2800 / r2600
@@ -34,7 +34,7 @@ r2000 Series - r2800 / r2600
 
 .. image:: images/rseries_appliances/image4.png
   :align: center
-  :scale: 100%
+  :scale: 120%
 
 Rack Mounting the Appliances
 ============================
