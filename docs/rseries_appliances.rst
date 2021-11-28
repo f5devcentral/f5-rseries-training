@@ -11,7 +11,7 @@ The CX410 is a 4RU chassis, that has eight ¼ width slots for the BX110 line car
 
 .. image:: images/rseries_appliances/image1.png
   :align: center
-  :scale: 60%
+  :scale: 90%
 
 r5000 Series - r5900 / r5800 / r5600
 ====================================
