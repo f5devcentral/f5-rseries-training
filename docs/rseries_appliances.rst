@@ -22,6 +22,8 @@ The r10000 Series appliance has 4 x 100Gb/40Gb ports that are QSFP28/QSFP+ as we
 r5000 Series - r5900 / r5800 / r5600
 ====================================
 
+The r5000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and PAYG licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
+
 .. image:: images/rseries_appliances/image2.png
   :align: center
   :scale: 100%
