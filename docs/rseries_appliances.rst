@@ -28,7 +28,7 @@ The r5000 Series is a 1RU appiance, that has 3 different licensing options that 
   :align: center
   :scale: 100%
 
-  The r5000 Series appliance has 2 x 100Gb/40Gb ports that are QSFP28/QSFP+ as well as 8 25Gb/10Gb ports that are SFP+/SFP28.
+The r5000 Series appliance has 2 x 100Gb/40Gb ports that are QSFP28/QSFP+ as well as 8 25Gb/10Gb ports that are SFP+/SFP28.
 
 .. image:: images/rseries_appliances/image2a.png
   :align: center
