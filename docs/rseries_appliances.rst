@@ -18,7 +18,7 @@ r5000 Series r5900 / r5800 / r5600
 
 .. image:: images/rseries_appliances/image2.png
   :align: center
-  :scale: 60%
+  :scale: 90%
 
 
 r4000 Series r4800 / r4600
@@ -26,7 +26,7 @@ r4000 Series r4800 / r4600
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
-  :scale: 60%
+  :scale: 90%
 
 
 r2000 Series r2800 / r2600
@@ -34,7 +34,7 @@ r2000 Series r2800 / r2600
 
 .. image:: images/rseries_appliances/image4.png
   :align: center
-  :scale: 60%
+  :scale: 90%
 
 Rack Mounting the Appliances
 ============================
@@ -43,7 +43,7 @@ An ideal environment for VELOS is to use a minimum of a 30” rack. The rackmoun
 
 .. image:: images/velos_components/image2.png
   :align: center
-  :scale: 60%
+  :scale: 90%
 
 
 
