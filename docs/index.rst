@@ -16,7 +16,6 @@ rSeries Training Guide
    initial_setup_of_rseries_platform_layer.rst
    rseries_deploying_a_tenant.rst
    rseries_inside_the_tenant.rst
-   rseries_f5os_backup_and_restore.rst
    rseries_software_upgrades.rst
    rseries_f5os_configuration_backup_and_restore.rst
    rseries_diagnostics.rst
