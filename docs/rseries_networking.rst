@@ -21,50 +21,8 @@ Below is an example deployment where each system controller has its own unique I
 
 .. image:: images/rseries_networking/image2.png
   :align: center
-  :scale: 50%
+  :scale: 30%
 
-Chassis Partitions and Networking
-=================================
-
-Each chassis partition is a unique entity that has its own set of (local/remote) users and authentication, it is managed via a dedicated out-of-band IP address with its own F5OS CLI, GUI, and API access. A chassis partition can be dedicated to a specific group, and that group will only be able to access networking and tenants within their partition. They will not be able to access or share resources within other chassis partitions in the system. This is an added level of isolation that VIPRION did not have. Below are some examples:
-
-.. image:: images/rseries_networking/image3.png
-  :align: center
-  :scale: 70%
-
-*Note: The environment above would require external networking connections between the chassis partitions if a tenant in one chassis partition needed to communicate with a tenant in another chassis partition.*
-
-.. image:: images/rseries_networking/image4.png
-  :align: center
-  :scale: 50%
-
-In addition to management access being completely isolated and unique, in-band networking (for use by tenants) is configured in and completely contained within the chassis partition. Each chassis partition will have its own set of networking components such as PortGroups, VLANs, LAGs, and Interfaces. This means that networking within one chassis partition is not accessible or viewable from another chassis partition. 
-
-Isolation at the network level is also enforced via the centralized switch fabrics that reside in the dual system controllers. In the VELOS system each blade has multiple connections into the centralized switch fabrics for redundancy and added bandwidth. Each BX110 blade has 2 100Gb backplane connections (one to each system controller), that are bonded together in a static LAG (Link Aggregation Group). This star-wired topology provides fast and reliable backplane connections between all the blades, and also allows for complete isolation at the networking layer.
-
-.. image:: images/rseries_networking/image5.png
-  :align: center
-
-
-When chassis partitions are created the administrator will assign one or more blades which are then isolated from all other blades in the chassis. The centralized switch fabrics are automatically configured with port based VLANs and VLAN tagging to enforce network isolation between chassis partitions. The diagram below provides a visual of how this is enforced.
-
-
-.. image:: images/rseries_networking/image6.png
-  :align: center
-  :scale: 60%
-
-.. image:: images/rseries_networking/image7.png
-  :align: center
-  :scale: 60%
-
-Network Isolation
-=================
-
-To illustrate the point of how isolated chassis partitions are, the diagram below shows two VELOS chassis with multiple chassis partitions in each. Since there is no sharing of in-band network resources each chassis partition must have its own network connectivity to the in-band networks, and for HA interconnects between the two chassis. There is no way to share interfaces, VLANs, or LAGs between chassis partitions. 
-
-.. image:: images/rseries_networking/image8.png
-  :align: center
-  :scale: 60%
 
 Port Groups
 ===========
