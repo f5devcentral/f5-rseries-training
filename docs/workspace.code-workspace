@@ -1,0 +1,16 @@
+{
+	"folders": [
+		{
+			"path": "../../f5-velos-training"
+		},
+		{
+			"name": "f5-rseries-training-1",
+			"path": "../../f5-rseries-training-1"
+		},
+		{
+			"name": "f5-rseries-training",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
