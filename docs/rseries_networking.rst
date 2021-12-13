@@ -16,7 +16,7 @@ This allows customers to run a secure/locked-down out-of-band management network
 Port Groups
 ===========
 
-The portgroup component is used to control the mode of the physical port. This controls whether the port is bundled or unbundled and the port speed. Both ports on the BX110 blade must be configured in the same mode currently. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
+The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. **Adjacent** high speed ports (1.0 & 2.0) (11.0 & 12.0) must be configured in the same mode and speed currently, either both are configured for 40Gb or both for 100Gb. Low speed ports (25Gb/10Gb) can be configured indepdently, and adjacent ports can have differnet values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
 
 .. image:: images/rseries_networking/image9.png
