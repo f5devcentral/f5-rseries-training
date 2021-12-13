@@ -33,6 +33,25 @@ The appliance also has an LCD panel.
   :align: center
   :scale: 100%
 
+In the back of the AC Power Model are 2 power supplies and AC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 Series is removable and servicable.
+
+
+.. image:: images/rseries_appliances/image1d.png
+  :align: center
+  :scale: 100%
+
+In the back of the DC Power Model are 2 power supplies and DC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 Series is removable and servicable.
+
+.. image:: images/rseries_appliances/image1e.png
+  :align: center
+  :scale: 100%
+
+In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and DC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 Series is removable and servicable.
+
+.. image:: images/rseries_appliances/image1f.png
+  :align: center
+  :scale: 100%
+
 r5000 Series - r5900 / r5800 / r5600
 ====================================
 
