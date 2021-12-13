@@ -62,6 +62,25 @@ The appliance also has an LCD panel.
   :align: center
   :scale: 100%
 
+In the back of the AC Power Model are 2 power supplies and AC Inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+
+
+.. image:: images/rseries_appliances/image2d.png
+  :align: center
+  :scale: 100%
+
+In the back of the DC Power Model are 2 power supplies and DC Inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+
+.. image:: images/rseries_appliances/image2e.png
+  :align: center
+  :scale: 100%
+
+In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and DC Inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+
+.. image:: images/rseries_appliances/image2f.png
+  :align: center
+  :scale: 100%
+
 
 r4000 Series - r4800 / r4600
 ============================
