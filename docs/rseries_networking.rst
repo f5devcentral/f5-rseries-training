@@ -30,7 +30,7 @@ Below is an example of the F5OS GUI **Port Groups** screen. Note that any change
 
 .. image:: images/rseries_networking/image4.png
    :align: center
-
+  :scale: 50%
 
 Interfaces
 ==========
