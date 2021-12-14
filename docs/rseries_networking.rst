@@ -35,17 +35,37 @@ Below is an example of the F5OS GUI **Port Groups** screen. Note that any change
 Interfaces
 ==========
 
-Interface numbering will vary depending on the current portgroup configuration. Interfaces will always be numbered by **<blade#>/<port#>**. The number of ports on a blade will change depending on if the portgroup is configured as bundled or unbundled. If the ports are bundled then ports will be **1/1.0** & **1/2.0** for slot 1, and **2/1.0** & **2/2.0** for slot 2. 
+Interfaces will always be numbered starting with **1.0** and ending with the maximum number of ports on the appliance (**10.0** on the r5000 series and **20.0** on the r10000 series appliances). The type of optic in combination with the **port group** setting will dictate the speed of the interface. Interfaces can be run independetly or bundled together in Link Aggregation Group. VLANs will be assigned to independent interfaces, or at the LAG configuration level if multiple interfaces are bundled together.
 
-If ports are unbundled then the port numbering will be **1/1.1, 1/1.2, 1/1.3, & 1/1.4** for the first physical port and **1/2.1, 1/2.2, 1/2.3, & 1/2.4** for the second physical port. Breakout cables will be needed to support the unbundled 25Gb or 10Gb configurations. Even when multiple chassis partitions are used, the port numbering will stay consistent starting with the blade number.
-
-.. image:: images/rseries_networking/image12.png
-  :align: center
 
 Supported Optics
 ================
 
-Only F5 branded optics are officially supported on VELOS. VELOS supports speeds of 10Gb, 25Gb, 40Gb, and 100Gb depending on the type of optics used and the port group configuration. VELOS interfaces will accept F5 approved QSFP+ or QSFP28 optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
+Only F5 branded optics are officially supported on rSeries appliances. rSeries supports speeds of 1Gb (on selected low end models) 10Gb, 25Gb, 40Gb, and 100Gb depending on the type of optics used and the port group configuration. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low spped ports will accept SFP28 and SFP+ optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
+
+**10GB SFP+ options:**
+
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100GBASE-SR4 (QSFP28)  | OPT-0031   | TRANSCEIVER, QSFP28, 100G-SR4, 850NM, MMF, MPO, DDM, BRANDED                     |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100GBASE-LR4 (QSFP28)  | OPT-00352  | TRANSCEIVER, QSFP28, 100G-LR4, 10KM, LC, SMF, 4.5W, DDM, VELOCITY SDK, BRANDED   |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100G-PSM4 (QSFP28)     | OPT-0055   | TRANSCEIVER, QSFP28, 100GIG-PSM4, 1310NM, 500M, MPO, SMF, F5 BRANDED             |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100G BIDI (QSFP28)     | OPT-0047   | TRANSCEIVER, QSFP28, 100G BIDI, 100M, LC, MMF, F5 BRANDED (Planned for mid CY21) |
++------------------------+------------+----------------------------------------------------------------------------------+
+
+**25GB SFP28 options:**
+
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100GBASE-SR4 (QSFP28)  | OPT-0031   | TRANSCEIVER, QSFP28, 100G-SR4, 850NM, MMF, MPO, DDM, BRANDED                     |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100GBASE-LR4 (QSFP28)  | OPT-00352  | TRANSCEIVER, QSFP28, 100G-LR4, 10KM, LC, SMF, 4.5W, DDM, VELOCITY SDK, BRANDED   |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100G-PSM4 (QSFP28)     | OPT-0055   | TRANSCEIVER, QSFP28, 100GIG-PSM4, 1310NM, 500M, MPO, SMF, F5 BRANDED             |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 100G BIDI (QSFP28)     | OPT-0047   | TRANSCEIVER, QSFP28, 100G BIDI, 100M, LC, MMF, F5 BRANDED (Planned for mid CY21) |
++------------------------+------------+----------------------------------------------------------------------------------+
 
 **40GB QSFP+ options:**
 
@@ -73,9 +93,10 @@ Only F5 branded optics are officially supported on VELOS. VELOS supports speeds 
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 
-**Note: OPT-0039 QSFP28 LR4 used in VIPRION/iSeries are compatible with VELOS, but default optics for 100G SR4 VEOS is OPT-0052 (as shown above)**
 
-Below are the current VELOS optic SKU’s:
+**Note: OPT-0039 QSFP28 LR4 used in VIPRION/iSeries are compatible with rSeries, but default optics for 100G SR4 VEOS is OPT-0052 (as shown above)**
+
+Below are the current rSeries optic SKU’s:
 
 **Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**
 
