@@ -16,14 +16,14 @@ This allows customers to run a secure/locked-down out-of-band management network
 Port Groups
 ===========
 
-The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0**) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently, either both are configured for 40Gb or both configured for 100Gb. You cannot break out to lower speeds (25Gb or 10Gb) via a breakout cables on these ports. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0** - **20.0** on the r10000 series) can be configured indepdently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
+The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently, either both are configured for 40Gb or both configured for 100Gb. You cannot break out to lower speeds (25Gb or 10Gb) via a breakout cables on these ports. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0** - **20.0** on the r10000 series) can be configured indepdently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
 
 .. image:: images/rseries_networking/image2.png
   :align: center
 
 
-Below is an example of the F5OS GUI Port Groups screen. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
+Below is an example of the F5OS GUI **Port Groups** screen. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
 
 .. image:: images/rseries_networking/image3.png
    :align: center
