@@ -23,7 +23,7 @@ The portgroup component is used to control the mode of the physical ports. This 
   :align: center
 
 
-Below is an example of the F5OS GUI **Port Groups** screen. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
+Below is an example of the F5OS GUI **Port Groups** screen on a r10000 Series appliance. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
 
 .. image:: images/rseries_networking/image3.png
    :align: center
@@ -46,25 +46,25 @@ Only F5 branded optics are officially supported on rSeries appliances. rSeries s
 **10GB SFP+ options:**
 
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100GBASE-SR4 (QSFP28)  | OPT-0031   | TRANSCEIVER, QSFP28, 100G-SR4, 850NM, MMF, MPO, DDM, BRANDED                     |
+| 10G Active DAC (SFP+)  | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100GBASE-LR4 (QSFP28)  | OPT-00352  | TRANSCEIVER, QSFP28, 100G-LR4, 10KM, LC, SMF, 4.5W, DDM, VELOCITY SDK, BRANDED   |
+| 10GBASE-LR (SFP+)      | OPT-xxxxx  |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100G-PSM4 (QSFP28)     | OPT-0055   | TRANSCEIVER, QSFP28, 100GIG-PSM4, 1310NM, 500M, MPO, SMF, F5 BRANDED             |
+| 10GBASE-SR (SFP+)      | OPT-xxxx   |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100G BIDI (QSFP28)     | OPT-0047   | TRANSCEIVER, QSFP28, 100G BIDI, 100M, LC, MMF, F5 BRANDED (Planned for mid CY21) |
+| xxxxxxxxxxxxxxxxxx     | OPT-xxxxx  |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 **25GB SFP28 options:**
 
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100GBASE-SR4 (QSFP28)  | OPT-0031   | TRANSCEIVER, QSFP28, 100G-SR4, 850NM, MMF, MPO, DDM, BRANDED                     |
+| 25GBASE-SR (SFP28)     | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100GBASE-LR4 (QSFP28)  | OPT-00352  | TRANSCEIVER, QSFP28, 100G-LR4, 10KM, LC, SMF, 4.5W, DDM, VELOCITY SDK, BRANDED   |
+| 25GBASE-LR (SFP28)     | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100G-PSM4 (QSFP28)     | OPT-0055   | TRANSCEIVER, QSFP28, 100GIG-PSM4, 1310NM, 500M, MPO, SMF, F5 BRANDED             |
+| xxxxxxxxxxxxxxxxxx     | OPT-xxxx   |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100G BIDI (QSFP28)     | OPT-0047   | TRANSCEIVER, QSFP28, 100G BIDI, 100M, LC, MMF, F5 BRANDED (Planned for mid CY21) |
+| xxxxxxxxxxxxxxxxxx     | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 **40GB QSFP+ options:**
