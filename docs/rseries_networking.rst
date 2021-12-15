@@ -160,19 +160,19 @@ Below is an example of the total external bandwidth exceeding internal pipeline 
 
 .. image:: images/rseries_networking/image5.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 There are static mapping of ports to specific pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines to avoid possible oversubscription scenarios.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 Below shows the total piplines and ports for both the r5000 and r10000 series appliances.
 
 .. image:: images/rseries_networking/image7.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 You can view the front panel port to pipeline mapping in the CLI, GUI, or API of F5OS.
 
