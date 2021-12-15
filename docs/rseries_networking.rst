@@ -26,10 +26,10 @@ The portgroup component is used to control the mode of the physical ports. This 
 Below is an example of the F5OS GUI **Port Groups** screen on a r10000 Series appliance. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
 
 .. image:: images/rseries_networking/image3.png
-   :align: center
+  :align: center
 
 .. image:: images/rseries_networking/image4.png
-   :align: center
+  :align: center
   :scale: 50%
 
 Interfaces
@@ -116,7 +116,9 @@ Below are the current rSeries optic SKU’s:
 | F5-UPG-VEL-QSFP+SR4  | CN   | VELOS Field Upgrade: QSFP+ Transceiver (40G-SR4, 850NM, 100M, MPO, DDM Support)       |
 +----------------------+------+---------------------------------------------------------------------------------------+
 
-The QSFP+ & QSFP28 optics when configured for unbundled mode will break out into either 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic). You will need to utilize a breakout cable to allow the single physical port to break out into 4 ports. The following breakout cable SKU’s can be ordered and utilized for either 4 x 25Gb or 4 x 10GB depending on the optic installed. Note they come in different lengths (1Meter, 3 Meter, or 10 Meter) and each of the SKU’s is a 2 Pack.
+**Note: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
+
+**THESE ARE UNSUPPORTED**
 
 +---------------------+------+--------------------------------------------------------------------------------------------+
 | F5-UPGVELSR4XSR3M   | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (3 Meter 2 Pack)  |
@@ -128,6 +130,8 @@ The QSFP+ & QSFP28 optics when configured for unbundled mode will break out into
 
 Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pack):
 
+**THESE ARE UNSUPPORTED**
+
 +---------------------+------+----------------------------------------------------------------------------------------------+
 | F5-UPG-VELPSMXLR10M   | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)  |
 +---------------------+------+----------------------------------------------------------------------------------------------+
@@ -137,14 +141,41 @@ Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pac
 VLANs
 =====
 
-VELOS supports both 802.1Q tagged and untagged VLAN interfaces. In the current F5OS releases, double VLAN tagging (802.1Q-in-Q) is not supported. Any port within a chassis partition, even across blades can be added to a VLAN and VLANs are specific to that chassis partition. VLANs can be re-used across different chassis partitions, and tenants within and across chassis partitions can share the same VLANs. Any VLANs that are configured on different chassis partitions will not be able to communicate inside the chassis, they will need to be connected via and external switch to facilitate communication between them.
+rSeries supports both 802.1Q tagged and untagged VLAN interfaces. In the current F5OS releases, double VLAN tagging (802.1Q-in-Q) is not supported. VLANs can be added to any individual port, or to a Link Aggregation Group.BIG-IP tenants can share the same VLANs.
 
 
 Link Aggregation Groups
 =======================
 
-VELOS allows for bonding of interfaces into Link Aggregation Groups or LAG’s. LAG’s can span across blades as long as blades are in the same chassis partition. Links within a LAG must be the same type and speed. LAG’s may be configured for static or lacp mode. The maximum number of members within a single LAG is eight.
+rSeries allows for bonding of interfaces into Link Aggregation Groups or LAG’s. LAG’s can span across any port as long as they are configured to support the same speed. Links within a LAG must be the same type and speed. LAG’s may be configured for static or lacp mode.
 
-**Note: The number of members in a LAG is expected to be increased to 32 in a subsequent release.**
+An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP Mode** to be **Active** or **Passive**, and the **LACP Interval** to **Slow** or **Fast**.
 
-An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP Mode** to be **Active** or **Passive**, and the **LACP Interval** to **Slow** or **Fast**.  
+Pipelines
+=========
+
+The r10000 and r5000 series of appliances expose internal pipelines to the user so that they can plan the most optimal network connectivity to avoid oversubscription. rSeries appliances will have multiple pipelines that have a maximum bandwidth that they can support. Front panel ports are statically mapped to different pipelines, and if all ports are utilized may result in an oversubsciprion if the maximum bandwidth for those ports is acheived. By exposing the internal pipelines ot the user, they can plan ahead an plug external connection into specific ports to avoid oversubscription in most cases. Currently the mapping of ports to piepleines is static and not configurable, although F5 may make this a configurable option in the future.
+
+Below is an example of the total external bandwidth exceeding internal pipeline bandwidth:
+
+.. image:: images/rseries_networking/image5.png
+  :align: center
+  :scale: 50%
+
+There are static mapping of ports to specific pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines to avoid possible oversubscription scenarios.
+
+.. image:: images/rseries_networking/image6.png
+  :align: center
+  :scale: 50%
+
+Below shows the total piplines and ports for both the r5000 and r10000 series appliances.
+
+.. image:: images/rseries_networking/image7.png
+  :align: center
+  :scale: 50%
+
+You can view the front panel port to pipeline mapping in the CLI, GUI, or API of F5OS.
+
+.. image:: images/rseries_networking/image8.png
+  :align: center
+  :scale: 50%
