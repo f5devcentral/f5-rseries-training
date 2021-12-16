@@ -154,15 +154,17 @@ An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP M
 Pipelines
 =========
 
-The r10000 and r5000 series of appliances expose internal pipelines to the user so that they can plan the most optimal network connectivity to avoid oversubscription. rSeries appliances will have multiple pipelines that have a maximum bandwidth that they can support. Front panel ports are statically mapped to different pipelines, and if all ports are utilized may result in an oversubsciprion if the maximum bandwidth for those ports is acheived. By exposing the internal pipelines ot the user, they can plan ahead an plug external connection into specific ports to avoid oversubscription in most cases. Currently the mapping of ports to piepleines is static and not configurable, although F5 may make this a configurable option in the future.
+The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipelines supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowlwedge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
-Below is an example of the total external bandwidth exceeding internal pipeline bandwidth:
+If all ports are utilized and running at max bandwidth capacity simulataneously this may result in an oversubsciprion if the maximum bandwidth for the internal pipelines are achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal piepleines is static and not configurable, although F5 may make this a configurable option in the future.
+
+Below is an example of the total external front panel possible bandwidth exceeding internal pipeline bandwidth:
 
 .. image:: images/rseries_networking/image5.png
   :align: center
   :scale: 70%
 
-There are static mapping of ports to specific pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines to avoid possible oversubscription scenarios.
+There are static mappings of external ports to specific internal pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines to avoid possible oversubscription scenarios.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
