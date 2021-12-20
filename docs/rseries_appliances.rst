@@ -108,7 +108,7 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
-
+  :scale: 160%
 
 
 r2000 Series - r2800 / r2600
@@ -118,7 +118,7 @@ The r2000 Series is a 1RU appliance, that has 2 different licensing options that
 
 .. image:: images/rseries_appliances/image4.png
   :align: center
-  :scale: 120%
+  :scale: 160%
 
 Rack Mounting the Appliances
 ============================
