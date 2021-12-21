@@ -1,4 +1,4 @@
 ===========================
-Deploying an rseries Tenant
+Deploying an rSeries Tenant
 ===========================
 

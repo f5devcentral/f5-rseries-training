@@ -1,4 +1,4 @@
 =====================
-Migtration to rSeries
+Migration to rSeries
 =====================
 
