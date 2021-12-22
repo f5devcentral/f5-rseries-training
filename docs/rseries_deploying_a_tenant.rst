@@ -68,135 +68,123 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
 
 .. code-block:: bash
 
-  r10900-1(config)# tenants tenant tenant2                        
-  Value for 'config image' (<string>): BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle
-  Value for 'config mgmt-ip' (<IPv4 address>): 10.255.0.205
-  Value for 'config prefix-length' (<unsignedByte, 1 .. 32>): 24
-  Value for 'config gateway' (<IPv4 address>): 10.255.0.1
+    Boston-r10900-1(config)# tenants tenant tenant2
+    Value for 'config image' (<string>): BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    Value for 'config nodes' (list): 1
+    Value for 'config mgmt-ip' (<IP address>): 10.255.0.136
+    Value for 'config prefix-length' (<unsignedByte, 0 .. 128>): 24
+    Value for 'config gateway' (<IP address>): 10.255.0.1
+    Boston-r10900-1(config-tenant-tenant2)# 
 
+**NOTE: The nodes value is currently required in the interactive CLI mode, but should be set for 1 for rSeries Appliances.** 
 
-When you are inside the tenant mode you can enter each configuration item one line at a time using tab completion and question mark for help. 
+When you are inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the avilable options.
 
 .. code-block:: bash
 
-  r10900-1# config
+  Boston-r10900-1# config
   Entering configuration mode terminal
-  r10900-1(config)# tenants tenant tenant2 
-  r10900-1(config-tenant-tenant2)# config ?
-  Possible completions:
-    appliance-mode        
+  Boston-r10900-1(config)# tenants tenant tenant2 
+    Boston-r10900-1(config-tenant-tenant2)# config ?
+    Possible completions:
+    appliance-mode        Appliance mode can be enabled/disabled at tenant level
     cryptos               Crypto devices for the tenant.
     gateway               User-specified gateway for the tenant mgmt-ip.
     image                 User-specified image for tenant.
     memory                User-specified memory in MBs for the tenant.
     mgmt-ip               User-specified mgmt-ip for the tenant management access.
     name                  User-specified name for tenant.
-    nodes                 User-specified node-number(s) in the partition to schedule the tenant.
+    nodes                 User-specified node-number(s) on which to schedule the tenant.
     prefix-length         User-specified prefix-length for the tenant mgmt-ip.
     running-state         User-specified desired state for the tenant.
+    storage               User-specified storage information
     type                  Tenant type.
     vcpu-cores-per-node   User-specified number of logical cpu cores for the tenant.
-    vlans                 User-specified vlan-id from partition vlan table for the tenant.
-  r10900-1(config-tenant-tenant2)# config cryptos enabled 
-  r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
-  r10900-1(config-tenant-tenant2)# config type BIG-IP 
-  r10900-1(config-tenant-tenant2)# config nodes 2
-  r10900-1(config-tenant-tenant2)# config vlans 444        
-  r10900-1(config-tenant-tenant2)# config vlans 500
-  r10900-1(config-tenant-tenant2)# config vlans 555
-  r10900-1(config-tenant-tenant2)# config running-state deployed
-  r10900-1(config-tenant-tenant2)# config memory 14848
+    vlans                 User-specified vlan-id from vlan table for the tenant.
+  Boston-r10900-1(config-tenant-tenant2)# config ?
+  Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
+  Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
+  Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
+  Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
+  Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
+  Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
+  Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
+  Boston-r10900-1(config-tenant-tenant2)# config memory 14848
+  
 
 Any changes must be committed for them to be executed:
 
 .. code-block:: bash
 
-  r10900-1(config-tenant-tenant2)# commit
+  Boston-r10900-1(config-tenant-tenant2)# commit
+  Commit complete.
+  Boston-r10900-1(config-tenant-tenant2)# 
 	
 You may also put all the parameters on one line:
 
 .. code-block:: bash
 
-  r10900-1(config)# tenants tenant tenant2 config image BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes [ 1 2 ] vlans [ 2001 3001 ] mgmt-ip 10.144.140.107 prefix-length 24 gateway 10.144.140.254 name cbip3 running-state configured
-  r10900-1(tenant2)# commit
-  Commit complete.
+    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1  vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
+    Boston-r10900-1(config-tenant-tenant2)# commit
+    Commit complete.
+    Boston-r10900-1(config-tenant-tenant2)#
 
 After the tenant is created you can run the command **show running-config tenant** to see what has been configured:
 
 .. code-block:: bash
 
-  r10900-1# show run tenant
-  tenants tenant bigtenant
-  config name         bigtenant
-  config type         BIG-IP
-  config image        BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle
-  config nodes        [ 1 2 ]
-  config mgmt-ip      10.255.0.149
-  config prefix-length 24
-  config gateway      10.255.0.1
-  config vlans        [ 444 500 555 ]
-  config cryptos      enabled
-  config vcpu-cores-per-node 6
-  config memory       22016
-  config running-state deployed
-  config appliance-mode disabled
-  !
+    Boston-r10900-1# show running-config tenants 
+    tenants tenant tenant2
+    config name         tenant2
+    config type         BIG-IP
+    config image        BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    config nodes        [ 1 ]
+    config mgmt-ip      10.255.0.136
+    config prefix-length 24
+    config gateway      10.255.0.1
+    config vlans        [ 500 3010 3011 ]
+    config cryptos      enabled
+    config vcpu-cores-per-node 4
+    config memory       14848
+    config storage size 76
+    config running-state deployed
+    config appliance-mode disabled
+    !
+    Boston-r10900-1# 
+
 
 To see the actual status of the tenants, issue the CLI command **show tenants**.
 
 .. code-block:: bash
 
-  r10900-1# show tenants 
-  tenants tenant bigtenant
-  state name          bigtenant
-  state type          BIG-IP
-  state mgmt-ip       10.255.0.149
-  state prefix-length 24
-  state gateway       10.255.0.1
-  state vlans         [ 444 500 555 ]
-  state cryptos       enabled
-  state vcpu-cores-per-node 6
-  state memory        22016
-  state running-state deployed
-  state mac-data base-mac 00:94:a1:8e:d0:0b
-  state mac-data mac-pool-size 1
-  state appliance-mode disabled
-  state status        Running
-  state primary-slot  1
-  state image-version "BIG-IP 14.1.4 0.0.619"
-  NDI      MAC                
-  ----------------------------
-  default  00:94:a1:8e:d0:09  
-
-        INSTANCE                                                                                                                                                    
-  NODE  ID        PHASE    IMAGE NAME                                       CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  1     1         Running  BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle  2021-01-15T17:15:03Z  2021-01-15T17:15:00Z  Started tenant instance  0a:27:45:20:90:c4  
-  2     2         Running  BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle  2021-01-15T17:15:03Z  2021-01-15T17:14:59Z  Started tenant instance  52:02:73:bf:ee:ac  
-
+  Boston-r10900-1# show tenants 
   tenants tenant tenant2
-  state name          tenant2
-  state type          BIG-IP
-  state mgmt-ip       10.255.0.205
-  state prefix-length 24
-  state gateway       10.255.0.1
-  state vlans         [ 444 500 555 ]
-  state cryptos       enabled
-  state vcpu-cores-per-node 4
-  state memory        14848
-  state running-state deployed
-  state mac-data base-mac 00:94:a1:8e:d0:0d
-  state mac-data mac-pool-size 1
-  state appliance-mode disabled
-  state status        Starting
+   state name          tenant2
+   state unit-key-hash glbrGy9pGV3BAh1ObpXrryOF23bTEs2BAnQ5MPaIRyBjc8Un1swNfBo2yQhFXC6jKx/F5EhuaJFCehnHJqtDkg==
+   state type          BIG-IP
+   state mgmt-ip       10.255.0.136
+   state prefix-length 24
+   state gateway       10.255.0.1
+   state vlans         [ 500 3010 3011 ]
+   state cryptos       enabled
+   state vcpu-cores-per-node 4
+   state memory        14848
+   state storage size 76
+   state running-state deployed
+   state mac-data base-mac 00:94:a1:69:59:26
+   state mac-data mac-pool-size 1
+   state appliance-mode disabled
+   state status        Running
+   state primary-slot  1
+   state image-version "BIG-IP 15.1.5 0.0.8"
   NDI      MAC                
   ----------------------------
-  default  00:94:a1:8e:d0:0e  
+  default  00:94:a1:69:59:24  
 
-        INSTANCE                                                                                                  CREATION  READY          MGMT  
-  NODE  ID        PHASE                                          IMAGE NAME                                       TIME      TIME   STATUS  MAC   
-  -----------------------------------------------------------------------------------------------------------------------------------------------
-  2     2         Allocating resources to tenant is in progress  BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle                           -     
+        INSTANCE                                                                                                                                                 
+  NODE  ID        PHASE    IMAGE NAME                                    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1     1         Running  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle  2021-12-22T20:47:31Z  2021-12-22T20:47:32Z  Started tenant instance  00:94:a1:69:59:27  
 
 
 Tenant Deployment via GUI
@@ -205,7 +193,7 @@ Tenant Deployment via GUI
 Uploading a Tenant Image
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. Click the Add button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings. There is no option to upload direct from a computer via the browser, but this functionality will be added in a subsequent release.
+You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings. The second option is to click the **Upload** button to select and image file direct from your computer via the browser.
 
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
