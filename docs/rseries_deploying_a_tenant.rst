@@ -273,7 +273,8 @@ Tenant Deployment via GUI
 Uploading a Tenant Image via GUI
 ================================
 
-You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings. 
+You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
+
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
   :scale: 70% 
@@ -288,7 +289,7 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded you need to wait until it shows **Replicated** status before deploying a tenant.
+After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant.
 
 Creating a Tenant via GUI
 =========================
