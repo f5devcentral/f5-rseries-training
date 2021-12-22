@@ -502,12 +502,12 @@ Validating Tenant Status
 Resizing a Tenant
 -----------------
 
-VELOS tenants have static CPU and memory allocations. These can be changed after a tenant has been deployed, but the tenant will have to be temporarily suspended (put in the **provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded within a single blade or it can be configured to extend across blades assuming adequate resources are available. Once the changes are completed the tenant can be put into the deployed state and returned to service.
+rSeries tenants have static CPU and memory allocations. These can be changed after a tenant has been deployed, but the tenant will have to be temporarily suspended (put in the **provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the deployed state and returned to service.
 
-Expanding a Tenant within the Same Blade via GUI
+Expanding a Tenant via GUI
 ------------------------------------------------
 
-Below is GUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s per slot, 7680 memory per slot, and the tenant is allowed to run on only slot1. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848 per slot. Click the check box next to the tenant, and then select the **Provision** button. 
+Below is GUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -523,7 +523,7 @@ Click **OK**. This will move the tenant from **deployed** to **provisioned** sta
   :align: center
   :scale: 70% 
 
-Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs per slot** to **4**, and the **Memory per Slot** to **14848**, and set the state back to **deployed**. When finished click Save and the tenant will start up again with the new configuration.
+Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **deployed**. When finished click **Save** and the tenant will start up again with the new configuration.
 
 .. image:: images/rseries_deploying_a_tenant/image78.png
   :align: center
@@ -534,10 +534,10 @@ Next click on the hyperlink for tenant1. This will bring you into the configurat
   :scale: 70% 
 
 
-Expanding a Tenant within the Same Blade via CLI
+Expanding a Tenant via CLI
 ------------------------------------------------
 
-Expanding a tenant on the same blade via the CLI follows the same workflows as the GUI. You must first put the tenant in a provisioned state, and then make configuration changes, and then change back to deployed state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
+Expanding a tenant via the CLI follows the same workflows as the GUI. You must first put the tenant in a provisioned state, and then make configuration changes, and then change back to deployed state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
 
 .. code-block:: bash
 
@@ -610,10 +610,10 @@ You can monitor the tenant transition to provisioned state using the show comman
     Commit complete.
 
 
-Expanding a Tenant within the Same Blade via API
+Expanding a Tenant via API
 ------------------------------------------------
 
-First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured to run on slot1 (node) and has 2 vCPU’s and 7680 of memory per slot:
+First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPU’s and 7680 of memory per slot:
 
 .. code-block:: bash
 
@@ -721,209 +721,4 @@ Finally change the tenant status back to **deployed** and then check the status 
   }
 
 
-Expanding a Tenant Across Blades via GUI
-----------------------------------------
 
-
-VELOS tenants can be configured to expand across multiple blades. You can pre-configure a tenant to span more than one blade, and as blades are added to a chassis partition the tenant should automatically expand and start using additional resources it has been configured for.
-
-One consideration when expanding a tenant across more than one blade is that you will need to configure additional out-of-band IP addresses for each blade that the tenant will reside on. This is required for proper HA communication and failover to cover specific cases around blade failures. Below is a GUI screenshot inside a VELOS tenant that shows the out-of-band management IP address along with the **Cluster Member IP Addresses**. You should configure a Cluster Member IP Address for each slot that a tenant will span. The **Alternate Management** and **Alternate Cluster Member IP addresses** are for dual stack IPv4/IPv6 support and you would configure IPv6 addresses here, if the primary addresses were IPv4.
-
-.. image:: images/rseries_deploying_a_tenant/image80.png
-  :align: center
-  :scale: 70% 
-
-Next a tenant that currently exists on a single blade will be expanded to span two blades using the GUI. In the screenshot below **tenant2** is currently configured to only run on slot/blade1 due to the **Allowed Slots** being configured for 1. This tenant is using 6 vCPU’s and 22016 MB of memory on slot1.
-
-.. image:: images/rseries_deploying_a_tenant/image81.png
-  :align: center
-  :scale: 70% 
-
-Click the check-mark next to tenant2 and then click the Provision button to move the tenant to the **provisioned** state so that configuration changes can occur. A pop-up will appear asking you to confirm. After confirming it will take a few seconds for the tenant to spin down into the provisioned state.
-
-.. image:: images/rseries_deploying_a_tenant/image82.png
-  :align: center
-  :scale: 70% 
-
-Next click on the hyperlink for **tenant2** to change the configuration of the tenant. Change the **Allowed Slots** so that both 1 and 2 are now checked. Change the state from **Provisioned** to **Deployed* and then click **Save**. When prompted confirm, and then watch the tenant startup.
-
-.. image:: images/rseries_deploying_a_tenant/image83.png
-  :align: center
-  :scale: 70% 
-
-Note the tenant is now configured for both. Slots 1 & 2 for **Allowed Slots**.
-
-.. image:: images/rseries_deploying_a_tenant/image84.png
-  :align: center
-  :scale: 70% 
-
-Expanding a Tenant Across Blades via CLI
-----------------------------------------
-
-The same workflow can be done in the CLI. A tenant that currently exists on a single blade will be expanded to span two blades using the CLI. First display the current tenant status:
-
-
-.. code-block:: bash
-
-  bigpartition-2# show tenants tenant tenant2
-  tenants tenant tenant2
-  state type          BIG-IP
-  state mgmt-ip       10.255.0.208
-  state prefix-length 24
-  state gateway       10.255.0.1
-  state vlans         [ 444 500 555 ]
-  state cryptos       enabled
-  state vcpu-cores-per-node 6
-  state memory        22016
-  state running-state deployed
-  state mac-data base-mac 00:94:a1:8e:58:1c
-  state mac-data mac-pool-size 1
-  state appliance-mode disabled
-  state status        Running
-  state primary-slot  1
-  state image-version "BIG-IP 14.1.4 0.0.654"
-  NDI      MAC                
-  ----------------------------
-  default  00:94:a1:8e:58:1a  
-
-        INSTANCE                                                                                                                                                    
-  NODE  ID        PHASE    IMAGE NAME                                       CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  1     1         Running  BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle  2021-02-05T18:10:47Z  2021-02-05T18:10:42Z  Started tenant instance  72:f1:75:fd:0e:5f  
-
-
-.. code-block:: bash
-
-  bigpartition-2# show running-config tenants tenant tenant2
-  tenants tenant tenant2
-  config type         BIG-IP
-  config image        BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle
-  config nodes        [ 1 ]
-  config mgmt-ip      10.255.0.208
-  config prefix-length 24
-  config gateway      10.255.0.1
-  config vlans        [ 444 500 555 ]
-  config cryptos      enabled
-  config vcpu-cores-per-node 6
-  config memory       22016
-  config running-state deployed
-  config appliance-mode disabled
-  !
-
-Enter config mode and change the tenant running-state to provisioned so that changes can be made to its configuration. A commit is needed to make the change.
-
-.. code-block:: bash
-
-  bigpartition-2# config                      
-  Entering configuration mode terminal
-  bigpartition-2(config)# tenants tenant tenant2 config running-state provisioned 
-  bigpartition-2(config-tenant-tenant2)# commit
-  Commit complete.
-
-Next alter the nodes configuration to [ 1 2 ] so that the tenant will deploy onto both blades, and set the running-state back to deployed so that the tenant will start back up.
-
-.. code-block:: bash
-
-  bigpartition-2(config-tenant-tenant2)# exit
-  bigpartition-2(config)# tenants tenant tenant2 config node [ 1 2 ] running-state deployed
-  bigpartition-2(config-tenant-tenant2)# commit
-  Commit complete.
-
-You can verify the tenant status using the show tenants command. Note that Node 1 and Node 2 have an instance of tenant2 running.
-
-.. code-block:: bash
-
-  bigpartition-2# show tenants tenant tenant2
-  tenants tenant tenant2
-  state type          BIG-IP
-  state mgmt-ip       10.255.0.208
-  state prefix-length 24
-  state gateway       10.255.0.1
-  state vlans         [ 444 500 555 ]
-  state cryptos       enabled
-  state vcpu-cores-per-node 6
-  state memory        22016
-  state running-state deployed
-  state mac-data base-mac 00:94:a1:8e:58:1c
-  state mac-data mac-pool-size 1
-  state appliance-mode disabled
-  state status        Running
-  state primary-slot  1
-  state image-version "BIG-IP 14.1.4 0.0.654"
-  NDI      MAC                
-  ----------------------------
-  default  00:94:a1:8e:58:1a  
-
-        INSTANCE                                                                                                                                                    
-  NODE  ID        PHASE    IMAGE NAME                                       CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  1     1         Running  BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle  2021-02-05T18:30:14Z  2021-02-05T18:30:11Z  Started tenant instance  de:b5:21:4c:1b:f6  
-  2     2         Running  BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle  2021-02-05T18:31:24Z  2021-02-05T18:31:21Z  Started tenant instance  26:4f:35:7f:5d:1b  
-
-
-Expanding a Tenant Across Blades via API
-----------------------------------------
-
-If the tenant is already deployed, then you must first change the tenant to a provisioned state before changes can be made. This will cause the tenant to shutdown. The following API call will move the tenant to a provisioned state. 
-
-.. code-block:: bash
-
-  PATCH https://{{Chassis2_BigPartition_IP}}:8888//restconf/data/f5-tenants:tenants/tenant={{New_Tenant2_Name}}/config/running-state
-
-.. code-block:: json
-
-  {
-      "running-state": "provisioned"
-  }
-
-Once the tenant is in the provisioned state you can issue another API call to modify its configuration. In this case the tenant will be expanded to run across slots 1 and 2, and also have its status changed back to deployed.
-
-.. code-block:: bash
-
-  PATCH https://{{Chassis2_BigPartition_IP}}:8888//restconf/data/f5-tenants:tenants/tenant={{New_Tenant2_Name}}/config/vcpu-cores-per-node
-
-.. code-block:: json
-
-  {
-      "vcpu-cores-per-node": 6,
-      "memory": 22016,
-      "nodes": [
-          1,
-          2
-      ],
-      "running-state": "deployed"
-  }
-
-The last part is to verify the tenant’s status, and that the config change has taken affect:
-
-.. code-block:: bash
-
-  GET https://{{Chassis2_BigPartition_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant2_Name}}/config
-
-.. code-block:: json
-
-  {
-      "f5-tenants:config": {
-          "name": "tenant2",
-          "type": "BIG-IP",
-          "image": "BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle",
-          "nodes": [
-              1
-          ],
-          "mgmt-ip": "10.255.0.208",
-          "prefix-length": 24,
-          "gateway": "10.255.0.1",
-          "vlans": [
-              444,
-              500,
-              555
-          ],
-          "cryptos": "enabled",
-          "vcpu-cores-per-node": "6",
-          "memory": "22016",
-          "running-state": "deployed",
-          "appliance-mode": {
-              "enabled": false
-          }
-      }
-  }
