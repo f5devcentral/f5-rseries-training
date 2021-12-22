@@ -310,6 +310,24 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
 Validating Tenant Status via GUI
 ================================
 
+Once the tenant is deployed you can monitor its status in the **Tenant Managment > Tenant Deployments** GUI page. You'll see the **State** show **Deployed** but the **Status** 
+
+.. image:: images/rseries_deploying_a_tenant/image76.png
+  :align: center
+  :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image77.png
+  :align: center
+  :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image78.png
+  :align: center
+  :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image79.png
+  :align: center
+  :scale: 70% 
+
 
 
 
