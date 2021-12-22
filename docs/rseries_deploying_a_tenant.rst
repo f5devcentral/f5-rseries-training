@@ -65,15 +65,17 @@ This is analogous to thin provisioning in a hypervisor where you can over-alloca
 Tenant Deployments
 ------------------
 
+Tenant can easily be deployed via the F5OS CLI, GUI, or API.
+
 Tenant Deployment via CLI
 -------------------------
 
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS Platform layer. The first release of rSeries tenants only support TMOS v15.1.4. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. 
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries tenants only support TMOS v15.1.4. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. 
 
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. 
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the GUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
 
 .. code-block:: bash
 
@@ -88,6 +90,8 @@ You may also import the tenant image file from the F5OS CLI. Use the **file impo
     result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
 
 If a remote HTTPS server is not available you may also copy the file form the CLI over SCP:
+
+.. code-block:: bash
 
     Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username root insecure protocol scp
     Value for 'password' (<string>): ********
