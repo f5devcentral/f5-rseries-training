@@ -7,7 +7,7 @@ rSeries Appliances
 r10000 Series - r10600 / r10800 / r10900
 ========================================
 
-The r10000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r10600 is the base system, and PAYG licensing options exist to upgrade to the r10800 or r10900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
+The r10000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r10600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r10800 or r10900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
 The r10000 platform has 24 physical CPU cores / 48 vCPU's, however some of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r10600 and r10800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 256GB of RAM, and has dual 1TB SSD's.
 
 .. image:: images/rseries_appliances/image1.png
@@ -55,8 +55,7 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
 r5000 Series - r5600 / r5800 / r5900
 ====================================
 
-The r5000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and PAYG licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. 
-The r5000 platform has 16 physical CPU cores / 32 vCPU's, however some of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD.
+The r5000 Series is a 1RU appiance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r5000 platform has 16 physical CPU cores / 32 vCPU's, however some of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD.
 
 .. image:: images/rseries_appliances/image2.png
   :align: center
@@ -104,7 +103,7 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
 r4000 Series - r4600 / r4800
 ============================
 
-The r4000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r4600 is the base system, and PAYG licensing options exist to upgrade to the r4800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r4000 platform has 16 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rseries appliances. Additionally, some CPU’s are disabled on the r4600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 480GB SSD.
+The r4000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r4600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r4800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r4000 platform has 16 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r4600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 480GB SSD.
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
@@ -114,7 +113,7 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
 r2000 Series - r2600 / r2800
 ============================
 
-The r2000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r2600 is the base system, and PAYG licensing options exist to upgrade to the r2800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r2000 platform has 8 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rseries appliances. Additionally, some CPU’s are disabled on the r2600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 64GB of RAM, and has a single 480GB SSD.
+The r2000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r2600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r2800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r2000 platform has 8 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r2600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 64GB of RAM, and has a single 480GB SSD.
 
 .. image:: images/rseries_appliances/image4.png
   :align: center
