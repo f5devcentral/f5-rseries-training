@@ -273,13 +273,18 @@ Tenant Deployment via GUI
 Uploading a Tenant Image via GUI
 ================================
 
-You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings. The second option is to click the **Upload** button to select and image file direct from your computer via the browser.
-
+You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings. 
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
   :scale: 70% 
 
 .. image:: images/rseries_deploying_a_tenant/image72.png
+  :align: center
+  :scale: 70% 
+
+The second option is to click the **Upload** button to select an image file that you have previously downloaded directly from your computer via the browser.
+
+.. image:: images/rseries_deploying_a_tenant/image73.png
   :align: center
   :scale: 70% 
 
