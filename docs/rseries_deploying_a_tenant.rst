@@ -68,9 +68,9 @@ Tenant Deployments
 Tenant Deployment via CLI
 -------------------------
 
-------------------------
+
 Uploading a Tenant Image
-------------------------
+========================
 
 Creating a Tenant
 ^^^^^^^^^^^^^^^^^
