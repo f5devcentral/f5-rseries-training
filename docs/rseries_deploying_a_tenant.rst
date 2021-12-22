@@ -196,7 +196,7 @@ Any changes must be committed for them to be executed:
   Commit complete.
   Boston-r10900-1(config-tenant-tenant2)# 
 	
-You may also put all the parameters on one line:
+You may alternatively put all the parameters on one line instead of using the interactive mode above:
 
 .. code-block:: bash
 
