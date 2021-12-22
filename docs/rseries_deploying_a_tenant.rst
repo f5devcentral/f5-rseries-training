@@ -61,10 +61,20 @@ However, the 76GB image is allocated in a sparse manner meaning the tenant is on
 
 This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4 image. There may be rare instances where tenant running in production for a long time can end up with lots of extra space consumed on disk. This could be due to many in place software upgrades, local logging, core files, database use etc…There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over utilized, you could backup the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
 
+------------------
+Tenant Deployments
+------------------
+
 Tenant Deployment via CLI
 -------------------------
 
-Tenant lifecycle can be fully managed via the CLI using the **tenants** command in config mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command tenants **tenant <tenant-name>** where <tenant-name> is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering config ? within the tenant mode that will provide all the available options:
+Uploading a Tenant Image
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creating a Tenant
+^^^^^^^^^^^^^^^^^
+
+Tenant lifecycle can be fully managed via the CLI using the **tenants** command in config mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
 .. code-block:: bash
 
@@ -76,7 +86,7 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
     Value for 'config gateway' (<IP address>): 10.255.0.1
     Boston-r10900-1(config-tenant-tenant2)# 
 
-**NOTE: The nodes value is currently required in the interactive CLI mode, but should be set for 1 for rSeries Appliances.** 
+**NOTE: The nodes value is currently required in the interactive CLI mode to remain consistency with VELOS, but should be set for 1 for rSeries tenant deployments.** 
 
 When you are inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the avilable options.
 
@@ -128,6 +138,10 @@ You may also put all the parameters on one line:
     Boston-r10900-1(config-tenant-tenant2)# commit
     Commit complete.
     Boston-r10900-1(config-tenant-tenant2)#
+
+
+Validating Tenant Status
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 After the tenant is created you can run the command **show running-config tenant** to see what has been configured:
 
