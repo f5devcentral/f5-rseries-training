@@ -68,12 +68,73 @@ Tenant Deployments
 Tenant Deployment via CLI
 -------------------------
 
+Uploading a Tenant Image via CLI
+================================
 
-Uploading a Tenant Image
-========================
+Tenant software images are loaded directly into the F5OS Platform layer. The first release of rSeries tenants only support TMOS v15.1.4. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. 
 
-Creating a Tenant
-=================
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. 
+
+.. code-block:: bash
+
+    scp BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle admin@10.255.0.132:IMAGES
+
+You may also import the tenant image file from the F5OS CLI. Use the **file import** command to get the tenant image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example importing from a remote HTTPS server. Note the target directory should be **images/tenant**:
+
+.. code-block:: bash
+
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
+
+If a remote HTTPS server is not available you may also copy the file form the CLI over SCP:
+
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username root insecure protocol scp
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
+
+
+The command **file transfer-status** will provide details of the transfer progress and any errors:
+
+.. code-block:: bash
+
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username root insecure protocol scp
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
+
+
+    Boston-r10900-1# show file transfer-operations
+    LOCAL FILE PATH                                               REMOTE HOST   REMOTE FILE PATH                                                         OPERATION    PROTOCOL  STATUS                                TIMESTAMP                 
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    images/import/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle  10.255.0.142  /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                   Import file  HTTPS              Completed                    Wed Dec 22 22:11:47 2021  
+    images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle  10.255.0.142  /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                   Import file  HTTPS     Unauthorized Request, HTTP Error 401  Wed Dec 22 22:21:59 2021  
+    images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle  10.255.0.142  /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                   Import file  SCP       Failed to recv file                   Wed Dec 22 22:22:57 2021  
+    images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle  10.255.0.142  /var/www/server/1/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle  Import file  SCP       In Progress (7.0%)                    Wed Dec 22 22:25:14 2021  
+
+You can view the current tenant images and their status in the F5OS CLI by using the **show images** command:
+
+.. code-block:: bash
+
+    Boston-r10900-1# show images
+                                                                        IN               
+    NAME                                                                 USE    STATUS    
+    --------------------------------------------------------------------------------------
+    BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle                       false  verified  
+    BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                       false  verified  
+    BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified  
+    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         false  verified  
+    BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle    false  verified  
+    BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle    false  verified  
+    BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle    false  verified  
+    BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle  false  verified  
+    BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle  false  verified  
+    BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle  false  verified  
+
+    Boston-r10900-1# 
+
+
+Creating a Tenant via CLI
+=========================
 
 Tenant lifecycle can be fully managed via the CLI using the **tenants** command in config mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
@@ -141,8 +202,8 @@ You may also put all the parameters on one line:
     Boston-r10900-1(config-tenant-tenant2)#
 
 
-Validating Tenant Status
-========================
+Validating Tenant Status via CLI
+================================
 
 After the tenant is created you can run the command **show running-config tenant** to see what has been configured:
 
@@ -205,8 +266,8 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
 Tenant Deployment via GUI
 -------------------------
 
-Uploading a Tenant Image
-^^^^^^^^^^^^^^^^^^^^^^^^
+Uploading a Tenant Image via GUI
+================================
 
 You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings. The second option is to click the **Upload** button to select and image file direct from your computer via the browser.
 
@@ -220,8 +281,8 @@ You can upload a tenant image via the GUI in two different places. The first is 
 
 After the image is uploaded you need to wait until it shows **Replicated** status before deploying a tenant.
 
-Creating a Tenant
-^^^^^^^^^^^^^^^^^
+Creating a Tenant via GUI
+=========================
 
 You can deploy a tenant from the GUI using the Add button in the Tenant Management > Tenant Deployments screen.
 
@@ -235,14 +296,19 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
   :align: center
   :scale: 70% 
 
+Validating Tenant Status via GUI
+================================
+
+
+
 
 Tenant Deployment via API
 -------------------------
 
 The VELOS tenant lifecycle is fully supported in the F5OS API. This section will cover common examples.
 
-Uploading a Tenant Image
-^^^^^^^^^^^^^^^^^^^^^^^^
+Uploading a Tenant Image via API
+================================
 
 The upload utility requires a remote HTTPS server that is hosting the tenant image file. All API calls for tenant lifecycle are posted to the IP address of the chassis partition.
 To copy a tenant image into a chassis partition, use the following API call to the chassis partition IP address:
@@ -293,8 +359,8 @@ Below is output generated from the previous command:
         }
     }
 
-Creating a Tenant
-^^^^^^^^^^^^^^^^^
+Creating a Tenant via API
+=========================
 
 Tenant creation via the API is as simple as defining the parameters below and sending the POST to the chassis partition.
 
@@ -330,8 +396,8 @@ Tenant creation via the API is as simple as defining the parameters below and se
       ]
   }
 
-Validating Tenant Status
-^^^^^^^^^^^^^^^^^^^^^^^^
+Validating Tenant Status via API
+================================
 
 .. code-block:: bash
 
@@ -508,7 +574,7 @@ Resizing a Tenant
 rSeries tenants have static CPU and memory allocations. These can be changed after a tenant has been deployed, but the tenant will have to be temporarily suspended (put in the **provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the deployed state and returned to service.
 
 Expanding a Tenant via GUI
-------------------------------------------------
+--------------------------
 
 Below is GUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
 
@@ -538,7 +604,7 @@ Next click on the hyperlink for tenant1. This will bring you into the configurat
 
 
 Expanding a Tenant via CLI
-------------------------------------------------
+--------------------------
 
 Expanding a tenant via the CLI follows the same workflows as the GUI. You must first put the tenant in a provisioned state, and then make configuration changes, and then change back to deployed state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
 
@@ -614,7 +680,7 @@ You can monitor the tenant transition to provisioned state using the show comman
 
 
 Expanding a Tenant via API
-------------------------------------------------
+--------------------------
 
 First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPU’s and 7680 of memory per slot:
 
