@@ -294,17 +294,18 @@ After the image is uploaded you need to wait until it shows **Verified** status 
 Creating a Tenant via GUI
 =========================
 
-You can deploy a tenant from the GUI using the Add button in the Tenant Management > Tenant Deployments screen.
-
-.. image:: images/rseries_deploying_a_tenant/image73.png
-  :align: center
-  :scale: 70% 
-
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the image for it to run. Next you will pick what slots (blades) within the chassis partition you want the tenant to run on and assign an out-of-band management address, prefix and gateway. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something VIPRION did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW crypto acceleration (Recommended this is enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant.
+You can deploy a tenant from the GUI using the Add button in the **Tenant Management > Tenant Deployments** screen.
 
 .. image:: images/rseries_deploying_a_tenant/image74.png
   :align: center
   :scale: 70% 
+
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assing VLANs you wan the tenant to inherit. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant.
+
+.. image:: images/rseries_deploying_a_tenant/image75.png
+  :align: center
+  :scale: 70% 
+
 
 Validating Tenant Status via GUI
 ================================
