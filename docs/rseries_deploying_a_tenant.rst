@@ -73,7 +73,7 @@ Uploading a Tenant Image
 ========================
 
 Creating a Tenant
-^^^^^^^^^^^^^^^^^
+=================
 
 Tenant lifecycle can be fully managed via the CLI using the **tenants** command in config mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
@@ -142,7 +142,7 @@ You may also put all the parameters on one line:
 
 
 Validating Tenant Status
-^^^^^^^^^^^^^^^^^^^^^^^^
+========================
 
 After the tenant is created you can run the command **show running-config tenant** to see what has been configured:
 
