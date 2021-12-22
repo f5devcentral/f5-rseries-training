@@ -300,7 +300,7 @@ You can deploy a tenant from the GUI using the Add button in the **Tenant Manage
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assing VLANs you wan the tenant to inherit. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -310,19 +310,25 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
 Validating Tenant Status via GUI
 ================================
 
-Once the tenant is deployed you can monitor its status in the **Tenant Managment > Tenant Deployments** GUI page. You'll see the **State** show **Deployed** but the **Status** 
+Once the tenant is deployed you can monitor its status in the **Tenant Managment > Tenant Deployments** GUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
 
 .. image:: images/rseries_deploying_a_tenant/image76.png
   :align: center
   :scale: 70% 
 
+The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Running**.
+
 .. image:: images/rseries_deploying_a_tenant/image77.png
   :align: center
   :scale: 70% 
 
+The **Running Version** will go from **Unavailable** to a blank status for a period of time.
+
 .. image:: images/rseries_deploying_a_tenant/image78.png
   :align: center
   :scale: 70% 
+
+Finally when the tenant is fully up the Running Version should display the actual software version of the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image79.png
   :align: center
