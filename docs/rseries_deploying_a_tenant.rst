@@ -790,37 +790,95 @@ First get the current tenant status via the API and note the current CPU Allocat
 
 .. code-block:: bash
 
-  GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config
+  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
 
 The API output:
 
 .. code-block:: json
 
-  {
-      "f5-tenants:config": {
-          "name": "tenant1",
-          "type": "BIG-IP",
-          "image": "BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle",
-          "nodes": [
-              1
-          ],
-          "mgmt-ip": "10.255.0.207",
-          "prefix-length": 24,
-          "gateway": "10.255.0.1",
-          "vlans": [
-              444,
-              500,
-              555
-          ],
-          "cryptos": "enabled",
-          "vcpu-cores-per-node": "2",
-          "memory": "7680",
-          "running-state": "deployed",
-          "appliance-mode": {
-              "enabled": false
-          }
-      }
-  }
+    {
+        "f5-tenants:tenants": {
+            "tenant": [
+                {
+                    "name": "tenant1",
+                    "config": {
+                        "name": "tenant1",
+                        "type": "BIG-IP",
+                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                        "nodes": [
+                            1
+                        ],
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "deployed",
+                        "appliance-mode": {
+                            "enabled": false
+                        }
+                    },
+                    "state": {
+                        "name": "tenant1",
+                        "unit-key-hash": "ppgxFYFyOnpn4GT6fL5Ej8Y+PbR5UUu/pBQb0P2nFOwCx1eQpHtFgvWdwqCKpwofjlRKNossj5y5y9OE0vCWpw==",
+                        "type": "BIG-IP",
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "mac-ndi-set": [
+                            {
+                                "ndi": "default",
+                                "mac": "00:94:a1:69:59:24"
+                            }
+                        ],
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "deployed",
+                        "mac-data": {
+                            "base-mac": "00:94:a1:69:59:26",
+                            "mac-pool-size": 1
+                        },
+                        "appliance-mode": {
+                            "enabled": false
+                        },
+                        "status": "Running",
+                        "instances": {
+                            "instance": [
+                                {
+                                    "node": 1,
+                                    "instance-id": 1,
+                                    "phase": "Running",
+                                    "image-name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                                    "creation-time": "2021-12-23T17:14:05Z",
+                                    "ready-time": "2021-12-23T17:14:06Z",
+                                    "status": "Started tenant instance",
+                                    "mgmt-mac": "00:94:a1:69:59:27"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
 
 
 If you attempt to change the tenant configuration while it is in the deployed state it will fail with an error like the one below notifying you that config changes when in the **deployed** state is not allowed:
@@ -845,7 +903,7 @@ The workflow to change the tenant configuration is to first change the tenant st
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis2_BigPartition_IP}}:8888//restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
 And for the JSON body of the API call change the **running-state** to **provisioned**:
 
@@ -859,20 +917,23 @@ Next issue the GET command above to obtain the tenant status and note that its r
 
 .. code-block:: json
 
-
-        "cryptos": "enabled",
-        "vcpu-cores-per-node": "2",
-        "memory": "7680",
-        "running-state": "provisioned",
-        "appliance-mode": {
-            "enabled": false
+                    "vcpu-cores-per-node": 2,
+                    "memory": "7680",
+                    "storage": {
+                        "size": 76
+                    },
+                    "running-state": "provisioned",
+                    "mac-data": {
+                        "base-mac": "00:94:a1:69:59:26",
+                        "mac-pool-size": 1
+                    },
 
 
 Send a PATCH API command to change the CPU and memory configuration so the tenant can expand from 2 to 4 vCPU’s and from 7680 to 14848 GB of memory. It’s important to change both the CPU and memory allocation when expanding the tenant.
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis2_BigPartition_IP}}:8888//restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/vcpu-cores-per-node
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/vcpu-cores-per-node
 
 .. code-block:: json
 
@@ -885,7 +946,7 @@ Finally change the tenant status back to **deployed** and then check the status 
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis2_BigPartition_IP}}:8888//restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
 .. code-block:: json
 
@@ -894,4 +955,98 @@ Finally change the tenant status back to **deployed** and then check the status 
   }
 
 
+Finally validate the new status of the tenant with the correct vCPU and memory sizes, and the running-state of deployed:
 
+.. code-block:: bash
+
+  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+
+The API output:
+
+.. code-block:: json
+
+    {
+        "f5-tenants:tenants": {
+            "tenant": [
+                {
+                    "name": "tenant1",
+                    "config": {
+                        "name": "tenant1",
+                        "type": "BIG-IP",
+                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                        "nodes": [
+                            1
+                        ],
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 4,
+                        "memory": "14848",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "deployed",
+                        "appliance-mode": {
+                            "enabled": false
+                        }
+                    },
+                    "state": {
+                        "name": "tenant1",
+                        "unit-key-hash": "ppgxFYFyOnpn4GT6fL5Ej8Y+PbR5UUu/pBQb0P2nFOwCx1eQpHtFgvWdwqCKpwofjlRKNossj5y5y9OE0vCWpw==",
+                        "type": "BIG-IP",
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "mac-ndi-set": [
+                            {
+                                "ndi": "default",
+                                "mac": "00:94:a1:69:59:24"
+                            }
+                        ],
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 4,
+                        "memory": "14848",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "deployed",
+                        "mac-data": {
+                            "base-mac": "00:94:a1:69:59:26",
+                            "mac-pool-size": 1
+                        },
+                        "appliance-mode": {
+                            "enabled": false
+                        },
+                        "status": "Running",
+                        "primary-slot": 1,
+                        "image-version": "BIG-IP 15.1.5 0.0.8",
+                        "instances": {
+                            "instance": [
+                                {
+                                    "node": 1,
+                                    "instance-id": 1,
+                                    "phase": "Running",
+                                    "image-name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                                    "creation-time": "2021-12-23T17:19:16Z",
+                                    "ready-time": "2021-12-23T17:19:17Z",
+                                    "status": "Started tenant instance",
+                                    "mgmt-mac": "00:94:a1:69:59:27"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
