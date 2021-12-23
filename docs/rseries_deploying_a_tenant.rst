@@ -1065,7 +1065,7 @@ If you need to delete a tenant it can be removed from the F5OS CLI, GUI, or API.
 Deleting a Tenant via the CLI
 -----------------------------
 
-To delete a teant from the CLI enter **config** mode and then enter the command **no tenants tenant <tenant-name>**. You will then need to issue the **commit** command for the change to take affect. You can then verify the tennt has been deleted by using the **show tenants** command.
+To delete a teant from the CLI enter **config** mode and then enter the command **no tenants tenant <tenant-name>**. You will then need to issue the **commit** command for the change to take affect. You can then verify the tenant has been deleted by using the **show tenants** command.
 
 .. code-block:: bash
 
@@ -1084,7 +1084,7 @@ To delete a teant from the CLI enter **config** mode and then enter the command 
 Deleting a Tenant via the GUI
 -----------------------------
 
-To delete a teant from the GUI go to the **Tenant Management > Tenant Deployments* page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
+To delete a teant from the GUI go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
 
 .. image:: images/rseries_deploying_a_tenant/image88.png
   :align: center
@@ -1099,7 +1099,9 @@ You will be prompted before confirming the delete:
 Deleting a Tenant via the API
 -----------------------------
 
-To delete a teant from the API issue the following DELETE API call. 
+To delete a teant from the API issue the following DELETE API call.
+
+.. code-block:: bash
 
 DELETE https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
 
