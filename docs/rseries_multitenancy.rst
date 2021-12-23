@@ -11,7 +11,7 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
   :align: center
   :scale: 80%
 
-Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed. In the future when the next generation BIG-IP for Distrbuted Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM.
+Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed. In the future when the next generation BIG-IP for Distributed Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM.
 
 Creating a tenant is nearly identical to creating a vCMP guest with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a TMOS image to run inside the tenant, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit spcific VLANs configured by the admin that were previously configured at the F5OS platform layer.
 
@@ -65,7 +65,7 @@ For resource provisioning you can use **Recommended** settings or **Advanced** s
 
 Each rSeries appliance has an overall amount of memory for the platform, and the F5OS layer takes about 33GB of RAM leaving ~95GB of RAM for use by tenants. Using the Recommended values per tenant ~80GB of RAM will be used, leaving ~15GB of additional RAM. You may over-allocate RAM to a tenant until the 90GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
-  **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
+**min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
 
 +-----------------------+-----------------------+--------------------------+----------------------------------+-----------------+
