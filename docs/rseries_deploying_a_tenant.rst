@@ -432,6 +432,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
 
   POST https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
 
+Below is the body/payload for the API call above:
 
 .. code-block:: json
 
