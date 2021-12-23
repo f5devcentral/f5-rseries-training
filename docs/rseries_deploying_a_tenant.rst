@@ -567,6 +567,7 @@ You may then re-check the tenant status and see how the state changes, and the a
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
 
+Below is the output from the above API call:
 
  .. code-block:: json   
 
