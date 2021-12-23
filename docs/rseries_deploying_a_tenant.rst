@@ -472,7 +472,7 @@ The command below will show the current state and status of the tenant. Remember
 
   GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
 
-The  output of the above API call shows the state and status of the tenant.
+The output of the above API call shows the state and status of the tenant.
 
 .. code-block:: json
 
@@ -571,7 +571,6 @@ Below is the output from the above API call:
 
 .. code-block:: json   
 
-
     {
         "f5-tenants:tenants": {
             "tenant": [
@@ -655,6 +654,7 @@ Below is the output from the above API call:
             ]
         }
     }
+
 
 -----------------
 Resizing a Tenant
