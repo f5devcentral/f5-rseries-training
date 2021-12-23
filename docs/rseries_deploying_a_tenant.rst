@@ -656,6 +656,7 @@ Below is the output from the above API call:
     }
 
 
+
 -----------------
 Resizing a Tenant
 -----------------
@@ -1054,3 +1055,47 @@ The API output:
             ]
         }
     }
+
+-----------------
+Deleting a Tenant
+-----------------
+
+If you need to delete a tenant it can be removed from the F5OS CLI, GUI, or API.
+
+Deleting a Tenant via the CLI
+-----------------------------
+
+To delete a teant from the CLI enter **config** mode and then enter the command **no tenants tenant <tenant-name>**. You will then need to issue the **commit** command for the change to take affect. You can then verify the tennt has been deleted by using the **show tenants** command.
+
+.. code-block:: bash
+
+
+    Boston-r10900-1# config
+    Entering configuration mode terminal
+    Boston-r10900-1(config)# no tenants tenant tenant1 
+    Boston-r10900-1(config)# commit
+    Commit complete.
+    Boston-r10900-1(config)# 
+    Boston-r10900-1# show tenants 
+    % No entries found.
+    Boston-r10900-1# 
+
+
+Deleting a Tenant via the GUI
+-----------------------------
+
+To delete a teant from the GUI go to the **Tenant Management > Tenant Deployments* page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
+
+.. image:: images/rseries_deploying_a_tenant/image88.png
+  :align: center
+  :scale: 70% 
+
+Deleting a Tenant via the API
+-----------------------------
+
+To delete a teant from the API issue the following DELETE API call. 
+
+DELETE https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
+
+There is no need to enter anything in the payload of the API call. This should delete the specified tenant.
+
