@@ -345,6 +345,22 @@ At this point the tenant should be running and can be access via the out-of-band
   :align: center
   :scale: 70% 
 
+Clicking on one of the hyperlinks will bring you to the BIG-IP GUI of that tenant, and you'll need to login with default credentials of admin/admin and at that point you will be prompted to change the password for the admin account.
+
+.. image:: images/rseries_deploying_a_tenant/image40.png
+  :align: center
+  :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image41.png
+  :align: center
+  :scale: 70% 
+
+Now login with the new admin password, and you'll be brought into the intial setup wizard of the BIG-IP tenant. 
+
+.. image:: images/rseries_deploying_a_tenant/image42.png
+  :align: center
+  :scale: 70% 
+
 Tenant Deployment via API
 -------------------------
 
