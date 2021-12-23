@@ -383,7 +383,7 @@ To copy a tenant image into the appliance, use the following API call to the out
             {
                 "remote-host": "10.255.0.142",
                 "remote-file": "upload/{{Appliance_Tenant_Image}}",
-                "local-file": "images/{{Appliance_Tenant_Image}}",
+                "local-file": "images/tenant/{{Appliance_Tenant_Image}}",
                 "insecure": "",
                 "f5-utils-file-transfer:username": "corpuser",
                 "f5-utils-file-transfer:password": "Pa$$w0rd"
@@ -426,210 +426,232 @@ Below is output generated from the previous command:
 Creating a Tenant via API
 =========================
 
-Tenant creation via the API is as simple as defining the parameters below and sending the POST to the chassis partition.
+Tenant creation via the API is as simple as defining the parameters below and sending the POST to the chassis partition. The API call below will create a tenant, many of the fields are defined as a variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images and they can be reused easily and adpated to any environment. In the example below the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
 
 .. code-block:: bash
 
-  POST https://{{rSeries_Mgmt_IP}}:8888/restconf/data/f5-tenants:tenants
+  POST https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
 
 .. code-block:: json
 
-  {
-      "tenant": [
-          {
-              "name": "{{New_Tenant1_Name}}",
-              "config": {
-                  "image": "{{Tenant_Image}}",
-                  "nodes": [
-                      1
-                  ],
-                  "mgmt-ip": "{{Chassis2_Tenant1_IP}}",
-                  "gateway": "{{OutofBand_DFGW}}",
-                  "prefix-length": 24,
-                  "vlans": [
-                      444,
-                      501,
-                      555
-                  ],
-                  "vcpu-cores-per-node": 2,
-                  "memory": 7680,
-                  "cryptos": "enabled",
-                  "running-state": "configured"
-              }
-          }
-      ]
-  }
+    {
+        "tenant": [
+            {
+                "name": "{{New_Tenant1_Name}}",
+                "config": {
+                    "image": "{{Appliance_Tenant_Image}}",
+                    "nodes": [
+                        1
+                    ],
+                    "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
+                    "gateway": "{{OutofBand_DFGW}}",
+                    "prefix-length": 24,
+                    "vlans": [
+                        {{Internal_VLAN}},
+                        {{External_VLAN}},
+                        {{HA_VLAN}}
+                    ],
+                    "vcpu-cores-per-node": 2,
+                    "memory": 7680,
+                    "cryptos": "enabled",
+                    "running-state": "configured"
+                }
+            }
+        ]
+    } 
 
 Validating Tenant Status via API
 ================================
 
+The command below will show the current state and status of the tenant. Remmber this has not been changed to the **Deployed** state yet.
+
 .. code-block:: bash
 
-  GET https://{{rSeries_Mgmt_IP}}:8888/restconf/data/f5-tenants:tenants
+  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+
+The  output of the above API call shows the state and status of the tenant.
 
 .. code-block:: json
 
-  {
-      "f5-tenants:tenants": {
-          "tenant": [
-              {
-                  "name": "tenant1",
-                  "config": {
-                      "name": "tenant1",
-                      "type": "BIG-IP",
-                      "image": "BIGIP-14.1.4-0.0.11.ALL-VELOS.qcow2.zip.bundle",
-                      "nodes": [
-                          1
-                      ],
-                      "mgmt-ip": "10.255.0.207",
-                      "prefix-length": 24,
-                      "gateway": "10.255.0.1",
-                      "vlans": [
-                          444,
-                          501,
-                          555
-                      ],
-                      "cryptos": "enabled",
-                      "vcpu-cores-per-node": "4",
-                      "memory": "14848",
-                      "running-state": "deployed",
-                      "appliance-mode": {
-                          "enabled": false
-                      }
-                  },
-                  "state": {
-                      "name": "tenant1",
-                      "type": "BIG-IP",
-                      "mgmt-ip": "10.255.0.207",
-                      "prefix-length": 24,
-                      "gateway": "10.255.0.1",
-                      "mac-ndi-set": [
-                          {
-                              "ndi": "default",
-                              "mac": "00:94:a1:8e:58:29"
-                          }
-                      ],
-                      "vlans": [
-                          444,
-                          501,
-                          555
-                      ],
-                      "cryptos": "enabled",
-                      "vcpu-cores-per-node": "4",
-                      "memory": "14848",
-                      "running-state": "deployed",
-                      "mac-data": {
-                          "base-mac": "00:94:a1:8e:58:2b",
-                          "mac-pool-size": 1
-                      },
-                      "appliance-mode": {
-                          "enabled": false
-                      },
-                      "status": "Running",
-                      "primary-slot": 1,
-                      "image-version": "BIG-IP 14.1.4 0.0.11",
-                      "instances": {
-                          "instance": [
-                              {
-                                  "node": 1,
-                                  "instance-id": 1,
-                                  "phase": "Running",
-                                  "image-name": "BIGIP-14.1.4-0.0.11.ALL-VELOS.qcow2.zip.bundle",
-                                  "creation-time": "2021-03-15T19:42:43Z",
-                                  "ready-time": "2021-03-15T19:42:57Z",
-                                  "status": "Started tenant instance",
-                                  "mgmt-mac": "62:e3:b2:ef:9d:66"
-                              }
-                          ]
-                      }
-                  }
-              },
-              {
-                  "name": "tenant2",
-                  "config": {
-                      "name": "tenant2",
-                      "type": "BIG-IP",
-                      "image": "BIGIP-14.1.4-0.0.11.ALL-VELOS.qcow2.zip.bundle",
-                      "nodes": [
-                          1,
-                          2
-                      ],
-                      "mgmt-ip": "10.255.0.208",
-                      "prefix-length": 24,
-                      "gateway": "10.255.0.1",
-                      "vlans": [
-                          444,
-                          502,
-                          555
-                      ],
-                      "cryptos": "enabled",
-                      "vcpu-cores-per-node": "6",
-                      "memory": "22016",
-                      "running-state": "deployed",
-                      "appliance-mode": {
-                          "enabled": false
-                      }
-                  },
-                  "state": {
-                      "name": "tenant2",
-                      "type": "BIG-IP",
-                      "mgmt-ip": "10.255.0.208",
-                      "prefix-length": 24,
-                      "gateway": "10.255.0.1",
-                      "mac-ndi-set": [
-                          {
-                              "ndi": "default",
-                              "mac": "00:94:a1:8e:58:2a"
-                          }
-                      ],
-                      "vlans": [
-                          444,
-                          502,
-                          555
-                      ],
-                      "cryptos": "enabled",
-                      "vcpu-cores-per-node": "6",
-                      "memory": "22016",
-                      "running-state": "deployed",
-                      "mac-data": {
-                          "base-mac": "00:94:a1:8e:58:2c",
-                          "mac-pool-size": 1
-                      },
-                      "appliance-mode": {
-                          "enabled": false
-                      },
-                      "status": "Running",
-                      "primary-slot": 1,
-                      "image-version": "BIG-IP 14.1.4 0.0.11",
-                      "instances": {
-                          "instance": [
-                              {
-                                  "node": 1,
-                                  "instance-id": 1,
-                                  "phase": "Running",
-                                  "image-name": "BIGIP-14.1.4-0.0.11.ALL-VELOS.qcow2.zip.bundle",
-                                  "creation-time": "2021-03-16T13:25:10Z",
-                                  "ready-time": "2021-03-16T13:25:07Z",
-                                  "status": "Started tenant instance",
-                                  "mgmt-mac": "aa:b8:c3:ce:23:87"
-                              },
-                              {
-                                  "node": 2,
-                                  "instance-id": 2,
-                                  "phase": "Running",
-                                  "image-name": "BIGIP-14.1.4-0.0.11.ALL-VELOS.qcow2.zip.bundle",
-                                  "creation-time": "2021-03-16T13:25:03Z",
-                                  "ready-time": "2021-03-16T13:24:58Z",
-                                  "status": "Started tenant instance",
-                                  "mgmt-mac": "62:ce:c9:75:15:e0"
-                              }
-                          ]
-                      }
-                  }
-              }
-          ]
-      }
-  }
+    {
+        "f5-tenants:tenants": {
+            "tenant": [
+                {
+                    "name": "tenant1",
+                    "config": {
+                        "name": "tenant1",
+                        "type": "BIG-IP",
+                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                        "nodes": [
+                            1
+                        ],
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "configured",
+                        "appliance-mode": {
+                            "enabled": false
+                        }
+                    },
+                    "state": {
+                        "name": "tenant1",
+                        "unit-key-hash": "ec+5rtpwnIt6awtkadYqXyWzJ/Oty4tRbfPICaz6OzPSw4KILtQMJZETeq/Q6pbfBh8zXQfBPTetgvPw2dW2ig==",
+                        "type": "BIG-IP",
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "mac-ndi-set": [
+                            {
+                                "ndi": "default",
+                                "mac": "00:94:a1:69:59:24"
+                            }
+                        ],
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "configured",
+                        "mac-data": {
+                            "base-mac": "00:94:a1:69:59:26",
+                            "mac-pool-size": 1
+                        },
+                        "appliance-mode": {
+                            "enabled": false
+                        },
+                        "status": "Configured"
+                    }
+                }
+            ]
+        }
+    }
+
+Next a new API call will be sent to set the tenant's **running-state** to **Deployed**. Note this uses a PATCH command. 
+
+.. code-block:: bash
+
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
+
+The body/payload of the API call will set the **running-state** to **Deployed**:
+
+.. code-block:: json
+
+    {
+        "running-state": "deployed"
+    }
+
+The  output of the above API call shows the state and status of the tenant.
+
+.. code-block:: json
+
+You may then re-check the tenant status and see how the state changes, and the additional information that is displayed:
+
+.. code-block:: bash
+
+    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+
+ .. code-block:: json   
+
+    {
+        "f5-tenants:tenants": {
+            "tenant": [
+                {
+                    "name": "tenant1",
+                    "config": {
+                        "name": "tenant1",
+                        "type": "BIG-IP",
+                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                        "nodes": [
+                            1
+                        ],
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "deployed",
+                        "appliance-mode": {
+                            "enabled": false
+                        }
+                    },
+                    "state": {
+                        "name": "tenant1",
+                        "unit-key-hash": "QnBzdWEYTr3oTmTgtyvQLc9m+ANYIrHlwcd6Z84qKOiYa61b3eqqbxBtaVTzWFOxn19xrXp37gz4CKC8Et2PsQ==",
+                        "type": "BIG-IP",
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "mac-ndi-set": [
+                            {
+                                "ndi": "default",
+                                "mac": "00:94:a1:69:59:24"
+                            }
+                        ],
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "deployed",
+                        "mac-data": {
+                            "base-mac": "00:94:a1:69:59:26",
+                            "mac-pool-size": 1
+                        },
+                        "appliance-mode": {
+                            "enabled": false
+                        },
+                        "status": "Running",
+                        "instances": {
+                            "instance": [
+                                {
+                                    "node": 1,
+                                    "instance-id": 1,
+                                    "phase": "Running",
+                                    "image-name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                                    "creation-time": "2021-12-23T15:30:07Z",
+                                    "ready-time": "2021-12-23T15:30:08Z",
+                                    "status": "Started tenant instance",
+                                    "mgmt-mac": "00:94:a1:69:59:27"
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    }
 
 -----------------
 Resizing a Tenant
