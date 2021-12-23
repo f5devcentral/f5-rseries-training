@@ -436,7 +436,6 @@ Below is the body/payload for the API call above:
 
 .. code-block:: json
 
-
     {
         "tenant": [
             {
@@ -462,6 +461,7 @@ Below is the body/payload for the API call above:
             }
         ]
     }
+
 
 
 Validating Tenant Status via API
