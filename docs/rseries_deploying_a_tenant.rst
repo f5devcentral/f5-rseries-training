@@ -786,7 +786,7 @@ You can monitor the tenant transition to provisioned state using the show comman
 Expanding a Tenant via API
 --------------------------
 
-First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPU’s and 7680 of memory per slot:
+First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPU’s and 7680 of memory:
 
 .. code-block:: bash
 
@@ -913,7 +913,7 @@ And for the JSON body of the API call change the **running-state** to **provisio
       "running-state": "provisioned"
   }
 
-Next issue the GET command above to obtain the tenant status and note that its running state has changed to **provisioned**:
+Next reissue the GET command above to obtain the tenant status and note that its running state has changed to **provisioned**:
 
 .. code-block:: json
 
@@ -935,6 +935,8 @@ Send a PATCH API command to change the CPU and memory configuration so the tenan
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/vcpu-cores-per-node
 
+The payload should contain the following:
+
 .. code-block:: json
 
   {
@@ -948,6 +950,8 @@ Finally change the tenant status back to **deployed** and then check the status 
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
+The payload should contain the following:
+
 .. code-block:: json
 
   {
@@ -955,7 +959,7 @@ Finally change the tenant status back to **deployed** and then check the status 
   }
 
 
-Finally validate the new status of the tenant with the correct vCPU and memory sizes, and the running-state of deployed:
+Validate the new status of the tenant with the correct vCPU and memory sizes, and the running-state of deployed:
 
 .. code-block:: bash
 
