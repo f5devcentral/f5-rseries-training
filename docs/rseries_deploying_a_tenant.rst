@@ -435,6 +435,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
 
 .. code-block:: json
 
+
     {
         "tenant": [
             {
