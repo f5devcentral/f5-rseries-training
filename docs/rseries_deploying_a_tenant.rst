@@ -1099,7 +1099,7 @@ You will be prompted before confirming the delete:
 Deleting a Tenant via the API
 -----------------------------
 
-To delete a teant from the API issue the following DELETE API call.
+To delete a teant from the API issue the following **DELETE** API call.
 
 .. code-block:: bash
 
