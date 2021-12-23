@@ -9,7 +9,7 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
 
 .. image:: images/rseries_multitenancy/image1.png
   :align: center
-  :scale: 50%
+  :scale: 80%
 
 Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed. In the future when the next generation BIG-IP for Distrbuted Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM.
 
@@ -17,7 +17,7 @@ Creating a tenant is nearly identical to creating a vCMP guest with a few except
 
 .. image:: images/rseries_multitenancy/image2.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPU’s assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in iSeries, but now you can over provision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: not all rSeries appliances support the maximum number of vCPU's, this will vary by platform. Below is for the r100900 which supports up to 36 vCPU's for tennancy.
 
