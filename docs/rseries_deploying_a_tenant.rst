@@ -569,7 +569,7 @@ You may then re-check the tenant status and see how the state changes, and the a
 
 Below is the output from the above API call:
 
- .. code-block:: json   
+.. code-block:: json   
 
 
     {
