@@ -316,13 +316,13 @@ Once the tenant is deployed you can monitor its status in the **Tenant Managment
   :align: center
   :scale: 70% 
 
-The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Running**.
+The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Starting**.
 
 .. image:: images/rseries_deploying_a_tenant/image77.png
   :align: center
   :scale: 70% 
 
-The **Running Version** will go from **Unavailable** to a blank status for a period of time.
+The tenant will then go from **Starting** to **Running** and the **Running Version** will go from **Unavailable** to a blank status for a period of time.
 
 .. image:: images/rseries_deploying_a_tenant/image78.png
   :align: center
