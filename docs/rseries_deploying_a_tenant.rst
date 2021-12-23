@@ -1088,7 +1088,13 @@ To delete a teant from the GUI go to the **Tenant Management > Tenant Deployment
 
 .. image:: images/rseries_deploying_a_tenant/image88.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
+
+You will be prompted before confirming the delete:  
+
+.. image:: images/rseries_deploying_a_tenant/image89.png
+  :align: center
+  :scale: 70%   
 
 Deleting a Tenant via the API
 -----------------------------
