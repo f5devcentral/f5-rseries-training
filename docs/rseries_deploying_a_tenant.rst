@@ -73,7 +73,7 @@ Tenant Deployment via CLI
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries tenants only support TMOS v15.1.4. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. 
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries tenants only support TMOS v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to later versions should happen within the tenant itself. The images inside F5OS are for intial deployment only.
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the GUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
 
@@ -89,7 +89,7 @@ You may also import the tenant image file from the F5OS CLI. Use the **file impo
     Value for 'password' (<string>): ********
     result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
 
-If a remote HTTPS server is not available you may also copy the file form the CLI over SCP:
+If a remote HTTPS server is not available you may also copy the file form the CLI over SCP by adding the **protocol scp** option to the command line:
 
 .. code-block:: bash
 
@@ -127,12 +127,6 @@ You can view the current tenant images and their status in the F5OS CLI by using
     BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                       false  verified  
     BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified  
     BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         false  verified  
-    BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle    false  verified  
-    BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle    false  verified  
-    BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle    false  verified  
-    BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle  false  verified  
-    BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle  false  verified  
-    BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle  false  verified  
 
     Boston-r10900-1# 
 
@@ -140,7 +134,7 @@ You can view the current tenant images and their status in the F5OS CLI by using
 Creating a Tenant via CLI
 =========================
 
-Tenant lifecycle can be fully managed via the CLI using the **tenants** command in config mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
+Tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
 .. code-block:: bash
 
@@ -154,7 +148,7 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
 
 **NOTE: The nodes value is currently required in the interactive CLI mode to remain consistency with VELOS, but should be set for 1 for rSeries tenant deployments.** 
 
-When you are inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the avilable options.
+When inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the avilable options.
 
 .. code-block:: bash
 
@@ -209,7 +203,7 @@ You may alternatively put all the parameters on one line instead of using the in
 Validating Tenant Status via CLI
 ================================
 
-After the tenant is created you can run the command **show running-config tenant** to see what has been configured:
+After the tenant is created you can run the command **show running-config tenants** to see what has been configured:
 
 .. code-block:: bash
 
@@ -289,7 +283,12 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant.
+After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant. The second option in the GUI to upload files is via the **ystem Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+
+.. image:: images/rseries_deploying_a_tenant/image50.png
+  :align: center
+  :scale: 70% 
+
 
 Creating a Tenant via GUI
 =========================
