@@ -426,7 +426,7 @@ Below is output generated from the previous command:
 Creating a Tenant via API
 =========================
 
-Tenant creation via the API is as simple as defining the parameters below and sending the POST to the chassis partition. The API call below will create a tenant, many of the fields are defined as a variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images and they can be reused easily and adpated to any environment. In the example below the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
+Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant, many of the fields are defined as a variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images and they can be reused easily and adpated to any environment. In the example below the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
 
 .. code-block:: bash
 
@@ -459,6 +459,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
             }
         ]
     } 
+
 
 Validating Tenant Status via API
 ================================
