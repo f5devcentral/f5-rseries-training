@@ -334,8 +334,11 @@ Finally when the tenant is fully up the Running Version should display the actua
   :align: center
   :scale: 70% 
 
+You can view a more detailed tenant status using the **Tenant Managment > Tenant Details** GUI page. you may select a refresh period, and a specific tenant to monitor in deeper detail:
 
-
+.. image:: images/rseries_deploying_a_tenant/image80.png
+  :align: center
+  :scale: 70% 
 
 Tenant Deployment via API
 -------------------------
