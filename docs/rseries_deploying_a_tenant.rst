@@ -283,7 +283,7 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant. The second option in the GUI to upload files is via the **ystem Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant. The second option in the GUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_tenant/image50.png
   :align: center
@@ -293,13 +293,13 @@ After the image is uploaded you need to wait until it shows **Verified** status 
 Creating a Tenant via GUI
 =========================
 
-You can deploy a tenant from the GUI using the Add button in the **Tenant Management > Tenant Deployments** screen.
+You can deploy a tenant from the GUI using the **Add** button in the **Tenant Management > Tenant Deployments** screen.
 
 .. image:: images/rseries_deploying_a_tenant/image74.png
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once **Save** is clicked the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -336,6 +336,12 @@ Finally when the tenant is fully up the Running Version should display the actua
 You can view a more detailed tenant status using the **Tenant Managment > Tenant Details** GUI page. you may select a refresh period, and a specific tenant to monitor in deeper detail:
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
+  :align: center
+  :scale: 70% 
+
+At this point the tenant should be running and can be access via the out-of-band managament IP address. You can go to the **Dashboard** page in the GUI to see the running tenants, and there is a hyperlink that will connect to the tenant's GUI IP address as seen below.
+
+.. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
   :scale: 70% 
 
@@ -620,27 +626,27 @@ Expanding a Tenant via GUI
 
 Below is GUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
 
-.. image:: images/rseries_deploying_a_tenant/image81.png
+.. image:: images/rseries_deploying_a_tenant/image82.png
   :align: center
   :scale: 70% 
 
 Click **OK**. This will move the tenant from **deployed** to **provisioned** state. You will see the tenant go from **running**, to **stopping** to **stopped**.
 
-.. image:: images/rseries_deploying_a_tenant/image82.png
-  :align: center
-  :scale: 70% 
-
 .. image:: images/rseries_deploying_a_tenant/image83.png
   :align: center
   :scale: 70% 
-
-Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **deployed**. When finished click **Save** and the tenant will start up again with the new configuration.
 
 .. image:: images/rseries_deploying_a_tenant/image84.png
   :align: center
   :scale: 70% 
 
+Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **deployed**. When finished click **Save** and the tenant will start up again with the new configuration.
+
 .. image:: images/rseries_deploying_a_tenant/image85.png
+  :align: center
+  :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image86.png
   :align: center
   :scale: 70% 
 
