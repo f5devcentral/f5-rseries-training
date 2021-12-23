@@ -671,15 +671,21 @@ Below is GUI output of a single tenant that is in the deployed and running state
   :align: center
   :scale: 70% 
 
-Click **OK**. This will move the tenant from **deployed** to **provisioned** state. You will see the tenant go from **running**, to **stopping** to **stopped**.
+A pop-up will appear letting you know this will stop the tenant and disrupt traffic, click **OK**. 
 
 .. image:: images/rseries_deploying_a_tenant/image83.png
   :align: center
   :scale: 70% 
 
+This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping** to **Stopped**.
+
 .. image:: images/rseries_deploying_a_tenant/image84.png
   :align: center
   :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image85.png
+  :align: center
+  :scale: 70%   
 
 Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **deployed**. When finished click **Save** and the tenant will start up again with the new configuration.
 
