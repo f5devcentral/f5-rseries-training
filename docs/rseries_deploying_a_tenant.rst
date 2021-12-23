@@ -343,17 +343,17 @@ You can view a more detailed tenant status using the **Tenant Managment > Tenant
 Tenant Deployment via API
 -------------------------
 
-The VELOS tenant lifecycle is fully supported in the F5OS API. This section will cover common examples.
+The rSeries tenant lifecycle is fully supported in the F5OS API. This section will cover common examples.
 
-Uploading a Tenant Image via API
-================================
+Uploading a Tenant Image via F5OS API
+=====================================
 
-The upload utility requires a remote HTTPS server that is hosting the tenant image file. All API calls for tenant lifecycle are posted to the IP address of the chassis partition.
-To copy a tenant image into a chassis partition, use the following API call to the chassis partition IP address:
+The upload utility requires a remote HTTPS, SCP, or SFTP server that is hosting the tenant image file. All API calls for tenant lifecycle are posted to the F5OS out-of-band management IP address of the appliance.
+To copy a tenant image into the appliance, use the following API call to the out-of-band F5OS management IP address:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_BigPartition_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{rSeries_Mgmt_IP}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
@@ -361,20 +361,20 @@ To copy a tenant image into a chassis partition, use the following API call to t
         "input": [
             {
                 "remote-host": "10.255.0.142",
-                "remote-file": "upload/{{Tenant_Image}}",
-                "local-file": "images/{{Tenant_Image}}",
+                "remote-file": "upload/{{Appliance_Tenant_Image}}",
+                "local-file": "images/{{Appliance_Tenant_Image}}",
                 "insecure": "",
                 "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "Passw0rd!!"
+                "f5-utils-file-transfer:password": "Pa$$w0rd"
             }
         ]
     }
 
-To list the current tenant images available on the chassis partition use the following API Call:
+To list the current tenant images available within F5OS use the following API Call:
 
 .. code-block:: bash
 
-    GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-tenant-images:images
+    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenant-images:images
 
 Below is output generated from the previous command:
 
@@ -384,14 +384,19 @@ Below is output generated from the previous command:
         "f5-tenant-images:images": {
             "image": [
                 {
-                    "name": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": true,
-                    "status": "replicated"
+                    "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
                 },
                 {
-                    "name": "BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle",
+                    "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": false,
-                    "status": "replicated"
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": true,
+                    "status": "verified"
                 }
             ]
         }
@@ -404,7 +409,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
 
 .. code-block:: bash
 
-  POST https://{{Chassis_Partition_IP}}:8888/restconf/data/f5-tenants:tenants
+  POST https://{{rSeries_Mgmt_IP}}:8888/restconf/data/f5-tenants:tenants
 
 .. code-block:: json
 
@@ -439,7 +444,7 @@ Validating Tenant Status via API
 
 .. code-block:: bash
 
-  GET https://{{Chassis_Partition_IP}}:8888/restconf/data/f5-tenants:tenants
+  GET https://{{rSeries_Mgmt_IP}}:8888/restconf/data/f5-tenants:tenants
 
 .. code-block:: json
 
