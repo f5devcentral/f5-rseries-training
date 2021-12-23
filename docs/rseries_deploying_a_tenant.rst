@@ -1103,7 +1103,7 @@ To delete a teant from the API issue the following DELETE API call.
 
 .. code-block:: bash
 
-DELETE https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
+    DELETE https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
 
 There is no need to enter anything in the payload of the API call. This should delete the specified tenant.
 
