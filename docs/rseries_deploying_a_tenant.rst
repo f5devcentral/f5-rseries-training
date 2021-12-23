@@ -464,7 +464,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
 Validating Tenant Status via API
 ================================
 
-The command below will show the current state and status of the tenant. Remmber this has not been changed to the **Deployed** state yet.
+The command below will show the current state and status of the tenant. Remember it has not been changed to the **Deployed** state yet.
 
 .. code-block:: bash
 
@@ -558,9 +558,6 @@ The body/payload of the API call will set the **running-state** to **Deployed**:
         "running-state": "deployed"
     }
 
-The  output of the above API call shows the state and status of the tenant.
-
-.. code-block:: json
 
 You may then re-check the tenant status and see how the state changes, and the additional information that is displayed:
 
