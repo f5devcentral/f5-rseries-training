@@ -701,77 +701,86 @@ Next click on the hyperlink for tenant1. This will bring you into the configurat
 Expanding a Tenant via CLI
 --------------------------
 
-Expanding a tenant via the CLI follows the same workflows as the GUI. You must first put the tenant in a provisioned state, and then make configuration changes, and then change back to deployed state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
+Expanding a tenant via the CLI follows the same workflows as the GUI. You must first put the tenant in a **Provisioned** state, and then make configuration changes, and then change back to **Deployed** state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
 
 .. code-block:: bash
 
-  bigpartition-2# show running-config tenants 
-  tenants tenant tenant1
-  config type         BIG-IP
-  config image        BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle
-  config nodes        [ 1 ]
-  config mgmt-ip      10.255.0.207
-  config prefix-length 24
-  config gateway      10.255.0.1
-  config vlans        [ 444 500 555 ]
-  config cryptos      enabled
-  config vcpu-cores-per-node 2
-  config memory       7680
-  config running-state deployed
-  config appliance-mode disabled
-  !
-  bigpartition-2# 
+    Boston-r10900-1# show running-config tenants 
+    tenants tenant tenant1
+    config name         tenant1
+    config type         BIG-IP
+    config image        BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    config nodes        [ 1 ]
+    config mgmt-ip      10.255.0.149
+    config prefix-length 24
+    config gateway      10.255.0.1
+    config vlans        [ 500 3010 3011 ]
+    config cryptos      enabled
+    config vcpu-cores-per-node 2
+    config memory       7680
+    config storage size 76
+    config running-state provisioned
+    config appliance-mode disabled
+    !
+    Boston-r10900-1# 
+
 
 You can also view the tenants running status by issuing the CLI command **show tenants**.
 
 .. code-block:: bash
 
-  bigpartition-2# show tenants 
-  tenants tenant tenant1
-  state type          BIG-IP
-  state mgmt-ip       10.255.0.207
-  state prefix-length 24
-  state gateway       10.255.0.1
-  state vlans         [ 444 500 555 ]
-  state cryptos       enabled
-  state vcpu-cores-per-node 2
-  state memory        7680
-  state running-state deployed
-  state mac-data base-mac 00:94:a1:8e:58:1b
-  state mac-data mac-pool-size 1
-  state appliance-mode disabled
-  state status        Running
-  state primary-slot  1
-  state image-version "BIG-IP 14.1.4 0.0.654"
-  NDI      MAC                
-  ----------------------------
-  default  00:94:a1:8e:58:19  
+    Boston-r10900-1# show tenants 
+    tenants tenant tenant1
+    state name          tenant1
+    state unit-key-hash QnBzdWEYTr3oTmTgtyvQLc9m+ANYIrHlwcd6Z84qKOiYa61b3eqqbxBtaVTzWFOxn19xrXp37gz4CKC8Et2PsQ==
+    state type          BIG-IP
+    state mgmt-ip       10.255.0.149
+    state prefix-length 24
+    state gateway       10.255.0.1
+    state vlans         [ 500 3010 3011 ]
+    state cryptos       enabled
+    state vcpu-cores-per-node 2
+    state memory        7680
+    state storage size 76
+    state running-state provisioned
+    state mac-data base-mac 00:94:a1:69:59:26
+    state mac-data mac-pool-size 1
+    state appliance-mode disabled
+    state status        Provisioned
+    state primary-slot  1
+    state image-version "BIG-IP 15.1.5 0.0.8"
+    NDI      MAC                
+    ----------------------------
+    default  00:94:a1:69:59:24  
 
-        INSTANCE                                                                                                                                                    
-  NODE  ID        PHASE    IMAGE NAME                                       CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  1     1         Running  BIGIP-14.1.4-0.0.654.ALL-VELOS.qcow2.zip.bundle  2021-02-04T22:02:22Z  2021-02-04T22:02:18Z  Started tenant instance  42:d9:d1:e5:a3:c0  
+        INSTANCE                                                                 CREATION  READY          MGMT  
+    NODE  ID        PHASE            IMAGE NAME                                    TIME      TIME   STATUS  MAC   
+    --------------------------------------------------------------------------------------------------------------
+    1     1         Ready to deploy  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                           -     
 
-  bigpartition-2# 
+    Boston-r10900-1# 
+
 
 To change the tenant configuration, you must first enter config mode and then change the tenant running state to **provisioned**, the change won’t take effect until the **commit** command is issued:
 
 .. code-block:: bash
 
-  bigpartition-2#  config
-  Entering configuration mode terminal
-  bigpartition-2(config)# tenants tenant tenant1 config running-state provisioned         
-  bigpartition-2(config-tenant-tenant1)# commit
-  Commit complete.
+    Boston-r10900-1# config
+    Entering configuration mode terminal
+    Boston-r10900-1(config)# tenants tenant tenant1 config running-state provisioned 
+    Boston-r10900-1(config-tenant-tenant1)# commit
+    Commit complete.
 
 You can monitor the tenant transition to provisioned state using the show commands above. Once in the provisioned state you can change the vCPU and memory configurations as well as the **running-state** back to deployed. Then issue the **commit** command to execute the changes.
 
 .. code-block:: bash
 
-  bigpartition-2(config-tenant-tenant1)# exit
-  bigpartition-2(config)# tenants tenant tenant1 config vcpu-cores-per-node 4 memory 14848 running-state deployed    
-  bigpartition-2(config-tenant-tenant1)# commit 
+    Boston-r10900-1# config
+    Entering configuration mode terminal
+    Boston-r10900-1(config)# tenants tenant tenant1 config vcpu-cores-per-node 4 memory 14848 running-state deployed 
+    Boston-r10900-1(config-tenant-tenant1)# commit
     Commit complete.
+
 
 
 Expanding a Tenant via API
