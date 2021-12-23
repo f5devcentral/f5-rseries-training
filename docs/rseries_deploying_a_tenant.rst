@@ -614,34 +614,34 @@ Validating Tenant Status via API
 Resizing a Tenant
 -----------------
 
-rSeries tenants have static CPU and memory allocations. These can be changed after a tenant has been deployed, but the tenant will have to be temporarily suspended (put in the **provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the deployed state and returned to service.
+rSeries tenants have static vCPU and memory allocations just like vCMP. These can be changed after a tenant has been deployed, but the tenant will have to be temporarily suspended (put in the **Provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the **Deployed** state and returned to service.
 
 Expanding a Tenant via GUI
 --------------------------
 
 Below is GUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
 
-.. image:: images/rseries_deploying_a_tenant/image75.png
+.. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
   :scale: 70% 
 
 Click **OK**. This will move the tenant from **deployed** to **provisioned** state. You will see the tenant go from **running**, to **stopping** to **stopped**.
 
-.. image:: images/rseries_deploying_a_tenant/image76.png
+.. image:: images/rseries_deploying_a_tenant/image82.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_tenant/image77.png
+.. image:: images/rseries_deploying_a_tenant/image83.png
   :align: center
   :scale: 70% 
 
 Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **deployed**. When finished click **Save** and the tenant will start up again with the new configuration.
 
-.. image:: images/rseries_deploying_a_tenant/image78.png
+.. image:: images/rseries_deploying_a_tenant/image84.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_tenant/image79.png
+.. image:: images/rseries_deploying_a_tenant/image85.png
   :align: center
   :scale: 70% 
 
