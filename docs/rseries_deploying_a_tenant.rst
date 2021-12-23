@@ -458,7 +458,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
                 }
             }
         ]
-    } 
+    }
 
 
 Validating Tenant Status via API
