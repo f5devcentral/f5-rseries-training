@@ -11,15 +11,15 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
   :align: center
   :scale: 80%
 
-Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed. In the future when the next generation BIG-IP for Distributed Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM.
+Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed on an iSeries appliance. In the future when the next generation BIG-IP for Distributed Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM. They will be able to run side by side on the same appliance.
 
-Creating a tenant is nearly identical to creating a vCMP guest with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a TMOS image to run inside the tenant, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit spcific VLANs configured by the admin that were previously configured at the F5OS platform layer.
+Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a TMOS image to run inside the tenant, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer.
 
 .. image:: images/rseries_multitenancy/image2.png
   :align: center
   :scale: 70%
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPU’s assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in iSeries, but now you can over provision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: not all rSeries appliances support the maximum number of vCPU's, this will vary by platform. Below is for the r100900 which supports up to 36 vCPU's for tennancy.
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPU’s assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPU's, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPU's for tennancy.
 
 +-----------------------+--------------------+--------------------------+-----------------+-----------------+
 | **Tenant Size**       | **Physical Cores** | **Logical Cores (vCPU)** | **Min GB RAM**  | **RAM/vCPU**    |
@@ -63,9 +63,9 @@ For resource provisioning you can use **Recommended** settings or **Advanced** s
 | rSeries 36vCPU Tenant | 18                 |  36                      | 129,536,000,000 | 3,598,222,222   |
 +-----------------------+--------------------+--------------------------+-----------------+-----------------+
 
-Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra ram is available for tenants beyonf the recommended values.
+Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra RAM is available for tenants beyond the recommended values.
 
-Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r10000 Series tenants, leaving ~15GB of additional RAM. You may over-allocate RAM to a tenant until the 90GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r10000 Series tenants, leaving ~15GB of additional RAM. You may over-allocate RAM to any tenant until the extra 15GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
 **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
@@ -97,19 +97,19 @@ Using the minimum Recommended values per tenant ~129GB of RAM will be allocated 
 r10000 Series Multitenancy
 ==========================
 
-Each r10000 Series appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 28 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
+Each r10000 Series appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 30 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
 
 .. image:: images/rseries_multitenancy/image3.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 .. image:: images/rseries_multitenancy/image4.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 .. image:: images/rseries_multitenancy/image5.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 
 Single vCPU (Skinny) tenants are supported, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option. As always proper sizing should be done to ensure the tenant has enough resources. 
