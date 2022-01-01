@@ -25,15 +25,15 @@ Tenant Level HA within the Same Appliance
 
 rSeries does not support configuring HA relationships between tenants within the same appliance. Depending on what failover behavior you want, you can have the tenant run with less capacity if certain failures occur or fail over to the tenant in the other chassis. This is controlled within the tenant itself, just like HA failover was configured inside a vCMP guest. HA groups allow an administrator to fail over based on pool, trunk, or blade (For VELOS/VIPRION systems) availability. 
 
-Below is an example of a “SuperVIP” tenant that spans all avialable vCPU's. Each rSeries appliance will have one static out-of-band management IP address. Each tenant will require an out-of-band management address on the same network, and optional inband self-IP addresses can be added within the tenant. 
+Below is an example of a “SuperVIP” tenant that spans all available vCPU's. Each rSeries appliance will have one static out-of-band management IP address. Each tenant will require an out-of-band management address on the same network, and optional inband self-IP addresses can be added within the tenant. 
 
-.. image:: images/rseries_high_availability/image10.png
+.. image:: images/rseries_high_availability/image3.png
   :align: center
   :scale: 70%
 
 Inside the tenant,  **Cluster Member IP Address** will not be needed as they are for chassis based systems such as VIPRION or VELOS. If using IPv4 & IPv6 (dual stack management) then **Alternate Management** addresses can be configured.
 
-.. image:: images/rseries_high_availability/image11.png
+.. image:: images/rseries_high_availability/image4.png
   :align: center
   :scale: 90%
 
