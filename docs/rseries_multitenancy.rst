@@ -99,13 +99,20 @@ r10000 Series Multitenancy
 
 Each r10000 Series appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 30 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
 
+The r10900 has 48 vCPU's total, 12 vCPU's reserved for F5OS, and 36 vCPU's left over for use by tenants:
+
+
 .. image:: images/rseries_multitenancy/image3.png
   :align: center
   :scale: 40%
 
+The r10800 has 48 vCPU's total, 6 vCPU's are disabled via licensing, 12 vCPU's reserved for F5OS, and 30 vCPU's left over for use by tenants:
+
 .. image:: images/rseries_multitenancy/image4.png
   :align: center
   :scale: 40%
+
+The r10600 has 48 vCPU's total, 12 vCPU's are disabled via licensing, 12 vCPU's reserved for F5OS, and 24 vCPU's left over for use by tenants:  
 
 .. image:: images/rseries_multitenancy/image5.png
   :align: center
