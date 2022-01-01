@@ -118,6 +118,8 @@ The r10600 has 48 vCPU's total, 12 vCPU's are disabled via licensing, 12 vCPU's 
   :align: center
   :scale: 40%
 
+Since all r10000 models are running on the same hardware appliance, you can easily upgrade from the r10600 to either the r10800 or r10900 to unlock more performance via a simple license change. The r10800 can be upgraded to an r10900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r10000 series appliances.
+
 r5000 Series Multitenancy
 ==========================
 
@@ -141,6 +143,60 @@ The r5600 has 32 vCPU's total, 12 vCPU's are disabled via licensing, 6 vCPU's re
 .. image:: images/rseries_multitenancy/image8.png
   :align: center
   :scale: 40%
+
+Since all r5000 models are running on the same hardware appliance, you can easily upgrade from the r5600 to either the r5800 or r5900 to unlock more performance via a simple license change. The r5800 can be upgraded to an r5900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r5000 series appliances.
+
+r4000 Series Multitenancy
+==========================
+
+In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPU's. For each physical CPU core there are two logical vCPU's. The r4000 series of appliances use a different class of Intel CPU that does not support hyperthreading. Instead of measuring how many vCPU's or logical cores these platforms support, they support physical core counts only. Also the r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS, or FASTL4. These workloads are handled by CPU instead. SSL and Compression are part of the Intel CPU complex and are offloaded. 
+
+Each r4000 Series appliance has 16 CPU cores (not vCPU’s), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
+
+This leaves all 16 CPU cores left over for use by tenants on the r4800, and 8 CPU cores for the r4600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant so that you can deploy many tenants. Below are examples of the total number of CPU cores supported for each r4000 platform.
+
+The r4800 has 16 CPU cores total, There are zero CPU cores reserved for F5OS, and 16 CPU cores left over for use by tenants:
+
+
+.. image:: images/rseries_multitenancy/image9.png
+  :align: center
+  :scale: 40%
+
+The r4600 has 16 CPU cores total, 8 CPU cores are disabled via licesning, there are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by tenants:
+
+.. image:: images/rseries_multitenancy/image10.png
+  :align: center
+  :scale: 40%
+
+Since all r4000 models are running on the same hardware appliance, you can easily upgrade from the r4600 to either the r4800 to unlock more performance via a simple license change. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 2 PAYG tiers within the r4000 series appliances.
+
+
+r2000 Series Multitenancy
+==========================
+
+In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPU's. For each physical CPU core there are two logical vCPU's. The r2000 series of appliances use a different class of Intel CPU that does not support hyperthreading. Instead of measuring how many vCPU's or logical cores these platforms support, they support physical core counts only. Also the r2000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS, or FASTL4. These workloads are handled by CPU instead. SSL and Compression are part of the Intel CPU complex and are offloaded. 
+
+Each r2000 Series appliance has 8 CPU cores (not vCPU’s), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
+
+This leaves all 8 CPU cores left over for use by tenants on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant so that you can deploy many tenants. Below are examples of the total number of CPU cores supported for each r2000 platform.
+
+The r2800 has 8 CPU cores total, There are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by tenants:
+
+
+.. image:: images/rseries_multitenancy/image11.png
+  :align: center
+  :scale: 40%
+
+The r2600 has 8 CPU cores total, 4 CPU cores are disabled via licesning, there are zero CPU cores reserved for F5OS, and 4 CPU cores left over for use by tenants:
+
+.. image:: images/rseries_multitenancy/image12.png
+  :align: center
+  :scale: 40%
+
+Since all r2000 models are running on the same hardware appliance, you can easily upgrade from the r2600 to either the r2800 to unlock more performance via a simple license change. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 2 PAYG tiers within the r2000 series appliances.
+
+Tenant Sizing
+=============
 
 Single vCPU (Skinny) tenants are supported, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option. As always proper sizing should be done to ensure the tenant has enough resources. 
 
