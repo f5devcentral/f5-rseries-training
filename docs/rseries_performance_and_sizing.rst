@@ -26,19 +26,18 @@ The r5000 Series appliance has a similar architecture but since it doesn't requi
   :scale: 40%
 
 
-**Note: In the initial 1.0.x versions of F5OS-A (for rSeries appliances), not all FPGA HW offload functions are enabled. Many will be added in the subsequent TMOS & F5OS releases. AFM DDoS mitigation offload is not fully supported in v1.0.x versions of F5OS-A and will run in software similar to how it would run in a BIG-IP VE. SSL & Compression HW offload are fully supported in the initial v1.0.x F5OS-A releases, as is FASTL4 HW offload. CGNAT & PEM support are not supported in the initial F5OS-A 1.0.x releases, and will be added in a future release.
+**Note: In the initial 1.0.x versions of F5OS-A (for rSeries appliances), not all FPGA HW offload functions are enabled. Many will be added in the subsequent TMOS & F5OS releases. AFM DDoS mitigation offload is not fully supported in v1.0.x versions of F5OS-A and will run in software similar to how it would run in a BIG-IP VE. SSL & Compression HW offload are fully supported in the initial v1.0.x F5OS-A releases, as is FASTL4 HW offload. CGNAT & PEM support are not supported in the initial F5OS-A 1.0.x releases, and will be added in a future release.**
 
-When comparing rSeries to iSeries it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x better performance than the previous generation iSeries appliances.
+When comparing rSeries to the previous generation iSeries appliances it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x more performance than the previous generation iSeries appliances.
+Looking at comparisons of VIPRION B2150 & B2250 vs. a single VELOS BX110 blade you can see a 1.5x-3x increase in Layer 7 Requests Per Second (RPS) performance depending on which blade a customer may be migrating from. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve the BX110 can now offload that to hardware, whereas the B2150 & B2250 had to process those ciphers in software consuming more CPU.
 
-is more scalable as it has double the number of slots (8 in VELOS vs. 4 in VIPRION), so the amount of performance in the same RU (Rack Unit) is significantly increased. The VELOS blades are half the width of the current B2250 blades in VIPRION. Looking at comparisons of VIPRION B2150 & B2250 vs. a single VELOS BX110 blade you can see a 1.5x-3x increase in Layer 7 Requests Per Second (RPS) performance depending on which blade a customer may be migrating from. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve the BX110 can now offload that to hardware, whereas the B2150 & B2250 had to process those ciphers in software consuming more CPU.
-
-.. image:: images/rseries_performance_and_sizing/image2.png
+.. image:: images/rseries_performance_and_sizing/image3.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 The real value of VELOS is the ability to scale from 3-6x for Layer 7 RPS and up to 20x for SSL (RSA) when comparing fully loaded chassis (4 VIPRION blades vs. 8 VELOS blades) in the same 4RU footprint.
 
-.. image:: images/rseries_performance_and_sizing/image3.png
+.. image:: images/rseries_performance_and_sizing/image4.png
   :align: center
   :scale: 40%
 
