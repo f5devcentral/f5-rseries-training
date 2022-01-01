@@ -10,7 +10,7 @@ Tenant Level HA Across Appliances
 
 rSeries does not support tenant HA within the same applaince. F5 recommends configuring dual rSeries appliances with identically configured tenants and maintaining HA relationships at the tenant level as seen below. This mimics the iSeries HA behavior between vCMP guests. There is no redundancy between rSeries appliances at the F5OS platform layer. The appliances themselves are unaware of the other appliance and there is no HA communication at this level, it’s the tenants that form the HA relationship.
 
-.. image:: images/velos_high_availability/image8.png
+.. image:: images/velos_high_availability/image1.png
   :align: center
   :scale: 70%
 
@@ -23,7 +23,7 @@ Tenants on different appliances, should have the same number of vCPU’s and ide
 Tenant Level HA within the Same Appliance
 =========================================
 
-rSeries does not support configuring HA relationships between tenants within the same appliance. Depending on what failover behavior you want, you can have the tenant run with less capacity if certain failures occur or fail over to the tenant in the other chassis. This is controlled within the tenant itself, just like vCMP guests HA failover was configured. HA groups allow an administrator to fail over based on pool, trunk, or blade (For VELOS/VIPRION systems) availability. 
+rSeries does not support configuring HA relationships between tenants within the same appliance. Depending on what failover behavior you want, you can have the tenant run with less capacity if certain failures occur or fail over to the tenant in the other chassis. This is controlled within the tenant itself, just like HA failover was configured inside a vCMP guest. HA groups allow an administrator to fail over based on pool, trunk, or blade (For VELOS/VIPRION systems) availability. 
 
 Below is an example of a “SuperVIP” tenant that spans all avialable vCPU's. Each rSeries appliance will have one static out-of-band management IP address. Each tenant will require an out-of-band management address on the same network, and optional inband self-IP addresses can be added within the tenant. 
 
