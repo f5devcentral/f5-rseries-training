@@ -10,13 +10,13 @@ Tenant Level HA Across Appliances
 
 rSeries does not support tenant HA within the same applaince. F5 recommends configuring dual rSeries appliances with identically configured tenants and maintaining HA relationships at the tenant level as seen below. This mimics the iSeries HA behavior between vCMP guests. There is no redundancy between rSeries appliances at the F5OS platform layer. The appliances themselves are unaware of the other appliance and there is no HA communication at this level, it’s the tenants that form the HA relationship.
 
-.. image:: images/velos_high_availability/image1.png
+.. image:: images/rseries_high_availability/image1.png
   :align: center
   :scale: 70%
 
 Tenants on different appliances, should have the same number of vCPU’s and identical memory configuration. HA interconnection VLANs would be configured between appliances, and then tenants would configure HA just as is the case with vCMP guest HA relationships. Below is an example of two rSeries appliances each with their own HA interconnects and in-band networking.
 
-.. image:: images/velos_high_availability/image2.png
+.. image:: images/rseries_high_availability/image2.png
   :align: center
   :scale: 70%
 
@@ -27,13 +27,13 @@ rSeries does not support configuring HA relationships between tenants within the
 
 Below is an example of a “SuperVIP” tenant that spans all avialable vCPU's. Each rSeries appliance will have one static out-of-band management IP address. Each tenant will require an out-of-band management address on the same network, and optional inband self-IP addresses can be added within the tenant. 
 
-.. image:: images/velos_high_availability/image10.png
+.. image:: images/rseries_high_availability/image10.png
   :align: center
   :scale: 70%
 
 Inside the tenant,  **Cluster Member IP Address** will not be needed as they are for chassis based systems such as VIPRION or VELOS. If using IPv4 & IPv6 (dual stack management) then **Alternate Management** addresses can be configured.
 
-.. image:: images/velos_high_availability/image11.png
+.. image:: images/rseries_high_availability/image11.png
   :align: center
   :scale: 90%
 
