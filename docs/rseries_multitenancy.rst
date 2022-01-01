@@ -118,6 +118,29 @@ The r10600 has 48 vCPU's total, 12 vCPU's are disabled via licensing, 12 vCPU's 
   :align: center
   :scale: 40%
 
+r5000 Series Multitenancy
+==========================
+
+Each r5000 Series appliance has 32 vCPU’s, however 6 of those vCPU’s are dedicated to the F5OS layer. This leaves 26 vCPU’s left over for use by tenants on the r5900, 18 vCPU's for the r5800, and 12 vCPU's for the r5600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r5000 platform.
+
+The r5900 has 32 vCPU's total, 6 vCPU's reserved for F5OS, and 26 vCPU's left over for use by tenants:
+
+
+.. image:: images/rseries_multitenancy/image6.png
+  :align: center
+  :scale: 40%
+
+The r5800 has 32 vCPU's total, 6 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 18 vCPU's left over for use by tenants:
+
+.. image:: images/rseries_multitenancy/image7.png
+  :align: center
+  :scale: 40%
+
+The r5600 has 32 vCPU's total, 12 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 12 vCPU's left over for use by tenants:  
+
+.. image:: images/rseries_multitenancy/image8.png
+  :align: center
+  :scale: 40%
 
 Single vCPU (Skinny) tenants are supported, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option. As always proper sizing should be done to ensure the tenant has enough resources. 
 
