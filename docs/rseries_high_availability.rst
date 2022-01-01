@@ -37,7 +37,7 @@ Inside the tenant,  **Cluster Member IP Address** will not be needed as they are
   :align: center
   :scale: 90%
 
-For planning purposes a single large tenant “SuperVip” spanning all available vCPU's would require 2 out-of-band management IP addresses for each appliance. One for the f5OS layer, and one for the tenant itself. In-band Self-IP & Virtual addresses are not included in this calculation.
+For planning purposes a single large tenant “SuperVip” spanning all available vCPU's would require 2 out-of-band management IP addresses for each appliance. One for the F5OS platform layer, and one for the tenant itself. In-band Self-IP & Virtual addresses are not included in this calculation.
 
 +------------------------------+----------------------------------+--------------------+
 | **IP Addresses Required**    | **Single Chassis**               | **HA Environment** | 
