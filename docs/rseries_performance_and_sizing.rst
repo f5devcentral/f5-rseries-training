@@ -3,7 +3,7 @@ rSeries Performance and Sizing
 ==============================
 
 
-rSeries appliances are a new generation of hardware using the latest Intel CPU's for processing in addition to FPGA's. Intel CPU’s perform SSL processing and compression offload as was done with previous generation BIG-IP solutions such as iSeries and the VIPRION B4450. Older VIPRION blades such as the B2100, B2150, & B2250 use Intel processing, but use Cavium Nitrox for SSL offload. The newer generation Intel chipsets provide more modern SSL cipher support and can offload ECC (Elliptical Curve) based ciphers in hardware, which most previous generations of VIPRION blades could not.
+rSeries appliances are a new generation of hardware using the latest Intel CPU's for processing in addition to FPGA's (On the r10000 and r5000 Series). Intel CPU’s perform SSL processing and compression offload as was done with previous generation BIG-IP solutions such as iSeries and the VIPRION B4450. Older VIPRION blades such as the B2100, B2150, & B2250 use Intel processing, but use Cavium Nitrox for SSL offload. The newer generation Intel chipsets provide more modern SSL cipher support and can offload ECC (Elliptical Curve) based ciphers in hardware, which most previous generations of VIPRION blades could not.
 
 In addition to more modern Intel chipsets, the mid-range and high-end rSeries appliances also have extensive FPGA support. The r2000 and r4000 rSeries models do not support FPGA's and instead perfrom these functions in software. In previous generations of F5 hardware the ePVA was used to offload varying workloads from FASTL4 to DDoS mitigation, and that functionality is brought forward and expanded upon in the new generation of rSeries hardware. 
 
@@ -13,9 +13,9 @@ https://techdocs.f5.com/content/dam/f5/kb/global/solutions/sol12837_pdf.html/128
 
 https://devcentral.f5.com/s/articles/F5-Fast-L4-Acceleration-and-the-F5-Smart-Coprocessor-prioritized-Fast-L4-Acceleration
 
-In rSeries there are now multiple FPGA’s, the **Application Traffic Services Engine** (ATSE), and the **VELOS Queuing FPGA** (VQF). In addition to supporting previous functions done by the ePVA there are also additional functions that were performed in software or Broadcom chipsets that are now handled in the FPGA’s.
+In rSeries there are now multiple FPGA’s, the **Application Traffic Services Engine** (ATSE), and the **Appliance Switch** (ASW), and the **Network Services Engine** (NSE). In addition to supporting previous functions done by the ePVA there are also additional functions that were performed in software or Broadcom chipsets that are now handled in the FPGA’s. Below is an architectural diagram of the r10000 Series apliance. 
 
-.. image:: images/velos_performance_and_sizing/image1.png
+.. image:: images/rseries_performance_and_sizing/image1.png
   :align: center
   :scale: 70%
 
@@ -25,13 +25,13 @@ When comparing rSeries to iSeries it is important to note that rSeries provides 
 
 is more scalable as it has double the number of slots (8 in VELOS vs. 4 in VIPRION), so the amount of performance in the same RU (Rack Unit) is significantly increased. The VELOS blades are half the width of the current B2250 blades in VIPRION. Looking at comparisons of VIPRION B2150 & B2250 vs. a single VELOS BX110 blade you can see a 1.5x-3x increase in Layer 7 Requests Per Second (RPS) performance depending on which blade a customer may be migrating from. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve the BX110 can now offload that to hardware, whereas the B2150 & B2250 had to process those ciphers in software consuming more CPU.
 
-.. image:: images/velos_performance_and_sizing/image2.png
+.. image:: images/rseries_performance_and_sizing/image2.png
   :align: center
   :scale: 70%
 
 The real value of VELOS is the ability to scale from 3-6x for Layer 7 RPS and up to 20x for SSL (RSA) when comparing fully loaded chassis (4 VIPRION blades vs. 8 VELOS blades) in the same 4RU footprint.
 
-.. image:: images/velos_performance_and_sizing/image3.png
+.. image:: images/rseries_performance_and_sizing/image3.png
   :align: center
   :scale: 40%
 
