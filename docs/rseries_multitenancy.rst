@@ -162,13 +162,13 @@ The r4800 has 16 CPU cores total, There are zero CPU cores reserved for F5OS, an
   :align: center
   :scale: 40%
 
-The r4600 has 16 CPU cores total, 8 CPU cores are disabled via licesning, there are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by tenants:
+The r4600 has 16 CPU cores total, 8 CPU cores are disabled via licensing, there are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by tenants:
 
 .. image:: images/rseries_multitenancy/image10.png
   :align: center
   :scale: 40%
 
-Since all r4000 models are running on the same hardware appliance, you can easily upgrade from the r4600 to either the r4800 to unlock more performance via a simple license change. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 2 PAYG tiers within the r4000 series appliances.
+Since all r4000 models are running on the same hardware appliance, you can easily upgrade from the r4600 to the r4800 to unlock more performance via a simple license change. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 2 PAYG tiers within the r4000 series appliances.
 
 
 r2000 Series Multitenancy
@@ -187,13 +187,13 @@ The r2800 has 8 CPU cores total, There are zero CPU cores reserved for F5OS, and
   :align: center
   :scale: 40%
 
-The r2600 has 8 CPU cores total, 4 CPU cores are disabled via licesning, there are zero CPU cores reserved for F5OS, and 4 CPU cores left over for use by tenants:
+The r2600 has 8 CPU cores total, 4 CPU cores are disabled via licensing, there are zero CPU cores reserved for F5OS, and 4 CPU cores left over for use by tenants:
 
 .. image:: images/rseries_multitenancy/image12.png
   :align: center
   :scale: 40%
 
-Since all r2000 models are running on the same hardware appliance, you can easily upgrade from the r2600 to either the r2800 to unlock more performance via a simple license change. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 2 PAYG tiers within the r2000 series appliances.
+Since all r2000 models are running on the same hardware appliance, you can easily upgrade from the r2600 to the r2800 to unlock more performance via a simple license change. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 2 PAYG tiers within the r2000 series appliances.
 
 Tenant Sizing
 =============
