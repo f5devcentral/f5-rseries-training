@@ -29,7 +29,7 @@ Below is an example of a “SuperVIP” tenant that spans all available vCPU's. 
 
 .. image:: images/rseries_high_availability/image3.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 Inside the tenant,  **Cluster Member IP Address** will not be needed as they are for chassis based systems such as VIPRION or VELOS. If using IPv4 & IPv6 (dual stack management) then IPv6 management addresses can be configured.
 
