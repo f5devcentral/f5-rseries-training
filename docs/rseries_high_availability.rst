@@ -12,7 +12,7 @@ rSeries does not support tenant HA within the same applaince. F5 recommends conf
 
 .. image:: images/rseries_high_availability/image1.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 Tenants on different appliances, should have the same number of vCPU’s and identical memory configuration. HA interconnection VLANs would be configured between appliances, and then tenants would configure HA just as is the case with vCMP guest HA relationships. Below is an example of two rSeries appliances each with their own HA interconnects and in-band networking.
 
