@@ -19,6 +19,13 @@ In rSeries there are now multiple FPGA’s, the **Application Traffic Services E
   :align: center
   :scale: 40%
 
+The r5000 Series appliance has a similar architecture but since it doesn't require the same performance as the r10000 series is has less FPGA's and CPUs, and less physical ports.
+
+.. image:: images/rseries_performance_and_sizing/image2.png
+  :align: center
+  :scale: 40%
+
+
 **Note: In the initial 1.0.x versions of F5OS-A (for rSeries appliances), not all FPGA HW offload functions are enabled. Many will be added in the subsequent TMOS & F5OS releases. AFM DDoS mitigation offload is not fully supported in v1.0.x versions of F5OS-A and will run in software similar to how it would run in a BIG-IP VE. SSL & Compression HW offload are fully supported in the initial v1.0.x F5OS-A releases, as is FASTL4 HW offload. CGNAT & PEM support are not supported in the initial F5OS-A 1.0.x releases, and will be added in a future release.
 
 When comparing rSeries to iSeries it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x better performance than the previous generation iSeries appliances.
