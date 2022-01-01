@@ -63,36 +63,62 @@ For resource provisioning you can use **Recommended** settings or **Advanced** s
 | rSeries 36vCPU Tenant | 18                 |  36                      | 129,536,000,000 | 3,598,222,222   |
 +-----------------------+--------------------+--------------------------+-----------------+-----------------+
 
-Each rSeries appliance has an overall amount of memory for the platform, and the F5OS layer takes about 33GB of RAM leaving ~95GB of RAM for use by tenants. Using the Recommended values per tenant ~80GB of RAM will be used, leaving ~15GB of additional RAM. You may over-allocate RAM to a tenant until the 90GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra ram is available for tenants beyonf the recommended values.
+
+Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r10000 Series tenants, leaving ~15GB of additional RAM. You may over-allocate RAM to a tenant until the 90GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
 **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
 
-+-----------------------+-----------------------+--------------------------+----------------------------------+-----------------+
-| **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**   | **Memory Available to Tenants**  | **RAM/vCPU**    |
-+=======================+=======================+==========================+==================================+=================+
-| r10000 Series         | 256GB RAM             |                          | 4,096,000,000                    | 4,096,000,000   |
-+-----------------------+-----------------------+--------------------------+----------------------------------+-----------------+
-| r5000 Series          | 128GB RAM             |                          | 4,096,000,000                    | 4,096,000,000   |
-+-----------------------+-----------------------+--------------------------+----------------------------------+-----------------+
-| r4000 Series          | 64GB RAM              |                          | 4,096,000,000                    | 4,096,000,000   |
-+-----------------------+-----------------------+--------------------------+----------------------------------+-----------------+
-| r2000 Series          | 32GB RAM              |                          | 4,096,000,000                    | 4,096,000,000   |
-+-----------------------+-----------------------+--------------------------+----------------------------------+-----------------+
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Default Mininimum RAM used**  |  **Extra RAM for Tenants**  |
++=======================+=======================+=========================+==================================+=================================+=============================+
+| r10900 Series         | 256GB RAM             | 25GB                    | 231GB                            | 129,536,000,000                 |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r10800 Series         | 256GB RAM             | 25GB                    | 231GB                            | 129,536,000,000                 |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r10600 Series         | 256GB RAM             | 25GB                    | 231GB                            | 129,536,000,000                 |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r5900 Series          | 128GB RAM             | 15GB                    | 113GB                            | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r5800 Series          | 128GB RAM             | 15GB                    | 113GB                            | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r5600 Series          | 128GB RAM             | 15GB                    | 113GB                            | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r4800 Series          | 64GB RAM              | 8GB                     | 56GB                             | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r4600 Series          | 64GB RAM              | 8GB                     | 56GB                             | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r2800 Series          | 32GB RAM              | 8GB                     | 24GB                             | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
+| r2600 Series          | 32GB RAM              | 8GB                     | 24GB                             | 4,096,000,000                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+---------------------------------+-----------------------------+
 
-Each r10000 Series appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants.  You can dedicate all 36 vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants.
+r10000 Series Multitenancy
+==========================
+
+Each r10000 Series appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 28 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
 
 .. image:: images/rseries_multitenancy/image3.png
   :align: center
   :scale: 70%
 
-Single vCPU (Skinny) tenants are supported, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10000 appliance. While single vCPU’s guests are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option. As always proper sizing should be done to ensure the tenant has enough resources. 
+.. image:: images/rseries_multitenancy/image4.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_multitenancy/image5.png
+  :align: center
+  :scale: 70%
+
+
+Single vCPU (Skinny) tenants are supported, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option. As always proper sizing should be done to ensure the tenant has enough resources. 
 
 An rSeries tenant supports 3 states: (**Configured**, **Provisioned**, and **Deployed**):
 
 **Configured**
 
-- The tenant configuration exists on the chassis partition, but the tenant is not running, and no hardware resources (CPU, memory) are allocated to it. This is the initial state and the default.
+- The tenant configuration exists on the appliance, but the tenant is not running, and no hardware resources (CPU, memory) are allocated to it. This is the initial state and the default.
 
 
 **Provisioned**
@@ -101,15 +127,15 @@ An rSeries tenant supports 3 states: (**Configured**, **Provisioned**, and **Dep
 
 **Deployed**
 
-- Changes the tenant to the Deployed state. The tenant is set up, resources are allocated to the tenant, the image is moved onto the blade, the software is installed, and after those tasks are complete, the tenant is fully deployed and running. If you choose this option, it takes a few minutes to complete the deployment and bring up the system.
+- Changes the tenant to the Deployed state. The tenant is set up, resources are allocated to the tenant, the software is installed, and after those tasks are complete, the tenant is fully deployed and running. If you choose this option, it takes a few minutes to complete the deployment and bring up the system.
 
 
 You may also configure **Crypto/Compression Acceleration**. This option is enabled by default, meaning the tenant will utilize and offload to crypto (SSL/TLS) and compression hardware, or it can be disabled meaning all crypto and compression will be done in software. It is highly recommended to use the default enabled option for best performance. 
 
-In some VIPRION blades there is an option to configure an **SSL Mode** for vCMP guests. This option is not available in VELOS, and the behavior may be different:
+In some previous generation hardware platforms there is an option to configure an **SSL Mode** for vCMP guests. This option is not available in rSeries, and the behavior may be different:
 
-If you currently utilize the SSL Mode feature where SSL resources can be **Dedicated, Shared, or Isolated** for each vCMP guest, this configuration option is not supported on VELOS at initial release. vCMP guests operate in the default shared mode meaning all guests get equal access to the shared SSL hardware resources. You may configure the SSL Mode to **dedicated** where SSL hardware resources are dedicated to a guest in proportion to the vCPU’s assigned to a guest. You may also configure **none**, meaning all SSL processing is done in software.  
+If you currently utilize the SSL Mode feature where SSL resources can be **Dedicated, Shared, or Isolated** for each vCMP guest, this configuration option is not supported on rSeries at initial release. vCMP guests operate in the default shared mode meaning all guests get equal access to the shared SSL hardware resources. You may configure the SSL Mode to **dedicated** where SSL hardware resources are dedicated to a guest in proportion to the vCPU’s assigned to a guest. You may also configure **none**, meaning all SSL processing is done in software.  
   
-In VELOS there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying a VELOS tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPU’s assigned to the tenant. This is conceptually similar to how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. A environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
+In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPU’s assigned to the tenant. This is conceptually similar to how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. A environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
 
 Lastly the tenant may be configured to support **Appliance Mode** which is a security option which disables root and bash access to the tenant.
