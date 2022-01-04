@@ -26,40 +26,24 @@ Here you can download the ISO file for F5OS along with checksum files and releas
   :scale: 70%
 
 
-The system controllers are fully redundant, however during software upgrades there can be outages of the entire chassis with the initial 1.1.x releases of F5OS. v1.2.x versions of F5OS have introduced a rolling upgrade capability for the system controller upgrade process which minimizes disruption to the chassis. The chassis must be already running a version of f5OS 1.2.x or later to take advantage of this capability. Upgrades from 1.1.x version to 1.2.x version will not see rolling upgrade functionality.
-
-This means that both system controllers will be updated at the same time thus causing an outage for all services within that chassis when running v1.1.x F5OS versions. For this reason, it is recommended you upgrade the system controllers during outage window and fail over all services to the other chassis that is paired with the one you’re upgrading.
-
-When upgrading the system controllers, you will have a choice of upgrading either a bundled release meaning **OS** and **Services** are **bundled** together in an ISO image or **unbundled** where you can upgrade service and/or OS independently.
-
-
-
-
-
-The outage for a service only upgrade on the system controller is smaller than if the entire OS was upgraded. A service upgrade will not cause a reboot of the controllers, where an OS upgrade will. If the OS does not need to be upgraded to address an issue, then you can choose to only upgrade the services. The OS is more of the container/OS layer, where most of the F5 specific code is in the service layer. Most upgrades currently require both service and OS to be upgraded, but in the future this service vs. OS upgrades may become available. Upgrades are easily accomplished via the system controller UI. First you would upload F5OS images for both the controllers as well as the partitions into the system controllers. 
-
-Uploading Controller and Partition Images via the GUI
+Uploading F5OS Images via the GUI
 -----------------------------------------------------
 
-You can do this from the **Software Management -> Partitions Image** and **Controller Images** pages.
-
-.. image:: images/rseries_software_upgrades/image3.png
-  :align: center
-  :scale: 70%
+You can do this from the **System Settings -> Software Management** page.
 
 .. image:: images/rseries_software_upgrades/image4.png
   :align: center
   :scale: 70%
 
-When you click **Add**, you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. In the current F5OS versions there is no option to upload directly from your browser (this will be added in a future release). You will need to have a remote HTTPS server that allows downloads to import images into the system via the GUI.
+Here you'll have the option to **Upload** or **Import** a new F5OS image. If you choose **Import** you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. If you choose **Upload** then you'll be able to upload an image from you local client machine via the browser. 
 
-You can alternatively upload F5OS images for both the system controllers and the chassis partitions using the **Sysyem Settings > File Utilities** page.
+You can alternatively upload F5OS images using the **Sysyem Settings > File Utilities** page.
 
 .. image:: images/rseries_software_upgrades/image5.png
   :align: center
   :scale: 70%
 
-  Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option form the drop-down menu to import new controller or partition images. Once uploaded into the staging area they will be imported and made available for upgrades after a brief delay.
+Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area they will be imported and made available for upgrades after a brief delay.
 
 .. image:: images/rseries_software_upgrades/image6.png
   :align: center
