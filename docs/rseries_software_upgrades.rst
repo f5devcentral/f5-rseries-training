@@ -51,7 +51,7 @@ After the upload completes, it will take some time for it to be fully imported a
   :align: center
   :scale: 70%
 
-When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled** where you can upgrade service and/or OS independently.
+When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled** where you can upgrade service and/or OS independently. Note currently F5 has not released any service only or OS only releases, but they may be an option in the future. For now it is recommended to choose **Bundled** upgrades.
 
 .. image:: images/rseries_software_upgrades/image7.png
   :align: center
