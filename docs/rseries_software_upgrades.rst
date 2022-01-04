@@ -35,21 +35,31 @@ You can do this from the **System Settings -> Software Management** page.
   :align: center
   :scale: 70%
 
-Here you'll have the option to **Upload** or **Import** a new F5OS image. If you choose **Import** you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. If you choose **Upload** then you'll be able to upload an image from you local client machine via the browser. 
+Here you'll have the option to **Upload** or **Import** a new F5OS image. If you choose **Import** you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. If you choose **Upload** then you'll be able to upload an image directly from your local client machine via the browser. 
 
-You can alternatively upload F5OS images using the **Sysyem Settings > File Utilities** page.
+Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area they will be imported and made available for upgrades after a brief delay.
 
 .. image:: images/rseries_software_upgrades/image5.png
   :align: center
   :scale: 70%
 
-Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area they will be imported and made available for upgrades after a brief delay.
+
+
+After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and GUI. If you don’t see it immediately be patient and wait a few minutes for it to show up as it will not show up until the file has been verified. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
 
 .. image:: images/rseries_software_upgrades/image6.png
   :align: center
   :scale: 70%
 
-After the upload completes, it will take some time for it to be replicated to the standby system controller. At that point it should show up in the CLI and GUI. If you don’t see it immediately be patient and wait a few minutes for it to show up as it will not show up until the internal replication is completed.
+When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled** where you can upgrade service and/or OS independently.
+
+.. image:: images/rseries_software_upgrades/image7.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_software_upgrades/image8.png
+  :align: center
+  :scale: 70%  
 
 Uploading Controller and Partition Images via the CLI
 -----------------------------------------------------
