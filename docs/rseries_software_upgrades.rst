@@ -134,16 +134,16 @@ You can alternatively copy the F5OS images into the management IP address of F5O
     root@xubuntu-vm# scp F5OS-C-1.2.1-10781.PARTITION.iso root@10.255.0.147:/var/import/staging/.
 
 
-Uploading Controller and Partition Images via the API
+Uploading F5OS-A Images via the API
 -----------------------------------------------------
 
-As with the GUI, the current implementation of **file import** in the API relies on a remote HTTPS server hosting the image files to be imported. The files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls.
+When uploading or importing F5OS-A images into the rSeries appliance the files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls.
 
 List the current system controller and partitions images in the images/staging directory via API calls:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
     .. code-block:: json
 
@@ -159,7 +159,7 @@ Below is an example output:
         "f5-utils-file-transfer:output": {
             "entries": [
                 {
-                    "name": "\nBIGIP-14.1.4.2-0.0.5.ALL-VELOS.qcow2.zip.bundle\nF5OS-C-1.1.2-6101.PARTITION.iso\nF5OS-C-1.2.0-10357.CONTROLLER.iso\nF5OS-C-1.2.0-10357.PARTITION.iso\nF5OS-C-1.2.0-6345.PARTITION.DEV.iso\nF5OS-C-1.2.0-6433.CONTROLLER.DEV.iso\nF5OS-C-1.2.0-6435.CONTROLLER.DEV.iso\nF5OS-C-1.2.0-7091.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-7091.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.0-7451.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-7451.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.0-8813.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-9003.PARTITION.iso\nF5OS-C-1.2.0-9496.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-9496.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.1-10692.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.1-10692.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.1-10781.PARTITION.iso\ncontroller.1.1.2-6101.iso"
+                    "name": "\nF5OS-A-1.0.0-11432.R5R10.iso\nF5OS-A-1.0.0-8722.R2R4.NSIT.iso"
                 }
             ]
         }
@@ -169,7 +169,7 @@ You can then query the **images/import** directory for various image types like 
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 .. code-block:: json
 
@@ -185,17 +185,17 @@ Below is an example output:
         "f5-utils-file-transfer:output": {
             "entries": [
                 {
-                    "name": "\nBIGIP-14.1.4.2-0.0.5.ALL-VELOS.qcow2.zip.bundle\nF5OS-C-1.1.2-6101.PARTITION.iso\nF5OS-C-1.2.0-10357.CONTROLLER.iso\nF5OS-C-1.2.0-10357.PARTITION.iso\nF5OS-C-1.2.0-6345.PARTITION.DEV.iso\nF5OS-C-1.2.0-6433.CONTROLLER.DEV.iso\nF5OS-C-1.2.0-6435.CONTROLLER.DEV.iso\nF5OS-C-1.2.0-7091.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-7091.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.0-7451.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-7451.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.0-8813.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-9003.PARTITION.iso\nF5OS-C-1.2.0-9496.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.0-9496.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.1-10692.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.1-10692.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.1-10781.PARTITION.iso\ncontroller.1.1.2-6101.iso"
+                    "name": "\nF5OS-A-1.0.0-11432.R5R10.iso\nF5OS-A-1.0.0-8722.R2R4.NSIT.iso"
                 }
             ]
         }
     }
 
-To import images, use the following API examples for controller and partition images. To import the **controller** image:
+To import an F5OS-A image, use the following API example:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
