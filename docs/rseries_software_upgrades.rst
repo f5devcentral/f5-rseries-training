@@ -27,7 +27,7 @@ Here you can download the ISO file for F5OS along with checksum files and releas
 
 
 Uploading F5OS Images via the GUI
------------------------------------------------------
+---------------------------------
 
 You can do this from the **System Settings -> Software Management** page.
 
@@ -61,23 +61,71 @@ When upgrading the F5OS platform layer, you will have a choice of upgrading eith
   :align: center
   :scale: 70%  
 
-Uploading Controller and Partition Images via the CLI
------------------------------------------------------
+Uploading F5OS Images via the CLI
+---------------------------------
 
-As with the GUI, the current implementation of **file import** in the CLI relies on a remote HTTPS server hosting the image files to be imported. The files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** command.
-
+If you would prefer to upload the F5OS image via the CLI this can be done with the **file import** command. Use the **file import** command to get the F5OS image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example importing from a remote HTTPS server. Note the target directory should be **images/staging**:
 
 .. code-block:: bash
 
-    syscon-2-active# file import remote-host 10.255.0.142 remote-file /upload/F5OS-C-1.2.1-10781.CONTROLLER.iso local-file images/staging/F5OS-C-1.2.1-10781.CONTROLLER.iso username corpuser insecure 
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
+    Boston-r10900-1#
 
-    syscon-2-active# file transfer-status                                                                                                                                                             
+If a remote HTTPS server is not available you may also copy the file from the CLI over SCP by adding the **protocol scp** option to the command line:
+
+.. code-block:: bash
+
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
+    Boston-r10900-1#
+
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username root insecure protocol scp
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
+
+
+The command **file transfer-status** will provide details of the transfer progress and any errors:
+
+.. code-block:: bash
+
+    Boston-r10900-1# file transfer-status
     result 
     S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
-    1    |Import file|HTTPS   |images/staging/F5OS-C-1.2.1-10781.CONTROLLER.iso            |10.255.0.142        |/upload/F5OS-C-1.2.1-10781.CONTROLLER.iso                   |In Progress (5.0%)|Thu Sep 16 17:11:51 2021
-    2    |Import file|HTTPS   |images/import/iso/F5OS-C-1.2.1-10781.CONTROLLER.iso         |10.255.0.142        |uploads/F5OS-C-1.2.1-10781.CONTROLLER.iso                   |File Not Found, HTTP Error 404|Thu Sep 16 16:18:27 2021
+    1    |Import file|HTTPS   |images/staging/F5OS-A-1.0.0-11432.R5R10.iso                 |10.255.0.142        |/upload/F5OS-A-1.0.0-11432.R5R10.iso                        |In Progress (86.0%)|Wed Jan  5 20:02:56 2022
 
-You can alternatively copy the controller and partition images into the floating IP address of the system controllers. You would use the **root** account and the target directory should be **/var/import/staging/**.
+    Boston-r10900-1# file transfer-status
+    result 
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Import file|HTTPS   |images/staging/F5OS-A-1.0.0-11432.R5R10.iso                 |10.255.0.142        |/upload/F5OS-A-1.0.0-11432.R5R10.iso                        |         Completed|Wed Jan  5 20:03:03 2022
+
+    Boston-r10900-1# 
+
+
+You can view the current F5OS images and their status in the F5OS CLI by using the **show system image** command:
+
+.. code-block:: bash
+
+    Boston-r10900-1# show system image 
+                                    IN    
+    VERSION OS   STATUS  DATE        USE   
+    ---------------------------------------
+    1.0.0-11432  ready   2021-12-03  true  
+
+    VERSION                          IN    
+    SERVICE      STATUS  DATE        USE   
+    ---------------------------------------
+    1.0.0-11432  ready   2021-12-03  true  
+
+                                    IN     
+    VERSION ISO  STATUS  DATE        USE    
+    ----------------------------------------
+    1.0.0-11432  ready   2021-12-03  false  
+
+
+You can alternatively copy the F5OS images into the management IP address of F5OS. You would use the **root** account and the target directory should be **/var/import/staging/**.
 
 .. code-block:: bash
 
