@@ -45,26 +45,21 @@ Only F5 branded optics are officially supported on rSeries appliances. rSeries s
 
 **10GB SFP+ options:**
 
-+------------------------+------------+----------------------------------------------------------------------------------+
-| 10G Active DAC (SFP+)  | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
-+------------------------+------------+----------------------------------------------------------------------------------+
-| 10GBASE-LR (SFP+)      | OPT-xxxxx  |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
-+------------------------+------------+----------------------------------------------------------------------------------+
-| 10GBASE-SR (SFP+)      | OPT-xxxx   |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
-+------------------------+------------+----------------------------------------------------------------------------------+
-| xxxxxxxxxxxxxxxxxx     | OPT-xxxxx  |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
-+------------------------+------------+----------------------------------------------------------------------------------+
++------------------------+------------+------------------------------------------------------------------------------------------+
+| 10G Active DAC (SFP+)  | CBL-0138   | CABLE ASSEMBLY, SFP+ ACTIVE, COPPER, 10GBPS, 30 AWG, 3.0m, M-M, 3.3V, GEN 2, F5 BRANDED  |
++------------------------+------------+------------------------------------------------------------------------------------------+
+| 10GBASE-LR (SFP+)      | OPT-0017   | TRANSCEIVER, SFP+, 10GIG, 1310nm, 10Km, LC, SMF.LIMITING, DDM, -5/70C, F5 BRANDED        |
++------------------------+------------+------------------------------------------------------------------------------------------+
+| 10GBASE-SR (SFP+)      | OPT-0016   | TRANSCEIVER, SFP+, 10GIG, 850nm, 300m, LC, MMF, LIMITING, DDM, F5 BRANDED                |
++------------------------+------------+------------------------------------------------------------------------------------------+
+
 
 **25GB SFP28 options:**
 
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 25GBASE-SR (SFP28)     | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
+| 25GBASE-SR (SFP28)     | OPT-0053   | TRANSCEIVER, SFP28, 25G-SR, 100M, LC, MMF, 1W, F5 BRANDED                        |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 25GBASE-LR (SFP28)     | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
-+------------------------+------------+----------------------------------------------------------------------------------+
-| xxxxxxxxxxxxxxxxxx     | OPT-xxxx   |  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                    |
-+------------------------+------------+----------------------------------------------------------------------------------+
-| xxxxxxxxxxxxxxxxxx     | OPT-xxxx   | xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                     |
+| 25GBASE-LR (SFP28)     | OPT-0054   | TRANSCEIVER, SFP28, 25G-LR, 10KM, LC, SMF, 1.5W, F5 BRANDED                      |
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 **40GB QSFP+ options:**
