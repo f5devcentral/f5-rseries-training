@@ -109,6 +109,18 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
   :align: center
   :scale: 160%
 
+.. image:: images/rseries_appliances/image3a.png
+  :align: center
+  :scale: 160%
+
+.. image:: images/rseries_appliances/image3b.png
+  :align: center
+  :scale: 160%
+
+.. image:: images/rseries_appliances/image3c.png
+  :align: center
+  :scale: 160%
+
 
 r2000 Series - r2600 / r2800
 ============================
@@ -116,6 +128,18 @@ r2000 Series - r2600 / r2800
 The r2000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r2600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r2800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r2000 platform has 8 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r2600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 64GB of RAM, and has a single 480GB SSD.
 
 .. image:: images/rseries_appliances/image4.png
+  :align: center
+  :scale: 160%
+
+.. image:: images/rseries_appliances/image3a.png
+  :align: center
+  :scale: 160%
+
+.. image:: images/rseries_appliances/image3b.png
+  :align: center
+  :scale: 160%
+
+.. image:: images/rseries_appliances/image3c.png
   :align: center
   :scale: 160%
 
