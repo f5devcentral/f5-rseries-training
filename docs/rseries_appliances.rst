@@ -109,7 +109,8 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
   :align: center
   :scale: 160%
 
-The r4000 Series appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb ports that are SFP+/SFP28.
+The r4000 Series appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb
+ ports that are SFP+/SFP28.
 
 .. image:: images/rseries_appliances/image3aa.png
   :align: center
