@@ -208,26 +208,6 @@ To import an F5OS-A image, use the following API example:
         ]
     }
 
-To import the **partition** image:
-
-.. code-block:: bash
-
-    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
-
-.. code-block:: json
-
-    {
-        "input": [
-            {
-                "remote-host": "10.255.0.142",
-                "remote-file": "upload/{{Appliance_ISO_Image}}",
-                "local-file": "images/staging/{{Appliance_ISO_Image}}",
-                "insecure": "",
-                "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "Pa$$w0rd"
-            }
-        ]
-    }
 
 You can then check on the file transfer status with the following API call:
 
