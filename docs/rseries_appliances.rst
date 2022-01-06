@@ -73,7 +73,7 @@ Note that adjacent highspeed (40Gb / 100Gb) ports (1.0 & 2.0) must be configured
   :align: center
   :scale: 100%
 
-The r5000 Series unit has a single 10Gb Ethernet out-of-band management port, a serial console port, and a serial (hard wired) failover port. A USB3.0 port is also made avaiable for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status.
+The r5000 Series unit has a single 10Gb Ethernet out-of-band management port and a serial console port. A USB3.0 port is also made avaiable for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status.
 The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image2c.png
@@ -108,6 +108,13 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
 .. image:: images/rseries_appliances/image3.png
   :align: center
   :scale: 160%
+
+The r4000 Series appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb ports that are SFP+/SFP28.
+
+.. image:: images/rseries_appliances/image3aa.png
+  :align: center
+  :scale: 70%
+
 
 .. image:: images/rseries_appliances/image3a.png
   :align: center
