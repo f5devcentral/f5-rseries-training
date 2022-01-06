@@ -133,15 +133,15 @@ The r2000 Series is a 1RU appliance, that has 2 different licensing options that
 
 .. image:: images/rseries_appliances/image3a.png
   :align: center
-  :scale: 160%
+  :scale: 70%
 
 .. image:: images/rseries_appliances/image3b.png
   :align: center
-  :scale: 160%
+  :scale: 70%
 
 .. image:: images/rseries_appliances/image3c.png
   :align: center
-  :scale: 160%
+  :scale: 70%
 
 Rack Mounting the Appliances
 ============================
