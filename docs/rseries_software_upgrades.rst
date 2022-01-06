@@ -278,7 +278,7 @@ You’ll see output similar to the example below. Once the file shows up here yo
     }
 
 
- You can then query the image status via the API:
+You can then query the image status via the API:
 
 .. code-block:: bash
 
