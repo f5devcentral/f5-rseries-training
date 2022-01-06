@@ -107,19 +107,19 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
-  :scale: 100%
+  :scale: 160%
 
 .. image:: images/rseries_appliances/image3a.png
   :align: center
-  :scale: 160%
+  :scale: 100%
 
 .. image:: images/rseries_appliances/image3b.png
   :align: center
-  :scale: 160%
+  :scale: 100%
 
 .. image:: images/rseries_appliances/image3c.png
   :align: center
-  :scale: 160%
+  :scale: 100%
 
 
 r2000 Series - r2600 / r2800
