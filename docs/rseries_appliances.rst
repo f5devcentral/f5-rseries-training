@@ -111,19 +111,29 @@ The r4000 Series is a 1RU appliance, that has 2 different licensing options that
 
 The r4000 Series appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gbports that are SFP+/SFP28.
 
-.. image:: images/rseries_appliances/image3aaa.png
+.. image:: images/rseries_appliances/image3aa.png
   :align: center
   :scale: 70%
 
 The r4000 Series unit has a single 10Gb Ethernet out-of-band management port and a serial console port. A USB3.0 port is also made avaiable for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
+.. image:: images/rseries_appliances/image3aaa.png
+  :align: center
+  :scale: 70%
+
+In the back of the AC Power Model are 2 power supplies and AC Inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+
 .. image:: images/rseries_appliances/image3a.png
   :align: center
   :scale: 70%
 
+In the back of the DC Power Model are 2 power supplies and DC Inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+
 .. image:: images/rseries_appliances/image3b.png
   :align: center
   :scale: 70%
+
+In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and DC Inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image3c.png
   :align: center
