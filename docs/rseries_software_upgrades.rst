@@ -351,212 +351,66 @@ The output will show the status for the OS, Service, ISO, and Install Status.
 Upgrading F5OS via GUI
 ----------------------
 
-Once the new images are loaded you can perform the upgrade from the **System Settings > Controller Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Once you click Save the upgrade process will begin. For F5OS versions 1.1.x there is no rolling upgrade support and both controllers will reboot immediately taking the entire chassis offline. For F5OSv1.2 rolling upgrade support has been added, but you must be on a v1.2.x release or later to take advantage of this new functionality.
+Once the new images are loaded you can perform the upgrade from the **System Settings > Software Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Select the software version you want to upgrade to, and once you click **Save** the upgrade process will begin. Upgrading F5OS will cuase an outage for all tenants on that appliance. It is best to failover tenants to the HA pair member, then perform the upgrade of F5OS.
 
 .. image:: images/rseries_software_upgrades/image7.png
   :align: center
   :scale: 70%
 
-Chassis Partition Upgrades
-==========================
 
------------------------------------------
-Upgrading a Chassis Partition via the GUI
------------------------------------------
 
-Upgrade of chassis partitions is performed from the system controller GUI **Partition Management** screen. You must first click the checkmark next to the chassis partition you wish to upgrade and then click **Edit**. You’ll now be able perform either a **bundled** or **unbundled** software upgrade of the chassis partition. At this time a bundled upgrade using the ISO image is recommended. Once you click **Save**, the partition will be brought offline and back online after the upgrade. All tenants will be suspended during this time so an outage will occur for this chassis partition only. 
+Upgrading F5OS via the CLI
+--------------------------
 
-.. image:: images/velos_software_upgrades/image8.png
-  :align: center
-  :scale: 70%
-
------------------------------------------
-Upgrading a Chassis Partition via the CLI
------------------------------------------
-
-In the system controller CLI you can use the **show image** command to see the currently installed software versions for each chassis partition.
+In the F5OS CLI you can use the **show system image** command to see the currently installed software version.
 
 .. code-block:: bash
 
-    syscon-1-active# show image
-    VERSION OS                                   IN     
-    CONTROLLER   CONTROLLER  STATUS  DATE        USE    
-    ----------------------------------------------------
-    1.1.2-6101   1           ready               false  
-    1.2.0-10357  1           ready   2021-08-21  false  
-    1.2.1-10692  1           ready   2021-08-30  false  
-    1.2.1-10781  1           ready   2021-09-01  true   
+    Boston-r10900-1# show system image 
+                                    IN     
+    VERSION OS   STATUS  DATE        USE    
+    ----------------------------------------
+    1.1.0-0188   ready   2021-11-24  false  
+    1.0.0-11432  ready   2021-12-03  true   
 
-    VERSION                                             
-    SERVICE                                      IN     
-    CONTROLLER   CONTROLLER  STATUS  DATE        USE    
-    ----------------------------------------------------
-    1.1.0-6101   1           ready   2021-05-09  false  
-    1.1.2-6101   1           ready   2021-05-09  false  
-    1.2.0-10357  1           ready   2021-08-21  false  
-    1.2.1-10692  1           ready   2021-08-30  false  
-    1.2.1-10781  1           ready   2021-09-01  true   
+    VERSION                          IN     
+    SERVICE      STATUS  DATE        USE    
+    ----------------------------------------
+    1.1.0-0188   ready   2021-11-24  false  
+    1.0.0-11432  ready   2021-12-03  true   
 
-    VERSION ISO                                  IN     
-    CONTROLLER   CONTROLLER  STATUS  DATE        USE    
-    ----------------------------------------------------
-    1.1.2-6101   1           ready   2021-05-09  false  
-    1.2.0-10357  1           ready   2021-08-21  false  
-    1.2.1-10692  1           ready   2021-08-30  false  
-    1.2.1-10781  1           ready   2021-09-01  false  
+                                    IN     
+    VERSION ISO  STATUS  DATE        USE    
+    ----------------------------------------
+    1.1.0-0188   ready   2021-11-24  false  
+    1.0.0-11432  ready   2021-12-03  false  
 
-    VERSION OS                                   IN     
-    CONTROLLER   CONTROLLER  STATUS  DATE        USE    
-    ----------------------------------------------------
-    1.1.2-6101   2           ready   2021-05-09  false  
-    1.2.0-10357  2           ready   2021-08-21  false  
-    1.2.1-10692  2           ready   2021-08-30  false  
-    1.2.1-10781  2           ready   2021-09-01  true   
+    Boston-r10900-1# 
 
-    VERSION                                             
-    SERVICE                                      IN     
-    CONTROLLER   CONTROLLER  STATUS  DATE        USE    
-    ----------------------------------------------------
-    1.1.0-6101   2           ready   2021-05-09  false  
-    1.1.2-6101   2           ready   2021-05-09  false  
-    1.2.0-10357  2           ready   2021-08-21  false  
-    1.2.1-10692  2           ready   2021-08-30  false  
-    1.2.1-10781  2           ready   2021-09-01  true   
 
-    VERSION ISO                                  IN     
-    CONTROLLER   CONTROLLER  STATUS  DATE        USE    
-    ----------------------------------------------------
-    1.1.2-6101   2           ready   2021-05-09  false  
-    1.2.0-10357  2           ready   2021-08-21  false  
-    1.2.1-10692  2           ready   2021-08-30  false  
-    1.2.1-10781  2           ready   2021-09-01  false  
-
-    VERSION OS                                   IN               
-    PARTITION    CONTROLLER  STATUS  DATE        USE    NAME  ID  
-    --------------------------------------------------------------
-    1.2.0-10357  1           ready   2021-08-21  false            
-    1.2.1-10692  1           ready   2021-08-30  false            
-
-    VERSION                                                          
-    SERVICE                                      IN                  
-    PARTITION    CONTROLLER  STATUS  DATE        USE    NAME     ID  
-    -----------------------------------------------------------------
-    1.2.0-10357  1           ready   2021-08-21  false               
-    1.2.1-10692  1           ready   2021-08-30  true   default  1   
-
-    VERSION ISO                                  IN                         
-    PARTITION    CONTROLLER  STATUS  DATE        USE    NAME            ID  
-    ------------------------------------------------------------------------
-    1.2.0-10357  1           ready   2021-08-21  false                      
-    1.2.1-10692  1           ready   2021-08-30  true   bigpartition    2   
-                                                        default         1   
-                                                        smallpartition  3   
-
-    VERSION OS                                   IN               
-    PARTITION    CONTROLLER  STATUS  DATE        USE    NAME  ID  
-    --------------------------------------------------------------
-    1.2.0-10357  2           ready   2021-08-21  false            
-    1.2.1-10692  2           ready   2021-08-30  false            
-
-    VERSION                                                          
-    SERVICE                                      IN                  
-    PARTITION    CONTROLLER  STATUS  DATE        USE    NAME     ID  
-    -----------------------------------------------------------------
-    1.2.0-10357  2           ready   2021-08-21  false               
-    1.2.1-10692  2           ready   2021-08-30  true   default  1   
-
-    VERSION ISO                                  IN                         
-    PARTITION    CONTROLLER  STATUS  DATE        USE    NAME            ID  
-    ------------------------------------------------------------------------
-    1.2.0-10357  2           ready   2021-08-21  false                      
-    1.2.1-10692  2           ready   2021-08-30  true   bigpartition    2   
-                                                        default         1   
-                                                        smallpartition  3   
-
-    syscon-1-active# 
-
-The command **show running-config image** will show the current configuration for software images. You can enter **config** mode and change the configuration using the **system image set-version** command and then commit to initiate an upgrade.
+The command **show running-config system image** will show the current configuration for software images. You can enter **config** mode and change the configuration using the **system image set-version** command and then commit to initiate an upgrade.
 
 .. code-block:: bash
 
-    syscon-1-active# show running-config image 
-    image controller config os os 1.1.2-6101
-    !
-    image controller config os os 1.2.0-10357
-    !
-    image controller config os os 1.2.1-10692
-    !
-    image controller config os os 1.2.1-10781
-    !
-    image controller config services service 1.1.0-6101
-    !
-    image controller config services service 1.1.2-6101
-    !
-    image controller config services service 1.2.0-10357
-    !
-    image controller config services service 1.2.1-10692
-    !
-    image controller config services service 1.2.1-10781
-    !
-    image controller config iso iso 1.1.2-6101
-    service 1.1.2-6101
-    os      1.1.2-6101
-    !
-    image controller config iso iso 1.2.0-10357
-    service 1.2.0-10357
-    os      1.2.0-10357
-    !
-    image controller config iso iso 1.2.1-10692
-    service 1.2.1-10692
-    os      1.2.1-10692
-    !
-    image controller config iso iso 1.2.1-10781
-    service 1.2.1-10781
-    os      1.2.1-10781
-    !
-    image partition config os os 1.2.0-10357
-    !
-    image partition config os os 1.2.1-10692
-    !
-    image partition config services service 1.2.0-10357
-    !
-    image partition config services service 1.2.1-10692
-    !
-    image partition config iso iso 1.2.0-10357
-    service 1.2.0-10357
-    os      1.2.0-10357
-    !
-    image partition config iso iso 1.2.1-10692
-    service 1.2.1-10692
-    os      1.2.1-10692
-    !
-    syscon-1-active# 
+    Boston-r10900-1# show running-config system image 
+    system image config iso-version 1.0.0-11432
+    Boston-r10900-1# 
 
 .. code-block:: bash
 
-    syscon-1-active(config)# system image set-version iso-version 1.2.1-10781 
-    response Controller iso version has been set
+    syscon-1-active(config)# system image set-version iso-version 1.0.0-11432 
+    response iso version has been set
     syscon-1-active(config)# 
 
 
-An upgrade of the system controllers should automatically start after the above command is entered. You can follow the upgrade progress by issuing the command **show system image**:
+An upgrade of F5OS should automatically start after the above command is entered. You can follow the upgrade progress by issuing the command **show system image**.
 
-.. code-block:: bash
-
-    syscon-2-active# show system image 
-                        SERVICE      ISO      INSTALL      
-    NUMBER  OS VERSION   VERSION      VERSION  STATUS       
-    --------------------------------------------------------
-    1       1.2.1-10692  1.2.1-10692  -        in-progress  
-    2       1.2.1-10692  1.2.1-10692  -        pending      
-
-    syscon-2-active# 
 
 -----------------------------------------
-Upgrading a Chassis Partition via the API
+Upgrading F5OS via the API
 -----------------------------------------
 
-To upgrade a chassis partition via the API you must first run the check version API call with the version you want to update to:
+To upgrade F5OS via the API you must first run the check version API call with the version you want to update to:
 
 .. code-block:: bash
 
