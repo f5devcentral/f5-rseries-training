@@ -77,11 +77,6 @@ If a remote HTTPS server is not available you may also copy the file from the CL
 
 .. code-block:: bash
 
-    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
-    Value for 'password' (<string>): ********
-    result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
-    Boston-r10900-1#
-
     Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username root insecure protocol scp
     Value for 'password' (<string>): ********
     result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
@@ -129,10 +124,9 @@ You can alternatively copy the F5OS images into the management IP address of F5O
 
 .. code-block:: bash
 
-    root@xubuntu-vm# scp F5OS-C-1.2.1-10781.CONTROLLER.iso root@10.255.0.147:/var/import/staging/.
-
-    root@xubuntu-vm# scp F5OS-C-1.2.1-10781.PARTITION.iso root@10.255.0.147:/var/import/staging/.
-
+    root@xubuntu-vm:/var/www/server/1/upload# scp F5OS-A-1.0.0-11433.R5R10.iso root@10.255.0.132:/var/import/staging
+    root@10.255.0.132's password: 
+    F5OS-A-1.0.0-11433.R5R10.iso                                                                                                                                                                                         100% 5291MB 110.2MB/s   00:48 
 
 Uploading F5OS-A Images via the API
 -----------------------------------------------------
