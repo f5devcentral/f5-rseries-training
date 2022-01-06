@@ -139,7 +139,7 @@ List the current F5OS images in the **images/staging** directory via API calls:
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
-    .. code-block:: json
+.. code-block:: json
 
     {
     "f5-utils-file-transfer:path": "images/staging"
