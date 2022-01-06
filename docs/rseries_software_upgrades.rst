@@ -417,13 +417,13 @@ To upgrade F5OS via the API you must first run the check version API call with t
 
 .. code-block:: bash
 
- POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition/check-version
+ POST https://{{Appliance1_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition/check-version
 
 .. code-block:: json
 
     {
         "input": {
-            "iso-version": "{{Partition_ISO_Image}}"
+            "iso-version": "{{Appliance_ISO_Image}}"
         }
     }
 
@@ -441,7 +441,7 @@ This is the Set Version API call that will initiate the upgrade:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition/set-version
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition/set-version
 
 .. code-block:: json
 
@@ -466,13 +466,12 @@ If the upgrad is successful, you will get notification like the message below:
 Tenant Images and Upgrades
 ==========================
 
+Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS tenants running v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on this versions of software. Tenant upgrades take place inside the tenants themselves, and images don't need to be loaded into the F5OS layer.
 
-Loading Tenant Images for New Tenants
--------------------------------------
+Loading Tenant Images for New Tenants via GUI
+---------------------------------------------
 
-Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. Tenant upgrades take place inside the tenants themslves, and images don't need to be loaded into the F5OS layer.
-
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported VELOS TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
 There is an option to **Add** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using the GUI in the current VELOS release. The **Tenant Images** page will also indicate of an image is in use by a tenant, and if it is replicated to other blades in the chassis partition.
 
@@ -580,7 +579,7 @@ Below is output generated from the previous command:
         }
     }
 
----------------
+
 Tenant Upgrades
 ---------------
 
