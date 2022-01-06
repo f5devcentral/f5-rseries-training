@@ -347,6 +347,10 @@ The output will show the status for the OS, Service, ISO, and Install Status.
     }
 
 
+Upgrading F5OS
+==============
+
+You can upgrade the F5OS-A platform software via the CLI, GUI, or API. 
 
 Upgrading F5OS via GUI
 ----------------------
@@ -406,7 +410,6 @@ The command **show running-config system image** will show the current configura
 An upgrade of F5OS should automatically start after the above command is entered. You can follow the upgrade progress by issuing the command **show system image**.
 
 
------------------------------------------
 Upgrading F5OS via the API
 -----------------------------------------
 
@@ -463,7 +466,7 @@ If the upgrad is successful, you will get notification like the message below:
 Tenant Images and Upgrades
 ==========================
 
--------------------------------------
+
 Loading Tenant Images for New Tenants
 -------------------------------------
 
