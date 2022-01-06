@@ -199,14 +199,14 @@ To import an F5OS-A image, use the following API example:
         "input": [
             {
                 "remote-host": "10.255.0.142",
-                "remote-file": "/upload/{{Controller_ISO_Image_Full}}",
-                "local-file": "images/staging/",
+                "remote-file": "upload/{{Appliance_ISO_Image}}",
+                "local-file": "images/staging/{{Appliance_ISO_Image}}",
                 "insecure": "",
                 "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "Passw0rd!!"
+                "f5-utils-file-transfer:password": "password"
             }
         ]
-    }
+}
 
 
 You can then check on the file transfer status with the following API call:
