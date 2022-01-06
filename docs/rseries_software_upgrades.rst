@@ -120,7 +120,7 @@ You can view the current F5OS images and their status in the F5OS CLI by using t
     1.0.0-11432  ready   2021-12-03  false  
 
 
-You can alternatively copy the F5OS images into the management IP address of F5OS. You would use the **root** account and the target directory should be **/var/import/staging/**.
+You can alternatively copy the F5OS images into the management IP address of F5OS from a client machine over SCP. You would use the **root** account and the target directory should be **/var/import/staging/**.
 
 .. code-block:: bash
 
@@ -129,11 +129,11 @@ You can alternatively copy the F5OS images into the management IP address of F5O
     F5OS-A-1.0.0-11433.R5R10.iso                                                                                                                                                                                         100% 5291MB 110.2MB/s   00:48 
 
 Uploading F5OS-A Images via the API
------------------------------------------------------
+------------------------------------
 
-When uploading or importing F5OS-A images into the rSeries appliance the files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls.
+When uploading or importing F5OS-A images into the rSeries appliance, the files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls. Below are API calls to upload and monitor status.
 
-List the current system controller and partitions images in the images/staging directory via API calls:
+List the current F5OS images in the **images/staging** directory via API calls:
 
 .. code-block:: bash
 
@@ -164,6 +164,8 @@ You can then query the **images/import** directory for various image types like 
 .. code-block:: bash
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+For the body you can enter the specific path you want to query. i.e. /images/import/<path> where path can be **iso**, **service**, or **os**:
 
 .. code-block:: json
 
@@ -210,7 +212,7 @@ To import the **partition** image:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
@@ -218,11 +220,11 @@ To import the **partition** image:
         "input": [
             {
                 "remote-host": "10.255.0.142",
-                "remote-file": "/upload/{{Partition_ISO_Image_Full}}",
-                "local-file": "images/staging/",
+                "remote-file": "upload/{{Appliance_ISO_Image}}",
+                "local-file": "images/staging/{{Appliance_ISO_Image}}",
                 "insecure": "",
                 "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "password"
+                "f5-utils-file-transfer:password": "Pa$$w0rd"
             }
         ]
     }
@@ -231,7 +233,7 @@ You can then check on the file transfer status with the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status
 
 A response like the one below will provide the status of the transfer:
 
@@ -239,11 +241,7 @@ A response like the one below will provide the status of the transfer:
 
     {
         "f5-utils-file-transfer:output": {
-            "result": "\nS.No.|Operation  |Protocol|Local File Path  |Remote Host |Remote File Path                                        |Status            |Time                \n1    |
-    Import file|HTTPS   |images/staging/F5OS-C-1.2.1-10781.PARTITION.iso |10.255.0.142 |/upload/F5OS-C-1.2.1-10781.PARTITION.iso                    |File Not Found, HTTP Error 404|Thu Sep 16 20:27:23 2021\n2    
-    |Import file|HTTPS   |images/staging/F5OS-C-1.2.1-10781.CONTROLLER.iso            |10.255.0.142        |F5OS-C-1.2.1-10781.CONTROLLER.iso                           |File Not Found, HTTP Error 404|Thu Sep 16 20:19:56 2021\n3    
-    |Import file|HTTPS   |images/import/iso/F5OS-C-1.2.1-10781.CONTROLLER.iso         |10.255.0.142        |uploads/F5OS-C-1.2.1-10781.CONTROLLER.iso                   |File Not Found, HTTP Error 404|Thu Sep 16 16:18:27 2021\n4    
-    |Import file|HTTPS   |images/staging/F5OS-C-1.2.1-10781.CONTROLLER.iso            |10.255.0.142        |/upload/F5OS-C-1.2.1-10781.CONTROLLER.iso                   |         Completed|Thu Sep 16 20:24:26 2021\n"
+            "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Import file|HTTPS   |images/import/iso/F5OS-A-1.1.0-0188.R5R10.CANDIDATE.iso     |artifactory.f5net.com|artifactory/velocity-os-generic-dev/F5OS-A/candidate-testing/1.1.0-0188.VF12.4_Candidate_2.6646b1d9/results/appliance/images/F5OS-A-1.1.0-0188.R5R10.CANDIDATE.iso|         Completed|Thu Jan  6 02:58:41 2022\n2    |Import file|HTTPS   |images/staging/F5OS-A-1.0.0-11432.R5R10.iso                 |10.255.0.142        |/upload/F5OS-A-1.0.0-11432.R5R10.iso                        |         Completed|Wed Jan  5 20:03:03 2022\n3    |Import file|SCP     |images/tenant/F5OS-A-1.0.0-11432.R5R10.iso                  |10.255.0.142        |/var/www/server/1/upload/F5OS-A-1.0.0-11432.R5R10.iso       |         Completed|Wed Jan  5 20:08:24 2022\n"
         }
     }
 
@@ -251,7 +249,7 @@ After transferring the file you can view the contents of the images/staging dire
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 .. code-block:: json
 
@@ -267,7 +265,7 @@ You will see all the files in the images/staging directory:
         "f5-utils-file-transfer:output": {
             "entries": [
                 {
-                    "name": "\nF5OS-C-1.2.0-10357.CONTROLLER.iso\nF5OS-C-1.2.0-10357.PARTITION.iso\nF5OS-C-1.2.1-10692.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.1-10692.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.1-10781.CONTROLLER.iso\ncontroller.1.1.2-6101.iso"
+                    "name": "\nF5OS-A-1.0.0-11432.R5R10.iso\nF5OS-A-1.0.0-8722.R2R4.NSIT.iso"
                 }
             ]
         }
@@ -277,7 +275,7 @@ You can then monitor the images/import/iso directory to see when the file is rea
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 .. code-block:: json
 
@@ -293,14 +291,84 @@ You’ll see output similar to the example below. Once the file shows up here yo
         "f5-utils-file-transfer:output": {
             "entries": [
                 {
-                    "name": "\nF5OS-C-1.2.0-10357.CONTROLLER.iso\nF5OS-C-1.2.0-10357.PARTITION.iso\nF5OS-C-1.2.1-10692.CONTROLLER.CANDIDATE.iso\nF5OS-C-1.2.1-10692.PARTITION.CANDIDATE.iso\nF5OS-C-1.2.1-10781.CONTROLLER.iso\ncontroller.1.1.2-6101.iso"
+                    "name": "\nF5OS-A-1.0.0-11432.R5R10.iso\nF5OS-A-1.0.0-8722.R2R4.NSIT.iso"
                 }
             ]
         }
     }
 
-Upgrading the System Controllers via GUI
-----------------------------------------
+ You can then query the image status via the API:
+
+.. code-block:: bash
+
+    GET https://{{Appliance1_IP}}:8888//api/data/openconfig-system:system/f5-system-image:image/state
+
+The output will show the status for the OS, Service, ISO, and Install Status.
+
+.. code-block:: json
+
+    {
+        "f5-system-image:state": {
+            "os": {
+                "os": [
+                    {
+                        "version-os": "1.1.0-0188",
+                        "status": "ready",
+                        "date": "2021-11-24",
+                        "in-use": false
+                    },
+                    {
+                        "version-os": "1.0.0-11432",
+                        "status": "ready",
+                        "date": "2021-12-03",
+                        "in-use": true
+                    }
+                ]
+            },
+            "services": {
+                "service": [
+                    {
+                        "version-service": "1.1.0-0188",
+                        "status": "ready",
+                        "date": "2021-11-24",
+                        "in-use": false
+                    },
+                    {
+                        "version-service": "1.0.0-11432",
+                        "status": "ready",
+                        "date": "2021-12-03",
+                        "in-use": true
+                    }
+                ]
+            },
+            "iso": {
+                "iso": [
+                    {
+                        "version-iso": "1.1.0-0188",
+                        "status": "ready",
+                        "date": "2021-11-24",
+                        "in-use": false
+                    },
+                    {
+                        "version-iso": "1.0.0-11432",
+                        "status": "ready",
+                        "date": "2021-12-03",
+                        "in-use": false
+                    }
+                ]
+            },
+            "install": {
+                "install-os-version": "1.0.0-11432",
+                "install-service-version": "1.0.0-11432",
+                "install-status": "success"
+            }
+        }
+    }
+
+
+
+Upgrading F5OS via GUI
+----------------------
 
 Once the new images are loaded you can perform the upgrade from the **System Settings > Controller Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Once you click Save the upgrade process will begin. For F5OS versions 1.1.x there is no rolling upgrade support and both controllers will reboot immediately taking the entire chassis offline. For F5OSv1.2 rolling upgrade support has been added, but you must be on a v1.2.x release or later to take advantage of this new functionality.
 
@@ -564,9 +632,9 @@ Tenant Images and Upgrades
 Loading Tenant Images for New Tenants
 -------------------------------------
 
-Tenant software images are loaded directly into each chassis partition. If you have more than one chassis partition, you’ll need to load tenant images for each one independently. The first release of VELOS only supported TMOS v14.1.4, and 15.1.4 support has been added with the release of F5OS v1.2.1. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. 
+Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software. Tenant upgrades take place inside the tenants themslves, and images don't need to be loaded into the F5OS layer.
 
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the chassis partition. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for VELOS. Only supported VELOS TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on VELOS. 
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported VELOS TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
 There is an option to **Add** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using the GUI in the current VELOS release. The **Tenant Images** page will also indicate of an image is in use by a tenant, and if it is replicated to other blades in the chassis partition.
 
