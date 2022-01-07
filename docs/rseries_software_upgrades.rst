@@ -490,18 +490,14 @@ If an HTTPS server is not available, you may upload a tenant image using scp dir
 
     scp BIGIP-bigip14.1.x-tmos-bugfix-14.1.3.1-0.0.586.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
 
+Loading Tenant Images for New Tenants via CLI
+---------------------------------------------
+
 You may also import the tenant image file from the chassis partition CLI. Use the file import command to get the tenant image file from a remote HTTPS server. You must do this for each chassis partition:
 
 .. code-block:: bash
 
     bigpartition# file import remote-host 10.255.0.142 remote-file /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username corpuser insecure
-
-Repeat for other chassis partitions:
-
-.. code-block:: bash
-
-    smallpartition# file import remote-host 10.255.0.142 remote-file /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username corpuser insecure
-
 
 The command **file transfer-status** will provide details of the transfer progress and any errors:
 
@@ -511,7 +507,10 @@ The command **file transfer-status** will provide details of the transfer progre
     Value for 'password' (<string>): ********
     result File transfer is initiated.(images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
 
-
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
+    Boston-r10900-1#
 
     bigpartition-1# file transfer-status 
     result 
@@ -523,13 +522,25 @@ You can view the current tenant images and their status in the chassis partition
 
 .. code-block:: bash
 
-    bigpartition-2# show images
-                                                                            IN                 
-    NAME                                                                       USE    STATUS      
-    ----------------------------------------------------------------------------------------------
-    BIGIP-14.1.3-0.0.7.ALL-VELOS.qcow2.zip.bundle                              false  replicated  
-    BIGIP-14.1.4-0.0.619.ALL-VELOS.qcow2.zip.bundle                            true   replicated  
-    BIGIP-bigip14.1.x-tmos-bugfix-14.1.3.1-0.0.586.ALL-VELOS.qcow2.zip.bundle  false  replicated
+    Boston-r10900-1# show images
+                                                                        IN                          
+    NAME                                                                 USE    STATUS               
+    -------------------------------------------------------------------------------------------------
+    BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle                       false  verified             
+    BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified             
+    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         true   verified             
+    BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle    false  verified             
+    BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle    false  verified             
+    BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle    false  verified             
+    BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle  false  verified             
+    BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle  false  verified             
+    BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle  false  verified              
+
+    Boston-r10900-1# 
+
+
+Loading Tenant Images for New Tenants via API
+---------------------------------------------
 
 To copy a tenant image into a chassis partition, use the following API call to the chassis partition IP address:
 
