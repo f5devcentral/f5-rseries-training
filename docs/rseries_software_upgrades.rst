@@ -524,14 +524,8 @@ You can view the current tenant images and their status in the chassis partition
     -------------------------------------------------------------------------------------------------
     BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle                       false  verified             
     BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified             
-    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         true   verified             
-    BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle    false  verified             
-    BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle    false  verified             
-    BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle    false  verified             
-    BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle  false  verified             
-    BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle  false  verified             
-    BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle  false  verified              
-
+    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         true   verified                        
+    
     Boston-r10900-1# 
 
 
