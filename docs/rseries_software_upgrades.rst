@@ -486,7 +486,7 @@ There is an option to **Import** new releases which will open a pop-up window th
 
 There is also an option to **Upload** a tenant release, this will allow you to upload an image directly from your client machine through the browser.
 
-If an HTTPS server is not available and uploading from a clinet machine is not an option, you may upload a tenant image using scp directly to the appliance. Simply scp an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
+If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using scp directly to the appliance. Simply scp an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
 
 .. code-block:: bash
 
