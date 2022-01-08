@@ -473,7 +473,7 @@ Loading Tenant Images for New Tenants via GUI
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
-There is an option to **Add** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using the GUI in the current VELOS release. The **Tenant Images** page will also indicate of an image is in use by a tenant, and if it is replicated to other blades in the chassis partition.
+There is an option to **Upload** or **Import** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using the GUI in the current VELOS release. The Upload option will allow you to upload an image directly from your client machine through the browser. The **Tenant Images** page will also indicate if an image is in use by a tenant, and if the image has been Verified. 
 
 .. image:: images/rseries_software_upgrades/image9.png
   :align: center
@@ -484,7 +484,7 @@ There is an option to **Add** new releases which will open a pop-up window that 
   :align: center
   :scale: 70%
 
-If an HTTPS server is not available, you may upload a tenant image using scp directly to the chassis partition. Simply scp an image to the system controllers out-of-band management IP address using the admin account and a path of **IMAGES**. 
+If an HTTPS server is not available and uploading from a clinet machine is not an option, you may upload a tenant image using scp directly to the appliance. Simply scp an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
 
 .. code-block:: bash
 
