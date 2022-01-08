@@ -499,7 +499,7 @@ You may also import the tenant image file from the F5OS CLI. Use the **file impo
 
 .. code-block:: bash
 
-    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
+    Boston-r10900-1# file import remote-host 10.255.0.132 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
     Value for 'password' (<string>): ********
     result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
     Boston-r10900-1#
