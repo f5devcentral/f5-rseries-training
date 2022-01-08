@@ -1,5 +1,5 @@
 =========================
-Inside the rSeries Tenant
+rSeries Inside the Tenant
 =========================
 
 
