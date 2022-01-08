@@ -488,12 +488,12 @@ If an HTTPS server is not available and uploading from a clinet machine is not a
 
 .. code-block:: bash
 
-    scp BIGIP-bigip14.1.x-tmos-bugfix-14.1.3.1-0.0.586.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
+    scp BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
 
 Loading Tenant Images for New Tenants via CLI
 ---------------------------------------------
 
-You may also import the tenant image file from the chassis partition CLI. Use the file import command to get the tenant image file from a remote HTTPS server. You must do this for each chassis partition:
+You may also import the tenant image file from the F5OS CLI. Use the **file import** command to get the tenant image file from a remote HTTPS server, over SCP, or SFTP. 
 
 .. code-block:: bash
 
