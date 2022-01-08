@@ -514,7 +514,7 @@ The command **file transfer-status** will provide details of the transfer progre
     1    |Import file|HTTPS   |images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle       |10.255.0.142        |/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle      |In Progress (15.0%)|Fri Sep 17 15:36:29 2021
 
 
-You can view the current tenant images and their status in the chassis partition CLI:
+You can view the current tenant images and their status in the F5OS CLI using the **show images** command:
 
 .. code-block:: bash
 
