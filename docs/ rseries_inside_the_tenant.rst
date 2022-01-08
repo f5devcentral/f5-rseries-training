@@ -30,7 +30,13 @@ You can delete the VLAN inside the tenant and then recreate it with a new name, 
 Interface Behavior
 ==================
 
-The number of interfaces within a tenant will be based upon the number of vCPU’s assigned to the tenant and the number of slots the tenant is running on. The screenshot below shows the interfaces inside the tenant lining up with the number of physical cores per slot. In the first example there are 6 vCPU’s on a single slot tenant, this will equate to 3 physical CPU’s. Likewise for a dual slot tenant with 10 vCPU’s per slot. You’ll see 5 physical CPU’s per slot.
+The number of interfaces within a tenant will be based upon the number of vCPU’s assigned to the tenant. The screenshot below shows the interfaces inside the tenant lining up with the number of physical cores per slot. In the example there are 36 vCPU’s assigned to a single tenant, this will equate to 18 physical CPU’s. 
+
+
+.. image:: images/rseries_inside_the_tenant/image4.png
+  :align: center
+  :scale: 70%
+
 
 .. image:: images/rseries_inside_the_tenant/image3.png
   :align: center
