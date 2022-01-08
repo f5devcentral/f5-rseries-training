@@ -91,34 +91,34 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
 
 .. code-block:: bash
 
-  syscon-2-active(config)# system network config network-range-type RFC1918 prefix ?
+  Boston-r10900-1(config)# system network config network-range-type RFC1918 prefix ?
   Description: 
   The network prefix index is used to select the range of IP addresses
-  used internally within the chassis.  The network prefix should be
-  selected such that internal chassis addresses do not overlap with
-  site-local addresses that are accessible to the chassis.
+  used internally within the appliance. The network prefix should be
+  selected such that internal appliance addresses do not overlap with
+  site-local addresses that are accessible to the appliance.
 
-  Network Prefix Index       Chassis Network Range
-  0                          10.[0-15].0.0/12
-  1                          10.[16-31].0.0/12
-  2                          10.[32-47].0.0/12
-  3                          10.[48-63].0.0/12
-  4                          10.[64-79].0.0/12
-  5                          10.[80-95].0.0/12
-  6                          10.[96-111].0.0/12
-  7                          10.[112-127].0.0/12
-  8                          10.[128-143].0.0/12
-  9                          10.[144-159].0.0/12
-  10                         10.[160-175].0.0/12
-  11                         10.[176-191].0.0/12
-  12                         10.[192-207].0.0/12
-  13                         10.[208-223].0.0/12
-  14                         10.[224-239].0.0/12
-  15                         10.[240-255].0.0/12
+  Network Prefix Index       Appliance Network Range
+  0                          10.[0-15].0.0/16
+  1                          10.[16-31].0.0/16
+  2                          10.[32-47].0.0/16
+  3                          10.[48-63].0.0/16
+  4                          10.[64-79].0.0/16
+  5                          10.[80-95].0.0/16
+  6                          10.[96-111].0.0/16
+  7                          10.[112-127].0.0/16
+  8                          10.[128-143].0.0/16
+  9                          10.[144-159].0.0/16
+  10                         10.[160-175].0.0/16
+  11                         10.[176-191].0.0/16
+  12                         10.[192-207].0.0/16
+  13                         10.[208-223].0.0/16
+  14                         10.[224-239].0.0/16
+  15                         10.[240-255].0.0/16
   Possible completions:
     <unsignedByte, 0 .. 15>[0]
-  syscon-2-active(config)# system network config network-range-type RFC1918 prefix 15
-    syscon-2-active(config)# commit
+  Boston-r10900-1(config)# system network config network-range-type RFC1918 prefix 15
+  Boston-r10900-1(config)# commit
   Commit complete.
 
 **Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required in order to convert existing internal address space to the new address space, a reboot is not sufficient.**
