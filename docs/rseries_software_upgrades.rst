@@ -488,7 +488,7 @@ If an HTTPS server is not available and uploading from a clinet machine is not a
 
 .. code-block:: bash
 
-    scp BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
+    scp BIGIP-15.1.5-0.0.8.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
 
 Loading Tenant Images for New Tenants via CLI
 ---------------------------------------------
@@ -497,20 +497,14 @@ You may also import the tenant image file from the F5OS CLI. Use the **file impo
 
 .. code-block:: bash
 
-    bigpartition# file import remote-host 10.255.0.142 remote-file /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username corpuser insecure
-
-The command **file transfer-status** will provide details of the transfer progress and any errors:
-
-.. code-block:: bash
-
-    bigpartition-1# file import remote-host 10.255.0.142 remote-file /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username corpuser insecure
-    Value for 'password' (<string>): ********
-    result File transfer is initiated.(images/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
-
     Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/F5OS-A-1.0.0-11432.R5R10.iso local-file images/staging/F5OS-A-1.0.0-11432.R5R10.iso username corpuser insecure
     Value for 'password' (<string>): ********
     result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
     Boston-r10900-1#
+
+The command **file transfer-status** will provide details of the transfer progress and any errors:
+
+.. code-block:: bash
 
     bigpartition-1# file transfer-status 
     result 
