@@ -9,39 +9,54 @@ Once logged in you can display the current running configuration by issuing the 
 
 .. code-block:: bash
 
-  syscon-2-active# show running-config
-  image controller config os os 1.2.0-0333
-  !
-  image controller config services service 1.2.0-0333
-  !
-  image controller config iso iso 1.2.0-0333
-      service 1.2.0-0333
-      os      1.2.0-0333
-  !
-  image partition config os os 1.2.0-0333
-  !
-  image partition config services service 1.2.0-0333
-  !
-  image partition config iso iso 1.2.0-0333
-      service 1.2.0-0333
-      os      1.2.0-0333
-  !
-  partitions partition bigpart
+  Boston-r10900-1# show running-config 
+  cluster disk-usage-threshold config warning-limit 85
+  cluster disk-usage-threshold config error-limit 90
+  cluster disk-usage-threshold config critical-limit 97
+  cluster disk-usage-threshold config growth-rate-limit 10
+  cluster disk-usage-threshold config interval 60
+  cluster nodes node node-1
+  config name node-1
   config enabled
-  …
+  !
+  fpga-tables xbar-ports xbar-port port0_mod0
+  !
+  fpga-tables xbar-ports xbar-port port1_mod0
+  !
+  fpga-tables xbar-ports xbar-port port2_mod3
+  !
+  fpga-tables xbar-ports xbar-port port3_mod3
+  !
+  fpga-tables xbar-ports xbar-port port4_mod4
+  !
+  fpga-tables xbar-ports xbar-port port5_mod5
+  !
+  fpga-tables xbar-ports xbar-port port6_mod1
+  !
+  cluster disk-usage-threshold config warning-limit 85
+  cluster disk-usage-threshold config error-limit 90
+  cluster disk-usage-threshold config critical-limit 97
+  cluster disk-usage-threshold config growth-rate-limit 10
+  cluster disk-usage-threshold config interval 60
+  cluster nodes node node-1
+  config name node-1
+  config enabled
+  !
 
-
------------------------
-Interface Configuration
------------------------
-
-The out-of-band Ethernet interfaces on each system controller can be configured to run independently, or they may be put into a common Link Aggregation Group to provide added redundancy. To alter any configuration, you must enter config mode:
+To alter any configuration, you must enter config mode:
 
 .. code-block:: bash
 
   syscon-2-active# config
   Entering configuration mode terminal
   syscon-2-active(config)#
+
+ And so save any configuration you must enter *commit**.
+
+.. code-block:: bash
+
+  Boston-r10900-1(config)# commit
+
 
 ----------------------------
 Internal Appliance IP Ranges
@@ -51,14 +66,12 @@ The rSeries appliances ship with a default internal RFC6598 address space of 100
 
 .. code-block:: bash
 
-  syscon-2-active# show system network 
+  Boston-r10900-1# show system network 
   system network state configured-network-range-type RFC6598
   system network state configured-network-range 100.64.0.0/12
-  system network state configured-chassis-id 1
   system network state active-network-range-type RFC6598
   system network state active-network-range 100.64.0.0/12
-  system network state active-chassis-id 1
-  syscon-2-active# 
+  Boston-r10900-1# 
 
 This address range never leaves the inside of the appliance and will not interfere with any communication outside the rSeries device. There can however be address collisions if a device trying to manage rSeries via the out-of-band management port falls within this range, or an external management device or service falls within this range and communicated with rSeries over its out-of-band networking. This may result in rSeries not able to communicate with those devices.
 
@@ -68,11 +81,11 @@ If there is the potential for conflict with external devices that fall within th
 
 .. code-block:: bash
 
-  syscon-2-active(config)# system network config network-range-type RFC <Hit Tab>
+  Boston-r10900-1(config)# system network config network-range-type RFC < Hit TAB>
   Possible completions:
-    RFC1918   VELOS system uses 10.[0-15]/12 as specified by RFC1918
-    RFC6598   VELOS system uses 100.64/10 as specified by RFC6598
-  syscon-2-active(config)# system network config network-range-type RFC1918
+    RFC1918   System uses 10.[0-15]/12 as specified by RFC1918
+    RFC6598   System uses 100.64/10 as specified by RFC6598
+  Boston-r10900-1(config)# system network config network-range-type RFC
 
 If changing to one of the RFC1918 address spaces, you will need to choose from one of 16 prefix ranges as seen below. You should ensure that this will not overlap with current address space deployed within the environment:
 
