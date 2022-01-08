@@ -473,7 +473,7 @@ Loading Tenant Images for New Tenants via GUI
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
-There is an option to **Import** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using the GUI in the current VELOS release.  The **Tenant Images** page will also indicate if an image is in use by a tenant, and if the image has been Verified. 
+There is an option to **Import** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using this option.  The **Tenant Images** page will also indicate if an image is in use by a tenant, and if the image has been Verified. 
 
 .. image:: images/rseries_software_upgrades/image9.png
   :align: center
