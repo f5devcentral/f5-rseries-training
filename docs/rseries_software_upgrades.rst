@@ -538,53 +538,93 @@ You can view the current tenant images and their status in the chassis partition
 Loading Tenant Images for New Tenants via API
 ---------------------------------------------
 
-To copy a tenant image into a chassis partition, use the following API call to the chassis partition IP address:
+To copy a tenant image into F5OS over tha API use the following API call to the F5OS out-of-band management IP address:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_BigPartition_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
-    {
-        "input": [
-            {
-                "remote-host": "10.255.0.142",
-                "remote-file": "upload/{{Tenant_Image}}",
-                "local-file": "images/{{Tenant_Image}}",
-                "insecure": "",
-                "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "Passw0rd!!"
-            }
-        ]
-    }
+{
+    "input": [
+        {
+            "remote-host": "10.255.0.142",
+            "remote-file": "upload/{{Appliance_Tenant_Image}}",
+            "local-file": "images/tenant/{{Appliance_Tenant_Image}}",
+            "insecure": "",
+            "f5-utils-file-transfer:username": "corpuser",
+            "f5-utils-file-transfer:password": "Pa$$w0rd"
+        }
+    ]
+}
 
-To list the current tenant images available on the chassis partition use the following API Call:
+To list the current tenant images available on the appliance use the following API Call:
 
 .. code-block:: bash
 
-    GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-tenant-images:images
+    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenant-images:images
 
 Below is output generated from the previous command:
 
 .. code-block:: json
 
-    {
-        "f5-tenant-images:images": {
-            "image": [
-                {
-                    "name": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": true,
-                    "status": "replicated"
-                },
-                {
-                    "name": "BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "replicated"
-                }
-            ]
-        }
+{
+    "f5-tenant-images:images": {
+        "image": [
+            {
+                "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                "in-use": true,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle",
+                "in-use": false,
+                "status": "verified"
+            },
+            {
+                "name": "F5OS-A-1.0.0-11432.R5R10.iso",
+                "in-use": false,
+                "status": "verification-failed"
+            }
+        ]
     }
+}
 
 
 Tenant Upgrades
