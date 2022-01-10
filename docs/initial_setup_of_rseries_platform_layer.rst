@@ -127,119 +127,67 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
 IP Address Assignment & Routing
 -------------------------------
 
-Each system controller requires its own unique IP address, and a floating IP address also needs to be configured. The floating IP address will follow the primary system controller. The IP addresses can be statically defined or acquired via DHCP. In addition to the IP addresses a default route and subnet mask/prefix length is defined. For the initial 1.1.x versions of F5OS only IPv4 IP addresses are supported on the out-of-band interfaces of the system controllers. IPv6 and dual stack IPv4/v6 support requires F5OS be running 1.2.x or later. Note the tenants themselves support IPv4/IPv6 management today.
-
-.. image:: images/initial_setup_of_velos_system_controllers/image1.png
-  :align: center
-  :scale: 70%
+The rSeries appliance requires its own unique out-of-band IP address for the F5OS layer. The IP addresses can be statically defined or acquired via DHCP. In addition to the IP address a default route and subnet mask/prefix length is defined. 
 
 Once logged in you will configure the static IP addresses (unless DHCP is preferred).
 
 .. code-block:: bash
 
-  syscon-2-active(config)# system mgmt-ip config ipv4 controller-1 address 10.255.0.212
-  syscon-2-active(config)# system mgmt-ip config ipv4 controller-2 address 10.255.0.213
-  syscon-2-active(config)# system mgmt-ip config ipv4 floating address 10.255.0.214
-  syscon-2-active(config)# system mgmt-ip config ipv4 prefix-length 24
-  syscon-2-active(config)# system mgmt-ip config ipv4 gateway 10.255.0.1
+  Boston-r10900-1(config)# system mgmt-ip config ipv4 system address 10.255.0.132
+  Boston-r10900-1(config)# system mgmt-ip config ipv4 prefix-length 24
+  Boston-r10900-1(config)# system mgmt-ip config ipv4 gateway 10.255.0.1
 
 In order to make these changes active you must commit the changes. No configuration changes are executed until the commit command is issued. 
 
 .. code-block:: bash
 
-  syscon-2-active(config)# commit
+  Boston-r10900-1(config)# commit
 
-Now that the out-of-band addresses and routing are configured you can attempt to access the system controller GUI via the floating IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings.
+Now that the out-of-band address and routing are configured you can attempt to access the F5OS GUI via the IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image2.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
   :scale: 70%
 
--------------------------------------------------------
-Interface Aggregation for System Controllers (Optional)
--------------------------------------------------------
-
-As seen in previous diagrams each system controller has its own independent out-of-band 10Gb ethernet connection. These can run independently of each other and should be connected to the same layer2 VLAN so that the floating IP address can move from primary to standby in the event of a failure. You may optionally configure these two interfaces into a single Link Aggregation Group (LAG) for added resiliency which is recommended. This would allow direct access to either static IP address on the system controllers in the event one link should fail. Below is a depiction of each system controllers OOB interface bonded together in a single LAG:
-
-.. image:: images/initial_setup_of_velos_system_controllers/image3.png
-  :align: center
-  :scale: 70%
-
-To enable this feature, you would need to enable link aggregation on the system controllers via the CLI, GUI or API, and then make changes to your upstream layer2 switching infrastructure to ensure the two ports are put into the same LAG. To configure the management ports of both system controllers to run in a LAG configure as follows:
-
-On the active controller create a managment LACP interface:
-
-.. code-block:: bash
-
-  lacp interfaces interface mgmt-aggr
-  config name mgmt-aggr
-  !
- 
-Next create a management aggregate interface and set the **config type** to **ieee8023adLag** and set the **lag-type** to **LACP**.
-
-.. code-block:: bash
-
-  interfaces interface mgmt-aggr
-  config name mgmt-aggr
-  config type ieee8023adLag
-  aggregation config lag-type LACP
-  !
-
-Finally add the aggregate that you created by name to each of the management interfaces on the two controllers: 
-
-.. code-block:: bash
-
-  !
-  interfaces interface 1/mgmt0
-  config name 1/mgmt0
-  config type ethernetCsmacd
-  ethernet config aggregate-id mgmt-aggr
-  !
- 
- 
-  interfaces interface 2/mgmt0
-  config name 2/mgmt0
-  config type ethernetCsmacd
-  ethernet config aggregate-id mgmt-aggr
 
 ---------------
 System Settings
 ---------------
 
-Once the IP addresses have been defined system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, GUI, or API.
+Once the IP address has been defined system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, GUI, or API.
 
 **From the CLI:**
 
 .. code-block:: bash
 
-  syscon-2-active# config
+  Boston-r10900-1# config
   Entering configuration mode terminal
-  syscon-2-active(config)# system dns servers server 192.168.19.1 config address 192.168.10.1
-  syscon-2-active(config-server-192.168.19.1)# exit
-  syscon-2-active(config)# system ntp config enabled 
-  syscon-2-active(config)# system ntp servers server time.f5net.com config address time.f5net.com
-  syscon-2-active(config-server-time.f5net.com)# exit
-  syscon-2-active(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
-  syscon-2-active(config-remote-server-10.255.0.142)# exit
-  syscon-2-active(config)# commit
+  Boston-r10900-1(config)# system dns servers server 192.168.19.1 config address 192.168.10.1
+  Boston-r10900-1(config-server-192.168.19.1)# exit
+  Boston-r10900-1(config)# system ntp config enabled 
+  Boston-r10900-1(config)# system ntp servers server time.f5net.com config address time.f5net.com
+  Boston-r10900-1(config-server-time.f5net.com)# exit
+  Boston-r10900-1(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
+  Boston-r10900-1(config-remote-server-10.255.0.142)# exit
+  Boston-r10900-1(config)# commit
 
 **From the GUI:**
 
 You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **Network Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the VELOS chassis to resolve hostnames that may be used for external services like ntp, authentication servers, or to reach iHealth for qkview uploads.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image4.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
   :scale: 70%
 
   Configuring Network Time Protocol is highly recommended so that the VELOS systems clock is sync’d and accurate. In addition to configure NTP time sources, you can set the local timezone for this chassis location.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image5.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
   :scale: 70%
 
   It’s also a good idea to have the VELOS system send logs to an external syslog server. This can be configured in the System Settings > Log Settings screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image6.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
   :align: center
   :scale: 70%
 
@@ -362,11 +310,11 @@ To set a Remote Logging destination:
       }
   }
 
----------------------------
-Licensing the VELOS Chassis
----------------------------
+-------------------------------
+Licensing the rSeries Appliance
+-------------------------------
 
-Licensing for the VELOS system is handled at the chassis level. This is similar to how VIPRION licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the chassis. With VELOS, licensing is applied at the system controller level and all chassis partitions and tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for MAX SSL/Compression or for tenancy/vCMP. This is different than VIPRION where there was an extra charge for virtualization/vCMP and in some cases for MAX SSL/Compression. For VELOS these are included in the base license at no extra cost. VELOS does not run vCMP, and instead runs tenancy.
+Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for MAX SSL/Compression or for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP and in some cases for MAX SSL/Compression. For rSeries these are included in the base license at no extra cost. rSeries does not run vCMP, and instead runs tenancy.
 
 Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. Licensing is accessible under the **System Settings > Licensing** page. **Automatic** will require proper routing and DNS connectivity to the Internet to reach F5’s licensing server. If this is not possible to reach the licensing server use the **Manual** method.
 
