@@ -41,7 +41,7 @@ Interfaces will always be numbered starting with **1.0** and ending with the max
 Supported Optics
 ================
 
-Only F5 branded optics are officially supported on rSeries appliances. rSeries supports speeds of 1Gb (on selected low end models) 10Gb, 25Gb, 40Gb, and 100Gb depending on the type of optics used and the port group configuration. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low spped ports will accept SFP28 and SFP+ optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
+Only F5 branded optics are officially supported on rSeries appliances. rSeries supports speeds of 1Gb (on selected low end models) 10Gb, 25Gb, 40Gb, and 100Gb depending on the type of optics used and the port group configuration. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
 
 **10GB SFP+ options:**
 
@@ -80,11 +80,11 @@ Only F5 branded optics are officially supported on rSeries appliances. rSeries s
 +------------------------+------------+----------------------------------------------------------------------------------+
 | 100GBASE-SR4 (QSFP28)  | OPT-0031   | TRANSCEIVER, QSFP28, 100G-SR4, 850NM, MMF, MPO, DDM, BRANDED                     |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100GBASE-LR4 (QSFP28)  | OPT-00352  | TRANSCEIVER, QSFP28, 100G-LR4, 10KM, LC, SMF, 4.5W, DDM, VELOCITY SDK, BRANDED   |
+| 100GBASE-LR4 (QSFP28)  | OPT-0052   | TRANSCEIVER, QSFP28, 100G-LR4, 10KM, LC, SMF, 4.5W, DDM, VELOCITY SDK, BRANDED   |
 +------------------------+------------+----------------------------------------------------------------------------------+
 | 100G-PSM4 (QSFP28)     | OPT-0055   | TRANSCEIVER, QSFP28, 100GIG-PSM4, 1310NM, 500M, MPO, SMF, F5 BRANDED             |
 +------------------------+------------+----------------------------------------------------------------------------------+
-| 100G BIDI (QSFP28)     | OPT-0047   | TRANSCEIVER, QSFP28, 100G BIDI, 100M, LC, MMF, F5 BRANDED (Planned for mid CY21) |
+| 100G BIDI (QSFP28)     | OPT-0047   | TRANSCEIVER, QSFP28, 100G BIDI, 100M, LC, MMF, F5 BRANDED                        |
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 
