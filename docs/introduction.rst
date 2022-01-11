@@ -18,7 +18,7 @@ rSeries will continue to provide hardware acceleration and offload capabilities 
 
 •	Existing TMOS/BIG-IP tenants*
 •	Future support for Next-generation BIG-IP for Distributed Cloud tenants (Modular Architecture)
-•	In the future the possibility of running approved 3rd party tenants 
+•	Future possibility of running approved 3rd party tenants 
 
  * specific software releases
 
@@ -28,21 +28,21 @@ rSeries will continue to provide hardware acceleration and offload capabilities 
 
 
 
-Customers will be able to migrate existing BIG-IP devices, or vCMP guests into a tenant running on rSeries. A tenant is conceptually similar to a vCMP guest on the VIPRION or iSeries platforms. Once inside the tenant, the management experience will be similar to the experience on existing BIG-IP platforms. The BIG-IP tenant will be managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator can connect directly to the tenant’s GUI, CLI, or API and have the same experience as they have with their existing platforms. 
+Customers will be able to migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest on the VIPRION or iSeries platforms. Once inside the tenant, the management experience will be similar to the experience on existing BIG-IP platforms. The BIG-IP tenant will be managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator can connect directly to the tenant’s GUI, CLI, or API and have the same experience as they have with their existing platforms. 
 
-In the future BIG-IP for Distributed Cloud tenants will be able to be provisioned within the same appliance, which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
+In the future BIG-IP for Distributed Cloud tenants will be able to be provisioned within the same rSeries appliance, which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
 ---------------------------------------------------
 Multitenant by Default
 ---------------------------------------------------
 
-The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** ontop of a **vCMP Host Layer**, customers will now provision **Tenants** ontop of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large BIG-IP tenant on rSeries. 
+The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default which is a change from the iSeries appliances which could run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** ontop of a **vCMP Host Layer**, customers will now provision **Tenants** ontop of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large BIG-IP tenant on rSeries after the intial F5OS setup is completed. 
 
------------------
-More PAYG options
------------------
+-----------------------------------
+More Pay-as-you-Grow (PAYG) options
+-----------------------------------
 
-the rSeries family of appliances has multiple hardware and software options similar to the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platfroms in the rSeries family, but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to higher model within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
+the rSeries family of appliances has multiple hardware and software options similar to the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platforms in the rSeries family, but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to higher model within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
 
 
 .. image:: images/rseries_introduction/image2.png
