@@ -132,13 +132,13 @@ The r5900 has 32 vCPU's total, 6 vCPU's reserved for F5OS, and 26 vCPU's left ov
   :align: center
   :scale: 40%
 
-The r5800 has 32 vCPU's total, 6 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 18 vCPU's left over for use by tenants:
+The r5800 has 32 vCPU's total, 8 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 18 vCPU's left over for use by tenants:
 
 .. image:: images/rseries_multitenancy/image7.png
   :align: center
   :scale: 40%
 
-The r5600 has 32 vCPU's total, 12 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 12 vCPU's left over for use by tenants:  
+The r5600 has 32 vCPU's total, 14 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 12 vCPU's left over for use by tenants:  
 
 .. image:: images/rseries_multitenancy/image8.png
   :align: center
