@@ -6,7 +6,7 @@ Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP i
 
 When an rSeries tenant is created it can be imported as a device into BIG-IQ. It will import just like any other BIG-IP instance or device.  Once imported it will show up with a Type of **BIG-IP Tenant**.
 
-.. image:: images/bigiq_support_for_velos/image1.png
+.. image:: images/bigiq_support_for_rseries/image1.png
   :align: center
   :scale: 70%
 
@@ -109,7 +109,7 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
 
 Shortly after the declaration is sent to BIG-IQ you can see a new onboarding task. This will take a while to complete as it may require reboots of the tenant for module provisioning. After the tenant is onboarded it will be imported into BIG-IQ.
 
-.. image:: images/bigiq_support_for_velos/image2.png
+.. image:: images/bigiq_support_for_rseries/image2.png
   :align: center
   :scale: 70%
 
