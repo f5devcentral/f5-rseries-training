@@ -173,31 +173,31 @@ Once the IP address has been defined system settings such as DNS servers, NTP, a
 
 **From the GUI:**
 
-You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **Network Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the VELOS chassis to resolve hostnames that may be used for external services like ntp, authentication servers, or to reach iHealth for qkview uploads.
+You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **Network Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, or to reach iHealth for qkview uploads.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image2.png
+  :align: center
+  :scale: 70%
+
+  Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is sync’d and accurate. In addition to configure NTP time sources, you can set the local timezone for this chassis location.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image3.png
+  :align: center
+  :scale: 70%
+
+  It’s also a good idea to have the rSeries appliance send logs to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
   :scale: 70%
 
-  Configuring Network Time Protocol is highly recommended so that the VELOS systems clock is sync’d and accurate. In addition to configure NTP time sources, you can set the local timezone for this chassis location.
-
-.. image:: images/initial_setup_of_rseries_platform_layer/image5.png
-  :align: center
-  :scale: 70%
-
-  It’s also a good idea to have the VELOS system send logs to an external syslog server. This can be configured in the System Settings > Log Settings screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
-
-.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
-  :align: center
-  :scale: 70%
-
 **From the API:**
 
-If you would prefer to automate the setup of the VELOS chassis, there are API calls for all of the examples above. To set the DNS configuration for the system controllers use the following API call:
+If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration for appliance use the following API call:
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
 
 .. code-block:: json
 
