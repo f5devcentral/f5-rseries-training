@@ -822,13 +822,13 @@ The output will show the logging level of all the software subsystems.
       }
   }
 
-If you would like to change the severity of any of the logging below is an example. the API call below will change the software subsystem logging for **l2-agent** to **DEBUG**.
+If you would like to change the severity of any of the logging, below is an example. The API call below will change the software subsystem logging for **l2-agent** to **DEBUG**.
 
 .. code-block:: bash
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
 
-Below is the configuration in the body of the API call above to set the DEBUG logging level:
+Below is the configuration in the body of the API call above to set the **DEBUG** logging level:
 
 .. code-block:: json
 
