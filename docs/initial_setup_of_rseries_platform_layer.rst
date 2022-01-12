@@ -181,75 +181,101 @@ Once the IP address has been defined system settings such as DNS servers, NTP, a
 
 You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, licensing, or to reach iHealth for qkview uploads.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image2.png
-  :align: center
-  :scale: 70%
-
-Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is sync’d and accurate. In addition to configure NTP time sources, you can set the local timezone for this chassis location.
-
 .. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
   :scale: 70%
 
-It’s also a good idea to have the rSeries appliance send logs to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is sync’d and accurate. In addition to configuring NTP time sources, you can set the local timezone for this appliance's location.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
   :scale: 70%
 
+It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image5.png
+  :align: center
+  :scale: 70%
+
 **From the API:**
 
-If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration for appliance use the following API call:
+If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for appliance use the following API call:
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/dns
+
+Below is the body of the API call which contains the desired configuration:
 
 .. code-block:: json
 
   {
-      "openconfig-system:system": {
-          "clock": {
-              "config": {
-                  "timezone-name": "America/New_York"
-              }
+      "openconfig-system:dns": {
+          "config": {
+              "search": [
+                  "olympus.f5net.com"
+              ]
           },
-          "dns": {
-              "config": {
-                  "search": "olympus.f5net.com"
-              },
-              "servers": {
-                  "server": [
-                      {
-                          "address": "8.8.8.8",
-                          "config": {
-                              "address": "8.8.8.8"
-                          }
-                      },
-                      {
-                          "address": "192.168.10.1",
-                          "config": {
-                              "address": "192.168.10.1"
-                          }
-                      },
-                      {
-                          "address": "192.168.11.1",
-                          "config": {
-                              "address": "192.168.11.1"
-                          }
+          "servers": {
+              "server": [
+                  {
+                      "address": "192.168.11.0",
+                      "config": {
+                          "address": "192.168.11.0"
                       }
-                  ]
-              }
+                  }
+              ]
+          }
+      }
+  }
+
+You may then view the current DNS configuration with the folowing API call:
+
+.. code-block:: bash
+
+  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/dns
+
+Below is the output from the API query above:
+
+.. code-block:: json
+
+  {
+      "openconfig-system:dns": {
+          "config": {
+              "search": [
+                  "olympus.f5net.com"
+              ]
+          },
+          "state": {
+              "search": [
+                  "olympus.f5net.com"
+              ]
+          },
+          "servers": {
+              "server": [
+                  {
+                      "address": "192.168.11.0",
+                      "config": {
+                          "address": "192.168.11.0",
+                          "port": 53
+                      },
+                      "state": {
+                          "port": 53
+                      }
+                  }
+              ]
           }
       }
   }
 
 
-To set System Time settings use the following API call as an example:
+To set System Time settings use the following API call as an example. this will set the Timezone, enable NTP, and configure NTP servers.
 
 .. code-block:: bash
 
   PATCH https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/
+
+Below is the body of the API call contianing the desired configuration:
 
 .. code-block:: json
 
@@ -278,7 +304,77 @@ To set System Time settings use the following API call as an example:
       }
   }
 
-To set a Remote Logging destination:
+
+To confirm the clock and NTP settings use the following API commands. First query NTP configuration:
+
+.. code-block:: bash
+
+  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/ntp
+
+.. code-block:: json
+
+
+  {
+      "openconfig-system:ntp": {
+          "config": {
+              "enabled": true
+          },
+          "state": {
+              "enabled": true
+          },
+          "servers": {
+              "server": [
+                  {
+                      "address": "time.f5net.com",
+                      "config": {
+                          "address": "time.f5net.com",
+                          "port": 123,
+                          "version": 4,
+                          "association-type": "SERVER",
+                          "iburst": false,
+                          "prefer": false
+                      },
+                      "state": {
+                          "address": "time.f5net.com",
+                          "port": 123,
+                          "version": 4,
+                          "association-type": "SERVER",
+                          "iburst": false,
+                          "prefer": false
+                      }
+                  }
+              ]
+          }
+      }
+  }
+
+Next query the clock configuration:
+
+.. code-block:: bash
+
+  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/clock
+
+Below is the output showing the date/time and timezone:
+
+
+.. code-block:: json
+
+  {
+      "openconfig-system:clock": {
+          "config": {
+              "timezone-name": "America/New_York"
+          },
+          "state": {
+              "timezone-name": "America/New_York",
+              "f5-system-clock:appliance": {
+                  "date-time": "2022-01-12 14:32:49 America/New_York"
+              }
+          }
+      }
+  }
+
+
+Next a remote logging detination will be setup for the F5OS logging. To set a Remote Logging destination:
 
 .. code-block:: bash
 
@@ -315,6 +411,459 @@ To set a Remote Logging destination:
           }
       }
   }
+
+To query the remote logging:
+
+.. code-block:: bash
+
+  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
+
+.. code-block:: json
+
+{
+    "openconfig-system:logging": {
+        "remote-servers": {
+            "remote-server": [
+                {
+                    "host": "10.255.0.142",
+                    "config": {
+                        "host": "10.255.0.142",
+                        "remote-port": 514,
+                        "f5-openconfig-system-logging:proto": "udp"
+                    },
+                    "selectors": {
+                        "selector": [
+                            {
+                                "facility": "f5-system-logging-types:LOCAL0",
+                                "severity": "WARNING",
+                                "config": {
+                                    "facility": "f5-system-logging-types:LOCAL0",
+                                    "severity": "WARNING"
+                                }
+                            }
+                        ]
+                    }
+                }
+            ]
+        },
+        "f5-openconfig-system-logging:sw-components": {
+            "sw-component": [
+                {
+                    "name": "alert-service",
+                    "config": {
+                        "name": "alert-service",
+                        "description": "Alert service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "api-svc-gateway",
+                    "config": {
+                        "name": "api-svc-gateway",
+                        "description": "API service gateway",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "appliance-orchestration-agent",
+                    "config": {
+                        "name": "appliance-orchestration-agent",
+                        "description": "Tenant orchestration agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "appliance-orchestration-manager",
+                    "config": {
+                        "name": "appliance-orchestration-manager",
+                        "description": "Appliance orchestration manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "authd",
+                    "config": {
+                        "name": "authd",
+                        "description": "Authentication configuration",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "confd-key-migrationd",
+                    "config": {
+                        "name": "confd-key-migrationd",
+                        "description": "Confd Primary Key Migration Service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "dagd-service",
+                    "config": {
+                        "name": "dagd-service",
+                        "description": "DAG daemon",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "datapath-cp-proxy",
+                    "config": {
+                        "name": "datapath-cp-proxy",
+                        "description": "Data path CP proxy",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "diag-agent",
+                    "config": {
+                        "name": "diag-agent",
+                        "description": "Diag agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "disk-usage-statd",
+                    "config": {
+                        "name": "disk-usage-statd",
+                        "description": "Disk usage agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "dma-agent",
+                    "config": {
+                        "name": "dma-agent",
+                        "description": "DMA agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "fips-service",
+                    "config": {
+                        "name": "fips-service",
+                        "description": "FIPS Service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "fpgamgr",
+                    "config": {
+                        "name": "fpgamgr",
+                        "description": "FPGA manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "ihealth-upload-service",
+                    "config": {
+                        "name": "ihealth-upload-service",
+                        "description": "Upload diagnostics data service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "ihealthd",
+                    "config": {
+                        "name": "ihealthd",
+                        "description": "Communication proxy for ihealth-upload-service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "image-agent",
+                    "config": {
+                        "name": "image-agent",
+                        "description": "Tenant image handling",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "kubehelper",
+                    "config": {
+                        "name": "kubehelper",
+                        "description": "Application that will handle specific tasks for deploying tenants",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "l2-agent",
+                    "config": {
+                        "name": "l2-agent",
+                        "description": "L2 agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "lacpd",
+                    "config": {
+                        "name": "lacpd",
+                        "description": "Link aggregation control protocol",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "license-service",
+                    "config": {
+                        "name": "license-service",
+                        "description": "License service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "line-dma-agent",
+                    "config": {
+                        "name": "line-dma-agent",
+                        "description": "Line DMA agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "lldpd",
+                    "config": {
+                        "name": "lldpd",
+                        "description": "Link layer discovery protocol",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "lopd",
+                    "config": {
+                        "name": "lopd",
+                        "description": "Communication proxy for the Lights Out Processor",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "network-manager",
+                    "config": {
+                        "name": "network-manager",
+                        "description": "Network manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "nic-manager",
+                    "config": {
+                        "name": "nic-manager",
+                        "description": "NIC manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "optics-mgr",
+                    "config": {
+                        "name": "optics-mgr",
+                        "description": "Optics tunning manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "platform-diag",
+                    "config": {
+                        "name": "platform-diag",
+                        "description": "Platform diag service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "platform-fwu",
+                    "config": {
+                        "name": "platform-fwu",
+                        "description": "Platform firmware upgrade",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "platform-hal",
+                    "config": {
+                        "name": "platform-hal",
+                        "description": "Platform hardware abstraction layer",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "platform-mgr",
+                    "config": {
+                        "name": "platform-mgr",
+                        "description": "Appliance platform manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "platform-monitor",
+                    "config": {
+                        "name": "platform-monitor",
+                        "description": "Platform monitor",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "platform-stats-bridge",
+                    "config": {
+                        "name": "platform-stats-bridge",
+                        "description": "Platform stats bridge",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "qkviewd",
+                    "config": {
+                        "name": "qkviewd",
+                        "description": "Diagnostic information",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "rsyslog-configd",
+                    "config": {
+                        "name": "rsyslog-configd",
+                        "description": "Logging configuration",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "snmp-trapd",
+                    "config": {
+                        "name": "snmp-trapd",
+                        "description": "SNMP trap",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "stpd",
+                    "config": {
+                        "name": "stpd",
+                        "description": "Spanning tree protocol (STP)",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "sw-rbcast",
+                    "config": {
+                        "name": "sw-rbcast",
+                        "description": "Software Rebroadcast Service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "sys-host-config",
+                    "config": {
+                        "name": "sys-host-config",
+                        "description": "System host config service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "system-control",
+                    "config": {
+                        "name": "system-control",
+                        "description": "Appliance System control framework",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "tcpdumpd-manager",
+                    "config": {
+                        "name": "tcpdumpd-manager",
+                        "description": "Tcpdump daemon",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "tmstat-agent",
+                    "config": {
+                        "name": "tmstat-agent",
+                        "description": "Appliance stats agent",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "tmstat-merged",
+                    "config": {
+                        "name": "tmstat-merged",
+                        "description": "Stats rollup",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "upgrade-service",
+                    "config": {
+                        "name": "upgrade-service",
+                        "description": "Software upgrade service",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "user-manager",
+                    "config": {
+                        "name": "user-manager",
+                        "description": "User manager",
+                        "severity": "INFORMATIONAL"
+                    }
+                },
+                {
+                    "name": "vconsole",
+                    "config": {
+                        "name": "vconsole",
+                        "description": "Tenant virtual console",
+                        "severity": "INFORMATIONAL"
+                    }
+                }
+            ]
+        },
+        "f5-openconfig-system-logging:host-logs": {
+            "config": {
+                "remote-forwarding": {
+                    "enabled": false
+                }
+            }
+        }
+    }
+}
+
+If you would like to change the severity of any of the logging below is an example. the API call below will change the software subsystem logging for l2-agant to **DEBUG**.
+
+.. code-block:: bash
+
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
+
+Below is the configuration in the body of the API call above to set the DEBUG loggin level:
+
+.. code-block:: json
+
+  {
+      "openconfig-system:logging": {
+          "f5-openconfig-system-logging:sw-components": {
+              "sw-component": {
+                  "name": "l2-agent",
+                  "config": {
+                      "name": "l2-agent",
+                      "description": "L2 agent",
+                      "severity": "DEBUG"
+                  }
+              }
+          }
+      }
+  }
+
+When done examining the logs, you can run the same API call but eh body will be modified to set the logging level back to **INFORMATIONAL**.
+
+.. code-block:: json
+
+  {
+      "openconfig-system:logging": {
+          "f5-openconfig-system-logging:sw-components": {
+              "sw-component": {
+                  "name": "l2-agent",
+                  "config": {
+                      "name": "l2-agent",
+                      "description": "L2 agent",
+                      "severity": "INFORMATIONAL"
+                  }
+              }
+          }
+      }
+  }
+
 
 -------------------------------
 Licensing the rSeries Appliance
