@@ -418,6 +418,8 @@ To query the remote logging:
 
   GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
 
+The output will show the logging level of all the software subsystems.
+
 .. code-block:: json
 
   {
