@@ -167,10 +167,11 @@ Once the IP address has been defined system settings such as DNS servers, NTP, a
 
   Boston-r10900-1# config
   Entering configuration mode terminal
-  Boston-r10900-1(config)# system dns servers server 192.168.19.1 config address 192.168.10.1
+  Boston-r10900-1(config)# system dns servers server 192.168.10.1 config address 192.168.10.1
   Boston-r10900-1(config-server-192.168.19.1)# exit
+  Boston-r10900-1(config)# system dns config search olympus.f5net.com
   Boston-r10900-1(config)# system ntp config enabled 
-  Boston-r10900-1(config)# system ntp servers server time.f5net.com config address time.f5net.com
+  Boston-r10900-1(config)# system ntp servers server time.olympus.f5net.com
   Boston-r10900-1(config-server-time.f5net.com)# exit
   Boston-r10900-1(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
   Boston-r10900-1(config-remote-server-10.255.0.142)# exit
@@ -178,19 +179,19 @@ Once the IP address has been defined system settings such as DNS servers, NTP, a
 
 **From the GUI:**
 
-You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **Network Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, or to reach iHealth for qkview uploads.
+You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, licensing, or to reach iHealth for qkview uploads.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
   :scale: 70%
 
-  Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is sync’d and accurate. In addition to configure NTP time sources, you can set the local timezone for this chassis location.
+Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is sync’d and accurate. In addition to configure NTP time sources, you can set the local timezone for this chassis location.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
   :scale: 70%
 
-  It’s also a good idea to have the rSeries appliance send logs to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+It’s also a good idea to have the rSeries appliance send logs to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure logging subsystem level individually. The remote logging severity level will override and component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
