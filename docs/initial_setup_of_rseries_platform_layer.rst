@@ -871,17 +871,17 @@ When done examining the logs, you can run the same API call but the body will be
 Licensing the rSeries Appliance
 -------------------------------
 
-Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for MAX SSL/Compression or for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP and in some cases for MAX SSL/Compression. For rSeries these are included in the base license at no extra cost. rSeries does not run vCMP, and instead runs tenancy.
+Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for MAX SSL/Compression or for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP and in some cases for MAX SSL/Compression. For rSeries these are included in the base license at no extra cost, however there are different levels of perfromance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
 
 Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. Licensing is accessible under the **System Settings > Licensing** page. **Automatic** will require proper routing and DNS connectivity to the Internet to reach F5’s licensing server. If this is not possible to reach the licensing server use the **Manual** method.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
+  :width: 45%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image7.png
   :width: 45%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image8.png
-  :width: 45%
-
-You can activate and display the current license in the GUI, CLI or API. To license the VELOS chassis automatically from the CLI:
+You can activate and display the current license in the GUI, CLI or API. To license the rSeries appliance automatically from the CLI:
 
 .. code-block:: bash
 
@@ -897,7 +897,7 @@ To license the VELOS chassis manually you’ll need to get the dossier first:
 
 You can then access F5’s licensing server (license.f5.com) and paste in the dossier when prompted:
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image9.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image8.png
   :align: center
   :scale: 70%
 
