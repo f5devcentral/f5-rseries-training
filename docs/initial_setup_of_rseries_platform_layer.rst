@@ -143,11 +143,13 @@ In order to make these changes active you must commit the changes. No configurat
 
   Boston-r10900-1(config)# commit
 
-Now that the out-of-band address and routing are configured you can attempt to access the F5OS GUI via the IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. Here you can switch from static to DHCP address assignment, configured IPv6 addresses, and interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. 
+Now that the out-of-band address and routing are configured you can attempt to access the F5OS GUI via the IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
   :scale: 70%
+
+Here you can switch from static to DHCP address assignment, configured IPv6 addresses, and interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
