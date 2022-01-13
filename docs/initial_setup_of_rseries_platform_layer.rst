@@ -885,14 +885,15 @@ You can activate and display the current license in the GUI, CLI or API. To lice
 
 .. code-block:: bash
 
-  syscon-1-active(config)# system licensing install registration-key I1234-12345-12345-12345-1234567
+  Boston-r10900-1(config)# system licensing install registration-key 12345-67891-12345-12345-8207880
   result License installed successfully.
+  Boston-r10900-1(config)# 
 
-To license the VELOS chassis manually you’ll need to get the dossier first:
+To license the rSeries appliance manually you’ll need to get the dossier first:
 
 .. code-block:: bash
 
-  syscon-2-active(config)# system licensing get-dossier
+  Boston-r10900-1(config)# system licensing get-dossier
   b9a9936886bada077d93843a281ce4c34bf78db0d6c32c40adea3a5329db15edd413fe7d7f8143fd128ebe2d97642b4ed9192b530788fe3965593e3b42131c66220401b16843476159414ceeba8af5fb67a39fe2a2f408b9…
 
 You can then access F5’s licensing server (license.f5.com) and paste in the dossier when prompted:
