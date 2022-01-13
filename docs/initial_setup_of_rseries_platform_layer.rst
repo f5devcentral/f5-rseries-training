@@ -878,8 +878,8 @@ Licensing for the rSeries device is handled at the F5OS level. This is similar t
 
 Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
-Licensing the rSeries Appliance vi GUI
-======================================
+Licensing via GUI
+=================
 
 
 Licensing is accessible under the **System Settings > Licensing** page. **Automatic** will require proper routing and DNS connectivity to the Internet to reach F5’s licensing server. If this is not possible to reach the licensing server use the **Manual** method.
@@ -891,8 +891,8 @@ Licensing is accessible under the **System Settings > Licensing** page. **Automa
   :width: 45%
 
 
-Licensing the rSeries Appliance vi CLI
-======================================
+Licensing via CLI
+=================
 
 You can activate and display the current license in the GUI, CLI or API. To license the rSeries appliance automatically from the CLI:
 
@@ -1018,8 +1018,8 @@ The CLI command **show system licensing** will display the appliance level licen
 
 https://support.f5.com/csp/article/K70113407
 
-Licensing the rSeries Appliance vi API
-======================================
+Licensing via API
+=================
 
 To get the current licensing status via API use the following API call. Issue a **GET** to the out-of-band management IP address of the F5OS layer:
 
