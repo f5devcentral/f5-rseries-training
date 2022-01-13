@@ -161,7 +161,8 @@ System Settings
 
 Once the IP address has been defined system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, GUI, or API.
 
-**From the CLI:**
+System Settings via the CLI
+===========================
 
 .. code-block:: bash
 
@@ -177,7 +178,8 @@ Once the IP address has been defined system settings such as DNS servers, NTP, a
   Boston-r10900-1(config-remote-server-10.255.0.142)# exit
   Boston-r10900-1(config)# commit
 
-**From the GUI:**
+System Settings via the GUI
+===========================
 
 You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, licensing, or to reach iHealth for qkview uploads.
 
@@ -197,7 +199,8 @@ It’s also a good idea to have the rSeries appliance send logs for the F5OS pla
   :align: center
   :scale: 70%
 
-**From the API:**
+System Settings via the API
+===========================
 
 If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for appliance use the following API call:
 
@@ -873,13 +876,23 @@ Licensing the rSeries Appliance
 
 Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for MAX SSL/Compression or for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP and in some cases for MAX SSL/Compression. For rSeries these are included in the base license at no extra cost, however there are different levels of perfromance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
 
-Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. Licensing is accessible under the **System Settings > Licensing** page. **Automatic** will require proper routing and DNS connectivity to the Internet to reach F5’s licensing server. If this is not possible to reach the licensing server use the **Manual** method.
+Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
+
+Licensing the rSeries Appliance vi GUI
+======================================
+
+
+Licensing is accessible under the **System Settings > Licensing** page. **Automatic** will require proper routing and DNS connectivity to the Internet to reach F5’s licensing server. If this is not possible to reach the licensing server use the **Manual** method.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image6.png
   :width: 45%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image7.png
   :width: 45%
+
+
+Licensing the rSeries Appliance vi CLI
+======================================
 
 You can activate and display the current license in the GUI, CLI or API. To license the rSeries appliance automatically from the CLI:
 
@@ -1004,6 +1017,9 @@ The CLI command **show system licensing** will display the appliance level licen
 **Note: rSeries supports AWAF vs. ASM licensing, and modules like AAM are not supported on the rSeries platform since it has reached End-of-Life.**
 
 https://support.f5.com/csp/article/K70113407
+
+Licensing the rSeries Appliance vi API
+======================================
 
 To get the current licensing status via API use the following API call. Issue a **GET** to the out-of-band management IP address of the F5OS layer:
 
