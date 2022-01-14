@@ -1057,24 +1057,25 @@ Alarms and Events
 
 Alarms and Events can be viewed via the **System Settings > Alarms & Events** GUI page. You may optionally choose different severity levels to see more or less events. 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image26.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image12.png
   :align: center
   :scale: 70%
 
 You may also change timeframe to see historical events, and optional refresh the screen via the controls on the right-hand side of the page:
 
-.. image:: images/initial_setup_of_velos_system_controllers/image27.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image13.png
   :align: center
+  :scale: 70%
 
 
-Management interface
+Management Interface
 ====================
 
 Under **Network Settings** you can view/edit the IP address for the F5OS out-of-band management. If you would prefer to use DHCP for automatic assignment of these addresses, this may also be configured. 
 
 **NOTE: For the initial 1.1.x versions of F5OS ronly IPv4 IP addressing is supported for the F5OS platform layer. IPv4/IPv6 dual stack support has been added in the F5OS 1.2.x release. This limitation is only for the F5OS platform layer v1.1.x versions, BIG-IP tenants are capable of IPv4/v6 dual stack management.** 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image22.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image14.png
   :align: center
   :scale: 70%
 
@@ -1083,7 +1084,7 @@ Software Management
 
 System controllers also run a unique F5OS software version. Both system controllers will need to run the same SW version. You can upload new F5 OS controller images via the **Software Management > Controller Images** GUI screen.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image25.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image15.png
   :align: center
   :scale: 70%
 
@@ -1092,7 +1093,7 @@ DNS
 
 External **DNS Lookup Servers** and **Search Domains** can be configured. This will be required for things like automatic license activation, NTP server domain resolution, and iHealth integration and it is recommended to be configured. 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image23.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
   :scale: 70%
 
@@ -1102,24 +1103,24 @@ Log Settings
 
 Under **System Settings > Log Settings** you may add remote log servers for the F5OS system controllers. You can also specify the **Software Component Log Levels** which may be useful when troubleshooting specific issues.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image30.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image17.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 File Utilities
 ==============
 
 The **System Settings > File Utilities** page allows for importing or exporting specific types of files to and from the system controllers. Logs from the various log directories log can be exported, cores and qkviews can be imported/exported from diags/shared and system controller and chassis partition SW images can be imported into import/staging.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image31.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image18.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 The Import/Export utility requires an external HTTPS server to copy to/from. A pop-up will be displayed asking for remote HTTPS server information. The utility does not currently support downloading directly through a browser to your desktop. Download directly to a browser is planned for a future release.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image32.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image19.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 
 Time Settings
@@ -1127,18 +1128,18 @@ Time Settings
 
 Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that the system controller time sources are sync’d to a reliable time source. The Time Zone may also be set.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image33.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 Certificate Management
 ======================
 
 Device certificates and keys can be uploaded via the **Systems Settings > Device Certificates** page.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image34.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 
 System Reports
@@ -1146,25 +1147,25 @@ System Reports
 
 The **System Settings > System Reports** page allows an admin to generate QKViews and optionally upload them to iHealth. 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image35.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 To generate a QKView click on the button in the upper right-hand corner. It will take some time for the QKview to be generated.  
 
-.. image:: images/initial_setup_of_velos_system_controllers/image36.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image37.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 Once the QKView is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if entered them previously and be cleared if you want to use another account, you can optionally add an **F5 Support Case Number** and **Description**.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image38.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 If you would like to store iHealth credentials within the configuration you may do so via the system controller CLI. Enter config mode, and then use the system diagnostics ihealth config command to configure a username and password.
 
@@ -1184,13 +1185,13 @@ Configuration Backup
 
 You may backup the confd configuration databases for the system controller via the GUI. The backups can then be copied off-box using the file utilities GUI option. Currently the GUI does not support the restoration of confd backups, this must be done via the CLI or API. 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image39.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image40.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 Licensing
 =========
@@ -1199,18 +1200,18 @@ Licensing for the VELOS system is handled at the chassis level. This is similar 
 
 Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image41.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 General
 =======
 
 The **System Settings > General** page allows you to configure Appliance mode for the system controllers. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI when Appliance mode is enabled. The page also displays the Systems Operation and Status which includes the Base OS and Service Versions currently running on the system controllers as well as the chassis partitions.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image43.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 ---------------
 User Management
@@ -1223,45 +1224,45 @@ Each layer of F5OS has its own user and authentication management. This allows f
 
 **Note: VELOS tenants running TMOS support Active Directory and TACACS for remote auth. The limitation is only for the F5OS v1.1.x platform layer.**
 
-.. image:: images/initial_setup_of_velos_system_controllers/image44.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image45.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 Server Groups
 =============
 
 You may define Server Groups which are collections of remote auth servers that the VELOS platform layer will use to authenticate against. Currently LDAP and RADIUS are supported. For LDAP you may choose to authenticate of TCP or SSL. You can configure the remote host’s IP address and port. 
 
-.. image:: images/initial_setup_of_velos_system_controllers/image46.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image47.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image48.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 Users
 =====
 
 Local Users may be defined, passwords set or changed, and then assigned to specific roles (Admin or Operator). An account may also be locked, and that may be changed here.
 
-.. image:: images/initial_setup_of_velos_system_controllers/image49.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image50.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
-.. image:: images/initial_setup_of_velos_system_controllers/image51.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
