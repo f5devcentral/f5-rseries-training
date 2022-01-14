@@ -64,7 +64,7 @@ rSeries utilizes an opensource Kubernetes distribution called K3S. This is large
 
 A combination of Docker Compose and Kubernetes is used within the F5OS layer. Docker Compose is used to bring up the software stacks as they need to be fully functional early in the startup process. Then Kubernetes takes over and is responsible for deploying workloads to the proper CPU's. 
 
-.. image:: images/rseries_introduction/image7.png
+.. image:: images/rseries_introduction/imagex.png
   :align: center
   :scale: 40%
 
