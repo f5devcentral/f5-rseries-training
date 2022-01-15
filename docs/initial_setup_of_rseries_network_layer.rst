@@ -38,9 +38,9 @@ F5OS Networking Configuration
 
 Before configuring any tenant, you’ll need to setup networking for the F5OS platform layer. All in-band networking is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant.
 
---------------------------------
+
 Network Settings - > Port Groups
---------------------------------
+================================
 
 Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (1.0 & 2.0 on both the r5000/r10000 series) and (11.0 & 12.0 on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (3.0 - 10.0 on both the r5000/r10000 series) and (13.0 - 20.0 on the r10000 series) can be configured independently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
