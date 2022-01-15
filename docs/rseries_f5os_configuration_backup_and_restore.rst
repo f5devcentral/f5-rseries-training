@@ -3,8 +3,8 @@ rSeries Configuration Backup and Restore
 ========================================
 
 
-F5OS Configuration Backup and Restore
-=====================================
+F5OS Configuration Backup
+=========================
 
 To completely backup the rSeries system, you’ll need to backup each tenant TMOS configuration first, and then back up the F5OS configuration. Tenant backup utilizes the same backup and recovery procedures as existing BIG-IP devices/guests because the tenants themselves are running TMOS. For the F5OS layer a different backup mechanism is utilized because F5OS configuration management is based on ConfD.  
 
@@ -91,13 +91,13 @@ In the body of the API call you can specifiy the file name you want to save the 
 
 **Note: In the current F5OS releases the confd system database can be backed up via CLI/GUI/API but it cannot be restored using the F5OS GUI. This will be added in a subsequent release.**
 
-Copying the F5OS Database Backup External Location
-==================================================
+Exporting F5OS Backup to an External Location
+=============================================
 
 Once the database backup has been completed, you should copy the file to an external location so that the system can be restored in the case of a total failure. You can download the database configuration backup using the CLI, GUI, or API. 
 
-Copying the F5OS Database Backup External Location via GUI
-----------------------------------------------------------
+Exporting F5OS Backup via GUI
+------------------------------
 
 In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can import or export configuration files. Note that the current transfer of files to and from the GUI requires an external HTTPS server. 
 
@@ -111,8 +111,8 @@ In the GUI use the **System Settings -> File Utilities** page and from the dropd
 
 **Note: In the current release exporting and importing the system database requires an external HTTPS server. Future releases will add more options for import/export that don’t rely on an external HTTPS server.**
 
-Copying the F5OS Database Backup External Location via CLI
-----------------------------------------------------------
+Exporting F5OS Backup via CLI
+------------------------------
 
 To transfer a file using the CLI use the **file list** command to see the contents of the **configs** directory. Note the previously saved file is listed.
 
@@ -164,8 +164,8 @@ If you don’t have an external HTTPS server that allows uploads, then you can l
     controller-backup-08-17-21                                                       100%   77KB  28.8MB/s   00:00    
     [root@controller-2 ~]# 
 
-Copying the F5OS Database Backup External Location via API
-----------------------------------------------------------
+Exporting F5OS Backup via API
+------------------------------
 
 To copy a confd configuration backup file from the system controller to a remote https server use the following API call:
 
