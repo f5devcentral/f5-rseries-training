@@ -13,7 +13,7 @@ rSeries allows different packaging options for tenant images. It will be up to a
   :align: center
   :scale: 70% 
 
-Ensure you choose the option that is labeled specifically for rSeries. i.e. **15.1.5_Tenant_F5OS**:
+Ensure you choose the option that is labeled specifically for rSeries. i.e. **15.1.5_Tenant-F5OS**:
 
 .. image:: images/rseries_deploying_a_tenant/image2.png
   :align: center
