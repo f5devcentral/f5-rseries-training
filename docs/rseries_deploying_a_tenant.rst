@@ -436,31 +436,31 @@ Below is the body/payload for the API call above:
 
 .. code-block:: json
 
-{
-    "tenant": [
-        {
-            "name": "{{New_Tenant1_Name}}",
-            "config": {
-                "image": "{{Appliance_Tenant_Image}}",
-                "nodes": [
-                    1
-                ],
-                "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
-                "gateway": "{{OutofBand_DFGW}}",
-                "prefix-length": 24,
-                "vlans": [
-                    {{Internal_VLAN}},
-                    {{External_VLAN}},
-                    {{HA_VLAN}}
-                ],
-                "vcpu-cores-per-node": 2,
-                "memory": 7680,
-                "cryptos": "enabled",
-                "running-state": "configured"
+    {
+        "tenant": [
+            {
+                "name": "{{New_Tenant1_Name}}",
+                "config": {
+                    "image": "{{Appliance_Tenant_Image}}",
+                    "nodes": [
+                        1
+                    ],
+                    "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
+                    "gateway": "{{OutofBand_DFGW}}",
+                    "prefix-length": 24,
+                    "vlans": [
+                        {{Internal_VLAN}},
+                        {{External_VLAN}},
+                        {{HA_VLAN}}
+                    ],
+                    "vcpu-cores-per-node": 2,
+                    "memory": 7680,
+                    "cryptos": "enabled",
+                    "running-state": "configured"
+                }
             }
-        }
-    ]
-}
+        ]
+    }
 
 
 Validating Tenant Status via API
