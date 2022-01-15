@@ -2402,22 +2402,22 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
 Network Settings -> VLANs
 =========================
 
-All in-band networking including VLANs are configured in the VELOS chassis partition layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by VELOS tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the chassis partition layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAG’s and VLANs. 
+All in-band networking including VLANs are configured in the F5OS layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by rSeries tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the F5OS layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAG’s and VLANs. 
 
-VELOS supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, GUI, or API.
+rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, GUI, or API.
 
-**Note: 802.1Q-in-Q (double VLAN tagging) is not currently supported on the VELOS platform.**
+**Note: 802.1Q-in-Q (double VLAN tagging) is not currently supported on the rSeries platform.**
 
 Configuring VLANs from the GUI
 ------------------------------
 
-VLANs can be created in the chassis partition GUI under **Network Settings > VLANs**. VLANs are not shared across chassis partitions, and each partition must configure its own set of VLANs. When adding a new VLAN you will define a Name and a VLAN ID. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a Native VLAN or tagged by adding it as a Trunked VLAN.
+VLANs can be created in the F5OS GUI under **Network Settings > VLANs**. When adding a new VLAN you will define a **Name** and a **VLAN ID**. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a **Native VLAN** or tagged by adding it as a **Trunked VLAN**.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image60.png
+.. image:: images/initial_setup_of_rseries_network_layer/image12.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image61.png
+.. image:: images/initial_setup_of_rseries_network_layer/image13.png
   :align: center
   :scale: 70%
 
@@ -2425,47 +2425,47 @@ VLANs can be created in the chassis partition GUI under **Network Settings > VLA
 Configuring VLANs from the CLI
 ------------------------------
 
-VLANs can be configured within the chassis partition CLI. Once VLANs are created they can either be assigned to a physical interfaces or LAGs within the chassis partition. VLANs must be given a name and a VLAN ID. You can choose if a VLAN is tagged or untagged within the physical interface or LAG configuration.
+VLANs can be configured within the F5OS CLI. Once VLANs are created they can either be assigned to a physical interfaces or LAGs within the appliance. VLANs must be given a name and a VLAN ID. You can choose if a VLAN is tagged or untagged within the physical interface or LAG configuration.
 
 To show the current configured VLANs and their options use the command **show running-config vlans**.
 
 .. code-block:: bash
 
-  bigpartition-1# show running-config vlans
-  vlans vlan 500
-  config name HA-VLAN
-  !
-  vlans vlan 501
-  config name HA-VLAN-Tenant1
-  !
-  vlans vlan 502
-  config name HA-VLAN-Tenant2
-  !
-  vlans vlan 503
-  config name HA-VLAN-Tenant3
-  !
-  vlans vlan 3010
-  config name Internal-VLAN
-  !
-  vlans vlan 3011
-  config name External-VLAN
-  !
+    appliance-1# show running-config vlans
+    vlans vlan 500
+    config vlan-id 500
+    config name Tenant1-HA-VLAN
+    !
+    vlans vlan 501
+    config vlan-id 501
+    config name HA-VLAN2
+    !
+    vlans vlan 3010
+    config vlan-id 3010
+    config name Internal-VLAN
+    !
+    vlans vlan 3011
+    config vlan-id 3011
+    config name External-VLAN
+    !
+    appliance-1# 
 
 
 You can also see configured state of VLANs by running the **show vlans** command:
 
 .. code-block:: bash
 
-  bigpartition-1# show vlans
-  VLAN                   
-  ID    INTERFACE        
-  -----------------------
-  500   HA-Interconnect  
-  501   HA-Interconnect  
-  502   HA-Interconnect  
-  503   HA-Interconnect  
-  3010  Arista           
-  3011  Arista  
+    appliance-1# show vlans
+    VLAN                   
+    ID    INTERFACE        
+    -----------------------
+    500   6.0              
+        HA-Interconnect  
+    501                    
+    3010  Arista           
+    3011  Arista           
+
+    appliance-1# 
 
 There are a few other VLAN related commands to show the configuration and running state of **vlan-listeners**. **show running-config vlan-listeners** will show the current configuration. A VLAN listener is created for each VLAN and is responsible for rebroadcasting traffic within the VLAN.
 
@@ -2473,50 +2473,47 @@ There are a few other VLAN related commands to show the configuration and runnin
 
 .. code-block:: bash
 
-  bigpartition-2# show running-config vlan-listeners 
-  vlan-listeners vlan-listener Arista 444
-  config entry-type RBCAST-LISTENER
-  config owner rbcast
-  config ifh-fields ndi-id 4095
-  config ifh-fields svc 5
-  config ifh-fields vtc 32
-  config ifh-fields sep 15
-  config ifh-fields mirroring disabled
-  config service-ids [ 8 10 ]
-  !
-  vlan-listeners vlan-listener Arista 555
-  config entry-type RBCAST-LISTENER
-  config owner rbcast
-  config ifh-fields ndi-id 4095
-  config ifh-fields svc 5
-  config ifh-fields vtc 32
-  config ifh-fields sep 15
-  config ifh-fields mirroring disabled
-  config service-ids [ 8 10 ]
-  !
-  vlan-listeners vlan-listener ha 500
-  config entry-type RBCAST-LISTENER
-  config owner rbcast
-  config ifh-fields ndi-id 4095
-  config ifh-fields svc 5
-  config ifh-fields vtc 32
-  config ifh-fields sep 15
-  config ifh-fields mirroring disabled
-  config service-ids [ 8 10 ]
-  !
+    Boston-r10900-1# show running-config vlan-listeners 
+    vlan-listeners vlan-listener Arista 3010
+    config entry-type VLAN-LISTENER
+    config owner tenant1
+    config ifh-fields ndi-id 4095
+    config ifh-fields svc 8
+    config ifh-fields sep 15
+    config ifh-fields mirroring disabled
+    !
+    vlan-listeners vlan-listener Arista 3011
+    config entry-type VLAN-LISTENER
+    config owner tenant1
+    config ifh-fields ndi-id 4095
+    config ifh-fields svc 8
+    config ifh-fields sep 15
+    config ifh-fields mirroring disabled
+    !
+    vlan-listeners vlan-listener HA-Interconnect 500
+    config entry-type VLAN-LISTENER
+    config owner tenant1
+    config ifh-fields ndi-id 4095
+    config ifh-fields svc 8
+    config ifh-fields sep 15
+    config ifh-fields mirroring disabled
+    !
+    Boston-r10900-1# 
+
 
 The **show vlan-listeners** command will show the current state:
 
 .. code-block:: bash
 
-  bigpartition-1# show vlan-listeners 
-                                                  NDI                                             SERVICE  
-  INTERFACE        VLAN  ENTRY TYPE       OWNER    ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  IDS      
-  ----------------------------------------------------------------------------------------------------------
-  Arista           444   RBCAST-LISTENER  rbcast   4095  5    32   15   -    -    -     disabled   [ 8 9 ]  
-  Arista           555   RBCAST-LISTENER  rbcast   4095  5    32   15   -    -    -     disabled   [ 8 9 ]  
-  HA-Interconnect  500   VLAN-LISTENER    tenant2  4095  9    -    15   -    -    -     disabled   -        
-  HA-Interconnect  501   VLAN-LISTENER    tenant1  4095  8    -    15   -    -    -     disabled   -     
+    Boston-r10900-1# show vlan-listeners 
+                                                NDI                                             SERVICE  
+    INTERFACE        VLAN  ENTRY TYPE     OWNER    ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  IDS      
+    --------------------------------------------------------------------------------------------------------
+    Arista           3010  VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+    Arista           3011  VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+    HA-Interconnect  500   VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+
+    Boston-r10900-1# 
 
 Configuring VLANs from the API
 ------------------------------
@@ -2525,7 +2522,7 @@ To configure VLANs use the following API command and JSON body. This will config
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -2632,9 +2629,9 @@ Configuring LAGs from the GUI
 
 Link Aggregation Groups (LAGs) can be configured in the chassis partition GUI via the **Network Settings > LAGs** page:
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image62.png
+.. image:: images/initial_setup_of_rseries_network_layer/image14.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term Trunks is used in place of LAG which is used in VELOS: 
 
@@ -2649,9 +2646,9 @@ https://support.f5.com/csp/article/K33431212
 
 Once you have configured the LAG Type and LACP options, you can add any physical interfaces within this chassis partition to be part of a LAG. Note you cannot add physical interfaces that reside in other chassis partitions as they are completely isolated from each other. Finally, you can configure the **Native VLAN** (for untagged VLAN), and what **Trunked VLANs** (tagged) you’d like to add to this LAG interface.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image63.png
+.. image:: images/initial_setup_of_rseries_network_layer/image15.png
   :align: center
-  :scale: 70% 
+  :scale: 70%
 
 Configuring LAGs from the CLI
 -----------------------------
