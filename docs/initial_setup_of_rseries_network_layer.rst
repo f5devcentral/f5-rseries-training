@@ -2,19 +2,30 @@
 Initial Setup of the rSeries Network Layer
 ==========================================
 
-Chassis partitions are completely separate management entities that are managed outside of the system controllers but are still considered part of the F5OS platform layer. If you have properly setup a chassis partition and assigned an out-of-band management IP address, you will be able to access it via its own CLI, GUI, and API. The chassis partitions only have a single out-of-band IP address and the system is resilient in that the single IP address should be reachable as long as one blade in the partition is active. There is no way to access the chassis partition via in-band networks, as the chassis partition does not have an option for in-band interfaces. 
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image52.png
+
+-----------------
+rSeries Dashboard
+-----------------
+
+The rSeries Dashboard will provide a visual system summary of the appliance including **System Summary**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPU’s available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. 
+
+.. image:: images/initial_setup_of_rseries_network_layer/image1.png
   :align: center
   :scale: 70% 
 
----------------------------
-Chassis Partition Dashboard
----------------------------
+.. image:: images/initial_setup_of_rseries_network_layer/image2.png
+  :align: center
+  :scale: 70% 
 
-The chassis partition Dashboard will provide a visual system summary of the partition and which slots are assigned to it. It will also list the total number of vCPU’s available for multitenancy and how many are currently in use. If there are any active-alarms they will be displayed on this page. There is also a tenant overview showing a quick summary of tenant status and basic parameters. Lastly there is a high availability status display.
+.. image:: images/initial_setup_of_rseries_network_layer/image3.png
+  :align: center
+  :scale: 70% 
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image53.png
+If there are any active-alarms they will be displayed on this tab:
+
+
+.. image:: images/initial_setup_of_rseries_network_layer/image4.png
   :align: center
   :scale: 70% 
 
@@ -30,12 +41,12 @@ Network Settings - > Port Groups
 
 Before configuring any interfaces, VLANs, or LAG’s you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical port. This controls whether the port is bundled or unbundled and the port speed. The term portgroup is used rather than simply Port because some front panel sockets may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly (this will require a reboot of the blade). The portgroup components are created by the system, based on the type of the blades installed. The user can modify the portgroup mode.
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image54.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image54.png
   :width: 45%
 
 
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image55.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image55.png
   :width: 45%
 
 
@@ -46,7 +57,7 @@ Configuring PortGroups from the GUI
 
 To configure Portgroups go to **Network Settings > Port Groups** in the chassis partition GUI. This should be configured before any Interface, VLAN, or LAG configuration as changing the portgroup mode will alter interface numbering on the blade. Note the warning at the top of the GUI page:
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image56.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image56.png
   :align: center
   :scale: 70% 
 
@@ -226,7 +237,7 @@ Network Settings -> Interfaces
 
 Interface numbering will vary depending on the current portgroup configuration. Interfaces will always be numbered by **<blade#>/<port#>**. The number of ports on a blade will change depending on if the portgroup is configured as bundled or unbundled. If the ports are bundled then ports will be **1/1.0** & **1/2.0** for slot 1, and **2/1.0** & **2/2.0** for slot 2 etc…. If ports are unbundled then the port numbering will be **1/1.1, 1/1.2, 1/1.3, & 1/1.4** for the first physical port and **1/2.1, 1/2.2, 1/2.3, & 1/2.4** for the second physical port. Even when multiple chassis partitions are used, the port numbering will stay consistent starting with the blade number. Below is an example of port numbering with all bundled interfaces.
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image57.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image57.png
   :align: center
   :scale: 70% 
 
@@ -235,13 +246,13 @@ Configuring Interfaces from the GUI
 
 Within the chassis partition GUI the physical ports of all blades within that partition will be visible by going to **Network Settings > Interfaces** page. If there are other chassis partitions in the VELOS system, then those ports will only be seen within their own chassis partition. In the example below this VELOS system has 3 blades installed, but only two are part of this chassis partition, so you will not see ports from the 3rd blade unless you connect directly to the other chassis partition.
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image58.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image58.png
   :align: center
   :scale: 70%  
 
 You can click on any interface to view its settings or edit them. You can currently change the interface State via the GUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image59.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image59.png
   :align: center
   :scale: 70% 
 
@@ -506,11 +517,11 @@ Configuring VLANs from the GUI
 
 VLANs can be created in the chassis partition GUI under **Network Settings > VLANs**. VLANs are not shared across chassis partitions, and each partition must configure its own set of VLANs. When adding a new VLAN you will define a Name and a VLAN ID. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a Native VLAN or tagged by adding it as a Trunked VLAN.
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image60.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image60.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image61.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image61.png
   :align: center
   :scale: 70%
 
@@ -725,7 +736,7 @@ Configuring LAGs from the GUI
 
 Link Aggregation Groups (LAGs) can be configured in the chassis partition GUI via the **Network Settings > LAGs** page:
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image62.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image62.png
   :align: center
   :scale: 70% 
 
@@ -742,7 +753,7 @@ https://support.f5.com/csp/article/K33431212
 
 Once you have configured the LAG Type and LACP options, you can add any physical interfaces within this chassis partition to be part of a LAG. Note you cannot add physical interfaces that reside in other chassis partitions as they are completely isolated from each other. Finally, you can configure the **Native VLAN** (for untagged VLAN), and what **Trunked VLANs** (tagged) you’d like to add to this LAG interface.
 
-.. image:: images/initial_setup_of_velos_chassis_partitions/image63.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image63.png
   :align: center
   :scale: 70% 
 
