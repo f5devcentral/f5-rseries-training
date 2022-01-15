@@ -99,7 +99,7 @@ Once the database backup has been completed, you should copy the file to an exte
 Exporting F5OS Backup via GUI
 ------------------------------
 
-In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to you client machine through the browser. Note that the current Import and Export options of files to and from the GUI requires an external HTTPS server. 
+In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the GUI requires an external HTTPS server. 
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
@@ -109,7 +109,6 @@ In the GUI use the **System Settings -> File Utilities** page and from the dropd
   :align: center
   :scale: 70%
 
-**Note: In the current release exporting and importing the system database requires an external HTTPS server. Future releases will add more options for import/export that don’t rely on an external HTTPS server.**
 
 Exporting F5OS Backup via CLI
 ------------------------------
@@ -118,51 +117,66 @@ To transfer a file using the CLI use the **file list** command to see the conten
 
 .. code-block:: bash
 
-    syscon-2-active# file list path configs/
+    appliance-1# file list path configs/
     entries {
         name 
-    CONTROLLER-API-DB-BACKUP2021-08-19
-    SYSTEM-CONTROLLER-DB-BACKUP2021-08-27
-    controller-backup-08-17-21
-    my-backup
+    rSeries-59002-backup-1-15-2022
     }
+    appliance-1# 
 
 
-To transfer the file from the CLI you can use the **file export** command. 
+To transfer the file from the CLI you can use the **file export** command. Below is an example of transferring to a remote HTTPS server:
 
 .. code-block:: bash
 
-    syscon-2-active# file export local-file configs/SYSTEM-CONTROLLER-DB-BACKUP2021-08-27 remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure 
+    appliance-1# file export local-file configs/rSeries-59002-backup-1-15-2022 remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
     Value for 'password' (<string>): ********
-    result File transfer is initiated.(configs/SYSTEM-CONTROLLER-DB-BACKUP2021-08-27)
-    syscon-2-active#
+    result File transfer is initiated.(configs/rSeries-59002-backup-1-15-2022)
+    appliance-1# 
 
 To check on status of the export use the **file transfer-status** command:
 
 .. code-block:: bash
 
-    syscon-1-active# file transfer-status                                                                                                                                   
+    appliance-1# file transfer-status 
     result 
-    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            
-    1    |Export file|HTTPS   |configs/SYSTEM-CONTROLLER-DB-BACKUP2021-08-27                |10.255.0.142        |/upload/upload.php                                          |Completed|Fri Aug 27 19:48:41 2021
-    2    |Export file|HTTPS   |/mnt/var/confd/configs/chassis1-sys-controller-backup-2-26-21|10.255.0.142        |chassis1-sys-controller-backup-2-26-21                      |Failed to open/read local data from file/application
-    3    |Export file|HTTPS   |/mnt/var/confd/configs/chassis1-sys-controller-backup-2-26-21|10.255.0.142        |/backup                                                     |Failed to open/read local data from file/application
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 15 20:45:29 2022
 
-If you don’t have an external HTTPS server that allows uploads, then you can log into the system controllers floating IP address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and GUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/confd/configs** directory.
+    appliance-1# 
+
+You may also transfer from the CLI using SCP or SFTP protocols. Below is an example using SCP:
+
+    appliance-1# file export local-file configs/rSeries-59002-backup-1-15-2022 remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(configs/rSeries-59002-backup-1-15-2022)
+    appliance-1#
+
+The **file transfer-status** command will show the upload of th SCP as well as HTTPS or SFTP:
+
+    appliance-1# file transfer-status
+    result 
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 15 20:45:29 2022
+    2    |Export file|SCP     |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/var/www/server/1/upload/rSeries-59002-backup-1-16-2022     |         Completed|Sat Jan 15 20:48:29 2022
+
+If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and GUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/F5/system/configs** directory.
 
 .. code-block:: bash
 
-    [root@controller-2 ~]# ls /var/confd/configs/
-    controller-backup-08-17-21  my-backup
-    [root@controller-2 ~]# scp /var/confd/configs/controller-backup-08-17-21 root@10.255.0.142:/var/www/server/1
+    [root@appliance-1 confd-backup]# ls /var/F5/system/configs/
+    total 48
+    -rw-r--r--. 1 root root 46465 Jan 15 15:18 rSeries-59002-backup-1-15-2022
+    [root@appliance-1 confd-backup]# scp /var/F5/system/configs/rSeries-59002-backup-1-15-2022 root@10.255.0.142:/var/www/server/1/upload/rseries-backup
     The authenticity of host '10.255.0.142 (10.255.0.142)' can't be established.
     ECDSA key fingerprint is SHA256:xexN3pt/7xGgGNFO3Lr77PHO2gobj/lV6vi7ZO7lNuU.
     ECDSA key fingerprint is MD5:ff:06:0f:a8:5f:64:92:7b:42:31:aa:bf:ea:ee:e8:3b.
     Are you sure you want to continue connecting (yes/no)? yes
     Warning: Permanently added '10.255.0.142' (ECDSA) to the list of known hosts.
     root@10.255.0.142's password: 
-    controller-backup-08-17-21                                                       100%   77KB  28.8MB/s   00:00    
-    [root@controller-2 ~]# 
+    rSeries-59002-backup-1-15-2022                                                                                                                                                                               100%   45KB  30.8MB/s   00:00    
+    [root@appliance-1 confd-backup]# 
+
 
 Exporting F5OS Backup via API
 ------------------------------
@@ -171,7 +185,7 @@ To copy a confd configuration backup file from the system controller to a remote
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/export
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/export
 
 .. code-block:: json
 
@@ -197,7 +211,7 @@ Resetting the System (Not for Production)
 
 For a proof-of-concept test, this section will provide steps to wipe out the entire system configuration in a graceful manner. This is not intended as a workflow for production environments, as you would not typically be deleting entire system configurations, instead you would be restoring pieces of the configuration in the case of failure. 
 
-The first step would be to ensure you have completed the previous sections, and have created backups for the system controllers, each chassis partition, and each tenant. These backups should have been copied out of the VELOS system to a remote HTTPS server so that they can be used to restore to the system after it has been reset.
+The first step would be to ensure you have completed the previous sections, and have created backups for the F5OS layer and each tenant. These backups should have been copied out of the rSeries system to a remote location so that they can be used to restore to the system after it has been reset.
 
 The first step is to ensure each chassis partition’s confd database has been **reset-to-default**. This will wipe out all tenant configurations and networking as well as all the system parameters associated with each chassis partition.
 
