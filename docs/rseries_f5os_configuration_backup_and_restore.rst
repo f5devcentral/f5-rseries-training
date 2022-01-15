@@ -64,17 +64,23 @@ Backing Up F5OS via GUI
 Using the F5OS GUI you can backup the confd configuration database using the **System Settings -> Configuration Backup** page. Click the **Create** button and provide a name for the backup file.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image1.png
-   :width: 45%
+  :align: center
+  :scale: 70%
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image2.png
-   :width: 45%
+  :align: center
+  :scale: 70%
 
 Backing Up F5OS via API
 -----------------------
 
+Using the F5OS API you can backup the confd configuration database using the following API POST:
+
 .. code-block:: bash
 
     POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
+
+In the body of the API call you can specifiy the file name you want to save the backup as.
 
 .. code-block:: json
 
@@ -85,26 +91,28 @@ Backing Up F5OS via API
 
 **Note: In the current F5OS releases the confd system database can be backed up via CLI/GUI/API but it cannot be restored using the F5OS GUI. This will be added in a subsequent release.**
 
-Copying System Controller Database Backup to an External Location
-=================================================================
+Copying the F5OS Database Backup External Location
+==================================================
 
 Once the database backup has been completed, you should copy the file to an external location so that the system can be restored in the case of a total failure. You can download the database configuration backup using the CLI, GUI, or API. 
 
-**From the GUI:**
+Copying the F5OS Database Backup External Location via GUI
+----------------------------------------------------------
 
 In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can import or export configuration files. Note that the current transfer of files to and from the GUI requires an external HTTPS server. 
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image3.png
+.. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
   :scale: 70%
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image4.png
+.. image:: images/rseries_f5os_configuration_backup_and_restore/image4.png
   :align: center
   :scale: 70%
 
 **Note: In the current release exporting and importing the system database requires an external HTTPS server. Future releases will add more options for import/export that don’t rely on an external HTTPS server.**
 
-**From the CLI:**
+Copying the F5OS Database Backup External Location via CLI
+----------------------------------------------------------
 
 To transfer a file using the CLI use the **file list** command to see the contents of the **configs** directory. Note the previously saved file is listed.
 
@@ -156,7 +164,8 @@ If you don’t have an external HTTPS server that allows uploads, then you can l
     controller-backup-08-17-21                                                       100%   77KB  28.8MB/s   00:00    
     [root@controller-2 ~]# 
 
-**From the API:**
+Copying the F5OS Database Backup External Location via API
+----------------------------------------------------------
 
 To copy a confd configuration backup file from the system controller to a remote https server use the following API call:
 
@@ -177,207 +186,6 @@ To copy a confd configuration backup file from the system controller to a remote
     }
 
 
-Backing Up Chassis Partition Databases
-======================================
-
-In addition to backing up the system controller database, you should backup the configuration database on each chassis partition within the VELOS system. In the example below there are two chassis partitions currently in use; **bigpartition** and **smallpartition**. Both must be backed up and archived off of the VELOS system.
-
-Log directly into the chassis partition bigpartitions management IP address and enter config mode. Use the **system database config-backup** command to save a copy of the chassis partitions config database. Then list the file using the **file list** command.
-
-.. code-block:: bash
-
-    bigpartition-1# config
-    Entering configuration mode terminal
-    bigpartition-1(config)# system database config-backup name chassis-partition-bigbartition-08-17-2021
-    result Database backup successful.
-    bigpartition-1(config)# exit
-    bigpartition-1# file list path configs/
-    entries {
-        name 
-    chassis-partition-bigbartition-08-17-2021
-    }
-    bigpartition-1# 
-
-
-Log directly into the chassis partition smallpartition's management IP address and enter **config** mode. Use the **system database config-backup** command to save a copy of the chassis partitions config database. Then list the file using the **file list** command.
-
-.. code-block:: bash
-
-    smallpartition-1# config
-    Entering configuration mode terminal
-    smallpartition-1(config)# system database config-backup name chassis-partition-smallpartition-08-17-2021
-    result Database backup successful.
-    smallpartition-1(config)# exit
-    smallpartition-1# file list path configs/
-    entries {
-        name 
-    chassis-partition-smallpartition-08-17-2021
-    }
-    smallpartition-1# 
-
-This can also be done from each chassis partition’s GUI interface. Log into the chassis partition GUI. Then go to **System Utilities -> Configuration Backup**. Click **Create** to save the confd database configuration and provide a name. 
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image5.png
-  :align: center
-  :scale: 70%
-
-
-You’ll need to do this for each chassis partition in the system. To backup the chassis partition databases via API use the following API command:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
-
-
-.. code-block:: json
-    {
-        "f5-database:name": "bigpartition-DB-BACKUP{{currentdate}}"
-    }
-
-Repeat this for each chassis partition.
-
-Next copy the backup files to a location outside of VELOS. The file can be copied off via the chassis partitions CLI, GUI, or API. In the current release you need an external HTTPS server configured to allow uploads in order to export database backups from VELOS. 
-
-Export Backup From the Chassis Partition GUI
---------------------------------------------
-
-You can copy the backup file out of the chassis partition using the **Systems Settings > File Utilities** menu in the GUI. Use the Base Directory drop down menu to select **configs** directory, and you should see a copy of the file created there:
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image6.png
-  :align: center
-  :scale: 70%
-
-You can highlight the file and then click the **Export** button. You when then be prompted to enter the details for a remote HTTPS server so that the file can be copied out of the chassis partition:
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image7.png
-  :align: center
-  :scale: 70%
-
-**Note: In the current release the exporting and importing the system database requires an external HTTPS server. Future releases will add more options for import/export that don’t rely on an external HTTPS server.**
-
-Export Backup From the Chassis Partition CLI
---------------------------------------------
-
-To transfer a file using the CLI use the **file list** command to see the contents of the **configs** directory. Note the previously saved file is listed. You will need to do this for all chassis partitions.
-
-To backup chassis partition bigpartition:
-
-.. code-block:: bash
-
-    bigpartition-1# file list path configs/
-    entries {
-        name 
-    chassis-partition-bigpartition-08-17-2021
-    }
-    bigpartition-1# 
-
-To transfer the file from the CLI you can use the **file export** command. Note that the file export command requires a remote HTTPS server that the file can be posted to. 
-
-.. code-block:: bash
-
-    bigpartition-2# file export local-file configs/chassis-partition-bigbartition-08-17-2021 remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
-    Value for 'password' (<string>): ********
-    result File transfer is initiated.(configs/chassis-partition-bigbartition-08-17-2021)
-    bigpartition-2#
-
-You can use the CLI command **file transfer-status** to see if the file was copied successfully or not:
-
-.. code-block:: bash
-
-    bigpartition-2# file transfer-status                                                                                                                                       
-    result 
-    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
-    1    |Export file|HTTPS   |configs/3-20-2021-bigpartition-backup                       |10.255.0.142        |/upload/upload.php                                          |Failed to open/read local data from file/application|Fri Aug 27 20:05:34 2021
-    2    |Export file|HTTPS   |configs/chassis-partition-bigbartition-08-17-2021           |10.255.0.142        |/upload/upload.php                                          |         Completed|Fri Aug 27 20:06:22 2021
-
-    bigpartition-2# 
-
-
-If you do not have a remote HTTPS server with the proper access to POST files then you can copy the chassis partition backups from the system controller shell. You’ll need to login to the system controllers shell using the root account. Once logged in list the contents of the **/var/F5** directory. You’ll notice partition<ID> directories, where <ID> equals the ID assigned to each partition.
-
-.. code-block:: bash
-
-    [root@controller-2 ~]# ls -al /var/F5/
-    total 36
-    drwxr-xr-x. 10 root root 4096 Mar 10 21:43 .
-    drwxr-xr-x. 40 root root 4096 Mar  3 04:17 ..
-    drwxr-xr-x.  3 root root 4096 Feb  8 19:58 controller
-    drwxr-xr-x.  5 root root 4096 Feb  8 19:58 diagnostics
-    drwxr-xr-x.  2 root root 4096 Feb  8 19:58 fips
-    drwxr-xr-x. 24 root root 4096 Mar  3 04:27 partition1
-    drwxr-xr-x.  3 root root   20 Mar 10 17:54 partition2
-    drwxr-xr-x. 24 root root 4096 Mar  4 15:52 partition3
-    drwxr-xr-x. 22 root root 4096 Mar 10 21:45 partition4
-    drwxr-xr-x.  3 root root 4096 Feb  9 16:08 sirr
-    [root@controller-2 ~]# 
-
-The backup files for each partition are stored in the **/var/F5/partition<ID>/configs** directory. You will need to copy off each chassis partitions backup file. You can use SCP to do this from the shell.
-
-.. code-block:: bash
-
-    [root@controller-2 ~]# ls -al /var/F5/partition4/configs
-    total 52
-    drwxrwxr-x.  2 root admin    43 Mar 20 06:10 .
-    drwxr-xr-x. 22 root root   4096 Mar 10 21:45 ..
-    -rw-r--r--.  1 root root  46954 Mar 20 06:10 3-20-2021-bigpartition-backup
-    [root@controller-2 ~]# 
-
-Below is an example using SCP to copy off the backup file from partition ID 4, you should do this for each of the partitions:
-
-.. code-block:: bash
-
-    [root@controller-2 ~]# scp /var/F5/partition4/configs/3-20-2021-bigpartition-backup root@10.255.0.142:/var/www/server/1/.
-    root@10.255.0.142's password: 
-    3-20-2021-bigpartition-backup                                                             100%   46KB  23.7MB/s   00:00    
-    [root@controller-2 ~]# 
-    
-Now repeat the same steps for chassis partition smallpartition. 
-
-Export Files From the Chassis Partition API
--------------------------------------------
-Each chassis partition in the system needs to be backed up independently. Below is an API example of backing up the chassis partition smallpartition. Note the API call is sent to the chassis partition IP address. Currently a remote HTTPS server is required to export the copy of the configuration backup.
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_SmallPartition_IP}}:8888/api/data/f5-utils-file-transfer:file/export
-
-.. code-block:: json
-
-    {
-        "f5-utils-file-transfer:insecure": "",
-        "f5-utils-file-transfer:username": "corpuser",
-        "f5-utils-file-transfer:password": "Passw0rd1!",
-        "f5-utils-file-transfer:local-file": "configs/smallpartition-DB-BACKUP{{currentdate}}",
-        "f5-utils-file-transfer:remote-host": "10.255.0.142",
-        "f5-utils-file-transfer:remote-port": 0,
-        "f5-utils-file-transfer:remote-file": "/upload/upload.php"
-    }
-
-To check on the status of the file export you can use the following API call to check the transfer-status:
-
-.. code-block:: bash
-
-  POST https://{{Chassis1_SmallPartition_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
-
-In the body of the post use the following json payload:
-
-.. code-block:: json
-
-    {
-        "f5-utils-file-transfer:file-name": "configs/smallpartition-DB-BACKUP{{currentdate}}"
-    }
-
-You will end up seeing a status similar to the output below.
-
-.. code-block:: json
-
-    {
-        "f5-utils-file-transfer:output": {
-            "result": "\nS.No.|Operation  |Protocol|Local File Path |Remote Host  |Remote File Path   |Status  |Time  \n1    |Export file|HTTPS   |configs/smallpartition-DB-BACKUP2021-08-27 |10.255.0.142 |/upload/upload.php | Completed|Fri Aug 27 20:18:12 2021"
-        }
-    }
-
-Repeat this for other partitions in the system.
 
 Backing up Tenants
 ==================
