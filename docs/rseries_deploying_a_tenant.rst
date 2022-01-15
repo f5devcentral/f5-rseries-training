@@ -7,27 +7,27 @@ Deploying an rSeries Tenant
 Tenant Image Types
 ------------------
 
-rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether or not they allow in place upgrades. rSeries only supports specific TMOS releases (currently 15.1.4), they can be found on downloads.f5.com:
+rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether or not they allow in place upgrades. rSeries only supports specific TMOS releases (currently 15.1.5), they can be found on downloads.f5.com:
 
-.. image:: images/rseries_deploying_a_tenant/image64.png
+.. image:: images/rseries_deploying_a_tenant/image1.png
   :align: center
   :scale: 70% 
 
-Ensure you choose the option that is labeled specifically for rSeries. i.e. **14.1.4_Tenant_VELOS**:
+Ensure you choose the option that is labeled specifically for rSeries. i.e. **15.1.4_Tenant_VELOS**:
 
-.. image:: images/rseries_deploying_a_tenant/image65.png
+.. image:: images/rseries_deploying_a_tenant/image2.png
   :align: center
   :scale: 70% 
 
 There are 4 different types of tenant images to choose from as seen below, please read the rest of this section to determine the best image type for your environment:
 
-.. image:: images/rseries_deploying_a_tenant/image66.png
+.. image:: images/rseries_deploying_a_tenant/image3.png
   :align: center
   :scale: 70% 
 
 The **T1-VELOS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave & nuke strategies are preferred over in place upgrades.   
 
-.. image:: images/rseries_deploying_a_tenant/image67.png
+.. image:: images/rseries_deploying_a_tenant/image4.png
   :align: center
   :scale: 70% 
 
