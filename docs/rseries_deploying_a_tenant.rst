@@ -41,7 +41,7 @@ The **T4-F5OS** image also supports any module combination but has additional di
 
 https://support.f5.com/csp/article/K45191957
 
-Note that the image sizes in the chart are the maximum amount of space a tenant could use, not necessarily what it will consume on the physical disk. rSeries tenants are deployed in sparse mode on the file system when they are created. That means that a tenant may think it has a certain amount of disk space, but in reality, most of the space that is unutilized is zeroed-out and not consuming any space on the disk. 
+Note that the image sizes in the chart are the default amount of space a tenant could use, not necessarily what it will consume on the physical disk. rSeries tenants are deployed in sparse mode on the file system when they are created. That means that a tenant may think it has a certain amount of disk space, but in reality, most of the space that is unutilized is zeroed-out and not consuming any space on the disk. 
 
 .. image:: images/rseries_deploying_a_tenant/image5.png
   :align: center
@@ -53,7 +53,7 @@ This means the disk consumption on the rSeries disk is actually much smaller tha
   :align: center
   :scale: 70% 
 
-However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is actually consuming only 6.4GB on the disk. You can confirm this by logging into the bbash sheel of F5OS as root. Then listing the contents of the directory **/var/F5.system/cbip-disks**, here you will see directories for each tenant. Enter the command ls -lsh **<tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (In this case 6.4Gb).
+However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is actually consuming only 6.4GB on the disk. You can confirm this by logging into the bash shell of F5OS as root. Then listing the contents of the directory **/var/F5/system/cbip-disks**, here you will see directories for each tenant. Enter the command **ls -lsh <tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (in this case 6.4GB).
 
 .. image:: images/rseries_deploying_a_tenant/image7.png
   :align: center
@@ -65,7 +65,7 @@ This is analogous to thin provisioning in a hypervisor where you can over-alloca
 Tenant Deployments
 ------------------
 
-Tenant can easily be deployed via the F5OS CLI, GUI, or API.
+Tenants can easily be deployed via the F5OS CLI, GUI, or API.
 
 Tenant Deployment via CLI
 -------------------------
@@ -73,7 +73,7 @@ Tenant Deployment via CLI
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries tenants only support TMOS v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to later versions should happen within the tenant itself. The images inside F5OS are for intial deployment only.
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries supported tenant version are v15.1.5 for the r5000 & r10000, and v15.1.6 for the r2000 & r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to newer versions happen within the tenant itself, nit in the F5OS layer. The images inside F5OS are for intial deployment only.
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the GUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
 
@@ -146,7 +146,7 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
     Value for 'config gateway' (<IP address>): 10.255.0.1
     Boston-r10900-1(config-tenant-tenant2)# 
 
-**NOTE: The nodes value is currently required in the interactive CLI mode to remain consistency with VELOS, but should be set for 1 for rSeries tenant deployments.** 
+**NOTE: The nodes value is currently required in the interactive CLI mode to remain consistent with VELOS, but should be set for 1 for rSeries tenant deployments.** 
 
 When inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the avilable options.
 
@@ -339,7 +339,7 @@ You can view a more detailed tenant status using the **Tenant Managment > Tenant
   :align: center
   :scale: 70% 
 
-At this point the tenant should be running and can be access via the out-of-band managament IP address. You can go to the **Dashboard** page in the GUI to see the running tenants, and there is a hyperlink that will connect to the tenant's GUI IP address as seen below.
+At this point the tenant should be running and can be accessed via the out-of-band management IP address. You can go to the **Dashboard** page in the GUI to see the running tenants, and there is a hyperlink that will connect to the tenant's GUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
@@ -374,7 +374,7 @@ To copy a tenant image into the appliance, use the following API call to the out
 
 .. code-block:: bash
 
-    POST https://{{rSeries_Mgmt_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
