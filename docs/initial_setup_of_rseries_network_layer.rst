@@ -945,12 +945,12 @@ Below is an exmaple configuration change in the body of the API call above, this
 Network Settings -> Interfaces
 ------------------------------
 
-Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **1.<port#>** for rSeries appliances. The r10000 has a total of 20 ports labled **1.1** - **1.20**, and the r5000 has 10 ports labled **1.1** - **1.10**.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 has a total of 20 ports labled **1.0** - **20.0**, and the r5000 has 10 ports labled **1.0** - **10.0**.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
   :scale: 70% 
-  
+
 .. image:: images/initial_setup_of_rseries_network_layer/image8.png
   :align: center
   :scale: 70% 
@@ -958,227 +958,1411 @@ Interface numbering will vary depending on which rSeries model is being used. In
 Configuring Interfaces from the GUI
 -----------------------------------
 
-Within the chassis partition GUI the physical ports of all blades within that partition will be visible by going to **Network Settings > Interfaces** page. If there are other chassis partitions in the VELOS system, then those ports will only be seen within their own chassis partition. In the example below this VELOS system has 3 blades installed, but only two are part of this chassis partition, so you will not see ports from the 3rd blade unless you connect directly to the other chassis partition.
+Within the F5OS GUI the physical ports of the appliance will be visible by going to **Network Settings > Interfaces** page. 
 
-
+.. image:: images/initial_setup_of_rseries_network_layer/image10.png
+  :align: center
+  :scale: 70% 
 
 You can click on any interface to view its settings or edit them. You can currently change the interface State via the GUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
 
-.. image:: images/initial_setup_of_rseries_network_layer/image10.png
+.. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center
   :scale: 70% 
 
 Configuring Interfaces from the CLI
 -----------------------------------
 
-Interfaces can be configured in the chassis partition CLI. As mentioned previously portgroups should be configured for their desired state before configuring any interfaces as the interface numbering may change. In the CLI enter config mode and then specify the interface you want to configure. If the interface is going to be part of a LAG, then most of the configuration is done within the LAG. Use the command **show running-config interfaces** to see the current configuration:
+Interfaces can be configured in the F5OS CLI. As mentioned previously portgroups should be configured for their desired state before configuring any interfaces. In the CLI enter config mode and then specify the interface you want to configure. If the interface is going to be part of a LAG, then most of the configuration is done within the LAG. Use the command **show running-config interfaces** to see the current configuration:
 
 
 .. code-block:: bash
 
-  bigpartition-2# show running-config interfaces 
-  interfaces interface 1/1.0
-  config name 1/1.0
-  config type ethernetCsmacd
-  config enabled
-  config tpid TPID_0X8100
-  ethernet config aggregate-id ha
-  !
-  interfaces interface 1/2.0
-  config name 1/2.0
-  config type ethernetCsmacd
-  config enabled
-  config tpid TPID_0X8100
-  ethernet config aggregate-id Arista
-  !
-  interfaces interface 2/1.0
-  config name 2/1.0
-  config type ethernetCsmacd
-  config enabled
-  config tpid TPID_0X8100
-  ethernet config aggregate-id Arista
-  !
-  interfaces interface 2/2.0
-  config name 2/2.0
-  config type ethernetCsmacd
-  config enabled
-  config tpid TPID_0X8100
-  ethernet config aggregate-id ha
-  !
-  interfaces interface Arista
-  config name Arista
-  config type ieee8023adLag
-  config tpid TPID_0X8100
-  aggregation config lag-type LACP
-  aggregation config distribution-hash src-dst-ipport
-  aggregation switched-vlan config trunk-vlans [ 444 555 ]
-  !
-  interfaces interface ha
-  config name ha
-  config type ieee8023adLag
-  config tpid TPID_0X8100
-  aggregation config lag-type LACP
-  aggregation config distribution-hash src-dst-ipport
-  aggregation switched-vlan config trunk-vlans [ 500 ]
-  !
+    appliance-1# show running-config interfaces 
+    interfaces interface 1.0
+    config name 1.0
+    config type ethernetCsmacd
+    config enabled
+    ethernet config aggregate-id Arista
+    !
+    interfaces interface 2.0
+    config name 2.0
+    config type ethernetCsmacd
+    config enabled
+    ethernet config aggregate-id Arista
+    !
+    interfaces interface 3.0
+    config name 3.0
+    config type ethernetCsmacd
+    config enabled
+    !
+    interfaces interface 4.0
+    config name 4.0
+    config type ethernetCsmacd
+    config enabled
+    !
+    interfaces interface 5.0
+    config name 5.0
+    config type ethernetCsmacd
+    config enabled
+    !
+    interfaces interface 6.0
+    config name 6.0
+    config type ethernetCsmacd
+    config enabled
+    !
+    interfaces interface 7.0
+    config name 7.0
+    config type ethernetCsmacd
+    config enabled
+    !
+    interfaces interface 8.0
+    config name 8.0
+    config type ethernetCsmacd
+    config enabled
+    ethernet config aggregate-id HA-Interconnect
+    !
+    interfaces interface 9.0
+    config name 9.0
+    config type ethernetCsmacd
+    config enabled
+    ethernet config aggregate-id HA-Interconnect
+    !
+    interfaces interface 10.0
+    config name 10.0
+    config type ethernetCsmacd
+    config enabled
+    !
+    interfaces interface mgmt
+    config name mgmt
+    config type ethernetCsmacd
+    config enabled
+    ethernet config auto-negotiate true
+    ethernet config duplex-mode FULL
+    ethernet config port-speed SPEED_1GB
+    !
+    interfaces interface Arista
+    config name Arista
+    config type ieee8023adLag
+    aggregation config lag-type LACP
+    aggregation config distribution-hash src-dst-ipport
+    aggregation switched-vlan config trunk-vlans [ 3010 3011 ]
+    !
+    interfaces interface HA-Interconnect
+    config name HA-Interconnect
+    config type ieee8023adLag
+    aggregation config lag-type LACP
+    aggregation config distribution-hash src-dst-ipport
+    aggregation switched-vlan config trunk-vlans [ 500 ]
+    !
+    appliance-1# 
 
-To make any changes you will need to enter config mode and then enter the interface to make changes. Be sure to commit any changes as they don’t take effect until the commit is issues.
+To make any changes you will need to enter config mode and then enter the interface to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0 Be sure to commit any changes as they don’t take effect until the commit is issued.
 
 .. code-block:: bash
-
-  bigpartition-1# config
-  Entering configuration mode terminal
-  bigpartition-1(config)# interfaces interface 1/1.0
-  bigpartition-1(config-interface-1/1.0)# ethernet switched-vlan config trunk-vlans 500
-  bigpartition-1(config-interface-1/1.0)# commit
+    
+    appliance-1# config
+    Entering configuration mode terminal
+    appliance-1(config)# interfaces interface 6.0 ethernet switched-vlan config trunk-vlans 500 
+    appliance-1(config-interface-6.0)# commit
+    Commit complete.
+    appliance-1(config-interface-6.0)# 
 
 Configuring Interfaces from the API
 -----------------------------------
 
-The following API command will list all the current interfaces within the current chassis partition with their configuration and status: 
+The following API command will list all the current interfaces within the appliance with their configuration and status: 
 
 .. code-block:: bash
 
-  GET https://{{Chassis2_BigPartition_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
+  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
 
 .. code-block:: json
 
     {
-      "openconfig-interfaces:interfaces": {
-          "interface": [
-              {
-                  "name": "3/1.0",
-                  "config": {
-                      "name": "3/1.0",
-                      "type": "iana-if-type:ethernetCsmacd",
-                      "enabled": true,
-                      "openconfig-vlan:tpid": "openconfig-vlan-types:TPID_0X8100"
-                  },
-                  "state": {
-                      "name": "3/1.0",
-                      "type": "iana-if-type:ethernetCsmacd",
-                      "mtu": 9600,
-                      "enabled": true,
-                      "oper-status": "UP",
-                      "counters": {
-                          "in-octets": "0",
-                          "in-unicast-pkts": "0",
-                          "in-broadcast-pkts": "0",
-                          "in-multicast-pkts": "0",
-                          "in-discards": "0",
-                          "in-errors": "0",
-                          "in-fcs-errors": "0",
-                          "out-octets": "2820",
-                          "out-unicast-pkts": "0",
-                          "out-broadcast-pkts": "0",
-                          "out-multicast-pkts": "30",
-                          "out-discards": "0",
-                          "out-errors": "0"
-                      },
-                      "f5-interface:forward-error-correction": "auto",
-                      "f5-lacp:lacp_state": "LACP_DEFAULTED"
-                  },
-                  "openconfig-if-ethernet:ethernet": {
-                      "state": {
-                          "port-speed": "openconfig-if-ethernet:SPEED_100GB",
-                          "hw-mac-address": "00:94:a1:8e:d1:00",
-                          "counters": {
-                              "in-mac-control-frames": "0",
-                              "in-mac-pause-frames": "0",
-                              "in-oversize-frames": "0",
-                              "in-jabber-frames": "0",
-                              "in-fragment-frames": "0",
-                              "in-8021q-frames": "0",
-                              "in-crc-errors": "0",
-                              "out-mac-control-frames": "0",
-                              "out-mac-pause-frames": "0",
-                              "out-8021q-frames": "0"
-                          },
-                          "f5-if-ethernet:flow-control": {
-                              "rx": "on"
-                          }
-                      },
-                      "openconfig-vlan:switched-vlan": {
-                          "config": {
-                              "trunk-vlans": [
-                                  500
-                              ]
-                          }
-                      }
-                  }
-              },
-              {
-                  "name": "3/2.0",
-                  "config": {
-                      "name": "3/2.0",
-                      "type": "iana-if-type:ethernetCsmacd",
-                      "enabled": true,
-                      "openconfig-vlan:tpid": "openconfig-vlan-types:TPID_0X8100"
-                  },
-                  "state": {
-                      "name": "3/2.0",
-                      "type": "iana-if-type:ethernetCsmacd",
-                      "mtu": 9600,
-                      "enabled": true,
-                      "oper-status": "UP",
-                      "counters": {
-                          "in-octets": "62245397142",
-                          "in-unicast-pkts": "152194827",
-                          "in-broadcast-pkts": "62238",
-                          "in-multicast-pkts": "297616",
-                          "in-discards": "18882",
-                          "in-errors": "0",
-                          "in-fcs-errors": "0",
-                          "out-octets": "61962689001",
-                          "out-unicast-pkts": "167540438",
-                          "out-broadcast-pkts": "855",
-                          "out-multicast-pkts": "60",
-                          "out-discards": "0",
-                          "out-errors": "0"
-                      },
-                      "f5-interface:forward-error-correction": "auto",
-                      "f5-lacp:lacp_state": "LACP_DEFAULTED"
-                  },
-                  "openconfig-if-ethernet:ethernet": {
-                      "state": {
-                          "port-speed": "openconfig-if-ethernet:SPEED_100GB",
-                          "hw-mac-address": "00:94:a1:8e:d1:01",
-                          "counters": {
-                              "in-mac-control-frames": "0",
-                              "in-mac-pause-frames": "0",
-                              "in-oversize-frames": "0",
-                              "in-jabber-frames": "0",
-                              "in-fragment-frames": "0",
-                              "in-8021q-frames": "0",
-                              "in-crc-errors": "0",
-                              "out-mac-control-frames": "0",
-                              "out-mac-pause-frames": "0",
-                              "out-8021q-frames": "0"
-                          },
-                          "f5-if-ethernet:flow-control": {
-                              "rx": "on"
-                          }
-                      },
-                      "openconfig-vlan:switched-vlan": {
-                          "config": {
-                              "trunk-vlans": [
-                                  444,
-                                  555
-                              ]
-                          }
-                      }
-                  }
-              }
-          ]
-      }
-  }
+        "openconfig-interfaces:interfaces": {
+            "interface": [
+                {
+                    "name": "1.0",
+                    "config": {
+                        "name": "1.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "1.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 19,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "9086600",
+                            "in-unicast-pkts": "116",
+                            "in-broadcast-pkts": "1493",
+                            "in-multicast-pkts": "68814",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "187008",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "1461",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_UP"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB",
+                            "openconfig-if-aggregate:aggregate-id": "Arista"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB",
+                            "hw-mac-address": "00:94:a1:69:59:0d",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "2.0",
+                    "config": {
+                        "name": "2.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "2.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 24,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "6288468",
+                            "in-unicast-pkts": "80",
+                            "in-broadcast-pkts": "504",
+                            "in-multicast-pkts": "46884",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "192776",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "1522",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_UP"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB",
+                            "openconfig-if-aggregate:aggregate-id": "Arista"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB",
+                            "hw-mac-address": "00:94:a1:69:59:12",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "3.0",
+                    "config": {
+                        "name": "3.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "3.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 20,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:0e",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "4.0",
+                    "config": {
+                        "name": "4.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "4.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 21,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:0f",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "5.0",
+                    "config": {
+                        "name": "5.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "5.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 22,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:10",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "6.0",
+                    "config": {
+                        "name": "6.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "6.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 23,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:11",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "7.0",
+                    "config": {
+                        "name": "7.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "7.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 25,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:13",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "8.0",
+                    "config": {
+                        "name": "8.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "8.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 26,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:14",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "9.0",
+                    "config": {
+                        "name": "9.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "9.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 27,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:15",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "10.0",
+                    "config": {
+                        "name": "10.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "10.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 28,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:16",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "11.0",
+                    "config": {
+                        "name": "11.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "11.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 9,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB",
+                            "hw-mac-address": "00:94:a1:69:59:03",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "12.0",
+                    "config": {
+                        "name": "12.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "12.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 14,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_100GB",
+                            "hw-mac-address": "00:94:a1:69:59:08",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "13.0",
+                    "config": {
+                        "name": "13.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "13.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 10,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "5605888",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "43796",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "5608964",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "43828",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_UP"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "openconfig-if-aggregate:aggregate-id": "HA-Interconnect"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:04",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "14.0",
+                    "config": {
+                        "name": "14.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "14.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 11,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "5605888",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "43796",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "5606144",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "43798",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_UP"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "openconfig-if-aggregate:aggregate-id": "HA-Interconnect"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:05",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "15.0",
+                    "config": {
+                        "name": "15.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "15.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 12,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "5605120",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "43790",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "5606272",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "43799",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_UP"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "openconfig-if-aggregate:aggregate-id": "HA-Interconnect"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:06",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "16.0",
+                    "config": {
+                        "name": "16.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "16.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 13,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "5603328",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "43776",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "5603456",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "43777",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_UP"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "openconfig-if-aggregate:aggregate-id": "HA-Interconnect"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:07",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "17.0",
+                    "config": {
+                        "name": "17.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "17.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 15,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:09",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "18.0",
+                    "config": {
+                        "name": "18.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "18.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 16,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:0a",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "19.0",
+                    "config": {
+                        "name": "19.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "19.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 17,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_25GB",
+                            "hw-mac-address": "00:94:a1:69:59:0b",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "20.0",
+                    "config": {
+                        "name": "20.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "20.0",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "ifindex": 18,
+                        "oper-status": "DOWN",
+                        "counters": {
+                            "in-octets": "0",
+                            "in-unicast-pkts": "0",
+                            "in-broadcast-pkts": "0",
+                            "in-multicast-pkts": "0",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "in-fcs-errors": "0",
+                            "out-octets": "0",
+                            "out-unicast-pkts": "0",
+                            "out-broadcast-pkts": "0",
+                            "out-multicast-pkts": "0",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        },
+                        "f5-interface:forward-error-correction": "auto",
+                        "f5-lacp:lacp_state": "LACP_DEFAULTED"
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_10GB"
+                        },
+                        "state": {
+                            "port-speed": "openconfig-if-ethernet:SPEED_10GB",
+                            "hw-mac-address": "00:94:a1:69:59:0c",
+                            "counters": {
+                                "in-mac-control-frames": "0",
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-8021q-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-control-frames": "0",
+                                "out-mac-pause-frames": "0",
+                                "out-8021q-frames": "0"
+                            },
+                            "f5-if-ethernet:flow-control": {
+                                "rx": "on"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "mgmt",
+                    "config": {
+                        "name": "mgmt",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "mgmt",
+                        "type": "iana-if-type:ethernetCsmacd",
+                        "enabled": true,
+                        "ifindex": 1,
+                        "oper-status": "UP",
+                        "counters": {
+                            "in-octets": "47748466",
+                            "in-unicast-pkts": "24169",
+                            "in-broadcast-pkts": "274573",
+                            "in-multicast-pkts": "63421",
+                            "in-discards": "0",
+                            "in-errors": "0",
+                            "out-octets": "22171273",
+                            "out-unicast-pkts": "30177",
+                            "out-broadcast-pkts": "50",
+                            "out-multicast-pkts": "71",
+                            "out-discards": "0",
+                            "out-errors": "0"
+                        }
+                    },
+                    "openconfig-if-ethernet:ethernet": {
+                        "config": {
+                            "auto-negotiate": true,
+                            "duplex-mode": "FULL",
+                            "port-speed": "openconfig-if-ethernet:SPEED_1GB"
+                        },
+                        "state": {
+                            "auto-negotiate": true,
+                            "duplex-mode": "FULL",
+                            "port-speed": "openconfig-if-ethernet:SPEED_1GB",
+                            "hw-mac-address": "00:94:a1:69:59:02",
+                            "negotiated-duplex-mode": "FULL",
+                            "negotiated-port-speed": "openconfig-if-ethernet:SPEED_1GB",
+                            "counters": {
+                                "in-mac-pause-frames": "0",
+                                "in-oversize-frames": "0",
+                                "in-jabber-frames": "0",
+                                "in-fragment-frames": "0",
+                                "in-crc-errors": "0",
+                                "out-mac-pause-frames": "0"
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "Arista",
+                    "config": {
+                        "name": "Arista",
+                        "type": "iana-if-type:ieee8023adLag",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "Arista",
+                        "type": "iana-if-type:ieee8023adLag",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "oper-status": "UP",
+                        "f5-interface:forward-error-correction": "auto"
+                    },
+                    "openconfig-if-aggregate:aggregation": {
+                        "config": {
+                            "lag-type": "LACP",
+                            "f5-if-aggregate:distribution-hash": "src-dst-ipport"
+                        },
+                        "state": {
+                            "lag-type": "LACP",
+                            "lag-speed": 200,
+                            "f5-if-aggregate:distribution-hash": "src-dst-ipport",
+                            "f5-if-aggregate:mac-address": "00:94:a1:69:59:24",
+                            "f5-if-aggregate:lagid": 1
+                        },
+                        "openconfig-vlan:switched-vlan": {
+                            "config": {
+                                "trunk-vlans": [
+                                    3010,
+                                    3011
+                                ]
+                            }
+                        }
+                    }
+                },
+                {
+                    "name": "HA-Interconnect",
+                    "config": {
+                        "name": "HA-Interconnect",
+                        "type": "iana-if-type:ieee8023adLag",
+                        "enabled": true
+                    },
+                    "state": {
+                        "name": "HA-Interconnect",
+                        "type": "iana-if-type:ieee8023adLag",
+                        "mtu": 9600,
+                        "enabled": true,
+                        "oper-status": "UP",
+                        "f5-interface:forward-error-correction": "auto"
+                    },
+                    "openconfig-if-aggregate:aggregation": {
+                        "config": {
+                            "lag-type": "LACP",
+                            "f5-if-aggregate:distribution-hash": "src-dst-ipport"
+                        },
+                        "state": {
+                            "lag-type": "LACP",
+                            "lag-speed": 100,
+                            "f5-if-aggregate:distribution-hash": "src-dst-ipport",
+                            "f5-if-aggregate:mac-address": "00:94:a1:69:59:25",
+                            "f5-if-aggregate:lagid": 2
+                        },
+                        "openconfig-vlan:switched-vlan": {
+                            "config": {
+                                "trunk-vlans": [
+                                    500
+                                ]
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
 
 
 To configure interfaces (that are not part of a LAG), use the following PATCH API call. In the example below VLANs are being assigned to the physical interfaces.
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis1_SmallPartition_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
 
 .. code-block:: json
 
