@@ -223,69 +223,17 @@ To reset the F5OS confd database to default use the CLI command **system databas
 
 .. code-block:: bash
 
-    smallpartition-1# config
-    smallpartition-1(config)# system database reset-to-default proceed  
+    Appliance-1# config
+    Appliance-1(config)# system database reset-to-default proceed  
     Value for 'proceed' [no,yes]: yes
     result Database reset-to-default successful.
-    smallpartition-1(config)# 
+    Appliance-1(config)# 
     System message at 2021-03-02 22:51:54...
     Commit performed by admin via tcp using cli.
-    smallpartition-1(config)# 
+    Appliance-1(config)# 
 
 
-For the bigpartition:
-
-.. code-block:: bash
-
-    bigpartition-2# config 
-    Entering configuration mode terminal
-    bigpartition-2(config)# system database reset-to-default proceed 
-    Value for 'proceed' [no,yes]: yes
-    result Database reset-to-default successful.
-    bigpartition-2(config)# 
-    System message at 2021-03-02 23:01:50...
-    Commit performed by admin via tcp using cli.
-    bigpartition-2(config)# 
-
-Once the partition configurations have been cleared, you’ll need to login to the system controller. You’ll need to put all slots back into the **none** partition and **commit** the changes if making changes via the CLI.
-
-.. code-block:: bash
-
-    syscon-2-active(config)# slots slot 1-3 partition none
-    syscon-2-active(config-slot-1-3)# commit 
-    Commit complete.
-    syscon-2-active(config-slot-1-3)#
-
-
-Then remove the partitions from the system controller. In this case we will remove the chassis partitions called **bigpartition** and **smallpartition**.
-
-.. code-block:: bash
-
-    syscon-2-active(config)# no partitions partition bigpartition 
-    syscon-2-active(config)# no partitions partition smallpartition 
-    syscon-2-active(config)# commit 
-    Commit complete.
-    syscon-2-active(config)# 
-
-
-For the final step reset the system controllers confd database. This will essentially wipe out all partitions and all of the system controller configuration essentially setting it back to factory default.
-
-Set controller:
-
-.. code-block:: bash
-
-    syscon-2-active(config)# system database config reset-default-config true
-    syscon-2-active(config)# commit
-
-Once this has been committed both controllers need to be rebooted manually. Login to the active controller and enter config mode and then issue the **system reboot controllers controller standby** command, this will reboot the standby controller first. Run the same command again but this time reboot the **active** controller. 
-
-.. code-block:: bash
-
-    syscon-1-active(config)# system reboot controllers controller standby
-
-    syscon-1-active(config)# system reboot controllers controller active
-
-The system controllers should reboot, and their configurations will be completely wiped clean. You will need ot login via the CLI to restore out-of-band networking connectivity, and then the previously archived configurations can be copied back and restored.
+Once the system configurations have been cleared, you’ll need to establish connectivity to the until via the console port and reconfigure out-of-band connectivity in order to continue.
 
 
 Resetting the system via API
