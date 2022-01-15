@@ -314,21 +314,19 @@ The last step in the reset procedure is to set the system controllers confd data
     "f5-database:reset-default-config": "true"
     }
 
-The system controllers should reboot, and their configurations will be completel wiped clean. You will need ot login via the CLI to restore out-of-band networking connectivity, and then the previously archived configurations can be copied back and restored.    
+The system controllers should reboot, and their configurations will be completel wiped clean. You will need ot login via the CLI to restore out-of-band networking connectivity, and then the previously archived configurations can be copied back and restored. 
 
-Using the GUI to Remove Partitions and Reset Controller
--------------------------------------------------------
+Resetting the system via API
+----------------------------
 
-In the system controller GUI go to the **Chassis Partitions** page. Select the chassis partition you wish to delete by using the check box, then click the **Delete** button. The GUI will automatically remove the slots and return them to the **none** chassis partition before deleting the selected chassis partition. You should delete all partitions except for **default**. 
+This is not currently an option, and a reset must be performed via API or CLI.
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image8.png
-  :align: center
-  :scale: 70%
 
-There is no capability in the GUI currently to reset the system controller database. You’ll need to use the API or CLI to perform that function.
+Restoring Out-of-Band Connectivity and Copying Archived Configs into F5OS
+=========================================================================
 
-Restoring Out-of-Band Connectivity and Copying Archived Configs into the Controller
-===================================================================================
+Importing F5OS Backups via API
+------------------------------
 
 You will need to login to the system controller console port since all the networking configuration has now been wiped clean. You will login with the default username/password of admin/admin, since any previous accounts will have been wiped clean. On first login you will be prompted to change your password. Note below that the current console is connected to the standby controller, you’ll need to connect to the console of the active controller to make further changes:
 
@@ -432,8 +430,8 @@ To import the file using the F5OS CLI you must have a remote HTTP server to host
     }
     syscon-1-active# 
 
-Importing System Controller Backups via API
--------------------------------------------
+Importing F5OS Backups via API
+------------------------------
 
 Post the following API call to the system controllers IP address to import the archived confd backup file form a remote HTTPS server to the configs directory on the system controller.
 
@@ -492,7 +490,7 @@ You’ll see the contents of the directory in the API response:
     }
 
 
-Importing System Controller Backups via GUI
+Importing F5OS Backups via GUI
 -------------------------------------------
 
 You can use the **System Settings -> File Utilities** page to import an archived system controller backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file.
