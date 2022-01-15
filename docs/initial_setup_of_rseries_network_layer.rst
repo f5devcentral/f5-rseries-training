@@ -14,19 +14,19 @@ The rSeries Dashboard will provide a visual system summary of the appliance incl
   :align: center
   :scale: 70% 
 
-The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** or **Down** status. The current **Pipeline** mapping is also displayed which show the external port mapping to internal pipelines.
+The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** or **Down** status. The current **Pipeline** mapping is also displayed which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
   :scale: 70% 
 
-The **CPU** tab shows all the avilable CPU's in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
+The **CPU** tab shows all the available CPU's in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
   :scale: 70% 
 
-The  **Active Alarms** tab will display any active alerts of alarms for the system. 
+The  **Active Alarms** tab will display any active alerts or alarms for the system. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image4.png
   :align: center
@@ -36,13 +36,13 @@ The  **Active Alarms** tab will display any active alerts of alarms for the syst
 F5OS Networking Configuration
 -----------------------------
 
-Before configuring any tenant, you’ll need to setup networking for the F5OS platform layer. All in-band networking is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant.
+Before configuring any tenants, you’ll need to setup networking for the F5OS platform layer. All in-band networking (Interface, VLANs, Link Aggregation Groups) is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar to how vCMP guests work on previous generation of BIG-IP like iSeries and VIPRION. 
 
 
 Network Settings - > Port Groups
 ================================
 
-Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (1.0 & 2.0 on both the r5000/r10000 series) and (11.0 & 12.0 on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (3.0 - 10.0 on both the r5000/r10000 series) and (13.0 - 20.0 on the r10000 series) can be configured independently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
+Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
