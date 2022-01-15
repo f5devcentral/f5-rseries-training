@@ -973,7 +973,7 @@ You can click on any interface to view its settings or edit them. You can curren
 Configuring Interfaces from the CLI
 -----------------------------------
 
-Interfaces can be configured in the F5OS CLI. As mentioned previously portgroups should be configured for their desired state before configuring any interfaces. In the CLI enter config mode and then specify the interface you want to configure. If the interface is going to be part of a LAG, then most of the configuration is done within the LAG. Use the command **show running-config interfaces** to see the current configuration:
+Interfaces can be configured in the F5OS CLI. As mentioned previously, portgroups should be configured for their desired state before configuring any interfaces. In the CLI enter config mode and then specify the interface you want to configure. If the interface is going to be part of a LAG, then most of the configuration is done within the LAG. Use the command **show running-config interfaces** to see the current configuration:
 
 
 .. code-block:: bash
@@ -1057,7 +1057,7 @@ Interfaces can be configured in the F5OS CLI. As mentioned previously portgroups
     !
     appliance-1# 
 
-To make any changes you will need to enter config mode and then enter the interface to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0. Be sure to commit any changes as they don’t take effect until the commit is issued.
+To make any changes you will need to enter **config** mode and then enter the interface config mode to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0. Be sure to commit any changes as they don’t take effect until the commit is issued.
 
 .. code-block:: bash
     
@@ -2399,9 +2399,8 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
   }
 
 
--------------------------
 Network Settings -> VLANs
--------------------------
+=========================
 
 All in-band networking including VLANs are configured in the VELOS chassis partition layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by VELOS tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the chassis partition layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAG’s and VLANs. 
 
@@ -2622,9 +2621,9 @@ The following command will list the configuration and status of all VLANs within
       }
   }
 
-------------------------
+
 Network Settings -> LAGs
-------------------------
+========================
 
 All in-band networking including LAGs are configured in the VELOS chassis partition layer. The admin will configure interfaces and/or LAGs and they will assign VLANs to those physical interfaces. Tenants will then inherit the VLANs that are assigned to them when they are created. It is recommended to spread LAG members across blades for added redundancy. 
 
