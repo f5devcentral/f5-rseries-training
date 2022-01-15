@@ -38,37 +38,35 @@ https://support.f5.com/csp/article/K47512994
 Backing Up F5OS via CLI
 -----------------------
 
-**Using the CLI:**
-
-You can back up the system controller configuration database using the **system database config-backup** command when in config mode. The file will be saved in the path of **/configs** automatically. You can then list the contents of that directory to ensure the file is there using the **file list path** command.
+You can back up the F5OS configuration database using the **system database config-backup** command when in config mode. The file will be saved in the path of **/configs** automatically. 
 
 .. code-block:: bash
 
-    syscon-1-active# config
-    Entering configuration mode terminal
-    syscon-1-active(config)# system database config-backup name chassis2-sys-controller-backup-2-26-21
-    response Succeeded.
-    syscon-1-active(config)# exit 
+    appliance-1(config)# system database config-backup name rSeries-59002-backup-1-15-2022
+    result Database backup successful.
+    appliance-1(config)# 
 
-    syscon-1-active# file list path configs
+You can then list the contents of that directory to ensure the file is there using the **file list path** command.
+
+.. code-block:: bash
+
+    appliance-1# file list path configs/
     entries {
         name 
-    chassis2-sys-controller-backup-2-26-21
-    test-backup
+    rSeries-59002-backup-1-15-2022
     }
-    syscon-1-active# 
-
+    appliance-1# 
 
 
 Backing Up F5OS via GUI
 -----------------------
 
-Using the system controller GUI you can backup the confd configuration database using the **System Settings -> Configuration Backup** page. Click the **Create** button and provide a name for the backup file.
+Using the F5OS GUI you can backup the confd configuration database using the **System Settings -> Configuration Backup** page. Click the **Create** button and provide a name for the backup file.
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image1.png
+.. image:: images/rseries_f5os_configuration_backup_and_restore/image1.png
    :width: 45%
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image2.png
+.. image:: images/rseries_f5os_configuration_backup_and_restore/image2.png
    :width: 45%
 
 Backing Up F5OS via API
