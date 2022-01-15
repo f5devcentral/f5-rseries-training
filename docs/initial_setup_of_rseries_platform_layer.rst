@@ -1128,7 +1128,7 @@ Time Settings
 
 Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that the system controller time sources are sync’d to a reliable time source. The Time Zone may also be set.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image20.png
   :align: center
   :scale: 70%
 
@@ -1137,9 +1137,17 @@ Certificate Management
 
 Device certificates and keys can be uploaded via the **Systems Settings > Device Certificates** page.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image21.png
   :align: center
   :scale: 70%
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image22.png
+  :align: center
+  :scale: 70%  
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image23.png
+  :align: center
+  :scale: 70%  
 
 
 System Reports
@@ -1147,23 +1155,23 @@ System Reports
 
 The **System Settings > System Reports** page allows an admin to generate QKViews and optionally upload them to iHealth. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image24.png
   :align: center
   :scale: 70%
 
 To generate a QKView click on the button in the upper right-hand corner. It will take some time for the QKview to be generated.  
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image25.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image26.png
   :align: center
   :scale: 70%
 
 Once the QKView is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if entered them previously and be cleared if you want to use another account, you can optionally add an **F5 Support Case Number** and **Description**.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image27.png
   :align: center
   :scale: 70%
 
@@ -1185,11 +1193,11 @@ Configuration Backup
 
 You may backup the confd configuration databases for the system controller via the GUI. The backups can then be copied off-box using the file utilities GUI option. Currently the GUI does not support the restoration of confd backups, this must be done via the CLI or API. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image28.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image29.png
   :align: center
   :scale: 70%
 
@@ -1200,7 +1208,7 @@ Licensing for the VELOS system is handled at the chassis level. This is similar 
 
 Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image30.png
   :align: center
   :scale: 70%
 
@@ -1209,7 +1217,7 @@ General
 
 The **System Settings > General** page allows you to configure Appliance mode for the system controllers. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI when Appliance mode is enabled. The page also displays the Systems Operation and Status which includes the Base OS and Service Versions currently running on the system controllers as well as the chassis partitions.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image31.png
   :align: center
   :scale: 70%
 
@@ -1224,45 +1232,46 @@ Each layer of F5OS has its own user and authentication management. This allows f
 
 **Note: VELOS tenants running TMOS support Active Directory and TACACS for remote auth. The limitation is only for the F5OS v1.1.x platform layer.**
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image32.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
-  :align: center
-  :scale: 70%
 
 Server Groups
 =============
 
 You may define Server Groups which are collections of remote auth servers that the VELOS platform layer will use to authenticate against. Currently LDAP and RADIUS are supported. For LDAP you may choose to authenticate of TCP or SSL. You can configure the remote host’s IP address and port. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image34.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image35.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image36.png
   :align: center
   :scale: 70%
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image37.png
+  :align: center
+  :scale: 70%  
 
 Users
 =====
 
 Local Users may be defined, passwords set or changed, and then assigned to specific roles (Admin or Operator). An account may also be locked, and that may be changed here.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image38.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image39.png
   :align: center
   :scale: 70%
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image40.png
   :align: center
   :scale: 70%
 
