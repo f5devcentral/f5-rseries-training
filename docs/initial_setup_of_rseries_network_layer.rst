@@ -941,9 +941,9 @@ Below is an exmaple configuration change in the body of the API call above, this
         }
     }
 
-------------------------------
+
 Network Settings -> Interfaces
-------------------------------
+==============================
 
 Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 has a total of 20 ports labled **1.0** - **20.0**, and the r5000 has 10 ports labled **1.0** - **10.0**.
 
@@ -1057,7 +1057,7 @@ Interfaces can be configured in the F5OS CLI. As mentioned previously portgroups
     !
     appliance-1# 
 
-To make any changes you will need to enter config mode and then enter the interface to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0 Be sure to commit any changes as they don’t take effect until the commit is issued.
+To make any changes you will need to enter config mode and then enter the interface to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0. Be sure to commit any changes as they don’t take effect until the commit is issued.
 
 .. code-block:: bash
     
@@ -2370,12 +2370,12 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
       "openconfig-interfaces:interfaces": {
           "interface": [
               {
-                  "name": "3/1.0",
+                  "name": "6.0",
                   "openconfig-if-ethernet:ethernet": {
                       "openconfig-vlan:switched-vlan": {
                           "config": {
                               "trunk-vlans": [
-                                  500
+                                  501
                               ]
                           }
                       }
@@ -2398,9 +2398,10 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
       }
   }
 
---------------------------
+
+-------------------------
 Network Settings -> VLANs
---------------------------
+-------------------------
 
 All in-band networking including VLANs are configured in the VELOS chassis partition layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by VELOS tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the chassis partition layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAG’s and VLANs. 
 
