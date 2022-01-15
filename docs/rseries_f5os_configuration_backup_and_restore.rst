@@ -325,8 +325,8 @@ This is not currently an option, and a reset must be performed via API or CLI.
 Restoring Out-of-Band Connectivity and Copying Archived Configs into F5OS
 =========================================================================
 
-Importing F5OS Backups via API
-------------------------------
+Rsestoring Out-of-Band Management via CLI
+-----------------------------------------
 
 You will need to login to the system controller console port since all the networking configuration has now been wiped clean. You will login with the default username/password of admin/admin, since any previous accounts will have been wiped clean. On first login you will be prompted to change your password. Note below that the current console is connected to the standby controller, you’ll need to connect to the console of the active controller to make further changes:
 
@@ -397,6 +397,10 @@ To transfer files into the system controller you’ll have to manually configure
     syscon-1-active(config)# system mgmt-ip config ipv4 prefix-length 24
     syscon-1-active(config)# commit 
     Commit complete.
+
+Importing F5OS Backups via CLI
+------------------------------
+
 
 Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the system controllers. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
 
@@ -491,7 +495,7 @@ You’ll see the contents of the directory in the API response:
 
 
 Importing F5OS Backups via GUI
--------------------------------------------
+------------------------------
 
 You can use the **System Settings -> File Utilities** page to import an archived system controller backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file.
 
@@ -503,8 +507,11 @@ You can use the **System Settings -> File Utilities** page to import an archived
   :align: center
   :scale: 70%
 
-Restoring the System Controller from a Database Backup
-======================================================
+Restoring F5OS from a Database Backup
+=====================================
+
+Restore Using the CLI
+---------------------
 
 Now that the system controller backup has been copied into the system, you can restore the previous backup using the **system database config-restore** command as seen below. You can use the file list command to verify the file name:
 
@@ -535,6 +542,9 @@ To restore the system controller confd database use the following API call:
     "f5-database:name": "SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}"
     }
 
+Restore Using the GUI
+---------------------
+
 Currently there is no GUI support for restoration of the confd database, so you’ll need to use either the CLI or API to restore the system controller’s database. Once the database has been restored (you may need to wait a few minutes for the restoration to complete.) you need to reboot the blades in-order for the config to be deployed successfully.
 
 To reboot blades from the GUI log into each chassis partition. You will be prompted to change the password on first login. 
@@ -551,6 +561,9 @@ Once logged in you’ll notice no configuration inside the chassis partition. Go
 
 
 Wait for each blade to return to the **Ready** status before going onto the next step.
+
+Restore Using the API
+---------------------
 
 To reboot blades from the API, using the following API commands to list nodes (Blades), and then reboot them. The command below will list the current nodes and their names that can then be used to reboot. Send the API call to the chassis partition IP address:
 
