@@ -51,7 +51,7 @@ After the upload completes, it will take some time for it to be fully imported a
   :align: center
   :scale: 70%
 
-When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled** where you can upgrade service and/or OS independently. Note currently F5 has not released any service only or OS only releases, but they may be an option in the future. For now it is recommended to choose **Bundled** upgrades.
+When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled** where you can upgrade Service and/or OS independently. Note currently F5 has not released any Service only or OS only releases, but they may be an option in the future. For now it is recommended to choose **Bundled** upgrades.
 
 .. image:: images/rseries_software_upgrades/image7.png
   :align: center
@@ -203,7 +203,7 @@ To import an F5OS-A image, use the following API example:
                 "local-file": "images/staging/{{Appliance_ISO_Image}}",
                 "insecure": "",
                 "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "password"
+                "f5-utils-file-transfer:password": "Pa$$w0rd"
             }
         ]
 }
@@ -355,7 +355,7 @@ You can upgrade the F5OS-A platform software via the CLI, GUI, or API.
 Upgrading F5OS via GUI
 ----------------------
 
-Once the new images are loaded you can perform the upgrade from the **System Settings > Software Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Select the software version you want to upgrade to, and once you click **Save** the upgrade process will begin. Upgrading F5OS will cuase an outage for all tenants on that appliance. It is best to failover tenants to the HA pair member, then perform the upgrade of F5OS.
+Once the new images are loaded you can perform the upgrade from the **System Settings > Software Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Select the software version you want to upgrade to, and once you click **Save** the upgrade process will begin. Upgrading F5OS will cause an outage for all tenants on that appliance. It is best to failover tenants to the HA pair member, then perform the upgrade of F5OS.
 
 .. image:: images/rseries_software_upgrades/image7.png
   :align: center
@@ -451,7 +451,7 @@ This is the Set Version API call that will initiate the upgrade:
         }
     }
 
-If the upgrad is successful, you will get notification like the message below:
+If the upgrade is successful, you will get notification like the message below:
 
 .. code-block:: json
 
