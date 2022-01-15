@@ -437,31 +437,26 @@ Below is the body/payload for the API call above:
 .. code-block:: json
 
     {
-        "tenant": [
-            {
-                "name": "{{New_Tenant1_Name}}",
-                "config": {
-                    "image": "{{Appliance_Tenant_Image}}",
-                    "nodes": [
-                        1
-                    ],
-                    "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
-                    "gateway": "{{OutofBand_DFGW}}",
-                    "prefix-length": 24,
-                    "vlans": [
-                        {{Internal_VLAN}},
-                        {{External_VLAN}},
-                        {{HA_VLAN}}
-                    ],
-                    "vcpu-cores-per-node": 2,
-                    "memory": 7680,
-                    "cryptos": "enabled",
-                    "running-state": "configured"
+        "f5-tenant-images:images": {
+            "image": [
+                {
+                    "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": true,
+                    "status": "verified"
                 }
-            }
-        ]
+            ]
+        }
     }
-
 
 Validating Tenant Status via API
 ================================
