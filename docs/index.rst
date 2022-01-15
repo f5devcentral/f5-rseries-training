@@ -14,6 +14,7 @@ rSeries Training Guide
    rseries_multitenancy.rst
    rseries_performance_and_sizing.rst
    initial_setup_of_rseries_platform_layer.rst
+   initial_setup_of_rseries_network_layer.rst
    rseries_deploying_a_tenant.rst
    rseries_inside_the_tenant.rst
    rseries_software_upgrades.rst
