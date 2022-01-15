@@ -14,54 +14,54 @@ The rSeries Dashboard will provide a visual system summary of the appliance incl
   :align: center
   :scale: 70% 
 
+The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** or **Down** status. The current **Pipeline** mapping is also displayed which show the external port mapping to internal pipelines.
+
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
   :scale: 70% 
+
+The **CPU** tab shows all the avilable CPU's in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
   :scale: 70% 
 
-If there are any active-alarms they will be displayed on this tab:
-
+The  **Active Alarms** tab will display any active alerts of alarms for the system. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image4.png
   :align: center
   :scale: 70% 
 
-----------------------------
-Chassis Partition Networking
-----------------------------
+-----------------------------
+F5OS Networking Configuration
+-----------------------------
 
-Before configuring any tenant, you’ll need to setup networking for the chassis partition. All in-band networking is configured within the chassis partition layer, and all chassis partitions are completely isolated from each other. You cannot share any in-band networking internally between different chassis partitions.
+Before configuring any tenant, you’ll need to setup networking for the F5OS platform layer. All in-band networking is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant.
 
 --------------------------------
 Network Settings - > Port Groups
 --------------------------------
 
-Before configuring any interfaces, VLANs, or LAG’s you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical port. This controls whether the port is bundled or unbundled and the port speed. The term portgroup is used rather than simply Port because some front panel sockets may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly (this will require a reboot of the blade). The portgroup components are created by the system, based on the type of the blades installed. The user can modify the portgroup mode.
+Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (1.0 & 2.0 on both the r5000/r10000 series) and (11.0 & 12.0 on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (3.0 - 10.0 on both the r5000/r10000 series) and (13.0 - 20.0 on the r10000 series) can be configured independently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image54.png
-  :width: 45%
-
-
-
-.. image:: images/initial_setup_of_rseries_platform_layer/image55.png
-  :width: 45%
-
-
-**NOTE: Both ports on the BX110 blade must be configured in the same mode in current F5OS versions i.e. both ports must be configured for 100Gb, or 40Gb, or 4 x 25GB, or 4 x 10Gb. You cannot mix different port group settings on the same blade currently. A future release may provide more granular options.**  
+.. image:: images/initial_setup_of_rseries_network_layer/image5.png
+  :align: center
+  :scale: 70% 
 
 Configuring PortGroups from the GUI
 -----------------------------------
 
-To configure Portgroups go to **Network Settings > Port Groups** in the chassis partition GUI. This should be configured before any Interface, VLAN, or LAG configuration as changing the portgroup mode will alter interface numbering on the blade. Note the warning at the top of the GUI page:
+To configure Portgroups go to **Network Settings > Port Groups** in the F5OS GUI. This should be configured before any Interface, VLAN, or LAG configuration. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image56.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
   :align: center
   :scale: 70% 
 
-If you do make a change the blade will be forced to reboot to load a new bitstream image into the FPGA.
+If you do make a change the applaince will be forced to rebootreload the network service to load a new bitstream image into the FPGA.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image7.png
+  :align: center
+  :scale: 70% 
 
 Configuring PortGroups from the CLI
 -----------------------------------
