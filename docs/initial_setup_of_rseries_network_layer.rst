@@ -924,19 +924,30 @@ To change the portgroup configuration via the API use the following API call
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-portgroup:portgroups
 
-Below is an exmaple ocnfiguration change in the body of the API call above:
+Below is an exmaple configuration change in the body of the API call above, this is changing portgroup 10 to 25Gb mode:
 
 .. code-block:: json
 
-
+    {
+        "f5-portgroup:portgroups": {
+            "portgroup": [
+                {
+                    "portgroup_name": "10",
+                    "config": {
+                        "mode": "MODE_25GB"
+                    }
+                }
+            ]
+        }
+    }
 
 ------------------------------
 Network Settings -> Interfaces
 ------------------------------
 
-Interface numbering will vary depending on the current portgroup configuration. Interfaces will always be numbered by **<blade#>/<port#>**. The number of ports on a blade will change depending on if the portgroup is configured as bundled or unbundled. If the ports are bundled then ports will be **1/1.0** & **1/2.0** for slot 1, and **2/1.0** & **2/2.0** for slot 2 etc…. If ports are unbundled then the port numbering will be **1/1.1, 1/1.2, 1/1.3, & 1/1.4** for the first physical port and **1/2.1, 1/2.2, 1/2.3, & 1/2.4** for the second physical port. Even when multiple chassis partitions are used, the port numbering will stay consistent starting with the blade number. Below is an example of port numbering with all bundled interfaces.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **1.<port#>** for rSeries appliances. The r10000 has a total of 20 ports labled 1.1 - 1.20, and the r5000  has 10 ports labled 1.1 - 1.10.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image57.png
+.. image:: images/initial_setup_of_rseries_network_layer/image8.png
   :align: center
   :scale: 70% 
 
@@ -945,13 +956,13 @@ Configuring Interfaces from the GUI
 
 Within the chassis partition GUI the physical ports of all blades within that partition will be visible by going to **Network Settings > Interfaces** page. If there are other chassis partitions in the VELOS system, then those ports will only be seen within their own chassis partition. In the example below this VELOS system has 3 blades installed, but only two are part of this chassis partition, so you will not see ports from the 3rd blade unless you connect directly to the other chassis partition.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image58.png
+.. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
-  :scale: 70%  
+  :scale: 70% 
 
 You can click on any interface to view its settings or edit them. You can currently change the interface State via the GUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image59.png
+.. image:: images/initial_setup_of_rseries_network_layer/image10.png
   :align: center
   :scale: 70% 
 
