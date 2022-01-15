@@ -42,7 +42,7 @@ Before configuring any tenants, you’ll need to setup networking for the F5OS p
 Network Settings - > Port Groups
 ================================
 
-Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
+Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the blade are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGS bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
@@ -53,60 +53,149 @@ Configuring PortGroups from the GUI
 
 To configure Portgroups go to **Network Settings > Port Groups** in the F5OS GUI. This should be configured before any Interface, VLAN, or LAG configuration. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
+.. image:: images/initial_setup_of_rseries_network_layer/image6.png
   :align: center
   :scale: 70% 
 
 If you do make a change the applaince will be forced to rebootreload the network service to load a new bitstream image into the FPGA.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image7.png
+.. image:: images/initial_setup_of_rseries_network_layer/image7.png
   :align: center
   :scale: 70% 
 
 Configuring PortGroups from the CLI
 -----------------------------------
 
-Portgroups can be configured from the chassis partition CLI using the **portgroups** command in **config** mode. The following command will set interface 1/1 for 100GB:
+Portgroups can be configured from the F5OS CLI using the **portgroups** command in **config** mode. The following command will set interface 1.0 for 100GB:
 
 .. code-block:: bash
 
-  bigpartition-2# config
-  Entering configuration mode terminal
-  bigpartition-2(config)# portgroups portgroup 1/1 config mode MODE_100GB
+    appliance-1# config
+    Entering configuration mode terminal
+    appliance-1(config)# portgroups portgroup 10 config mode MODE_10GB 
+    appliance-1(config-portgroup-10)# commit
+    The following warnings were generated:
+    'portgroups portgroup': Portgroup mode changes result in a reboot of the box.
+    Proceed? [yes,no] yes
+    Commit complete.
+    appliance-1(config-portgroup-10)# 
+
 
 You must commit for any changes to take affect:
 
 .. code-block:: bash
 
-  bigpartition-2(config)# commit
+    appliance-1(config-portgroup-10)# commit
+    The following warnings were generated:
+    'portgroups portgroup': Portgroup mode changes result in a reboot of the box.
+    Proceed? [yes,no] yes
+    Commit complete.
+    appliance-1(config-portgroup-10)# 
 
 
-Possible options for mode are: MODE_4x10GB,  MODE_4x25GB,  MODE_40GB,  MODE_100GB. You can optionally configure the portgroup name and ddm poll frequency. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**:
+Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000 supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup name and ddm poll frequency. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 
-  bigpartition-2# show running-config portgroups 
-  portgroups portgroup 1/1
-  config name 1/1
-  config mode MODE_100GB
-  config ddm ddm-poll-frequency 30
-  !
-  portgroups portgroup 1/2
-  config name 1/2
-  config mode MODE_100GB
-  config ddm ddm-poll-frequency 30
-  !
-  portgroups portgroup 2/1
-  config name 2/1
-  config mode MODE_100GB
-  config ddm ddm-poll-frequency 30
-  !
-  portgroups portgroup 2/2
-  config name 2/2
-  config mode MODE_100GB
-  config ddm ddm-poll-frequency 30
-  !
-  bigpartition-2# 
+    appliance-1# show running-config portgroups 
+    portgroups portgroup 1
+    config name 1
+    config mode MODE_100GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 2
+    config name 2
+    config mode MODE_100GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 3
+    config name 3
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 4
+    config name 4
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 5
+    config name 5
+    config mode MODE_25GB
+    portgroups portgroup 1
+    config name 1
+    config mode MODE_100GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 2
+    config name 2
+    config mode MODE_100GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 3
+    config name 3
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 4
+    config name 4
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 5
+    config name 5
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    portgroups portgroup 1
+    config name 1
+    config mode MODE_100GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 2
+    config name 2
+    config mode MODE_100GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 3
+    config name 3
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 4
+    config name 4
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 5
+    config name 5
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 6
+    config name 6
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 7
+    config name 7
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 8
+    config name 8
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 9
+    config name 9
+    config mode MODE_25GB
+    config ddm ddm-poll-frequency 30
+    !
+    portgroups portgroup 10
+    config name 10
+    config mode MODE_10GB
+    config ddm ddm-poll-frequency 30
+    !
+    appliance-1#  
 
 Configuring PortGroups from the API
 -----------------------------------
@@ -115,121 +204,731 @@ To list the current portgroup configuration issue the following API call:
 
 .. code-block:: bash
 
-  GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-portgroup:portgroups
+  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-portgroup:portgroups
+
+Below is an exmaple output from an r10000 series appliance:
 
 .. code-block:: json
 
-  {
-      "f5-portgroup:portgroups": {
-          "portgroup": [
-              {
-                  "portgroup_name": "1/1",
-                  "config": {
-                      "name": "1/1",
-                      "mode": "MODE_100GB",
-                      "f5-ddm:ddm": {
-                          "ddm-poll-frequency": 30
-                      }
-                  },
-                  "state": {
-                      "vendor-name": "F5 NETWORKS INC.",
-                      "vendor-oui": "009065",
-                      "vendor-partnum": "OPT-0031        ",
-                      "vendor-revision": "A0",
-                      "vendor-serialnum": "X3CAU1J         ",
-                      "transmitter-technology": "850 nm VCSEL",
-                      "media": "100GBASE-SR4",
-                      "optic-state": "QUALIFIED",
-                      "f5-ddm:ddm": {
-                          "rx-pwr": {
-                              "low-threshold": {
-                                  "alarm": "-14.0",
-                                  "warn": "-11.0"
-                              },
-                              "instant": {
-                                  "val-lane1": "-0.08",
-                                  "val-lane2": "-0.61",
-                                  "val-lane3": "-0.19",
-                                  "val-lane4": "-0.73"
-                              },
-                              "high-threshold": {
-                                  "alarm": "3.4",
-                                  "warn": "2.4"
-                              }
-                          },
-                          "tx-pwr": {
-                              "low-threshold": {
-                                  "alarm": "-10.0",
-                                  "warn": "-8.0"
-                              },
-                              "instant": {
-                                  "val-lane1": "-0.77",
-                                  "val-lane2": "-1.01",
-                                  "val-lane3": "-1.01",
-                                  "val-lane4": "-0.82"
-                              },
-                              "high-threshold": {
-                                  "alarm": "5.0",
-                                  "warn": "3.0"
-                              }
-                          },
-                          "temp": {
-                              "low-threshold": {
-                                  "alarm": "-5.0",
-                                  "warn": "0.0"
-                              },
-                              "instant": {
-                                  "val": "23.4609"
-                              },
-                              "high-threshold": {
-                                  "alarm": "75.0",
-                                  "warn": "70.0"
-                              }
-                          },
-                          "bias": {
-                              "low-threshold": {
-                                  "alarm": "0.003",
-                                  "warn": "0.005"
-                              },
-                              "instant": {
-                                  "val-lane1": "0.007526",
-                                  "val-lane2": "0.007484",
-                                  "val-lane3": "0.00752",
-                                  "val-lane4": "0.006914"
-                              },
-                              "high-threshold": {
-                                  "alarm": "0.013",
-                                  "warn": "0.011"
-                              }
-                          },
-                          "vcc": {
-                              "low-threshold": {
-                                  "alarm": "2.97",
-                                  "warn": "3.135"
-                              },
-                              "instant": {
-                                  "val": "3.2555"
-                              },
-                              "high-threshold": {
-                                  "alarm": "3.63",
-                                  "warn": "3.465"
-                              }
-                          }
-                      }
-                  }
-              },
-              {
-                  "portgroup_name": "1/2",
-                  "config": {
-                      "name": "1/2",
-                      "mode": "MODE_100GB",
-                      "f5-ddm:ddm": {
-                          "ddm-poll-frequency": 30
-                      }
-                  },
-                  "state": {
-                      "vendor-name": "F5 NETWORKS INC.",
-   ....
+    {
+        "f5-portgroup:portgroups": {
+            "portgroup": [
+                {
+                    "portgroup_name": "1",
+                    "config": {
+                        "name": "1",
+                        "mode": "MODE_100GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "F5 NETWORKS INC.",
+                        "vendor-oui": "009065",
+                        "vendor-partnum": "OPT-0031        ",
+                        "vendor-revision": "A0",
+                        "vendor-serialnum": "X3CAU6G         ",
+                        "transmitter-technology": "850 nm VCSEL",
+                        "media": "100GBASE-SR4",
+                        "optic-state": "QUALIFIED",
+                        "f5-ddm:ddm": {
+                            "rx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-14.0",
+                                    "warn": "-11.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.77",
+                                    "val-lane2": "-0.89",
+                                    "val-lane3": "-0.92",
+                                    "val-lane4": "-1.06"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.4",
+                                    "warn": "2.4"
+                                }
+                            },
+                            "tx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-10.0",
+                                    "warn": "-8.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-1.11",
+                                    "val-lane2": "-0.52",
+                                    "val-lane3": "-1.0",
+                                    "val-lane4": "-1.15"
+                                },
+                                "high-threshold": {
+                                    "alarm": "5.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "temp": {
+                                "low-threshold": {
+                                    "alarm": "-5.0",
+                                    "warn": "0.0"
+                                },
+                                "instant": {
+                                    "val": "33.1523"
+                                },
+                                "high-threshold": {
+                                    "alarm": "75.0",
+                                    "warn": "70.0"
+                                }
+                            },
+                            "bias": {
+                                "low-threshold": {
+                                    "alarm": "0.003",
+                                    "warn": "0.005"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.007536",
+                                    "val-lane2": "0.007322",
+                                    "val-lane3": "0.007428",
+                                    "val-lane4": "0.007454"
+                                },
+                                "high-threshold": {
+                                    "alarm": "0.013",
+                                    "warn": "0.011"
+                                }
+                            },
+                            "vcc": {
+                                "low-threshold": {
+                                    "alarm": "2.97",
+                                    "warn": "3.135"
+                                },
+                                "instant": {
+                                    "val": "3.3211"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.63",
+                                    "warn": "3.465"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "2",
+                    "config": {
+                        "name": "2",
+                        "mode": "MODE_100GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "F5 NETWORKS INC.",
+                        "vendor-oui": "009065",
+                        "vendor-partnum": "OPT-0031        ",
+                        "vendor-revision": "A0",
+                        "vendor-serialnum": "XYR00K4         ",
+                        "transmitter-technology": "850 nm VCSEL",
+                        "media": "100GBASE-SR4",
+                        "optic-state": "QUALIFIED",
+                        "f5-ddm:ddm": {
+                            "rx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-14.0",
+                                    "warn": "-11.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.05",
+                                    "val-lane2": "0.12",
+                                    "val-lane3": "-0.01",
+                                    "val-lane4": "-0.17"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.4",
+                                    "warn": "2.4"
+                                }
+                            },
+                            "tx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-10.0",
+                                    "warn": "-8.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.93",
+                                    "val-lane2": "-1.02",
+                                    "val-lane3": "-1.02",
+                                    "val-lane4": "-0.9"
+                                },
+                                "high-threshold": {
+                                    "alarm": "5.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "temp": {
+                                "low-threshold": {
+                                    "alarm": "-5.0",
+                                    "warn": "0.0"
+                                },
+                                "instant": {
+                                    "val": "31.1953"
+                                },
+                                "high-threshold": {
+                                    "alarm": "75.0",
+                                    "warn": "70.0"
+                                }
+                            },
+                            "bias": {
+                                "low-threshold": {
+                                    "alarm": "0.003",
+                                    "warn": "0.005"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.007448",
+                                    "val-lane2": "0.007556",
+                                    "val-lane3": "0.007504",
+                                    "val-lane4": "0.00748"
+                                },
+                                "high-threshold": {
+                                    "alarm": "0.013",
+                                    "warn": "0.011"
+                                }
+                            },
+                            "vcc": {
+                                "low-threshold": {
+                                    "alarm": "2.97",
+                                    "warn": "3.135"
+                                },
+                                "instant": {
+                                    "val": "3.2964"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.63",
+                                    "warn": "3.465"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "3",
+                    "config": {
+                        "name": "3",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "4",
+                    "config": {
+                        "name": "4",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "5",
+                    "config": {
+                        "name": "5",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "6",
+                    "config": {
+                        "name": "6",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "7",
+                    "config": {
+                        "name": "7",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "8",
+                    "config": {
+                        "name": "8",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "9",
+                    "config": {
+                        "name": "9",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "10",
+                    "config": {
+                        "name": "10",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "11",
+                    "config": {
+                        "name": "11",
+                        "mode": "MODE_100GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "",
+                        "vendor-oui": "",
+                        "vendor-partnum": "",
+                        "vendor-revision": "",
+                        "vendor-serialnum": "",
+                        "transmitter-technology": "",
+                        "media": "",
+                        "optic-state": "UNKNOWN"
+                    }
+                },
+                {
+                    "portgroup_name": "12",
+                    "config": {
+                        "name": "12",
+                        "mode": "MODE_100GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "",
+                        "vendor-oui": "",
+                        "vendor-partnum": "",
+                        "vendor-revision": "",
+                        "vendor-serialnum": "",
+                        "transmitter-technology": "",
+                        "media": "",
+                        "optic-state": "UNKNOWN"
+                    }
+                },
+                {
+                    "portgroup_name": "13",
+                    "config": {
+                        "name": "13",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "F5 NETWORKS INC.",
+                        "vendor-oui": "009065",
+                        "vendor-partnum": "OPT-0053        ",
+                        "vendor-revision": "A1",
+                        "vendor-serialnum": "P62BET1         ",
+                        "transmitter-technology": "",
+                        "media": "25GBASE-SR",
+                        "optic-state": "QUALIFIED",
+                        "f5-ddm:ddm": {
+                            "rx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-20.0",
+                                    "warn": "-18.01"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.84"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "tx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-9.0",
+                                    "warn": "-8.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.8"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "temp": {
+                                "low-threshold": {
+                                    "alarm": "-5.0",
+                                    "warn": "0.0"
+                                },
+                                "instant": {
+                                    "val": "33.0468"
+                                },
+                                "high-threshold": {
+                                    "alarm": "75.0",
+                                    "warn": "70.0"
+                                }
+                            },
+                            "bias": {
+                                "low-threshold": {
+                                    "alarm": "0.001",
+                                    "warn": "0.002"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.007976"
+                                },
+                                "high-threshold": {
+                                    "alarm": "0.012",
+                                    "warn": "0.0115"
+                                }
+                            },
+                            "vcc": {
+                                "low-threshold": {
+                                    "alarm": "3.0",
+                                    "warn": "3.1"
+                                },
+                                "instant": {
+                                    "val": "3.3589"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.6",
+                                    "warn": "3.5"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "14",
+                    "config": {
+                        "name": "14",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "F5 NETWORKS INC.",
+                        "vendor-oui": "009065",
+                        "vendor-partnum": "OPT-0053        ",
+                        "vendor-revision": "A1",
+                        "vendor-serialnum": "P62BESG         ",
+                        "transmitter-technology": "",
+                        "media": "25GBASE-SR",
+                        "optic-state": "QUALIFIED",
+                        "f5-ddm:ddm": {
+                            "rx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-20.0",
+                                    "warn": "-18.01"
+                                },
+                                "instant": {
+                                    "val-lane1": "-1.45"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "tx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-9.0",
+                                    "warn": "-8.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.82"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "temp": {
+                                "low-threshold": {
+                                    "alarm": "-5.0",
+                                    "warn": "0.0"
+                                },
+                                "instant": {
+                                    "val": "32.0781"
+                                },
+                                "high-threshold": {
+                                    "alarm": "75.0",
+                                    "warn": "70.0"
+                                }
+                            },
+                            "bias": {
+                                "low-threshold": {
+                                    "alarm": "0.001",
+                                    "warn": "0.002"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.00798"
+                                },
+                                "high-threshold": {
+                                    "alarm": "0.012",
+                                    "warn": "0.0115"
+                                }
+                            },
+                            "vcc": {
+                                "low-threshold": {
+                                    "alarm": "3.0",
+                                    "warn": "3.1"
+                                },
+                                "instant": {
+                                    "val": "3.3499"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.6",
+                                    "warn": "3.5"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "15",
+                    "config": {
+                        "name": "15",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "F5 NETWORKS INC.",
+                        "vendor-oui": "009065",
+                        "vendor-partnum": "OPT-0053        ",
+                        "vendor-revision": "A1",
+                        "vendor-serialnum": "P62BET3         ",
+                        "transmitter-technology": "",
+                        "media": "25GBASE-SR",
+                        "optic-state": "QUALIFIED",
+                        "f5-ddm:ddm": {
+                            "rx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-20.0",
+                                    "warn": "-18.01"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.66"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "tx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-9.0",
+                                    "warn": "-8.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.61"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "temp": {
+                                "low-threshold": {
+                                    "alarm": "-5.0",
+                                    "warn": "0.0"
+                                },
+                                "instant": {
+                                    "val": "30.2812"
+                                },
+                                "high-threshold": {
+                                    "alarm": "75.0",
+                                    "warn": "70.0"
+                                }
+                            },
+                            "bias": {
+                                "low-threshold": {
+                                    "alarm": "0.001",
+                                    "warn": "0.002"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.008008"
+                                },
+                                "high-threshold": {
+                                    "alarm": "0.012",
+                                    "warn": "0.0115"
+                                }
+                            },
+                            "vcc": {
+                                "low-threshold": {
+                                    "alarm": "3.0",
+                                    "warn": "3.1"
+                                },
+                                "instant": {
+                                    "val": "3.3101"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.6",
+                                    "warn": "3.5"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "16",
+                    "config": {
+                        "name": "16",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    },
+                    "state": {
+                        "vendor-name": "F5 NETWORKS INC.",
+                        "vendor-oui": "009065",
+                        "vendor-partnum": "OPT-0053        ",
+                        "vendor-revision": "A1",
+                        "vendor-serialnum": "P62BET5         ",
+                        "transmitter-technology": "",
+                        "media": "25GBASE-SR",
+                        "optic-state": "QUALIFIED",
+                        "f5-ddm:ddm": {
+                            "rx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-20.0",
+                                    "warn": "-18.01"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.68"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "tx-pwr": {
+                                "low-threshold": {
+                                    "alarm": "-9.0",
+                                    "warn": "-8.0"
+                                },
+                                "instant": {
+                                    "val-lane1": "-0.82"
+                                },
+                                "high-threshold": {
+                                    "alarm": "4.0",
+                                    "warn": "3.0"
+                                }
+                            },
+                            "temp": {
+                                "low-threshold": {
+                                    "alarm": "-5.0",
+                                    "warn": "0.0"
+                                },
+                                "instant": {
+                                    "val": "32.4921"
+                                },
+                                "high-threshold": {
+                                    "alarm": "75.0",
+                                    "warn": "70.0"
+                                }
+                            },
+                            "bias": {
+                                "low-threshold": {
+                                    "alarm": "0.001",
+                                    "warn": "0.002"
+                                },
+                                "instant": {
+                                    "val-lane1": "0.007994"
+                                },
+                                "high-threshold": {
+                                    "alarm": "0.012",
+                                    "warn": "0.0115"
+                                }
+                            },
+                            "vcc": {
+                                "low-threshold": {
+                                    "alarm": "3.0",
+                                    "warn": "3.1"
+                                },
+                                "instant": {
+                                    "val": "3.3442"
+                                },
+                                "high-threshold": {
+                                    "alarm": "3.6",
+                                    "warn": "3.5"
+                                }
+                            }
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "17",
+                    "config": {
+                        "name": "17",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "18",
+                    "config": {
+                        "name": "18",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "19",
+                    "config": {
+                        "name": "19",
+                        "mode": "MODE_25GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                },
+                {
+                    "portgroup_name": "20",
+                    "config": {
+                        "name": "20",
+                        "mode": "MODE_10GB",
+                        "f5-ddm:ddm": {
+                            "ddm-poll-frequency": 30
+                        }
+                    }
+                }
+            ]
+        }
+    }
+
+
+To change the portgroup configuration via the API use the following API call
+
+.. code-block:: bash
+
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-portgroup:portgroups
+
+Below is an exmaple ocnfiguration change in the body of the API call above:
+
+.. code-block:: json
+
+
 
 ------------------------------
 Network Settings -> Interfaces
