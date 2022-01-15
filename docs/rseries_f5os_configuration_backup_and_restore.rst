@@ -99,7 +99,7 @@ Once the database backup has been completed, you should copy the file to an exte
 Exporting F5OS Backup via GUI
 ------------------------------
 
-In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can import or export configuration files. Note that the current transfer of files to and from the GUI requires an external HTTPS server. 
+In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to you client machine through the browser. Note that the current Import and Export options of files to and from the GUI requires an external HTTPS server. 
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
