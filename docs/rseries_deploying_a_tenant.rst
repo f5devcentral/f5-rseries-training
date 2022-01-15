@@ -25,7 +25,7 @@ There are 4 different types of tenant images to choose from as seen below, pleas
   :align: center
   :scale: 70% 
 
-The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave & nuke strategies are preferred over in place upgrades.   
+The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave & nuke strategies are preferred over in place upgrades.   
 
 .. image:: images/rseries_deploying_a_tenant/image4.png
   :align: center
@@ -53,7 +53,7 @@ This means the disk consumption on the rSeries disk is actually much smaller tha
   :align: center
   :scale: 70% 
 
-However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is actually consuming only 11GB on the disk:
+However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is actually consuming only 6.4GB on the disk. You can confirm this by logging into the bbash sheel of F5OS as root. Then listing the contents of the directory **/var/F5.system/cbip-disks**, here you will see directories for each tenant. Enter the command ls -lsh **<tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (In this case 6.4Gb).
 
 .. image:: images/rseries_deploying_a_tenant/image7.png
   :align: center
