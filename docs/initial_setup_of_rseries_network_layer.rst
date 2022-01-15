@@ -66,7 +66,7 @@ If you do make a change the applaince will be forced to rebootreload the network
 Configuring PortGroups from the CLI
 -----------------------------------
 
-Portgroups can be configured from the F5OS CLI using the **portgroups** command in **config** mode. The following command will set interface 1.0 for 100GB:
+Portgroups can be configured from the F5OS CLI using the **portgroups** command in **config** mode. The following command will set interface 10 for 10GB:
 
 .. code-block:: bash
 
@@ -81,7 +81,7 @@ Portgroups can be configured from the F5OS CLI using the **portgroups** command 
     appliance-1(config-portgroup-10)# 
 
 
-You must commit for any changes to take affect:
+You must commit for any changes to take affect. This will require a reboot of the appliance:
 
 .. code-block:: bash
 
@@ -93,7 +93,7 @@ You must commit for any changes to take affect:
     appliance-1(config-portgroup-10)# 
 
 
-Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000 supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup name and ddm poll frequency. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
+Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000 supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 
@@ -945,8 +945,12 @@ Below is an exmaple configuration change in the body of the API call above, this
 Network Settings -> Interfaces
 ------------------------------
 
-Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **1.<port#>** for rSeries appliances. The r10000 has a total of 20 ports labled 1.1 - 1.20, and the r5000  has 10 ports labled 1.1 - 1.10.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **1.<port#>** for rSeries appliances. The r10000 has a total of 20 ports labled **1.1** - **1.20**, and the r5000 has 10 ports labled **1.1** - **1.10**.
 
+.. image:: images/initial_setup_of_rseries_network_layer/image9.png
+  :align: center
+  :scale: 70% 
+  
 .. image:: images/initial_setup_of_rseries_network_layer/image8.png
   :align: center
   :scale: 70% 
@@ -956,9 +960,7 @@ Configuring Interfaces from the GUI
 
 Within the chassis partition GUI the physical ports of all blades within that partition will be visible by going to **Network Settings > Interfaces** page. If there are other chassis partitions in the VELOS system, then those ports will only be seen within their own chassis partition. In the example below this VELOS system has 3 blades installed, but only two are part of this chassis partition, so you will not see ports from the 3rd blade unless you connect directly to the other chassis partition.
 
-.. image:: images/initial_setup_of_rseries_network_layer/image9.png
-  :align: center
-  :scale: 70% 
+
 
 You can click on any interface to view its settings or edit them. You can currently change the interface State via the GUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
 
