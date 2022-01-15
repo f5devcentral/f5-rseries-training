@@ -206,16 +206,20 @@ Backing up Tenants
 
 Backup all tenants using a UCS archive or other mechanism so that they can be restored after the system controller and chassis partitions are restored. Another alternative to UCS backup/restore of tenants is using Declarative Onboarding and AS3. If tenants are configured using DO and AS3 initially, and the declarations are saved, they can be replayed to restore a tenant. BIG-IQ could be used for this purpose as AS3 and DO declarations can be sent through BIG-IQ.
 
+
 Resetting the System (Not for Production)
 =========================================
 
 For a proof-of-concept test, this section will provide steps to wipe out the entire system configuration in a graceful manner. This is not intended as a workflow for production environments, as you would not typically be deleting entire system configurations, instead you would be restoring pieces of the configuration in the case of failure. 
 
-The first step would be to ensure you have completed the previous sections, and have created backups for the F5OS layer and each tenant. These backups should have been copied out of the rSeries system to a remote location so that they can be used to restore to the system after it has been reset.
+The first step would be to ensure you have completed the previous sections, and have created backups for the F5OS layer and each tenant. These backups should have been copied out of the rSeries system to a remote location so that they can be used to restore to the system after it has been reset. The following solution article has more details in resetting the rSeries system to default:
 
-The first step is to ensure each chassis partition’s confd database has been **reset-to-default**. This will wipe out all tenant configurations and networking as well as all the system parameters associated with each chassis partition.
+https://support.f5.com/csp/article/K20024872
 
-For the smallpartition:
+Resetting the system via CLI
+----------------------------
+
+To reset the F5OS confd database to default use the CLI command **system database reset-to-default**. This will wipe out all tenant configurations, networking, as well as all the system parameters. You will lose all conectivity after this is run and will require console access to re-establish network connectivity before a previous backup can be imported and a restore can occur.
 
 .. code-block:: bash
 
@@ -284,9 +288,8 @@ Once this has been committed both controllers need to be rebooted manually. Logi
 The system controllers should reboot, and their configurations will be completely wiped clean. You will need ot login via the CLI to restore out-of-band networking connectivity, and then the previously archived configurations can be copied back and restored.
 
 
-
-Using the API to Remove Partitions and Reset Controller
--------------------------------------------------------
+Resetting the system via API
+----------------------------
 
 There is no GUI support for this functionality currently. To do this via API call you will need to send the following API call to the chassis partition IP address. Below is an example sending the database reset to default command to the chassis partition called bigpartition:
 
