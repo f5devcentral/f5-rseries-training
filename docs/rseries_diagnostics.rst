@@ -2,89 +2,114 @@
 rSeries Diagnostics
 ===================
 
+This section will go through some of the diagnostic capcilities within the F5OS layer. Inside the tenant the same diagnostics that customers are used to are still avilable. 
 
 Qkviews
 =======
 
+rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide mroe details:
 
-rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant.
+https://support.f5.com/csp/article/K76100544
 
-https://support.f5.com/csp/article/K02521182
+https://support.f5.com/csp/article/K04756153
 
-**System Controller qkview**:
+In general, you can use the qkview utility on rSeries systems to automatically collect configuration and diagnostic information from the system. The qkview utility provided in F5OS-A software captures diagnostic information from the rSeries system and associated containers. 
 
-- Use this to investigate problems relating to the controllers themselves, or the controller platform services.
-    - Collects info for active controller
-    - Collects host info, including logs
-    - Collects info from each controller platform service container
-- Collects info for standby controller
-    - Collects host info, including logs
-    - Collects info from each controller platform service container
- 
-**Chassis Partition qkview**:
+Note: The qkview utility on the rSeries system does not capture diagnostic data from tenant BIG-IP systems. To generate diagnostic data for a tenant BIG-IP, log in to the tenant system and perform the relevant procedure in K12878: Generating diagnostic data using the qkview utility.
 
-- Use this to investigate problems relating to a Partition. i.e. a problem with one of the partition services, or one of the blades in that partition
-    - Collects info for partition services, on the controller for which the partition is active
-        - Collects info for each partition service container
-    - Collects info for partition services, on the controller for which the partition is standby
-        - Collects info for each partition service container
-    - Collects info from each blade in the partition
-    - Collects blade host info, including logs
-    - Collects info for each partition service container
+The qkview utility on the rSeries system generates machine-readable JavaScript Object Notation (JSON) diagnostic data and combines the data into a single compressed Tape ARchive (TAR) format file. The single TAR file is comprised of embedded TAR files containing the diagnostic data of individual containers running on the system, as well as diagnostic data from the rSeries system. You can upload this file, called a QKView file, to iHealth, or give it to F5 Support to help them troubleshoot any issues.
 
-In both the system controller and the chassis partition the qkview can be generated from The **System Settings > System Reports** page. Here it also allows an admin to optionally upload them to iHealth. 
+Note: F5 Support requires a QKView file in all cases in which remote access to the product is not available.
 
-.. image:: images/velos_diagnostics/image1.png
+Qkview creation via GUI
+-----------------------
+
+
+A QKView for the F5OS layer can be generated from the **System Settings > System Reports** page. Once finished it can also be uploaded them to iHealth. 
+
+.. image:: images/rseries_diagnostics/image1.png
   :align: center
   :scale: 70%
 
 To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkyou view to be generated.  Once the qkview is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if entered them previously and can be cleared if you want to use another account, you can optionally add an **F5 Support Case Number** and **Description** when uploading to iHealth.
 
 
-.. image:: images/velos_diagnostics/image2.png
-  :width: 45%
+.. image:: images/rseries_diagnostics/image2.png
+  :align: center
+  :scale: 70%
 
-.. image:: images/velos_diagnostics/image3.png
-  :width: 45%
+.. image:: images/rseries_diagnostics/image3.png
+  :align: center
+  :scale: 70%
 
+Qkview creation via CLI
+-----------------------
 
-If you would like to store iHealth credentials within the configuration you may do so via the system controller CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a **username** and **password**.
+If you would like to store iHealth credentials within the configuration you may do so via the F5OS CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a **username** and **password**.
 
 .. code-block:: bash
 
-    syscon-2-active(config)# system diagnostics ihealth config username j.mccarron@f5.com password 
+    appliance-1# config
+    Entering configuration mode terminal
+    appliance-1(config)# system diagnostics ihealth config username test@f5.com password 
     (<AES encrypted string>): ********
-    syscon-2-active(config)# commit 
+    appliance-1(config)# commit
     Commit complete.
-    syscon-2-active(config)# do show system diagnostics ihealth 
-    system diagnostics ihealth state username j.mccarron@f5.com
-    system diagnostics ihealth state server https://ihealth-api.f5.com/qkview-analyzer/api/qkviews?visible_in_gui=True
-    system diagnostics ihealth state authserver https://api.f5.com/auth/pub/sso/login/ihealth-api
-    syscon-2-active(config)# 
+    appliance-1(config)# 
 
 To generate a qkview from the CLI run the command **system diagnostics qkview capture**.
 
 .. code-block:: bash
 
-    syscon-2-active# system diagnostics qkview capture 
-    result  Qkview file controller-2.qkview is being collected
+    appliance-1(config)# system diagnostics qkview capture 
+    result  Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. 
+    Qkview file appliance-1.qkview is being collected.
     return code 200
+    
     resultint 0
-
+    appliance-1(config)# 
  
-You can view the status of the capture using the command system diagnostics qkview status.
+You can view the status of the capture using the command **system diagnostics qkview status**.
 
 .. code-block:: bash
 
-    syscon-2-active# system diagnostics qkview status 
-    result  {"Busy":true,"Percent":59,"Status":"collecting","Message":"Collecting Data","Filename":"controller-2.qkview"}
+    appliance-1# system diagnostics qkview status
+    result  {"Busy":true,"Percent":97,"Status":"collating","Message":"Collating data","Filename":"appliance-1.qkview"}
     
     resultint 0
+    appliance-1# 
 
-    syscon-2-active# system diagnostics qkview status
-    result  {"Busy":false,"Percent":100,"Status":"complete","Message":"Completed collection.","Filename":"controller-2.qkview"}
+You may also confirm the file has been created by using the **file list** command, or the command **system diagnostics qkview list** to see more details about the size and creation date of the file:
+
+    appliance-1# file list path diags/shared/qkview/
+    entries {
+        name 
+    appliance-1.qkview
+    }
+    appliance-1# 
+
+    appliance-1# system diagnostics qkview list 
+    result  {"Qkviews":[{"Filename":"appliance-1.qkview","Date":"2022-01-16T16:57:22.983013886Z","Size":208510806}]}
     
     resultint 0
+    appliance-1# 
+
+To upload the qkview file to iHealth using the CLI use the following command **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
+
+    appliance-1# system diagnostics ihealth upload qkview-file appliance-1.qkview description "This is a test" 
+    message HTTP/1.1 202 Accepted
+    Location: /support/ihealth/status/Z3HydOfa
+    Date: Sun, 16 Jan 2022 17:02:36 GMT
+    Content-Length: 0
+
+
+    errorcode false
+    appliance-1# 
+
+
+Qkview creation via API
+-----------------------
+
 
 
 
@@ -249,7 +274,7 @@ Within a chassis partition the path for the logging is different. You can use th
 
 Currently in both the system controller and chassis partition GUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbosity going to the remote logging host, you can raise its severity to see additional messages.
 
-.. image:: images/velos_diagnostics/image4.png
+.. image:: images/rseries_diagnostics/image4.png
   :align: center
   :scale: 70%
 
