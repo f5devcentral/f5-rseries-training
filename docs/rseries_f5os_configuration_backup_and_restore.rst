@@ -316,7 +316,7 @@ The last step in the reset procedure is to set the system controllers confd data
 
 The system controllers should reboot, and their configurations will be completel wiped clean. You will need ot login via the CLI to restore out-of-band networking connectivity, and then the previously archived configurations can be copied back and restored. 
 
-Resetting the system via API
+Resetting the system via GUI
 ----------------------------
 
 This is not currently an option, and a reset must be performed via API or CLI.
@@ -325,10 +325,10 @@ This is not currently an option, and a reset must be performed via API or CLI.
 Restoring Out-of-Band Connectivity and Copying Archived Configs into F5OS
 =========================================================================
 
-Rsestoring Out-of-Band Management via CLI
------------------------------------------
+Rsestoring F5OS Out-of-Band Management via CLI
+----------------------------------------------
 
-You will need to login to the system controller console port since all the networking configuration has now been wiped clean. You will login with the default username/password of admin/admin, since any previous accounts will have been wiped clean. On first login you will be prompted to change your password. Note below that the current console is connected to the standby controller, you’ll need to connect to the console of the active controller to make further changes:
+You will need to login to the rSeries appliance console port since all the networking configuration has now been wiped clean. You will login with the default username/password of admin/admin, since any previous accounts will have been wiped clean. On first login you will be prompted to change your password.
 
 .. code-block:: bash
 
@@ -402,7 +402,7 @@ Importing F5OS Backups via CLI
 ------------------------------
 
 
-Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the system controllers. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
+Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
 
 
 Next SCP the file from a remote server:
@@ -437,11 +437,11 @@ To import the file using the F5OS CLI you must have a remote HTTP server to host
 Importing F5OS Backups via API
 ------------------------------
 
-Post the following API call to the system controllers IP address to import the archived confd backup file form a remote HTTPS server to the configs directory on the system controller.
+Post the following API call to the F5OS out-of-band IP address to import the archived confd backup file from a remote HTTPS server to the configs directory on the appliance.
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/import
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
@@ -459,7 +459,7 @@ You may query the transfer status of the file via the following API command:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+    POST https://{{Appliance1_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
 .. code-block:: json
 
@@ -471,7 +471,7 @@ If you want to list the contents of the config directory via API use the followi
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 .. code-block:: json
 
@@ -497,13 +497,13 @@ You’ll see the contents of the directory in the API response:
 Importing F5OS Backups via GUI
 ------------------------------
 
-You can use the **System Settings -> File Utilities** page to import an archived system controller backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file.
+You can use the **System Settings -> File Utilities** page to import an archived F5OS backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file.
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image9.png
+.. image:: images/rseries_f5os_configuration_backup_and_restore/image9.png
   :align: center
   :scale: 70%
 
-.. image:: images/velos_f5os_configuration_backup_and_restore/image10.png
+.. image:: images/rseries_f5os_configuration_backup_and_restore/image10.png
   :align: center
   :scale: 70%
 
@@ -513,7 +513,7 @@ Restoring F5OS from a Database Backup
 Restore Using the CLI
 ---------------------
 
-Now that the system controller backup has been copied into the system, you can restore the previous backup using the **system database config-restore** command as seen below. You can use the file list command to verify the file name:
+Now that the F5OS backup has been copied into the system, you can restore the previous backup using the **system database config-restore** command as seen below. You can use the **file list** command to verify the file name:
 
 .. code-block:: bash
 
@@ -530,11 +530,14 @@ Now that the system controller backup has been copied into the system, you can r
     syscon-2-active(config)#
 
 
-To restore the system controller confd database use the following API call:
+Restore Using the API
+---------------------
+
+To restore the F5OS confd database use the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
+    POST https://{{Applince1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
 
 .. code-block:: json
 
@@ -545,237 +548,7 @@ To restore the system controller confd database use the following API call:
 Restore Using the GUI
 ---------------------
 
-Currently there is no GUI support for restoration of the confd database, so you’ll need to use either the CLI or API to restore the system controller’s database. Once the database has been restored (you may need to wait a few minutes for the restoration to complete.) you need to reboot the blades in-order for the config to be deployed successfully.
-
-To reboot blades from the GUI log into each chassis partition. You will be prompted to change the password on first login. 
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image11.png
-  :align: center
-  :scale: 70%
-
-Once logged in you’ll notice no configuration inside the chassis partition. Go to the **System Settings -> General** Page and reboot each blade. You’ll need to do the same procedure for other chassis partitions if they exist.
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image12.png
-  :align: center
-  :scale: 70%
-
-
-Wait for each blade to return to the **Ready** status before going onto the next step.
-
-Restore Using the API
----------------------
-
-To reboot blades from the API, using the following API commands to list nodes (Blades), and then reboot them. The command below will list the current nodes and their names that can then be used to reboot. Send the API call to the chassis partition IP address:
-
-.. code-block:: bash
-
-    GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-cluster:cluster/nodes
-
-.. code-block:: json
-
-    {
-        "f5-cluster:nodes": {
-            "node": [
-                {
-                    "name": "blade-1",
-                    "config": {
-                        "name": "blade-1",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-1",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": true,
-                        "platform": {
-                            "fpga-state": "FPGA_RDY",
-                            "dma-agent-state": "DMA_AGENT_RDY"
-                        },
-                        "slot-number": 1,
-                        "node-info": {
-                            "creation-time": "2021-08-31T00:16:13Z",
-                            "cpu": 28,
-                            "pods": 250,
-                            "memory": "131574100Ki"
-                        },
-                        "ready-info": {
-                            "ready": true,
-                            "last-transition-time": "2021-09-16T00:36:42Z",
-                            "message": "kubelet is posting ready status"
-                        },
-                        "out-of-disk-info": {
-                            "out-of-disk": false,
-                            "last-transition-time": "2021-09-16T00:36:31Z",
-                            "message": "kubelet has sufficient disk space available"
-                        },
-                        "disk-pressure-info": {
-                            "disk-pressure": false,
-                            "last-transition-time": "2021-09-16T00:36:31Z",
-                            "message": "kubelet has no disk pressure"
-                        },
-                        "disk-data": {
-                            "stats": [
-                                {},
-                                {},
-                                {}
-                            ]
-                        },
-                        "f5-disk-usage-threshold:disk-usage": {
-                            "used-percent": 1,
-                            "growth-rate": 0,
-                            "status": "in-range"
-                        }
-                    }
-                },
-                {
-                    "name": "blade-2",
-                    "config": {
-                        "name": "blade-2",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-2",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": true,
-                        "platform": {
-                            "fpga-state": "FPGA_RDY",
-                            "dma-agent-state": "DMA_AGENT_RDY"
-                        },
-                        "slot-number": 2,
-                        "node-info": {
-                            "creation-time": "2021-08-31T00:16:12Z",
-                            "cpu": 28,
-                            "pods": 250,
-                            "memory": "131574100Ki"
-                        },
-                        "ready-info": {
-                            "ready": true,
-                            "last-transition-time": "2021-09-16T00:36:44Z",
-                            "message": "kubelet is posting ready status"
-                        },
-                        "out-of-disk-info": {
-                            "out-of-disk": false,
-                            "last-transition-time": "2021-09-16T00:36:34Z",
-                            "message": "kubelet has sufficient disk space available"
-                        },
-                        "disk-pressure-info": {
-                            "disk-pressure": false,
-                            "last-transition-time": "2021-09-16T00:36:34Z",
-                            "message": "kubelet has no disk pressure"
-                        },
-                        "disk-data": {
-                            "stats": [
-                                {},
-                                {},
-                                {}
-                            ]
-                        },
-                        "f5-disk-usage-threshold:disk-usage": {
-                            "used-percent": 1,
-                            "growth-rate": 0,
-                            "status": "in-range"
-                        }
-                    }
-                },
-                {
-                    "name": "blade-3",
-                    "config": {
-                        "name": "blade-3",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-3",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": false,
-                        "slot-number": 3
-                    }
-                },
-                {
-                    "name": "blade-4",
-                    "config": {
-                        "name": "blade-4",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-4",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": false,
-                        "slot-number": 4
-                    }
-                },
-                {
-                    "name": "blade-5",
-                    "config": {
-                        "name": "blade-5",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-5",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": false,
-                        "slot-number": 5
-                    }
-                },
-                {
-                    "name": "blade-6",
-                    "config": {
-                        "name": "blade-6",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-6",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": false,
-                        "slot-number": 6
-                    }
-                },
-                {
-                    "name": "blade-7",
-                    "config": {
-                        "name": "blade-7",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-7",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": false,
-                        "slot-number": 7
-                    }
-                },
-                {
-                    "name": "blade-8",
-                    "config": {
-                        "name": "blade-8",
-                        "enabled": true
-                    },
-                    "state": {
-                        "name": "blade-8",
-                        "enabled": true,
-                        "node-running-state": "running",
-                        "assigned": false,
-                        "slot-number": 8
-                    }
-                }
-            ]
-        }
-    }
-
-You must reboot each blade that was previously assigned to a partition:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-cluster:cluster/nodes/node=blade-1/reboot
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-cluster:cluster/nodes/node=blade-2/reboot
-
-    POST https://{{Chassis1_SmallPartition_IP}}:8888/restconf/data/f5-cluster:cluster/nodes/node=blade-3/reboot
-
+Currently there is no GUI support for restoration of the confd database, so you’ll need to use either the CLI or API to restore the F5OS database. Once the database has been restored (you may need to wait a few minutes for the restoration to complete.)
 
 
 
