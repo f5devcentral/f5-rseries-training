@@ -188,96 +188,45 @@ In the output of tha API call the upload initiation is confirmed.
 Logging
 =======
 
-Many functions inside the F5OS layer system controllers and partitions will log their events to the **velos.log** file that resides in the **/var/log_controller** path in the underlying system controller shell. In the F5OS CLI the paths are simplified in v1.2.x so that you don’t have know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/controller** directory:
+Many functions inside the F5OS layer will log their events to the **platform.log** file that resides in the **/log/system/platform** path. You'll also notice there are other files for other types of logs.
+
+Viewing Logs from the CLI
+--------------------------
+
+In the F5OS CLI the paths are simplified so that you don’t have know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/platform** directory, use the tab complete to see the options:
 
 .. code-block:: bash
 
-    syscon-1-active# file list path log/controller/
-    entries {
-        name 
-    afu-cookie
-    cc-confd
-    cc-confd-hal
-    cc-confd-health
-    cc-confd-health-diag-agent
-    cc-confd-init
-    cc-confd.1
-    cc-confd.2.gz
-    cc-confd.3.gz
-    cc-confd.4.gz
-    cc-confd.5.gz
-    cc-upgrade.dbg
-    chassis-manager
-    chassis-manager.1
-    chassis-manager.2.gz
-    chassis-manager.3.gz
-    chassis-manager.4.gz
-    chassis-manager.5.gz
-    confd
-    confd_image_remove
-    config-object-manager
-    config-object-manager-hal
-    events/
-    ha
-    ha-hal
-    host-config
-    host-config-hal
-    host-config.1
-    host-config.2.gz
-    host-config.3.gz
-    httpd/
-    image-server
-    image-server-dhcp
-    image-server-hal
-    image-server-httpd
-    logrotate.log
-    logrotate.log.1
-    logrotate.log.2.gz
-    partition-agent
-    partition-agent.1
-    partition-software-manager
-    partition-software-manager-hal
-    partition-software-manager.1
-    partition-software-manager.2.gz
-    partition-software-manager.3.gz
-    partition-update
-    pel_log
-    reprogram_chassis_network
-    rsyslogd_init.log
-    run/
-    sshd.terminal-server
-    switchd
-    switchd-hal
-    switchd.1
-    switchd.2.gz
-    switchd.3.gz
-    switchd.4.gz
-    system-update
-    terminal-server.default
-    tftp.log
-    velos.log
-    velos.log.1
-    }
-    syscon-1-active# 
+    appliance-1# file list path log/
+    Possible completions:
+    confd/  host/  system/
+    appliance-1# file list path log/system/
+    Possible completions:
+    audit.log                      confd.log          devel.log     devel.log.1    lcd.log           lcd.log.1           lcd.log.2.gz       
+    lcd.log.3.gz                   lcd.log.4.gz       lcd.log.5.gz  logrotate.log  logrotate.log.1   logrotate.log.2.gz  platform.log       
+    reprogram_chassis_network.log  rsyslogd_init.log  snmp.log      startup.log    startup.log.prev  trace/              vconsole_auth.log  
+    vconsole_startup.log           velos.log          webui/        
+    appliance-1# file list path log/system/
 
-To view the contents of the velos.log file use the command **file show path /log/controller/velos.log**:
+To view the contents of the **platform.log** file use the command **file show path /log/controller/velos.log**. This will show the entire log file from the beginning, and may not be the best way to troubleshoot a recent event:
 
 .. code-block:: bash
 
-    syscon-1-active# file show log/controller/velos.log
-    2021-02-08T11:52:27-08:00 localhost.localdomain notice boot_marker: ---===[ BOOT-MARKER ]===---
-    2021-02-08T19:58:50.837735+00:00 controller-1 vcc-lacpd[0]: priority="Err" version=1.0 msgid=0x401000000000005 msg="Invalid Argument" function="fzmq_set_msg_queue_size" argument="handle NULL".
-    2021-02-08T19:58:50.837748+00:00 controller-1 user-manager[14]: priority="Notice" version=1.0 msgid=0x6801000000000001 msg="User Manager Starting".
-    2021-02-08T19:58:50.838837+00:00 controller-1 alert-service[7]: priority="Notice" version=1.0 msgid=0x2201000000000001 msg="Alert Service Starting..." version="3.4.7" date="Sun Oct 11 01:21:02 2020".
-    2021-02-08T19:58:50.838867+00:00 controller-1 alert-service[7]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-08T19:58:50.838881+00:00 controller-1 /usr/bin/authd[7]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-08T19:58:50.838934+00:00 controller-1 alert-service[7]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
+    appliance-1# file show log/system/platform.log 
+    2021-10-18T20:53:28.620260+00:00 appliance-1 /usr/sbin/fips-service[9]: priority="Notice" version=1.0 msgid=0x5f01000000000001 msg="fips-service starting".
+    2021-10-18T20:53:28.620289+00:00 appliance-1 utils-agent[9]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
+    2021-10-18T20:53:28.620392+00:00 appliance-1 /usr/sbin/fips-service[9]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
+    2021-10-18T20:53:28.620401+00:00 appliance-1 utils-agent[9]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
+    2021-10-18T20:53:28.620590+00:00 appliance-1 /usr/sbin/fips-service[9]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
+    2021-10-18T20:53:28.620591+00:00 appliance-1 ihealthd[8]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
+    2021-10-18T20:53:28.620593+00:00 appliance-1 utils-agent[9]: priority="Info" version=1.0 msgid=0x6602000000000006 msg="DB state monitor started".
+    2021-10-18T20:53:28.620900+00:00 appliance-1 /usr/sbin/fips-service[9]: priority="Info" version=1.0 msgid=0x6602000000000006 msg="DB state monitor started".
 
 There are options to manipulate the output of the file by adding **| ?**  to see the options.
 
 .. code-block:: bash
 
-    syscon-1-active# file show /log/controller/velos.log | ?
+    appliance-1# file show log/system/platform.log | ?
     Possible completions:
     append    Append output text to a file
     begin     Begin with the line that matches
@@ -289,67 +238,142 @@ There are options to manipulate the output of the file by adding **| ?**  to see
     nomore    Suppress pagination
     save      Save output text to a file
     until     End with the line that matches
+    appliance-1# file show log/system/platform.log | 
 
 There are also other file options to tail the log file using **file tail -f** for live tail of the file or **file tail -n <number of lines>**.
 
 .. code-block:: bash
 
-    syscon-1-active# file tail -f log/controller/velos.log 
-    2021-02-23T16:42:41.251528+00:00 controller-1 rsyslog-configd[7]: priority="Info" version=1.0 msgid=0x1301000000000005 msg="Setting component log severity" name="partition-software-manager" severity=6.
-    2021-02-23T16:42:41.284819+00:00 controller-1 rsyslog-configd[7]: priority="Info" version=1.0 msgid=0x1301000000000005 msg="Setting component log severity" name="vcc-chassis-manager" severity=6.
-    2021-02-23T16:42:41.290347+00:00 controller-1 rsyslog-configd[7]: priority="Info" version=1.0 msgid=0x1301000000000005 msg="Setting component log severity" name="vcc-confd" severity=6.
-    2021-02-23T16:42:41.295275+00:00 controller-1 rsyslog-configd[7]: priority="Info" version=1.0 msgid=0x1301000000000005 msg="Setting component log severity" name="vcc-ha" severity=6.
-    2021-02-23T16:42:41.305051+00:00 controller-1 rsyslog-configd[7]: priority="Info" version=1.0 msgid=0x1301000000000005 msg="Setting component log severity" name="vcc-lacpd" severity=6.
-    2021-02-23T16:42:41.305662+00:00 controller-1 rsyslog-configd[7]: priority="Info" version=1.0 msgid=0x1301000000000005 msg="Setting component log severity" name="vcc-partition-agent" severity=6.
-    2021-02-23T16:42:46.960349+00:00 controller-1 partition-software-manager[9]: priority="Info" version=1.0 msgid=0x1101000000000034 msg="configuration updated; num_part:" num_partition=4.
-    2021-02-23T16:42:46.960395+00:00 controller-1 partition-software-manager[9]: priority="Info" version=1.0 msgid=0x1101000000000036 msg="configuration updated; num_image:" num_partition_iso_image=4.
-    2021-02-23T16:57:51.752978+00:00 controller-1 partition-software-manager[9]: priority="Err" version=1.0 msgid=0x1101000000000052 msg="unknown class_tag:" field_tag=1537040122.
-    2021-02-23T16:57:56+00:00 controller-2 partition-software-manager[8]: priority="Err" version=1.0 msgid=0x1101000000000052 msg="unknown class_tag:" field_tag=1537040122.
+    appliance-1# file tail -f log/system/platform.log 
+    2022-01-18T01:44:40.236691+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:44:40.255537+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    2022-01-18T01:45:40.213327+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:45:40.213596+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:45:40.226138+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:45:40.238555+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    2022-01-18T01:46:40.212159+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:46:40.212402+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:46:40.229909+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    appliance-1# 
 
 
 
-    syscon-1-active# file tail -n 20 log/controller/velos.log
-    2021-02-23T16:42:41.077215+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x401000000000024 msg="Send Message" time=1614098561077203609 id="1614045762610008304:2" seq=207646 mtype="SEND_TYPE" src="lacpd CC2 sender" dest="addr:tcp://10.1.5.62:1053".
-    2021-02-23T16:42:41.077239+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x3301000000000052 msg="PDU:" direction="Transmitted" interface="1/1.3" length=124.
-    2021-02-23T16:42:41.077257+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x401000000000024 msg="Send Message" time=1614098561077247405 id="1614045762609932334:1" seq=207648 mtype="SEND_TYPE" src="lacpd CC1 sender" dest="addr:tcp://10.1.5.61:1053".
-    2021-02-23T16:42:41.077280+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x3301000000000052 msg="PDU:" direction="Transmitted" interface="2/1.3" length=124.
-    2021-02-23T16:42:41.077301+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x401000000000024 msg="Send Message" time=1614098561077291045 id="1614045762610008304:2" seq=207647 mtype="SEND_TYPE" src="lacpd CC2 sender" dest="addr:tcp://10.1.5.62:1053".
-    2021-02-23T16:42:41.077391+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x3301000000000052 msg="PDU:" direction="Transmitted" interface="1/mgmt0" length=124.
-    2021-02-23T16:42:41.077411+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x401000000000024 msg="Send Message" time=1614098561077399963 id="1614045762609932334:1" seq=207649 mtype="SEND_TYPE" src="lacpd CC1 sender" dest="addr:tcp://10.1.5.61:1053".
-    2021-02-23T16:42:41.077437+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x3301000000000052 msg="PDU:" direction="Transmitted" interface="2/mgmt0" length=124.
-    2021-02-23T16:42:41.077477+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x401000000000024 msg="Send Message" time=1614098561077445005 id="1614045762610008304:2" seq=207648 mtype="SEND_TYPE" src="lacpd CC2 sender" dest="addr:tcp://10.1.5.62:1053".
-    2021-02-23T16:42:41.077637+00:00 controller-1 vcc-lacpd[7]: priority="Debug" version=1.0 msgid=0x3301000000000050 msg="" debug_str="zmqMsgHandler.receivePdu called".
+    appliance-1# file tail -n 20 log/system/platform.log
+    2022-01-18T01:42:40.217019+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:42:40.217275+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:42:40.235046+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:42:40.254086+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    2022-01-18T01:43:40.332658+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:43:40.332900+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:43:40.352918+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:43:40.370488+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    2022-01-18T01:44:40.218159+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:44:40.218479+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:44:40.236691+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:44:40.255537+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    2022-01-18T01:45:40.213327+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:45:40.213596+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:45:40.226138+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:45:40.238555+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    2022-01-18T01:46:40.212159+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
+    2022-01-18T01:46:40.212402+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:46:40.229909+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::get_elem(confd_trans_ctx*, confd_hkeypath_t*)".
+    2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
+    appliance-1# 
 
-Within a chassis partition the path for the logging is different. You can use the same CLI commands in the chassis partition that are used in the system controllers by substituting the updated path for the **log/velos.log** file.
+Within the bash shell the path for the logging is different it is **/var/F5/system/log**. 
 
 .. code-block:: bash
 
-    bigpartition-2# file show log/velos.log     
+    [root@appliance-1 /]# ls -al /var/F5/system/log/
+    total 1016748
+    drwxr-xr-x.  4 root root      4096 Jan 17 19:38 .
+    drwxr-xr-x. 21 root root      4096 Jan 17 20:30 ..
+    -rw-r--r--.  1 root root  14123371 Jan 17 20:48 audit.log
+    -rw-r--r--.  1 root root    588341 Jan 17 05:18 confd.log
+    -rw-r--r--.  1 root root  41019035 Jan 17 20:48 devel.log
+    -rw-r--r--.  1 root root 104858562 Dec 22 15:29 devel.log.1
+    -rw-r--r--.  1 root root  64837421 Jan 17 20:49 lcd.log
+    -rw-r--r--.  1 root root 104860300 Jan  5 18:04 lcd.log.1
+    -rw-r--r--.  1 root root   6501388 Dec 17 08:23 lcd.log.2.gz
+    -rw-r--r--.  1 root root   6532013 Nov 27 22:08 lcd.log.3.gz
+    -rw-r--r--.  1 root root   6396563 Nov  8 12:27 lcd.log.4.gz
+    -rw-r--r--.  1 root root   5101197 Oct 20 03:46 lcd.log.5.gz
+    -rw-r--r--.  1 root root    110308 Jan 17 20:49 logrotate.log
+    -rw-r--r--.  1 root root   5245071 Jan 17 19:38 logrotate.log.1
+    -rw-r--r--.  1 root root     28600 Jan 15 11:15 logrotate.log.2.gz
+    -rw-r--r--.  1 root root 471625299 Jan 17 20:48 platform.log
+    -rw-r--r--.  1 root root         0 Sep 30 18:10 reprogram_chassis_network.log
+    -rw-r--r--.  1 root root     14659 Jan 17 05:17 rsyslogd_init.log
+    -rw-r--r--.  1 root root         0 Sep 24 16:41 snmp.log
+    -rw-r--r--.  1 root root       118 Jan 17 05:17 startup.log
+    -rw-r--r--.  1 root root       193 Jan 17 05:14 startup.log.prev
+    drwxr-xr-x.  2 root root      4096 Sep 24 16:41 trace
+    -rw-r--r--.  1 root root      3381 Jan 17 05:17 vconsole_auth.log
+    -rw-r--r--.  1 root root     18817 Jan 17 05:17 vconsole_startup.log
+    -rw-r--r--.  1 root root 209193620 Oct 18 16:46 velos.log
+    drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webui
+    [root@appliance-1 /]# 
 
-    2021-02-22T23:46:23+00:00 10.1.18.51 controller-1(p2) partition-ha[1]: priority="Info" version=1.0 msgid=0x4602000000000004 msg="Active going Standby".
-    2021-02-22T23:46:23.381784+00:00 controller-2(p2) user-manager[223]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.2 blade-2(p2) platform-mgr[12]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.2 blade-2(p2) fpgamgr[12]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.2 blade-2(p2) /usr/bin/authd[7]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.2 blade-2(p2) l2-agent[12]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.2 blade-2(p2) partition-ha[1]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.2 blade-2(p2) /usr/sbin/fips-service[13]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-    2021-02-22T23:46:23+00:00 10.1.18.1 blade-1(p2) platform-mgr[11]: priority="Info" version=1.0 msgid=0x6602000000000005 msg="DB is not ready".
-
-    bigpartition-2# file tail -f log/velos.log
-    2021-02-23T17:38:10+00:00 10.1.18.2 blade-2(p2) lacpd[1]: priority="Debug" version=1.0 msgid=0x3401000000000048 msg="" debug_str="velocityDatapathHandler.pollPdu() called".
-    2021-02-23T17:38:11+00:00 10.1.18.2 blade-2(p2) lacpd[1]: priority="Debug" version=1.0 msgid=0x3401000000000048 msg="" debug_str="velocityDatapathHandler.pollPdu() called".
-    2021-02-23T17:38:11+00:00 10.1.18.2 blade-2(p2) lacpd[1]: priority="Debug" version=1.0 msgid=0x3401000000000045 msg="PDU:" direction="Transmitted" interface="1/2.0" length=124.
-    2021-02-23T17:38:11+00:00 10.1.18.2 blade-2(p2) lacpd[1]: priority="Debug" version=1.0 msgid=0x3401000000000045 msg="PDU:" direction="Transmitted" interface="2/1.0" length=124.
-    2021-02-23T17:38:11+00:00 10.1.18.2 blade-2(p2) lacpd[1]: priority="Debug" version=1.0 msgid=0x3401000000000045 msg="PDU:" direction="Transmitted" interface="1/1.0" length=124.
+If you would like to change any of the logging level via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must commit for this change to take affect. Be sure to set logging levels back to normal after troubleshooting has completed.
 
 
-Currently in both the system controller and chassis partition GUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbosity going to the remote logging host, you can raise its severity to see additional messages.
+.. code-block:: bash
+
+    appliance-1(config)# system logging sw-components sw-component ?
+    Possible completions:
+    alert-service     api-svc-gateway         appliance-orchestration-agent  appliance-orchestration-manager  authd         confd-key-migrationd  
+    dagd-service      datapath-cp-proxy       diag-agent                     disk-usage-statd                 dma-agent     fips-service          
+    fpgamgr           ihealth-upload-service  ihealthd                       image-agent                      kubehelper    l2-agent              
+    lacpd             license-service         line-dma-agent                 lldpd                            lopd          network-manager       
+    nic-manager       optics-mgr              platform-diag                  platform-fwu                     platform-hal  platform-mgr          
+    platform-monitor  platform-stats-bridge   qkviewd                        rsyslog-configd                  snmp-trapd    stpd                  
+    sw-rbcast         sys-host-config         system-control                 tcpdumpd-manager                 tmstat-agent  tmstat-merged         
+    upgrade-service   user-manager            vconsole                       
+    appliance-1(config)# system logging sw-components sw-component lacpd ?
+    Possible completions:
+    config   Configuration data for platform sw-component logging
+    <cr>     
+    appliance-1(config)# system logging sw-components sw-component lacpd config ?
+    Possible completions:
+    description   Text that describes the platform sw-component (read-only)
+    name          Name of the platform sw-component (read-only)
+    severity      sw-component logging severity level.
+    appliance-1(config)# system logging sw-components sw-component lacpd config severity ?
+    Description: sw-component logging severity level. Default is INFORMATIONAL.
+    Possible completions:
+    [INFORMATIONAL]  ALERT  CRITICAL  DEBUG  EMERGENCY  ERROR  INFORMATIONAL  NOTICE  WARNING
+    appliance-1(config)# system logging sw-components sw-component lacpd config severity DEBUG
+    appliance-1(config-sw-component-lacpd)# commit
+    Commit complete.
+    appliance-1(config-sw-component-lacpd)# 
+  
+Viewing Logs from the GUI
+--------------------------
+
+In the intial release you cannot view the F5OS logs directly from the GUI, although you can download them from the GUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the GUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. 
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
   :scale: 70%
 
+If you want to download the main **platform.log** select the directoy **/log/system**.
+
+
+.. image:: images/rseries_diagnostics/image5.png
+  :align: center
+  :scale: 70%
+
+
+Currently F5OS GUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbosity going to the remote logging host, you can raise its severity to see additional messages.
+
+.. image:: images/rseries_diagnostics/image6.png
+  :align: center
+  :scale: 70%
+
+Viewing Logs from the API
+--------------------------
 
 TCPDUMP
 =======
