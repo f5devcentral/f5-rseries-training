@@ -154,18 +154,17 @@ text
 .. image:: images/rseries_performance_and_sizing/image24.png
   :width: 45%
 
-To compare performance of iSeries vs. rSeries you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the # of vCPUs in the system and consider the speed/performance at the per vCPU metric to come up with a sizing metric. Because rSeries dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing metric so that numbers don’t get skewed. As an example, take the overall r5900 performance metrics then divide by the total vCPU’s in the system (32) minus the 6 vCPU’s for the platform layer. You also have to consider that rSeries has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) only is not sufficient to get accurate sizing. 
+To compare performance of iSeries vs. rSeries you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the # of vCPUs in the system and consider the speed/performance of the vCPU to come up with a sizing metric. Because rSeries dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing exercise calculations so that sizing numbers don’t get skewed. As an example, take the overall r5900 performance metrics then divide by the total vCPU’s in the system (32) minus the 6 vCPU’s for the platform layer. By not including the vCPU's dedciated to F5OS, you'll get a much more accurate assesment of what an individual vCPU can forward. You also have to consider that rSeries has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing.  
 
 **Relative CPU Scale** is a numeric grade-based comparison where the overall CPU capacity/horsepower of the system is given a rating. The rating is an easy way to compare different BIG-IP platforms. The Relative CPU Scale is calculated by taking the total # of CPU’s in a system (not including those used by F5OS platform layer) and multiplying that times the speed that the processors run. This will result in an aggregate CPU Ghz for the platform . We then take the Aggregate CPU Ghz of a BIG-IP 2000s platform and give it a grade of 1. All other platforms are then given a numeric grade of how many times faster it is than the 2000s. This results in a simple numeric rating system that combines CPU speed with the number of CPU’s.
 
-In the graph below you can see that a an i5600 has 4.7x more aggregate CPU capacity than the 2000s and it's newer replacement r5600 has a 6.0x rating.  In general the mapping of platforms will be i5600 - ->5600, i5800 ->r5800, i7600/i7800 -> r5900. You can see in evrey case the newer generation should have more CPU horsepower in theory. What may be deceiving here is how this translates into performance because the rSeries has next generation processors, and a different architecture where some CPU’s are dedicated to the platform layer.
-
+In the graph below you can see that a an i5600 has 4.7x more aggregate CPU capacity than the 2000s and it's newer replacement r5600 has a 6.0x rating.  In general the mapping of platforms will be i5600 --> r600, i5800 --> r5800, i7600/i7800 --> r5900. You can see in every case that the newer generation rSeries should have more CPU horsepower in theory. What may be deceiving here is how this translates into real performance because the rSeries has next generation processors, and a different architecture where some CPU’s are dedicated to the F5OS platform layer.
 
 .. image:: images/rseries_performance_and_sizing/image22.png
   :align: center
   :scale: 80%
 
-To see how this translates into performance, it is good to look at a Layer7 metric as that is something that will use a lot of CPU resource. If you look at the published Layer7 (Inf-Inf) numbers, you’ll notice that each rSeries replacement provides higher numbers than the previous generation iSeries. This is likely due to the newer generation of processors, the fact that some processing is dedicated to the platform layer, and the fact that the CPU’s can boost higher than previous generations. Generally, a BX110 blade is going to be faster than a B2250 blade (each metric will vary), but it’s safe to propose BX110 blades as direct replacements for B2250 blades. Also keep in mind BX110 has the latest Intel processing and crypto support so things like ECC ciphers are now accelerated in hardware which was not the case with VIPRION B2xxx blades. 
+To see how this translates into real performance, it is good to look at a Layer7 metric as that is something that is highly dependent on CPU resources. If you look at the published Layer7 (Inf-Inf) numbers, you’ll notice that each rSeries replacement provides higher numbers than the previous generation iSeries. This is likely due to the newer generation of processors, the fact that some processing is dedicated to the F5OS platform layer, and the fact that the CPU’s can boost higher than previous generations. Generally, each rSeries platform is going to be faster than each iSeries platfrom it will replace (each metric will vary), but it’s safe to propose the following replacements: i5600 --> r5600, i5800 --> r5800, i7600/i7800 --> r5900. Also keep in mind rSeries has the latest Intel processing and crypto support so things like ECC ciphers are now accelerated in hardware which was not the case with appliances before the iSeries line. 
 
 Note a BX110 blade is not intended to replace a single B4450 blade. The B4450 has ~2x the processing power and vCPU count of a BX110 blade. In most cases it would take 2 BX110 blades to handle the workload of a B4450. 
 
@@ -184,6 +183,45 @@ Because each blade has a different number of CPU’s, a common sizing exercise i
 **NOTE: The per vCPU charts above are based on extrapolations, not per vCPU testing, so results may vary. This is generally acceptable for sizing use, as this is more a means of comparison of platform differences than a guarantee of a certain metric.**
 
 Also consider that these extrapolations for the VIPRION blades are for bare metal configuration with no vCMP enabled. When extrapolating what the performance would be with vCMP enabled on a per vCPU basis the numbers for VIPRION blades would have 20% subtracted from them. VELOS on the other hand is multitenant by default, so there is no need to subtract 20% for virtualization overhead. The VELOS numbers are inclusive of multitenancy already.
+
+High-End vCPU Comparisons to iSeries
+=====================================
+
+When sizing, removing the 12 or 6 (depending on platform) dedicated vCPU’s for F5OS from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the i10600, i10800, i11600 and i11800 compared to the new rSeries r10600, r10800, and r10900. Note that the rSeries sizing is more complex because of the way the CPU’s are used. Since 6 physical / 12 vCPU’s (for the r10000) and 3 physical / 6 vCPU's (for the r5000) are dedicated for use by the F5OS platform layer overall CPU performance can be misleading. 
+
+The graphs below compare the older model mid-rage iSeries platforms vs. the newer mode mid-range rSeries models. Note that these comparisons remove the 12 vCPU’s used for the platform layer. Instead of showing 24 physical cores and 48 vCPU’s, the r10000 is sized using 18 physical cores and 36 vCPU’s listed as (minus platform Layer CPU).
+
+.. image:: images/rseries_performance_and_sizing/image25.png
+  :width: 45%
+
+.. image:: images/rseries_performance_and_sizing/image26.png
+  :width: 45%
+
+text
+
+.. image:: images/rseries_performance_and_sizing/image27.png
+  :width: 45%
+
+.. image:: images/rseries_performance_and_sizing/image28.png
+  :width: 45%
+
+To compare performance of iSeries vs. rSeries you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the # of vCPUs in the system and consider the speed/performance of the vCPU to come up with a sizing metric. Because rSeries dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing exercise calculations so that sizing numbers don’t get skewed. As an example, take the overall r10900 performance metrics then divide by the total vCPU’s in the system (48) minus the 12 vCPU’s for the platform layer. By not including the vCPU's dedciated to F5OS, you'll get a much more accurate assesment of what an individual vCPU can forward. You also have to consider that rSeries has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing.  
+
+**Relative CPU Scale** is a numeric grade-based comparison where the overall CPU capacity/horsepower of the system is given a rating. The rating is an easy way to compare different BIG-IP platforms. The Relative CPU Scale is calculated by taking the total # of CPU’s in a system (not including those used by F5OS platform layer) and multiplying that times the speed that the processors run. This will result in an aggregate CPU Ghz for the platform . We then take the Aggregate CPU Ghz of a BIG-IP 2000s platform and give it a grade of 1. All other platforms are then given a numeric grade of how many times faster it is than the 2000s. This results in a simple numeric rating system that combines CPU speed with the number of CPU’s.
+
+In the graph below you can see that a an i10600 has x more aggregate CPU capacity than the 2000s and it's newer replacement r5600 has a x rating.  In general the mapping of platforms will be i10600 --> r10600, i10800 --> r10800, i11600/i11800 --> r10900. You can see in every case that the newer generation rSeries should have more CPU horsepower in theory. What may be deceiving here is how this translates into real performance because the rSeries has next generation processors, and a different architecture where some CPU’s are dedicated to the F5OS platform layer.
+
+.. image:: images/rseries_performance_and_sizing/image29.png
+  :align: center
+  :scale: 80%
+
+To see how this translates into real performance, it is good to look at a Layer7 metric as that is something that is highly dependent on CPU resources. If you look at the published Layer7 (Inf-Inf) numbers, you’ll notice that each rSeries replacement provides higher numbers than the previous generation iSeries. This is likely due to the newer generation of processors, the fact that some processing is dedicated to the F5OS platform layer, and the fact that the CPU’s can boost higher than previous generations. Generally, each rSeries platform is going to be faster than each iSeries platfrom it will replace (each metric will vary), but it’s safe to propose the following replacements: i10600 --> r10600, i10800 --> r10800, i11600/i11800 --> r10900. Also keep in mind rSeries has the latest Intel processing and crypto support so things like ECC ciphers are now accelerated in hardware which was not the case with appliances before the iSeries line. 
+
+Note a BX110 blade is not intended to replace a single B4450 blade. The B4450 has ~2x the processing power and vCPU count of a BX110 blade. In most cases it would take 2 BX110 blades to handle the workload of a B4450. 
+
+.. image:: images/rseries_performance_and_sizing/image30.png
+  :align: center
+  :scale: 80%
 
 Memory Sizing
 =============
