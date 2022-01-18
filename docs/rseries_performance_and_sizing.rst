@@ -131,9 +131,9 @@ The r2600 model has 16 CPU’s (The 2000 platform does not utilize hyperhreading
   :align: center
   :scale: 70%
 
-When sizing, removing the 12 dedicated vCPU’s from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the VIPRION B2250, VELOS BX110, and VIPRION B4450. Note that the VELOS sizing is more complex because of the way the CPU’s are used. Since 6 physical / 12 vCPU’s are dedicated for use by the platform layer overall CPU performance can be misleading. 
+When sizing, removing the 12 or 6 (depending on platform) dedicated vCPU’s for F5OS from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the i5600, i5800, i7600 and i7800 compared to the new rSeries r5600, r5800, and r5900. Note that the rSeries sizing is more complex because of the way the CPU’s are used. Since 6 physical / 12 vCPU’s (for the r10000) and 3 physical / 6 vCPU's (for the r5000) are dedicated for use by the platform layer overall CPU performance can be misleading. 
 
-The graphs below compare 1 and 2 blade configurations of the B2250 vs. a single B4450 blade, and one and two blade VELOS BX110 configurations. There are comparisons which includes all the vCPU’s on a BX110, and another set which removes the 6 vCPU’s used for the platform layer. Instead of showing 14 physical cores and 28 vCPU’s, VELOS is sized using 11 physical cores and 22 vCPU’s listed as (minus platform Layer CPU).
+The graphs below compare the older model mid-rage iSeries platforms vs. the newer mode mid-range rSeries models. There are comparisons which includes all the vCPU’s on a BX110, and another set which removes the 6 vCPU’s used for the platform layer. Instead of showing 14 physical cores and 28 vCPU’s, VELOS is sized using 11 physical cores and 22 vCPU’s listed as (minus platform Layer CPU).
 
 .. image:: images/rseries_performance_and_sizing/image20.png
   :width: 45
