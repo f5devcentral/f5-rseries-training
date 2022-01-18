@@ -207,7 +207,7 @@ To compare performance of iSeries vs. rSeries you can first look at overall CPU 
 
 **Relative CPU Scale** is a numeric grade-based comparison where the overall CPU capacity/horsepower of the system is given a rating. The rating is an easy way to compare different BIG-IP platforms. The Relative CPU Scale is calculated by taking the total # of CPU’s in a system (not including those used by F5OS platform layer) and multiplying that times the speed that the processors run. This will result in an aggregate CPU Ghz for the platform . We then take the Aggregate CPU Ghz of a BIG-IP 2000s platform and give it a grade of 1. All other platforms are then given a numeric grade of how many times faster it is than the 2000s. This results in a simple numeric rating system that combines CPU speed with the number of CPU’s.
 
-In the graph below you can see that a an i10600 has x more aggregate CPU capacity than the 2000s and it's newer replacement r5600 has a x rating.  In general the mapping of platforms will be i10600 --> r10600, i10800 --> r10800, i11600/i11800 --> r10900. You can see in every case that the newer generation rSeries should have more CPU horsepower in theory. What may be deceiving here is how this translates into real performance because the rSeries has next generation processors, and a different architecture where some CPU’s are dedicated to the F5OS platform layer.
+In the graph below you can see that a an i10600 has 8.7x more aggregate CPU capacity than the 2000s and it's newer replacement r5600 has a 12x rating.  In general the mapping of platforms will be i10600 --> r10600, i10800 --> r10800, i11600/i11800 --> r10900. You can see in every case that the newer generation rSeries should have more CPU horsepower in theory. What may be deceiving here is how this translates into real performance because the rSeries has next generation processors, and a different architecture where some CPU’s are dedicated to the F5OS platform layer.
 
 .. image:: images/rseries_performance_and_sizing/image29.png
   :align: center
@@ -219,18 +219,16 @@ To see how this translates into real performance, it is good to look at a Layer7
 Memory Sizing
 =============
 
-Each VELOS BX110 blade has 128GB of memory, which is double the current memory support of the B2250 blade (64GB) but half the current B4450 blade (256GB). Generally, a BX110 will have more than enough memory to replace a B2250 blade and will actually provide more memory which may help vCMP guests which are pushing memory limits.  Just like sizing based on L7 it will likely take 2 BX110 blades to replace a B4450 blade when looking at memory only. 
+In general migrating form an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, ro the same amount of memory (when comparing the 11600/11800).
 
-.. image:: images/rseries_performance_and_sizing/image25.png
-  :align: center
-  :scale: 80%
+.. image:: images/rseries_performance_and_sizing/image34.png
+  :width: 45%
+
+
+.. image:: images/rseries_performance_and_sizing/image35.png
+  :width: 45%
 
 Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPU’s assigned to the guest. Because VELOS has a different architecture than VIPRION there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant. 
-
-.. image:: images/rseries_performance_and_sizing/image26.png
-  :align: center
-  :scale: 70%
-
 
 With VELOS the amount of RAM per vCPU will change slightly as more vCPU’s are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the VELOS tenants. These are Recommended values, but VELOS provides  Advanced options where memory per tenant can be customized to allocate more memory. See the Multitennancy section for more details on memory customization.
 
