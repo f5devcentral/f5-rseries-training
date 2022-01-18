@@ -188,12 +188,12 @@ In the output of tha API call the upload initiation is confirmed.
 Logging
 =======
 
-Many functions inside the F5OS layer will log their events to the **platform.log** file that resides in the **/log/system/platform** path. You'll also notice there are other files for other types of logs.
+Many functions inside the F5OS layer will log their events to the **platform.log** file that resides in the **/log/system/** path. You'll also notice there are other files for other types of logs.
 
 Viewing Logs from the CLI
 --------------------------
 
-In the F5OS CLI the paths are simplified so that you don’t have know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/platform** directory, use the tab complete to see the options:
+In the F5OS CLI the paths are simplified so that you don’t have know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory, use the tab complete to see the options:
 
 .. code-block:: bash
 
@@ -208,7 +208,7 @@ In the F5OS CLI the paths are simplified so that you don’t have know the under
     vconsole_startup.log           velos.log          webui/        
     appliance-1# file list path log/system/
 
-To view the contents of the **platform.log** file use the command **file show path /log/controller/velos.log**. This will show the entire log file from the beginning, and may not be the best way to troubleshoot a recent event:
+To view the contents of the **platform.log** file use the command **file show path /log/system/platform.log**. This will show the entire log file from the beginning, and may not be the best way to troubleshoot a recent event:
 
 .. code-block:: bash
 
@@ -316,7 +316,7 @@ Within the bash shell the path for the logging is different it is **/var/F5/syst
     drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webui
     [root@appliance-1 /]# 
 
-If you would like to change any of the logging level via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must commit for this change to take affect. Be sure to set logging levels back to normal after troubleshooting has completed.
+If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take affect. Be sure to set logging levels back to normal after troubleshooting has completed.
 
 
 .. code-block:: bash
@@ -352,7 +352,7 @@ If you would like to change any of the logging level via the CLI you must be in 
 Viewing Logs from the GUI
 --------------------------
 
-In the intial release you cannot view the F5OS logs directly from the GUI, although you can download them from the GUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the GUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. 
+In the intial release you cannot view the F5OS logs directly from the GUI, although you can download them from the GUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the GUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
@@ -375,10 +375,13 @@ Currently F5OS GUI’s logging levels can be configured for local logging, and r
 Viewing Logs from the API
 --------------------------
 
+TBD
+
+
 TCPDUMP
 =======
 
-You can use the **tcpdump** utility on the VELOS system to capture traffic in chassis partitions. The captured traffic can be saved as a file and analyzed to help troubleshoot network issues.
+You can use the **tcpdump** utility to capture traffic at the F5OS layer. The captured traffic can be saved as a file and analyzed to help troubleshoot network issues.
 
 When you use the tcpdump utility to capture traffic on a VELOS system, traffic is captured based on the chassis partition in which the command was run. Only the traffic that occurs on that chassis partition is captured. This includes traffic traversing the front panel ports on the chassis blades in the chassis partition as well as backplane traffic for the chassis partition.
 
