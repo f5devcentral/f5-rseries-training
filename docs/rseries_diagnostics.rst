@@ -375,7 +375,7 @@ Currently F5OS GUI’s logging levels can be configured for local logging, and r
 Viewing Logs from the API
 --------------------------
 
-If the system currently has an uany active Alarms you can view them via the following API call:
+If the system currently has an any active Alarms you can view them via the following API call:
 
 .. code-block:: bash
 
