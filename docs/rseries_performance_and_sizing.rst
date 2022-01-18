@@ -105,9 +105,64 @@ The r10600 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use 
   :scale: 70%
 
 
+r5000 vCPU Sizing
+------------------
+
+Each rSeries 5900 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5900 24 vCPU’s are available to be assigned to tenants since the other 6 are reserved. The diagram below depicts the r5900 vCPU allocation: 
 
 
+.. image:: images/rseries_performance_and_sizing/image13.png
+  :align: center
+  :scale: 70%
 
+The r5800 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer and 8 vCPU's are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5800 18 vCPU’s are available to be assigned to tenants since 6 are reserved for F5OS, and 8 are disabled via licensing. The diagram below depicts the r5800 vCPU allocation: 
+
+
+.. image:: images/rseries_performance_and_sizing/image14.png
+  :align: center
+  :scale: 70%
+
+
+The r5600 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5600 12 vCPU’s are available to be assigned to tenants since the other 6 are reserved for F5OS, and 14 are disabled via licensing. The diagram below depicts the r5600 vCPU allocation: 
+
+
+.. image:: images/rseries_performance_and_sizing/image15.png
+  :align: center
+  :scale: 70%
+
+r4000 vCPU Sizing
+------------------
+
+Each rSeries 4800 model has 16 CPU’s (The 4000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r4800 16 CPU’s are available to be assigned to tenants. The diagram below depicts the r4800 CPU allocation: 
+
+
+.. image:: images/rseries_performance_and_sizing/image16.png
+  :align: center
+  :scale: 70%
+
+The r4600 model has 16 CPU’s (The 4000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r4600 8 CPU’s are available to be assigned to tenants and 8 are disabled via licensing. The diagram below depicts the r4600 vCPU allocation: 
+
+
+.. image:: images/rseries_performance_and_sizing/image17.png
+  :align: center
+  :scale: 70%
+
+r2000 vCPU Sizing
+------------------
+
+Each rSeries 2800 model has 8 CPU’s (The 2000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r2800 8 CPU’s are available to be assigned to tenants (and only one tenant is supported). The diagram below depicts the r4200 CPU allocation: 
+
+
+.. image:: images/rseries_performance_and_sizing/image18.png
+  :align: center
+  :scale: 70%
+
+The r2600 model has 16 CPU’s (The 2000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r2600 4 CPU’s are available to be assigned to tenants and 4 are disabled via licensing. The diagram below depicts the r4600 vCPU allocation: 
+
+
+.. image:: images/rseries_performance_and_sizing/image19.png
+  :align: center
+  :scale: 70%
 
 
 When sizing, removing the 12 dedicated vCPU’s from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the VIPRION B2250, VELOS BX110, and VIPRION B4450. Note that the VELOS sizing is more complex because of the way the CPU’s are used. Since 6 physical / 12 vCPU’s are dedicated for use by the platform layer overall CPU performance can be misleading. 
