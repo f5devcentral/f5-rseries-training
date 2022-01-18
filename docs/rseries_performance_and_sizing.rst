@@ -136,12 +136,16 @@ When sizing, removing the 12 dedicated vCPU’s from the equation will give a be
 The graphs below compare 1 and 2 blade configurations of the B2250 vs. a single B4450 blade, and one and two blade VELOS BX110 configurations. There are comparisons which includes all the vCPU’s on a BX110, and another set which removes the 6 vCPU’s used for the platform layer. Instead of showing 14 physical cores and 28 vCPU’s, VELOS is sized using 11 physical cores and 22 vCPU’s listed as (minus platform Layer CPU).
 
 .. image:: images/rseries_performance_and_sizing/image20.png
-  :align: center
-  :scale: 70%
+  :width: 45
 
 .. image:: images/rseries_performance_and_sizing/image21.png
-  :align: center
-  :scale: 70%
+  :width: 45
+
+.. image:: images/rseries_performance_and_sizing/image23.png
+  :width: 45
+
+.. image:: images/rseries_performance_and_sizing/image24.png
+  :width: 45
 
 To compare performance of VIPRION vs. VELOS you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the # of vCPUs in the system and consider the speed/performance at the per vCPU metric to come up with a sizing metric. Because VELOS dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing metric so that numbers don’t get skewed. As an example, take the overall BX110 blade performance metrics then divide by the total vCPU’s on the blades minus the 6 vCPU’s for the platform layer. You also have to consider that VELOS has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) only is not sufficient to get accurate sizing. 
 
