@@ -224,39 +224,84 @@ In general migrating form an iSeries to the equivalent rSeries model in the mid-
 .. image:: images/rseries_performance_and_sizing/image34.png
   :width: 45%
 
-
 .. image:: images/rseries_performance_and_sizing/image35.png
   :width: 45%
 
-Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPU’s assigned to the guest. Because VELOS has a different architecture than VIPRION there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant. 
+Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPU’s assigned to the guest. Because rSeries has a different architecture than iSeries there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant. 
 
-With VELOS the amount of RAM per vCPU will change slightly as more vCPU’s are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the VELOS tenants. These are Recommended values, but VELOS provides  Advanced options where memory per tenant can be customized to allocate more memory. See the Multitennancy section for more details on memory customization.
+With rSeries the amount of RAM per vCPU will change slightly as more vCPU’s are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the rSeries tenants. These are **Recommended** values, but rSeries provides **Advanced** options where memory per tenant can be customized to allocate more memory without having to allocate mor vCPU. See the Multitennancy section for more details on memory customization.
 
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| **Tenant Size**      | **Physical Cores**  | **Logical Cores (vCPU)** | **Min GB RAM**  | **RAM/vCPU**    |
-+======================+=====================+==========================+=================+=================+
-| BX110 1vCPU Tenant   | 0.5                 |  1                       | 4,096,000,000   | 4,096,000,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 2vCPU Tenant   | 1                   |  2                       | 7,680,000,000   | 3,840,000,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 4vCPU Tenant   | 2                   |  4                       | 14,848,000,000  | 3,712,000,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 6vCPU Tenant   | 3                   |  6                       | 22,016,000,000  | 3,669,333,333   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 8vCPU Tenant   | 4                   |  8                       | 29,184,000,000  | 3,648,000,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 10vCPU Tenan   | 5                   |  10                      | 36,352,000,000  | 3,635,200,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 12vCPU Tenant  | 6                   |  12                      | 43,520,000,000  | 3,626,666,667   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 14vCPU Tenant  | 7                   |  14                      | 50,688,000,000  | 3,620,571,429   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 16vCPU Tenant  | 8                   |  16                      | 57,856,000,000  | 3,616,000,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 18vCPU Tenant  | 9                   |  18                      | 65,024,000,000  | 3,612,444,444   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 20vCPU Tenant  | 10                  |  20                      | 72,192,000,000  | 3,609,600,000   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
-| BX110 22vCPU Tenant  | 11                  |  22                      | 79,360,000,000  | 3,607,272,727   |
-+----------------------+---------------------+--------------------------+-----------------+-----------------+
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPU’s assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPU's, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPU's for tennancy.
 
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| **Tenant Size**       | **Physical Cores** | **Logical Cores (vCPU)** | **Min GB RAM**  | **RAM/vCPU**    |
++=======================+====================+==========================+=================+=================+
+| rSeries 1vCPU Tenant  | 0.5                |  1                       | 4,096,000,000   | 4,096,000,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 2vCPU Tenant  | 1                  |  2                       | 7,680,000,000   | 3,840,000,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 4vCPU Tenant  | 2                  |  4                       | 14,848,000,000  | 3,712,000,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 6vCPU Tenant  | 3                  |  6                       | 22,016,000,000  | 3,669,333,333   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 8vCPU Tenant  | 4                  |  8                       | 29,184,000,000  | 3,648,000,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 10vCPU Tenant | 5                  |  10                      | 36,352,000,000  | 3,635,200,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 12vCPU Tenant | 6                  |  12                      | 43,520,000,000  | 3,626,666,667   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 14vCPU Tenant | 7                  |  14                      | 50,688,000,000  | 3,620,571,429   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 16vCPU Tenant | 8                  |  16                      | 57,856,000,000  | 3,616,000,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 18vCPU Tenant | 9                  |  18                      | 65,024,000,000  | 3,612,444,444   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 20vCPU Tenant | 10                 |  20                      | 72,192,000,000  | 3,609,600,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 22vCPU Tenant | 11                 |  22                      | 79,360,000,000  | 3,607,272,727   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 24vCPU Tenant | 12                 |  24                      | 86,528,000,000  | 3,605,333,333   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 26vCPU Tenant | 13                 |  26                      | 93,696,000,000  | 3,603,692,308   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 28vCPU Tenant | 14                 |  28                      | 100,864,000,000 | 3,602,285,714   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 30vCPU Tenant | 15                 |  30                      | 108,032,000,000 | 3,601,066,667   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 32vCPU Tenant | 16                 |  32                      | 115,200,000,000 | 3,600,000,000   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 34vCPU Tenant | 17                 |  34                      | 122,368,000,000 | 3,599,058,824   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+| rSeries 36vCPU Tenant | 18                 |  36                      | 129,536,000,000 | 3,598,222,222   |
++-----------------------+--------------------+--------------------------+-----------------+-----------------+
+
+Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra RAM is available for tenants beyond the recommended values.
+
+Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r10000 Series tenants, leaving ~15GB of additional RAM. You may over-allocate RAM to any tenant until the extra 15GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+
+**min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
+
+
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Default Mininimum RAM used (Max vCPU)**  |  **Extra RAM Available for Tenants**  |
++=======================+=======================+=========================+==================================+============================================+=======================================+
+| r10900 Series         | 256GB RAM             | 25GB                    | 231,906,000,000                  | 129,536,000,000                            | 102,370,000,000                       |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r10800 Series         | 256GB RAM             | 25GB                    | 231,906,000,000                  | 108,032,000,000                            | 123,874,000,000                       |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r10600 Series         | 256GB RAM             | 25GB                    | 231,906,000,000                  | 86,528,000,000                             | 145,378,000,000                       |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r5900 Series          | 128GB RAM             | 15GB                    | 113,132,000,000                  | 93,696,000,000                             | 19,436,000,000                        |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r5800 Series          | 128GB RAM             | 15GB                    | 113,132,000,000                  | 65,024,000,000                             | 48,108,000,000                        |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r5600 Series          | 128GB RAM             | 15GB                    | 113,132,000,000                  | 43,520,000,000                             | 69,612,000,000                        |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r4800 Series          | 64GB RAM              | 8GB                     | 56GB                             | TBD                                        | TBD                                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r4600 Series          | 64GB RAM              | 8GB                     | 56GB                             | TBD                                        | TBD                                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r2800 Series          | 32GB RAM              | 8GB                     | 24GB                             | TBD                                        | TBD                                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
+| r2600 Series          | 32GB RAM              | 8GB                     | 24GB                             | TBD                                        | TBD                                   |
++-----------------------+-----------------------+-------------------------+----------------------------------+--------------------------------------------+---------------------------------------+
