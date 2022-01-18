@@ -135,7 +135,7 @@ Below is the following output showing successfukl intiation of the qkview:
 
     {
         "f5-system-diagnostics-qkview:output": {
-            "result": " Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. \nQkview file my-qkview3 is being collected.\nreturn code 200\n ",
+            "result": " Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. \nQkview file my-qkview4.tgz is being collected.\nreturn code 200\n ",
             "resultint": 0
         }
     }
@@ -146,7 +146,7 @@ To view the qkview status via the API POST the following API call:
 
     POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:status
 
-The output will display the percentage complete , error, or complete status:
+The output will display the percentage complete, error, or complete status:
 
 .. code-block:: json
 
@@ -157,13 +157,13 @@ The output will display the percentage complete , error, or complete status:
         }
     }
 
-To upload the qkview file to iHealth using the API use the following POST PI call:
+To upload the qkview file to iHealth using the API use the following POST AI call:
 
 .. code-block:: bash
 
     POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-ihealth:ihealth/f5-system-diagnostics-ihealth:upload
 
-Below is the body of the POSt API call:
+Below is the body of the POST API call:
 
 .. code-block:: json
 
