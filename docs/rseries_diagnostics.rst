@@ -398,7 +398,7 @@ You can display the F5OS Event Log via the following API call:
 
     GET https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
 
-This will display all events form the beginning in the F5OS Event log:
+This will display all events (not just the active ones) from the beginning in the F5OS Event log:
 
 .. code-block:: json
 
