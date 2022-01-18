@@ -25,25 +25,38 @@ The r5000 Series appliance has a similar architecture but since it doesn't requi
   :align: center
   :scale: 40%
 
+Both the r4000 & r2000 Series appliances have a slightly different hardware architecture then the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utulize FPGA's for hardware offload, and instead perform these function in software. This means that CPU's do not eed to be dedicated to the F5OS layer leaving more CPU for tenants. These platfroms also run a different class of Intel processing, and do not utilize hyperthreafding like the higher end platforms do. Becuase these applainces are for lowe perfromaing environments they do not support 40Gb or 100Gb interfaces. Instead they support 1Gb, 10Gb, and 25Gb interfaces.
+
+.. image:: images/rseries_performance_and_sizing/image3.png
+  :align: center
+  :scale: 40%
+
+.. image:: images/rseries_performance_and_sizing/image4.png
+  :align: center
+  :scale: 40%  
+
+a similar architecture but since it doesn't require the same performance as the r10000 series is has less FPGA's and CPUs, and less physical ports.
+
 
 **Note: In the initial 1.0.x versions of F5OS-A (for rSeries appliances), not all FPGA HW offload functions are enabled. Many will be added in the subsequent TMOS & F5OS releases. AFM DDoS mitigation offload is not fully supported in v1.0.x versions of F5OS-A and will run in software similar to how it would run in a BIG-IP VE. SSL & Compression HW offload are fully supported in the initial v1.0.x F5OS-A releases, as is FASTL4 HW offload. CGNAT, PEM, SPDAG, VXLAN, 802.1Q-in-Q (double) VLAN tagging, vWire, VLAN Groups, are not supported in the initial F5OS-A 1.0.x releases, and will be added in a future release.**
 
 When comparing rSeries to the previous generation iSeries appliances it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x more performance than the previous generation iSeries appliances.
+
 Looking at comparisons of iSeries i10800 vs. the r10000 or the iSeries i5800 vs.the r5000 you can see a 1.2x-2.4x increase in performance depending on which metric is looked at. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve the BX110 can now offload that to hardware, whereas the B2150 & B2250 had to process those ciphers in software consuming more CPU.
 
-.. image:: images/rseries_performance_and_sizing/image3.png
+.. image:: images/rseries_performance_and_sizing/image5.png
   :align: center
   :scale: 40%
 
 When comparing VELOS to VIPRION C4480/4800 it is important to note that the current VELOS BX110 blade is not as dense CPU-wise as the current generation B4450 blade. In many cases it may take 2 BX110 blades to provide similar CPU density/performance as a single B4450 blade. The sizing will be dependent on the configuration of the current generation blades, how utilized they are, and how vCMP is configured. Note in the case of DNS, responses per second are significantly higher on the B4450 (6.4m rps) vs BX110 (2.5m rps). Below are some single blade comparisons of the B4340N, B4450N and a single VELOS BX110 blade. And then single blade comparisons of the B4300, B4450 and a single VELOS BX110 blade.
 
 
-.. image:: images/rseries_performance_and_sizing/image4.png
+.. image:: images/rseries_performance_and_sizing/image6.png
   :align: center
   :scale: 40%
 
 
-.. image:: images/rseries_performance_and_sizing/image5.png
+.. image:: images/rseries_performance_and_sizing/image7.png
   :align: center
   :scale: 40%
 
