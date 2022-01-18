@@ -25,7 +25,7 @@ The r5000 Series appliance has a similar architecture but since it doesn't requi
   :align: center
   :scale: 40%
 
-Both the r4000 & r2000 Series appliances have a slightly different hardware architecture then the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utulize FPGA's for hardware offload, and instead perform these function in software. This means that CPU's do not eed to be dedicated to the F5OS layer leaving more CPU for tenants. These platfroms also run a different class of Intel processing, and do not utilize hyperthreafding like the higher end platforms do. Becuase these applainces are for lowe perfromaing environments they do not support 40Gb or 100Gb interfaces. Instead they support 1Gb, 10Gb, and 25Gb interfaces.
+Both the r4000 & r2000 Series appliances have a slightly different hardware architecture than the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utulize FPGA's for hardware offload, and instead perform these functions in software. This means that CPU's do not need to be dedicated to the F5OS layer leaving more CPU for tenants. These platforms also run a different class of Intel processing, and do not utilize hyperthreading like the higher end platforms do. Because these appliances are for lower performing environments they do not support 40Gb or 100Gb interfaces. Instead they support 1Gb, 10Gb, and 25Gb interfaces.
 
 .. image:: images/rseries_performance_and_sizing/image3.png
   :align: center
