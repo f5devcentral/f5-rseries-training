@@ -89,20 +89,25 @@ Each rSeries 10900 model has 48 vCPU’s, but 12 of those vCPU’s are reserved 
   :align: center
   :scale: 70%
 
-The r10800 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer and xx vCPU's are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10800 xx vCPU’s are available to be assigned to tenants since 12 are reserved for F5OS, and xx are disabled via licensing. The diagram below depicts the r10800 vCPU allocation: 
+The r10800 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer and xx vCPU's are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10800 30 vCPU’s are available to be assigned to tenants since 12 are reserved for F5OS, and 6 are disabled via licensing. The diagram below depicts the r10800 vCPU allocation: 
 
 
-.. image:: images/rseries_performance_and_sizing/image10.png
+.. image:: images/rseries_performance_and_sizing/image11.png
   :align: center
   :scale: 70%
 
 
-The r10600 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10600 xx vCPU’s are available to be assigned to tenants since the other 12 are reserved for F5OS, and xx are disabled via licensing. The diagram below depicts the r10600 vCPU allocation: 
+The r10600 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10600 24 vCPU’s are available to be assigned to tenants since the other 12 are reserved for F5OS, and 12 are disabled via licensing. The diagram below depicts the r10600 vCPU allocation: 
 
 
-.. image:: images/rseries_performance_and_sizing/image10.png
+.. image:: images/rseries_performance_and_sizing/image12.png
   :align: center
   :scale: 70%
+
+
+
+
+
 
 
 When sizing, removing the 12 dedicated vCPU’s from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the VIPRION B2250, VELOS BX110, and VIPRION B4450. Note that the VELOS sizing is more complex because of the way the CPU’s are used. Since 6 physical / 12 vCPU’s are dedicated for use by the platform layer overall CPU performance can be misleading. 
