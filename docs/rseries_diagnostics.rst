@@ -2,12 +2,12 @@
 rSeries Diagnostics
 ===================
 
-This section will go through some of the diagnostic capcilities within the F5OS layer. Inside the tenant the same diagnostics that customers are used to are still avilable. 
+This section will go through some of the diagnostic capabilities within the new F5OS layer. Inside the tenant the same BIG-IP diagnostic utilities that customers are used to are sill available.
 
 Qkviews
 =======
 
-rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide mroe details:
+rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
 https://support.f5.com/csp/article/K76100544
 
@@ -31,7 +31,7 @@ A QKView for the F5OS layer can be generated from the **System Settings > System
   :align: center
   :scale: 70%
 
-To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkyou view to be generated.  Once the qkview is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if entered them previously and can be cleared if you want to use another account, you can optionally add an **F5 Support Case Number** and **Description** when uploading to iHealth.
+To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  Once the qkview is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if you entered them previously and can be cleared if you want to use another account, you can optionally add an **F5 Support Case Number** and **Description** when uploading to iHealth.
 
 
 .. image:: images/rseries_diagnostics/image2.png
@@ -81,6 +81,8 @@ You can view the status of the capture using the command **system diagnostics qk
 
 You may also confirm the file has been created by using the **file list** command, or the command **system diagnostics qkview list** to see more details about the size and creation date of the file:
 
+.. code-block:: bash
+
     appliance-1# file list path diags/shared/qkview/
     entries {
         name 
@@ -96,6 +98,8 @@ You may also confirm the file has been created by using the **file list** comman
 
 To upload the qkview file to iHealth using the CLI use the following command **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
 
+.. code-block:: bash
+
     appliance-1# system diagnostics ihealth upload qkview-file appliance-1.qkview description "This is a test" 
     message HTTP/1.1 202 Accepted
     Location: /support/ihealth/status/Z3HydOfa
@@ -110,8 +114,48 @@ To upload the qkview file to iHealth using the CLI use the following command **s
 Qkview creation via API
 -----------------------
 
+To generate a qkview from the API POST the following API call to the F5OS out-of-band management IP.
+
+.. code-block:: bash
+
+    POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:capture
+
+In the body of the API call supply the filename for the qkview:
+
+.. code-block:: json
+
+    {
+        "f5-system-diagnostics-qkview:filename": "my-qkview3"
+    }
+
+Below is the following output showing successfukl intiation of the qkview:
+
+.. code-block:: json
 
 
+    {
+        "f5-system-diagnostics-qkview:output": {
+            "result": " Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. \nQkview file my-qkview3 is being collected.\nreturn code 200\n ",
+            "resultint": 0
+        }
+    }
+
+To view the qkview status via the API POST the following API call:
+
+.. code-block:: bash
+
+    POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:status
+
+The output will display the percentage complete , error, or complete status:
+
+.. code-block:: json
+
+    {
+        "f5-system-diagnostics-qkview:output": {
+            "result": " {\"Busy\":false,\"Percent\":100,\"Status\":\"complete\",\"Message\":\"Completed collection.\",\"Filename\":\"my-qkview3\"}\n ",
+            "resultint": 0
+        }
+    }
 
 Logging
 =======
