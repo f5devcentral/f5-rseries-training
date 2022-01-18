@@ -21,8 +21,8 @@ The qkview utility on the rSeries system generates machine-readable JavaScript O
 
 Note: F5 Support requires a QKView file in all cases in which remote access to the product is not available.
 
-Qkview creation via GUI
------------------------
+Qkview Creation and Upload via GUI
+----------------------------------
 
 
 A QKView for the F5OS layer can be generated from the **System Settings > System Reports** page. Once finished it can also be uploaded them to iHealth. 
@@ -42,8 +42,8 @@ To generate a qkview click on the button in the upper right-hand corner. It will
   :align: center
   :scale: 70%
 
-Qkview creation via CLI
------------------------
+Qkview Creation and Upload via CLI
+----------------------------------
 
 If you would like to store iHealth credentials within the configuration you may do so via the F5OS CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a **username** and **password**.
 
@@ -111,8 +111,8 @@ To upload the qkview file to iHealth using the CLI use the following command **s
     appliance-1# 
 
 
-Qkview creation via API
------------------------
+Qkview Creation and Upload via API
+----------------------------------
 
 To generate a qkview from the API POST the following API call to the F5OS out-of-band management IP.
 
@@ -125,7 +125,7 @@ In the body of the API call supply the filename for the qkview:
 .. code-block:: json
 
     {
-        "f5-system-diagnostics-qkview:filename": "my-qkview3"
+        "f5-system-diagnostics-qkview:filename": "my-qkview4.tgz"
     }
 
 Below is the following output showing successfukl intiation of the qkview:
@@ -152,10 +152,38 @@ The output will display the percentage complete , error, or complete status:
 
     {
         "f5-system-diagnostics-qkview:output": {
-            "result": " {\"Busy\":false,\"Percent\":100,\"Status\":\"complete\",\"Message\":\"Completed collection.\",\"Filename\":\"my-qkview3\"}\n ",
+            "result": " {\"Busy\":false,\"Percent\":100,\"Status\":\"complete\",\"Message\":\"Completed collection.\",\"Filename\":\"my-qkview4.tgz\"}\n ",
             "resultint": 0
         }
     }
+
+To upload the qkview file to iHealth using the API use the following POST PI call:
+
+.. code-block:: bash
+
+    POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-ihealth:ihealth/f5-system-diagnostics-ihealth:upload
+
+Below is the body of the POSt API call:
+
+.. code-block:: json
+
+    {
+    "f5-system-diagnostics-ihealth:qkview-file": "my-qkview4.tgz",
+    "f5-system-diagnostics-ihealth:description": "This is a test qkview",
+    "f5-system-diagnostics-ihealth:service-request-number": ""
+    }
+
+In the output of tha API call the upload initiation is confirmed.
+
+.. code-block:: json
+
+    {
+        "f5-system-diagnostics-ihealth:output": {
+            "message": "HTTP/1.1 202 Accepted\r\nLocation: /support/ihealth/status/sthO7ieL\r\nDate: Tue, 18 Jan 2022 01:31:36 GMT\r\nContent-Length: 0\r\n\r\n",
+            "errorcode": false
+        }
+    }
+
 
 Logging
 =======
