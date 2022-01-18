@@ -44,48 +44,11 @@ a similar architecture but since it doesn't require the same performance as the 
 
 When comparing rSeries to the previous generation iSeries appliances it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x more performance than the previous generation iSeries appliances.
 
-Looking at comparisons of iSeries i10800 vs. the r10000 or the iSeries i5800 vs.the r5000 you can see a 1.2x-2.4x increase in performance depending on which metric is looked at. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve the BX110 can now offload that to hardware, whereas the B2150 & B2250 had to process those ciphers in software consuming more CPU.
+Looking at comparisons of iSeries i10800 vs. the r10000 or the iSeries i5800 vs.the r5000 you can see a 1.2x-2.4x increase in performance depending on which metric is looked at. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve rSeries will offload that processing to hardware, some older BIG-IP appliances may have had to process more modern ciphers in software.
 
 .. image:: images/rseries_performance_and_sizing/image5.png
   :align: center
   :scale: 40%
-
-When comparing VELOS to VIPRION C4480/4800 it is important to note that the current VELOS BX110 blade is not as dense CPU-wise as the current generation B4450 blade. In many cases it may take 2 BX110 blades to provide similar CPU density/performance as a single B4450 blade. The sizing will be dependent on the configuration of the current generation blades, how utilized they are, and how vCMP is configured. Note in the case of DNS, responses per second are significantly higher on the B4450 (6.4m rps) vs BX110 (2.5m rps). Below are some single blade comparisons of the B4340N, B4450N and a single VELOS BX110 blade. And then single blade comparisons of the B4300, B4450 and a single VELOS BX110 blade.
-
-
-.. image:: images/rseries_performance_and_sizing/image6.png
-  :align: center
-  :scale: 40%
-
-
-.. image:: images/rseries_performance_and_sizing/image7.png
-  :align: center
-  :scale: 40%
-
-
-The VELOS CX410 chassis is only 4U compared to the VIPRION 4480 (7RU) and VIPRION 4800 (16RU) chassis so comparing performance per RU may be a more important metric. The other important factor is cost, a single BX110 blade is half the price of the VIPRION B4450 blade so an apples-to-apples comparison would be two BX110 blades to a single B4450 blade. 2 BX110 blades will compare very well to a single B4450 blade with some metrics being higher, and some slightly lower than the B4450 but at the same pricepoint. 
-
-.. image:: images/rseries_performance_and_sizing/image6.png
-  :align: center
-  :scale: 40%
-
-
-.. image:: images/rseries_performance_and_sizing/image7.png
-  :align: center
-  :scale: 40%
-
-
-Below is an example of a B4450 configuration (excluding chassis) with 4 blades and an identical priced VELOS BX110 solution (excluding chassis) with 8 blades. For the same price the VELOS configuration will provide higher performance at a lower footprint.
-
-.. image:: images/rseries_performance_and_sizing/image8.png
-  :align: center
-  :scale: 40%
-
-
-.. image:: images/rseries_performance_and_sizing/image9.png
-  :align: center
-  :scale: 40%
-
 
 The performance numbers for rSeries already include any overhead for multitenancy as the platform is multitenant by default. There is nothing to switch on to enable multitenancy. VIPRION or iSeries on the other hand has the option of running multitenancy by enabling vCMP. Published data sheet numbers for VIPRION or iSeries are for bare-metal mode, where no virtualization (vCMP) is enabled. Enabling vCMP on VIPRION or iSeries has overhead and will reduce the overall performance of a blade or appliance as the hypervisor takes up CPU and memory resources.
 
