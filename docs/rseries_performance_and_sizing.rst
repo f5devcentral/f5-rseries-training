@@ -141,6 +141,8 @@ The graphs below compare the older model mid-rage iSeries platforms vs. the newe
 .. image:: images/rseries_performance_and_sizing/image21.png
   :width: 45
 
+text
+
 .. image:: images/rseries_performance_and_sizing/image23.png
   :width: 45
 
