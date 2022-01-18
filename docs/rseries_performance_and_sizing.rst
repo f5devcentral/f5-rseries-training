@@ -136,18 +136,18 @@ When sizing, removing the 12 or 6 (depending on platform) dedicated vCPU’s for
 The graphs below compare the older model mid-rage iSeries platforms vs. the newer mode mid-range rSeries models. Note that these comparisons remove the 6 vCPU’s used for the platform layer. Instead of showing 16 physical cores and 32 vCPU’s, the r5000 is sized using 13 physical cores and 26 vCPU’s listed as (minus platform Layer CPU).
 
 .. image:: images/rseries_performance_and_sizing/image20.png
-  :width: 45
+  :width: 45%
 
 .. image:: images/rseries_performance_and_sizing/image21.png
-  :width: 45
+  :width: 45%
 
 text
 
 .. image:: images/rseries_performance_and_sizing/image23.png
-  :width: 45
+  :width: 45%
 
 .. image:: images/rseries_performance_and_sizing/image24.png
-  :width: 45
+  :width: 45%
 
 To compare performance of VIPRION vs. VELOS you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the # of vCPUs in the system and consider the speed/performance at the per vCPU metric to come up with a sizing metric. Because VELOS dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing metric so that numbers don’t get skewed. As an example, take the overall BX110 blade performance metrics then divide by the total vCPU’s on the blades minus the 6 vCPU’s for the platform layer. You also have to consider that VELOS has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) only is not sufficient to get accurate sizing. 
 
