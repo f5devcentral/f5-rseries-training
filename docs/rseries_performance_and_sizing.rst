@@ -54,8 +54,8 @@ The performance numbers for rSeries already include any overhead for multitenanc
 
 How much performance drops can vary for different metrics, but F5 has always sized environments using a rule-of-thumb of ~20% hit on performance for enabling virtualization/vCMP. With rSeries the published data sheet numbers are with multitenancy enabled, so there is no need to calculate in an additional 20% drop due to virtualization being enabled.  
 
-vCPU Sizing
-===========
+Platform vCPU Sizing
+====================
 
 r10000 vCPU Sizing
 ------------------
@@ -131,6 +131,11 @@ The r2600 model has 16 CPU’s (The 2000 platform does not utilize hyperhreading
   :align: center
   :scale: 70%
 
+
+
+Mid-Range vCPU Comparisons to iSeries
+=====================================
+
 When sizing, removing the 12 or 6 (depending on platform) dedicated vCPU’s for F5OS from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the i5600, i5800, i7600 and i7800 compared to the new rSeries r5600, r5800, and r5900. Note that the rSeries sizing is more complex because of the way the CPU’s are used. Since 6 physical / 12 vCPU’s (for the r10000) and 3 physical / 6 vCPU's (for the r5000) are dedicated for use by the platform layer overall CPU performance can be misleading. 
 
 The graphs below compare the older model mid-rage iSeries platforms vs. the newer mode mid-range rSeries models. Note that these comparisons remove the 6 vCPU’s used for the platform layer. Instead of showing 16 physical cores and 32 vCPU’s, the r5000 is sized using 13 physical cores and 26 vCPU’s listed as (minus platform Layer CPU).
@@ -163,8 +168,6 @@ In the graph below you can see that a an i5600 has 4.7x more aggregate CPU capac
 .. image:: images/rseries_performance_and_sizing/image22.png
   :align: center
   :scale: 80%
-
-
 
 To see how this translates into performance, it is good to look at a Layer7 metric as that is something that will use a lot of CPU resource. If you look at the published Layer7 (Inf-Inf) numbers, you’ll notice that each rSeries replacement provides higher numbers than the previous generation iSeries. This is likely due to the newer generation of processors, the fact that some processing is dedicated to the platform layer, and the fact that the CPU’s can boost higher than previous generations. Generally, a BX110 blade is going to be faster than a B2250 blade (each metric will vary), but it’s safe to propose BX110 blades as direct replacements for B2250 blades. Also keep in mind BX110 has the latest Intel processing and crypto support so things like ECC ciphers are now accelerated in hardware which was not the case with VIPRION B2xxx blades. 
 
