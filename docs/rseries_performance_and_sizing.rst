@@ -172,11 +172,11 @@ When sizing, removing the 12 dedicated vCPU’s from the equation will give a be
 
 The graphs below compare 1 and 2 blade configurations of the B2250 vs. a single B4450 blade, and one and two blade VELOS BX110 configurations. There are comparisons which includes all the vCPU’s on a BX110, and another set which removes the 6 vCPU’s used for the platform layer. Instead of showing 14 physical cores and 28 vCPU’s, VELOS is sized using 11 physical cores and 22 vCPU’s listed as (minus platform Layer CPU).
 
-.. image:: images/rseries_performance_and_sizing/image11.png
+.. image:: images/rseries_performance_and_sizing/image20.png
   :align: center
   :scale: 70%
 
-.. image:: images/rseries_performance_and_sizing/image12.png
+.. image:: images/rseries_performance_and_sizing/image21.png
   :align: center
   :scale: 70%
 
@@ -187,7 +187,7 @@ To compare performance of VIPRION vs. VELOS you can first look at overall CPU ca
 In the graph below you can see that a B2250 blade has 10x more aggregate CPU capacity than the 2000s.  A VELOS BX110 blade will have either 8.7x (minus platform CPU’s) or 11.1x (including platform CPU’s) and a 4450 blade has 22x. What may be deceiving here is how this translates into performance because the BX110 has next generation processors, and a different architecture where some CPU’s are dedicated to the platform layer.
 
 
-.. image:: images/rseries_performance_and_sizing/image13.png
+.. image:: images/rseries_performance_and_sizing/image22.png
   :align: center
   :scale: 80%
 
@@ -197,14 +197,14 @@ To see how this translates into performance, it is good to look at a Layer7 metr
 
 Note a BX110 blade is not intended to replace a single B4450 blade. The B4450 has ~2x the processing power and vCPU count of a BX110 blade. In most cases it would take 2 BX110 blades to handle the workload of a B4450. 
 
-.. image:: images/rseries_performance_and_sizing/image14.png
+.. image:: images/rseries_performance_and_sizing/image23.png
   :align: center
   :scale: 80%
 
 
 Because each blade has a different number of CPU’s, a common sizing exercise is to look at the per vCPU performance by using the formulas above to come up with a per vCPU metric. In the graph below it is done for Layer7 RPS (Inf-Inf) but you could use the same math for any metric. Note the graph below is not derived from a per vCPU test, it is taking a published blade metric and dividing it by the number of vCPU’s to come up with a per vCPU metric. As mentioned above using the VELOS metric which is (minus the platform CPU’s) is the most realistic. As expected, the BX110 provides a better per vCPU RPS than the B2250, but what may be surprising is that it has a higher RPS than the B4450 as well. This is because the B4450 gets its overall speed due to the number of vCPU’s and it has 2x more than the BX110. Even though the BX110 CPUs run slower (1.9Ghz vs. 2.2Ghz) than the B4450, the changes in architecture, more modern CPU etc... make it perform faster at the per vCPU metric.
 
-.. image:: images/rseries_performance_and_sizing/image15.png
+.. image:: images/rseries_performance_and_sizing/image24.png
   :align: center
   :scale: 80%
 
@@ -218,13 +218,13 @@ Memory Sizing
 
 Each VELOS BX110 blade has 128GB of memory, which is double the current memory support of the B2250 blade (64GB) but half the current B4450 blade (256GB). Generally, a BX110 will have more than enough memory to replace a B2250 blade and will actually provide more memory which may help vCMP guests which are pushing memory limits.  Just like sizing based on L7 it will likely take 2 BX110 blades to replace a B4450 blade when looking at memory only. 
 
-.. image:: images/rseries_performance_and_sizing/image16.png
+.. image:: images/rseries_performance_and_sizing/image25.png
   :align: center
   :scale: 80%
 
 Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPU’s assigned to the guest. Because VELOS has a different architecture than VIPRION there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant. 
 
-.. image:: images/rseries_performance_and_sizing/image17.png
+.. image:: images/rseries_performance_and_sizing/image26.png
   :align: center
   :scale: 70%
 
