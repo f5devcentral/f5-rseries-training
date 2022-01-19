@@ -66,7 +66,7 @@ A combination of Docker Compose and Kubernetes is used within the F5OS layer. Do
 
 .. image:: images/rseries_introduction/imagex.png
   :align: center
-  :scale: 40%
+  :scale: 80%
 
 The diagram above is somewhat simplified as it shows a single software stack for the Kubernetes control plane. There is a software stack for the F5OS layer that provides F5OS CLI, GUI, and API management for the appliance  as well as support for the networking services such as stpd, lldpd, lacpd, that get deployed as workloads.
 
