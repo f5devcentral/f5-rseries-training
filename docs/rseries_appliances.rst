@@ -13,13 +13,13 @@ The r10000 Series is a 1RU appliance, that has 3 different licensing options tha
   :align: center
   :scale: 100%
 
-The r10000 Series appliance has 4 x 100Gb/40Gb ports that are QSFP28/QSFP+ as well as 16 25Gb/10Gb ports that are SFP+/SFP28.
+The r10000 Series appliance has 4 x 100Gb/40Gb ports that support QSFP28/QSFP+ optics as well as 16 x 25Gb/10Gb ports that support SFP+/SFP28 optics.
 
 .. image:: images/rseries_appliances/image1a.png
   :align: center
   :scale: 100%
 
-Note that adjacent highspeed (40Gb / 100Gb) ports (1.0 & 2.0 or 11.0 & 12.0) must be configured for the same speed. You cannot have one port at 40Gb and the other at 100Gb. You can have ports 1.0 & 2.0 at one speed, and 11.0 & 12.0 at another. Also, the high speed ports do not support unbundling into lower speeds (25Gb / 10Gb), only 40Gb or 100Gb are supported. For the low speed ports (3.0 - 10.0 & 13.0 - 20.0) any combination of 10Gb or 25Gb is supported. The SFP28 ports are backwards compatible with SFP+.
+Note that adjacent highspeed (40Gb / 100Gb) ports (**1.0** & **2.0** or **11.0** & **12.0**) must be configured for the same speed. You cannot have one port at 40Gb and the other at 100Gb currently. You can have ports 1.0 & 2.0 at one speed, and 11.0 & 12.0 at another. Also, the high speed ports do not support unbundling into lower speeds (25Gb / 10Gb), only 40Gb or 100Gb are supported on those ports. For the low speed ports (**3.0** - **10.0** & **13.0** - **20.0**) any combination of 10Gb or 25Gb is supported. The SFP28 ports are backwards compatible with SFP+.
 
 .. image:: images/rseries_appliances/image1b.png
   :align: center
