@@ -177,15 +177,6 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
   :scale: 70%
 
 
-Rack Mounting the Appliances
-============================
-
-An ideal environment for VELOS is to use a minimum of a 30” rack. The rackmount kits that ship with the system will support the minimum depth of 30” and can telescope to longer depths if needed. If the rack depth is less than 30” then custom rack mount kits will need to be ordered.   
-
-.. image:: images/velos_components/image2.png
-  :align: center
-  :scale: 90%
-
 
 
 
