@@ -30,7 +30,7 @@ rSeries will continue to provide hardware acceleration and offload capabilities 
 
 Customers will be able to migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest on the VIPRION or iSeries platforms. Once inside the tenant, the management experience will be similar to the experience on existing BIG-IP platforms. The BIG-IP tenant will be managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator can connect directly to the tenant’s GUI, CLI, or API and have the same experience as they have with their existing platforms. 
 
-In the future BIG-IP for Distributed Cloud tenants will be able to be provisioned within the same rSeries appliance, which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
+In the future BIG-IP for Distributed Cloud tenants will be able to be provisioned within the same rSeries appliance (except on the r2000 series which supports one tenant only), which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
 ---------------------------------------------------
 Multitenant by Default
@@ -42,14 +42,14 @@ The physical architecture of rSeries differs from the iSeries platforms in sever
 More Pay-as-you-Grow (PAYG) options
 -----------------------------------
 
-the rSeries family of appliances has multiple hardware and software options similar to the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platforms in the rSeries family, but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to higher model within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
+the rSeries family of appliances has multiple hardware and software options similar to the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platforms in the rSeries family, but increased the number of Pay-as-you-Grow (PAYG) options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to a higher model within the same family. As an example you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you can unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
 
 
 .. image:: images/rseries_introduction/image2.png
   :align: center
   :scale: 40%
 
-For the 2000 and 4000 models the number of pay-as-you-grow tiers remains the same, whith each model having an x600 model and an x800 model just like the previous generation iSeries appliances. You can start with an x600 model and upgrade the the x800 model via a simple licensing change.
+For the 2000 and 4000 models the number of pay-as-you-grow tiers remains the same as the current iSeries, with each model having an x600 model and an x800 model just like the previous generation iSeries appliances. You can start with an x600 model and upgrade the the x800 model via a simple licensing change.
 
 .. image:: images/rseries_introduction/image3.png
   :align: center
