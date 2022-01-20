@@ -178,16 +178,16 @@ In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU
 
 Each r2000 Series appliance has 8 CPU cores (not vCPU’s), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
 
-This leaves all 8 CPU cores left over for use by tenants on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant so that you can deploy many tenants. Below are examples of the total number of CPU cores supported for each r2000 platform.
+This leaves all 8 CPU cores left over for use by a single tenant on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant. Below are examples of the total number of CPU cores supported for each r2000 platform.
 
-The r2800 has 8 CPU cores total, There are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by tenants:
+The r2800 has 8 CPU cores total, There are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by the single tenant:
 
 
 .. image:: images/rseries_multitenancy/image11.png
   :align: center
   :scale: 40%
 
-The r2600 has 8 CPU cores total, 4 CPU cores are disabled via licensing, there are zero CPU cores reserved for F5OS, and 4 CPU cores left over for use by tenants:
+The r2600 has 8 CPU cores total, 4 CPU cores are disabled via licensing, there are zero CPU cores reserved for F5OS, and 4 CPU cores left over for use by the single tenant:
 
 .. image:: images/rseries_multitenancy/image12.png
   :align: center
@@ -198,7 +198,7 @@ Since all r2000 models are running on the same hardware appliance, you can easil
 Tenant Sizing
 =============
 
-Single vCPU (Skinny) tenants are supported on the r10000 and r5000 appliances, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. For the r50000 platforms this would allow for 26 single vCPU tenants per r5900 appliance, 18 tenants for the r5800, and 12 tenants for the r5600. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option and ideally for non-production envrionements. As always proper sizing should be done to ensure the tenant has enough resources. 
+Single vCPU (Skinny) tenants are supported on the r10000 and r5000 appliances, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 30 tenants for the r10800, and 24 tenants for the r10600. For the r5000 platforms this would allow for 26 single vCPU tenants per r5900 appliance, 18 tenants for the r5800, and 12 tenants for the r5600. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option and ideally for non-production envrionements. As always proper sizing should be done to ensure the tenant has enough resources. 
 
 Tenant States
 =============
