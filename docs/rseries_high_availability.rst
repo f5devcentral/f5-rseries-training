@@ -8,7 +8,7 @@ rSeries High Availability
 Tenant Level HA Across Appliances
 =================================
 
-rSeries does not support tenant HA within the same applaince. F5 recommends configuring dual rSeries appliances with identically configured tenants and maintaining HA relationships at the tenant level as seen below. This mimics the iSeries HA behavior between vCMP guests. There is no redundancy between rSeries appliances at the F5OS platform layer. The appliances themselves are unaware of the other appliance and there is no HA communication at this level, it’s the tenants that form the HA relationship.
+F5 recommends configuring dual rSeries appliances with identically configured tenants and maintaining HA relationships at the tenant level as seen below. This mimics the iSeries HA behavior that is typically configured between vCMP guests. There is no redundancy between rSeries appliances at the F5OS platform layer. The appliances themselves are unaware of the other appliance and there is no HA communication at this level, it’s the tenants that form the HA relationship. rSeries does not support tenant HA within the same appliance, it must be configured between tenants in separate appliances. Direct (hard wired) HA modes are not supported even though there is a port for this on each rSeries unit it is unused. HA must use network level failover configurations using Device Service Clusters or other network based failovers.
 
 .. image:: images/rseries_high_availability/image1.png
   :align: center
