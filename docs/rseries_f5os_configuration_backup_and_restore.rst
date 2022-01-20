@@ -84,10 +84,9 @@ In the body of the API call you can specifiy the file name you want to save the 
 
 .. code-block:: json
 
-{
-    "f5-database:name": "F5OS-BACKUP{{currentdate}}"
-}
-
+    {
+        "f5-database:name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}"
+    }
 
 **Note: In the current F5OS releases the confd system database can be backed up via CLI/GUI/API but it cannot be restored using the F5OS GUI. This will be added in a subsequent release.**
 
@@ -147,12 +146,16 @@ To check on status of the export use the **file transfer-status** command:
 
 You may also transfer from the CLI using SCP or SFTP protocols. Below is an example using SCP:
 
+.. code-block:: bash
+
     appliance-1# file export local-file configs/rSeries-59002-backup-1-15-2022 remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
     Value for 'password' (<string>): ********
     result File transfer is initiated.(configs/rSeries-59002-backup-1-15-2022)
     appliance-1#
 
 The **file transfer-status** command will show the upload of th SCP as well as HTTPS or SFTP:
+
+.. code-block:: bash
 
     appliance-1# file transfer-status
     result 
@@ -196,9 +199,9 @@ To copy a confd configuration backup file from the system controller to a remote
         "f5-utils-file-transfer:password": "password",
         "f5-utils-file-transfer:remote-host": "10.255.0.142",
         "f5-utils-file-transfer:remote-file": "/upload/upload.php",
-        "f5-utils-file-transfer:local-file": "configs/F5OS-BACKUP{{currentdate}}"
+        "f5-utils-file-transfer:local-file": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
-
+    
 You can then chek on the status of the export via the following API call:
 
 .. code-block:: bash
