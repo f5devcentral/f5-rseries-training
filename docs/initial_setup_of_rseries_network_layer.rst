@@ -2672,9 +2672,6 @@ Within the GUI LAGs and LACP parameters are configured within the LAG GUI pages.
 
 .. code-block:: bash
 
-
-.. code-block:: bash
-
     appliance-1(config)# interfaces interface Arista
     appliance-1(config-interface-Arista)#  config name Arista
     appliance-1(config-interface-Arista)#  config type ieee8023adLag
@@ -2740,6 +2737,8 @@ Next you must configure interfaces to be part of the LAG. Below are examples of 
 
 Finally, configuring the lacp interfaces for **Arista** and **HA-Interconnect** will start to bring the LAG interface up.
 
+.. code-block:: bash
+
     appliance-1# config
     Entering configuration mode terminal
     appliance-1(config)# lacp interfaces interface Arista
@@ -2786,18 +2785,18 @@ To see that status of the LACP interfaces run the command **show lacp**. It is b
 
 .. code-block:: bash
 
- Appliance-1# show lacp               
-lacp state system-id-mac 00:94:a1:69:35:13
-                                                                                                                                                                                                                                            PARTNER  LACP    LACP    LACP    LACP    LACP             
-                                            LACP                      SYSTEM                                                                                                                        OPER                     PARTNER  PORT  PORT     IN      OUT     RX      TX      UNKNOWN  LACP    
-NAME             NAME             INTERVAL  MODE    SYSTEM ID MAC     PRIORITY  INTERFACE  INTERFACE  ACTIVITY  TIMEOUT  SYNCHRONIZATION  AGGREGATABLE  COLLECTING  DISTRIBUTING  SYSTEM ID         KEY   PARTNER ID         KEY      NUM   NUM      PKTS    PKTS    ERRORS  ERRORS  ERRORS   ERRORS  
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-Arista           Arista           FAST      ACTIVE  0:94:a1:69:35:13  -         1.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  2     2c:dd:e9:90:88:13  103      1024  345      237602  7889    0       0       0        0       
-                                                                                2.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  2     2c:dd:e9:90:88:13  103      2048  349      237590  7888    0       0       0        0       
-HA-Interconnect  HA-Interconnect  FAST      ACTIVE  0:94:a1:69:35:13  -         8.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        8192  8192     237494  236522  0       0       0        0       
-                                                                                9.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        9216  9216     237488  236516  0       0       0        0       
+    Appliance-1# show lacp               
+    lacp state system-id-mac 00:94:a1:69:35:13
+                                                                                                                                                                                                                                                PARTNER  LACP    LACP    LACP    LACP    LACP             
+                                                LACP                      SYSTEM                                                                                                                        OPER                     PARTNER  PORT  PORT     IN      OUT     RX      TX      UNKNOWN  LACP    
+    NAME             NAME             INTERVAL  MODE    SYSTEM ID MAC     PRIORITY  INTERFACE  INTERFACE  ACTIVITY  TIMEOUT  SYNCHRONIZATION  AGGREGATABLE  COLLECTING  DISTRIBUTING  SYSTEM ID         KEY   PARTNER ID         KEY      NUM   NUM      PKTS    PKTS    ERRORS  ERRORS  ERRORS   ERRORS  
+    ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    Arista           Arista           FAST      ACTIVE  0:94:a1:69:35:13  -         1.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  2     2c:dd:e9:90:88:13  103      1024  345      237602  7889    0       0       0        0       
+                                                                                    2.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  2     2c:dd:e9:90:88:13  103      2048  349      237590  7888    0       0       0        0       
+    HA-Interconnect  HA-Interconnect  FAST      ACTIVE  0:94:a1:69:35:13  -         8.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        8192  8192     237494  236522  0       0       0        0       
+                                                                                    9.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        9216  9216     237488  236516  0       0       0        0       
 
-Appliance-1# 
+    Appliance-1# 
 
 
 
