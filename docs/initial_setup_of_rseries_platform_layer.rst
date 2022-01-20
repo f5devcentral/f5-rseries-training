@@ -51,7 +51,7 @@ To alter any configuration, you must enter config mode:
   Entering configuration mode terminal
   syscon-2-active(config)#
 
- And so save any configuration you must enter *commit**.
+To save any configuration you must enter *commit**.
 
 .. code-block:: bash
 
@@ -73,9 +73,9 @@ The rSeries appliances ship with a default internal RFC6598 address space of 100
   system network state active-network-range 100.64.0.0/12
   Boston-r10900-1# 
 
-This address range never leaves the inside of the appliance and will not interfere with any communication outside the rSeries device. There can however be address collisions if a device trying to manage rSeries via the out-of-band management port falls within this range, or an external management device or service falls within this range and communicated with rSeries over its out-of-band networking. This may result in rSeries not able to communicate with those devices.
+This address range never leaves the inside of the appliance and will not interfere with any communication outside the rSeries device. There can however be address collisions if a device trying to manage rSeries via the out-of-band management port falls within this range, or an external management device or service falls within this range and attempts to communicate with rSeries over its out-of-band networking. This may result in rSeries control plane not able to communicate with those devices. In-band traffic is not affected by these internal addresses an can overlap.
 
-Some examples would be any client trying to access the F5OS or tenant out-of-band interfaces to reach its’ CLI, GUI, or API. Other examples would be external services such as SNMP, DNS, NTP, SNMP, Authentication that have addresses that fall within the RFC6598 address space. You may experience connectivity problems with these types of clients/services if there is an overlap. Note that this does not affect the data plane / in-band interfaces, it only affects communication to the out-of-band interfaces. 
+Some examples would be any client trying to access the F5OS layer or tenant out-of-band interfaces to reach its’ CLI, GUI, or API. Other examples would be external services such as SNMP, DNS, NTP, SNMP, Authentication that have addresses that fall within the RFC6598 address space. You may experience connectivity problems with these types of clients/services if there is an overlap. Note that this does not affect the data plane / in-band interfaces, it only affects communication to the out-of-band interfaces. 
 
 If there is the potential for conflict with external devices that fall within this range that need to communicate with rSeries, then there are options to change the configured-network-range-type to one of sixteen different blocks within the RFC1918 address space. Changing this will require a complete appliance power-cycle, rebooting is not sufficient.  Please consult with F5 prior to making any changes to the internal addresses.
 
@@ -202,7 +202,7 @@ It’s also a good idea to have the rSeries appliance send logs for the F5OS pla
 System Settings via the API
 ===========================
 
-If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for appliance use the following API call. For any API calls to rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json**.
+If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for appliance use the following API call. For any API calls to rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
 
 .. code-block:: bash
 
@@ -276,7 +276,7 @@ To set System Time settings use the following API call as an example. This will 
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
 
 Below is the body of the API call contianing the desired configuration:
 
@@ -381,7 +381,7 @@ Next a remote logging destination will be setup for the F5OS logging. To set a R
 
 .. code-block:: bash
 
-  PATCH https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/
+  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -874,7 +874,7 @@ When done examining the logs, you can run the same API call but the body will be
 Licensing the rSeries Appliance
 -------------------------------
 
-Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for MAX SSL/Compression or for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP and in some cases for MAX SSL/Compression. For rSeries these are included in the base license at no extra cost, however there are different levels of perfromance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
+Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost, however there are different levels of perfromance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
 
 Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
@@ -1125,7 +1125,7 @@ The **Import/Export** utility requires an external HTTPS server to copy to/from 
 Time Settings
 =============
 
-Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that the system controller time sources are sync’d to a reliable time source. The Time can be set manaully and a Time Zone may also be set.
+Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that F5OS time sources are sync’d to a reliable time source. The Time can be set manaully and a Time Zone may also be set.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image20.png
   :align: center
@@ -1218,7 +1218,7 @@ Licenses can be applied via CLI, GUI, or API. A base registration key and option
 General
 =======
 
-The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also cconfigure the **Hostname** of the system, and configure a Message of the Day **MOTD** which is displaye don login. 
+The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also cconfigure the **Hostname** of the system, and configure a Message of the Day **MOTD** which is displayed on login. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image31.png
   :align: center
@@ -1231,7 +1231,7 @@ User Management
 Auth Settings
 =============
 
-The F5OS platform has its own user and authentication management configured under the **User Management** section of the GUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS. 
+The F5OS platform has its own user and authentication management configured under the **User Management** section of the GUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image32.png
   :align: center
@@ -1241,7 +1241,7 @@ The F5OS platform has its own user and authentication management configured unde
 Server Groups
 =============
 
-Under the **User Management -> Server Groups*** page you may define **Server Groups** which are collections of remote auth servers that the VELOS platform layer will use to authenticate against. LDAP, RADIUS, and TACACS are supported. For LDAP you may choose to authenticate of TCP or SSL. You can configure the remote host’s IP address and port. 
+Under the **User Management -> Server Groups*** page you may define **Server Groups** which are collections of remote auth servers that the F5OS platform layer will use to authenticate against. LDAP, RADIUS, and TACACS+ are supported. For LDAP you may choose to authenticate of TCP or SSL. You can configure the remote host’s IP address and port. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image34.png
   :align: center
