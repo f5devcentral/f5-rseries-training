@@ -2715,28 +2715,40 @@ You can view the current interface aggregation configurations in the CLI by runn
     appliance-1# 
 
 
-Finally, you must configure interfaces to be part of the LAG. Below are examples of interface 1.0 and 2.0 being added to the aggregate-id **Arista**, and interfaces 8.0 and 9.0 being added to the aggregate **HA-Interconnect**.
+Next you must configure interfaces to be part of the LAG. Below are examples of interface 1.0 and 2.0 being added to the aggregate-id **Arista**, and interfaces 8.0 and 9.0 being added to the aggregate **HA-Interconnect**.
 
 .. code-block:: bash
 
     appliance-1(config)# interfaces interface 1.0
     appliance-1(config-interface-1.0)#  config name 1.0
     appliance-1(config-interface-1.0)#  ethernet config aggregate-id Arista
-    appliance-1(config-interface-1.0)# !
-    appliance-1(config-interface-1.0)# interfaces interface 2.0
+    appliance-1(config-interface-1.0)#  exit
+    appliance-1(config)# interfaces interface 2.0
     appliance-1(config-interface-2.0)#  config name 2.0
     appliance-1(config-interface-2.0)#  ethernet config aggregate-id Arista
-    appliance-1(config-interface-2.0)# !
+    appliance-1(config-interface-2.0)#  exit
     
     appliance-1(config)# interfaces interface 8.0
     appliance-1(config-interface-1.0)#  config name 8.0
     appliance-1(config-interface-1.0)#  ethernet config aggregate-id HA-Interconnect
-    appliance-1(config-interface-1.0)# !
-    appliance-1(config-interface-1.0)# interfaces interface 9.0
+    appliance-1(config-interface-1.0)#  exit
+    appliance-1(config)# interfaces interface 9.0
     appliance-1(config-interface-2.0)#  config name 9.0
     appliance-1(config-interface-2.0)#  ethernet config aggregate-id HA-Interconnect
     appliance-1(config-interface-2.0)# !
     appliance-1(config)# commit
+
+Finally, configuring the lacp interfaces for **Arista** and **HA-Interconnect** will start to bring the LAG interface up.
+
+    appliance-1# config
+    Entering configuration mode terminal
+    appliance-1(config)# lacp interfaces interface Arista
+    appliance-1(config-interface-Arista)#  config name Arista
+    appliance-1(config-interface-Arista)#  config interval FAST
+    appliance-1(config-interface-Arista)#  config lacp-mode ACTIVE
+    appliance-1(config-interface-Arista)# !
+    appliance-1(config-interface-Arista)# commit
+    Commit complete.
 
 
     appliance-1# config
@@ -2774,113 +2786,115 @@ To see that status of the LACP interfaces run the command **show lacp**. It is b
 
 .. code-block:: bash
 
-  bigpartition-1# show lacp
-  lacp state system-id-mac 00:94:a1:8e:d0:08
-                                                                                                                                                                                                                                  PARTNER  LACP    LACP    LACP    LACP    LACP             
-                                              LACP                                                                                                                                        OPER                     PARTNER  PORT  PORT     IN      OUT     RX      TX      UNKNOWN  LACP    
-  NAME             NAME             INTERVAL  MODE    SYSTEM ID MAC    INTERFACE  INTERFACE  ACTIVITY  TIMEOUT  SYNCHRONIZATION  AGGREGATABLE  COLLECTING  DISTRIBUTING  SYSTEM ID        KEY   PARTNER ID         KEY      NUM   NUM      PKTS    PKTS    ERRORS  ERRORS  ERRORS   ERRORS  
-  ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  Arista           Arista           FAST      ACTIVE  0:94:a1:8e:d0:8  1/2.0      -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:8e:d0:8  2     98:5d:82:1d:2c:a9  10       4352  125      713887  713949  0       0       0        0       
-                                                                      2/1.0      -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:8e:d0:8  2     98:5d:82:1d:2c:a9  10       8320  129      713906  713948  0       0       0        0       
-  HA-Interconnect  HA-Interconnect  FAST      ACTIVE  0:94:a1:8e:d0:8  1/1.0      -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:8e:d0:8  3     0:94:a1:8e:58:28   3        4224  8448     714114  713959  0       0       0        0       
-                                                                      2/2.0      -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:8e:d0:8  3     0:94:a1:8e:58:28   3        8448  4224     714155  713959  0       0       0        0       
+ Appliance-1# show lacp               
+lacp state system-id-mac 00:94:a1:69:35:13
+                                                                                                                                                                                                                                            PARTNER  LACP    LACP    LACP    LACP    LACP             
+                                            LACP                      SYSTEM                                                                                                                        OPER                     PARTNER  PORT  PORT     IN      OUT     RX      TX      UNKNOWN  LACP    
+NAME             NAME             INTERVAL  MODE    SYSTEM ID MAC     PRIORITY  INTERFACE  INTERFACE  ACTIVITY  TIMEOUT  SYNCHRONIZATION  AGGREGATABLE  COLLECTING  DISTRIBUTING  SYSTEM ID         KEY   PARTNER ID         KEY      NUM   NUM      PKTS    PKTS    ERRORS  ERRORS  ERRORS   ERRORS  
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Arista           Arista           FAST      ACTIVE  0:94:a1:69:35:13  -         1.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  2     2c:dd:e9:90:88:13  103      1024  345      237602  7889    0       0       0        0       
+                                                                                2.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  2     2c:dd:e9:90:88:13  103      2048  349      237590  7888    0       0       0        0       
+HA-Interconnect  HA-Interconnect  FAST      ACTIVE  0:94:a1:69:35:13  -         8.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        8192  8192     237494  236522  0       0       0        0       
+                                                                                9.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        9216  9216     237488  236516  0       0       0        0       
 
-  bigpartition-1# 
+Appliance-1# 
+
 
 
 If you have shorter width terminal, then the output above may be condensed as seen below:
 
 .. code-block:: bash
 
-  bigpartition-1# show lacp
-  lacp state system-id-mac 00:94:a1:8e:d0:08
-  lacp interfaces interface Arista
-  state name    Arista
-  state interval FAST
-  state lacp-mode ACTIVE
-  state system-id-mac 0:94:a1:8e:d0:8
-  members member 1/2.0
+    Appliance-1# show lacp
+    lacp state system-id-mac 00:94:a1:69:35:13
+    lacp interfaces interface Arista
+    state name    Arista
+    state interval FAST
+    state lacp-mode ACTIVE
+    state system-id-mac 0:94:a1:69:35:13
+    members member 1.0
     state activity   ACTIVE
     state timeout    SHORT
     state synchronization IN_SYNC
     state aggregatable true
     state collecting true
     state distributing true
-    state system-id  0:94:a1:8e:d0:8
+    state system-id  0:94:a1:69:35:13
     state oper-key   2
-    state partner-id 98:5d:82:1d:2c:a9
-    state partner-key 10
-    state port-num   4352
-    state partner-port-num 125
-    state counters lacp-in-pkts 714408
-    state counters lacp-out-pkts 714471
+    state partner-id 2c:dd:e9:90:88:13
+    state partner-key 103
+    state port-num   1024
+    state partner-port-num 345
+    state counters lacp-in-pkts 237650
+    state counters lacp-out-pkts 7891
     state counters lacp-rx-errors 0
     state counters lacp-tx-errors 0
     state counters lacp-unknown-errors 0
     state counters lacp-errors 0
-  members member 2/1.0
+    members member 2.0
     state activity   ACTIVE
     state timeout    SHORT
     state synchronization IN_SYNC
     state aggregatable true
     state collecting true
     state distributing true
-    state system-id  0:94:a1:8e:d0:8
+    state system-id  0:94:a1:69:35:13
     state oper-key   2
-    state partner-id 98:5d:82:1d:2c:a9
-    state partner-key 10
-    state port-num   8320
-    state partner-port-num 129
-    state counters lacp-in-pkts 714428
-    state counters lacp-out-pkts 714469
+    state partner-id 2c:dd:e9:90:88:13
+    state partner-key 103
+    state port-num   2048
+    state partner-port-num 349
+    state counters lacp-in-pkts 237638
+    state counters lacp-out-pkts 7890
     state counters lacp-rx-errors 0
     state counters lacp-tx-errors 0
     state counters lacp-unknown-errors 0
     state counters lacp-errors 0
-  lacp interfaces interface HA-Interconnect
-  state name    HA-Interconnect
-  state interval FAST
-  state lacp-mode ACTIVE
-  state system-id-mac 0:94:a1:8e:d0:8
-  members member 1/1.0
+    lacp interfaces interface HA-Interconnect
+    state name    HA-Interconnect
+    state interval FAST
+    state lacp-mode ACTIVE
+    state system-id-mac 0:94:a1:69:35:13
+    members member 8.0
     state activity   ACTIVE
     state timeout    SHORT
     state synchronization IN_SYNC
     state aggregatable true
     state collecting true
     state distributing true
-    state system-id  0:94:a1:8e:d0:8
+    state system-id  0:94:a1:69:35:13
     state oper-key   3
-    state partner-id 0:94:a1:8e:58:28
+    state partner-id 0:94:a1:69:29:13
     state partner-key 3
-    state port-num   4224
-    state partner-port-num 8448
-    state counters lacp-in-pkts 714647
-    state counters lacp-out-pkts 714493
+    state port-num   8192
+    state partner-port-num 8192
+    state counters lacp-in-pkts 237542
+    state counters lacp-out-pkts 236570
     state counters lacp-rx-errors 0
     state counters lacp-tx-errors 0
     state counters lacp-unknown-errors 0
     state counters lacp-errors 0
-  members member 2/2.0
+    members member 9.0
     state activity   ACTIVE
     state timeout    SHORT
     state synchronization IN_SYNC
     state aggregatable true
     state collecting true
     state distributing true
-    state system-id  0:94:a1:8e:d0:8
+    state system-id  0:94:a1:69:35:13
     state oper-key   3
-    state partner-id 0:94:a1:8e:58:28
+    state partner-id 0:94:a1:69:29:13
     state partner-key 3
-    state port-num   8448
-    state partner-port-num 4224
-    state counters lacp-in-pkts 714689
-    state counters lacp-out-pkts 714492
+    state port-num   9216
+    state partner-port-num 9216
+    state counters lacp-in-pkts 237536
+    state counters lacp-out-pkts 236564
     state counters lacp-rx-errors 0
     state counters lacp-tx-errors 0
     state counters lacp-unknown-errors 0
     state counters lacp-errors 0
-  bigpartition-1# 
+    Appliance1# 
+
 
 Configuring LAGs from the API
 -----------------------------
