@@ -74,19 +74,19 @@ Using the F5OS GUI you can backup the confd configuration database using the **S
 Backing Up F5OS via API
 -----------------------
 
-Using the F5OS API you can backup the confd configuration database using the following API POST:
+Using the F5OS API you can backup the F5OS confd configuration database using the following API POST:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
 
 In the body of the API call you can specifiy the file name you want to save the backup as.
 
 .. code-block:: json
 
-    {
-        "f5-database:name": "SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}"
-    }
+{
+    "f5-database:name": "F5OS-BACKUP{{currentdate}}"
+}
 
 
 **Note: In the current F5OS releases the confd system database can be backed up via CLI/GUI/API but it cannot be restored using the F5OS GUI. This will be added in a subsequent release.**
@@ -193,12 +193,26 @@ To copy a confd configuration backup file from the system controller to a remote
         "f5-utils-file-transfer:insecure": "",
         "f5-utils-file-transfer:protocol": "https",
         "f5-utils-file-transfer:username": "corpuser",
-        "f5-utils-file-transfer:password": "Passw0rd!!",
+        "f5-utils-file-transfer:password": "password",
         "f5-utils-file-transfer:remote-host": "10.255.0.142",
         "f5-utils-file-transfer:remote-file": "/upload/upload.php",
-        "f5-utils-file-transfer:local-file": "configs/SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}"
+        "f5-utils-file-transfer:local-file": "configs/F5OS-BACKUP{{currentdate}}"
     }
 
+You can then chek on the status of the export via the following API call:
+
+.. code-block:: bash
+
+    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Export file|HTTPS   |configs/F5OS-BACKUP2022-01-20                               |10.255.0.142        |/upload/upload.php                                          |         Completed|Thu Jan 20 05:11:44 2022"
+        }
+    }
 
 
 Backing up Tenants
