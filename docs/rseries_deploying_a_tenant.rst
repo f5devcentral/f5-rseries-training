@@ -33,7 +33,7 @@ The **T1-F5OS** image type should be used with extreme caution. It is the smalle
 
 The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in place upgrades; however, they all default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage.
 
-The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high density tenant environment where the number of tenants is going to be high per appliancee and using minimum CPU resources (1 or 2 vCPU’s per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk per appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over provisioning situation. Because tenants are deployed in sparse mode which allows over provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk than other BIG-IP modules which do extensive local logging and utilize databases on disk.
+The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPU’s per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over provisioning situation. Because tenants are deployed in sparse mode which allows over provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk than other BIG-IP modules which do extensive local logging and utilize databases on disk.
 
 The **All-F5OS** image is suitable for any module configuration and supports a default of 76GB for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk typically require more CPU/Memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach, it may be best to default using the T4-F5OS image as that is essentially the default size for vCMP deployments today. 
 
@@ -73,7 +73,7 @@ Tenant Deployment via CLI
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries supported tenant version are v15.1.5 for the r5000 & r10000, and v15.1.6 for the r2000 & r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to newer versions happen within the tenant itself, nit in the F5OS layer. The images inside F5OS are for intial deployment only.
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries supported tenant version are v15.1.5 for the r5000 & r10000, and v15.1.6 for the r2000 & r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for intial deployment only.
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the GUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
 
@@ -299,7 +299,7 @@ You can deploy a tenant from the GUI using the **Add** button in the **Tenant Ma
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once **Save** is clicked the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There is also an optio to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once **Save** is clicked the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -360,6 +360,8 @@ Now login with the new admin password, and you'll be brought into the intial set
 .. image:: images/rseries_deploying_a_tenant/image42.png
   :align: center
   :scale: 70% 
+
+At this point you can configure the tenat as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower level network and system settings, and then use AS3 to automate application deployments.
 
 Tenant Deployment via API
 -------------------------
@@ -432,9 +434,11 @@ Tenant creation via the API is as simple as defining the parameters below and se
 
   POST https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
 
-Below is the body/payload for the API call above:
+
+Below is the body of the API call above.
 
 .. code-block:: json
+
 
     {
         "tenant": [
