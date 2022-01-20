@@ -11,9 +11,9 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
   :align: center
   :scale: 80%
 
-Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed on an iSeries appliance. In the future when the next generation BIG-IP for Distributed Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM. They will be able to run side by side on the same appliance.
+Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed on an iSeries appliance. In the future when the next generation BIG-IP for Distributed Cloud tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM. They will be able to run side by side on the same appliance (with the exception of the r2000 which only supports one tenant).
 
-Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a TMOS image to run inside the tenant, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer.
+Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a supported TMOS tenant image, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer.
 
 .. image:: images/rseries_multitenancy/image2.png
   :align: center
@@ -130,7 +130,7 @@ The r5900 has 32 vCPU's total, 6 vCPU's reserved for F5OS, and 26 vCPU's left ov
 
 .. image:: images/rseries_multitenancy/image6.png
   :align: center
-  :scale: 40%
+  :scale: 80%
 
 The r5800 has 32 vCPU's total, 8 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 18 vCPU's left over for use by tenants:
 
