@@ -453,9 +453,9 @@ Below is the body of the API call above.
                     "gateway": "{{OutofBand_DFGW}}",
                     "prefix-length": 24,
                     "vlans": [
-                        {{Internal_VLAN}},
-                        {{External_VLAN}},
-                        {{HA_VLAN}}
+                        3010,
+                        3011,
+                        500
                     ],
                     "vcpu-cores-per-node": 2,
                     "memory": 7680,
