@@ -2785,7 +2785,7 @@ To see that status of the LACP interfaces run the command **show lacp**. It is b
 
 .. code-block:: bash
 
-    Appliance-1# show lacp               
+    appliance-1# show lacp               
     lacp state system-id-mac 00:94:a1:69:35:13
                                                                                                                                                                                                                                                 PARTNER  LACP    LACP    LACP    LACP    LACP             
                                                 LACP                      SYSTEM                                                                                                                        OPER                     PARTNER  PORT  PORT     IN      OUT     RX      TX      UNKNOWN  LACP    
@@ -2796,7 +2796,7 @@ To see that status of the LACP interfaces run the command **show lacp**. It is b
     HA-Interconnect  HA-Interconnect  FAST      ACTIVE  0:94:a1:69:35:13  -         8.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        8192  8192     237494  236522  0       0       0        0       
                                                                                     9.0        -          ACTIVE    SHORT    IN_SYNC          true          true        true          0:94:a1:69:35:13  3     0:94:a1:69:29:13   3        9216  9216     237488  236516  0       0       0        0       
 
-    Appliance-1# 
+    appliance-1# 
 
 
 
@@ -2804,7 +2804,7 @@ If you have shorter width terminal, then the output above may be condensed as se
 
 .. code-block:: bash
 
-    Appliance-1# show lacp
+    appliance-1# show lacp
     lacp state system-id-mac 00:94:a1:69:35:13
     lacp interfaces interface Arista
     state name    Arista
@@ -2892,7 +2892,7 @@ If you have shorter width terminal, then the output above may be condensed as se
     state counters lacp-tx-errors 0
     state counters lacp-unknown-errors 0
     state counters lacp-errors 0
-    Appliance1# 
+    appliance1# 
 
 
 Configuring LAGs from the API
