@@ -104,19 +104,19 @@ The r10900 has 48 vCPU's total, 12 vCPU's reserved for F5OS, and 36 vCPU's left 
 
 .. image:: images/rseries_multitenancy/image3.png
   :align: center
-  :scale: 40%
+  :scale: 60%
 
 The r10800 has 48 vCPU's total, 6 vCPU's are disabled via licensing, 12 vCPU's reserved for F5OS, and 30 vCPU's left over for use by tenants:
 
 .. image:: images/rseries_multitenancy/image4.png
   :align: center
-  :scale: 40%
+  :scale: 60%
 
 The r10600 has 48 vCPU's total, 12 vCPU's are disabled via licensing, 12 vCPU's reserved for F5OS, and 24 vCPU's left over for use by tenants:  
 
 .. image:: images/rseries_multitenancy/image5.png
   :align: center
-  :scale: 40%
+  :scale: 60%
 
 Since all r10000 models are running on the same hardware appliance, you can easily upgrade from the r10600 to either the r10800 or r10900 to unlock more performance via a simple license change. The r10800 can be upgraded to an r10900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r10000 series appliances.
 
