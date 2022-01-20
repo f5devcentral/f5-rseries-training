@@ -240,18 +240,52 @@ To reset the F5OS confd database to default use the CLI command **system databas
 
 .. code-block:: bash
 
-    Appliance-1# config
-    Appliance-1(config)# system database reset-to-default proceed  
+    appliance-1(config)# system database reset-to-default proceed 
     Value for 'proceed' [no,yes]: yes
     result Database reset-to-default successful.
-    Appliance-1(config)# 
-    System message at 2021-03-02 22:51:54...
+    appliance-1(config)# 
+    System message at 2022-01-20 20:52:40...
     Commit performed by admin via tcp using cli.
-    Appliance-1(config)# 
+    appliance-1(config)# 
 
 
-Once the system configurations have been cleared, you’ll need to establish connectivity to the until via the console port and reconfigure out-of-band connectivity in order to continue.
+After resettting the system database reboot the system to ensure the configuration is completely cleaned up. 
 
+.. code-block:: bash
+
+    appliance-1# system reboot 
+    Really want to reboot the system ? Datapath and management connectivity to system would be disrupted. [no,yes] yes
+    appliance-1# 
+
+
+The reset of the database will not completely wipe out the system. It will preserve some basic configuration like out-of-band settings so that you can still reach the unit after reset and reboot. Once the system finishes rebooting login into the out-of-band F5OS IP address. The previous set of credentials will be wiped out, and you'll need to login with the default **admin/admin** account, but you'll be prompted to change the password. 
+
+.. code-block:: bash
+
+    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    admin@10.255.0.133's password: *****
+    You are required to change your password immediately (root enforced)
+    Last failed login: Thu Jan 20 16:01:00 EST 2022 from 172.18.104.143 on ssh:notty
+    There was 1 failed login attempt since the last successful login.
+    Last login: Thu Jan 20 15:51:44 2022 from 172.18.104.143
+    WARNING: Your password has expired.
+    You must change your password now and login again!
+    Changing password for user admin.
+    Changing password for admin.
+    (current) UNIX password: 
+    New password: 
+    Retype new password: 
+    passwd: all authentication tokens updated successfully.
+    Connection to 10.255.0.133 closed.
+
+After the password is changed for the adin account you will be disconnected and forced to login with the new password:
+
+    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    admin@10.255.0.133's password: 
+    Last login: Thu Jan 20 16:01:04 2022 from 172.18.104.143
+    Welcome to the Management CLI
+    admin connected from 172.18.104.143 using ssh on appliance-1.chassis.local
+    appliance-1# 
 
 Resetting the system via API
 ----------------------------
