@@ -16,7 +16,7 @@ This allows customers to run a secure/locked-down out-of-band management network
 Port Groups
 ===========
 
-The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
+The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, GUI or API.
 
 
 .. image:: images/rseries_networking/image2.png
@@ -35,7 +35,7 @@ Below is an example of the F5OS GUI **Port Groups** screen on a r10000 Series ap
 Interfaces
 ==========
 
-Interfaces will always be numbered starting with **1.0** and ending with the maximum number of ports on the appliance (**10.0** on the r5000 series and **20.0** on the r10000 series appliances). The type of optic in combination with the **port group** setting will dictate the speed of the interface. Interfaces can be run independetly or bundled together in Link Aggregation Group. VLANs will be assigned to independent interfaces, or at the LAG configuration level if multiple interfaces are bundled together.
+Interfaces will always be numbered starting with **1.0** and ending with the maximum number of ports on the appliance (**10.0** on the r5000 series and **20.0** on the r10000 series appliances). The type of optic in combination with the **port group** setting will dictate the speed of the interface. Interfaces can be run independetly or bundled together in Link Aggregation Groups. VLANs will be assigned to independent interfaces, or at the LAG configuration level if multiple interfaces are bundled together.
 
 
 Supported Optics
@@ -136,7 +136,7 @@ Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pac
 VLANs
 =====
 
-rSeries supports both 802.1Q tagged and untagged VLAN interfaces. In the current F5OS releases, double VLAN tagging (802.1Q-in-Q) is not supported. VLANs can be added to any individual port, or to a Link Aggregation Group.BIG-IP tenants can share the same VLANs.
+rSeries supports both 802.1Q tagged and untagged VLAN interfaces. In the current F5OS releases, double VLAN tagging (802.1Q-in-Q) is not supported. VLANs can be added to any individual port, or to a Link Aggregation Group. BIG-IP tenants can share the same VLANs if needed.
 
 
 Link Aggregation Groups
@@ -149,7 +149,7 @@ An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP M
 Pipelines
 =========
 
-The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipelines supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowlwedge of pipelines and planning will avoid any possible internal oversubscription scenarios.
+The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowlwedge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
 If all ports are utilized and running at max bandwidth capacity simulataneously this may result in an oversubsciprion if the maximum bandwidth for the internal pipelines are achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal piepleines is static and not configurable, although F5 may make this a configurable option in the future.
 
@@ -159,7 +159,7 @@ Below is an example of the total external front panel possible bandwidth exceedi
   :align: center
   :scale: 120%
 
-There are static mappings of external ports to specific internal pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines to avoid possible oversubscription scenarios.
+There are static mappings of external ports to specific internal pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines by chossing different front panel ports to avoid possible oversubscription scenarios.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
@@ -176,3 +176,16 @@ You can view the front panel port to pipeline mapping in the CLI, GUI, or API of
 .. image:: images/rseries_networking/image8.png
   :align: center
   :scale: 50%
+
+..code-block:: bash
+
+
+  Boston-r10900-1# show port-mappings 
+                                                                              NUM                                             
+                                          CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                                  
+  NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                         
+  -----------------------------------------------------------------------------------------------------------------------------
+  default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 1.0 3.0 4.0 5.0 6.0 ]       
+            PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]      
+  default-2  PIPELINE-3  PIPELINEGROUP-2  100       200        OVERSUBSCRIBED  5          8      [ 11.0 13.0 14.0 15.0 16.0 ]  
+            PIPELINE-4  PIPELINEGROUP-2  100       185        OVERSUBSCRIBED  5          8      [ 12.0 17.0 18.0 19.0 20.0 ]    
