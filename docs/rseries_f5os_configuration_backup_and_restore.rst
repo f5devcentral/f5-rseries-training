@@ -354,38 +354,35 @@ After the password is changed for the admin account you will be disconnected and
     appliance-1# 
 
 
-
-Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
-
-
-Next SCP the file from a remote server:
+Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. To import the file using the F5OS CLI you must have a remote HTTPS/SCP/SFTP server to host the file. Use the file import command as seen below to import the file into the **configs** directory.
 
 .. code-block:: bash
 
-    scp root@10.255.0.142:/var/www/server/1/upload/SYSTEM-CONTROLLER-DB-BACKUP2021-09-10 .
-
-To import the file using the F5OS CLI you must have a remote HTTP server to host the file. Use the file import command as seen below to import the file into the **configs** directory.
-
-.. code-block:: bash
-
-    syscon-1-active# file import remote-host 10.255.0.142 remote-file /upload/SYSTEM-CONTROLLER-DB-BACKUP2021-09-10 local-file configs/SYSTEM-CONTROLLER-DB-BACKUP2021-09-10 username corpuser insecure
+    Appliance1# file import remote-host 10.255.0.142 remote-file /upload/upload.php local-file configs/F5OS-BACKUP-APPLIANCE12022-01-22 username corpuser insecure
     Value for 'password' (<string>): ********
-    result File transfer is initiated.(configs/SYSTEM-CONTROLLER-DB-BACKUP2021-09-10)
+    result File transfer is initiated.(configs/F5OS-BACKUP-APPLIANCE12022-01-22)
 
+You can then check on the transfer using the CLI command **file trnasfer-status**.
 
-    syscon-1-active# file transfer-status 
+.. code-block:: bash
+
+    Appliance1## file transfer-status                                                                                                                              
     result 
     S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
-    1    |Import file|HTTPS   |configs/SYSTEM-CONTROLLER-DB-BACKUP2021-09-10               |10.255.0.142        |/upload/SYSTEM-CONTROLLER-DB-BACKUP2021-09-10               |         Completed|Wed Sep 15 01:57:39 2021
+    1    |Import file|HTTPS   |configs/F5OS-BACKUP-APPLIANCE12022-01-22                    |10.255.0.142        |/upload/F5OS-BACKUP-APPLIANCE12022-01-22                    |File Not Found, HTTP Error 404|Sat Jan 22 22:19:30 2022
+    2    |Import file|HTTPS   |configs/F5OS-BACKUP-APPLIANCE12022-01-22                    |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 22 22:20:09 2022
 
+    
+Lastlyyou can confirm the file is in the configs directory using the CLI command **file list path configs/**.
 
-    syscon-1-active# file list path configs/
+.. code-block:: bash
+
+    Appliance1## file list path configs/
     entries {
         name 
-    dummy-backup
-    SYSTEM-CONTROLLER-DB-BACKUP2021-09-10
+    F5OS-BACKUP-APPLIANCE12022-01-22
     }
-    syscon-1-active# 
+    Appliance1## 
 
 Changing the Default Password and Importing F5OS Backups via API
 ----------------------------------------------------------------
