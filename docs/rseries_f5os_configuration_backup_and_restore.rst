@@ -494,18 +494,27 @@ Now that the F5OS backup has been copied into the system, you can restore the pr
 
 .. code-block:: bash
 
-    syscon-2-active# file list path configs/ 
+    r5900-2# file list path configs/
     entries {
         name 
-    SYSTEM-CONTROLLER-DB-BACKUP2021-09-10
+    F5OS-BACKUP-APPLIANCE42022-01-22
     }
-    syscon-2-active# 
+    r5900-2# config
 
 
-    syscon-2-active(config)# system database config-restore name SYSTEM-CONTROLLER-DB-BACKUP2021-09-10
-    response Succeeded.
-    syscon-2-active(config)#
+.. code-block:: bash
 
+    Appliance1(config)# system database config-restore name F5OS-BACKUP-APPLIANCE12022-01-22
+    A clean configuration is required before restoring to a previous configuration.
+    Please perform a reset-to-default operation if you have not done so already.
+    Proceed? [yes/no]: yes
+    result Database config-restore successful.
+    Appliance1(config)# 
+    System message at 2022-01-22 22:46:42...
+    Commit performed by admin via tcp using cli.
+    Appliance1(config)# 
+
+The system should restore the F5OS and start any tenant configurations. You may need to copy a tenant image into F5OS if it has been deleted. 
 
 Restore Using the API
 ---------------------
