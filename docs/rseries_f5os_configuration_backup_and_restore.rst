@@ -523,7 +523,7 @@ To restore the F5OS confd database use the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Applince1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
 
 .. code-block:: json
 
