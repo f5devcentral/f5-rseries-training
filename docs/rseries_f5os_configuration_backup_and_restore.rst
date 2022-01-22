@@ -227,14 +227,19 @@ UCS Backup is covered in the following solution article on askf5:
 
 https://support.f5.com/csp/article/K13132
 
+The following video provides a demo of backing up UCS files from the BIG-IP GUI, this is the same for rSeries tenants.
+
 .. raw:: html
 
     <iframe width="560" height="315" src="https://www.youtube.com/embed/OFE9MwxeBys" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
 
-You can also use BIG-IQ to backup rSeries tenants:
+You can also use BIG-IQ to backup rSeries tenants.
 
+    https://techdocs.f5.com/en-us/bigiq-8-0-0/managing-big-ip-devices-from-big-iq/backup-file-management.html
+    
 
+The following video provides a demo of backing up UCS files form the BIG-IQ GUI, this is the same for rSeries tenants.
 
 .. raw:: html
 
