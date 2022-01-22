@@ -414,6 +414,8 @@ Post the following API call to the F5OS out-of-band IP address to import the arc
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/import
 
+Below is the body of the API call above:
+
 .. code-block:: json
 
     {
@@ -432,6 +434,8 @@ You may query the transfer status of the file via the following API command:
 
     POST https://{{Appliance1_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
+The body of the API call should have the file name you want to query:
+
 .. code-block:: json
 
     {
@@ -444,13 +448,15 @@ If you want to list the contents of the config directory via API use the followi
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
+The body of the API call above will list the **configs** directory as the one to be queried:
+
 .. code-block:: json
 
     {
     "f5-utils-file-transfer:path": "configs"
     }
 
-You’ll see the contents of the directory in the API response:
+You’ll see the contents of the directory in the API response and the file should be listed:
 
 .. code-block:: json
 
