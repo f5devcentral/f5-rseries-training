@@ -352,7 +352,7 @@ If you would like to change any of the logging levels via the CLI you must be in
 Viewing Logs from the GUI
 --------------------------
 
-In the intial release you cannot view the F5OS logs directly from the GUI, although you can download them from the GUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the GUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download the files directly to your client machine through the browser.
+In the intial release you cannot view the F5OS logs directly from the GUI, although you can download them from the GUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the GUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
