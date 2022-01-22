@@ -501,6 +501,7 @@ Now that the F5OS backup has been copied into the system, you can restore the pr
     }
     r5900-2# config
 
+The command below will restore the prvious config for the F5OS layer:
 
 .. code-block:: bash
 
