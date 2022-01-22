@@ -260,7 +260,7 @@ https://support.f5.com/csp/article/K20024872
 Resetting the system via CLI
 ----------------------------
 
-To reset the F5OS confd database to default use the CLI command **system database reset-to-default**. This will wipe out all tenant configurations, networking, as well as all the system parameters. You will lose all conectivity after this is run and will require console access to re-establish network connectivity before a previous backup can be imported and a restore can occur.
+To reset the F5OS confd database to default use the CLI command **system database reset-to-default**. This will wipe out all tenant configurations, networking, as well as all the system parameters except for out-of-band networking and licensing.
 
 .. code-block:: bash
 
@@ -303,6 +303,8 @@ The reset of the database will not completely wipe out the system configuration.
     Connection to 10.255.0.133 closed.
 
 After the password is changed for the admin account you will be disconnected and forced to login with the new password:
+
+.. code-block:: bash
 
     FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
     admin@10.255.0.133's password: 
