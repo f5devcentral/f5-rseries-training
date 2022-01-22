@@ -282,36 +282,6 @@ After resettting the system database reboot the system to ensure the configurati
     appliance-1# 
 
 
-The reset of the database will not completely wipe out the system configuration. It will preserve some basic configuration like out-of-band settings so that you can still reach the unit after the database reset and reboot. Once the system finishes rebooting log into the out-of-band F5OS IP address. The previous set of login credentials will be wiped out, and you'll need to login with the default **admin/admin** account, and then you'll be prompted to change the default admin password. 
-
-.. code-block:: bash
-
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
-    admin@10.255.0.133's password: *****
-    You are required to change your password immediately (root enforced)
-    Last failed login: Thu Jan 20 16:01:00 EST 2022 from 172.18.104.143 on ssh:notty
-    There was 1 failed login attempt since the last successful login.
-    Last login: Thu Jan 20 15:51:44 2022 from 172.18.104.143
-    WARNING: Your password has expired.
-    You must change your password now and login again!
-    Changing password for user admin.
-    Changing password for admin.
-    (current) UNIX password: 
-    New password: 
-    Retype new password: 
-    passwd: all authentication tokens updated successfully.
-    Connection to 10.255.0.133 closed.
-
-After the password is changed for the admin account you will be disconnected and forced to login with the new password:
-
-.. code-block:: bash
-
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
-    admin@10.255.0.133's password: 
-    Last login: Thu Jan 20 16:01:04 2022 from 172.18.104.143
-    Welcome to the Management CLI
-    admin connected from 172.18.104.143 using ssh on appliance-1.chassis.local
-    appliance-1# 
 
 Resetting the system via API
 ----------------------------
@@ -352,11 +322,40 @@ Copying Archived Configs into F5OS
 Changing the Default Password and Importing F5OS Backups via CLI
 ----------------------------------------------------------------
 
-After the reboot of the system you'll need to login and change the default password. Login with the default **admin/admin** account. You'll be prompted to change the password, and after doing so you'll be disconnected, and will need to login with the new admin password:
+The reset of the database will not completely wipe out the system configuration. It will preserve some basic configuration like out-of-band settings so that you can still reach the unit after the database reset and reboot. Once the system finishes rebooting log into the out-of-band F5OS IP address. The previous set of login credentials will be wiped out, and you'll need to login with the default **admin/admin** account, and then you'll be prompted to change the default admin password. 
 
 .. code-block:: bash
 
-nce the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
+    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    admin@10.255.0.133's password: *****
+    You are required to change your password immediately (root enforced)
+    Last failed login: Thu Jan 20 16:01:00 EST 2022 from 172.18.104.143 on ssh:notty
+    There was 1 failed login attempt since the last successful login.
+    Last login: Thu Jan 20 15:51:44 2022 from 172.18.104.143
+    WARNING: Your password has expired.
+    You must change your password now and login again!
+    Changing password for user admin.
+    Changing password for admin.
+    (current) UNIX password: 
+    New password: 
+    Retype new password: 
+    passwd: all authentication tokens updated successfully.
+    Connection to 10.255.0.133 closed.
+
+After the password is changed for the admin account you will be disconnected and forced to login with the new password:
+
+.. code-block:: bash
+
+    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    admin@10.255.0.133's password: 
+    Last login: Thu Jan 20 16:01:04 2022 from 172.18.104.143
+    Welcome to the Management CLI
+    admin connected from 172.18.104.143 using ssh on appliance-1.chassis.local
+    appliance-1# 
+
+
+
+Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
 
 
 Next SCP the file from a remote server:
@@ -424,7 +423,7 @@ Post the following API call to the F5OS out-of-band IP address to import the arc
         "f5-utils-file-transfer:insecure": "",
         "f5-utils-file-transfer:protocol": "https",
         "f5-utils-file-transfer:username": "corpuser",
-        "f5-utils-file-transfer:password": "password",
+        "f5-utils-file-transfer:password": "Pa$$w0rd",
         "f5-utils-file-transfer:remote-host": "10.255.0.142",
         "f5-utils-file-transfer:remote-file": "/upload/F5OS-BACKUP-APPLIANCE1{{currentdate}}",
         "f5-utils-file-transfer:local-file": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
@@ -462,7 +461,7 @@ You’ll see the contents of the directory in the API response:
         "f5-utils-file-transfer:output": {
             "entries": [
                 {
-                    "name": "\nF5OS-BACKUP-APPLIANCE42022-01-22"
+                    "name": "\nF5OS-BACKUP-APPLIANCE12022-01-22"
                 }
             ]
         }
