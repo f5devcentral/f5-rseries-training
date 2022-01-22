@@ -221,7 +221,19 @@ You can then chek on the status of the export via the following API call:
 Backing up Tenants
 ==================
 
-Backup all tenants using a UCS archive or other mechanism so that they can be restored after the system controller and chassis partitions are restored. Another alternative to UCS backup/restore of tenants is using Declarative Onboarding and AS3. If tenants are configured using DO and AS3 initially, and the declarations are saved, they can be replayed to restore a tenant. BIG-IQ could be used for this purpose as AS3 and DO declarations can be sent through BIG-IQ.
+Backup all tenants using a UCS archive or other mechanism so that they can be restored after F5OS layer has been restored. Another alternative to UCS backup/restore of tenants is using Declarative Onboarding and AS3. If tenants are configured using DO and AS3 initially, and the declarations are saved, they can be replayed to restore a tenant. BIG-IQ could be used for this purpose as AS3 and DO declarations can be sent through BIG-IQ.
+
+UCS Backup is covered in the following solution article on askf5:
+
+https://support.f5.com/csp/article/K13132
+
+You can also use BIG-IQ to backup rSeries tenants:
+
+.. raw:: html
+
+<iframe width="1269" height="714" src="https://www.youtube.com/embed/OFE9MwxeBys" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
 
 
 Resetting the System (Not for Production)
@@ -258,7 +270,7 @@ After resettting the system database reboot the system to ensure the configurati
     appliance-1# 
 
 
-The reset of the database will not completely wipe out the system. It will preserve some basic configuration like out-of-band settings so that you can still reach the unit after reset and reboot. Once the system finishes rebooting login into the out-of-band F5OS IP address. The previous set of credentials will be wiped out, and you'll need to login with the default **admin/admin** account, but you'll be prompted to change the password. 
+The reset of the database will not completely wipe out the system configuration. It will preserve some basic configuration like out-of-band settings so that you can still reach the unit after the database reset and reboot. Once the system finishes rebooting log into the out-of-band F5OS IP address. The previous set of login credentials will be wiped out, and you'll need to login with the default **admin/admin** account, and then you'll be prompted to change the default admin password. 
 
 .. code-block:: bash
 
@@ -278,7 +290,7 @@ The reset of the database will not completely wipe out the system. It will prese
     passwd: all authentication tokens updated successfully.
     Connection to 10.255.0.133 closed.
 
-After the password is changed for the adin account you will be disconnected and forced to login with the new password:
+After the password is changed for the admin account you will be disconnected and forced to login with the new password:
 
     FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
     admin@10.255.0.133's password: 
@@ -290,11 +302,11 @@ After the password is changed for the adin account you will be disconnected and 
 Resetting the system via API
 ----------------------------
 
-There is no GUI support for this functionality currently. To do this via API call you will need to send the following API call to the chassis partition IP address. Below is an example sending the database reset to default command to the chassis partition called bigpartition:
+There is no GUI support for this functionality currently. To do this via API call you will need to send the following API call to the F5OS IP address. Below is an example sending the database reset to default command:
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:reset-to-default
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:reset-to-default
 
 .. code-block:: json
 
@@ -302,156 +314,27 @@ There is no GUI support for this functionality currently. To do this via API cal
     "f5-database:proceed": "yes"
     }
 
-Repeat this for the other chassis partitions in the system, in this case send and API call to the IP address of the chassis partition smallpartition:
+After resettting the system database reboot the system to ensure the configuration is completely cleaned up. 
 
 .. code-block:: bash
 
-    POST https://{{Chassis1_SmallPartition_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:reset-to-default
-
-.. code-block:: json
-
-    {
-    "f5-database:proceed": "yes"
-    }
-
-First send an API call to the system controller IP address to re-assign any slots that were previously part of a chassis partition to the partition none. In the example below slots 1-2 were assigned to bigpartition and slot3 was assigned to smallpartition. All 3 slots will be moved to the partition none. 
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-reboot:reboot
 
 
-.. code-block:: bash
 
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/
-
-.. code-block:: json
-
-    {
-        "f5-system-slot:slots": {
-            "slot": [
-                {
-                    "slot-num": 1,
-                    "enabled": true,
-                    "partition": "none"
-                },
-                {
-                    "slot-num": 2,
-                    "enabled": true,
-                    "partition": "none"
-                },
-                {
-                    "slot-num": 3,
-                    "enabled": true,
-                    "partition": "none"
-                }
-            ]
-        }
-    }
-
-Next Delete any chassis partitions that were configured. In this case both **bigpartition** and **smallpartiion** will be deleted by sending API calls to the system controller IP address:
-
-.. code-block:: bash
-
-    DELETE https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition
-
-    DELETE https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=smallpartition
-
-The last step in the reset procedure is to set the system controllers confd database back to default.
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_System_Controller_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config
-
-.. code-block:: json
-
-    {
-    "f5-database:reset-default-config": "true"
-    }
-
-The system controllers should reboot, and their configurations will be completel wiped clean. You will need ot login via the CLI to restore out-of-band networking connectivity, and then the previously archived configurations can be copied back and restored. 
 
 Resetting the system via GUI
 ----------------------------
 
-This is not currently an option, and a reset must be performed via API or CLI.
+Currently there is no option to reset the system via the GUI, a reset must be performed via API or CLI.
 
 
-Restoring Out-of-Band Connectivity and Copying Archived Configs into F5OS
-=========================================================================
+Copying Archived Configs into F5OS
+==================================
 
-Rsestoring F5OS Out-of-Band Management via CLI
-----------------------------------------------
-
-You will need to login to the rSeries appliance console port since all the networking configuration has now been wiped clean. You will login with the default username/password of admin/admin, since any previous accounts will have been wiped clean. On first login you will be prompted to change your password.
-
-.. code-block:: bash
-
-    controller-1 login: admin
-    Password: 
-    You are required to change your password immediately (root enforced)
-    Changing password for admin.
-    (current) UNIX password: admin
-    New password: **************
-    Retype new password: **************
-    Last failed login: Fri Sep 10 14:49:55 UTC 2021 on ttyS0
-    There was 1 failed login attempt since the last successful login.
-    Last login: Thu Sep  2 14:09:57 on ttyS0
-    Welcome to the F5OS System Controller Management CLI
-    admin connected from 127.0.0.1 using console on syscon-1-standby
-    syscon-1-standby# 
-
-Logout of the system and login as root using the new password you just created for the admin account, you’ll be prompted to change the password again. There is a bug in the current F5OS version where the config directory is getting deleted on wiping out of the database, and it is not restored. Until that issue is resolved the recommended workaround is to create a new backup of the system controller configuration and that will create the required config directory. Note you will not restore from this backup, instead you will restore from the one taken earlier before the reset. 
-
-.. code-block:: bash
-
-    syscon-1-active# config
-    Entering configuration mode terminal
-    syscon-1-active(config)# system database config-backup name dummy-backup
-    response Succeeded.
-    syscon-1-active(config)# exit 
-
-    syscon-1-active# file list path configs
-    entries {
-        name 
-    dummy-backup
-    test-backup
-    }
-    syscon-1-active# 
-
-
-
-To transfer files into the system controller you’ll have to manually configure the out-of-band networking first. In the case below the system controller out-of-band ethernet ports were aggregated into a LAG before the system was reset. This needs to be recreated, and then static and floating out-of-band IP addresses are assigned as well as a prefix length and gateway.
-
-.. code-block:: bash
-
-    syscon-1-active# config
-    syscon-1-active(config)# interfaces interface mgmt-aggr
-    Value for 'config type' [a12MppSwitch,aal2,aal5,actelisMetaLOOP,...]: ieee8023adLag
-    syscon-1-active(config-interface-mgmt-aggr)# config name mgmt-aggr
-    syscon-1-active(config-interface-mgmt-aggr)# aggregation config lag-type LACP 
-    syscon-1-active(config-interface-mgmt-aggr)# exit
-    syscon-1-active(config)# lacp interfaces interface mgmt-aggr
-    syscon-1-active(config-interface-mgmt-aggr)# config name mgmt-aggr
-    syscon-1-active(config-interface-mgmt-aggr)# exit
-    syscon-1-active(config)# interfaces interface 1/mgmt0 
-    syscon-1-active(config-interface-1/mgmt0)# config name 1/mgmt0
-    syscon-1-active(config-interface-1/mgmt0)# config type ethernetCsmacd 
-    syscon-1-active(config-interface-1/mgmt0)# ethernet config aggregate-id mgmt-aggr 
-    syscon-1-active(config-interface-1/mgmt0)# exit
-    syscon-1-active(config)# exit
-    yscon-1-active(config)# interfaces interface 2/mgmt0  
-    syscon-1-active(config-interface-2/mgmt0)# config name 2/mgmt0
-    syscon-1-active(config-interface-2/mgmt0)# config type ethernetCsmacd 
-    syscon-1-active(config-interface-2/mgmt0)# ethernet config aggregate-id mgmt-aggr
-    syscon-1-active(config-interface-2/mgmt0)# 
-    syscon-1-active(config)# system mgmt-ip config ipv4 controller-1 address 10.255.0.145
-    syscon-1-active(config)# system mgmt-ip config ipv4 controller-2 address 10.255.0.146
-    syscon-1-active(config)# system mgmt-ip config ipv4 floating address 10.255.0.147
-    syscon-1-active(config)# system mgmt-ip config ipv4 gateway 10.255.0.1
-    syscon-1-active(config)# system mgmt-ip config ipv4 prefix-length 24
-    syscon-1-active(config)# commit 
-    Commit complete.
 
 Importing F5OS Backups via CLI
 ------------------------------
-
 
 Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
 
