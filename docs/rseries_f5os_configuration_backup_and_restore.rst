@@ -322,13 +322,15 @@ There is no GUI support for this functionality currently. To do this via API cal
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:reset-to-default
 
+The body of the above API call must contain the following:
+
 .. code-block:: json
 
     {
     "f5-database:proceed": "yes"
     }
 
-After resettting the system database reboot the system to ensure the configuration is completely cleaned up. 
+After resettting the system database reboot the system to ensure the configuration is completely cleaned up. The API call below will reboot the system.
 
 .. code-block:: bash
 
@@ -347,10 +349,14 @@ Copying Archived Configs into F5OS
 ==================================
 
 
-Importing F5OS Backups via CLI
-------------------------------
+Changing the Default Password and Importing F5OS Backups via CLI
+----------------------------------------------------------------
 
-Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
+After the reboot of the system you'll need to login and change the default password. Login with the default **admin/admin** account. You'll be prompted to change the password, and after doing so you'll be disconnected, and will need to login with the new admin password:
+
+.. code-block:: bash
+
+nce the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. If you are in the bash shell you can simply SCP the file into the **/var/confd/configs** directory. If it doesn’t exist, you can create it by creating a dummy backup of the system controllers configuration as outlined earlier.
 
 
 Next SCP the file from a remote server:
@@ -382,8 +388,29 @@ To import the file using the F5OS CLI you must have a remote HTTP server to host
     }
     syscon-1-active# 
 
-Importing F5OS Backups via API
-------------------------------
+Changing the Default Password and Importing F5OS Backups via API
+----------------------------------------------------------------
+
+After the reboot of the system you'll need to login and change the default password. Use the following API call to login with the default **admin/admin** account to change the password. After doing so an future API calls will need to login with the new admin password:
+
+.. code-block:: bash
+
+    POST https://{{Appliance1_IP}}:8888/restconf/operations/openconfig-system:system/aaa/authentication/users/user=admin/config/change-password
+
+The body of the API call contains the following:
+
+.. code-block:: json
+
+    {
+        "input": [
+            {
+                "old-password": "admin",
+                "new-password": "{{Appliance_Password}}",
+                "confirm-password": "{{Appliance_Password}}"
+            }
+        ]
+    }
+
 
 Post the following API call to the F5OS out-of-band IP address to import the archived confd backup file from a remote HTTPS server to the configs directory on the appliance.
 
@@ -397,10 +424,10 @@ Post the following API call to the F5OS out-of-band IP address to import the arc
         "f5-utils-file-transfer:insecure": "",
         "f5-utils-file-transfer:protocol": "https",
         "f5-utils-file-transfer:username": "corpuser",
-        "f5-utils-file-transfer:password": "Passw0rd!!",
+        "f5-utils-file-transfer:password": "password",
         "f5-utils-file-transfer:remote-host": "10.255.0.142",
-        "f5-utils-file-transfer:remote-file": "/upload/SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}",
-        "f5-utils-file-transfer:local-file": "configs/SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}"
+        "f5-utils-file-transfer:remote-file": "/upload/F5OS-BACKUP-APPLIANCE1{{currentdate}}",
+        "f5-utils-file-transfer:local-file": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
 
 You may query the transfer status of the file via the following API command:
@@ -412,7 +439,7 @@ You may query the transfer status of the file via the following API command:
 .. code-block:: json
 
     {
-        "f5-utils-file-transfer:file-name": "configs/SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}"
+        "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE4{{currentdate}}"
     }
 
 If you want to list the contents of the config directory via API use the following API command:
@@ -435,15 +462,15 @@ You’ll see the contents of the directory in the API response:
         "f5-utils-file-transfer:output": {
             "entries": [
                 {
-                    "name": "\nSYSTEM-CONTROLLER-DB-BACKUP2021-09-10"
+                    "name": "\nF5OS-BACKUP-APPLIANCE42022-01-22"
                 }
             ]
         }
     }
 
 
-Importing F5OS Backups via GUI
-------------------------------
+Changing the Default Password and Importing F5OS Backups via GUI
+----------------------------------------------------------------
 
 You can use the **System Settings -> File Utilities** page to import an archived F5OS backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file.
 
@@ -490,8 +517,9 @@ To restore the F5OS confd database use the following API call:
 .. code-block:: json
 
     {
-    "f5-database:name": "SYSTEM-CONTROLLER-DB-BACKUP{{currentdate}}"
+    "f5-database:name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
+The system should restore the F5OS and start any tenant configurations. You may need to copy a tenant image into F5OS if it has been deleted. 
 
 Restore Using the GUI
 ---------------------
@@ -499,425 +527,3 @@ Restore Using the GUI
 Currently there is no GUI support for restoration of the confd database, so you’ll need to use either the CLI or API to restore the F5OS database. Once the database has been restored (you may need to wait a few minutes for the restoration to complete.)
 
 
-
-Importing Archived Chassis Partition Configs
-============================================
-
-Log directly into the chassis partition CLI and use the **file import** command to copy the archived image from a remote HTTPS server. You can then use the **file transfer-status** to see if the import succeeded, and then the **file list** command to see the file.
-
-.. code-block:: bash
-
-    bigpartition-1# file import remote-host 10.255.0.142 remote-file /upload/bigpartition-DB-BACKUP2021-09-10 local-file configs/bigpartition-DB-BACKUP2021-09-10 username corpuser insecure  
-    Value for 'password' (<string>): ********
-    result File transfer is initiated.(configs/bigpartition-DB-BACKUP2021-09-10)
-
-
-    bigpartition-1# file transfer-status 
-    result 
-    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
-    1    |Import file|HTTPS   |configs/bigpartition-DB-BACKUP2021-09-10                    |10.255.0.142        |/upload/bigpartition-DB-BACKUP2021-09-10                    |         Completed|Wed Sep 15 03:15:43 2021
-
-
-
-    bigpartition-1# file list path configs/
-    entries {
-        name 
-    bigpartition-DB-BACKUP2021-09-10
-    }
-    bigpartition-1# 
-
-Repeat this process for each chassis partition in the system.
-
-.. code-block:: bash
-
-    smallpartition-1# file import remote-host 10.255.0.142 remote-file /upload/smallpartition-DB-BACKUP2021-09-10 local-file configs/smallpartition-DB-BACKUP2021-09-10 username corpuser insecure 
-    Value for 'password' (<string>): ********
-    result File transfer is initiated.(configs/smallpartition-DB-BACKUP2021-09-10)
-
-
-    smallpartition-1# file transfer-status 
-    result 
-    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
-    1    |Import file|HTTPS   |configs/smallpartition-DB-BACKUP2021-09-10                  |10.255.0.142        |/upload/smallpartition-DB-BACKUP2021-09-10                  |         Completed|Wed Sep 15 03:21:40 2021
-
-
-
-    smallpartition-1# file list path configs/
-    entries {
-        name 
-    smallpartition-DB-BACKUP2021-09-10
-    }
-    smallpartition-1# 
-
-Importing Archived Chassis Partition Configs via API
-----------------------------------------------------
-
-Archived confd database backups can be imported from a remote HTTPS server via the following API call to the chassis partition IP addresses. Each chassis partition will need to have its own archived database imported so that it may be restored:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_SmallPartition_IP}}:8888/restconf/data/f5-utils-file-transfer:file/import
-
-.. code-block:: json
-
-    {
-        "f5-utils-file-transfer:insecure": "",
-        "f5-utils-file-transfer:protocol": "https",
-        "f5-utils-file-transfer:username": "corpuser",
-        "f5-utils-file-transfer:password": "Passw0rd!!",
-        "f5-utils-file-transfer:remote-host": "10.255.0.142",
-        "f5-utils-file-transfer:remote-file": "/upload/smallpartition-DB-BACKUP2021-09-10",
-        "f5-utils-file-transfer:local-file": "configs/smallpartition-DB-BACKUP2021-09-10"
-    }
-
-You can check on the file transfer status by issubg the following API call:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
-
-A status similar to the one below will show a status of completed if successful:
-
-.. code-block:: json
-
-    {
-        "f5-utils-file-transfer:output": {
-            "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Import file|HTTPS   |configs/bigpartition-DB-BACKUP2021-09-10                    |10.255.0.142        |/upload/bigpartition-DB-BACKUP2021-09-10                    |         Completed|Thu Sep 16 01:33:50 2021"
-        }
-    }
-
-Repeat similar steps for remaining chassis partitions:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-utils-file-transfer:file/import
-
-.. code-block:: json
-
-    {
-        "f5-utils-file-transfer:insecure": "",
-        "f5-utils-file-transfer:protocol": "https",
-        "f5-utils-file-transfer:username": "corpuser",
-        "f5-utils-file-transfer:password": "Passw0rd!!",
-        "f5-utils-file-transfer:remote-host": "10.255.0.142",
-        "f5-utils-file-transfer:remote-file": "/upload/bigpartition-DB-BACKUP2021-09-10",
-        "f5-utils-file-transfer:local-file": "configs/bigpartition-DB-BACKUP2021-09-10"
-    }
-
-Importing Archived Chassis Partition Configs via GUI
-----------------------------------------------------
-
-You can use the System Settings -> File Utilities page to import archives from a remote HTTPS server. 
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image13.png
-  :align: center
-  :scale: 70%
-
-Restoring Chassis Partitions from Database Backups
-==================================================
-
-To restore a configuration database backup within a chassis partition, use the **system database config-restore** command inside the chassis partition. Note that a newly restored chassis partition will not have any tenant images loaded so tenants will show a **Pending** status until the proper image is loaded for that tenant.
-
-.. code-block:: bash
-
-    bigpartition-1(config)# system database config-restore name bigpartition-DB-BACKUP2021-09-10
-    A clean configuration is required before restoring to a previous configuration.
-    Please perform a reset-to-default operation if you have not done so already.
-    Proceed? [yes/no]: yes
-    result Database config-restore successful.
-    bigpartition-1(config)# 
-    System message at 2021-09-15 03:25:53...
-    Commit performed by admin via tcp using cli.
-    bigpartition-1(config)# 
-
-
-    smallpartition-1(config)# system database config-restore name smallpartition-DB-BACKUP2021-09-10
-    A clean configuration is required before restoring to a previous configuration.
-    Please perform a reset-to-default operation if you have not done so already.
-    Proceed? [yes/no]: yes
-    result Database config-restore successful.
-    smallpartition-1(config)# 
-    System message at 2021-09-15 03:23:50...
-    Commit performed by admin via tcp using cli.
-    smallpartition-1(config)# 
-
-
-The tenant is properly restored and deployed; however, its status is pending waiting on image:
-
-
-.. image:: images/velos_f5os_configuration_backup_and_restore/image14.png
-  :align: center
-  :scale: 70%
-
-This can be seen in the chassis partition CLI by using the **show tenants** command. Note the **Phase** will display: **Tenant image not found**.
-
-.. code-block:: bash
-
-    Placeholder
-
- Copy the proper tenant image into each partition and the tenant should then deploy successfully. Below is a **show images** output before and after an image is successfully uploaded. Note the **STATUS** of **not-present** and then **replicated** after the image has been uploaded:   
-
- .. code-block:: bash
-
-    bigpartition-1# show images 
-                                                    IN                  
-    NAME                                            USE    STATUS       
-    --------------------------------------------------------------------
-    BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle  false  not-present  
-
-
-    bigpartition-1# show images
-                                                    IN                 
-    NAME                                            USE    STATUS      
-    -------------------------------------------------------------------
-    BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle  false  replicated  
-
-Once the tenant is deployed you may login, and the upload and restore the tenant UCS image.
-
-Restoring Chassis Partitions from Database Backups via API
-----------------------------------------------------------
-
-The following API commands will restore the database backups on the two chassis partitions:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
-
-.. code-block:: json
-
-    {
-    "f5-database:name": "bigpartition-DB-BACKUP2021-09-10"
-    }
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_SmallPartition_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
-
-.. code-block:: json
-
-    {
-    "f5-database:name": "smallpartition-DB-BACKUP2021-09-10"
-    }
-
-The tenants are properly restored and deployed; however, its status is pending waiting on image. You can check the status of the images with the following API call:
-
-.. code-block:: bash
-
-    GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-tenant-images:images
-
-You will need to load the image that the tenant was running when it was archived. The following API call will import a tenant image from a remote HTTPS server:
-
-.. code-block:: bash
-
-    POST https://{{Chassis1_BigPartition_IP}}:8888/api/data/f5-utils-file-transfer:file/import
-
-.. code-block:: json
-
-    {
-        "input": [
-            {
-                "remote-host": "10.255.0.142",
-                "remote-file": "upload/{{Tenant_Image}}",
-                "local-file": "images/{{Tenant_Image}}",
-                "insecure": "",
-                "f5-utils-file-transfer:username": "corpuser",
-                "f5-utils-file-transfer:password": "Passw0rd!!"
-            }
-        ]
-    }
-
-You can verify the tenant has successfully started once the image has been loaded:
-
-.. code-block:: bash
-
-    GET https://{{Chassis1_BigPartition_IP}}:8888/restconf/data/f5-tenants:tenants
-
-.. code-block:: json
-
-    {
-        "f5-tenants:tenants": {
-            "tenant": [
-                {
-                    "name": "tenant1",
-                    "config": {
-                        "name": "tenant1",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                        "nodes": [
-                            1
-                        ],
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "vlans": [
-                            501,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": "4",
-                        "memory": "14848",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "appliance-mode": {
-                            "enabled": false
-                        }
-                    },
-                    "state": {
-                        "name": "tenant1",
-                        "unit-key-hash": "Y00du3mZxvi0UXGNV32NpCMLTRia8AbLvaHwAAuLxg2IS6EWppPwnSGSecfleaHh0lHXENQWKACz27xe9CyW5w==",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                        "nodes": [
-                            1
-                        ],
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "mac-ndi-set": [
-                            {
-                                "ndi": "default",
-                                "mac": "00:94:a1:8e:d0:0b"
-                            }
-                        ],
-                        "vlans": [
-                            501,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": "4",
-                        "memory": "14848",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "mac-data": {
-                            "base-mac": "00:94:a1:8e:d0:09",
-                            "mac-pool-size": 1
-                        },
-                        "appliance-mode": {
-                            "enabled": false
-                        },
-                        "status": "Running",
-                        "primary-slot": 1,
-                        "image-version": "BIG-IP 15.1.4 0.0.46",
-                        "instances": {
-                            "instance": [
-                                {
-                                    "node": 1,
-                                    "instance-id": 1,
-                                    "phase": "Running",
-                                    "image-name": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                                    "creation-time": "2021-09-16T01:57:11Z",
-                                    "ready-time": "2021-09-16T01:56:58Z",
-                                    "status": "Started tenant instance",
-                                    "mgmt-mac": "36:4d:6d:2d:a8:80"
-                                }
-                            ]
-                        }
-                    }
-                },
-                {
-                    "name": "tenant2",
-                    "config": {
-                        "name": "tenant2",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                        "nodes": [
-                            1,
-                            2
-                        ],
-                        "mgmt-ip": "10.255.0.205",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "vlans": [
-                            502,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": "6",
-                        "memory": "22016",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "appliance-mode": {
-                            "enabled": false
-                        }
-                    },
-                    "state": {
-                        "name": "tenant2",
-                        "unit-key-hash": "fRO3SmBcQxURAjrANfv8u4J9EDH+kG1KevOn99rvDupNW2HMyoBeWqN4nhabnmAha/wbbNxAR9l2JW9LEF+7FQ==",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                        "nodes": [
-                            1,
-                            2
-                        ],
-                        "mgmt-ip": "10.255.0.205",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "mac-ndi-set": [
-                            {
-                                "ndi": "default",
-                                "mac": "00:94:a1:8e:d0:0c"
-                            }
-                        ],
-                        "vlans": [
-                            502,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": "6",
-                        "memory": "22016",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "mac-data": {
-                            "base-mac": "00:94:a1:8e:d0:0a",
-                            "mac-pool-size": 1
-                        },
-                        "appliance-mode": {
-                            "enabled": false
-                        },
-                        "status": "Running",
-                        "primary-slot": 1,
-                        "image-version": "BIG-IP 15.1.4 0.0.46",
-                        "instances": {
-                            "instance": [
-                                {
-                                    "node": 1,
-                                    "instance-id": 1,
-                                    "phase": "Running",
-                                    "image-name": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                                    "creation-time": "2021-09-16T01:58:41Z",
-                                    "ready-time": "2021-09-16T01:58:27Z",
-                                    "status": "Started tenant instance",
-                                    "mgmt-mac": "de:08:94:a8:1b:08"
-                                },
-                                {
-                                    "node": 2,
-                                    "instance-id": 2,
-                                    "phase": "Running",
-                                    "image-name": "BIGIP-15.1.4-0.0.46.ALL-VELOS.qcow2.zip.bundle",
-                                    "creation-time": "2021-09-16T01:58:37Z",
-                                    "ready-time": "2021-09-16T01:58:24Z",
-                                    "status": "Started tenant instance",
-                                    "mgmt-mac": "a6:fe:75:70:21:c8"
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
-    }
-
-
-The final step is to restore the backups on each individual tenant. This will follow the normal BIG-IP UCS restore process.
