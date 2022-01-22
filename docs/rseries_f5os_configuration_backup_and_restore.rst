@@ -362,7 +362,7 @@ Once the system is configured and out-of-band connectivity is restored you can n
     Value for 'password' (<string>): ********
     result File transfer is initiated.(configs/F5OS-BACKUP-APPLIANCE12022-01-22)
 
-You can then check on the transfer using the CLI command **file trnasfer-status**.
+You can then check on the transfer using the CLI command **file transfer-status**.
 
 .. code-block:: bash
 
@@ -373,7 +373,7 @@ You can then check on the transfer using the CLI command **file trnasfer-status*
     2    |Import file|HTTPS   |configs/F5OS-BACKUP-APPLIANCE12022-01-22                    |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 22 22:20:09 2022
 
     
-Lastlyyou can confirm the file is in the configs directory using the CLI command **file list path configs/**.
+Lastly you can confirm the file is in the configs directory using the CLI command **file list path configs/**.
 
 .. code-block:: bash
 
@@ -468,7 +468,7 @@ You’ll see the contents of the directory in the API response:
 Changing the Default Password and Importing F5OS Backups via GUI
 ----------------------------------------------------------------
 
-You can use the **System Settings -> File Utilities** page to import an archived F5OS backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file.
+You can use the **System Settings -> File Utilities** page to import an archived F5OS backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file. You can optionally use the **Upload** option to upload a backup from your client machine through the browser.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image9.png
   :align: center
