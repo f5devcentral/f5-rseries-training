@@ -1557,9 +1557,31 @@ For example, the following command sends the output of the tcpdump command to th
 Export TCPDUMP From CLI
 -----------------------
 
-The following example combines options to capture traffic only on interface 2.0, if the source IP address is 10.10.1.1 and the destination port is 80, and sends the output to the **example_capture.pcap** file:
+You can export the tcpdump output file from the rSeries system using the command line file utility in F5OS-A or using the scp utility as the root user. To export a tcpdump output file using the file utility, perform the following procedure:
 
-system diagnostics tcpdump interface "1/2.0" bpf "src host 10.10.1.1 and dst port 80" outfile /var/F5/partition/shared/example_capture.pcap    
+Note: When using the file utility for export, first copy the tcpdump output file to the /var/shared/ directory. The local-file path for the file export command is then diags/shared/<filename>, as shown in the following example.
+
+Impact of procedure: Performing the following procedure should not have a negative impact on your system.
+
+Log in to the command line on the rSeries system as the admin user.To export a file, use the following syntax:
+
+.. code-block:: bash
+
+    file export protocol <https | scp | sftp> local-file diags/shared/<tcpdump_filename> remote-host <host_address> remote-file <path/to/remote_file> username <user>
+
+For example, to export the **/var/shared/example_capture.pcap** file to the /tmp/ directory of the remote host at 10.10.10.100 using scp protocol, enter the following command:
+
+**Note: To disable remote system identity verification, use the insecure option to the file command.**
+
+.. code-block:: bash
+
+    file export protocol scp local-file diags/shared/example_capture.pcap remote-host 10.10.10.100 remote-file /tmp/example_capture.pcap username admin
+
+At the prompt, to transfer the file, enter the password for the remote host. To check the status of the file transfer, enter the following command: **file transfer-status**. When complete, your output is similar to the following example:
+
+.. code-block:: bash
+
+    3    |Export file|SCP     |diags/shared/example_capture.pcap                         |10.10.10.100       |/tmp/example_capture.pcap                          |         Completed|
 
 Console Access to System Controllers and Blades via Built-In Terminal Server
 ============================================================================
