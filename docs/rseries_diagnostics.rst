@@ -1585,8 +1585,8 @@ At the prompt, to transfer the file, enter the password for the remote host. To 
 
     3    |Export file|SCP     |diags/shared/example_capture.pcap                         |10.10.10.100       |/tmp/example_capture.pcap                          |         Completed|
 
-Console Access to System Controllers and Blades via Built-In Terminal Server
-============================================================================
+Console Access to via Built-In Terminal Server
+==============================================
 
 You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to individual tenant console ports. Specific TCP ports on the rSeries F5OS IP address have been reserved and mapped to console ports of as follows:
 
