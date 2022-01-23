@@ -1526,8 +1526,7 @@ For example, the following command captures traffic on interface 1.0:
 
     system diagnostics tcpdump interface "1.0"
 
-----------------
-Specify a filter
+Specify a Filter
 ----------------
 
 Using the bpf keyword in the tcpdump command, you can specify a filter that limits the traffic capture based on the keywords you supply.
@@ -1544,8 +1543,8 @@ The following command captures traffic if the source IP address is 10.10.1.1 and
 
     system diagnostics tcpdump bpf "src host 10.10.1.1 and dst port 443"
 
-----------------------
-Specify an output file
+
+Specify an Output File
 ----------------------
 
 To send the captured traffic to a file, specify the filename using the **outfile** keyword. The resulting file is placed in the **/var/F5/system/shared/tcpdump/** directory by default.
@@ -1556,7 +1555,7 @@ For example, the following command sends the output of the tcpdump command to th
 
     system diagnostics tcpdump interface "2.0" bpf "src host 10.10.1.1 and dst port 80" outfile example_capture.pcap
 
------------------------
+
 Export TCPDUMP From CLI
 -----------------------
 
