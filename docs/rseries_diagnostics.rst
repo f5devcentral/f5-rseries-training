@@ -1588,7 +1588,7 @@ At the prompt, to transfer the file, enter the password for the remote host. To 
 Console Access to System Controllers and Blades via Built-In Terminal Server
 ============================================================================
 
-You may have a need to access the console of a VELOS BX110 blade, one of the system controllers, or a tenant to diagnose a problem, or to watch it bootup. VELOS provides a built-in terminal server function that will proxy network connections to individual blades, system controller, & tenant console ports. Specific TCP ports on the system controller floating IP address have been reserved and mapped to console ports of as follows:
+You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to individual tenant console ports. Specific TCP ports on the rSeries F5OS IP address have been reserved and mapped to console ports of as follows:
 
 •	System controller ports 7001-7008 map to slots/blades 1-8
 •	System controller ports 7100 & 7200 map to system controllers 1 & 2
