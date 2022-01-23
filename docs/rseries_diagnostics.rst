@@ -1493,13 +1493,11 @@ When finished troubleshooting you can set the logging level back to default (INF
 TCPDUMP
 =======
 
-You can use the **tcpdump** utility to capture traffic at the F5OS layer. The captured traffic can be saved as a file and analyzed to help troubleshoot network issues.
+You can use the **tcpdump** utility on the rSeries system to capture network traffic traversing the front panel ports on the platform. You can save the captured traffic as a file to analyze when troubleshooting network issues.
 
-When you use the tcpdump utility to capture traffic on a VELOS system, traffic is captured based on the chassis partition in which the command was run. Only the traffic that occurs on that chassis partition is captured. This includes traffic traversing the front panel ports on the chassis blades in the chassis partition as well as backplane traffic for the chassis partition.
+You run the tcpdump utility from the F5OS-A command line using the **system diagnostics tcpdump** command. The system displays output on the terminal by default, or you can redirect output to a specified file using the **outfile** keyword. You can specify filters using the **bpf** keyword followed by the filter expression in quotes.
 
-When you run tcpdump in a chassis partition, a secondary tcpdump operation runs on each member blade in the chassis partition. The packets captured by the secondary tcpdumps are collected together in the command output.
-
-In addition to the normal tcpdump output, the following fields have been added that are specific to the VELOS system:
+In addition to the normal tcpdump output, the following fields have been added that are specific to the rSeries system:
 
 •	did - The Destination ID indicates the destination port for the frame.
 •	sid - The Source ID indicates the source port for the frame.
@@ -1511,23 +1509,19 @@ You can see this in the following example output:
 02:28:55.385343 IP 10.10.11.12 > 10.10.11.13: ICMP echo request, id 19463, seq 4, length 64 did:0F sid:04 sep:F svc:08 ld:1 rd:0
 More detail on configuration and filtering of tcpdump is provide here:
 
-https://support.f5.com/csp/article/K12313135
+https://support.f5.com/csp/article/K80685750
 
 
-You can capture traffic for a specific interface on a blade using the interface keyword in the tcpdump command. The interface is specified as <blade>/<port>.<subport>. If the interface keyword is not supplied, or if 0/0.0 is specified for the interface, no interface filtering occurs and the command captures all interfaces in the partition.
 
-Important: The interfaces on the VELOS system are capable of very high traffic rates. To prevent dropped packets during traffic capture, you should specify appropriate filters in order to capture only the intended traffic and reduce the total amount of captured traffic.
+You can capture traffic for a specific interface using the interface keyword in the tcpdump command. You specify the interface using the following syntax: <port>.<subport>. If you do not supply the interface keyword, or if you specify 0.0 for the interface, no interface filtering occurs and the command captures all interfaces.
 
-For example, the following command captures traffic on interface 1.0 on blade number 2:
+**Important: The interfaces on the rSeries system are capable of very high traffic rates. To prevent dropped packets during traffic capture, specify appropriate filters to capture only the intended traffic and reduce the total amount of captured traffic.**
 
-.. code-block:: bash
-
-    system diagnostics tcpdump interface "2/1.0"
-
-The following command captures traffic-only packets in and out of the host of blade 2:
+For example, the following command captures traffic on interface 1.0:
 
 .. code-block:: bash
-    system diagnostics tcpdump interface "2/0.0"
+
+    system diagnostics tcpdump interface "1.0"
 
 ----------------
 Specify a filter
@@ -1537,29 +1531,33 @@ Using the bpf keyword in the tcpdump command, you can specify a filter that limi
 
 For example, the following command captures traffic only if the source or destination IP address is 10.10.10.100 and the source or destination port is 80:
 
-system diagnostics tcpdump bpf "host 10.10.10.100 and port 80"
+.. code-block:: bash
+
+    system diagnostics tcpdump bpf "host 10.10.10.100 and port 80"
 
 The following command captures traffic if the source IP address is 10.10.1.1 and the destination port is 443:
 
-system diagnostics tcpdump bpf "src host 10.10.1.1 and dst port 443"
+.. code-block:: bash
+
+    system diagnostics tcpdump bpf "src host 10.10.1.1 and dst port 443"
 
 ----------------------
 Specify an output file
 ----------------------
 
-To send the captured traffic to a file, specify the filename using the outfile keyword. The resulting file is placed in the /var/F5/<partiton>/ directory by default, or you can specify the directory in which to save the file.
+To send the captured traffic to a file, specify the filename using the **outfile** keyword. The resulting file is placed in the **/var/F5/system/shared/tcpdump/** directory by default.
 
-For example, the following command sends the output of the tcpdump command to the /var/F5/partition/shared/example_capture.pcap file:
+For example, the following command sends the output of the tcpdump command to the **example_capture.pcap** file:
 
 .. code-block:: bash
 
-    system diagnostics tcpdump outfile /var/F5/partition/shared/example_capture.pcap
+    system diagnostics tcpdump interface "2.0" bpf "src host 10.10.1.1 and dst port 80" outfile example_capture.pcap
 
----------------
-Combine options
----------------
+-----------------------
+Export TCPDUMP From CLI
+-----------------------
 
-The following example combines options to only capture traffic on interface 2.0 on blade 1 if the source IP address is 10.10.1.1 and the destination port is 80, and send the output to the /var/F5/partition/shared/example_capture.pcap file:
+The following example combines options to capture traffic only on interface 2.0, if the source IP address is 10.10.1.1 and the destination port is 80, and sends the output to the **example_capture.pcap** file:
 
 system diagnostics tcpdump interface "1/2.0" bpf "src host 10.10.1.1 and dst port 80" outfile /var/F5/partition/shared/example_capture.pcap    
 
