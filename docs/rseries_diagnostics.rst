@@ -1506,7 +1506,10 @@ In addition to the normal tcpdump output, the following fields have been added t
 
 You can see this in the following example output:
 
-02:28:55.385343 IP 10.10.11.12 > 10.10.11.13: ICMP echo request, id 19463, seq 4, length 64 did:0F sid:04 sep:F svc:08 ld:1 rd:0
+.. code-block:: bash
+
+    02:28:55.385343 IP 10.10.11.12 > 10.10.11.13: ICMP echo request, id 19463, seq 4, length 64 did:0F sid:04 sep:F svc:08 ld:1 rd:0
+
 More detail on configuration and filtering of tcpdump is provide here:
 
 https://support.f5.com/csp/article/K80685750
