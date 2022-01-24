@@ -41,9 +41,10 @@ Interfaces will always be numbered starting with **1.0** and ending with the max
 Supported Optics
 ================
 
-Only F5 branded optics are officially supported on rSeries appliances. rSeries supports speeds of 1Gb (on selected low end models) 10Gb, 25Gb, 40Gb, and 100Gb depending on the type of optics used and the port group configuration. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
+Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
 
-**10GB SFP+ options:**
+rSeries 10GB SFP+ Options
+-------------------------
 
 +------------------------+------------+------------------------------------------------------------------------------------------+
 | 10G Active DAC (SFP+)  | CBL-0138   | CABLE ASSEMBLY, SFP+ ACTIVE, COPPER, 10GBPS, 30 AWG, 3.0m, M-M, 3.3V, GEN 2, F5 BRANDED  |
@@ -54,7 +55,8 @@ Only F5 branded optics are officially supported on rSeries appliances. rSeries s
 +------------------------+------------+------------------------------------------------------------------------------------------+
 
 
-**25GB SFP28 options:**
+rSeries 25GB SFP28 Options
+--------------------------
 
 +------------------------+------------+----------------------------------------------------------------------------------+
 | 25GBASE-SR (SFP28)     | OPT-0053   | TRANSCEIVER, SFP28, 25G-SR, 100M, LC, MMF, 1W, F5 BRANDED                        |
@@ -62,7 +64,8 @@ Only F5 branded optics are officially supported on rSeries appliances. rSeries s
 | 25GBASE-LR (SFP28)     | OPT-0054   | TRANSCEIVER, SFP28, 25G-LR, 10KM, LC, SMF, 1.5W, F5 BRANDED                      |
 +------------------------+------------+----------------------------------------------------------------------------------+
 
-**40GB QSFP+ options:**
+rSeries 40GB QSFP+ Options
+--------------------------
 
 
 +------------------------+------------+------------------------------------------------------------------------------+
@@ -75,7 +78,8 @@ Only F5 branded optics are officially supported on rSeries appliances. rSeries s
 | 40G-PSM4 (QSFP+)       | OPT-0045   | TRANSCEIVER, QSFP+, 40GIG-PSM4, 1310NM, 10KM, MPO, SMF, DDM, F5 BRANDED      |
 +------------------------+------------+------------------------------------------------------------------------------+
 
-**100GB QSFP28 options:**
+rSeries 100GB QSFP28 Options
+----------------------------
 
 +------------------------+------------+----------------------------------------------------------------------------------+
 | 100GBASE-SR4 (QSFP28)  | OPT-0031   | TRANSCEIVER, QSFP28, 100G-SR4, 850NM, MMF, MPO, DDM, BRANDED                     |
