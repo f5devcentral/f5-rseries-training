@@ -11,7 +11,7 @@ The r10000 Series is a 1RU appliance, that has 3 different licensing options tha
 
 .. image:: images/rseries_appliances/image1.png
   :align: center
-  :scale: 100%
+  :scale: 150%
 
 The r10000 Series appliance has 4 x 100Gb/40Gb ports that support QSFP28/QSFP+ optics as well as 16 x 25Gb/10Gb ports that support SFP+/SFP28 optics.
 
