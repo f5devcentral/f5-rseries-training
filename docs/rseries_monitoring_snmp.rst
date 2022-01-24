@@ -381,7 +381,7 @@ SNMP FPGA Stats Table OID: .1.3.6.1.4.1.12276.1.2.1.5.1
 SNMP Trap Support in F5OS
 ========================
 
-You can enable SNMP traps in both the system controllers and within each chassis partition. The **F5-CTRLR-ALERT-NOTIF-MIB* & the **F5-PARTITION-ALERT-NOTIF-MIB** provide details of supported system controller and chassis partition SNMP traps. Below is the current full list of traps support by F5OS: 
+You can enable SNMP traps for the F5OS layer. The **F5-CTRLR-ALERT-NOTIF-MIB* & the **F5-PARTITION-ALERT-NOTIF-MIB** provide details of supported system controller and chassis partition SNMP traps. Below is the current full list of traps support by F5OS: 
 
 
 
@@ -493,89 +493,74 @@ For the chassis partitions the following SNMP Traps are supported as of F5OS 1.2
 Enabling SNMP Traps in the CLI
 ------------------------------
 
-Enter **config** mode and enter the following commands to enable SNMP traps. Specifiy your SNMP trap reciver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
+Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS layer. Specifiy your SNMP trap reciver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
 Note: The **snmpTargetAddrTAddress** is currently uniintuitive and an enhacement request has been filed to simplify the IP address and port configuration. The Trap target ip configuration for SNMP is ip + port. The calculation for port 2 octet conversion is 1st octet port >> 8 and 2nd octet is port & 255. For a typical 161 UDP port trap receiver, The 1st octet is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.139 & 161 UDP port is "10.255.0.139.0.161"
 
 
 .. code-block:: bash
 
-    syscon-1-active(config)# SNMP-NOTIFICATION-MIB snmpNotifyTable snmpNotifyEntry v2_trap snmpNotifyTag v2_trap snmpNotifyType trap snmpNotifyStorageType nonVolatile 
-    syscon-1-active(config-snmpNotifyEntry-v2_trap)# exit
-    syscon-1-active(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.139.0.161 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
-    syscon-1-active(config-snmpTargetAddrEntry-group2)# exit
-    syscon-1-active(config)# SNMP-TARGET-MIB snmpTargetParamsTable snmpTargetParamsEntry group2 snmpTargetParamsMPModel 1 snmpTargetParamsSecurityModel 2 snmpTargetParamsSecurityName public snmpTargetParamsSecurityLevel noAuthNoPriv snmpTargetParamsStorageType nonVolatile
-    syscon-1-active(config-snmpTargetParamsEntry-group2)# exit
-    syscon-1-active(config)# commit 
+    r5900-2# config
+    Entering configuration mode terminal
+    r5900-2(config)# SNMP-NOTIFICATION-MIB snmpNotifyTable snmpNotifyEntry v2_trap snmpNotifyTag v2_trap snmpNotifyType trap snmpNotifyStorageType nonVolatile 
+    r5900-2(config-snmpNotifyEntry-v2_trap)# exit
+    r5900-2(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.139.0.161 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
+    r5900-2(config-snmpTargetAddrEntry-group2)# exit
+    r5900-2(config)# SNMP-TARGET-MIB snmpTargetParamsTable snmpTargetParamsEntry group2 snmpTargetParamsMPModel 1 snmpTargetParamsSecurityModel 2 snmpTargetParamsSecurityName public snmpTargetParamsSecurityLevel noAuthNoPriv snmpTargetParamsStorageType nonVolatile
+    r5900-2(config-snmpTargetParamsEntry-group2)# exit
+    r5900-2(config)# commit
     Commit complete.
-    syscon-1-active(config)# 
+    r5900-2(config)# 
 
 
 Troubleshooting SNMP
 ====================
 
-There are SNMP logs for the system controllers and within each chassis partition. SNMP information is captured in the **snmp.log** located with the **log/confd** directory of the system controller:
+There are SNMP logs within each appliance. SNMP information is captured in the **snmp.log** located with the **/log/system** directory in the F5OS layer:
 
-**Note: The CLI and GUI abstract the full paths for logs so that they are easier to find, if using root access to the bash shell, then the full path to the system controller snmp logs is **/var/confd/log/snmp.log**
+**Note: The CLI and GUI abstract the full paths for logs so that they are easier to find, if using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
 
-.. code-block:: bash
-
-    syscon-2-active# file tail -n 20 log/confd/snmp.log 
-    <INFO> 6-Oct-2021::00:25:49.125 controller-2 confd[403]: snmp get-request reqid=1698654669 10.255.0.139:53745 (OCTET STRING sysContact)
-    <INFO> 6-Oct-2021::00:25:49.129 controller-2 confd[403]: snmp get-response reqid=1698654669 10.255.0.139:53745 (OCTET STRING sysContact=Jim@f5.com)
-    <INFO> 6-Oct-2021::00:25:49.130 controller-2 confd[403]: snmp get-request reqid=1698654670 10.255.0.139:53438 (OCTET STRING sysName)
-    <INFO> 6-Oct-2021::00:25:49.133 controller-2 confd[403]: snmp get-response reqid=1698654670 10.255.0.139:53438 (OCTET STRING sysName=VELOS)
-    <INFO> 6-Oct-2021::00:25:49.133 controller-2 confd[403]: snmp get-request reqid=1698654671 10.255.0.139:40402 (OCTET STRING sysLocation)
-    <INFO> 6-Oct-2021::00:25:49.136 controller-2 confd[403]: snmp get-response reqid=1698654671 10.255.0.139:40402 (OCTET STRING sysLocation=Boston)
-    <INFO> 6-Oct-2021::00:30:48.493 controller-2 confd[403]: snmp get-request reqid=1002109892 10.255.0.139:57416 (TimeTicks sysUpTime)
-    <INFO> 6-Oct-2021::00:30:48.496 controller-2 confd[403]: snmp get-response reqid=1002109892 10.255.0.139:57416 (TimeTicks sysUpTime=174495150)
-    <INFO> 6-Oct-2021::00:30:48.499 controller-2 confd[403]: snmp get-request reqid=1002109893 10.255.0.139:45272 (OCTET STRING sysDescr)
-    <INFO> 6-Oct-2021::00:30:48.502 controller-2 confd[403]: snmp get-response reqid=1002109893 10.255.0.139:45272 (OCTET STRING sysDescr=Tail-f ConfD agent)
-    <INFO> 6-Oct-2021::00:30:48.503 controller-2 confd[403]: snmp get-request reqid=1002109894 10.255.0.139:52783 (OBJECT IDENTIFIER sysObjectID)
-    <INFO> 6-Oct-2021::00:30:48.509 controller-2 confd[403]: snmp get-response reqid=1002109894 10.255.0.139:52783 (OBJECT IDENTIFIER sysObjectID=1.3.6.1.4.1.24961)
-    <INFO> 6-Oct-2021::00:30:48.510 controller-2 confd[403]: snmp get-request reqid=1002109895 10.255.0.139:52543 (TimeTicks sysUpTime)
-    <INFO> 6-Oct-2021::00:30:48.512 controller-2 confd[403]: snmp get-response reqid=1002109895 10.255.0.139:52543 (TimeTicks sysUpTime=174495152)
-    <INFO> 6-Oct-2021::00:30:48.514 controller-2 confd[403]: snmp get-request reqid=1002109896 10.255.0.139:50082 (OCTET STRING sysContact)
-    <INFO> 6-Oct-2021::00:30:48.517 controller-2 confd[403]: snmp get-response reqid=1002109896 10.255.0.139:50082 (OCTET STRING sysContact=Jim@f5.com)
-    <INFO> 6-Oct-2021::00:30:48.518 controller-2 confd[403]: snmp get-request reqid=1002109897 10.255.0.139:54944 (OCTET STRING sysName)
-    <INFO> 6-Oct-2021::00:30:48.520 controller-2 confd[403]: snmp get-response reqid=1002109897 10.255.0.139:54944 (OCTET STRING sysName=VELOS)
-    <INFO> 6-Oct-2021::00:30:48.521 controller-2 confd[403]: snmp get-request reqid=1002109898 10.255.0.139:51556 (OCTET STRING sysLocation)
-    <INFO> 6-Oct-2021::00:30:48.523 controller-2 confd[403]: snmp get-response reqid=1002109898 10.255.0.139:51556 (OCTET STRING sysLocation=Boston)
-    syscon-2-active# 
-
-
-SNMP information is captured in the **snmp.log** located with the **log** directory of each chassis partition:
-
-**Note: The CLI and GUI abstract the full paths for logs so that they are easier to find, if using root access to the bash shell, then the full path to the chassis partition snmp logs is **/var/F5/partition<id>/log/snmp.log**
-
+To list the files in the **log/system** directory in the CLI use the **file list path log/system** command:
 
 .. code-block:: bash
 
-    bigpartition-1# file tail -n 20 log/
-    Possible completions:
-    audit.log  auth.log  confd.log  devel.log  ext-auth-err.log  ext-val-err.log  httpd/  logrotate.log  logrotate.log.1  logrotate.log.2.gz  partition_sync.log  rsyslogd_init.log  snmp.log  startup.log  startup.log.prev  trace/  vconsole_auth.log  vconsole_startup.log  velos.log  webui/
-    bigpartition-1# file tail -n 20 log/snmp.log 
-    <INFO> 24-Sep-2021::06:10:36.000 partition2 confd[103]: snmp get-next-request reqid=1512684928 172.18.104.29:50858 (INTEGER vacmAccessContextMatch.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1)(OCTET STRING vacmAccessReadViewName.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1)(OCTET STRING vacmAccessNotifyViewName.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1)(INTEGER vacmAccessStorageType.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1)(INTEGER vacmAccessStatus.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1)
-    <INFO> 24-Sep-2021::06:10:36.003 partition2 confd[103]: snmp get-response reqid=1512684928 172.18.104.29:50858 (OCTET STRING vacmAccessReadViewName.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=internet)(OCTET STRING vacmAccessNotifyViewName.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=internet)(INTEGER vacmAccessStorageType.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=3)(INTEGER vacmAccessStatus.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=1)(INTEGER vacmViewSpinLock=1837836215)
-    <INFO> 24-Sep-2021::06:10:43.510 partition2 confd[103]: snmp get-next-request reqid=1512684931 172.18.104.29:50859 (OCTET STRING vacmViewTreeFamilyViewName.)(OBJECT IDENTIFIER vacmViewTreeFamilySubtree.)(OCTET STRING vacmViewTreeFamilyMask.)(INTEGER vacmViewTreeFamilyType.)(INTEGER vacmViewTreeFamilyStorageType.)(INTEGER vacmViewTreeFamilyStatus.)
-    <INFO> 24-Sep-2021::06:10:43.516 partition2 confd[103]: snmp get-response reqid=1512684931 172.18.104.29:50859 (OCTET STRING vacmViewTreeFamilyMask.8.105.110.116.101.114.110.101.116.4.1.3.6.1=)(OCTET STRING vacmViewTreeFamilyMask.8.105.110.116.101.114.110.101.116.4.1.3.6.1=)(OCTET STRING vacmViewTreeFamilyMask.8.105.110.116.101.114.110.101.116.4.1.3.6.1=)(INTEGER vacmViewTreeFamilyType.8.105.110.116.101.114.110.101.116.4.1.3.6.1=1)(INTEGER vacmViewTreeFamilyStorageType.8.105.110.116.101.114.110.101.116.4.1.3.6.1=3)(INTEGER vacmViewTreeFamilyStatus.8.105.110.116.101.114.110.101.116.4.1.3.6.1=1)
-    <INFO> 24-Sep-2021::06:10:43.532 partition2 confd[103]: snmp get-next-request reqid=1512684934 172.18.104.29:50859 (OCTET STRING vacmViewTreeFamilyMask.8.105.110.116.101.114.110.101.116.4.1.3.6.1)(INTEGER vacmViewTreeFamilyType.8.105.110.116.101.114.110.101.116.4.1.3.6.1)(INTEGER vacmViewTreeFamilyStorageType.8.105.110.116.101.114.110.101.116.4.1.3.6.1)(INTEGER vacmViewTreeFamilyStatus.8.105.110.116.101.114.110.101.116.4.1.3.6.1)
-    <INFO> 24-Sep-2021::06:10:43.533 partition2 confd[103]: snmp get-response reqid=1512684934 172.18.104.29:50859 (INTEGER vacmViewTreeFamilyType.8.105.110.116.101.114.110.101.116.4.1.3.6.1=1)(INTEGER vacmViewTreeFamilyStorageType.8.105.110.116.101.114.110.101.116.4.1.3.6.1=3)(INTEGER vacmViewTreeFamilyStatus.8.105.110.116.101.114.110.101.116.4.1.3.6.1=1)(OCTET STRING snmpCommunityName.98.111.121.97.112.97.116.105=boyapati)
-    <INFO> 24-Sep-2021::06:10:53.626 partition2 confd[103]: snmp get-next-request reqid=1512684937 172.18.104.29:50860 (OCTET STRING vacmContextName.)
-    <INFO> 24-Sep-2021::06:10:53.627 partition2 confd[103]: snmp get-response reqid=1512684937 172.18.104.29:50860 (OCTET STRING vacmContextName.0.=)
-    <INFO> 24-Sep-2021::06:10:53.640 partition2 confd[103]: snmp get-next-request reqid=1512684940 172.18.104.29:50860 (OCTET STRING vacmContextName.0.)
-    <INFO> 24-Sep-2021::06:10:53.644 partition2 confd[103]: snmp get-response reqid=1512684940 172.18.104.29:50860 (OCTET STRING vacmGroupName.1.8.98.111.121.97.112.97.116.105=read-access)
-    <INFO> 24-Sep-2021::06:11:16.645 partition2 confd[103]: snmp get-bulk-request reqid=1512684943 172.18.104.29:60019 non-repeaters=0 max-repetitions=10 (platformCPUGroup)
-    <INFO> 24-Sep-2021::06:11:16.649 partition2 confd[103]: snmp get-response reqid=1512684943 172.18.104.29:60019 (INTEGER snmpSetSerialNo=504343332)(OCTET STRING snmpEngineID=80:00:61:81:05:01)(INTEGER snmpEngineBoots=3)(INTEGER snmpEngineTime=52301)(INTEGER snmpEngineMaxMessageSize=50000)(Counter32 snmpUnknownSecurityModels=0)(Counter32 snmpInvalidMsgs=0)(Counter32 snmpUnknownPDUHandlers=0)(INTEGER snmpTargetSpinLock=888290400)(Counter32 snmpUnavailableContexts=0)
-    <INFO> 24-Sep-2021::06:11:27.761 partition2 confd[103]: snmp get-next-request reqid=1512684946 172.18.104.29:60020 (platformCPUGroup)
-    <INFO> 24-Sep-2021::06:11:27.762 partition2 confd[103]: snmp get-response reqid=1512684946 172.18.104.29:60020 (INTEGER snmpSetSerialNo=504343332)
-    <INFO> 24-Sep-2021::06:11:34.792 partition2 confd[103]: snmp get-bulk-request reqid=1512684949 172.18.104.29:60021 non-repeaters=0 max-repetitions=50 (platformCPUGroup)
-    <INFO> 24-Sep-2021::06:11:34.807 partition2 confd[103]: snmp get-response reqid=1512684949 172.18.104.29:60021 (INTEGER snmpSetSerialNo=504343332)(OCTET STRING snmpEngineID=80:00:61:81:05:01)(INTEGER snmpEngineBoots=3)(INTEGER snmpEngineTime=52319)(INTEGER snmpEngineMaxMessageSize=50000)(Counter32 snmpUnknownSecurityModels=0)(Counter32 snmpInvalidMsgs=0)(Counter32 snmpUnknownPDUHandlers=0)(INTEGER snmpTargetSpinLock=888290400)(Counter32 snmpUnavailableContexts=0)(Counter32 snmpUnknownContexts=0)(OCTET STRING vacmContextName.0.=)(OCTET STRING vacmGroupName.1.8.98.111.121.97.112.97.116.105=read-access)(OCTET STRING vacmGroupName.2.8.98.111.121.97.112.97.116.105=read-access)(INTEGER vacmSecurityToGroupStorageType.1.8.98.111.121.97.112.97.116.105=3)(INTEGER vacmSecurityToGroupStorageType.2.8.98.111.121.97.112.97.116.105=3)(INTEGER vacmSecurityToGroupStatus.1.8.98.111.121.97.112.97.116.105=1)(INTEGER vacmSecurityToGroupStatus.2.8.98.111.121.97.112.97.116.105=1)(INTEGER vacmAccessContextMatch.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=1)(OCTET STRING vacmAccessReadViewName.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=internet)(OCTET STRING vacmAccessNotifyViewName.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=internet)(INTEGER vacmAccessStorageType.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=3)(INTEGER vacmAccessStatus.11.114.101.97.100.45.97.99.99.101.115.115.0.0.1=1)(INTEGER vacmViewSpinLock=1837836215)(OCTET STRING vacmViewTreeFamilyMask.8.105.110.116.101.114.110.101.116.4.1.3.6.1=)(INTEGER vacmViewTreeFamilyType.8.105.110.116.101.114.110.101.116.4.1.3.6.1=1)(INTEGER vacmViewTreeFamilyStorageType.8.105.110.116.101.114.110.101.116.4.1.3.6.1=3)(INTEGER vacmViewTreeFamilyStatus.8.105.110.116.101.114.110.101.116.4.1.3.6.1=1)(OCTET STRING snmpCommunityName.98.111.121.97.112.97.116.105=boyapati)(OCTET STRING snmpCommunitySecurityName.98.111.121.97.112.97.116.105=boyapati)(OCTET STRING snmpCommunityContextEngineID.98.111.121.97.112.97.116.105=80:00:61:81:05:01)(OCTET STRING snmpCommunityContextName.98.111.121.97.112.97.116.105=)(OCTET STRING snmpCommunityTransportTag.98.111.121.97.112.97.116.105=)(INTEGER snmpCommunityStorageType.98.111.121.97.112.97.116.105=4)(INTEGER snmpCommunityStatus.98.111.121.97.112.97.116.105=1)(INTEGER snmpCommunityStatus.98.111.121.97.112.97.116.105=endOfMibView)
-    <INFO> 24-Sep-2021::17:33:16.445 partition2 confd[103]: snmp get-request reqid=6725531 172.23.81.81:42802 (OCTET STRING sysDescr)
-    <INFO> 24-Sep-2021::17:47:04.751 partition2 confd[103]: snmp get-request reqid=6728306 172.23.81.81:42172 (OCTET STRING sysDescr)
-    <INFO> 24-Sep-2021::17:47:14.754 partition2 confd[103]: snmp get-request reqid=6728306 172.23.81.81:42172 (OCTET STRING sysDescr)
-    <INFO> 24-Sep-2021::17:47:24.760 partition2 confd[103]: snmp get-request reqid=6728306 172.23.81.81:42172 (OCTET STRING sysDescr)
-    bigpartition-1# 
+    r5900-2# file list path log/system/
+    entries {
+        name 
+    audit.log
+    confd.log
+    devel.log
+    devel.log.1
+    lcd.log
+    lcd.log.1
+    lcd.log.2.gz
+    lcd.log.3.gz
+    lcd.log.4.gz
+    lcd.log.5.gz
+    logrotate.log
+    logrotate.log.1
+    logrotate.log.2.gz
+    platform.log
+    reprogram_chassis_network.log
+    rsyslogd_init.log
+    snmp.log
+    startup.log
+    startup.log.prev
+    trace/
+    vconsole_auth.log
+    vconsole_startup.log
+    velos.log
+    webui/
+    }
+    r5900-2# 
+
+SNMP information is captured in the **snmp.log** located with the **log** directory of each appliance:
+
+
+.. code-block:: bash
+
+    r5900-2# file show log/system/snmp.log 
+
 
 
 
