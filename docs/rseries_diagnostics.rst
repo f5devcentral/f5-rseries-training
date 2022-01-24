@@ -1590,135 +1590,113 @@ Console Access to via Built-In Terminal Server
 
 You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to individual tenant console ports. Specific TCP ports on the rSeries F5OS IP address have been reserved and mapped to console ports of as follows:
 
-•	System controller ports 7001-7008 map to slots/blades 1-8
-•	System controller ports 7100 & 7200 map to system controllers 1 & 2
 •	Chassis partition ports 700x map to tenant ID’s (requires tenant name as username)
 
-You can connect to any blade by SSH’ing to the floating IP address of the system controller and specifying the proper port for the blade you want to connect with. Port 7001 maps to blade1, 7002 to blade2 etc…. Once connected to the terminal server, you will need to login as root to the blade. The blade will have the default root password and will need to be changed on first reboot. The example below shows connecting to blade 2 ( port 7002) through a terminal server.
-
-.. code-block:: bash
-
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.147 -p 7002
-    admin@10.255.0.147's password: 
-
-    Terminal session established
-
-    CentOS Linux 7 (Core)
-    Kernel 3.10.0-862.14.4.el7.centos.plus.x86_64 on an x86_64
-
-    blade-2 login: root
-    Password: 
-    You are required to change your password immediately (root enforced)
-    Changing password for root.
-    (current) UNIX password: 
-
-Connecting to a system controller follows the same general process but uses ports 7100 for controller1 and 7200 for controller2. Below is an example connecting to system controller 1:
-
-.. code-block:: bash
-
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.147 -p 7100
-    admin@10.255.0.147's password: 
-    Terminal session established
-
-    CentOS Linux 7 (Core)
-    Kernel 3.10.0-862.14.4.el7.centos.plus.x86_64 on an x86_64
-
-    controller-1 login: root
-    Password: 
-    Last failed login: Wed May 19 21:14:06 UTC 2021 on ttyS0
-    There was 1 failed login attempt since the last successful login.
-    Last login: Wed May 19 01:20:04 from controller-1.chassis.local
-    [root@controller-1 ~]# 
 
 Console Access to Tenant via Built-In Terminal Server
 =====================================================
 
 
-You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. VELOS
-provides a built-in terminal server function that will proxy network connections to a tenant console. VIPRION provided a **vconsole** capability which required a user to authenticate to VIPRION’s CLI first before they could run the vconsole command. 
+You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to a tenant console. VIPRION & iSeries provided a **vconsole** capability for vCMP guest access which required a user to authenticate to the device CLI first before they could run the vconsole command. 
 
-When a VELOS tenant is created and deployed a listening ssh port will be configured on port 700x of the chassis partition (where x is the tenant instance ID). After a tenant is created, you will need to set the tenant password and tweak the expiry date to force a password change before a user can connect via the terminal server.
+When an rSeries tenant is created and deployed a listening ssh port will be configured on port 700x of the F5OS layer (where x is the tenant instance ID). After a tenant is created, you will need to set the tenant password and tweak the expiry date to force a password change before a user can connect via the terminal server.
 
-Once a tenant is created from the chassis partition CLI enter the command **show system aaa authentication**. Note that there is a **username** that corresponds to each tenant that has been created (tenant1, tenant2, tenant3 in this case, but will match the configured name of the tenant) and each of these have the role of **tenant-console**. Note the expiry date is set for **1**, which means expired.
+Once a tenant is created from the F5OS CLI enter the command **show system aaa authentication**. Note that there is a **username** that corresponds to each tenant that has been created (tenant1, tenant2, tenant3, etc... but will match the configured name of the tenant) and each of these have the role of **tenant-console**. Note the expiry date is set for **1**, which means expired.
 
 .. code-block:: bash
 
-    bigpartition-1# show system aaa authentication      
-            LAST    TALLY  EXPIRY                  
-    USERNAME  CHANGE  COUNT  DATE    ROLE            
-    -------------------------------------------------
-    admin     18667   0      -1      admin           
-    root      18000   0      -1      root            
-    tenant1   0       0      1       tenant-console  
-    tenant2   0       0      1       tenant-console  
-    tenant3   0       0      1       tenant-console  
+    r5900-2# show system aaa authentication 
+            LAST        TALLY  EXPIRY                  
+    USERNAME  CHANGE      COUNT  DATE    ROLE            
+    -----------------------------------------------------
+    admin     2021-09-29  0      -1      admin           
+    root      2021-11-29  0      -1      root            
+    tenant1   0           0      1       tenant-console  
 
     ROLENAME        GID   USERS  
     -----------------------------
     admin           9000  -      
-    limited         9999  -      
     operator        9001  -      
     root            0     -      
-    tenant-console  9100  -   
+    tenant-console  9100  -      
+
+    r5900-2# 
 
 
-For tenant2 to have console access you must first set a password for that user using the command **system aaa authentication users user <tenant-name> config set-password password**. When prompted enter the desired password for this tenant’s console access. Next set the tenants **expiry-date** to **-1** (no expiration date) and then **commit** to enable the changes.
+
+For tenant1 to have console access you must first set a password for that user using the command **system aaa authentication users user <tenant-name> config set-password password**. When prompted enter the desired password for this tenant’s console access. Next set the tenants **expiry-date** to **-1** (no expiration date) and then **commit** to enable the changes.
 
 .. code-block:: bash
 
-    bigpartition-1(config)# system aaa authentication users user tenant2 config set-password password      
+    r5900-2# config
+    Entering configuration mode terminal
+    r5900-2(config)# system aaa authentication users user tenant1 config set-password password 
     Value for 'password' (<string>): **************
-    bigpartition-1(config)# system aaa authentication users user tenant2 config expiry-date                                                                                                                                    
+    
+    r5900-2(config)# system aaa authentication users user tenant1 config expiry-date 
     (<string>) (1): -1
-    bigpartition-1(config-user-tenant2)# commit 
+    r5900-2(config-user-tenant1)# commit
     Commit complete.
+    r5900-2(config-user-tenant1)#
 
-Now it will be possible to remotely ssh using a specific username and port pointed at the chassis partition IP address to connect directly to the console port of the tenant. The username will be the name of the tenant, and the port will be the instance tcp port 700x (where x is the instance ID of that tenant). Below is an example of the output from the **show tenants** command within the chassis partition. The tenant **tenant2** is running on two blades so it has two instance ID’s 1 & 2. You can connect to either one of these instances via the console using tenant2 as the username and either port 7001 or 7002. 
+Now it will be possible to remotely ssh using a specific username and port pointed at the F5OS IP address to connect directly to the console port of the tenant. The username will be the name of the tenant, and the port will be the instance tcp port 700x (where x is the Instance ID of that tenant). Below is an example of the output from the **show tenants** command within the F5OS layer. The tenant **tenant1** has an instance ID’s of 1. You can connect to this instance via the F5OS out-of-band management IP using tenant1 as the username and port 7001. 
 
 .. code-block:: bash
 
-    tenants tenant tenant2
+    r5900-2# show tenants 
+    tenants tenant tenant1
+    state name          tenant1
+    state unit-key-hash U3AcJ5xCOqJs9Ejmh3EdbgES+LYRVUa2bOjHkCVl/vX4e+bgahkECfJCZeZFqLaoJvzOdoQysdj33BJ5Zahljg==
     state type          BIG-IP
-    state mgmt-ip       10.255.0.205
+    state mgmt-ip       10.255.0.138
     state prefix-length 24
     state gateway       10.255.0.1
-    state vlans         [ 444 500 555 ]
+    state vlans         [ 500 3010 3011 ]
     state cryptos       enabled
-    state vcpu-cores-per-node 6
-    state memory        22016
+    state vcpu-cores-per-node 4
+    state memory        14848
+    state storage size 76
     state running-state deployed
-    state mac-data base-mac 00:94:a1:8e:d0:1c
+    state mac-data base-mac 00:94:a1:69:35:14
     state mac-data mac-pool-size 1
     state appliance-mode disabled
     state status        Running
     state primary-slot  1
-    state image-version "BIG-IP 14.1.4 0.0.9"
+    state image-version "BIG-IP 15.1.5 0.0.8"
     NDI      MAC                
     ----------------------------
-    default  00:94:a1:8e:d0:1a  
+    default  00:94:a1:69:35:16  
+
+        INSTANCE                                                                                                                                                 
+    NODE  ID        PHASE    IMAGE NAME                                    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------
+    1     1         Running  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle  2022-01-22T22:47:39Z  2022-01-22T22:47:40Z  Started tenant instance  00:94:a1:69:35:15  
+
+    r5900-2# 
 
 
-        INSTANCE                                                                                                                                                  
-    NODE  ID        PHASE    IMAGE NAME                                     CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------
-    1     1         Running  BIGIP-14.1.4-0.0.9.ALL-VELOS.qcow2.zip.bundle  2021-02-10T21:16:23Z  2021-02-10T21:16:38Z  Started tenant instance  a2:4a:b4:fd:85:81  
-    2     2         Running  BIGIP-14.1.4-0.0.9.ALL-VELOS.qcow2.zip.bundle  2021-02-10T21:16:27Z  2021-02-10T21:16:24Z  Started tenant instance  16:1a:f6:87:be:07  
 
-
-The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to login to the tenant. In the example below the username is tenant2 (matches the tenant name), and the port is 7001 meaning connect to instance ID 1 of that tenant. 
+The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to login to the tenant as root and change the default password. In the example below the username is tenant1 (matches the tenant name), and the port is 7001 meaning connect to instance ID 1 of that tenant. 
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh tenant2@10.255.0.148 -p 7001
-    tenant1@10.255.0.148's password: 
-    Successfully connected to tenant2-1 console. The escape sequence is ^]
+    FLD-ML-00054045:~ jmccarron$ ssh tenant1@10.255.0.135 -p 7001
+    tenant1@10.255.0.135's password: 
+    Successfully connected to tenant1-1 console. The escape sequence is ^]
 
-    BIG-IP 14.1.4 Build 0.0.9
+    BIG-IP 15.1.5 Build 0.0.8
     Kernel 3.10.0-862.14.4.el7.x86_64 on an x86_64
-    tenant1 login: root
+    localhost login: root
     Password: 
-    Last login: Thu Feb 11 22:43:43 on ttyS0
-    [root@tenant2:/S1-green-P::Active:Standalone] config #
+    You are required to change your password immediately (root enforced)
+    Changing password for root.
+    (current) UNIX password: 
+    New BIG-IP password: 
+    Retype new BIG-IP password: 
+    The password for the "admin" user ID has been changed to match the new password for the "root" user ID.
+    The password for "admin" user is marked as expired and must be changed the next time the "admin" user logs in.
+    Future changes to the "root" password will not affect the password of the "admin" user ID
+    [root@localhost:Active:Standalone] config # 
 
 
 
