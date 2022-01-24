@@ -26,18 +26,17 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
             "async": true,
             "Common": {
                 "class": "Tenant",
+                "hostname": "tenant1.appliance1.f5demo.net",
                 "myProvision": {
                     "class": "Provision",
                     "avr": "nominal",
-                    "ltm": "nominal",
-                    "asm": "nominal",
-                    "apm": "nominal"
+                    "ltm": "nominal"
                 },
                 "myDns": {
                     "class": "DNS",
                     "nameServers": [
-                        "10.192.50.10",
-                        "10.192.50.11"
+                        "192.168.10.0",
+                        "192.168.10.1"
                     ]
                 },
                 "myNtp": {
@@ -47,25 +46,76 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
                     ],
                     "timezone": "UTC"
                 },
-                "internal-self": {
+                "internal-localself": {
                     "class": "SelfIp",
-                    "address": "10.10.11.11/24",
-                    "vlan": "vlan-444",
+                    "address": "10.10.11.110/24",
+                    "vlan": "vlan-3010",
                     "allowService": "all",
                     "trafficGroup": "traffic-group-local-only"
                 },
-                "external-self": {
+                "internal-self": {
                     "class": "SelfIp",
-                    "address": "10.10.12.11/24",
-                    "vlan": "vlan-555",
+                    "address": "10.10.11.120/24",
+                    "vlan": "vlan-3010",
+                    "allowService": "all",
+                    "trafficGroup": "traffic-group-1"
+                },
+                "external-localself": {
+                    "class": "SelfIp",
+                    "address": "10.10.12.110/24",
+                    "vlan": "vlan-3011",
                     "trafficGroup": "traffic-group-local-only",
                     "allowService": "default"
+                },
+                "external-self": {
+                    "class": "SelfIp",
+                    "address": "10.10.12.120/24",
+                    "vlan": "vlan-3011",
+                    "trafficGroup": "traffic-group-1",
+                    "allowService": "default"
+                },
+                "ha-localself": {
+                    "class": "SelfIp",
+                    "address": "10.10.13.110/24",
+                    "vlan": "vlan-500",
+                    "trafficGroup": "traffic-group-local-only",
+                    "allowService": "default"
+                },
+                "configsync": {
+                    "class": "ConfigSync",
+                    "configsyncIp": "10.10.13.110"
+                },
+                "failoverAddress": {
+                    "class": "FailoverUnicast",
+                    "address": "10.10.13.110"
+                },
+                "failoverGroup": {
+                    "class": "DeviceGroup",
+                    "type": "sync-failover",
+                    "members": [
+                        "10.10.13.110",
+                        "10.10.13.244"
+                    ],
+                    "owner": "10.10.13.110",
+                    "autoSync": true,
+                    "saveOnAutoSync": false,
+                    "networkFailover": true,
+                    "fullLoadOnSync": false,
+                    "asmSync": false
+                },
+                "trust": {
+                    "class": "DeviceTrust",
+                    "localUsername": "{{Tenant_Username}}",
+                    "localPassword": "{{Tenant_Password}}",
+                    "remoteHost": "{{Appliance1_Tenant1_IP}}",
+                    "remoteUsername": "{{Tenant_Username}}",
+                    "remotePassword": "{{Tenant_Password}}"
                 },
                 "myDbVariables": {
                     "class": "DbVariables",
                     "ui.advisory.enabled": "true",
-                    "ui.advisory.color": "red",
-                    "ui.advisory.text": "Configuration deployed with AS3. Do not make any change directly on the BIG-IP or those changes may be lost."
+                    "ui.advisory.color": "blue",
+                    "ui.advisory.text": "This is rSeries Tenant1 on Appliance1."
                 },
                 "admin": {
                     "class": "User",
@@ -76,18 +126,17 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
                             "role": "admin"
                         }
                     },
-                    "password": "{{Chassis_Partition_Password}}"
+                    "password": "{{Tenant_Password}}"
                 },
                 "root": {
                     "class": "User",
                     "userType": "root",
-                    "newPassword": "{{Chassis_Partition_Password}}",
-                    "oldPassword": "{{Chassis_Partition_Password}}"
-                },
-                "hostname": "tenant1.chassis1.f5demo.net"
+                    "newPassword": "{{Tenant_Password}}",
+                    "oldPassword": "{{Tenant_Password}}"
+                }
             }
         },
-        "targetHost": "{{Chassis1_Tenant1_IP}}",
+        "targetHost": "{{Appliance1_Tenant1_IP}}",
         "targetUsername": "admin",
         "targetPassphrase": "admin",
         "bigIqSettings": {
@@ -95,13 +144,10 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
             "conflictPolicy": "USE_BIGIQ",
             "deviceConflictPolicy": "USE_BIGIP",
             "versionedConflictPolicy": "KEEP_VERSION",
+            "clusterName": "Tenant1-Cluster",
             "statsConfig": {
                 "enabled": true,
                 "zone": "default"
-            },
-            "accessModuleProperties": {
-                "cm:access:access-group-name": "tenant1",
-                "cm:access:import-shared": true
             },
             "snapshotWorkingConfig": false
         }
