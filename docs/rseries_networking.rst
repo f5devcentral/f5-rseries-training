@@ -43,6 +43,11 @@ Supported Optics
 
 Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. 3rd party optics are not officially supported per F5’s support policies: https://support.f5.com/csp/article/K8153. 
 
+Also more details on each optic can be found in the F5 Platforms Accessories Guide:
+
+https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html
+
+
 rSeries 10GB SFP+ Options
 -------------------------
 
@@ -95,9 +100,13 @@ rSeries 100GB QSFP28 Options
 
 **Note: OPT-0039 QSFP28 LR4 used in VIPRION/iSeries are compatible with rSeries, but default optics for 100G SR4 VEOS is OPT-0052 (as shown above)**
 
-Below are the current rSeries optic SKU’s:
+rSeries Optics SKU's 
+---------------------
+
+Even though some of the SKU's below have VELOS in the description, of VEL in the actual SKU, they are interoperable with rSeries.
 
 **Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**
+
 
 +----------------------+------+---------------------------------------------------------------------------------------+
 | F5-UPGVELQSFP28LR4   | MY   | VELOS Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, DDM) ROHS           |
