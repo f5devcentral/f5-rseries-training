@@ -3466,6 +3466,9 @@ After the full output below some CLI examples of how to filter all this informat
 
     r5900-2#
 
+------------------------------------------------
+Filter to Get a Summary of System Health via CLI
+------------------------------------------------
 
 You can use the built-in filtering in the CLI to just get the top level state health of each susbsystem. This doesn't list the subsystems, but shows all the top level system health status outputs. If one subsystem shows a status other than **ok** you can then adjust the filtering to only display that subsystem.
 
@@ -18153,6 +18156,11 @@ This provides a very large output of all the subsystems and their subcomponents.
             }
         }
     }
+
+------------------------------------------------
+Filter to Get a Summary of System Health via API
+------------------------------------------------
+
 
 You can filter the above output in many ways. Below is an example of how to only get the system health data for a components. In this case lcd, or psu-1. This will still result in a lot of data outputted in the response:
 
