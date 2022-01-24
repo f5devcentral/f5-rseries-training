@@ -1594,7 +1594,7 @@ You may have a need to access the console of a tenant to diagnose a problem, or 
 
 
 Console Access to Tenant via Built-In Terminal Server
-=====================================================
+-----------------------------------------------------
 
 
 You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to a tenant console. VIPRION & iSeries provided a **vconsole** capability for vCMP guest access which required a user to authenticate to the device CLI first before they could run the vconsole command. 
