@@ -269,7 +269,7 @@ To see past events use the command **show system events**.
 Checking Active Alerts via GUI
 ------------------------------
 
-In the system controller GUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the the VELOS F5OS SNMP Monitoring and Alerting section.
+In the F5OS GUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the the rSeries F5OS SNMP Monitoring and Alerting section.
 
 .. image:: images/monitoring_rseries_health_status/image1.png
   :align: center
@@ -283,7 +283,7 @@ Recent system level alerts can be accessed via the API. Below is an API call to 
 
 .. code-block:: bash
 
-    GET https://{{System-Controller-IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
+    GET https://{{Appliance1-IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
 
 
 Below are examples of events from a chassis in a test lab.Note there are ASSERT and Deasserted messages that clear them.
@@ -294,293 +294,703 @@ Below are examples of events from a chassis in a test lab.Note there are ASSERT 
         "f5-event-log:events": {
             "event": [
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration health state\" \"2021-05-24 15:53:18.820164630 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-09-24 20:42:37.530264260 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration request-active state\" \"2021-05-24 15:53:19.967579072 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-09-24 20:42:37.530303402 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration grant-active state\" \"2021-05-24 15:53:19.978854195 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-09-24 20:42:47.523230213 UTC\""
                 },
                 {
-                    "log": "65545 fan-controller-1 power-fault ASSERT NOTICE \"Power fault detected in hardware\" \"2021-05-24 15:53:21.049898161 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-09-24 20:42:47.523257401 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: local arbitration health state\" \"2021-05-24 15:53:26.015915252 UTC\""
+                    "log": "66307 lcd module-communication-error ASSERT ERROR \"Module communication error detected\" \"2021-09-24 20:43:26.817425015 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: local arbitration request-active state\" \"2021-05-24 15:53:27.966554138 UTC\""
+                    "log": "66307 lcd module-communication-error EVENT NA \"LCD module communication error detected\" \"2021-09-24 20:43:26.817494411 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: local arbitration grant-active state\" \"2021-05-24 15:53:28.856929312 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"LCD Health is Not OK\" \"2021-09-24 20:43:26.827835221 UTC\""
                 },
                 {
-                    "log": "65546 blade-2 thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-05-24 15:53:36.609780988 UTC\""
+                    "log": "66307 lcd module-communication-error CLEAR ERROR \"Module communication error detected\" \"2021-09-25 13:31:17.525707606 UTC\""
                 },
                 {
-                    "log": "65546 blade-1 thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-05-24 15:53:40.490642113 UTC\""
+                    "log": "66307 lcd module-communication-error EVENT NA \"LCD module communication is OK\" \"2021-09-25 13:31:17.525764773 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: peer arbitration health state\" \"2021-05-24 15:53:40.497334043 UTC\""
+                    "log": "66306 lcd lcd-fault ASSERT ERROR \"Fault detected in LCD module\" \"2021-09-25 13:31:17.537641060 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: peer arbitration health state\" \"2021-05-24 15:53:26.746574994 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"LCD Health is Not OK\" \"2021-09-25 13:31:17.537709360 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: peer arbitration request-active state\" \"2021-05-24 15:53:40.509161929 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"Attribute health reset\" \"2021-09-29 03:51:31.596531347 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: peer arbitration request-active state\" \"2021-05-24 15:53:28.706752103 UTC\""
+                    "log": "66306 lcd lcd-fault CLEAR INFO \"Fault detected in LCD module\" \"2021-09-29 03:51:31.663915466 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: peer arbitration grant-active state\" \"2021-05-24 15:53:28.715491054 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-09-29 03:51:45.753957124 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration health state\" \"2021-05-24 15:53:30.717324742 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-09-29 03:51:52.305535996 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration request-active state\" \"2021-05-24 15:53:30.855158278 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-09-29 03:51:52.305564980 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration grant-active state\" \"2021-05-24 15:53:30.866478756 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-09-29 03:51:58.432597269 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: local arbitration health state\" \"2021-05-24 15:53:32.702577376 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-09-29 03:52:01.308221659 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: local arbitration request-active state\" \"2021-05-24 15:53:34.604942495 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-09-29 03:52:01.308250111 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration request-active state\" \"2021-05-24 15:53:42.172936771 UTC\""
+                    "log": "66307 lcd module-communication-error ASSERT ERROR \"Module communication error detected\" \"2021-09-29 03:52:04.938947934 UTC\""
                 },
                 {
-                    "log": "65546 blade-3 thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-05-24 15:53:44.108120781 UTC\""
+                    "log": "66307 lcd module-communication-error EVENT NA \"LCD module communication error detected\" \"2021-09-29 03:52:04.938996558 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration request-active state\" \"2021-05-24 15:53:44.763209737 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"LCD Health is Not OK\" \"2021-09-29 03:52:04.949570244 UTC\""
                 },
                 {
-                    "log": "65550 controller-1 firmware-update-status EVENT NA \"Firmware update is running for sirr \" \"2021-05-24 15:53:50.355583264 UTC\""
+                    "log": "66307 lcd module-communication-error CLEAR ERROR \"Module communication error detected\" \"2021-09-29 20:39:28.801031896 UTC\""
                 },
                 {
-                    "log": "65550 controller-1 firmware-update-status EVENT NA \"Firmware update completed for sirr \" \"2021-05-24 15:53:54.860605432 UTC\""
+                    "log": "66307 lcd module-communication-error EVENT NA \"LCD module communication is OK\" \"2021-09-29 20:39:28.801078036 UTC\""
                 },
                 {
-                    "log": "131073 chassis nebsDisabled EVENT NA \"Chassis is operating with non-NEBS temperature thresholds\" \"2021-05-24 15:53:54.959361073 UTC\""
+                    "log": "66306 lcd lcd-fault ASSERT ERROR \"Fault detected in LCD module\" \"2021-09-29 20:39:28.811080347 UTC\""
                 },
                 {
-                    "log": "65550 controller-2 firmware-update-status EVENT NA \"Firmware update is running for sirr \" \"2021-05-24 15:53:55.977932249 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"LCD Health is Not OK\" \"2021-09-29 20:39:28.811121924 UTC\""
                 },
                 {
-                    "log": "65550 controller-2 firmware-update-status EVENT NA \"Firmware update completed for sirr \" \"2021-05-24 15:53:56.004017282 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"Attribute health reset\" \"2021-09-30 22:13:31.711372401 UTC\""
                 },
                 {
-                    "log": "65546 blade-2 thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-05-24 19:02:25.967760976 UTC\""
+                    "log": "66306 lcd lcd-fault CLEAR INFO \"Fault detected in LCD module\" \"2021-09-30 22:13:31.717478859 UTC\""
                 },
                 {
-                    "log": "65546 blade-2 thermal-fault EVENT NA \"Deasserted: VQF hot\" \"2021-05-24 19:02:25.967814413 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-09-30 22:13:45.258781006 UTC\""
                 },
                 {
-                    "log": "65546 blade-1 thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-05-24 19:02:25.984620974 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-09-30 22:13:45.258810884 UTC\""
                 },
                 {
-                    "log": "65546 blade-1 thermal-fault EVENT NA \"Deasserted: VQF hot\" \"2021-05-24 19:02:25.984658200 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-09-30 22:13:45.269581558 UTC\""
                 },
                 {
-                    "log": "65546 blade-3 thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-05-24 19:02:26.005916081 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-09-30 22:13:53.603296145 UTC\""
                 },
                 {
-                    "log": "65546 blade-3 thermal-fault EVENT NA \"Deasserted: VQF hot\" \"2021-05-24 19:02:26.005953590 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-09-30 22:13:53.603325184 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update is running for vqf 0\" \"2021-05-24 19:27:26.907130040 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-09-30 22:13:57.508802483 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update completed for vqf 0\" \"2021-05-24 19:27:32.909166793 UTC\""
+                    "log": "65550 lcd firmware-update-status EVENT NA \"Firmware update is running for lcd app\" \"2021-09-30 22:14:08.406281623 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-05-24 19:27:32.918458222 UTC\""
+                    "log": "65550 lcd firmware-update-status EVENT NA \"Firmware update completed for lcd app\" \"2021-09-30 22:17:41.254699037 UTC\""
                 },
                 {
-                    "log": "65550 blade-2 firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-05-24 19:27:33.225942722 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-09-30 22:21:59.612100940 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-05-24 19:27:40.575885860 UTC\""
+                    "log": "66307 lcd module-communication-error ASSERT ERROR \"Module communication error detected\" \"2021-09-30 22:22:09.744138756 UTC\""
                 },
                 {
-                    "log": "65550 blade-2 firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-05-24 19:27:40.699221495 UTC\""
+                    "log": "66307 lcd module-communication-error EVENT NA \"LCD module communication error detected\" \"2021-09-30 22:22:09.744185210 UTC\""
                 },
                 {
-                    "log": "66049 controller-1 switch-fault EVENT NA \"data plane switch port hg14 (blade2/bp0) has uncorrected errors, value={fecUncorrected}\" \"2021-05-24 19:27:45.296321858 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"LCD Health is Not OK\" \"2021-09-30 22:22:09.755991542 UTC\""
                 },
                 {
-                    "log": "66049 controller-1 switch-fault EVENT NA \"data plane switch port hg0 (blade1/bp0) has uncorrected errors, value={fecUncorrected}\" \"2021-05-24 19:27:45.351543047 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-09-30 22:22:13.743592332 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-fault EVENT NA \"data plane switch port hg14 (blade2/bp1) has uncorrected errors, value={fecUncorrected}\" \"2021-05-24 19:27:46.473379078 UTC\""
+                    "log": "66307 lcd module-communication-error CLEAR ERROR \"Module communication error detected\" \"2021-09-30 22:23:13.748018092 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-fault EVENT NA \"data plane switch port hg0 (blade1/bp1) has uncorrected errors, value={fecUncorrected}\" \"2021-05-24 19:27:46.758451350 UTC\""
+                    "log": "66307 lcd module-communication-error EVENT NA \"LCD module communication is OK\" \"2021-09-30 22:23:13.748094654 UTC\""
                 },
                 {
-                    "log": "66049 controller-1 switch-fault EVENT NA \"data plane switch port hg14 (blade2/bp0) has no uncorrected errors\" \"2021-05-24 19:28:15.154986705 UTC\""
+                    "log": "66306 lcd lcd-fault EVENT NA \"LCD Health is OK\" \"2021-09-30 22:23:13.761910895 UTC\""
                 },
                 {
-                    "log": "66049 controller-1 switch-fault EVENT NA \"data plane switch port hg0 (blade1/bp0) has no uncorrected errors\" \"2021-05-24 19:28:15.426611864 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-10-05 17:38:50.079885448 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-fault EVENT NA \"data plane switch port hg0 (blade1/bp1) has no uncorrected errors\" \"2021-05-24 19:28:16.693070219 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-05 17:38:50.079928355 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-fault EVENT NA \"data plane switch port hg14 (blade2/bp1) has no uncorrected errors\" \"2021-05-24 19:28:16.929074328 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-10-05 17:39:00.072044694 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update is running for vqf 0\" \"2021-05-24 19:28:59.482959232 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-05 17:39:00.072074572 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update completed for vqf 0\" \"2021-05-24 19:29:05.495334551 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for sirr \" \"2021-10-05 17:39:02.067247139 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-05-24 19:29:05.501245699 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for sirr \" \"2021-10-05 17:39:02.083977127 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-05-24 19:29:13.225536688 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-05 17:39:02.098659600 UTC\""
                 },
                 {
-                    "log": "66049 controller-1 switch-fault EVENT NA \"data plane switch port hg11 (blade3/bp0) has uncorrected errors, value={fecUncorrected}\" \"2021-05-24 19:29:19.095000767 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-05 17:39:13.347122421 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-fault EVENT NA \"data plane switch port hg11 (blade3/bp1) has uncorrected errors, value={fecUncorrected}\" \"2021-05-24 19:29:26.520634735 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for bios\" \"2021-10-05 17:39:14.473124755 UTC\""
                 },
                 {
-                    "log": "66049 controller-1 switch-fault EVENT NA \"data plane switch port hg11 (blade3/bp0) has no uncorrected errors\" \"2021-05-24 19:29:49.115375341 UTC\""
+                    "log": "65543 appliance aom-fault ASSERT ERROR \"Fault detected in the AOM\" \"2021-10-05 17:48:56.925998053 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-fault EVENT NA \"data plane switch port hg11 (blade3/bp1) has no uncorrected errors\" \"2021-05-24 19:29:56.854690134 UTC\""
+                    "log": "65543 appliance aom-fault EVENT NA \"LOP Runtime fault detected: lop:fan-control-fault\" \"2021-10-05 17:48:56.926049145 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: local arbitration health state\" \"2021-05-26 02:41:33.773124875 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-10-05 17:48:58.896030299 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: local arbitration request-active state\" \"2021-05-26 02:41:35.695101564 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-05 17:48:58.896078923 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: local arbitration grant-active state\" \"2021-05-26 02:41:35.699045726 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-05 17:48:58.910827305 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration health state\" \"2021-05-26 02:41:39.786044205 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-10-05 17:49:07.404699391 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration request-active state\" \"2021-05-26 02:41:39.794249414 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-05 17:49:07.404735680 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: peer arbitration grant-active state\" \"2021-05-26 02:41:39.801413197 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-05 17:49:11.133887588 UTC\""
                 },
                 {
-                    "log": "131073 chassis nebsDisabled EVENT NA \"Chassis is operating with non-NEBS temperature thresholds\" \"2021-05-26 02:41:40.461757212 UTC\""
+                    "log": "65543 appliance aom-fault CLEAR ERROR \"Fault detected in the AOM\" \"2021-10-05 18:00:02.904547087 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: peer arbitration health state\" \"2021-05-26 02:42:07.768703623 UTC\""
+                    "log": "65543 appliance aom-fault EVENT NA \"No LOP Runtime fault detected: lop:fan-control-fault\" \"2021-10-05 18:00:02.904618551 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: peer arbitration request-active state\" \"2021-05-26 02:42:07.773478111 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-10-06 22:36:15.890309759 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: local arbitration health state\" \"2021-05-26 02:42:07.777640774 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-06 22:36:15.890344861 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: local arbitration request-active state\" \"2021-05-26 02:42:07.784882772 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-06 22:36:15.899652551 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Deasserted: local arbitration grant-active state\" \"2021-05-26 02:42:07.797839796 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-10-06 22:36:25.182561677 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: peer arbitration grant-active state\" \"2021-05-26 02:41:34.187592931 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-06 22:36:25.182588627 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration health state\" \"2021-05-26 02:41:35.217855071 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-06 22:36:28.095912279 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration request-active state\" \"2021-05-26 02:41:35.225443025 UTC\""
+                    "log": "327680 Appliance core-dump EVENT NA \"Core dumped on Appliance. process=snmp_trapd, location=/var/shared/core/container/snmp_trapd-1.core.gz\" \"2021-10-06 22:37:02.867803404 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: local arbitration grant-active state\" \"2021-05-26 02:41:35.229464078 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-07 19:36:28.425404878 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: peer arbitration health state\" \"2021-05-26 02:41:43.919541915 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-10-07 19:36:31.589007937 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: local arbitration health state\" \"2021-05-26 02:42:05.250170202 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-07 19:36:31.589039655 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: local arbitration request-active state\" \"2021-05-26 02:42:05.318741777 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-07 19:36:40.911993523 UTC\""
                 },
                 {
-                    "log": "131073 chassis nebsDisabled EVENT NA \"Chassis is operating with non-NEBS temperature thresholds\" \"2021-05-26 02:42:06.203445372 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-10-07 19:36:42.419885336 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Asserted: local arbitration grant-active state\" \"2021-05-26 02:42:07.211962644 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-07 19:36:42.419914186 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: peer arbitration health state\" \"2021-05-26 02:42:07.802468848 UTC\""
+                    "log": "65538 appliance unknown-alarm EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-18 20:53:45.331800325 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: peer arbitration request-active state\" \"2021-05-26 02:42:07.812836190 UTC\""
+                    "log": "65538 appliance unknown-alarm EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-18 20:53:54.655898424 UTC\""
                 },
                 {
-                    "log": "66048 controller-1 arbitration-state EVENT NA \"Deasserted: peer arbitration grant-active state\" \"2021-05-26 02:42:07.837459150 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-18 20:54:01.318390153 UTC\""
                 },
                 {
-                    "log": "131073 chassis nebsDisabled EVENT NA \"Chassis is operating with non-NEBS temperature thresholds\" \"2021-05-26 02:42:10.436404999 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-18 20:54:14.143624212 UTC\""
                 },
                 {
-                    "log": "66048 controller-2 arbitration-state EVENT NA \"Asserted: peer arbitration grant-active state\" \"2021-05-26 02:42:10.822523042 UTC\""
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-10-21 16:01:50.003423497 UTC\""
                 },
                 {
-                    "log": "65550 blade-2 firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-05-26 04:06:34.843286399 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-21 16:01:50.003434430 UTC\""
                 },
                 {
-                    "log": "65546 blade-2 thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-05-26 04:06:36.864531942 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-10-21 16:01:51.999220111 UTC\""
                 },
                 {
-                    "log": "65546 blade-2 thermal-fault EVENT NA \"Asserted: VQF hot\" \"2021-05-26 04:06:36.864577488 UTC\""
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-10-21 16:01:58.752028781 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update is running for vqf 0\" \"2021-05-26 04:06:39.864693543 UTC\""
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-21 16:01:58.752039434 UTC\""
                 },
                 {
-                    "log": "65550 blade-2 firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-05-26 04:06:40.767393044 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-10-21 16:02:08.914165850 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update is running for vqf 0\" \"2021-05-26 04:06:44.080096986 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for cpld\" \"2021-10-21 16:02:09.995922369 UTC\""
                 },
                 {
-                    "log": "65546 blade-1 thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-05-26 04:06:46.861342298 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for cpld\" \"2021-10-21 16:10:30.887216940 UTC\""
                 },
                 {
-                    "log": "65546 blade-1 thermal-fault EVENT NA \"Asserted: VQF hot\" \"2021-05-26 04:06:46.861384173 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-21 16:10:31.997412851 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update completed for vqf 0\" \"2021-05-26 04:06:47.864891691 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-21 16:10:43.996629722 UTC\""
                 },
                 {
-                    "log": "65550 blade-1 firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-05-26 04:06:47.868305537 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-21 16:10:43.999261917 UTC\""
                 },
                 {
-                    "log": "66049 controller-2 switch-status EVENT NA \"data plane switch port hg14 (blade2/bp1) has uncorrected errors, value={fecUncorrected}\" \"2021-05-26 04:06:50.071892384 UTC\""
+                    "log": "327680 Appliance core-dump EVENT NA \"Core dumped on Appliance. process=fpgamgr, location=/var/shared/core/container/fpgamgr-1.core.gz\" \"2021-10-21 16:10:44.410130732 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update completed for vqf 0\" \"2021-05-26 04:06:52.078973703 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-21 16:10:56.965345667 UTC\""
                 },
                 {
-                    "log": "65550 blade-3 firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-05-26 04:06:52.083057955 UTC\""
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for lop app\" \"2021-10-21 16:10:57.996958960 UTC\""
                 },
                 {
-                    "log": "65546 blade-3 thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-05-26 04:06:52.864912359 UTC\""
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 input OK\" \"2021-10-21 16:12:04.007920003 UTC\""
                 },
                 {
-                    "log": "65546 blade-3 thermal-fault EVENT NA \"Asserted: VQF hot\" \"2021-05-26 04:06:52.864961319 UTC\""
-          
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 output OK\" \"2021-10-21 16:12:04.016066799 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for lop app\" \"2021-10-21 16:12:05.997077384 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-21 16:12:06.001335165 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-21 16:12:19.997931537 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for sirr \" \"2021-10-21 16:12:20.001487185 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for sirr \" \"2021-10-21 16:12:20.008918481 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for bios\" \"2021-10-21 16:12:20.013466117 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for bios\" \"2021-10-21 16:16:46.003085218 UTC\""
+                },
+                {
+                    "log": "65536 appliance hardware-device-fault EVENT NA \"RAS AER unknown errors, count=1\" \"2021-10-21 16:22:19.387992390 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-10-21 16:22:23.381380311 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-21 16:22:23.381390040 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-10-21 16:22:25.385435390 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-10-21 16:22:33.381712308 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-10-21 16:22:33.381724382 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-10-21 16:22:37.380958363 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 input OK\" \"2021-10-21 16:22:52.634577652 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 output OK\" \"2021-10-21 16:22:53.384852972 UTC\""
+                },
+                {
+                    "log": "65536 appliance hardware-device-fault EVENT NA \"No RAS AER unknown errors detected\" \"2021-10-21 17:27:18.298033804 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-11-08 19:02:52.902578167 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-11-08 19:02:57.497737288 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-11-08 19:02:57.497747001 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-11-08 19:03:07.398069876 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-11-08 19:03:07.398080030 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-11-08 19:03:10.455550306 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-11-08 19:03:11.495334911 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-11-08 19:03:23.496853600 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 input OK\" \"2021-11-12 21:07:25.498321744 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 output OK\" \"2021-11-12 21:07:25.504634021 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault ASSERT ERROR \"Fault detected in the AOM\" \"2021-11-12 22:00:03.510159007 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault EVENT NA \"LOP Runtime fault detected: lop:nc-si-rmii:failure\" \"2021-11-12 22:00:03.510181925 UTC\""
+                },
+                {
+                    "log": "327680 Appliance core-dump EVENT NA \"Core dumped on Appliance. process=appliance_orche, location=/var/shared/core/container/appliance_orche-1.core.gz\" \"2021-11-13 17:36:53.583667701 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault EVENT NA \"Attribute health reset\" \"2021-11-30 03:04:15.614494982 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault CLEAR EMERGENCY \"Fault detected in the AOM\" \"2021-11-30 03:04:15.633871228 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for atse 0\" \"2021-11-30 03:04:18.672712529 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault ASSERT ERROR \"Fault detected in the AOM\" \"2021-11-30 03:04:20.197354633 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault EVENT NA \"LOP Runtime fault detected: lop:nc-si-rmii:failure\" \"2021-11-30 03:04:20.197369120 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-11-30 03:04:22.671699902 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-11-30 03:04:22.671710561 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for lop app\" \"2021-11-30 03:04:22.673457605 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-11-30 03:04:37.360915686 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-11-30 03:04:38.671015413 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-11-30 03:04:54.671332003 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 input OK\" \"2021-11-30 03:05:28.673454233 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 output OK\" \"2021-11-30 03:05:28.680134116 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for lop app\" \"2021-11-30 03:05:30.739769167 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for sirr \" \"2021-11-30 03:05:30.909784471 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for sirr \" \"2021-11-30 03:05:31.056876974 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for bios\" \"2021-11-30 03:05:31.203040930 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault CLEAR ERROR \"Fault detected in the AOM\" \"2021-11-30 03:05:34.849689751 UTC\""
+                },
+                {
+                    "log": "65543 appliance aom-fault EVENT NA \"No LOP Runtime fault detected: lop:nc-si-rmii:failure\" \"2021-11-30 03:05:34.854406452 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for bios\" \"2021-11-30 03:09:40.675727012 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2021-11-30 03:15:05.999510689 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR INFO \"Thermal fault detected in hardware\" \"2021-11-30 03:15:06.736711926 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-11-30 03:15:12.090052531 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-11-30 03:15:12.090062383 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-11-30 03:15:14.089416338 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-11-30 03:15:14.092678092 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-11-30 03:15:20.903194506 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-11-30 03:15:20.903205041 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-11-30 03:15:29.609273565 UTC\""
+                },
+                {
+                    "log": "65550 lcd firmware-update-status EVENT NA \"Firmware update is running for lcd app\" \"2021-11-30 03:15:40.088891192 UTC\""
+                },
+                {
+                    "log": "65550 lcd firmware-update-status EVENT NA \"Firmware update completed for lcd app\" \"2021-11-30 03:19:15.999579163 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2021-12-08 19:46:53.504213060 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-12-08 19:47:01.529893397 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-12-08 19:47:01.534041443 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-12-08 19:47:05.527110643 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-12-08 19:47:05.527120486 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-12-08 19:47:13.742069012 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-12-08 19:47:13.742079357 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-12-08 19:47:17.232925320 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2021-12-11 23:40:34.166483738 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2021-12-11 23:40:41.365377563 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-12-11 23:40:41.365386164 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2021-12-11 23:40:43.150189326 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2021-12-11 23:40:43.152771734 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2021-12-11 23:40:51.271782290 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2021-12-11 23:40:51.271792629 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2021-12-11 23:40:59.150601474 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 input OK\" \"2021-12-11 23:41:07.155884004 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 output OK\" \"2021-12-11 23:41:07.161054552 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-14 19:10:22.024893444 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-14 19:10:31.201584672 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-14 19:10:31.204837008 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-14 19:10:33.202595967 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-14 19:10:33.202607134 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-14 19:10:43.202976867 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-14 19:10:43.202988143 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-14 19:10:46.851253533 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 input OK\" \"2022-01-14 19:10:57.678840635 UTC\""
+                },
+                {
+                    "log": "66305 psu-2 psu-fault EVENT NA \"Deasserted: PSU 2 output OK\" \"2022-01-14 19:10:59.204970112 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-15 06:04:15.665074228 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-15 06:04:24.096265138 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-15 06:04:24.096276299 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-15 06:04:24.452570280 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-15 06:04:24.455229163 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-15 06:04:34.454864249 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-15 06:04:34.454875983 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-15 06:04:40.086088658 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-15 06:47:50.255692452 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-15 06:47:58.859176054 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-15 06:47:58.859186190 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-15 06:47:59.515267548 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-15 06:48:01.515381232 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-15 06:48:09.517292441 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-15 06:48:09.517302197 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-15 06:48:15.310272826 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-17 09:28:25.339993260 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-17 09:28:28.397568698 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-17 09:28:28.397578016 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-17 09:28:34.185952482 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-17 09:28:34.388141317 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-17 09:28:37.079075988 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-17 09:28:37.079085740 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-17 09:28:50.050575268 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-17 10:17:56.205717158 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-17 10:18:00.285549822 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-17 10:18:00.285561947 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-17 10:18:04.284792251 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-17 10:18:04.288861233 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-17 10:18:08.913192669 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-17 10:18:08.913208304 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-17 10:18:19.310194557 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-22 21:38:43.263060216 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-22 21:38:51.478378406 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-22 21:38:51.807229100 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-22 21:38:53.807453271 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-22 21:38:53.807462914 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-22 21:39:03.820207125 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-22 21:39:03.820217814 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-22 21:39:07.327923568 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for <no value> 0\" \"2022-01-22 22:13:37.685508736 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault ASSERT WARNING \"Thermal fault detected in hardware\" \"2022-01-22 22:13:42.499364348 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-22 22:13:42.499382148 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for atse 0\" \"2022-01-22 22:13:46.297326792 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update is running for asw 0\" \"2022-01-22 22:13:46.487157856 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault CLEAR WARNING \"Thermal fault detected in hardware\" \"2022-01-22 22:13:52.188569631 UTC\""
+                },
+                {
+                    "log": "65546 appliance thermal-fault EVENT NA \"Deasserted: CPU Memhot\" \"2022-01-22 22:13:52.188580132 UTC\""
+                },
+                {
+                    "log": "65550 appliance firmware-update-status EVENT NA \"Firmware update completed for asw 0\" \"2022-01-22 22:14:02.155131424 UTC\""
                 }
             ]
         }
@@ -591,7 +1001,7 @@ Below are examples of events from a chassis in a test lab.Note there are ASSERT 
 System Health
 =============
 
-VELOS also has a very robust **system health** utility where all the various hardware and software subsystems will first provide a high level health status, but then deeper detail can be gained on what is monitored via each subsystem.
+rSeries also has a very robust **system health** utility where all the various hardware and software subsystems will first provide a high level health status, but then deeper detail can be gained on what is monitored via each subsystem.
 
 
 ------------------------------
