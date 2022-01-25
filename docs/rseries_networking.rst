@@ -110,8 +110,8 @@ rSeries 100GB QSFP28 Options
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 
-rSeries Optics SKU's 
----------------------
+Supported rSeries Optics SKU's
+==============================
 
 **Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**
 
