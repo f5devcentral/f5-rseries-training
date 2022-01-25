@@ -50,6 +50,16 @@ More details on each optic can be found in the F5 Platforms Accessories Guide:
 https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html
 
 
+rSeries 1GB SFP+ Options (r2000 & r4000 only)
+---------------------------------------------
+
++------------------------+------------+----------------------------------------------------------------------------------+
+| 25GBASE-SR (SFP28)     | OPT-0053   | TRANSCEIVER, SFP28, 25G-SR, 100M, LC, MMF, 1W, F5 BRANDED                        |
++------------------------+------------+----------------------------------------------------------------------------------+
+| 25GBASE-LR (SFP28)     | OPT-0054   | TRANSCEIVER, SFP28, 25G-LR, 10KM, LC, SMF, 1.5W, F5 BRANDED                      |
++------------------------+------------+----------------------------------------------------------------------------------+
+
+
 rSeries 10GB SFP+ Options
 -------------------------
 
@@ -60,7 +70,8 @@ rSeries 10GB SFP+ Options
 +------------------------+------------+------------------------------------------------------------------------------------------+
 | 10GBASE-SR (SFP+)      | OPT-0016   | TRANSCEIVER, SFP+, 10GIG, 850nm, 300m, LC, MMF, LIMITING, DDM, F5 BRANDED                |
 +------------------------+------------+------------------------------------------------------------------------------------------+
-
+| ??/     | OPT-0016   | TRANSCEIVER, SFP+, 10GIG, 850nm, 300m, LC, MMF, LIMITING, DDM, F5 BRANDED                |
++------------------------+------------+------------------------------------------------------------------------------------------+
 
 rSeries 25GB SFP28 Options
 --------------------------
@@ -99,32 +110,81 @@ rSeries 100GB QSFP28 Options
 +------------------------+------------+----------------------------------------------------------------------------------+
 
 
-
-**Note: OPT-0039 QSFP28 LR4 used in VIPRION/iSeries are compatible with rSeries, but default optics for 100G SR4 VEOS is OPT-0052 (as shown above)**
-
 rSeries Optics SKU's 
 ---------------------
 
-Even though some of the SKU's below have VELOS in the description, or **VEL** in the actual SKU, they are interoperable with rSeries.
-
 **Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**
 
+rSeries 1GB SFP SKU's
+--------------------------
 
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPGVELQSFP28LR4   | MY   | VELOS Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, DDM) ROHS           |
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPGVELQSFP28PSM4  | TH   | VELOS Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS     |
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPGVELQSFP28-SR4  | PH   | VELOS Field Upgrade: QSFP28 Transceiver (100G-SR4, 100M, MPO MMF, DDM) ROHS           |
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPG-VEL-QSFP+BD   | PH   | VELOS Field Upgrade: QSFP+ Transceiver (2x20G-BIDI, 850NM-900NM, 100M, LC, MMF, DDM)  |
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPG-VEL-QSFP+LR4  | MY   | VELOS Field Upgrade: QSFP+ Transceiver (40G-LR, 1310NM, 10KM, LC, SMF, DDM Support)   |
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPG-VEL-QSFP+PSM4 | PH   | VELOS Field Upgrade: QSFP+ Transceiver (40G-PSM4, 1310NM, 10KM, MPO/APC, SMF, DDM )   |
-+----------------------+------+---------------------------------------------------------------------------------------+
-| F5-UPG-VEL-QSFP+SR4  | CN   | VELOS Field Upgrade: QSFP+ Transceiver (40G-SR4, 850NM, 100M, MPO, DDM Support)       |
-+----------------------+------+---------------------------------------------------------------------------------------+
+1Gb Optics are only supported on the r2000/r4000 platforms:
+
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFP-R         | Field Upgrade: SFP Fiber Connector (1G - LC/850nm) ROHS                                |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFPLX-R       | Field Upgrade: SFP LX Fiber Connector (1G - LC/1310nm) ROHS                            |
++----------------------+----------------------------------------------------------------------------------------+
+
+
+rSeries 10GB SFP+ SKU's
+--------------------------
+
+10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms:
+
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-SFPC-R        | Field Upgrade: SFP Copper Connector (10/100/1000 RJ45)) ROHS                          |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-SFP+-R        | Field Upgrade: SFP+ Fiber Connector (10G-LC/850nm) ROHS                               |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-SFP+LR-R      | Field Upgrade: SFP+LR Fiber Connector (10G-LC/1310nm) ROHS                            |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-SFPC+-3M-8    | Field Upgrade: Copper SFP+ 10G Direct Attach 8-Pack 3M (8900, 11000, B4200, B2100)    |
++----------------------+---------------------------------------------------------------------------------------+
+
+
+rSeries 25GB SFP28 SKU's
+--------------------------
+
+25Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms:
+
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-SFP28-SR      | Field Upgrade: Transceiver SFP28, 25G-SR, 100M, LC, MMF, DDM (rSeries ONLY)           |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-SFP28-LR      | Field Upgrade: Transceiver SFP28, 25G-LR, 100M, LC, MMF, DDM (rSeries ONLY)           |
++----------------------+---------------------------------------------------------------------------------------+
+
+
+rSeries 40GB QSFP+ SKU's
+--------------------------
+
+40Gb Optics are only supported on the r5000/r10000 platforms:
+
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+SR4      | Field Upgrade: QSFP+ Transceiver (40G-SR4, 850NM, 100M, MPO, DDM Support)             |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+LR4      | Field Upgrade: QSFP+ Transceiver (40G-LR4, 1310NM, 10KM, LC, SMF, DDM Support)        |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+PSM4     | Field Upgrade: QSFP+ Transceiver (40G-PSM4, 4x10LR, 1310NM, 10KM, MPO/APC, SMF, DDM)  |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+BD       | Field Upgrade: Transceiver QSFP+, 2X20G BIDI 850NM-900NM, 100M, LC, MMF, DDM          |
++----------------------+---------------------------------------------------------------------------------------+
+
+rSeries 100GB QSFP28 SKU's
+--------------------------
+
+100Gb Optics are only supported on the r5000/r10000 platforms:
+
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-SR4    | Field Upgrade: QSFP28 Transceiver (100G-SR4, 850NM, 70M/100M, OM3/OM4, MMF, MPO, DDM) |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-LR4    | Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, 4.5W, DDM)                |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-PSM4   | Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS           |
++----------------------+---------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-BD     | Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       |
++----------------------+---------------------------------------------------------------------------------------+
+
 
 **Note: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
 
@@ -143,9 +203,9 @@ Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pac
 **THESE ARE UNSUPPORTED**
 
 +---------------------+------+----------------------------------------------------------------------------------------------+
-| F5-UPG-VELPSMXLR10M   | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)  |
+| F5-UPG-VELPSMXLR10M | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)    |
 +---------------------+------+----------------------------------------------------------------------------------------------+
-| F5-UPG-VELPSM4XLR3M   | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (3 Meter)   |
+| F5-UPG-VELPSM4XLR3M | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (3 Meter)     |
 +---------------------+------+----------------------------------------------------------------------------------------------+
 
 VLANs
