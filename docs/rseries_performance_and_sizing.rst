@@ -212,7 +212,7 @@ To see how this translates into real performance, it is good to look at a Layer7
 
 .. image:: images/rseries_performance_and_sizing/image32.png
   :align: center
-  :scale: 80%
+  :scale: 50%
 
 Because each appliance has a different number of CPU’s, a common sizing exercise is to look at the per vCPU performance by using the formulas above to come up with a per vCPU metric. In the graph below it is done for Layer7 RPS (Inf-Inf) but you could use the same math for any metric. Note the graph below is not derived from a per vCPU test, it is taking a published appliance metric and dividing it by the number of vCPU’s (minus the platform vCPU's) to come up with a per vCPU metric. As mentioned above using the rSeries metric which is (minus the platform CPU’s) is the most realistic. 
 
