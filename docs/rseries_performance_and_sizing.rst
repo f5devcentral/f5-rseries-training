@@ -214,6 +214,17 @@ To see how this translates into real performance, it is good to look at a Layer7
   :align: center
   :scale: 80%
 
+Because each appliance has a different number of CPU’s, a common sizing exercise is to look at the per vCPU performance by using the formulas above to come up with a per vCPU metric. In the graph below it is done for Layer7 RPS (Inf-Inf) but you could use the same math for any metric. Note the graph below is not derived from a per vCPU test, it is taking a published appliance metric and dividing it by the number of vCPU’s (minus the platform vCPU's) to come up with a per vCPU metric. As mentioned above using the rSeries metric which is (minus the platform CPU’s) is the most realistic. 
+
+.. image:: images/rseries_performance_and_sizing/image33.png
+  :align: center
+  :scale: 50%
+
+
+**NOTE: The per vCPU charts above are based on extrapolations, not per vCPU testing, so results may vary. This is generally acceptable for sizing use, as this is more a means of comparison of platform differences than a guarantee of a certain metric.**
+
+Also consider that these extrapolations for the iSeries appliances are for bare metal configuration with no vCMP enabled. When extrapolating what the performance would be with vCMP enabled on a per vCPU basis the numbers for iSeries appliances would have 20% subtracted from them. rSeries on the other hand is multitenant by default, so there is no need to subtract 20% for virtualization overhead. The rSeries numbers are inclusive of multitenancy already.  
+
 Memory Sizing
 =============
 
