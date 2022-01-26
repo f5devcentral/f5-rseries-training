@@ -228,7 +228,7 @@ Also consider that these extrapolations for the iSeries appliances are for bare 
 Memory Sizing
 =============
 
-In general migrating form an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, ro the same amount of memory (when comparing the 11600/11800).
+In general migrating form an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, or the same amount of memory (when comparing the 11600/11800).
 
 .. image:: images/rseries_performance_and_sizing/image34.png
   :width: 45%
