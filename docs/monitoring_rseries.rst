@@ -28,12 +28,16 @@ Or you can alter the Accept header to receive output in XML format:
 
 
 
-Appliance Level and System Component Monitoring
-===============================================
+Hardware and System Component Monitoring
+========================================
 
-------------------------------------------
-System Inventory / Components from the CLI
-------------------------------------------
+-----------------------------------------------------
+Hardware and System Component Monitoring from the CLI
+-----------------------------------------------------
+
+
+Show Components from the CLI
+-----------------------------
 
 High level appliance status can be obtained by using the **show components** command, this will include all the subsystems:
 
@@ -147,6 +151,9 @@ High level appliance status can be obtained by using the **show components** com
     psu-stats psu-fan-1-speed 9760
     appliance-1# 
 
+Show Componenent State Only from the CLI
+----------------------------------------
+
 If you just want the state and not all the details:
 
 .. code-block:: bash
@@ -174,7 +181,8 @@ If you just want the state and not all the details:
     state empty false
     appliance-1# 
 
-Or just the properties:
+Show Componenent Properties from the CLI
+----------------------------------------
 
 .. code-block:: bash
 
@@ -201,6 +209,8 @@ Or just the properties:
 
     appliance-1# 
 
+Show Power Supply Status from the CLI
+--------------------------------------
 
 Or you can view individual subsystems. High level power supply status can be obtained by using the **show components component <psu-#>** command:
 
@@ -242,6 +252,8 @@ High level power supply stats can be obtained by using the **show components com
 
     appliance-1# 
 
+Show LCD Status from the CLI
+--------------------------------------
 
 High level chassis LCD status can be obtained by using the **show components component lcd** command:
 
@@ -252,6 +264,10 @@ High level chassis LCD status can be obtained by using the **show components com
     state serial-no sub0872g00d5
     state empty false
     appliance-1# 
+
+
+Show CPU Status from the CLI
+--------------------------------------
 
 You can view stats on the platform CPU and basic utilization with the command **show components component cpu**:
 
@@ -296,6 +312,9 @@ You can view stats on the platform CPU and basic utilization with the command **
                                                                                                                                                             31      cpu31   2        1       2       2       
 
     appliance-1# 
+
+Show Storage Status from the CLI
+--------------------------------------
 
 You can view stats on the storage subsystem:
 
@@ -993,7 +1012,7 @@ You may query the status of the disks within the rSeries appliance:
 CPU Status
 -----------
 
-You can query the detais about the CPU's within each rSeries device. Every CPU thread (vCPU) will display **Current**, **5 Second**, 1**1 Minutes**, and **5 Minute** utilization.
+You can query the detais about the CPU's within each rSeries device. Every CPU thread (vCPU) will display **Current**, **5 Seconds**, **1 Minute**, and **5 Minute** utilization.
 
 .. code-block:: bash
 
@@ -1342,6 +1361,9 @@ Trusted Protection Module Status
         "f5-platform:tpm-integrity-status": "Valid"
     }
 
+---------------------------------------
+Software Health adn Status from the API
+---------------------------------------
 
 F5 Cluster status
 -----------------
