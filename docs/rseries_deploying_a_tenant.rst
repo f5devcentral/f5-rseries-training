@@ -885,7 +885,7 @@ The API output:
     }
 
 
-If you attempt to change the tenant configuration while it is in the deployed state it will fail with an error like the one below notifying you that config changes when in the **deployed** state is not allowed:
+If you attempt to change the tenant configuration while it is in the deployed state it will fail with an error like the one below.  It will nontify you that config changes when in the **deployed** state is not allowed:
 
 .. code-block:: json
 
