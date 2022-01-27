@@ -333,8 +333,8 @@ You can view stats on the storage subsystem:
 System Inventory / Components from the API
 ------------------------------------------
 
-Chassis Status
---------------
+Appliance Component Status from the API
+---------------------------------------
 
 The overall appliance component status can be queried via the following API command:
 
@@ -898,8 +898,8 @@ The overall appliance component status can be queried via the following API comm
     }
 
 
-LCD Status
-----------
+LCD Status from the API
+-----------------------
 
 The appliance LCD panel status can be queried via the following API command:
 
@@ -926,8 +926,8 @@ The appliance LCD panel status can be queried via the following API command:
 
 
 
-Power Supply Status
--------------------
+Power Supply Status from the API
+--------------------------------
 
 The rSeries applinace may have 1 or 2 power supplies installed. Each can be queried via the following API command. Substitute psu-1, or psu-2 (for dual power systems) at the end of the API call:
 
@@ -963,8 +963,8 @@ The rSeries applinace may have 1 or 2 power supplies installed. Each can be quer
         ]
     }
 
-Storage Status
-------------
+Storage Status from the API
+---------------------------
 
 You may query the status of the disks within the rSeries appliance:
 
@@ -1009,8 +1009,8 @@ You may query the status of the disks within the rSeries appliance:
     }
 
 
-CPU Status
------------
+CPU Status from the API
+-----------------------
 
 You can query the detais about the CPU's within each rSeries device. Every CPU thread (vCPU) will display **Current**, **5 Seconds**, **1 Minute**, and **5 Minute** utilization.
 
@@ -1311,8 +1311,8 @@ Below is the exmaple output for CPU's:
         }
     }
 
-Temperature Status
-------------------
+Temperature Status from the API
+-------------------------------
 
 You can monitor the rSeries Appliance temperature.  The output will display the **Current**, **Average**, **Minimum**, and **Maximum** temperatures.
 
@@ -1331,8 +1331,8 @@ You can monitor the rSeries Appliance temperature.  The output will display the 
         }
     }
 
-Memory Status
--------------
+Memory Status from the API
+--------------------------
 
 .. code-block:: bash
 
@@ -1348,8 +1348,8 @@ Memory Status
         }
     }
 
-Trusted Protection Module Status
---------------------------------
+Trusted Protection Module Status from the API
+---------------------------------------------
 
 .. code-block:: bash
 
