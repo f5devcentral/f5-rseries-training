@@ -1362,11 +1362,235 @@ Trusted Protection Module Status from the API
     }
 
 ---------------------------------------
-Software Health adn Status from the API
+Software Health and Status from the CLI
 ---------------------------------------
 
-F5 Cluster status
------------------
+
+F5 Cluster Status via CLI
+-------------------------
+
+.. code-block:: bash
+
+    r5900-2# show cluster
+    cluster state
+    cluster disk-usage-threshold state warning-limit 85
+    cluster disk-usage-threshold state error-limit 90
+    cluster disk-usage-threshold state critical-limit 97
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 60
+    cluster nodes node node-1
+    state enabled      true
+    state node-running-state running
+    state platform fpga-state FPGA_RDY
+    state platform dma-agent-state DMA_AGENT_RDY
+    state node-info creation-time 2021-09-30T22:22:29Z
+    state node-info cpu 32
+    state node-info pods 110
+    state node-info memory 15730136Ki
+    state ready-info ready true
+    state ready-info last-transition-time 2022-01-17T10:17:36Z
+    state ready-info message "kubelet is posting ready status"
+    state out-of-disk-info last-transition-time ""
+    state out-of-disk-info message ""
+    state disk-pressure-info disk-pressure false
+    state disk-pressure-info last-transition-time 2021-11-30T03:14:47Z
+    state disk-pressure-info message "kubelet has no disk pressure"
+    state disk-usage used-percent 50
+    state disk-usage growth-rate 0
+    state disk-usage status in-range
+    DISK DATA  DISK DATA     
+    NAME       VALUE         
+    -------------------------
+    available  56439144448   
+    capacity   117493108736  
+    used       55061983232   
+
+    TENANT                              
+    NAME     QAT DEVICE NAME   BDF      
+    ------------------------------------
+    tenant1  qat_dev_vf00pf00  53:01.0  
+            qat_dev_vf00pf01  54:01.0  
+            qat_dev_vf00pf02  55:01.0  
+            qat_dev_vf01pf00  53:01.1  
+            qat_dev_vf01pf01  54:01.1  
+            qat_dev_vf01pf02  55:01.1  
+
+    NAMESPACE  TYPE    REASON   OBJECT                            MESSAGE                          
+    -----------------------------------------------------------------------------------------------
+    default    Normal  Created  VirtualMachineInstance/tenant1-1  VirtualMachineInstance defined.  
+
+    STAGE NAME         STATUS  TIMESTAMP            VERSION       
+    --------------------------------------------------------------
+    K3SClusterInstall  done    2021/09/30-22:22:30  1.21.1.1.7.0  
+    K3SClusterUpgrade  done    2021/11/30-03:06:39  1.21.1.1.8.3  
+
+    cluster cluster-status summary-status "K3S cluster is initialized and ready for use."
+    INDEX  STATUS                                                                                
+    ---------------------------------------------------------------------------------------------
+    0      2022-01-22 22:13:17.387346 -  applianceMainEventLoop::Orchestration manager startup.  
+    1      2022-01-22 22:13:17.392742 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
+    2      2022-01-22 22:13:17.798753 -  Successfully ssh'd to appliance 127.0.0.1.              
+    3      2022-01-22 22:13:23.293784 -  Appliance 1 is ready in k3s cluster.                    
+    4      2022-01-22 22:13:23.293868 -  K3S cluster is ready.                                   
+
+F5 DAG States via CLI
+-------------------------
+
+
+.. code-block:: bash
+
+    r5900-2# show dag-states 
+                                            COMMIT                         TENANT                                                     SDAG   
+    TENANT              PUBLISHER  PUBLISH     TENANT    COMMIT      DAG      INSTANCE                                                   TABLE  
+    NAME     PUBLISHER  INSTANCE   TIME        INSTANCE  TIME        VERSION  IDS       SDAG TABLE                                       HASH   
+    --------------------------------------------------------------------------------------------------------------------------------------------
+    tenant1  dagd       1          1642891753  1         1642891753  16       [ 15 ]    f f f f f f f f f f f f f f f f f f f f f f f f  0      
+
+    r5900-2# 
+
+Show FDB via CLI
+----------------
+
+.. code-block:: bash
+
+    r5900-2# show fdb 
+                                                                                                NDI                                                        
+    MAC ADDRESS        VLAN  TAG TYPE      VLAN  TAG TYPE      VID   ENTRY TYPE   OWNER    AGE  ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  INTERFACE  
+    -------------------------------------------------------------------------------------------------------------------------------------------------------
+    00:94:a1:69:35:14  500   tag_type_vid  500   tag_type_vid  500   L2-LISTENER  tenant1  -    4095  8    -    -    -    -    1     -          -          
+    00:94:a1:69:35:14  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  tenant1  -    4095  8    -    -    -    -    1     -          -          
+    00:94:a1:69:35:14  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  tenant1  -    4095  8    -    -    -    -    1     -          -          
+
+    r5900-2# 
+
+
+Show FPGA Tables via CLI
+------------------------
+
+.. code-block:: bash
+
+
+    r5900-2# show fpga-tables
+                                                                                                                                                                                                                                                RX                     
+                                                            MCAST  MCAST                                                                                                                  RX                                                    DST                    
+                                                        TX     RX     TX     RX     RX     RX     RX     RX     RX     RX     RX     TX     TX     TX     TX     TX     TX     TX     TX     MCAST             RX     TX                  TX       DIS    MIRROR  MIRROR  
+                RX PKT   RX BYTE    TX PKT   TX BYTE    OBUFF  FULL   FULL   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   PKT     RX MCAST  MCAST  MCAST    TX MCAST   MCAST    PKT    PKTS    BYTES   
+    NAME        CNT      CNT        CNT      CNT        DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  CNT     BYTE CNT  DROPS  PKT CNT  BYTE CNT   DROPS    CNT    CNT     CNT     
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    port0_mod0  741483   106773552  1646401  237965206  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      60      6360      0      1929920  150506676  0        0      0       0       
+    port1_mod0  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      0        0          0        0      0       0       
+    port2_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      450      35184      1929470  0      0       0       
+    port3_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      0        0          0        0      0       0       
+    port4_mod4  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      450      35184      1929470  0      0       0       
+    port5_mod5  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      450      35184      1929470  0      0       0       
+    port6_mod1  372853   54581052   11963    1722672    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      939297  73409046  0      990623   77097630   0        0      0       0       
+    port7_mod2  1273548  183384154  729520   105050880  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      990563  77091270  0      939357   73415406   0        0      0       0       
+
+    r5900-2# 
+
+Show Port-Mappings via CLI
+------------------------
+
+.. code-block:: bash
+
+
+    r5900-2# show port-mappings 
+                                                                                NUM                                         
+                                            CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                              
+    NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                     
+    -------------------------------------------------------------------------------------------------------------------------
+    default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 1.0 3.0 4.0 5.0 6.0 ]   
+            PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]  
+
+    r5900-2# 
+
+
+Show Service-Instances via CLI
+------------------------------
+
+.. code-block:: bash
+
+    r5900-2# show service-instances 
+                                    ATSE                                                                                                                                                                         
+                SLOT  INSTANCE    MOD                      TENANT  SERVICE  NUM   DM           SVC  DOS                                                                                           VLAN         
+    TENANT NAME   ID    ID          ID    SERVICE TYPE       ID      IDS      SEPS  OFFSET  DID  GRP  GRP  TCO  WP  SP  TP  MSS  TC  WIN  WSCALE  SYNACKTTL  SYNACKHOPLIMIT  INDEX  S1  S2  S3  S4  ID    STATE  
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    L2HostLearn   1     713434935   0     ST_SYSTEM_SERVICE  0       [ 2 ]    1     0       15   1    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+    SwRbcaster-1  1     4039786245  0     ST_SYSTEM_SERVICE  0       [ 5 ]    1     0       15   3    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+    lacpd         1     19377286    0     ST_SYSTEM_SERVICE  0       [ 1 ]    1     2       15   5    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+    lldpd         1     1795340596  0     ST_SYSTEM_SERVICE  0       [ 4 ]    1     0       15   2    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+    stpd          1     19377286    0     ST_SYSTEM_SERVICE  0       [ 3 ]    1     1       15   4    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+    tenant1       1     2823180630  0     ST_TENANT_SERVICE  2       [ 8 ]    2     1       15   6    1    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+
+    r5900-2# 
+
+Show Service-Pods via CLI
+------------------------------
+
+.. code-block:: bash
+
+    r5900-2# show service-pods     
+                                            SERVICE  POD           POD                                     POD      
+                            SERVICE         CLUSTER  SLOT  POD     RESTART  POD                            IMAGE    
+    SERVICE NAME            CLUSTER IP      PORT     ID    STATUS  COUNT    STATE    POD MESSAGE           VERSION  
+    ----------------------------------------------------------------------------------------------------------------
+    compute                                 0        1     true    0        Running  Running Successfully  2.4.6    
+    coredns                                 0        1     true    8        Running  Running Successfully  1.8.3    
+    kube-flannel                            0        1     true    8        Running  Running Successfully  0.13.0   
+    kube-multus                             0        1     true    8        Running  Running Successfully  3.6.0    
+    lb-port-443                             0        1     true    8        Running  Running Successfully  v0.2.0   
+    local-path-provisioner                  0        1     true    12       Running  Running Successfully  v0.0.19  
+    metrics-server          100.75.29.109   443      1     true    8        Running  Running Successfully  v0.3.6   
+    pause                                   0        1     true    8        Running  Running Successfully  3.1      
+    traefik-ingress-lb                      0        1     true    8        Running  Running Successfully  2.4.8    
+    virt-api                100.75.241.212  443      1     true    8        Running  Running Successfully  2.4.6    
+    virt-controller                         0        1     true    12       Running  Running Successfully  2.4.6    
+    virt-handler                            0        1     true    8        Running  Running Successfully  2.4.6    
+    virt-operator                           0        1     true    12       Running  Running Successfully  2.4.6    
+
+    r5900-2# 
+
+Show Services via CLI
+---------------------
+
+.. code-block:: bash
+
+    r5900-2# show services
+                                                USE                                       USE             
+    SERVICE  HASH   FIELD   FULL        TUNNEL  IP     HASH   FIELD   FULL        TUNNEL  IP     TENANT   
+    ID       ALG    SELECT  MASK  MASK  SELECT  PROTO  ALG    SELECT  MASK  MASK  SELECT  PROTO  NAME     
+    ------------------------------------------------------------------------------------------------------
+    8        dagv2  port    true        outer   false  dagv2  port    true        outer   false  tenant1  
+
+    r5900-2# 
+
+Show VLAN-Listeners via CLI
+---------------------------
+
+.. code-block:: bash
+
+    r5900-2# show vlan-listeners 
+                                                NDI                                             SERVICE  
+    INTERFACE        VLAN  ENTRY TYPE     OWNER    ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  IDS      
+    --------------------------------------------------------------------------------------------------------
+    Arista           3010  VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+    Arista           3011  VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+    HA-Interconnect  500   VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+
+    r5900-2# 
+
+---------------------------------------
+Software Health and Status from the GUI
+---------------------------------------
+
+
+
+---------------------------------------
+Software Health and Status from the API
+---------------------------------------
+
+F5 Cluster Status via API
+-------------------------
 
 .. code-block:: bash
 
