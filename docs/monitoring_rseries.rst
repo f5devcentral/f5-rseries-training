@@ -1365,9 +1365,12 @@ Trusted Protection Module Status from the API
 Software Health and Status from the CLI
 ---------------------------------------
 
+You can monitor the health of the unlerying software and hardware using the following CLI commands.
 
 F5 Cluster Status via CLI
 -------------------------
+
+This command will display the health of the underlying Kubernetes (K3S) cluster which powers the F5OS layer. They key is the last message at the bottom of the output **K3S cluster is ready**, this lets you know that the underlying K3S cluster is up running and healthy.
 
 .. code-block:: bash
 
@@ -1436,6 +1439,7 @@ F5 Cluster Status via CLI
 F5 DAG States via CLI
 -------------------------
 
+The command below displays the current DAG-states. DAG stands for Disaggregation, which is the process incoming connections go through to determine which TMM processor a connection should be sent to. There are various DAG algorithms that may be configured.  
 
 .. code-block:: bash
 
@@ -1450,6 +1454,8 @@ F5 DAG States via CLI
 
 Show FDB via CLI
 ----------------
+
+The command below displays the Forwarding Database. 
 
 .. code-block:: bash
 
