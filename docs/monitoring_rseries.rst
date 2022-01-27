@@ -151,7 +151,7 @@ High level appliance status can be obtained by using the **show components** com
     psu-stats psu-fan-1-speed 9760
     appliance-1# 
 
-Show Componenent State Only from the CLI
+Show Component State Only from the CLI
 ----------------------------------------
 
 If you just want the state and not all the details:
@@ -181,7 +181,7 @@ If you just want the state and not all the details:
     state empty false
     appliance-1# 
 
-Show Componenent Properties from the CLI
+Show Component Properties from the CLI
 ----------------------------------------
 
 .. code-block:: bash
@@ -329,9 +329,9 @@ You can view stats on the storage subsystem:
 
     appliance-1# 
 
-------------------------------------------
-System Inventory / Components from the API
-------------------------------------------
+-----------------------------------------------------
+Hardware and System Component Monitoring from the API
+-----------------------------------------------------
 
 Appliance Component Status from the API
 ---------------------------------------
