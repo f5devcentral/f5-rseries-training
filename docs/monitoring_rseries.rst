@@ -1506,7 +1506,7 @@ Show Port-Mappings via CLI
     NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                     
     -------------------------------------------------------------------------------------------------------------------------
     default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 1.0 3.0 4.0 5.0 6.0 ]   
-            PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]  
+               PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]  
 
     r5900-2# 
 
@@ -1589,6 +1589,21 @@ Show VLAN-Listeners via CLI
 Software Health and Status from the GUI
 ---------------------------------------
 
+.. image:: images/monitoring_rseries/image1.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/monitoring_rseries/image2.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/monitoring_rseries/image3.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/monitoring_rseries/image4.png
+  :align: center
+  :scale: 70%
 
 
 ---------------------------------------
