@@ -53,13 +53,13 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
 r5000 Series - r5600 / r5800 / r5900
 ====================================
 
-The r5000 (rSeries) is a 1RU appliance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r5000 platform has 16 physical CPU cores / 32 vCPU's, however 6 of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD. There is no option for dual/redundant disk on the r5000, you'll need to to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r5000 hardware appliance which can be licensed as an r5600, r5800, or r5900. Its the same hardware platform for these 3 software licesing options.
+The r5000 (rSeries) is a 1RU appliance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r5000 platform has 16 physical CPU cores / 32 vCPU's, however 6 of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD. There is no option for dual/redundant disks on the r5000, you'll need to go to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r5000 hardware appliance which can be licensed as an r5600, r5800, or r5900. Its the same hardware platform for these 3 software licensing options.
 
 .. image:: images/rseries_appliances/image2.png
   :align: center
   :scale: 100%
 
-The r5000 Series appliance has 2 x 100Gb/40Gb ports that support QSFP28/QSFP+ optics as well as 8 x 25Gb/10Gb ports that support SFP+/SFP28 optics.
+The r5000 appliance has 2 x 100Gb/40Gb ports that support QSFP28/QSFP+ optics as well as 8 x 25Gb/10Gb ports that support SFP+/SFP28 optics.
 
 .. image:: images/rseries_appliances/image2a.png
   :align: center
