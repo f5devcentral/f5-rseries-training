@@ -100,19 +100,19 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
 r4000 Series - r4600 / r4800
 ============================
 
-The r4000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r4600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r4800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r4000 platform has 16 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r4600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 480GB SSD. There is no option for dual/redundant disk on the r4000, you'll need to to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r4000 hardware appliance which can be licensed as an r4600 or r4800. Its the same hardware platform for these 2 software licensing options.
+The r4000 (rSeries) is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r4600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r4800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r4000 platform has 16 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r4600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 480GB SSD. There is no option for dual/redundant disk on the r4000, you'll need to go to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r4000 hardware appliance which can be licensed as an r4600 or r4800. Its the same hardware platform for these 2 software licensing options.
 
 .. image:: images/rseries_appliances/image3.png
   :align: center
   :scale: 160%
 
-The r4000 Series appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gbports that support SFP+/SFP28 optics.
+The r4000 appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb ports that support SFP+/SFP28 optics.
 
 .. image:: images/rseries_appliances/image3a.png
   :align: center
   :scale: 70%
 
-The r4000 Series unit has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r4000 has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image3b.png
   :align: center
@@ -140,19 +140,19 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
 r2000 Series - r2600 / r2800
 ============================
 
-The r2000 Series is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r2600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r2800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r2000 platform has 8 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r2600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 64GB of RAM, and has a single 480GB SSD. There is no option for dual/redundant disk on the r2000, you'll need to to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r2000 hardware appliance which can be licensed as an r2600 or r2800. Its the same hardware platform for these 2 software licensing options.
+The r2000 (rSeries) is a 1RU appliance, that has 2 different licensing options that unlock more CPU resources. The r2600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r2800 model. At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r2000 platform has 8 physical CPU cores and hyperthreading is not used. No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. Additionally, some CPU’s are disabled on the r2600 model to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 64GB of RAM, and has a single 480GB SSD. There is no option for dual/redundant disk on the r2000, you'll need to to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r2000 hardware appliance which can be licensed as an r2600 or r2800. Its the same hardware platform for these 2 software licensing options.
 
 .. image:: images/rseries_appliances/image4.png
   :align: center
   :scale: 160%
 
-The r2000 Series appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gbports that support SFP+/SFP28 optics.
+The r2000 appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb ports that support SFP+/SFP28 optics.
 
 .. image:: images/rseries_appliances/image4a.png
   :align: center
   :scale: 70%
 
-The r2000 Series unit has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r2000 has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image4b.png
   :align: center
