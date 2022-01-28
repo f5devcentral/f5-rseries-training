@@ -457,11 +457,11 @@ If the upgrade is successful, you will get notification like the message below a
 
 .. code-block:: json
 
-{
-    "f5-system-image:output": {
-        "response": "System iso version has been set"
+    {
+        "f5-system-image:output": {
+            "response": "System iso version has been set"
+        }
     }
-}
 
 
 
