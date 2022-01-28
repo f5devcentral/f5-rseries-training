@@ -417,7 +417,9 @@ To upgrade F5OS via the API you must first run the check version API call with t
 
 .. code-block:: bash
 
- POST https://{{Appliance1_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition/check-version
+ POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/check-version
+
+The body of the API should contain the version you want to upgrade to:
 
 .. code-block:: json
 
@@ -427,13 +429,13 @@ To upgrade F5OS via the API you must first run the check version API call with t
         }
     }
 
-If the compatability check then you will get a message like the one below, and it is safe to install the new image via the set-version API call:
+If the compatability check passes then you will get a message like the one below, and it is safe to install the new image via the set-version API call:
 
 .. code-block:: json
 
     {
-        "f5-system-partition:output": {
-            "result": "Partition upgrade compatibility check succeeded."
+        "f5-system-image:output": {
+            "response": "Compatibility verification succeeded."
         }
     }
 
@@ -441,25 +443,25 @@ This is the Set Version API call that will initiate the upgrade:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-system-partition:partitions/partition=bigpartition/set-version
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/set-version
 
 .. code-block:: json
 
     {
         "input": {
-            "iso-version": "{{Partition_ISO_Image}}"
+            "iso-version": "{{Appliance_ISO_Image}}"
         }
     }
 
-If the upgrade is successful, you will get notification like the message below:
+If the upgrade is successful, you will get notification like the message below and the system will cleanly shutdown and reboot:
 
 .. code-block:: json
 
-    {
-        "f5-system-partition:output": {
-            "result": "Version update successful."
-        }
+{
+    "f5-system-image:output": {
+        "response": "System iso version has been set"
     }
+}
 
 
 
