@@ -142,7 +142,7 @@ The r5600 has 32 vCPU's total, 14 vCPU's are disabled via licensing, 6 vCPU's re
 
 .. image:: images/rseries_multitenancy/image8.png
   :align: center
-  :scale: 40%
+  :scale: 70%
 
 Since all r5000 models are running on the same hardware appliance, you can easily upgrade from the r5600 to either the r5800 or r5900 to unlock more performance via a simple license change. The r5800 can be upgraded to an r5900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r5000 series appliances.
 

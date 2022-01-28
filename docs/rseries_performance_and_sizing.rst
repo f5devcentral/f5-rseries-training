@@ -5,7 +5,7 @@ rSeries Performance and Sizing
 
 rSeries are a new generation of hardware appliances using the latest Intel CPU's for processing in addition to Field Programmable Gate Arrays (FPGA's) for hardware offload (On the r10000 and r5000 Series). Intel CPU’s perform SSL processing and compression offload as was done with previous generation BIG-IP solutions such as iSeries and the VIPRION B4450. Older VIPRION blades such as the B2100, B2150, & B2250 use Intel processing, but use Cavium Nitrox for SSL offload. The newer generation Intel chipsets provide more modern SSL cipher support and can offload ECC (Elliptical Curve) based ciphers in hardware, which most previous generations of VIPRION blades could not.
 
-In addition to more modern Intel chipsets, the mid-range (r5000) and high-end (r10000) rSeries appliances also have extensive FPGA support. The r2000 and r4000 rSeries models do not support FPGA's and instead perform these functions in software. In previous generations of F5 hardware the ePVA (FPGA) was used to offload varying workloads from FASTL4 to DDoS mitigation, and that functionality is brought forward and expanded upon in the new generation of rSeries hardware. 
+In addition to more modern Intel chipsets, the mid-range (r5000) and high-end (r10000) rSeries appliances also have extensive FPGA support. The r2000 and r4000 rSeries models do not include FPGA's and instead perform these functions in software with some specialized offload. In previous generations of F5 hardware the ePVA (FPGA) was used to offload varying workloads from FASTL4 to DDoS mitigation, and that functionality is brought forward and expanded upon in the new generation of rSeries hardware. 
 
 Some additional links on the benefits of hardware offload using the ePVA in previous generation BIG-IP solutions:
 
@@ -13,19 +13,19 @@ https://techdocs.f5.com/content/dam/f5/kb/global/solutions/sol12837_pdf.html/128
 
 https://devcentral.f5.com/s/articles/F5-Fast-L4-Acceleration-and-the-F5-Smart-Coprocessor-prioritized-Fast-L4-Acceleration
 
-In rSeries there are now multiple FPGA’s, the **Application Traffic Services Engine** (ATSE), and the **Appliance Switch** (ASW), and the **Network Services Engine** (NSE). In addition to supporting previous functions done by the ePVA there are also additional functions that were performed in software or Broadcom chipsets that are now handled within the FPGA’s. Below is an architectural diagram of the r10000 Series appliance. 
+In rSeries there are now multiple FPGA’s, the **Application Traffic Services Engine** (ATSE), and the **Appliance Switch** (ASW), and the **Network Services Engine** (NSE). In addition to supporting previous functions done by the ePVA there are also additional functions that were performed in software or 3rd party chipsets that are now handled within the FPGA’s. Below is an architectural diagram of the r10000 Series appliance. 
 
 .. image:: images/rseries_performance_and_sizing/image1.png
   :align: center
   :scale: 40%
 
-The r5000 Series appliance has a similar architecture but since it doesn't require the same performance as the r10000 series is has less FPGA's and CPUs, and less physical ports.
+The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has less FPGA's and CPUs, and less physical ports.
 
 .. image:: images/rseries_performance_and_sizing/image2.png
   :align: center
   :scale: 40%
 
-Both the r4000 & r2000 Series appliances have a slightly different hardware architecture than the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utulize FPGA's for hardware offload, and instead perform these functions in software. This means that CPU's do not need to be dedicated to the F5OS layer leaving more CPU for tenants. These platforms also run a different class of Intel processing, and do not utilize hyperthreading like the higher end platforms do. These appliances are positined for smaller scale environments and they do not support 40Gb or 100Gb interfaces. Instead they support 1Gb, 10Gb, and 25Gb interfaces. Below is the architecture of the r4000 appliance.
+Both the r4000 & r2000 appliances have a slightly different hardware architecture than the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utilize FPGA's for hardware offload, and instead perform these functions in software and leverage SR-IOV. This means that CPU's do not need to be dedicated to the F5OS layer leaving more CPU for tenants. These platforms also run a different class of Intel processing, and do not utilize hyperthreading like the higher end platforms do. These appliances are positioned for smaller scale environments and they do not support 40Gb or 100Gb interfaces. Instead they support 1Gb, 10Gb, and 25Gb interfaces. Below is the architecture of the r4000 appliance.
 
 .. image:: images/rseries_performance_and_sizing/image3.png
   :align: center
