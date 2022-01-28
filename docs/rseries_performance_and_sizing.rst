@@ -67,7 +67,7 @@ The r10800 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use 
 
 .. image:: images/rseries_performance_and_sizing/image11.png
   :align: center
-  :scale: 80%
+  :scale: 40%
 
 
 The r10600 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10600, 24 vCPU’s are available for tenants since the other 12 are reserved for F5OS, and 12 are disabled via licensing. The diagram below depicts the r10600 vCPU allocation: 
