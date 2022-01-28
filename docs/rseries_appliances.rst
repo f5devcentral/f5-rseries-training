@@ -25,26 +25,26 @@ Note that adjacent highspeed (40Gb / 100Gb) ports (**1.0** & **2.0** or **11.0**
   :align: center
   :scale: 100%
 
-The r10000 Series appliance has a single 10Gb Ethernet out-of-band management port, a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r10000 appliance has a single 10Gb Ethernet out-of-band management port, a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image1c.png
   :align: center
   :scale: 100%
 
-In the back of the AC Power Model are 2 power supplies and AC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 Series is removable and servicable.
+In the back of the AC Power Model are 2 power supplies and AC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 is removable and servicable.
 
 
 .. image:: images/rseries_appliances/image1d.png
   :align: center
   :scale: 100%
 
-In the back of the DC Power Model are 2 power supplies and DC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 Series is removable and servicable.
+In the back of the DC Power Model are 2 power supplies and DC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 is removable and servicable.
 
 .. image:: images/rseries_appliances/image1e.png
   :align: center
   :scale: 100%
 
-In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and DC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 Series is removable and servicable.
+In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and DC Inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 is removable and servicable.
 
 .. image:: images/rseries_appliances/image1f.png
   :align: center
@@ -53,7 +53,7 @@ In the back of the HVDC (High Voltage DC)  Power Model are 2 power supplies and 
 r5000 Series - r5600 / r5800 / r5900
 ====================================
 
-The r5000 Series is a 1RU appliance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r5000 platform has 16 physical CPU cores / 32 vCPU's, however 6 of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD. There is no option for dual/redundant disk on the r5000, you'll need to to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r5000 hardware appliance which can be licensed as an r5600, r5800, or r5900. Its the same hardware platform for these 3 software licesing options.
+The r5000 (rSeries) is a 1RU appliance, that has 3 different licensing options that unlock more CPU resources. The r5600 is the base system, and Pay-as-you-Grow licensing options exist to upgrade to the r5800 or r5900 models.  At intial ship there is an AC power version of the appliance and DC power versions will be made available in the future. The r5000 platform has 16 physical CPU cores / 32 vCPU's, however 6 of the vCPU's are dedicated to the F5OS platform layer. Additionally, some vCPU's are disabled on the r5600 and r5800 models to provide different levels of performance which can be unlocked through PAYG licensing. The system also supports 128GB of RAM, and has a single 1TB SSD. There is no option for dual/redundant disk on the r5000, you'll need to to the r10000 if dual/redundant disk is a requirement.  Below is a picture of the r5000 hardware appliance which can be licensed as an r5600, r5800, or r5900. Its the same hardware platform for these 3 software licesing options.
 
 .. image:: images/rseries_appliances/image2.png
   :align: center
