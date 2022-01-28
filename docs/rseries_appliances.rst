@@ -71,7 +71,7 @@ Note that adjacent highspeed (40Gb / 100Gb) ports (**1.0** & **2.0**) must be co
   :align: center
   :scale: 100%
 
-The r5000 Series unit has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r5000 has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image2c.png
   :align: center
