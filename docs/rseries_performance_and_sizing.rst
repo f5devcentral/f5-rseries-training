@@ -92,7 +92,7 @@ The r5800 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by
   :align: center
   :scale: 70%
 
-The r5600 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5600, 12 vCPU’s are available for tenants since the other 6 are reserved for F5OS, and 14 are disabled via licensing. The diagram below depicts the r5600 vCPU allocation: 
+The r5600 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5600, 12 vCPU’s are available for tenants since the other 6 are reserved for F5OS, and 14 are disabled via licensing. Note there is a limit of 8 tenants on thr r5600. The diagram below depicts the r5600 vCPU allocation: 
 
 .. image:: images/rseries_performance_and_sizing/image15.png
   :align: center
