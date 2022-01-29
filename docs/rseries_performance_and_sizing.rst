@@ -133,7 +133,7 @@ The r2600 model has 16 CPU’s (The 2000 platform does not utilize hyperhreading
 Mid-Range vCPU Comparisons to iSeries
 =====================================
 
-When sizing, removing the 12 or 6 (depending on platform) dedicated vCPU’s for F5OS from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the i5600, i5800, i7600 and i7800 compared to the new rSeries r5600, r5800, and r5900. Note that the rSeries sizing is is different because of the way that some of the  vCPU’s are used by the F5OS platform layer. Since 3 physical CPU's / 6 vCPU's are dedicated for use by the F5OS platform layer on the r5000 appliances the prrocess for calcuating per vCPU performance needs to be adjusted.
+When sizing, removing the 12 or 6 (depending on platform) dedicated vCPU’s for F5OS from the equation will give a better representation of what the per vCPU performance will be. Comparing the performance of a single vCPU can be important for control plane sizing and also for extrapolation of what a tenant’s performance may be. Below is a comparison on the CPU’s on the i5600, i5800, i7600 and i7800 compared to the new rSeries r5600, r5800, and r5900. Note that rSeries sizing is is different because of the way that some vCPU’s are used by the F5OS platform layer. Since 3 physical CPU's / 6 vCPU's are dedicated for use by the F5OS platform layer on the r5000 appliances, the process for calculating per vCPU performance needs to be adjusted.
 
 The graphs below compare the mid-rage iSeries platforms vs. the newer generation mid-range rSeries models. Note that these comparisons remove the 6 vCPU’s used for the F5OS platform layer. Instead of showing 16 physical cores and 32 vCPU’s, the r5000 is sized using 13 physical cores and 26 vCPU’s listed as (minus platform Layer CPU) in the graphs.
 
@@ -143,18 +143,17 @@ The graphs below compare the mid-rage iSeries platforms vs. the newer generation
 .. image:: images/rseries_performance_and_sizing/image21.png
   :width: 45%
 
-
 .. image:: images/rseries_performance_and_sizing/image22.png
   :width: 45%
 
 .. image:: images/rseries_performance_and_sizing/image23.png
   :width: 45%
 
-To compare performance of iSeries vs. rSeries first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall performance of the device and divide by the # of vCPUs in the system to come up with a per vCPU sizing metric. Since rSeries dedicates some of its vCPU processing to the F5OS platform layer, they are removed from the overall sizing exercise calculations so that sizing doesn’t get skewed. As an example, take the overall r5900 performance metrics then divide by the total vCPU’s in the system (32), then subtract the 6 vCPU’s for the F5OS platform layer.
+To compare performance of iSeries vs. rSeries first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get an apples-to-apples comparison. In a typical sizing exercise, it is normal to look at the overall performance of the device and divide by the # of vCPUs in the system to come up with a per vCPU sizing metric. Since rSeries dedicates some of its vCPU processing to the F5OS platform layer, they are removed from the overall sizing exercise calculations so that sizing doesn’t get skewed. As an example, take the overall r5900 performance metrics then divide by the total vCPU’s in the system (32) minus the 6 vCPU’s for the F5OS platform layer.
 
-i.e. r5900 has 32 vCPUs. Take the published Layer7 perfromance of 4.3M RPS and divide by (32 vCPUs - 6 vCPU's used by F5OS) to get a per vCPU performance metric. For the PAYG variants you would also subtract the vCPU's disabled via licensing, and use the published layer7 metric for that specific platform. i.e. r5800 has 32vCPU's, 6 are used by F5OS, and 8 are disabled via licensing. Published L7 performance for r5800 is 3.3M RPS divided by (32 total vCPU's minus 6 vCPU's for F5OS ans 8 vCPU's that are disabled).  
+i.e. The r5900 has 32 vCPUs. Take the published Layer7 performance of 4.3M RPS and divide by (32 vCPUs - 6 vCPU's used by F5OS) to get a per vCPU performance metric. For the PAYG variants you would also subtract the vCPU's disabled via licensing, and use the published layer7 metric for that specific platform. i.e. r5800 has 32vCPU's, 6 are used by F5OS, and 8 are disabled via licensing. Published L7 performance for r5800 is 3.3M RPS divided by (32 total vCPU's minus 6 vCPU's for F5OS and 8 vCPU's that are disabled).  
 
-By not including the vCPU's dedciated to F5OS, you'll get a much more accurate assesment of what an individual vCPU can forward in theory. You also have to consider that rSeries has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing.  
+By not including the vCPU's dedciated to F5OS, you'll get a much more accurate assesment of what an individual vCPU can forward in theory. Looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing since tenants are in use, and they will only receove a fraction of the total vCPU resources.  
 
 **Relative CPU Scale** is a numeric grade-based comparison where the overall CPU capacity/horsepower of the system is given a rating. The rating is an easy way to compare different BIG-IP platforms. The Relative CPU Scale is calculated by taking the total # of CPU’s in a system (not including those used by F5OS platform layer) and multiplying that by the speed that the processors run. This will result in an aggregate CPU Ghz for the platform . Then take the Aggregate CPU Ghz of a BIG-IP 2000s platform and give it a grade of 1. All other platforms are then given a numeric grade of how many times faster it is than the BIG-IP 2000s platform. This results in a simple numeric rating system to compare platforms that combines CPU speed with the number of CPU’s.
 
@@ -168,7 +167,7 @@ To see how this translates into real performance, it is good to look at a Layer7
 
 .. image:: images/rseries_performance_and_sizing/image25.png
   :align: center
-  :scale: 50%
+  :scale: 80%
 
 
 Since each appliance has a different number of CPU’s, a common sizing exercise is to look at the per vCPU performance by using the formulas above to come up with a per vCPU metric. In the graph below it is done for Layer7 RPS (Inf-Inf) but you could use the same math for any metric. Note the graph below is not derived from a per vCPU test, it is taking a published appliance metric and dividing it by the number of vCPU’s (minus the platform vCPU's) to come up with a per vCPU metric. As mentioned above using the rSeries metric which is (minus the platform CPU’s) is the most realistic. Note that in some cases moving from iSeries to rSeries will have lower per-vCPU perfromance, but higher overall performance due to the increase in vCPUs. As an example migrating from an i5600 to an r5600 will see an increase in per vCPU performance as will migration from an i7600 to an r5900. There are two cases where per vCPU performance will be lower (but aggregate per appliance is still higher): Going from an i5800 to an r5800 will see lower per vCPU performance as will going from an i7800 to an r5900. 
