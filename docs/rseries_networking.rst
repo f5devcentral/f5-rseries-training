@@ -193,8 +193,9 @@ You can view the front panel port to pipeline mapping in the CLI, GUI, or API of
   :align: center
   :scale: 50%
 
-.. code-block:: bash
+Below is the CLI command to display the pipelines:
 
+.. code-block:: bash
 
   Boston-r10900-1# show port-mappings 
                                                                               NUM                                             
