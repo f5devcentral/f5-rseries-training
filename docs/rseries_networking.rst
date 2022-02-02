@@ -185,7 +185,7 @@ Below shows the total piplines and ports for both the r5000 and r10000 series ap
 
 .. image:: images/rseries_networking/image7.png
   :align: center
-  :scale: 120%
+  :scale: 80%
 
 You can view the front panel port to pipeline mapping in the CLI, GUI, or API of F5OS.
 
