@@ -17,7 +17,7 @@ The major difference between rSeries and iSeries is the introduction of a new Ku
 rSeries will continue to provide hardware acceleration and offload capabilities in a similar way that iSeries did, however more modern FPGA, CPU, and crypto offload capabilities have been introduced. The new F5OS platform layer will allow rSeries to run different types of tenants within the same appliance. As an example, rSeries will be able to run:
 
 •	Existing TMOS/BIG-IP tenants*
-•	Future support for Next-generation BIG-IP for Distributed Cloud tenants (Modular Architecture)
+•	Future support for Next-generation BIG-IP (Modular Architecture)
 •	Future possibility of running approved 3rd party tenants 
 
  * specific software releases
@@ -30,7 +30,7 @@ rSeries will continue to provide hardware acceleration and offload capabilities 
 
 Customers will be able to migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest on the VIPRION or iSeries platforms. Once inside the tenant, the management experience will be similar to the experience on existing BIG-IP platforms. The BIG-IP tenant will be managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator can connect directly to the tenant’s GUI, CLI, or API and have the same experience as they have with their existing platforms. 
 
-In the future BIG-IP for Distributed Cloud tenants will be able to be provisioned within the same rSeries appliance (except on the r2000 series which supports one tenant only), which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
+In the future BIG-IP (Modular Architecture) tenants will be able to be provisioned within the same rSeries appliance (except on the r2000 series which supports one tenant only), which will allow customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What will differ from an administrator’s perspective is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
 ---------------------------------------------------
 Multitenant by Default
