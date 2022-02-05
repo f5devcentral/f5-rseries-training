@@ -20,6 +20,19 @@ Tenants on different appliances, should have the same number of vCPU’s and ide
   :align: center
   :scale: 70%
 
+.. image:: images/rseries_high_availability/image3.png
+  :align: center
+  :scale: 70%
+
+
+.. image:: images/rseries_high_availability/image4.png
+  :align: center
+  :scale: 70%  
+
+.. image:: images/rseries_high_availability/image5.png
+  :align: center
+  :scale: 70%   
+
 Tenant Level HA within the Same Appliance
 =========================================
 
@@ -27,13 +40,13 @@ rSeries does not support configuring HA relationships between tenants within the
 
 Below is an example of a “SuperVIP” tenant that spans all available vCPU's. Each rSeries appliance will have one static out-of-band management IP address. Each tenant will require an out-of-band management address on the same network, and optional inband self-IP addresses can be added within the tenant. 
 
-.. image:: images/rseries_high_availability/image3.png
+.. image:: images/rseries_high_availability/image6.png
   :align: center
   :scale: 50%
 
 Inside the tenant,  **Cluster Member IP Address** will not be needed as they are for chassis based systems such as VIPRION or VELOS. If using IPv4 & IPv6 (dual stack management) then IPv6 management addresses can be configured.
 
-.. image:: images/rseries_high_availability/image4.png
+.. image:: images/rseries_high_availability/image7.png
   :align: center
   :scale: 90%
 
