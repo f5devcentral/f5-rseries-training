@@ -2,7 +2,7 @@
 Points of Management in rSeries
 ===============================
 
-There are two main points of management within the rSeries Appliances. The **F5OS platform layer**, and the individual **tenants**. Each support their own CLI, GUI, and API access and have their own authentications and users. 
+There are two main points of management within the rSeries Appliances. The **F5OS platform layer**, and the individual **tenants**. Each support their own CLI, GUI, and API access and have their own authentication and user configuration. 
 
 .. image:: images/rseries_points_of_management/image1.png
   :align: center
@@ -16,7 +16,9 @@ Additionally, they each run their own version of software; tenants are able to r
 
 At the F5OS platform layer initial configuration consists of out-of-band management IP addresses, routing and other system parameters like DNS & NTP. Licensing is also configured at the F5OS layer and is similar to iSeries with vCMP configured in that it is applied at the appliance level and inherited by all tenants. In-band networking (VLANs, Interfaces, Link Aggregation Groups) are also configured within the F5OS platform layer. Once networking is setup tenants can be provisioned and deployed from the F5OS management interfaces. Once the tenant is deployed it is managed like any other BIG-IP. This is very similar to how vCMP guests are managed on iSeries or VIPRION.  Please refer to the **rSeries Systems Administration Guide** on askf5.com for more detailed information.
 
-**Link Coming soon!**
+https://techdocs.f5.com/en-us/f5os-a-1-0-0/f5-rseries-systems-administration-configuration.html
+
+
 
 
 
