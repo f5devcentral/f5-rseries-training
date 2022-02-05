@@ -2,7 +2,7 @@
 Introduction
 =============
 
-rSeries is F5’s next generation appliance-based solution that will replace the current iSeries platforms. The rSeries platforms have many advantages over the current iSeries architecture. This guide will highlight the differences between the two architectures and then provide details on how to configure, monitor and troubleshoot the new platforms so that customers considering adoption understand how rSeries will fit within their environment. 
+rSeries is F5’s next generation appliance-based solution that will replace the current iSeries platforms. rSeries platforms have many advantages over the current iSeries architecture. This guide will highlight the major differences between the two architectures as well as providing details on how to configure, monitor, and troubleshoot the new platforms so that customers will understand how rSeries will fit within their existing environments. 
 
 
 rSeries Overview
@@ -17,14 +17,14 @@ The major difference between rSeries and iSeries is the introduction of a new Ku
 rSeries will continue to provide hardware acceleration and offload capabilities in a similar way that iSeries did, however more modern FPGA, CPU, and crypto offload capabilities have been introduced. The new F5OS platform layer will allow rSeries to run different types of tenants within the same appliance. As an example, rSeries will be able to run:
 
 •	Existing TMOS/BIG-IP tenants*
-•	Future support for Next-generation BIG-IP (Modular Architecture)
+•	Future support for next-generation BIG-IP (Modular Architecture)
 •	Future possibility of running approved 3rd party tenants 
 
  * specific software releases
 
 .. image:: images/rseries_introduction/image1.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 
 
