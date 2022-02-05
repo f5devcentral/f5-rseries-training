@@ -71,7 +71,11 @@ rSeries 1GB SFP Options
 rSeries 10GB SFP+ SKU's
 -----------------------
 
-10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms:
+Most 10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms. The r2000 / r4000 will support both F5-UPG-SFPC-R and F5-UPG-SFPC+-3M-8 with one caveat. 
+F5-UPG-SFPC-R will only be supported at 1000Mbps on r2000/r4000, there is no support for 10Mbps or 100Mbps speeds.
+ 
+Also note: The r5000 / r10000 platforms do not support 1G SFPs at this time, so F5-UPG-SFPC-R is not supported on those platforms.
+F5-UPG-SFPC+-3M-8 is still supported on r5000 / r10000 for 10G operation.
 
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-SFPC-R        | Field Upgrade: SFP Copper Connector (10/100/1000 RJ45)) ROHS                          |
