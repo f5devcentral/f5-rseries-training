@@ -56,7 +56,7 @@ Supported rSeries Optics SKU's
 **Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**
 
 
-rSeries 1GB SFP Options 
+rSeries 1GB SFP SKU's
 -----------------------
 
 1Gb Optics are only supported on the r2000/r4000 platforms:
