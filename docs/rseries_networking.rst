@@ -53,7 +53,7 @@ https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html
 Supported rSeries Optics SKU's
 ==============================
 
-**Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**
+**Note: For 100G BiDi, please contact product management to discuss your requirements, as there are different standards available in the market.**
 
 
 rSeries 1GB SFP SKU's
@@ -171,9 +171,9 @@ Pipelines
 
 The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowlwedge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
-If all ports are utilized and running at max bandwidth capacity simulataneously this may result in an oversubsciprion if the maximum bandwidth for the internal pipelines are achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal piepleines is static and not configurable, although F5 may make this a configurable option in the future.
+If all ports are utilized and running at max bandwidth capacity simulataneously this may result in an oversubsciprion if the maximum bandwidth for one of the internal pipelines is achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal piepleines is static and not configurable, although F5 may make this a configurable option in the future.
 
-Below is an example of the total external front panel possible bandwidth exceeding internal pipeline bandwidth:
+Below is an example of the total external front panel theoretical bandwidth exceeding internal pipeline bandwidth:
 
 .. image:: images/rseries_networking/image5.png
   :align: center
@@ -189,7 +189,7 @@ Below shows the total piplines and ports for both the r5000 and r10000 series ap
 
 .. image:: images/rseries_networking/image7.png
   :align: center
-  :scale: 80%
+  :scale: 60%
 
 You can view the front panel port to pipeline mapping in the CLI, GUI, or API of F5OS.
 
