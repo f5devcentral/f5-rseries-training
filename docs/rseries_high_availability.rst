@@ -14,20 +14,25 @@ F5 recommends configuring dual rSeries appliances with identically configured te
   :align: center
   :scale: 50%
 
-Tenants on different appliances, should have the same number of vCPU’s and identical memory configuration. HA interconnection VLANs would be configured between appliances, and then tenants would configure HA just as is the case with vCMP guest HA relationships. Below is an example of two rSeries appliances each with their own HA interconnects and in-band networking. Some may prefer not to dedicate links for the HA interconnect, but the preferred method is to have dedicated links that will carry HA/Mirroring related traffic.
+Tenants on different appliances, should have the same number of vCPU’s and identical memory configuration. HA interconnection VLANs would be configured between appliances, and then tenants would configure HA just as is the case with vCMP guest HA relationships. Below is an example of two rSeries appliances each with their own HA interconnects and in-band networking. Some customers may prefer not to dedicate links for the HA interconnect, but the preferred method is to have dedicated links that will carry HA/Mirroring related traffic. In the diagram below a LAG is created on each rSeries unit, and it is dual homed to upstream swtiches running in a VPC style mode where they appear as one virtual switch. There are different variations on this design. The one below has a dedicated LAG for HA Interconnect traffic, this isolates mirroing and other HA traffic to run over its own set of interfaces, providing better isolation and performance. This is not mandatory, but is preferred in many environments.
 
 .. image:: images/rseries_high_availability/image2.png
   :align: center
   :scale: 40%
 
+In some customer environments they may not want to run the HA VLANs over a dedicated LAG between the rSeries units. In this case the HA VLAN's are running over the in-band LAG's going to the upstream layer2 switches. This deployment mode may use less ports on rSeries, but now HA traffic and some heartbeat traffic is intermingled on the same links as in-band traffic and under certain conditions might not get prioritized in the L2 swtching infrastructure if the network is saturated. This might not be an issue for most customers, but in heavily utilized environments this is something that should be considered. Depending on the amount and type of mirroring, you are also adding addtional latency betweenthe HA pairs and this will increase the time for acknowldgements to be sent and recevied and ultimately for a trasaction to be acknoweldged to a client. 
+
 .. image:: images/rseries_high_availability/image3.png
   :align: center
   :scale: 40%
 
+If VPC style interconnects are not used then the same concepts from above are used but slightly altered. In the first case LAG's are not dual homed due to lack of VPC support and instead are configured as point to point LAG's between one rSeries device and one upstream layer2 switch. Again a dedicated HA link is optional but perferred.
 
 .. image:: images/rseries_high_availability/image4.png
   :align: center
   :scale: 40%  
+
+This deployment mode is identical to the one above, but lacks the dedicated HA interconnect LAG:
 
 .. image:: images/rseries_high_availability/image5.png
   :align: center
