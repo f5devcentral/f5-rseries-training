@@ -18,20 +18,20 @@ Tenants on different appliances, should have the same number of vCPU’s and ide
 
 .. image:: images/rseries_high_availability/image2.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 .. image:: images/rseries_high_availability/image3.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 
 .. image:: images/rseries_high_availability/image4.png
   :align: center
-  :scale: 70%  
+  :scale: 40%  
 
 .. image:: images/rseries_high_availability/image5.png
   :align: center
-  :scale: 70%   
+  :scale: 40%   
 
 Tenant Level HA within the Same Appliance
 =========================================
