@@ -66,19 +66,18 @@ rSeries 1GB SFP SKU's
 +----------------------+----------------------------------------------------------------------------------------+
 | F5-UPG-SFPLX-R       | Field Upgrade: SFP LX Fiber Connector (1G - LC/1310nm) ROHS                            |
 +----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFPC-R        | Field Upgrade: SFP Copper Connector (10/100/1000 RJ45)) ROHS                           |
++----------------------+----------------------------------------------------------------------------------------+
 
+The r2000 / r4000 will support both **F5-UPG-SFPC-R** with one caveat. **F5-UPG-SFPC-R** will only be supported at 1000Mbps on r2000 / r4000, there will be no support for 10Mbps or 100Mbps speeds.
+The r5000 / r10000 platforms do not support 1G SFPs at this time, so **F5-UPG-SFPC-R** is not supported on those platforms.
+However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 for 10G operation.
 
 rSeries 10GB SFP+ SKU's
 -----------------------
 
-Most 10Gb optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms. The r2000 / r4000 will support both **F5-UPG-SFPC-R** and **F5-UPG-SFPC+-3M-8** with one caveat. 
-**F5-UPG-SFPC-R** will only be supported at 1000Mbps on r2000 / r4000, there will be no support for 10Mbps or 100Mbps speeds.
- 
-Also note: The r5000 / r10000 platforms do not support 1G SFPs at this time, so **F5-UPG-SFPC-R** is not supported on those platforms.
-However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 for 10G operation.
+10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms:
 
-+----------------------+---------------------------------------------------------------------------------------+
-| F5-UPG-SFPC-R        | Field Upgrade: SFP Copper Connector (10/100/1000 RJ45)) ROHS                          |
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-SFP+-R        | Field Upgrade: SFP+ Fiber Connector (10G-LC/850nm) ROHS                               |
 +----------------------+---------------------------------------------------------------------------------------+
