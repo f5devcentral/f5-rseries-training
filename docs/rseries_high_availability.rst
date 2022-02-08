@@ -34,6 +34,7 @@ If VPC style interconnects are not used then the same concepts from above are us
 
 This deployment mode is identical to the one above, but lacks the dedicated HA interconnect LAG. This will have the same caveats as lited in the VPC with no dedicated LAG design.
 
+
 .. image:: images/rseries_high_availability/image5.png
   :align: center
   :scale: 40%   
@@ -41,7 +42,7 @@ This deployment mode is identical to the one above, but lacks the dedicated HA i
 Tenant Level HA within the Same Appliance
 =========================================
 
-rSeries does not support configuring HA relationships between tenants within the same appliance. Depending on what failover behavior you want, you can have the tenant run with less capacity if certain failures occur or fail over to the tenant in the other chassis. This is controlled within the tenant itself, just like HA failover was configured inside a vCMP guest. **HA Groups** allow an administrator to fail over based on pool, trunk, or blade (For VELOS/VIPRION systems) availability. 
+rSeries does not support configuring HA relationships between tenants within the same appliance. Depending on what failover behavior you want, you can have the tenant run with less capacity if certain failures occur or fail over to the tenant in the other appliance. This is controlled within the tenant itself, just like HA failover was configured inside a vCMP guest. **HA Groups** allow an administrator to fail over based on pool, trunk, or blade (For VELOS/VIPRION systems) availability. 
 
 Below is an example of a “SuperVIP” tenant that spans all available vCPU's. Each rSeries appliance will have one static out-of-band management IP address. Each tenant will require an out-of-band management address on the same network, and optional inband self-IP addresses can be added within the tenant. 
 
