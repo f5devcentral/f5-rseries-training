@@ -51,7 +51,7 @@ To alter any configuration, you must enter config mode:
   Entering configuration mode terminal
   syscon-2-active(config)#
 
-To save any configuration you must enter *commit**.
+To save any configuration you must enter **commit**.
 
 .. code-block:: bash
 
@@ -73,7 +73,7 @@ The rSeries appliances ship with a default internal RFC6598 address space of 100
   system network state active-network-range 100.64.0.0/12
   Boston-r10900-1# 
 
-This address range never leaves the inside of the appliance and will not interfere with any communication outside the rSeries device. There can however be address collisions if a device trying to manage rSeries via the out-of-band management port falls within this range, or an external management device or service falls within this range and attempts to communicate with rSeries over its out-of-band networking. This may result in rSeries control plane not able to communicate with those devices. In-band traffic is not affected by these internal addresses an can overlap.
+This address range never leaves the inside of the appliance and will not interfere with any communication outside the rSeries device. There can however be address collisions if a device trying to manage rSeries via the out-of-band management port falls within this range, or an external management device or service falls within this range and attempts to communicate with rSeries over its out-of-band networking. This may result in rSeries control plane not able to communicate with those devices. In-band traffic is not affected by these internal addresses and they can overlap.
 
 Some examples would be any client trying to access the F5OS layer or tenant out-of-band interfaces to reach its’ CLI, GUI, or API. Other examples would be external services such as SNMP, DNS, NTP, SNMP, Authentication that have addresses that fall within the RFC6598 address space. You may experience connectivity problems with these types of clients/services if there is an overlap. Note that this does not affect the data plane / in-band interfaces, it only affects communication to the out-of-band interfaces. 
 
@@ -149,11 +149,11 @@ Now that the out-of-band address and routing are configured you can attempt to a
   :align: center
   :scale: 70%
 
-Here you can switch from static to DHCP address assignment, configured IPv6 addresses, and interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. 
+Here you can switch from static to DHCP address assignment, configure IPv6 addresses, and interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 ---------------
 System Settings
