@@ -3,7 +3,7 @@ rSeries Performance and Sizing
 ==============================
 
 
-rSeries are a new generation of hardware appliances using the latest Intel CPU's for processing in addition to Field Programmable Gate Arrays (FPGA's) for hardware offload (On the r10000 and r5000 Series). Intel CPU’s perform SSL processing and compression offload as was done with previous generation BIG-IP solutions such as iSeries and the VIPRION B4450. Older VIPRION blades such as the B2100, B2150, & B2250 use Intel processing, but use Cavium Nitrox for SSL offload. The newer generation Intel chipsets provide more modern SSL cipher support and can offload ECC (Elliptical Curve) based ciphers in hardware, which most previous generations of VIPRION blades could not.
+rSeries are a new generation of hardware appliances using the latest Intel CPU's for processing in addition to Field Programmable Gate Arrays (FPGA's) for hardware offload (on the r10000 and r5000 Series). Intel CPU’s perform SSL processing and compression offload as was done with previous generation BIG-IP solutions such as iSeries and the VIPRION B4450. Older VIPRION blades such as the B2100, B2150, & B2250 use Intel processing, but use Cavium Nitrox for SSL offload. The newer generation Intel chipsets provide more modern SSL cipher support and can offload ECC (Elliptical Curve) based ciphers in hardware, which most previous generations of VIPRION blades and older appliances could not.
 
 In addition to more modern Intel chipsets, the mid-range (r5000) and high-end (r10000) rSeries appliances also have extensive FPGA support. The r2000 and r4000 rSeries models do not include FPGA's and instead perform these functions in software with some specialized offload. In previous generations of F5 hardware the ePVA (FPGA) was used to offload varying workloads from FASTL4 to DDoS mitigation, and that functionality is brought forward and expanded upon in the new generation of rSeries hardware. 
 
@@ -13,7 +13,7 @@ https://techdocs.f5.com/content/dam/f5/kb/global/solutions/sol12837_pdf.html/128
 
 https://devcentral.f5.com/s/articles/F5-Fast-L4-Acceleration-and-the-F5-Smart-Coprocessor-prioritized-Fast-L4-Acceleration
 
-In rSeries there are now multiple FPGA’s, the **Application Traffic Services Engine** (ATSE), and the **Appliance Switch** (ASW), and the **Network Services Engine** (NSE). In addition to supporting previous functions done by the ePVA there are also additional functions that were performed in software or 3rd party chipsets that are now handled within the FPGA’s. Below is an architectural diagram of the r10000 Series appliance. 
+In rSeries there are now multiple FPGA’s, the **Application Traffic Services Engine** (ATSE), and the **Appliance Switch** (ASW), and the **Network Services Socket** (NSO). In addition to supporting previous functions done by the ePVA there are also additional functions that were performed in software or 3rd party chipsets that are now handled within the FPGA’s. Below is an architectural diagram of the r10000 Series appliance. 
 
 .. image:: images/rseries_performance_and_sizing/image1.png
   :align: center
