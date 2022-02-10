@@ -176,19 +176,19 @@ Below is an example of the total external front panel theoretical bandwidth exce
 
 .. image:: images/rseries_networking/image5.png
   :align: center
-  :scale: 120%
+  :scale: 100%
 
 There are static mappings of external ports to specific internal pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines by chossing different front panel ports to avoid possible oversubscription scenarios. Below shows the total piplines and ports for the r5000 appliances.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
-  :scale: 120%
+  :scale: 100%
 
-Below shows the total piplines and ports for the r10000 appliances.
+the diagram below shows the 4 total piplines and ports for the r10000 appliances.
 
 .. image:: images/rseries_networking/image7.png
   :align: center
-  :scale: 60%
+  :scale: 40%
 
  
 
