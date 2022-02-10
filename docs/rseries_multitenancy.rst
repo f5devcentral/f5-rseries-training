@@ -65,7 +65,7 @@ For resource provisioning you can use **Recommended** settings or **Advanced** s
 
 Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra RAM is available for tenants beyond the recommended values.
 
-Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r10000 Series tenants, leaving ~15GB of additional RAM. You may over-allocate RAM to any tenant until the extra 15GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r19000 Series tenants, leaving ~102GB of additional RAM. You may over-allocate RAM to any tenant until the extra  all 231GB RAM is depleted. The toal amount of RAM available for tenants is different on the r10000 vs. the r5000 appliances. And because the x600 and x800 models have less vCPU's avilable for tenants, there is more RAM to spread as the default value will use less of the overall RAM. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
 **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
@@ -97,7 +97,7 @@ Using the minimum Recommended values per tenant ~129GB of RAM will be allocated 
 r10000 Series Multitenancy
 ==========================
 
-Each r10000 Series appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 28 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
+Each r10000 appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 28 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of vCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
 
 The r10900 has 48 vCPU's total, 12 vCPU's reserved for F5OS, and 36 vCPU's left over for use by tenants:
 
@@ -123,7 +123,7 @@ Since all r10000 models are running on the same hardware appliance, you can easi
 r5000 Series Multitenancy
 ==========================
 
-Each r5000 Series appliance has 32 vCPU’s, however 6 of those vCPU’s are dedicated to the F5OS layer. This leaves 26 vCPU’s left over for use by tenants on the r5900, 18 vCPU's for the r5800, and 12 vCPU's for the r5600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of VCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r5000 platform.
+Each r5000 appliance has 32 vCPU’s, however 6 of those vCPU’s are dedicated to the F5OS layer. This leaves 26 vCPU’s left over for use by tenants on the r5900, 18 vCPU's for the r5800, and 12 vCPU's for the r5600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of vCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r5000 platform.
 
 The r5900 has 32 vCPU's total, 6 vCPU's reserved for F5OS, and 26 vCPU's left over for use by tenants:
 
@@ -138,7 +138,7 @@ The r5800 has 32 vCPU's total, 8 vCPU's are disabled via licensing, 6 vCPU's res
   :align: center
   :scale: 40%
 
-The r5600 has 32 vCPU's total, 14 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 12 vCPU's left over for use by tenants. Note there is a max of 4 tenants:  
+The r5600 has 32 vCPU's total, 14 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 12 vCPU's left over for use by tenants. Note there is a max of 8 tenants:  
 
 .. image:: images/rseries_multitenancy/image8.png
   :align: center
@@ -151,7 +151,7 @@ r4000 Series Multitenancy
 
 **NOTE: This is subject to change**
 
-In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPU's. For each physical CPU core there are two logical vCPU's. The r4000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPU's or logical cores these platforms support, they are measured using physical CPU core counts only. The r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specilized offloasd instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
+In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPU's. For each physical CPU core there are two logical vCPU's. The r4000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPU's or logical cores these platforms support, they are measured using physical CPU core counts only. The r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
 
 Each r4000 appliance has 16 CPU cores (not vCPU’s), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
 
