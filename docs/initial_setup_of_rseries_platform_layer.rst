@@ -202,7 +202,7 @@ It’s also a good idea to have the rSeries appliance send logs for the F5OS pla
 System Settings via the API
 ===========================
 
-If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for appliance use the following API call. For any API calls to rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
+If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for the appliance use the following API call. For any API calls to the rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
 
 .. code-block:: bash
 
@@ -232,7 +232,7 @@ Below is the body of the API call which contains the desired configuration:
       }
   }
 
-You may then view the current DNS configuration with the folowing API call:
+You may then view the current DNS configuration with the following API call:
 
 .. code-block:: bash
 
@@ -1081,7 +1081,7 @@ IPv4/IPv6 dual stack support can also be configured. At the bottom of the page s
 Software Management
 ===================
 
-The F5OS-A platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade the F5OS-A to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Seprate **Service** & **OS**) based upgrades. For now F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
+The F5OS-A platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade the F5OS-A to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image15.png
   :align: center
@@ -1218,7 +1218,7 @@ Licenses can be applied via CLI, GUI, or API. A base registration key and option
 General
 =======
 
-The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also cconfigure the **Hostname** of the system, and configure a Message of the Day **MOTD** which is displayed on login. 
+The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access is disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also cconfigure the **Hostname** of the system, and configure a Message of the Day **MOTD** which is displayed on login. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image31.png
   :align: center
