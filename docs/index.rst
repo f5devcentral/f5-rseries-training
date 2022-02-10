@@ -1,6 +1,6 @@
-======================
-rSeries Training Guide
-======================
+==========================
+Planning for rSeries Guide
+==========================
 
 .. toctree::
    :maxdepth: 1

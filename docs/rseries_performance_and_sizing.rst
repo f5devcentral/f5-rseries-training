@@ -80,7 +80,7 @@ The r10600 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use 
 r5000 vCPU Sizing
 ------------------
 
-Each rSeries 5900 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5900, 24 vCPU’s are available for tenants since the other 6 are reserved. The diagram below depicts the r5900 vCPU allocation: 
+Each rSeries 5900 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by the F5OS platform layer. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r5900, 26 vCPU’s are available for tenants since the other 6 are reserved. The diagram below depicts the r5900 vCPU allocation: 
 
 .. image:: images/rseries_performance_and_sizing/image13.png
   :align: center
@@ -116,7 +116,7 @@ The r4600 model has 16 CPU’s (The 4000 platform does not utilize hyperhreading
 r2000 vCPU Sizing
 ------------------
 
-Each rSeries 2800 model has 8 CPU’s (The 2000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r2800 8 CPU’s are available to be assigned to tenants (and only one tenant is supported). The diagram below depicts the r4200 CPU allocation: 
+Each rSeries 2800 model has 8 CPU’s (The 2000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r2800 8 CPU’s are available to be assigned to tenants (and only one tenant is supported). The diagram below depicts the r2800 CPU allocation: 
 
 .. image:: images/rseries_performance_and_sizing/image18.png
   :align: center
