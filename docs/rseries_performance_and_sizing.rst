@@ -19,7 +19,7 @@ In rSeries there are now multiple FPGA’s, the **Application Traffic Services E
   :align: center
   :scale: 40%
 
-The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has less FPGA's and CPUs, and less physical ports.
+The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has less FPGA's, CPUs, and fewer physical ports.
 
 .. image:: images/rseries_performance_and_sizing/image2.png
   :align: center
@@ -63,7 +63,7 @@ Each rSeries 10900 model has 48 vCPU’s, but 12 of those vCPU’s are reserved 
   :align: center
   :scale: 40%
 
-The r10800 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer and 6 vCPU's are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10800, 30 vCPU’s are available for tenants since 12 are reserved for F5OS, and 6 are disabled via licensing. The diagram below depicts the r10800 vCPU allocation: 
+The r10800 model has 48 vCPU’s, but 12 of those vCPU’s are reserved for use by the F5OS platform layer and 8 vCPU's are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r10800, 28 vCPU’s are available for tenants since 12 are reserved for F5OS, and 8 are disabled via licensing. The diagram below depicts the r10800 vCPU allocation: 
 
 .. image:: images/rseries_performance_and_sizing/image11.png
   :align: center
