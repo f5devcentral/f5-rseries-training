@@ -17,7 +17,7 @@ The F5OS configuration contains data that includes the following:
 - VLAN configuration
 - Tenant configuration
 
-Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration of the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself. For information, refer to:
+**Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration of the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself.** For information, refer to:
 
 K13132: Backing up and restoring BIG-IP configuration files with a UCS archive: https://support.f5.com/csp/article/K13132
 
@@ -31,8 +31,8 @@ K13132: Backing up and restoring BIG-IP configuration files with a UCS archive: 
 
 To perform a complete backup of the rSeries system, you must:
 
-•	Back up the configuration for F5OS.
-•	Back up any deployed tenants using the tenants’ backup mechanism (i.e. a UCS).
+•	Back up the configuration for F5OS
+•	Back up any deployed tenants using the tenants’ backup mechanism (i.e. a UCS)
 
 More detail is covered in the following solution article:
 
@@ -77,7 +77,7 @@ Using the F5OS GUI you can backup the confd configuration database using the **S
 Backing Up F5OS via API
 -----------------------
 
-Using the F5OS API you can backup the F5OS confd configuration database using the following API POST:
+Using the F5OS API you can backup the F5OS configuration database using the following API POST:
 
 .. code-block:: bash
 
@@ -91,7 +91,7 @@ In the body of the API call you can specifiy the file name you want to save the 
         "f5-database:name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
 
-**Note: In the current F5OS releases the confd system database can be backed up via CLI/GUI/API but it cannot be restored using the F5OS GUI. This will be added in a subsequent release.**
+**Note: In the current F5OS releases the ConfD system database can be backed up via CLI/GUI/API but it cannot be restored using the F5OS GUI. This will be added in a subsequent release.**
 
 Exporting F5OS Backup to an External Location
 =============================================
@@ -101,7 +101,7 @@ Once the database backup has been completed, you should copy the file to an exte
 Exporting F5OS Backup via GUI
 ------------------------------
 
-In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the GUI requires an external HTTPS server. 
+In the GUI use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the GUI requires an external HTTPS server. The **Upload** and *Download** options allows for a browser to upload/download from the client's local machine.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
@@ -156,7 +156,7 @@ You may also transfer from the CLI using SCP or SFTP protocols. Below is an exam
     result File transfer is initiated.(configs/rSeries-59002-backup-1-15-2022)
     appliance-1#
 
-The **file transfer-status** command will show the upload of th SCP as well as HTTPS or SFTP:
+The **file transfer-status** command will show the upload of the SCP transfer as well as HTTPS or SFTP:
 
 .. code-block:: bash
 
@@ -166,7 +166,7 @@ The **file transfer-status** command will show the upload of th SCP as well as H
     1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 15 20:45:29 2022
     2    |Export file|SCP     |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/var/www/server/1/upload/rSeries-59002-backup-1-16-2022     |         Completed|Sat Jan 15 20:48:29 2022
 
-If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and GUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/F5/system/configs** directory.
+If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and GUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/F5/system/configs** directory. Note this is not an option if the appliance has been configured in Appliance Mode, which disables bash/shell access.
 
 .. code-block:: bash
 
@@ -187,7 +187,7 @@ If you don’t have an external HTTPS server that allows uploads, then you can l
 Exporting F5OS Backup via API
 ------------------------------
 
-To copy a confd configuration backup file from the system controller to a remote https server use the following API call:
+To copy a configuration backup file from the sappliance to a remote https server use the following API call:
 
 .. code-block:: bash
 
@@ -205,7 +205,7 @@ To copy a confd configuration backup file from the system controller to a remote
         "f5-utils-file-transfer:local-file": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
     
-You can then chek on the status of the export via the following API call:
+You can then check on the status of the export via the following API call:
 
 .. code-block:: bash
 
@@ -242,7 +242,7 @@ You can also use BIG-IQ to backup rSeries tenants.
 https://techdocs.f5.com/en-us/bigiq-8-0-0/managing-big-ip-devices-from-big-iq/backup-file-management.html
 
 
-The following video provides a demo of backing up UCS files form the BIG-IQ GUI, this is the same for rSeries tenants.
+The following video provides a demo of backing up UCS files from the BIG-IQ GUI, this is the same for rSeries tenants.
 
 .. raw:: html
 
@@ -263,7 +263,7 @@ https://support.f5.com/csp/article/K20024872
 Resetting the system via CLI
 ----------------------------
 
-To reset the F5OS confd database to default use the CLI command **system database reset-to-default**. This will wipe out all tenant configurations, networking, as well as all the system parameters except for out-of-band networking and licensing.
+To reset the F5OS configuration database to default use the CLI command **system database reset-to-default**. This will wipe out all tenant configurations, networking, as well as all the system parameters except for out-of-band networking and licensing.
 
 .. code-block:: bash
 
@@ -357,7 +357,7 @@ After the password is changed for the admin account you will be disconnected and
     appliance-1# 
 
 
-Once the system is configured and out-of-band connectivity is restored you can now copy the confd database archives back into the F5OS layer. To import the file using the F5OS CLI you must have a remote HTTPS/SCP/SFTP server to host the file. Use the file import command as seen below to import the file into the **configs** directory.
+Once the system is configured and out-of-band connectivity is restored you can now copy the configuration database archives back into the F5OS layer. To import the file using the F5OS CLI you must have a remote HTTPS/SCP/SFTP server to host the file. Use the **file import** command as seen below to import the file into the **configs** directory.
 
 .. code-block:: bash
 
@@ -390,7 +390,7 @@ Lastly you can confirm the file is in the configs directory using the CLI comman
 Changing the Default Password and Importing F5OS Backups via API
 ----------------------------------------------------------------
 
-After the reboot of the system you'll need to login and change the default password. Use the following API call to login with the default **admin/admin** account to change the password. After doing so an future API calls will need to login with the new admin password:
+After the reboot of the system you'll need to login and change the default password. Use the following API call to login with the default **admin/admin** account to change the password. After doing so all future API calls will need to login with the new admin password/ or get a new token:
 
 .. code-block:: bash
 
@@ -411,7 +411,7 @@ The body of the API call contains the following:
     }
 
 
-Post the following API call to the F5OS out-of-band IP address to import the archived confd backup file from a remote HTTPS server to the configs directory on the appliance.
+You'll need to use the new password/token on subsequent API calls. Post the following API call to the F5OS out-of-band IP address to import the archived confd backup file from a remote HTTPS server to the configs directory on the appliance.
 
 .. code-block:: bash
 
@@ -523,11 +523,13 @@ The system should restore the F5OS and start any tenant configurations. You may 
 Restore Using the API
 ---------------------
 
-To restore the F5OS confd database use the following API call:
+To restore the F5OS configuration database use the following API call:
 
 .. code-block:: bash
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
+
+The body/payload must include the test below to specifiy the file to be restored:
 
 .. code-block:: json
 
@@ -541,4 +543,7 @@ Restore Using the GUI
 
 Currently there is no GUI support for restoration of the confd database, so you’ll need to use either the CLI or API to restore the F5OS database. Once the database has been restored (you may need to wait a few minutes for the restoration to complete.)
 
+Restoring Tenants from a UCS Backup
+====================================
 
+Once the teant has finished starting up you'll need to load and restore via UCS file. This should follow normal BIG-IP restoration procedures.
