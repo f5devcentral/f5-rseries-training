@@ -8,7 +8,7 @@ F5OS Configuration Backup
 
 To completely backup the rSeries system, you’ll need to backup each tenant TMOS configuration first, and then back up the F5OS configuration. Tenant backup utilizes the same backup and recovery procedures as existing BIG-IP devices/guests because the tenants themselves are running TMOS. For the F5OS layer a different backup mechanism is utilized because F5OS configuration management is based on ConfD.  
 
-The confd process manages the F5OS configuration on an rSeries system. The system stores the configuration in its configuration database (CDB).
+The ConfD process manages the F5OS configuration on an rSeries system. The system stores the configuration in its configuration database (CDB).
 
 The F5OS configuration contains data that includes the following:
 
@@ -17,7 +17,10 @@ The F5OS configuration contains data that includes the following:
 - VLAN configuration
 - Tenant configuration
 
-Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration of the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself. For information, refer to K13132: Backing up and restoring BIG-IP configuration files with a UCS archive.
+Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration of the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself. For information, refer to:
+
+K13132: Backing up and restoring BIG-IP configuration files with a UCS archive: https://support.f5.com/csp/article/K13132
+
 
 - DNS servers
 - Network Time Protocol (NTP) servers
