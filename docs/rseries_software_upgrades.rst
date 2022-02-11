@@ -29,7 +29,7 @@ Here you can download the ISO file for F5OS along with checksum files and releas
 Uploading F5OS Images via the GUI
 ---------------------------------
 
-You can do this from the **System Settings -> Software Management** page.
+You canupload F5OS-A images to the appliance via the GUI. This is done from the **System Settings -> Software Management** page.
 
 .. image:: images/rseries_software_upgrades/image4.png
   :align: center
@@ -133,11 +133,13 @@ Uploading F5OS-A Images via the API
 
 When uploading or importing F5OS-A images into the rSeries appliance, the files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls. Below are API calls to upload and monitor status.
 
-List the current F5OS images in the **images/staging** directory via API calls:
+List the current F5OS images in the **images/staging** directory via the following API call:
 
 .. code-block:: bash
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the API call body/payload add the directory you want to query:
 
 .. code-block:: json
 
@@ -145,7 +147,7 @@ List the current F5OS images in the **images/staging** directory via API calls:
     "f5-utils-file-transfer:path": "images/staging"
     }
 
-Below is an example output:
+Below is an example output listing the current ISO file:
 
 .. code-block:: json
 
@@ -159,7 +161,7 @@ Below is an example output:
         }
     }
 
-You can then query the **images/import** directory for various image types like ISO, Service, or OS:
+You can then query the **images/import** directory for various image types like ISO, Service, or OS which are in separate directories:
 
 .. code-block:: bash
 
@@ -187,6 +189,7 @@ Below is an example output:
         }
     }
 
+
 To import an F5OS-A image, use the following API example:
 
 .. code-block:: bash
@@ -206,7 +209,7 @@ To import an F5OS-A image, use the following API example:
                 "f5-utils-file-transfer:password": "Pa$$w0rd"
             }
         ]
-}
+    }
 
 
 You can then check on the file transfer status with the following API call:
