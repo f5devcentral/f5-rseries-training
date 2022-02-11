@@ -117,11 +117,11 @@ To upload the qkview file to iHealth using the CLI use the following command **s
 Qkview Creation and Upload via API
 ----------------------------------
 
-To generate a qkview from the API POST the following API call to the F5OS out-of-band management IP.
+To generate a qkview from the API, POST the following API call to the F5OS out-of-band management IP.
 
 .. code-block:: bash
 
-    POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:capture
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:capture
 
 In the body of the API call supply the filename for the qkview:
 
@@ -131,7 +131,7 @@ In the body of the API call supply the filename for the qkview:
         "f5-system-diagnostics-qkview:filename": "my-qkview4.tgz"
     }
 
-Below is the following output showing successfukl intiation of the qkview:
+Below is the following output showing successful intiation of the qkview:
 
 .. code-block:: json
 
@@ -143,11 +143,11 @@ Below is the following output showing successfukl intiation of the qkview:
         }
     }
 
-To view the qkview status via the API POST the following API call:
+To view the qkview status via the API, POST the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:status
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:status
 
 The output will display the percentage complete, error, or complete status:
 
@@ -160,11 +160,11 @@ The output will display the percentage complete, error, or complete status:
         }
     }
 
-To upload the qkview file to iHealth using the API use the following POST AI call:
+To upload the qkview file to iHealth using the API use the following POST API call:
 
 .. code-block:: bash
 
-    POST https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-ihealth:ihealth/f5-system-diagnostics-ihealth:upload
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-ihealth:ihealth/f5-system-diagnostics-ihealth:upload
 
 Below is the body of the POST API call:
 
@@ -176,7 +176,7 @@ Below is the body of the POST API call:
     "f5-system-diagnostics-ihealth:service-request-number": ""
     }
 
-In the output of tha API call the upload initiation is confirmed.
+In the output of the API call the upload initiation is confirmed.
 
 .. code-block:: json
 
@@ -382,7 +382,7 @@ If the system currently has an any active Alarms you can view them via the follo
 
 .. code-block:: bash
 
-    GET https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/alarms
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/alarms
 
 If there are no active alarms, then no output will be displayed.
 
@@ -390,16 +390,12 @@ If there are no active alarms, then no output will be displayed.
 .. code-block:: json
 
 
-
-
-
-
 You can display the F5OS Event Log via the following API call:
 
 
 .. code-block:: bash
 
-    GET https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
 
 This will display all events (not just the active ones) from the beginning in the F5OS Event log:
 
@@ -1068,7 +1064,7 @@ You can display all the logging subsystems logging levels via the following API 
 
 .. code-block:: bash
 
-    GET https://{{Appliance4_IP}}:8888/restconf/data/openconfig-system:system/logging
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
 
 Every subsystem will be displayed along with its current setting:
 
@@ -1450,7 +1446,7 @@ Every subsystem will be displayed along with its current setting:
         }
     }
 
-If you need to change logging level to troubleshoot an issue, you can change the loggin level via the API's. Below is an example of changing the logging level for the **l2-agent** subsystem to **DEBUG**.
+If you need to change logging level to troubleshoot an issue, you can change the logging level via the API's. Below is an example of changing the logging level for the **l2-agent** subsystem to **DEBUG**.
 
 .. code-block:: bash
 
