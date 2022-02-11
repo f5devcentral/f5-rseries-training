@@ -5,12 +5,12 @@ Monitoring rSeries
 
 With the introduction of a new F5OS platform layer, anyone deploying rSeries will need to know the important things for them to monitor to ensure proper health and performance of the system. In addition to getting F5’s recommendation on what to monitor, administrators will require details on how to get access to that information. 
 
-Some admins may want CLI commands to monitor, or API calls to query the system, and others may prefer the GUI. Many customers also use SNMP to monitor and be alerted of system issues and events. For SNMP integrations F5 will provide specific SNMP OID’s that an admin can monitor, and what traps are available for altering. The following sections will outline what sort of monitoring and alerting is available with the new F5OS layer in rSeries.
+Some admins may want CLI commands to monitor, or API calls to query the system, and others may prefer the GUI. Many customers also use SNMP to monitor and be alerted of system issues and events. For SNMP integrations F5 will provide specific SNMP OID’s that an admin can monitor, and what traps are available for alerting. The following sections will outline what sort of monitoring and alerting is available with the new F5OS layer in rSeries. Alerting/monitoring inside the tenants themselves does not change except at the lower network layers.
 
 Accessing the F5OS API
 ======================
 
-The F5OS platform API’s for the can be reached on port 8888. In this document we will use the Postman tool to access rSeries F5OS platform layer API’s. You can download the Postman tool at:
+The F5OS platform API’s for the rSeries applainces can be reached on port 8888. In this document we will use the Postman tool to access rSeries F5OS platform layer API’s. You can download the Postman tool at:
 
 https://www.postman.com/downloads/
 
@@ -184,6 +184,8 @@ If you just want the state and not all the details:
 Show Component Properties from the CLI
 ----------------------------------------
 
+This command shows the firmware version of the various subsystems:
+
 .. code-block:: bash
 
     appliance-1# show components component properties 
@@ -239,7 +241,7 @@ Or you can view individual subsystems. High level power supply status can be obt
     appliance-1# 
 
 
-High level power supply stats can be obtained by using the **show components component psu-stats** command.
+High level power supply stats can be obtained by using the **show components component psu-stats** command:
 
 .. code-block:: bash
 
@@ -929,11 +931,11 @@ The appliance LCD panel status can be queried via the following API command:
 Power Supply Status from the API
 --------------------------------
 
-The rSeries applinace may have 1 or 2 power supplies installed. Each can be queried via the following API command. Substitute psu-1, or psu-2 (for dual power systems) at the end of the API call:
+The rSeries appliance may have 1 or 2 power supplies installed. Each can be queried via the following API command. Substitute psu-1, or psu-2 (for dual power systems) at the end of the API call:
 
 .. code-block:: bash
 
-    GET https://{{Appliance4_IP}}:8888/restconf/data/openconfig-platform:components/component=psu-1
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=psu-1
 
 .. code-block:: json
 
@@ -1334,6 +1336,8 @@ You can monitor the rSeries Appliance temperature.  The output will display the 
 Memory Status from the API
 --------------------------
 
+The API call below shows the total system memory:
+
 .. code-block:: bash
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:memory
@@ -1350,6 +1354,8 @@ Memory Status from the API
 
 Trusted Protection Module Status from the API
 ---------------------------------------------
+
+rSeries supports the Trusted Protection Module (TPM) to validate certain software has not been tampered with. You can query the last statsus check which is performed on boot:
 
 .. code-block:: bash
 
@@ -1589,17 +1595,26 @@ Show VLAN-Listeners via CLI
 Software Health and Status from the GUI
 ---------------------------------------
 
+The rSeries Dashboard will provide a visual system summary of the appliance including System Summary, Network, CPU, and Active Alarms. It will also list the total number of vCPU’s available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters.
+
 .. image:: images/monitoring_rseries/image1.png
   :align: center
   :scale: 70%
+
+The Network tab wil provide a visual representation of all networking ports on the system. Each port will be color coded Green for Up status, and Red or Down status. The current Pipeline mapping is also displayed which shows the external port mapping to internal pipelines.
+
 
 .. image:: images/monitoring_rseries/image2.png
   :align: center
   :scale: 70%
 
+The CPU tab shows all the available CPU’s in the system, along with their Current, 5 Second, 1 Minute, and 5 Minute averages.
+
 .. image:: images/monitoring_rseries/image3.png
   :align: center
   :scale: 70%
+
+The Active Alarms tab will display any active alerts or alarms for the system.
 
 .. image:: images/monitoring_rseries/image4.png
   :align: center
