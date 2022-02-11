@@ -3,9 +3,11 @@ rSeries F5OS SNMP Monitoring and Alerting
 =========================================
 
 
-SNMP Support for F5OS will vary by release. In the F5OS-A v1.1.0 versions of F5OS SNMP support is limited to SNMP Trap support from the system controllers & chassis partitions, and **IF-MIB** support for the chassis partitions. F5OS v1.2.x added addtional SNMP support including Link Up/Down Traps for chassis partittions, and support for  **IF-MIB**, **EtherLike-MIB**, & the **PLATFORM-STATS-MIB**.
+Within rSeries tenant SNMP support remains unchanged from existing BIG-IP's. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS currently supports SNMP versions 
 
-As of F5OS 1.2.0 the list of MIBs available are as follows:
+ In the F5OS-A v1.x.x versions SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the the physical interfaces. **IF-MIB**, **EtherLike-MIB**, & the **PLATFORM-STATS-MIB**.
+
+As of F5OS-A 1.x.x the list of MIBs available are as follows:
 
 - SNMP-FRAMEWORK-MIB
 - SNMP-MPD-MIB
@@ -23,7 +25,7 @@ As of F5OS 1.2.0 the list of MIBs available are as follows:
 - F5-COMMON-SMI
 - F5-ALERT-MIB
 
-As of F5OS 1.2.0 the list of alerts that can be configured as traps is as follows:
+As of F5OS-A 1.x.x the list of alerts that can be configured as traps is as follows:
 
 - Interface UP
 - Interface DOWN
