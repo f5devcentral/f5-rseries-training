@@ -1628,6 +1628,8 @@ Software Health and Status from the API
 F5 Cluster Status via API
 -------------------------
 
+This command will display the health of the underlying Kubernetes (K3S) cluster which powers the F5OS layer. They key is the last message at the bottom of the output K3S cluster is ready, this lets you know that the underlying K3S cluster is up running and healthy.
+
 .. code-block:: bash
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/f5-cluster:cluster
@@ -1803,6 +1805,9 @@ F5 Cluster Status via API
 F5 Service Instances Status
 ---------------------------
 
+This API call displays some of the software processes running within the F5OS platform layer for networking. You can see processes for lacpd, stpd,lldpd etc..
+
+
 .. code-block:: bash
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/f5-service-instances:service-instances
@@ -1958,6 +1963,8 @@ F5 Services Status
 Layer2 FDB Status
 -----------------
 
+This API call displays the Forwarding Database:
+
 .. code-block:: bash
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/f5-l2fdb:fdb
@@ -2070,6 +2077,8 @@ Layer2 FDB Status
 
 F5 Service-Pods Status
 ----------------------
+
+The following API call displays the service-pods running isinde the F5OS layer:
 
 .. code-block:: bash
 
@@ -2229,6 +2238,9 @@ F5 Service-Pods Status
 
 System Health
 -------------
+
+The following API call displays the details used to feed the overall system health. Note this API call will return a lot of status details:
+
 
 .. code-block:: bash
 
