@@ -2,7 +2,7 @@
 rSeries Diagnostics
 ===================
 
-This section will go through some of the diagnostic capabilities within the new F5OS layer. Inside the tenant the same BIG-IP diagnostic utilities that customers are used to are sill available.
+This section will go through some of the diagnostic capabilities within the new F5OS layer. Inside the tenant the same BIG-IP diagnostic utilities that customers are used to are still available.
 
 Qkviews
 =======
@@ -15,7 +15,10 @@ https://support.f5.com/csp/article/K04756153
 
 In general, you can use the qkview utility on rSeries systems to automatically collect configuration and diagnostic information from the system. The qkview utility provided in F5OS-A software captures diagnostic information from the rSeries system and associated containers. 
 
-Note: The qkview utility on the rSeries system does not capture diagnostic data from tenant BIG-IP systems. To generate diagnostic data for a tenant BIG-IP, log in to the tenant system and perform the relevant procedure in K12878: Generating diagnostic data using the qkview utility.
+Note: The qkview utility on the rSeries system does not capture diagnostic data from tenant BIG-IP systems. To generate diagnostic data for a tenant BIG-IP, log in to the tenant system and perform the relevant procedure in:
+
+K12878: Generating diagnostic data using the qkview utility: https://support.f5.com/csp/article/K12878
+
 
 The qkview utility on the rSeries system generates machine-readable JavaScript Object Notation (JSON) diagnostic data and combines the data into a single compressed Tape ARchive (TAR) format file. The single TAR file is comprised of embedded TAR files containing the diagnostic data of individual containers running on the system, as well as diagnostic data from the rSeries system. You can upload this file, called a QKView file, to iHealth, or give it to F5 Support to help them troubleshoot any issues.
 
