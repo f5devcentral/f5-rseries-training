@@ -148,7 +148,7 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
 
 **NOTE: The nodes value is currently required in the interactive CLI mode to remain consistent with VELOS, but should be set for 1 for rSeries tenant deployments.** 
 
-When inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the avilable options.
+When inside the tenant config mode you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the available options.
 
 .. code-block:: bash
 
@@ -299,7 +299,7 @@ You can deploy a tenant from the GUI using the **Add** button in the **Tenant Ma
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There is also an optio to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once **Save** is clicked the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once **Save** is clicked the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -333,13 +333,13 @@ Finally when the tenant is fully up the Running Version should display the actua
   :align: center
   :scale: 70% 
 
-You can view a more detailed tenant status using the **Tenant Managment > Tenant Details** GUI page. you may select a refresh period, and a specific tenant to monitor in deeper detail:
+You can view a more detailed tenant status using the **Tenant Managment > Tenant Details** GUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
   :align: center
   :scale: 70% 
 
-At this point the tenant should be running and can be accessed via the out-of-band management IP address. You can go to the **Dashboard** page in the GUI to see the running tenants, and there is a hyperlink that will connect to the tenant's GUI IP address as seen below.
+At this point the tenant should be running and can be accessed via it's out-of-band management IP address. You can go to the **Dashboard** page in the GUI to see the running tenants, and there is a hyperlink that will connect to the tenant's GUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
@@ -885,7 +885,7 @@ The API output:
     }
 
 
-If you attempt to change the tenant configuration while it is in the deployed state it will fail with an error like the one below.  It will nontify you that config changes when in the **deployed** state is not allowed:
+If you attempt to change the tenant configuration while it is in the deployed state it will fail with an error like the one below.  It will notify you that config changes when in the **deployed** state are not allowed:
 
 .. code-block:: json
 
@@ -909,7 +909,7 @@ The workflow to change the tenant configuration is to first change the tenant st
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
-And for the JSON body of the API call change the **running-state** to **provisioned**:
+For the JSON body of the API call change the **running-state** to **provisioned**:
 
 .. code-block:: json
 
