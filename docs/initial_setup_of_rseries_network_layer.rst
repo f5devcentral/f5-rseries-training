@@ -2382,7 +2382,7 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
                   }
               },
               {
-                  "name": "3/2.0",
+                  "name": "2.0",
                   "openconfig-if-ethernet:ethernet": {
                       "openconfig-vlan:switched-vlan": {
                           "config": {
@@ -2637,7 +2637,7 @@ The following command will list the configuration and status of all VLANs within
 Network Settings -> LAGs
 ========================
 
-All in-band networking including Link Aggregation Groups (LAGs) are configured in the F5OS layer. The admin will configure interfaces and/or LAGs and they will assign VLANs to those physical interfaces. Tenants will then inherit the VLANs that are assigned to them when they are created. It is recommended to spread LAG members across internal rSeries pipelines for added redundancy and optimal performance. 
+All in-band networking including Link Aggregation Groups (LAGs) are configured in the F5OS layer. The admin will configure interfaces and/or LAGs and they will assign VLANs to those physical interfaces or LAGs. Tenants will then inherit the VLANs that are assigned to them when they are created. It is recommended to spread LAG members across internal rSeries pipelines for added redundancy and optimal performance. 
 
 Configuring LAGs from the GUI
 -----------------------------
