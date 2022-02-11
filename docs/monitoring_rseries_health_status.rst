@@ -279,14 +279,14 @@ In the F5OS GUI you can go to the **System Events > Alarms & Events** page to se
 Checking Active Alerts via API
 ------------------------------
 
-Recent system level alerts can be accessed via the API. Below is an API call to see all the system events that have occured for a particular chassis:
+Recent system level alerts can be accessed via the API. Below is an API call to see all the system events that have occured for a particular appliance:
 
 .. code-block:: bash
 
     GET https://{{Appliance1-IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
 
 
-Below are examples of events from a chassis in a test lab.Note there are ASSERT and Deasserted messages that clear them.
+Below are examples of events from an appliance in a test lab. Note there are ASSERT and Deasserted messages that clear them.
 
 .. code-block:: json
 
@@ -1008,7 +1008,7 @@ rSeries also has a very robust **system health** utility where all the various h
 Checking System Health via CLI
 ------------------------------
 
-Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it bubble up to the higher level status.
+Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher level status.
 
 After the full output below some CLI examples of how to filter all this information down into a high level status will be provided.
 
@@ -4026,7 +4026,7 @@ Just like the CLI output you can dump the full system health and all its subsyst
 
 .. code-block:: bash
 
-    GEThttps://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
 
 
 This provides a very large output of all the subsystems and their subcomponents. Below the large output are examples of how to futher filter/reduce the output via API calls.
@@ -18162,7 +18162,7 @@ Filter to Get a Summary of System Health via API
 ------------------------------------------------
 
 
-You can filter the above output in many ways. Below is an example of how to only get the system health data for a components. In this case lcd, or psu-1. This will still result in a lot of data outputted in the response:
+You can filter the above output in many ways. Below is an example of how to only get the system health data for a specific component. In this case lcd, or psu-1. This will still result in a lot of data output in the response:
 
 .. code-block:: bash
 
