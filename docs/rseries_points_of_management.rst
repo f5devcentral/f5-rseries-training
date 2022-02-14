@@ -2,7 +2,7 @@
 Points of Management in rSeries
 ===============================
 
-There are two main points of management within the rSeries Appliances. The **F5OS platform layer**, and the individual **tenants**. Each support their own CLI, GUI, and API access and have their own authentication and user configuration. 
+There are two main points of management within the rSeries appliances. The **F5OS platform layer**, and the individual **tenants**. Each support their own CLI, GUI, and API access and have their own authentication and user configuration. 
 
 .. image:: images/rseries_points_of_management/image1.png
   :align: center
