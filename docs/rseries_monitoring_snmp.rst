@@ -3,7 +3,7 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenant SNMP support remains unchanged from existing BIG-IP's. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP versions...
+Within rSeries tenants SNMP support remains unchanged from existing BIG-IP's. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP v1 & v2c versions.
 
 In the F5OS-A v1.x.x versions SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the the physical interfaces. **IF-MIB**, **EtherLike-MIB**, & the **PLATFORM-STATS-MIB**.
 
@@ -33,6 +33,134 @@ As of F5OS-A 1.x.x the list of alerts that can be configured as traps is as foll
 
 Enabling SNMP via CLI
 =====================
+
+
+Before enabling SNMP you'll need to open up the out-of-band management port to allow SNMP traffic.
+
+
+.. code-block:: bash
+
+    appliance-1(config)# system allowed-ips allowed-ip SNMP config ipv4 address 10.255.0.144 port 161 
+    appliance-1(config-allowed-ip-SNMP)# commit
+    Commit complete.
+    appliance-1(config-allowed-ip-SNMP)# 
+
+
+
+appliance-1(config)# SNMP-COMMUNITY-MIB snmpCommunityTable snmpCommunityEntry public snmpCommunityName public snmpCommunitySecurityName public snmpCommunityContextEngineID 80:00:61:81:05:01 snmpCommunityContextName "" snmpCommunityTransportTag "" snmpCommunityStorageType permanent
+appliance-1(config-snmpCommunityEntry-public)# exit
+appliance-1(config)# 
+appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmViewTreeFamilyTable vacmViewTreeFamilyEntry v1v2_access 1.3.6.1 vacmViewTreeFamilyType included vacmViewTreeFamilyStorageType nonVolatile
+appliance-1(config-vacmViewTreeFamilyEntry-v1v2_access/1.3.6.1)# exit
+appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 2 public vacmGroupName public vacmSecurityToGroupStorageType nonVolatile
+appliance-1(config-vacmSecurityToGroupEntry-2/public)# exit
+appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmAccessTable vacmAccessEntry public "" 0 noAuthNoPriv vacmAccessContextMatch exact vacmAccessReadViewName v1v2_access vacmAccessWriteViewName empty vacmAccessNotifyViewName v1v2_access vacmAccessStorageType nonVolatile
+appliance-1(config-vacmAccessEntry-public//0/noAuthNoPriv)# 
+appliance-1(config-vacmAccessEntry-public//0/noAuthNoPriv)# exit
+appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName boyapati vacmSecurityToGroupStorageType nonVolatile
+appliance-1(config-vacmSecurityToGroupEntry-1/public)# exit
+appliance-1(config)# 
+appliance-1(config)# 
+appliance-1(config)# 
+appliance-1(config)# SNMP-NOTIFICATION-MIB snmpNotifyTable snmpNotifyEntry v2_trap snmpNotifyTag v2_trap snmpNotifyType trap snmpNotifyStorageType nonVolatile
+appliance-1(config-snmpNotifyEntry-v2_trap)# exit
+appliance-1(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.144.23.123 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
+appliance-1(config-snmpTargetAddrEntry-group2)# exit
+appliance-1(config)# SNMP-TARGET-MIB snmpTargetParamsTable snmpTargetParamsEntry group2 snmpTargetParamsMPModel 1 snmpTargetParamsSecurityModel 2 snmpTargetParamsSecurityName public snmpTargetParamsSecurityLevel noAuthNoPriv snmpTargetParamsStorageType nonVolatile
+appliance-1(config-snmpTargetParamsEntry-group2)# exit
+appliance-1(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.144.23.123 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
+appliance-1(config-snmpTargetAddrEntry-group2)# 
+appliance-1(config-snmpTargetAddrEntry-group2)# exit
+appliance-1(config)# commit
+Aborted: illegal reference 'SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName'
+appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmViewTreeFamilyTable vacmViewTreeFamilyEntry v1v2_access 1.3.6.1 vacmViewTreeFamilyType included vacmViewTreeFamilyStorageType nonVolatile
+appliance-1(config-vacmViewTreeFamilyEntry-v1v2_access/1.3.6.1)# exit
+appliance-1(config)# commit
+Aborted: illegal reference 'SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName'
+appliance-1(config)# no SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName boyapati vacmSecurityToGroupStorageType nonVolatile
+appliance-1(config)# commit
+Aborted: 'SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName' is not configured
+appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName public vacmSecurityToGroupStorageType nonVolatile     
+appliance-1(config-vacmSecurityToGroupEntry-1/public)# exit
+appliance-1(config)# commit
+Commit complete.
+appliance-1(config)# 
+
+
+appliance-1# show SNMP-FRAMEWORK-MIB 
+SNMP-FRAMEWORK-MIB snmpEngine snmpEngineID 80:00:61:81:05:01
+SNMP-FRAMEWORK-MIB snmpEngine snmpEngineBoots 26
+SNMP-FRAMEWORK-MIB snmpEngine snmpEngineTime 15215
+SNMP-FRAMEWORK-MIB snmpEngine snmpEngineMaxMessageSize 50000
+appliance-1# show SNMP-MPD-MIB      
+SNMP-MPD-MIB snmpMPDStats snmpUnknownSecurityModels 0
+SNMP-MPD-MIB snmpMPDStats snmpInvalidMsgs 0
+SNMP-MPD-MIB snmpMPDStats snmpUnknownPDUHandlers 0
+appliance-1# show SNMP-TARGET-MIB 
+SNMP-TARGET-MIB snmpTargetObjects snmpUnavailableContexts 0
+SNMP-TARGET-MIB snmpTargetObjects snmpUnknownContexts 0
+appliance-1# show SNMP-USER-BASED-SM-MIB 
+SNMP-USER-BASED-SM-MIB usmStats usmStatsUnsupportedSecLevels 0
+SNMP-USER-BASED-SM-MIB usmStats usmStatsNotInTimeWindows 0
+SNMP-USER-BASED-SM-MIB usmStats usmStatsUnknownUserNames 0
+SNMP-USER-BASED-SM-MIB usmStats usmStatsUnknownEngineIDs 0
+SNMP-USER-BASED-SM-MIB usmStats usmStatsWrongDigests 0
+SNMP-USER-BASED-SM-MIB usmStats usmStatsDecryptionErrors 0
+appliance-1# show SNMPv2-MIB            
+SNMPv2-MIB system sysDescr "Linux 3.10.0-1160.25.1.F5.1.el7_8.x86_64 : Appliance services version 1.1.0-3306"
+SNMPv2-MIB system sysObjectID 1.3.6.1.2.1.1
+SNMPv2-MIB system sysUpTime 1525114
+SNMPv2-MIB system sysServices 72
+SNMPv2-MIB system sysORLastChange 6
+SNMPv2-MIB snmp snmpInPkts 1
+SNMPv2-MIB snmp snmpInBadVersions 0
+SNMPv2-MIB snmp snmpInBadCommunityNames 1
+SNMPv2-MIB snmp snmpInBadCommunityUses 0
+SNMPv2-MIB snmp snmpInASNParseErrs 0
+SNMPv2-MIB snmp snmpSilentDrops 0
+SNMPv2-MIB snmp snmpProxyDrops 0
+SNMPv2-MIB snmpSet snmpSetSerialNo 1200461836
+                                                                                                           SYS   
+SYS                                                                                                        ORUP  
+ORINDEX  SYS ORID             SYS ORDESCR                                                                  TIME  
+-----------------------------------------------------------------------------------------------------------------
+1        1.3.6.1.4.1.12276.1  F5 Networks enterprise Platform MIB                                          6     
+2        1.3.6.1.2.1.31       The MIB module to describe generic objects for network interface sub-layers  6     
+
+appliance-1# 
+
+
+appliance-1(config)# interfaces interface 1.0 config description "Interface 1.0"
+appliance-1(config-interface-1.0)# exit
+appliance-1(config)# interfaces interface 2.0 config description "Interface 2.0"               
+appliance-1(config-interface-2.0)# exit
+appliance-1(config)# interfaces interface 3.0 config description "Interface 3.0"
+appliance-1(config-interface-3.0)# interfaces interface 4.0 config description "Interface 4.0"
+appliance-1(config-interface-4.0)# interfaces interface 5.0 config description "Interface 5.0"
+appliance-1(config-interface-5.0)# interfaces interface 6.0 config description "Interface 6.0"
+appliance-1(config-interface-6.0)# interfaces interface 7.0 config description "Interface 7.0"
+appliance-1(config-interface-7.0)# interfaces interface 8.0 config description "Interface 8.0"
+appliance-1(config-interface-8.0)# interfaces interface 9.0 config description "Interface 9.0"
+appliance-1(config-interface-9.0)# interfaces interface 10.0 config description "Interface 10.0"
+appliance-1(config-interface-10.0)# interfaces interface 11.0 config description "Interface 11.0"
+appliance-1(config-interface-11.0)# interfaces interface 12.0 config description "Interface 12.0"
+appliance-1(config-interface-12.0)# interfaces interface 13.0 config description "Interface 13.0"
+appliance-1(config-interface-13.0)# interfaces interface 14.0 config description "Interface 14.0"
+appliance-1(config-interface-14.0)# interfaces interface 15.0 config description "Interface 15.0"
+appliance-1(config-interface-15.0)# interfaces interface 16.0 config description "Interface 16.0"
+appliance-1(config-interface-16.0)# interfaces interface 17.0 config description "Interface 17.0"
+appliance-1(config-interface-17.0)# interfaces interface 18.0 config description "Interface 18.0"
+appliance-1(config-interface-18.0)# interfaces interface 19.0 config description "Interface 19.0"
+appliance-1(config-interface-19.0)# interfaces interface 20.0 config description "Interface 20.0"
+appliance-1(config-interface-20.0)# exit
+appliance-1(config)# commit
+Commit complete.
+appliance-1(config)# 
+
+appliance-1(config)# interfaces interface mgmt  config description "Interface mgmt"
+appliance-1(config-interface-mgmt)# commit
+
+
 
 Setting up SNMP can de done from the CLI by enabling an SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer:
 
