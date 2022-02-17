@@ -3,11 +3,11 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants SNMP support remains unchanged from existing BIG-IP's. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP v1 & v2c versions.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP v1 and v2c versions.
 
-In the F5OS-A v1.x.x versions SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the the physical interfaces. **IF-MIB**, **EtherLike-MIB**, & the **PLATFORM-STATS-MIB**.
+In the F5OS-A v1.x.x versions SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the physical interfaces. **IF-MIB**, **EtherLike-MIB**, and the **PLATFORM-STATS-MIB**.
 
-As of F5OS-A 1.x.x the list of MIBs available are as follows:
+As of F5OS-A 1.x.x the following MIBs available are available:
 
 - SNMP-FRAMEWORK-MIB
 - SNMP-MPD-MIB
@@ -25,7 +25,7 @@ As of F5OS-A 1.x.x the list of MIBs available are as follows:
 - F5-COMMON-SMI
 - F5-ALERT-MIB
 
-As of F5OS-A 1.x.x the list of alerts that can be configured as traps is as follows:
+As of F5OS-A 1.x.x the following alerts and traps are available:
 
 - Interface UP
 - Interface DOWN
@@ -191,7 +191,7 @@ You can configure the SNMP System paramters including the System Contact, System
 
 
 
-It is highly recommend that you put Interface descriptions in your configuration so that this will showup when using SNMP polling:
+It is highly recommend that you put interface descriptions in your configuration so that this will show up when using SNMP polling:
 
 .. code-block:: bash
 
@@ -207,7 +207,7 @@ It is highly recommend that you put Interface descriptions in your configuration
     appliance-1(config)# 
 
 
-If LAGs are configured decriptions should be added to the LAG interfaces as well:
+If LAGs are configured, decriptions should be added to the LAG interfaces as well:
 
 .. code-block:: bash
 
@@ -251,7 +251,7 @@ Exmaple output:
 SNMP ifIndex
 ------------
 
-You can poll the following SNMP OID to get detailed Interface stats for each physical port on the BX100 blades and also for Link Aggregation Groups that have been configured. Note that you will only see interfaces and LAG's that are configured within the chassis partition you are monitoring. You will not have visibility into other chassis partition interfaces of LAG's unless you poll them directly.
+You can poll the following SNMP OID to get detailed interface stats for each physical port on the BX100 blades and also for Link Aggregation Groups that have been configured. Note that you will only see interfaces and LAG's that are configured within the chassis partition you are monitoring. You will not have visibility into other chassis partition interfaces of LAG's unless you poll them directly.
 
 **NOTE: Stats for LAG interfaces are not currently populated.**
 
@@ -278,7 +278,7 @@ SNMP ifIndex OID: .1.3.6.1.2.1.2.2.1
 Chassis Partition CPU
 --------------------- 
 
-The CPU Processor Stats Table provides details on the Intel CPU processors which are running in the BX100 line card. It deals the Core & Thread Counts, as well as the Cache Size, Frequency and Model Number.
+The CPU Processor Stats Table provides details on the Intel CPU processors, which are running in the BX100 line card. It displays the Core and Thread Counts, as well as the Cache Size, Frequency and Model Number.
 
 SNMP Chassis Partition CPU Processor Stats Table OID: .1.3.6.1.4.1.12276.1.2.1.1.1
 
@@ -294,7 +294,7 @@ SNMP Chassis Partition CPU Processor Stats Table OID: .1.3.6.1.4.1.12276.1.2.1.1
 CPU Utilization Stats Table
 ---------------------------
 
-The table below shows the total CPU Utilization per blade within a chassis parition over 5 seconds, 1 minute, and 5 minutes averagesas well as the current value.
+The table below shows the total CPU Utilization per blade within a chassis parition over 5 seconds, 1 minute, and 5 minutes averages, as well as the current value.
 
 SNMP CPU Utilization Stas Table OID: .1.3.6.1.4.1.12276.1.2.1.1.2
 
@@ -310,7 +310,7 @@ SNMP CPU Utilization Stas Table OID: .1.3.6.1.4.1.12276.1.2.1.1.2
 CPU Core Stats Table
 ---------------------------
 
-The table below shows the total CPU Utilization per vCPU within a chassis parition over 5 seconds, 1 minute, and 5 minutes averages. Below is an example of a 2 blade chassis partition. Each blade has 28 vCPU's or Cores:
+The table below shows the total CPU Utilization per vCPU within a chassis parition over 5 seconds, 1 minute, and 5 minutes averages. Below is an example of a 2-blade chassis partition. Each blade has 28 vCPU's or Cores:
 
 SNMP CPU Core Stas Table OID: .1.3.6.1.4.1.12276.1.2.1.1.3
 
@@ -435,7 +435,7 @@ SNMP CPU Core Stas Table OID: .1.3.6.1.4.1.12276.1.2.1.1.3
 Disk Info Table
 ---------------
 
-The following table display information about the disks installed on each blade in the current chassis partition.
+The following table displays information about the disks installed on each blade in the current chassis partition.
 
 SNMP Disk Info Table OID: .1.3.6.1.4.1.12276.1.2.1.2.1
 
@@ -491,7 +491,7 @@ SNMP Memory Stats Table OID:.1.3.6.1.4.1.12276.1.2.1.4.1
 FPGA Stats Table
 ----------------
 
-The FPGA Stats table shows the current FPGA version. There are two different FPGA's on each BX110 line card. The ATSE (Application Traffic Service Engine) and the VQF (VELOS Queuing FPGA). 
+The FPGA Stats table shows the current FPGA version. There are two different FPGA's on each BX110 line card: The ATSE (Application Traffic Service Engine) and the VQF (VELOS Queuing FPGA). 
 
 SNMP FPGA Stats Table OID: .1.3.6.1.4.1.12276.1.2.1.5.1
 
@@ -511,13 +511,13 @@ SNMP FPGA Stats Table OID: .1.3.6.1.4.1.12276.1.2.1.5.1
 SNMP Trap Support in F5OS
 ========================
 
-You can enable SNMP traps for the F5OS layer. The **F5-CTRLR-ALERT-NOTIF-MIB* & the **F5-PARTITION-ALERT-NOTIF-MIB** provide details of supported system controller and chassis partition SNMP traps. Below is the current full list of traps support by F5OS: 
+You can enable SNMP traps for the F5OS layer. The **F5-CTRLR-ALERT-NOTIF-MIB* & the **F5-PARTITION-ALERT-NOTIF-MIB** provide details about supported system controller and chassis partition SNMP traps. Below is the current full list of traps support by F5OS: 
 
 
 
-For the system controllers the following SNMP Traps are supported as of F5OS 1.2.x as defined in the **F5-CTRLR-ALERT-NOTIF-MIB.txt**:
+For the system controllers, the following SNMP Traps are supported as of F5OS 1.2.x as defined in the **F5-CTRLR-ALERT-NOTIF-MIB.txt**:
 
-SNMP Trap events that note a fault should also trigger an Alert that can be viewed in the show alerts, in the CLI, GUI, and API. Once the clear SNMP Trap is sent it should clear the event form the show events output.
+SNMP Trap events that note a fault should also trigger an Alert that can be viewed in the show alters output, in the CLI, GUI, and API. Once the clear SNMP Trap is sent, it should clear the event form the show events output.
 
 +----------------------------+----------------------------------+
 | **Alert**                  | **OID**                          |                            
@@ -578,7 +578,7 @@ SNMP Trap events that note a fault should also trigger an Alert that can be view
 +----------------------------+----------------------------------+
 
 
-For the chassis partitions the following SNMP Traps are supported as of F5OS 1.2.x as defined in the **F5-PARTITION-ALERT-NOTIF-MIB.txt**:
+For the chassis partitions, the following SNMP Traps are supported as of F5OS 1.2.x as defined in the **F5-PARTITION-ALERT-NOTIF-MIB.txt**:
 
 +----------------------------+-----------------------------------+
 | **Alert**                  | **OID**                           |                            
@@ -623,9 +623,9 @@ For the chassis partitions the following SNMP Traps are supported as of F5OS 1.2
 Enabling SNMP Traps in the CLI
 ------------------------------
 
-Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS layer. Specifiy your SNMP trap reciver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
+Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-Note: The **snmpTargetAddrTAddress** is currently uniintuitive and an enhacement request has been filed to simplify the IP address and port configuration. The Trap target ip configuration for SNMP is ip + port. The calculation for port 2 octet conversion is 1st octet port >> 8 and 2nd octet is port & 255. For a typical 161 UDP port trap receiver, The 1st octet is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.139 & 161 UDP port is "10.255.0.139.0.161"
+Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. The Trap target IP receiver, The 1st octet is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.139 & 161 UDP port is "10.255.0.139.0.161".
 
 
 .. code-block:: bash
@@ -646,9 +646,9 @@ Note: The **snmpTargetAddrTAddress** is currently uniintuitive and an enhacement
 Troubleshooting SNMP
 ====================
 
-There are SNMP logs within each appliance. SNMP information is captured in the **snmp.log** located with the **/log/system** directory in the F5OS layer:
+There are SNMP logs within each appliance. SNMP information is captured in the **snmp.log** file located with the **/log/system** directory in the F5OS layer:
 
-**Note: The CLI and GUI abstract the full paths for logs so that they are easier to find, if using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
+**Note: The CLI and GUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
 
 To list the files in the **log/system** directory in the CLI use the **file list path log/system** command:
 
@@ -684,7 +684,7 @@ To list the files in the **log/system** directory in the CLI use the **file list
     }
     r5900-2# 
 
-SNMP information is captured in the **snmp.log** located with the **log** directory of each appliance:
+SNMP information is captured in the **snmp.log** file located with the **log** directory of each appliance:
 
 
 .. code-block:: bash
