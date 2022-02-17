@@ -2,15 +2,15 @@
 BIG-IQ Support for rSeries
 ==========================
 
-Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP is in use. In iSeries a vCMP guest can be created via the host CLI, GUI, or API and it can then be imported into BIG-IQ as a device. From there statistics/analytics can be gathered, and L4-7 configurations can be managed in a variety of ways. An rSeries tenant will behave identical to a iSeries vCMP guest from a BIG-IQ perspective, meaning you can import it after it has been created to manage configuration or get analytics.
+Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP is in use. In iSeries, a vCMP guest can be created via the host CLI, WebUI, or API and it can then be imported into BIG-IQ as a device. From there, statistics/analytics can be gathered, and L4-7 configurations can be managed in a variety of ways. An rSeries tenant will behave identically to an iSeries vCMP guest from a BIG-IQ perspective, meaning you can import it after it has been created to manage configuration or get analytics.
 
-When an rSeries tenant is created it can be imported as a device into BIG-IQ. It will import just like any other BIG-IP instance or device.  Once imported it will show up with a Type of **BIG-IP Tenant**.
+When an rSeries tenant is created, it can be imported as a device into BIG-IQ. It will import just like any other BIG-IP instance or device.  Once imported, it will show up with a Type of **BIG-IP Tenant**.
 
 .. image:: images/bigiq_support_for_rseries/image1.png
   :align: center
   :scale: 70%
 
-rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO). Once a tenant is created via one of the rSeries F5OS interfaces you can run a DO declaration like the one below to BIG-IQ to provision, configure and import it. In the DO declaration you will specify a **targetHost** which is the IP address of the tenant to be onboarded. The following is an example of a DO declaration for onboarding an rSeries tenant:
+rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO). Once a tenant is created via one of the rSeries F5OS interfaces, you can run a DO declaration like the one below to BIG-IQ to provision, configure, and import it. In the DO declaration you will specify a **targetHost** which is the IP address of the tenant to be onboarded. The following is an example of a DO declaration for onboarding an rSeries tenant:
 
 .. code-block:: bash
 
@@ -153,10 +153,10 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
         }
     }
 
-Shortly after the declaration is sent to BIG-IQ you can see a new onboarding task. This will take a while to complete as it may require reboots of the tenant for module provisioning. After the tenant is onboarded it will be imported into BIG-IQ.
+Shortly after the declaration is sent to BIG-IQ, you can see a new onboarding task. This will take a while to complete as it may require reboots of the tenant for module provisioning. After the tenant is onboarded it will be imported into BIG-IQ.
 
 .. image:: images/bigiq_support_for_rseries/image2.png
   :align: center
   :scale: 70%
 
-At this point the rSeries tenant is managed just like any other BIG-IP device, or guest inside of BIG-IQ. You can manage software upgrades, create and restore backups, maintain configurations and gather analytics.
+At this point the rSeries tenant is managed just like any other BIG-IP device or guest inside of BIG-IQ. You can manage software upgrades, create and restore backups, maintain configurations, and gather analytics.
