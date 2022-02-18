@@ -517,7 +517,7 @@ You can enable SNMP traps for the F5OS layer. The **F5-CTRLR-ALERT-NOTIF-MIB* & 
 
 For the system controllers, the following SNMP Traps are supported as of F5OS 1.2.x as defined in the **F5-CTRLR-ALERT-NOTIF-MIB.txt**:
 
-SNMP Trap events that note a fault should also trigger an Alert that can be viewed in the show alters output, in the CLI, GUI, and API. Once the clear SNMP Trap is sent, it should clear the event form the show events output.
+SNMP Trap events that note a fault should also trigger an Alert that can be viewed in the show alters output, in the CLI, WebUI, and API. Once the clear SNMP Trap is sent, it should clear the event form the show events output.
 
 +----------------------------+----------------------------------+
 | **Alert**                  | **OID**                          |                            
@@ -648,7 +648,7 @@ Troubleshooting SNMP
 
 There are SNMP logs within each appliance. SNMP information is captured in the **snmp.log** file located with the **/log/system** directory in the F5OS layer:
 
-**Note: The CLI and GUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
+**Note: The CLI and WebUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
 
 To list the files in the **log/system** directory in the CLI use the **file list path log/system** command:
 

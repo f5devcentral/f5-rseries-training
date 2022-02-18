@@ -26,10 +26,10 @@ Here you can download the ISO file for F5OS along with checksum files and releas
   :scale: 70%
 
 
-Uploading F5OS Images via the GUI
+Uploading F5OS Images via the WebUI
 ---------------------------------
 
-You canupload F5OS-A images to the appliance via the GUI. This is done from the **System Settings -> Software Management** page.
+You canupload F5OS-A images to the appliance via the WebUI. This is done from the **System Settings -> Software Management** page.
 
 .. image:: images/rseries_software_upgrades/image4.png
   :align: center
@@ -45,7 +45,7 @@ Alternatively, you may also upload images to the controller through the **System
 
 
 
-After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and GUI. If you don’t see it immediately be patient and wait a few minutes for it to show up as it will not show up until the file has been verified. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
+After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and WebUI. If you don’t see it immediately be patient and wait a few minutes for it to show up as it will not show up until the file has been verified. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
 
 .. image:: images/rseries_software_upgrades/image6.png
   :align: center
@@ -353,9 +353,9 @@ The output will show the status for the OS, Service, ISO, and Install Status.
 Upgrading F5OS
 ==============
 
-You can upgrade the F5OS-A platform software via the CLI, GUI, or API. 
+You can upgrade the F5OS-A platform software via the CLI, WebUI, or API. 
 
-Upgrading F5OS via GUI
+Upgrading F5OS via WebUI
 ----------------------
 
 Once the new images are loaded you can perform the upgrade from the **System Settings > Software Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Select the software version you want to upgrade to, and once you click **Save** the upgrade process will begin. Upgrading F5OS will cause an outage for all tenants on that appliance. It is best to failover tenants to the HA pair member, then perform the upgrade of F5OS.
@@ -473,7 +473,7 @@ Tenant Images and Upgrades
 
 Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS tenants running v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on this versions of software. Tenant upgrades take place inside the tenants themselves, and images don't need to be loaded into the F5OS layer.
 
-Loading Tenant Images for New Tenants via GUI
+Loading Tenant Images for New Tenants via WebUI
 ---------------------------------------------
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 

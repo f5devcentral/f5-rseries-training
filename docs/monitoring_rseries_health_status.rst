@@ -2,7 +2,7 @@
 Montoring rSeries Health & Alert Status
 =====================================
 
-rSeries has many components and subsystems which can be monitored via CLI, GUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quicky provide health of the chassis. This section will provide guidance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
+rSeries has many components and subsystems which can be monitored via CLI, WebUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quicky provide health of the chassis. This section will provide WebUIdance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
 
 Active Alerts
 =============
@@ -266,10 +266,10 @@ To see past events use the command **show system events**.
 
 
 ------------------------------
-Checking Active Alerts via GUI
+Checking Active Alerts via WebUI
 ------------------------------
 
-In the F5OS GUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the the rSeries F5OS SNMP Monitoring and Alerting section.
+In the F5OS WebUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the the rSeries F5OS SNMP Monitoring and Alerting section.
 
 .. image:: images/monitoring_rseries_health_status/image1.png
   :align: center
@@ -3167,8 +3167,8 @@ After the full output below some CLI examples of how to filter all this informat
     container:event:stop               Container stop event                      ok      info      0      2021-09-24T20:42:30Z  
     container:running                  Container running                         ok      info      true   2022-01-24T06:10:38Z  
 
-    services appliance/services/vanquish-gui
-    state name vanquish-gui
+    services appliance/services/vanquish-WebUI
+    state name vanquish-WebUI
     state health ok
     state severity info
     NAME                               DESCRIPTION                               HEALTH  SEVERITY  VALUE  UPDATED AT            
@@ -3936,7 +3936,7 @@ You can also filter using this CLI command for better summaries. You can see tha
     state name utils-agent
     state health ok
     state severity info
-    state name vanquish-gui
+    state name vanquish-WebUI
     state health ok
     state severity info
     state name BIOS
@@ -16731,9 +16731,9 @@ This provides a very large output of all the subsystems and their subcomponents.
                                 }
                             },
                             {
-                                "key": "appliance/services/vanquish-gui",
+                                "key": "appliance/services/vanquish-WebUI",
                                 "state": {
-                                    "name": "vanquish-gui",
+                                    "name": "vanquish-WebUI",
                                     "health": "ok",
                                     "severity": "info"
                                 },

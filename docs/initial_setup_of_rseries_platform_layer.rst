@@ -75,7 +75,7 @@ The rSeries appliances ship with a default internal RFC6598 address space of 100
 
 This address range never leaves the inside of the appliance and will not interfere with any communication outside the rSeries device. There can however be address collisions if a device trying to manage rSeries via the out-of-band management port falls within this range, or an external management device or service falls within this range and attempts to communicate with rSeries over its out-of-band networking. This may result in rSeries control plane not able to communicate with those devices. In-band traffic is not affected by these internal addresses and they can overlap.
 
-Some examples would be any client trying to access the F5OS layer or tenant out-of-band interfaces to reach its’ CLI, GUI, or API. Other examples would be external services such as SNMP, DNS, NTP, SNMP, Authentication that have addresses that fall within the RFC6598 address space. You may experience connectivity problems with these types of clients/services if there is an overlap. Note that this does not affect the data plane / in-band interfaces, it only affects communication to the out-of-band interfaces. 
+Some examples would be any client trying to access the F5OS layer or tenant out-of-band interfaces to reach its’ CLI, WebUI, or API. Other examples would be external services such as SNMP, DNS, NTP, SNMP, Authentication that have addresses that fall within the RFC6598 address space. You may experience connectivity problems with these types of clients/services if there is an overlap. Note that this does not affect the data plane / in-band interfaces, it only affects communication to the out-of-band interfaces. 
 
 If there is the potential for conflict with external devices that fall within this range that need to communicate with rSeries, then there are options to change the configured-network-range-type to one of sixteen different blocks within the RFC1918 address space. Changing this will require a complete appliance power-cycle, rebooting is not sufficient.  Please consult with F5 prior to making any changes to the internal addresses.
 
@@ -143,7 +143,7 @@ In order to make these changes active you must commit the changes. No configurat
 
   Boston-r10900-1(config)# commit
 
-Now that the out-of-band address and routing are configured you can attempt to access the F5OS GUI via the IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
+Now that the out-of-band address and routing are configured you can attempt to access the F5OS WebUI via the IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
@@ -159,7 +159,7 @@ Here you can switch from static to DHCP address assignment, configure IPv6 addre
 System Settings
 ---------------
 
-Once the IP address has been defined system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, GUI, or API.
+Once the IP address has been defined system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, WebUI, or API.
 
 System Settings via the CLI
 ===========================
@@ -178,10 +178,10 @@ System Settings via the CLI
   Boston-r10900-1(config-remote-server-10.255.0.142)# exit
   Boston-r10900-1(config)# commit
 
-System Settings via the GUI
+System Settings via the WebUI
 ===========================
 
-You can configure the DNS and Time settings from the GUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, licensing, or to reach iHealth for qkview uploads.
+You can configure the DNS and Time settings from the WebUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers, and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like ntp, authentication servers, licensing, or to reach iHealth for qkview uploads.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
@@ -876,9 +876,9 @@ Licensing the rSeries Appliance
 
 Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different than iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost, however there are different levels of perfromance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
 
-Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
+Licenses can be applied via CLI, WebUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
-Licensing via GUI
+Licensing via WebUI
 =================
 
 
@@ -894,7 +894,7 @@ Licensing is accessible under the **System Settings > Licensing** page. **Automa
 Licensing via CLI
 =================
 
-You can activate and display the current license in the GUI, CLI or API. To license the rSeries appliance automatically from the CLI:
+You can activate and display the current license in the WebUI, CLI or API. To license the rSeries appliance automatically from the CLI:
 
 .. code-block:: bash
 
@@ -1055,7 +1055,7 @@ You can go back and review or edit various settings for the F5OS layer System Se
 Alarms and Events
 =================
 
-Alarms and Events can be viewed via the **System Settings > Alarms & Events** GUI page. You may optionally choose different severity levels to see more or less events. 
+Alarms and Events can be viewed via the **System Settings > Alarms & Events** WebUI page. You may optionally choose different severity levels to see more or less events. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image12.png
   :align: center
@@ -1185,7 +1185,7 @@ If you would like to store iHealth credentials within the configuration you may 
   password     password to login to iHealth
   server       Server for iHealth ex:-
                https://ihealth-api.f5.com/qkview-analyzer/api/qkviews?visible_i
-               n_gui=True
+               n_WebUI=True
   username     username to login to iHealth
 
   Boston-r10900-1(config)# system diagnostics ihealth config
@@ -1194,7 +1194,7 @@ If you would like to store iHealth credentials within the configuration you may 
 Configuration Backup
 ====================
 
-You may backup the confd configuration database for the F5OS platform layer via the GUI. The backups can then be copied off-box using the **File Utilities** GUI option. 
+You may backup the confd configuration database for the F5OS platform layer via the WebUI. The backups can then be copied off-box using the **File Utilities** WebUI option. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image28.png
   :align: center
@@ -1209,7 +1209,7 @@ Licensing
 
 Licensing for the rSeries appliance is handled at the F5OS level. This is similar to how iSeries licensing is handled with vCMP enabled, where the system is licensed once, and all subsystems inherit their licensing from the lower layer. With rSeries licensing is applied at the F5OS platform layer and tenants will inherit their licenses from the base system. There is no need to add-on licenses for MAX SSL/Compression or for tenancy. This is different than iSeries where there was an extra charge for virtualization/vCMP and ionly certain models supported multitennancy (Note the r2000 series will only support a single tenant). For rSeries these are included in the base license at no extra cost.
 
-Licenses can be applied via CLI, GUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
+Licenses can be applied via CLI, WebUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image30.png
   :align: center
@@ -1231,7 +1231,7 @@ User Management
 Auth Settings
 =============
 
-The F5OS platform has its own user and authentication management configured under the **User Management** section of the GUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
+The F5OS platform has its own user and authentication management configured under the **User Management** section of the WebUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image32.png
   :align: center

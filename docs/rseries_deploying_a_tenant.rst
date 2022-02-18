@@ -65,7 +65,7 @@ This is analogous to thin provisioning in a hypervisor where you can over-alloca
 Tenant Deployments
 ------------------
 
-Tenants can easily be deployed via the F5OS CLI, GUI, or API.
+Tenants can easily be deployed via the F5OS CLI, WebUI, or API.
 
 Tenant Deployment via CLI
 -------------------------
@@ -75,7 +75,7 @@ Uploading a Tenant Image via CLI
 
 Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries supported tenant version are v15.1.5 for the r5000 & r10000, and v15.1.6 for the r2000 & r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for intial deployment only.
 
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the GUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the WebUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
 
 .. code-block:: bash
 
@@ -261,13 +261,13 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
   1     1         Running  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle  2021-12-22T20:47:31Z  2021-12-22T20:47:32Z  Started tenant instance  00:94:a1:69:59:27  
 
 
-Tenant Deployment via GUI
+Tenant Deployment via WebUI
 -------------------------
 
-Uploading a Tenant Image via GUI
+Uploading a Tenant Image via WebUI
 ================================
 
-You can upload a tenant image via the GUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
+You can upload a tenant image via the WebUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
 
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
@@ -283,17 +283,17 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant. The second option in the GUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant. The second option in the WebUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_tenant/image50.png
   :align: center
   :scale: 70% 
 
 
-Creating a Tenant via GUI
+Creating a Tenant via WebUI
 =========================
 
-You can deploy a tenant from the GUI using the **Add** button in the **Tenant Management > Tenant Deployments** screen.
+You can deploy a tenant from the WebUI using the **Add** button in the **Tenant Management > Tenant Deployments** screen.
 
 .. image:: images/rseries_deploying_a_tenant/image74.png
   :align: center
@@ -306,10 +306,10 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
   :scale: 70% 
 
 
-Validating Tenant Status via GUI
+Validating Tenant Status via WebUI
 ================================
 
-Once the tenant is deployed you can monitor its status in the **Tenant Managment > Tenant Deployments** GUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
+Once the tenant is deployed you can monitor its status in the **Tenant Managment > Tenant Deployments** WebUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
 
 .. image:: images/rseries_deploying_a_tenant/image76.png
   :align: center
@@ -333,19 +333,19 @@ Finally when the tenant is fully up the Running Version should display the actua
   :align: center
   :scale: 70% 
 
-You can view a more detailed tenant status using the **Tenant Managment > Tenant Details** GUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
+You can view a more detailed tenant status using the **Tenant Managment > Tenant Details** WebUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
   :align: center
   :scale: 70% 
 
-At this point the tenant should be running and can be accessed via it's out-of-band management IP address. You can go to the **Dashboard** page in the GUI to see the running tenants, and there is a hyperlink that will connect to the tenant's GUI IP address as seen below.
+At this point the tenant should be running and can be accessed via it's out-of-band management IP address. You can go to the **Dashboard** page in the WebUI to see the running tenants, and there is a hyperlink that will connect to the tenant's WebUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
   :scale: 70% 
 
-Clicking on one of the hyperlinks will bring you to the BIG-IP GUI of that tenant, and you'll need to login with default credentials of admin/admin and at that point you will be prompted to change the password for the admin account.
+Clicking on one of the hyperlinks will bring you to the BIG-IP WebUI of that tenant, and you'll need to login with default credentials of admin/admin and at that point you will be prompted to change the password for the admin account.
 
 .. image:: images/rseries_deploying_a_tenant/image40.png
   :align: center
@@ -666,10 +666,10 @@ Resizing a Tenant
 
 rSeries tenants have static vCPU and memory allocations just like vCMP. These can be changed after a tenant has been deployed, but the tenant will have to be temporarily suspended (put in the **Provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the **Deployed** state and returned to service.
 
-Expanding a Tenant via GUI
+Expanding a Tenant via WebUI
 --------------------------
 
-Below is GUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
+Below is WebUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
 
 .. image:: images/rseries_deploying_a_tenant/image82.png
   :align: center
@@ -705,7 +705,7 @@ Next click on the hyperlink for tenant1. This will bring you into the configurat
 Expanding a Tenant via CLI
 --------------------------
 
-Expanding a tenant via the CLI follows the same workflows as the GUI. You must first put the tenant in a **Provisioned** state, and then make configuration changes, and then change back to **Deployed** state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
+Expanding a tenant via the CLI follows the same workflows as the WebUI. You must first put the tenant in a **Provisioned** state, and then make configuration changes, and then change back to **Deployed** state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
 
 .. code-block:: bash
 
@@ -1063,7 +1063,7 @@ The API output:
 Deleting a Tenant
 -----------------
 
-If you need to delete a tenant it can be removed from the F5OS CLI, GUI, or API.
+If you need to delete a tenant it can be removed from the F5OS CLI, WebUI, or API.
 
 Deleting a Tenant via the CLI
 -----------------------------
@@ -1084,10 +1084,10 @@ To delete a teant from the CLI enter **config** mode and then enter the command 
     Boston-r10900-1# 
 
 
-Deleting a Tenant via the GUI
+Deleting a Tenant via the WebUI
 -----------------------------
 
-To delete a teant from the GUI go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
+To delete a teant from the WebUI go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
 
 .. image:: images/rseries_deploying_a_tenant/image88.png
   :align: center
