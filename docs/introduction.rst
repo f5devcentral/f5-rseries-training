@@ -24,7 +24,7 @@ rSeries continues to provide hardware acceleration and offload capabilities in a
 
 .. image:: images/rseries_introduction/image1.png
   :align: center
-  :scale: 40%
+  :scale: 30%
 
 
 
