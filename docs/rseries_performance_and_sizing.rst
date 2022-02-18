@@ -105,13 +105,13 @@ Each rSeries 4800 model has 16 CPU’s (The 4000 platform does not utilize hyper
 
 .. image:: images/rseries_performance_and_sizing/image16.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 The r4600 model has 16 CPU’s (The 4000 platform does not utilize hyperhreading / vCPU's). No CPU’s are dedicated to the F5OS platform layer which is different than the mid-range and high-end rSeries appliances. In the r4600 8 CPU’s are available to be assigned to tenants and 8 are disabled via licensing. The diagram below depicts the r4600 vCPU allocation: 
 
 .. image:: images/rseries_performance_and_sizing/image17.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 r2000 vCPU Sizing
 ------------------
