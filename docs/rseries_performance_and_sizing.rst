@@ -96,7 +96,7 @@ The r5600 model has 32 vCPU’s, but 6 of those vCPU’s are reserved for use by
 
 .. image:: images/rseries_performance_and_sizing/image15.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 r4000 vCPU Sizing
 ------------------
