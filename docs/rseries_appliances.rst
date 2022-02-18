@@ -23,7 +23,7 @@ Note that adjacent highspeed (40Gb / 100Gb) ports (**1.0** & **2.0** or **11.0**
 
 .. image:: images/rseries_appliances/image1b.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 The r10000 appliance has a single 10Gb Ethernet out-of-band management port, a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high- level LEDs provide Status, Alarm, and power supply status. The appliance also has an LCD panel.
 
