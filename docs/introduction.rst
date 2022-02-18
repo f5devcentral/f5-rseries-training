@@ -2,7 +2,7 @@
 Introduction
 =============
 
-rSeries is F5’s next generation appliance-based solution that replaces the current iSeries platforms. rSeries platforms have many advantages over the current iSeries architecture. This guide highlights the major differences between the two architectures as well as providing details on how to configure, monitor, and troubleshoot the new platforms so that customers understand how rSeries fits within their existing environments. 
+rSeries is F5’s next generation appliance-based solution that replaces the current iSeries platforms. rSeries platforms have many advantages over the current iSeries architecture. This WebUIde highlights the major differences between the two architectures as well as providing details on how to configure, monitor, and troubleshoot the new platforms so that customers understand how rSeries fits within their existing environments. 
 
 
 rSeries Overview
@@ -12,7 +12,7 @@ rSeries Overview
 Kubernetes-Based Platform Layer
 -------------------------------
 
-A major difference between rSeries and iSeries is the introduction of a new Kubernetes-based platform layer (called F5OS) that allows for some exciting new capabilities. Customers don’t need to learn Kubernetes in order to manage the new appliances; it is abstracted from the administrator who will be able to manage the new platform layer via familiar F5 CLI, GUI, or API interfaces. 
+A major difference between rSeries and iSeries is the introduction of a new Kubernetes-based platform layer (called F5OS) that allows for some exciting new capabilities. Customers don’t need to learn Kubernetes in order to manage the new appliances; it is abstracted from the administrator who will be able to manage the new platform layer via familiar F5 CLI, WebUI, or API interfaces. 
 
 rSeries continues to provide hardware acceleration and offload capabilities in a similar way that iSeries does, however, more modern Field Programmable Gate Arrays (FPGA's), CPU, and crypto offload capabilities have been introduced. The new F5OS platform layer allows rSeries to run different types of tenants within the same appliance. As an example, rSeries will be able to run:
 
@@ -28,7 +28,7 @@ rSeries continues to provide hardware acceleration and offload capabilities in a
 
 
 
-Customers can migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest running on the VIPRION or iSeries platforms. Once inside the tenant, the management experience is similar to the experience on existing BIG-IP platforms. The BIG-IP tenant is managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator connects directly to the tenant’s GUI, CLI, or API and has the same experience as they have with their existing platforms. 
+Customers can migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest running on the VIPRION or iSeries platforms. Once inside the tenant, the management experience is similar to the experience on existing BIG-IP platforms. The BIG-IP tenant is managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator connects directly to the tenant’s WebUI, CLI, or API and has the same experience as they have with their existing platforms. 
 
 In the future, BIG-IP (Modular Architecture) tenants will be supported within the same rSeries appliance (except on the r2000 series, which supports one tenant only), which allows customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What differs is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
@@ -60,7 +60,7 @@ For the 2000 and 4000 models, the number of PAYG tiers remains the same as the c
 The Kubernetes Control Plane
 ----------------------------
 
-rSeries utilizes an open source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releaases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, GUI, or API’s. 
+rSeries utilizes an open source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releaases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, WebUI, or API’s. 
 
 A combination of Docker Compose and Kubernetes is used within the F5OS rSeries platform layer. The Docker Compose component brings up the software stacks as they need to be fully functional early in the startup process. Then the Kubernetes component takes over and is responsible for deploying workloads to the proper CPU's. 
 
@@ -68,7 +68,7 @@ A combination of Docker Compose and Kubernetes is used within the F5OS rSeries p
   :align: center
   :scale: 80%
 
-The diagram above is somewhat simplified as it shows a single software stack for the Kubernetes control plane. There is a software stack for the F5OS layer that provides F5OS CLI, GUI, and API management for the appliance  as well as support for the networking services such as stpd, lldpd, lacpd, that get deployed as workloads.
+The diagram above is somewhat simplified as it shows a single software stack for the Kubernetes control plane. There is a software stack for the F5OS layer that provides F5OS CLI, WebUI, and API management for the appliance  as well as support for the networking services such as stpd, lldpd, lacpd, that get deployed as workloads.
 
 The Kubernetes control plane is responsible for deploying workloads. This would happen when tenants are configured. We won’t get too deep into the Kubernetes architecture as its not required to manage the rSeries Appliance. Know that the Kubernetes platform layer will allow F5 to introduce exciting new features in the future, but F5 will continue to provide abstracted interfaces for ease of management. By leveraging microservices and containers, F5 may be able to introduce new options such as shared multitenancy and dynamic scaling in the future. These are features that were not supported on iSeries.
 
