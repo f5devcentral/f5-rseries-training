@@ -61,10 +61,10 @@ You can then list the contents of that directory to ensure the file is there usi
     appliance-1# 
 
 
-Backing Up F5OS via WebUI
+Backing Up F5OS via webUI
 -----------------------
 
-Using the F5OS WebUI you can backup the ConfD configuration database using the **System Settings -> Configuration Backup** page. Click the **Create** button and provide a name for the backup file.
+Using the F5OS webUI you can backup the ConfD configuration database using the **System Settings -> Configuration Backup** page. Click the **Create** button and provide a name for the backup file.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image1.png
   :align: center
@@ -91,17 +91,17 @@ In the body of the API call you can specifiy the file name you want to save the 
         "f5-database:name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
 
-**Note: In the current F5OS releases, the ConfD system database can be backed up via CLI/WebUI/API but it cannot be restored using the F5OS WebUI. This will be added in a subsequent release.**
+**Note: In the current F5OS releases, the ConfD system database can be backed up via CLI/webUI/API but it cannot be restored using the F5OS webUI. This will be added in a subsequent release.**
 
 Exporting F5OS Backup to an External Location
 =============================================
 
-Once the database backup has been completed, you should copy the file to an external location so that the system can be restored in the case of a total failure. You can download the database configuration backup using the CLI, WebUI, or API. 
+Once the database backup has been completed, you should copy the file to an external location so that the system can be restored in the case of a total failure. You can download the database configuration backup using the CLI, webUI, or API. 
 
-Exporting F5OS Backup via WebUI
+Exporting F5OS Backup via webUI
 ------------------------------
 
-In the WebUI, use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the WebUI require an external HTTPS server. The **Upload** and **Download** options allows for a browser to upload/download from the client's local machine.
+In the webUI, use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the webUI require an external HTTPS server. The **Upload** and **Download** options allows for a browser to upload/download from the client's local machine.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
@@ -166,7 +166,7 @@ The **file transfer-status** command will show the upload of the SCP transfer as
     1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 15 20:45:29 2022
     2    |Export file|SCP     |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/var/www/server/1/upload/rSeries-59002-backup-1-16-2022     |         Completed|Sat Jan 15 20:48:29 2022
 
-If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and WebUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/F5/system/configs** directory. Note that this is not an option if the appliance has been configured in Appliance Mode, which disables bash/shell access.
+If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and webUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/F5/system/configs** directory. Note that this is not an option if the appliance has been configured in Appliance Mode, which disables bash/shell access.
 
 .. code-block:: bash
 
@@ -230,7 +230,7 @@ UCS Backup is covered in the following solution article on askf5:
 
 https://support.f5.com/csp/article/K13132
 
-The following video provides a demo of backing up UCS files from the BIG-IP WebUI; this is the same for rSeries tenants.
+The following video provides a demo of backing up UCS files from the BIG-IP webUI; this is the same for rSeries tenants.
 
 .. raw:: html
 
@@ -242,7 +242,7 @@ You can also use BIG-IQ to back up rSeries tenants.
 https://techdocs.f5.com/en-us/bigiq-8-0-0/managing-big-ip-devices-from-big-iq/backup-file-management.html
 
 
-The following video provides a demo of backing up UCS files from the BIG-IQ WebUI, this is the same for rSeries tenants.
+The following video provides a demo of backing up UCS files from the BIG-IQ webUI, this is the same for rSeries tenants.
 
 .. raw:: html
 
@@ -289,7 +289,7 @@ After resettting the system database, reboot the system to ensure the configurat
 Resetting the system via API
 ----------------------------
 
-There is no WebUI support for this functionality currently. To do this via API call, you will need to send the following API call to the F5OS IP address. Below is an example of sending the database reset to default command:
+There is no webUI support for this functionality currently. To do this via API call, you will need to send the following API call to the F5OS IP address. Below is an example of sending the database reset to default command:
 
 .. code-block:: bash
 
@@ -312,10 +312,10 @@ After resettting the system database reboot the system to ensure the configurati
 
 
 
-Resetting the system via WebUI
+Resetting the system via webUI
 ----------------------------
 
-Currently there is no option to reset the system via the WebUI; a reset must be performed via API or CLI.
+Currently there is no option to reset the system via the webUI; a reset must be performed via API or CLI.
 
 
 Copying Archived Configs into F5OS
@@ -474,7 +474,7 @@ You’ll see the contents of the directory in the API response and the file shou
     }
 
 
-Changing the Default Password and Importing F5OS Backups via WebUI
+Changing the Default Password and Importing F5OS Backups via webUI
 ----------------------------------------------------------------
 
 You can use the **System Settings -> File Utilities** page to import an archived F5OS backup from a remote HTTPS server. Use the drop-down option for **Base Directory** and choose **configs** to see the current files in that directory, and to import or export files. Choose the **Import** option and a popup will appear asking for the details of how to obtain the remote file. You can optionally use the **Upload** option to upload a backup from your client machine through the browser.
@@ -539,10 +539,10 @@ The body/payload must include the text below to specifiy the file to be restored
 
 The system should restore the F5OS and start any tenant configurations. You may need to copy a tenant image into F5OS if it has been deleted. 
 
-Restore Using the WebUI
+Restore Using the webUI
 ---------------------
 
-Currently there is no WebUI support for restoration of the ConfD database, so you’ll need to use either the CLI or API to restore the F5OS database. Once the database has been restored, you may need to wait a few minutes for the restoration to complete.
+Currently there is no webUI support for restoration of the ConfD database, so you’ll need to use either the CLI or API to restore the F5OS database. Once the database has been restored, you may need to wait a few minutes for the restoration to complete.
 
 Restoring Tenants from a UCS Backup
 ====================================

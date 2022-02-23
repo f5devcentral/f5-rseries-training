@@ -42,16 +42,16 @@ Before configuring any tenants, you’ll need to setup networking for the F5OS p
 Network Settings - > Port Groups
 ================================
 
-Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match on the adjacent high speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, WebUI or API.
+Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match on the adjacent high speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
   :scale: 70% 
 
-Configuring PortGroups from the WebUI
+Configuring PortGroups from the webUI
 -----------------------------------
 
-To configure Portgroups go to **Network Settings > Port Groups** in the F5OS WebUI. This should be configured before any Interface, VLAN, or LAG configuration. 
+To configure Portgroups go to **Network Settings > Port Groups** in the F5OS webUI. This should be configured before any Interface, VLAN, or LAG configuration. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image6.png
   :align: center
@@ -955,16 +955,16 @@ Interface numbering will vary depending on which rSeries model is being used. In
   :align: center
   :scale: 70% 
 
-Configuring Interfaces from the WebUI
+Configuring Interfaces from the webUI
 -----------------------------------
 
-Within the F5OS WebUI the physical ports of the appliance will be visible by going to **Network Settings > Interfaces** page. 
+Within the F5OS webUI the physical ports of the appliance will be visible by going to **Network Settings > Interfaces** page. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image10.png
   :align: center
   :scale: 70% 
 
-You can click on any interface to view its settings or edit them. You can currently change the interface State via the WebUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
+You can click on any interface to view its settings or edit them. You can currently change the interface State via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center
@@ -2404,14 +2404,14 @@ Network Settings -> VLANs
 
 All in-band networking including VLANs are configured in the F5OS layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by rSeries tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the F5OS layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAG’s and VLANs. 
 
-rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, WebUI, or API.
+rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, webUI, or API.
 
 **Note: 802.1Q-in-Q (double VLAN tagging) is not currently supported on the rSeries platform.**
 
-Configuring VLANs from the WebUI
+Configuring VLANs from the webUI
 ------------------------------
 
-VLANs can be created in the F5OS WebUI under **Network Settings > VLANs**. When adding a new VLAN you will define a **Name** and a **VLAN ID**. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a **Native VLAN** or tagged by adding it as a **Trunked VLAN**.
+VLANs can be created in the F5OS webUI under **Network Settings > VLANs**. When adding a new VLAN you will define a **Name** and a **VLAN ID**. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a **Native VLAN** or tagged by adding it as a **Trunked VLAN**.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image12.png
   :align: center
@@ -2639,10 +2639,10 @@ Network Settings -> LAGs
 
 All in-band networking including Link Aggregation Groups (LAGs) are configured in the F5OS layer. The admin will configure interfaces and/or LAGs and they will assign VLANs to those physical interfaces or LAGs. Tenants will then inherit the VLANs that are assigned to them when they are created. It is recommended to spread LAG members across internal rSeries pipelines for added redundancy and optimal performance. 
 
-Configuring LAGs from the WebUI
+Configuring LAGs from the webUI
 -----------------------------
 
-Link Aggregation Groups (LAGs) can be configured in the F5OS WebUI via the **Network Settings > LAGs** page:
+Link Aggregation Groups (LAGs) can be configured in the F5OS webUI via the **Network Settings > LAGs** page:
 
 .. image:: images/initial_setup_of_rseries_network_layer/image14.png
   :align: center
@@ -2654,7 +2654,7 @@ https://support.f5.com/csp/article/K1689
 
 https://support.f5.com/csp/article/K13142
 
-The following solution article provides WebUIdance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches and this would be similar WebUIdance for rSeries:
+The following solution article provides webUIdance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches and this would be similar webUIdance for rSeries:
 
 https://support.f5.com/csp/article/K33431212
 
@@ -2668,7 +2668,7 @@ Once you have configured the LAG Type and LACP options, you can add any physical
 Configuring LAGs from the CLI
 -----------------------------
 
-Within the WebUI LAGs and LACP parameters are configured within the LAG WebUI pages. In the CLI they are broken out into separate areas. First enter **config** mode and then use the following interface commands to configure the aggregation and LACP:
+Within the webUI LAGs and LACP parameters are configured within the LAG webUI pages. In the CLI they are broken out into separate areas. First enter **config** mode and then use the following interface commands to configure the aggregation and LACP:
 
 .. code-block:: bash
 

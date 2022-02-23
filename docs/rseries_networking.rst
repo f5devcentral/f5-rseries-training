@@ -16,14 +16,14 @@ This allows customers to run a secure/locked-down out-of-band management network
 Port Groups
 ===========
 
-The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, WebUI or API.
+The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
 
 .. image:: images/rseries_networking/image2.png
   :align: center
 
 
-Below is an example of the F5OS WebUI **Port Groups** screen on a r10000 Series appliance. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
+Below is an example of the F5OS webUI **Port Groups** screen on a r10000 Series appliance. Note that any changes in configuration will require a reboot of the appliance to load a new FPGA bitstream image.
 
 .. image:: images/rseries_networking/image3.png
   :align: center
@@ -45,7 +45,7 @@ Only F5 branded optics are officially supported on rSeries appliances. On rSerie
 
 https://support.f5.com/csp/article/K8153. 
 
-More details on each optic can be found in the F5 Platforms Accessories WebUIde:
+More details on each optic can be found in the F5 Platforms Accessories webUIde:
 
 https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html
 
@@ -192,7 +192,7 @@ the diagram below shows the 4 total piplines and ports for the r10000 appliances
 
  
 
-You can view the front panel port to pipeline mapping in the CLI, WebUI, or API of F5OS.
+You can view the front panel port to pipeline mapping in the CLI, webUI, or API of F5OS.
 
 .. image:: images/rseries_networking/image8.png
   :align: center

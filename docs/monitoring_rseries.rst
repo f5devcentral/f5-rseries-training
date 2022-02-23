@@ -5,7 +5,7 @@ Monitoring rSeries
 
 With the introduction of a new F5OS platform layer, anyone deploying rSeries will need to know the important things for them to monitor to ensure proper health and performance of the system. In addition to getting F5’s recommendation on what to monitor, administrators will require details on how to get access to that information. 
 
-Some admins may want CLI commands to monitor, or API calls to query the system, and others may prefer the WebUI. Many customers also use SNMP to monitor and be alerted of system issues and events. For SNMP integrations F5 will provide specific SNMP OID’s that an admin can monitor, and what traps are available for alerting. The following sections will outline what sort of monitoring and alerting is available with the new F5OS layer in rSeries. Alerting/monitoring inside the tenants themselves does not change except at the lower network layers.
+Some admins may want CLI commands to monitor, or API calls to query the system, and others may prefer the webUI. Many customers also use SNMP to monitor and be alerted of system issues and events. For SNMP integrations F5 will provide specific SNMP OID’s that an admin can monitor, and what traps are available for alerting. The following sections will outline what sort of monitoring and alerting is available with the new F5OS layer in rSeries. Alerting/monitoring inside the tenants themselves does not change except at the lower network layers.
 
 Accessing the F5OS API
 ======================
@@ -1592,7 +1592,7 @@ Show VLAN-Listeners via CLI
     r5900-2# 
 
 ---------------------------------------
-Software Health and Status from the WebUI
+Software Health and Status from the webUI
 ---------------------------------------
 
 The rSeries Dashboard will provide a visual system summary of the appliance including System Summary, Network, CPU, and Active Alarms. It will also list the total number of vCPU’s available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters.
@@ -14946,9 +14946,9 @@ The following API call displays the details used to feed the overall system heal
                                 }
                             },
                             {
-                                "key": "appliance/services/vanquish-WebUI",
+                                "key": "appliance/services/vanquish-webUI",
                                 "state": {
-                                    "name": "vanquish-WebUI",
+                                    "name": "vanquish-webUI",
                                     "health": "ok",
                                     "severity": "info"
                                 },

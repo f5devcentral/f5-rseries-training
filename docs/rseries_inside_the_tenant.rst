@@ -3,7 +3,7 @@ rSeries Inside the Tenant
 =========================
 
 
-Once a tenant is deployed you can connect/communicate directly to one of its CLI, WebUI, or API interfaces. At this layer you are interacting with TMOS, i.e. the experience should be almost identical to a vCMP guest with some minor exceptions. Day to day management of the tenant will use the same CLI (tmsh), API (iControl) and WebUI as TMOS instances or hardware devices running within customer envronments today. If you are using vCMP today, then many of the concepts will be familiar. If you run and iSeries appliance or VIPRION in a bare metal mode, then there will be some differences as rSeries will be configured with at least one tenant, and lower layer configuration and stats will come from the F5OS layer.
+Once a tenant is deployed you can connect/communicate directly to one of its CLI, webUI, or API interfaces. At this layer you are interacting with TMOS, i.e. the experience should be almost identical to a vCMP guest with some minor exceptions. Day to day management of the tenant will use the same CLI (tmsh), API (iControl) and webUI as TMOS instances or hardware devices running within customer envronments today. If you are using vCMP today, then many of the concepts will be familiar. If you run and iSeries appliance or VIPRION in a bare metal mode, then there will be some differences as rSeries will be configured with at least one tenant, and lower layer configuration and stats will come from the F5OS layer.
 
 VLAN Behavior
 =============

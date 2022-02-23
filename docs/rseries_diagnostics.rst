@@ -24,7 +24,7 @@ The qkview utility on the rSeries system generates machine-readable JavaScript O
 
 Note: F5 Support requires a QKView file in all cases in which remote access to the product is not available.
 
-Qkview Creation and Upload via WebUI
+Qkview Creation and Upload via webUI
 ----------------------------------
 
 
@@ -208,7 +208,7 @@ In the F5OS CLI the paths are simplified so that you don’t have know the under
     audit.log                      confd.log          devel.log     devel.log.1    lcd.log           lcd.log.1           lcd.log.2.gz       
     lcd.log.3.gz                   lcd.log.4.gz       lcd.log.5.gz  logrotate.log  logrotate.log.1   logrotate.log.2.gz  platform.log       
     reprogram_chassis_network.log  rsyslogd_init.log  snmp.log      startup.log    startup.log.prev  trace/              vconsole_auth.log  
-    vconsole_startup.log           velos.log          webui/        
+    vconsole_startup.log           velos.log          webUI/        
     appliance-1# file list path log/system/
 
 To view the contents of the **platform.log** file use the command **file show path /log/system/platform.log**. This will show the entire log file from the beginning, and may not be the best way to troubleshoot a recent event:
@@ -316,7 +316,7 @@ Within the bash shell the path for the logging is different it is **/var/F5/syst
     -rw-r--r--.  1 root root      3381 Jan 17 05:17 vconsole_auth.log
     -rw-r--r--.  1 root root     18817 Jan 17 05:17 vconsole_startup.log
     -rw-r--r--.  1 root root 209193620 Oct 18 16:46 velos.log
-    drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webui
+    drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webUI
     [root@appliance-1 /]# 
 
 If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take affect. Be sure to set logging levels back to normal after troubleshooting has completed.
@@ -352,10 +352,10 @@ If you would like to change any of the logging levels via the CLI you must be in
     Commit complete.
     appliance-1(config-sw-component-lacpd)# 
   
-Viewing Logs from the WebUI
+Viewing Logs from the webUI
 --------------------------
 
-In the intial release you cannot view the F5OS logs directly from the WebUI, although you can download them from the WebUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the WebUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the intial release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
@@ -369,7 +369,7 @@ If you want to download the main **platform.log** select the directoy **/log/sys
   :scale: 70%
 
 
-Currently F5OS WebUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbosity going to the remote logging host, you can raise its severity to see additional messages.
+Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbosity going to the remote logging host, you can raise its severity to see additional messages.
 
 .. image:: images/rseries_diagnostics/image6.png
   :align: center

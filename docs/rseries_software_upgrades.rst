@@ -6,7 +6,7 @@ rSeries Software Upgrades
 F5OS-A Platform Layer Upgrades
 ==============================
 
-rSeries appliances ship with a new platform layer software called F5OS. There are two different flavors of F5OS, one for VELOS chassis based systems called F5OS-C (C is for Chassis), and F5OS-A (A is for Appliances) for rSeries appliances. The F5OS platform layer is upgraded independently from the tenant layer, and has its own unique image which can be downloaded from downloads.f5.com. Below is the default page for downloads.f5.com, note the **F5OS** section under **F5 Product Family** and under **Product Line** select **F5OS Appliance Software**. Click the hyperlink for this section.
+rSeries appliances ship with a new platform layer software called F5OS. There are two different flavors of F5OS, one for VELOS chassis based systems called F5OS-C (Chassis), and F5OS-A (Appliances) for rSeries appliances. The F5OS platform layer is upgraded independently from the tenant layer, and has its own unique image, which can be downloaded from downloads.f5.com. Below is the default page for downloads.f5.com; note the **F5OS** section under **F5 Product Family** and under **Product Line** select **F5OS Appliance Software**. Click the hyperlink for this section.
 
 
 .. image:: images/rseries_software_upgrades/image1.png
@@ -26,18 +26,18 @@ Here you can download the ISO file for F5OS along with checksum files and releas
   :scale: 70%
 
 
-Uploading F5OS Images via the WebUI
+Uploading F5OS Images via the webUI
 ---------------------------------
 
-You canupload F5OS-A images to the appliance via the WebUI. This is done from the **System Settings -> Software Management** page.
+You canupload F5OS-A images to the appliance via the webUI. This is done from the **System Settings -> Software Management** page.
 
 .. image:: images/rseries_software_upgrades/image4.png
   :align: center
   :scale: 70%
 
-Here you'll have the option to **Upload** or **Import** a new F5OS image. If you choose **Import** you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. If you choose **Upload** then you'll be able to upload an image directly from your local client machine via the browser. 
+Here you'll have the option to **Upload** or **Import** a new F5OS image. If you choose **Import**, you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. If you choose **Upload** you will be able to upload an image directly from your local client machine via the browser. 
 
-Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area they will be imported and made available for upgrades after a brief delay.
+Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area, they will be imported and made available for upgrades after a brief delay.
 
 .. image:: images/rseries_software_upgrades/image5.png
   :align: center
@@ -45,13 +45,13 @@ Alternatively, you may also upload images to the controller through the **System
 
 
 
-After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and WebUI. If you don’t see it immediately be patient and wait a few minutes for it to show up as it will not show up until the file has been verified. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
+After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and webUI. If you don’t see it immediately, be patient and wait a few minutes for it to show up as it will not show up until the file has been verified. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
 
 .. image:: images/rseries_software_upgrades/image6.png
   :align: center
   :scale: 70%
 
-When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled** where you can upgrade Service and/or OS independently. Note currently F5 has not released any Service only or OS only releases, but they may be an option in the future. For now it is recommended to choose **Bundled** upgrades.
+When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release, meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled**, where you can upgrade Service and/or OS independently. Note that currently F5 has not released any Service only or OS only releases, but they may be an option in the future. For now it is recommended to choose **Bundled** upgrades.
 
 .. image:: images/rseries_software_upgrades/image7.png
   :align: center
@@ -167,7 +167,7 @@ You can then query the **images/import** directory for various image types like 
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
-For the body you can enter the specific path you want to query. i.e. /images/import/<path> where path can be **iso**, **service**, or **os**:
+For the body you can enter the specific path you want to query. For example /images/import/<path> where path can be **iso**, **service**, or **os**:
 
 .. code-block:: json
 
@@ -266,7 +266,7 @@ You can then monitor the images/import/iso directory to see when the file is rea
     "f5-utils-file-transfer:path": "images/import/iso"
     }
 
-You’ll see output similar to the example below. Once the file shows up here you are ready to upgrade.
+You will see output similar to the example below. Once the file shows up here you are ready to upgrade.
 
 .. code-block:: json
 
@@ -353,9 +353,9 @@ The output will show the status for the OS, Service, ISO, and Install Status.
 Upgrading F5OS
 ==============
 
-You can upgrade the F5OS-A platform software via the CLI, WebUI, or API. 
+You can upgrade the F5OS-A platform software via the CLI, webUI, or API. 
 
-Upgrading F5OS via WebUI
+Upgrading F5OS via webUI
 ----------------------
 
 Once the new images are loaded you can perform the upgrade from the **System Settings > Software Management** screen. Currently it is recommended you use the **Bundled** option to upgrade using the ISO. In the future there may be cases where **Unbundled** (separate OS or Service upgrades) are recommended. Select the software version you want to upgrade to, and once you click **Save** the upgrade process will begin. Upgrading F5OS will cause an outage for all tenants on that appliance. It is best to failover tenants to the HA pair member, then perform the upgrade of F5OS.
@@ -432,7 +432,7 @@ The body of the API should contain the version you want to upgrade to:
         }
     }
 
-If the compatability check passes then you will get a message like the one below, and it is safe to install the new image via the set-version API call:
+If the compatability check passes, then you will get a message like the one below, and it is safe to install the new image via the set-version API call:
 
 .. code-block:: json
 
@@ -473,12 +473,12 @@ Tenant Images and Upgrades
 
 Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS tenants running v15.1.5. No other TMOS versions are supported other than hotfixes or rollups based on this versions of software. Tenant upgrades take place inside the tenants themselves, and images don't need to be loaded into the F5OS layer.
 
-Loading Tenant Images for New Tenants via WebUI
+Loading Tenant Images for New Tenants via webUI
 ---------------------------------------------
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
-There is an option to **Import** new releases which will open a pop-up window that will ask for remote host, path and optional authentication parameters. You may only upload from a remote HTTPS server using this option.  The **Tenant Images** page will also indicate if an image is in use by a tenant, and if the image has been Verified. 
+There is an option to **Import** new releases which will open a pop-up window that will ask for remote host, path, and optional authentication parameters. You may only upload from a remote HTTPS server using this option.  The **Tenant Images** page will also indicate if an image is in use by a tenant, and if the image has been verified. 
 
 .. image:: images/rseries_software_upgrades/image9.png
   :align: center
@@ -489,9 +489,9 @@ There is an option to **Import** new releases which will open a pop-up window th
   :align: center
   :scale: 70%
 
-There is also an option to **Upload** a tenant release, this will allow you to upload an image directly from your client machine through the browser.
+There is also an option to **Upload** a tenant release; this will allow you to upload an image directly from your client machine through the browser.
 
-If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using scp directly to the appliance. Simply scp an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
+If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using SCP directly to the appliance. Simply SCP an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
 
 .. code-block:: bash
 
@@ -537,7 +537,7 @@ You can view the current tenant images and their status in the F5OS CLI using th
 Loading Tenant Images for New Tenants via API
 ---------------------------------------------
 
-To copy a tenant image into F5OS over tha API use the following API call to the F5OS out-of-band management IP address:
+To copy a tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address:
 
 .. code-block:: bash
 
@@ -558,7 +558,7 @@ To copy a tenant image into F5OS over tha API use the following API call to the 
         ]
     }
 
-To list the current tenant images available on the appliance use the following API Call:
+To list the current tenant images available on the appliance, use the following API Call:
 
 .. code-block:: bash
 
@@ -629,7 +629,7 @@ Below is output generated from the previous command:
 Tenant Upgrades
 ---------------
 
-Tenants are upgraded via the normal TMOS upgrade process. Find the proper ISO image and ensure it is of a supported rSeries release, and upload it into the TMOS tenant. Once uploaded you can upgrade and boot into the new version. Currently rSeries does not allow an upgrade of the tenant from inside the F5OS layer, you must perform the upgrade from inside the tenant.
+Tenants are upgraded via the normal TMOS upgrade process. Find the proper ISO image and ensure it is of a supported rSeries release, and upload it into the TMOS tenant. Once uploaded you can upgrade and boot into the new version. Currently rSeries does not allow an upgrade of the tenant from inside the F5OS layer; you must perform the upgrade from inside the tenant.
 
 **NOTE: Currently rSeries does not provide a shared image repository for all tenants to upgrade from. With vCMP guests, iSeries allowed for an image to be loaded once into the host layer, and all tenants had access to that repository to use to upgrade.**
 

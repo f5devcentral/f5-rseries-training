@@ -2,7 +2,7 @@
 BIG-IQ Support for rSeries
 ==========================
 
-Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP is in use. In iSeries, a vCMP guest can be created via the host CLI, WebUI, or API and it can then be imported into BIG-IQ as a device. From there, statistics/analytics can be gathered, and L4-7 configurations can be managed in a variety of ways. An rSeries tenant will behave identically to an iSeries vCMP guest from a BIG-IQ perspective, meaning you can import it after it has been created to manage configuration or get analytics.
+Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP is in use. In iSeries, a vCMP guest can be created via the host CLI, webUI, or API and it can then be imported into BIG-IQ as a device. From there, statistics/analytics can be gathered, and L4-7 configurations can be managed in a variety of ways. An rSeries tenant will behave identically to an iSeries vCMP guest from a BIG-IQ perspective, meaning you can import it after it has been created to manage configuration or get analytics.
 
 When an rSeries tenant is created, it can be imported as a device into BIG-IQ. It will import just like any other BIG-IP instance or device.  Once imported, it will show up with a Type of **BIG-IP Tenant**.
 
