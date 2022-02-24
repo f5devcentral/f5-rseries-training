@@ -19,7 +19,7 @@ Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSe
   :align: center
   :scale: 70%
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPU’s assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPU's, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPU's for tennancy.
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPUs for tennancy.
 
 +-----------------------+--------------------+--------------------------+-----------------+-----------------+
 | **Tenant Size**       | **Physical Cores** | **Logical Cores (vCPU)** | **Min GB RAM**  | **RAM/vCPU**    |
@@ -65,7 +65,7 @@ For resource provisioning you can use **Recommended** settings or **Advanced** s
 
 Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra RAM is available for tenants beyond the recommended values.
 
-Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r19000 Series tenants, leaving ~102GB of additional RAM. You may over-allocate RAM to any tenant until the extra  all 231GB RAM is depleted. The toal amount of RAM available for tenants is different on the r10000 vs. the r5000 appliances. And because the x600 and x800 models have less vCPU's avilable for tenants, there is more RAM to spread as the default value will use less of the overall RAM. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r19000 Series tenants, leaving ~102GB of additional RAM. You may over-allocate RAM to any tenant until the extra  all 231GB RAM is depleted. The toal amount of RAM available for tenants is different on the r10000 vs. the r5000 appliances. And because the x600 and x800 models have less vCPUs avilable for tenants, there is more RAM to spread as the default value will use less of the overall RAM. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
 **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
@@ -97,22 +97,22 @@ Using the minimum Recommended values per tenant ~129GB of RAM will be allocated 
 r10000 Series Multitenancy
 ==========================
 
-Each r10000 appliance has 48 vCPU’s, however 12 of those vCPU’s are dedicated to the F5OS layer. This leaves 36 vCPU’s left over for use by tenants on the r10900, 28 vCPU's for the r10800, and 24 vCPU's for the r10600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of vCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r10000 platform.
+Each r10000 appliance has 48 vCPUs, however 12 of those vCPUs are dedicated to the F5OS layer. This leaves 36 vCPUs left over for use by tenants on the r10900, 28 vCPUs for the r10800, and 24 vCPUs for the r10600.  You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below are examples of the total number of vCPUs supported for each r10000 platform.
 
-The r10900 has 48 vCPU's total, 12 vCPU's reserved for F5OS, and 36 vCPU's left over for use by tenants:
+The r10900 has 48 vCPUs total, 12 vCPUs reserved for F5OS, and 36 vCPUs left over for use by tenants:
 
 
 .. image:: images/rseries_multitenancy/image3.png
   :align: center
   :scale: 60%
 
-The r10800 has 48 vCPU's total, 8 vCPU's are disabled via licensing, 12 vCPU's reserved for F5OS, and 28 vCPU's left over for use by tenants:
+The r10800 has 48 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 28 vCPUs left over for use by tenants:
 
 .. image:: images/rseries_multitenancy/image4.png
   :align: center
   :scale: 60%
 
-The r10600 has 48 vCPU's total, 12 vCPU's are disabled via licensing, 12 vCPU's reserved for F5OS, and 24 vCPU's left over for use by tenants:  
+The r10600 has 48 vCPUs total, 12 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 24 vCPUs left over for use by tenants:  
 
 .. image:: images/rseries_multitenancy/image5.png
   :align: center
@@ -123,22 +123,22 @@ Since all r10000 models are running on the same hardware appliance, you can easi
 r5000 Series Multitenancy
 ==========================
 
-Each r5000 appliance has 32 vCPU’s, however 6 of those vCPU’s are dedicated to the F5OS layer. This leaves 26 vCPU’s left over for use by tenants on the r5900, 18 vCPU's for the r5800, and 12 vCPU's for the r5600.  You can dedicate all vCPU’s to one large tenant, or you can allocate smaller numbers of vCPU’s per tenant so that you can deploy many tenants. Below are examples of the total number of vCPU's supported for each r5000 platform.
+Each r5000 appliance has 32 vCPUs, however 6 of those vCPUs are dedicated to the F5OS layer. This leaves 26 vCPUs left over for use by tenants on the r5900, 18 vCPUs for the r5800, and 12 vCPUs for the r5600.  You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below are examples of the total number of vCPUs supported for each r5000 platform.
 
-The r5900 has 32 vCPU's total, 6 vCPU's reserved for F5OS, and 26 vCPU's left over for use by tenants:
+The r5900 has 32 vCPUs total, 6 vCPUs reserved for F5OS, and 26 vCPUs left over for use by tenants:
 
 
 .. image:: images/rseries_multitenancy/image6.png
   :align: center
   :scale: 80%
 
-The r5800 has 32 vCPU's total, 8 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 18 vCPU's left over for use by tenants:
+The r5800 has 32 vCPUs total, 8 vCPUs are disabled via licensing, 6 vCPUs reserved for F5OS, and 18 vCPUs left over for use by tenants:
 
 .. image:: images/rseries_multitenancy/image7.png
   :align: center
   :scale: 40%
 
-The r5600 has 32 vCPU's total, 14 vCPU's are disabled via licensing, 6 vCPU's reserved for F5OS, and 12 vCPU's left over for use by tenants. Note there is a max of 8 tenants:  
+The r5600 has 32 vCPUs total, 14 vCPUs are disabled via licensing, 6 vCPUs reserved for F5OS, and 12 vCPUs left over for use by tenants. Note there is a max of 8 tenants:  
 
 .. image:: images/rseries_multitenancy/image8.png
   :align: center
@@ -151,9 +151,9 @@ r4000 Series Multitenancy
 
 **NOTE: This is subject to change**
 
-In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPU's. For each physical CPU core there are two logical vCPU's. The r4000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPU's or logical cores these platforms support, they are measured using physical CPU core counts only. The r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
+In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPUs. For each physical CPU core there are two logical vCPUs. The r4000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPUs or logical cores these platforms support, they are measured using physical CPU core counts only. The r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
 
-Each r4000 appliance has 16 CPU cores (not vCPU’s), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
+Each r4000 appliance has 16 CPU cores (not vCPUs), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
 
 This leaves all 16 CPU cores left over for use by tenants on the r4800, and 8 CPU cores for the r4600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant so that you can deploy many tenants. Below are examples of the total number of CPU cores supported for each r4000 platform.
 
@@ -178,9 +178,9 @@ r2000 Series Multitenancy
 
 **NOTE: This is subject to Change**
 
-In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPU's or vCPU's. For each physical CPU core there are two logical vCPU's. The r2000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPU's or logical cores these platforms support, they are measured using physical CPU core counts only. The r2000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
+In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPUs or vCPUs. For each physical CPU core there are two logical vCPUs. The r2000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPUs or logical cores these platforms support, they are measured using physical CPU core counts only. The r2000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
 
-Each r2000 appliance has 8 CPU cores (not vCPU’s), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
+Each r2000 appliance has 8 CPU cores (not vCPUs), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
 
 This leaves all 8 CPU cores left over for use by a single tenant on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant. Below are examples of the total number of CPU cores supported for each r2000 platform.
 
@@ -227,8 +227,8 @@ You may also configure **Crypto/Compression Acceleration**. This option is enabl
 
 In some previous generation hardware platforms there is an option to configure an **SSL Mode** for vCMP guests. This option is not available in rSeries, and the behavior may be different:
 
-If you currently utilize the SSL Mode feature where SSL resources can be **Dedicated, Shared, or Isolated** for each vCMP guest, this configuration option is not supported on rSeries at initial release. vCMP guests operate in the default shared mode meaning all guests get equal access to the shared SSL hardware resources. You may configure the SSL Mode to **dedicated** where SSL hardware resources are dedicated to a guest in proportion to the vCPU’s assigned to a guest. You may also configure **none**, meaning all SSL processing is done in software.  
+If you currently utilize the SSL Mode feature where SSL resources can be **Dedicated, Shared, or Isolated** for each vCMP guest, this configuration option is not supported on rSeries at initial release. vCMP guests operate in the default shared mode meaning all guests get equal access to the shared SSL hardware resources. You may configure the SSL Mode to **dedicated** where SSL hardware resources are dedicated to a guest in proportion to the vCPUs assigned to a guest. You may also configure **none**, meaning all SSL processing is done in software.  
   
-In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPU’s assigned to the tenant. This is conceptually similar to how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. A environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
+In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPUs assigned to the tenant. This is conceptually similar to how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. A environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
 
 Lastly the tenant may be configured to support **Appliance Mode** which is a security option which disables root and bash access to the tenant.

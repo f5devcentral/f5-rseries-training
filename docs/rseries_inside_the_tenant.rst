@@ -28,7 +28,7 @@ These are the VLANs as they appear in the F5OS platform layer. Notice that the t
 Interface Behavior
 ==================
 
-The number of interfaces within a tenant will be based upon the number of vCPU’s assigned to the tenant. The screenshot below shows the interfaces inside the tenant lining up with the number of physical cores per tenant. In the example there are 36 vCPU’s assigned to a single tenant, this will equate to 18 physical CPU’s. 
+The number of interfaces within a tenant will be based upon the number of vCPUs assigned to the tenant. The screenshot below shows the interfaces inside the tenant lining up with the number of physical cores per tenant. In the example there are 36 vCPUs assigned to a single tenant, this will equate to 18 physical CPU’s. 
 
 
 .. image:: images/rseries_inside_the_tenant/image4.png

@@ -33,7 +33,7 @@ The **T1-F5OS** image type should be used with extreme caution. It is the smalle
 
 The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in place upgrades; however, they all default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage.
 
-The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPU’s per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over provisioning situation. Because tenants are deployed in sparse mode which allows over provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk than other BIG-IP modules which do extensive local logging and utilize databases on disk.
+The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPUs per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over provisioning situation. Because tenants are deployed in sparse mode which allows over provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk than other BIG-IP modules which do extensive local logging and utilize databases on disk.
 
 The **All-F5OS** image is suitable for any module configuration and supports a default of 76GB for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk typically require more CPU/Memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach, it may be best to default using the T4-F5OS image as that is essentially the default size for vCMP deployments today. 
 
@@ -669,7 +669,7 @@ rSeries tenants have static vCPU and memory allocations just like vCMP. These ca
 Expanding a Tenant via webUI
 --------------------------
 
-Below is webUI output of a single tenant that is in the deployed and running state configured with 2 vCPU’s and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPU’s and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
+Below is webUI output of a single tenant that is in the deployed and running state configured with 2 vCPUs and 7680 memory. The workflow below will cover expanding the tenant from 2 to 4 vCPUs and the memory from 7680 to 14848. Click the check box next to the tenant, and then select the **Provision** button. 
 
 .. image:: images/rseries_deploying_a_tenant/image82.png
   :align: center
@@ -790,7 +790,7 @@ You can monitor the tenant transition to provisioned state using the show comman
 Expanding a Tenant via API
 --------------------------
 
-First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPU’s and 7680 of memory:
+First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPUs and 7680 of memory:
 
 .. code-block:: bash
 
@@ -933,7 +933,7 @@ Next reissue the GET command above to obtain the tenant status and note that its
                     },
 
 
-Send a PATCH API command to change the CPU and memory configuration so the tenant can expand from 2 to 4 vCPU’s and from 7680 to 14848 GB of memory. It’s important to change both the CPU and memory allocation when expanding the tenant.
+Send a PATCH API command to change the CPU and memory configuration so the tenant can expand from 2 to 4 vCPUs and from 7680 to 14848 GB of memory. It’s important to change both the CPU and memory allocation when expanding the tenant.
 
 .. code-block:: bash
 
