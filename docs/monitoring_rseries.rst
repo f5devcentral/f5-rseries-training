@@ -1595,7 +1595,7 @@ Show VLAN-Listeners via CLI
 Software Health and Status from the webUI
 ---------------------------------------
 
-The rSeries Dashboard will provide a visual system summary of the appliance including System Summary, Network, CPU, and Active Alarms. It will also list the total number of vCPU’s available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters.
+The rSeries Dashboard will provide a visual system summary of the appliance including System Summary, Network, CPU, and Active Alarms. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters.
 
 .. image:: images/monitoring_rseries/image1.png
   :align: center
