@@ -12,6 +12,7 @@ rSeries Overview
 Kubernetes-Based Platform Layer
 -------------------------------
 
+
 A major difference between rSeries and iSeries is the introduction of a new Kubernetes-based platform layer (called F5OS) that allows for some exciting new capabilities. Customers don’t need to learn Kubernetes in order to manage the new appliances; it is abstracted from the administrator who will be able to manage the new platform layer via familiar F5 CLI, webUI, or API interfaces. 
 
 rSeries continues to provide hardware acceleration and offload capabilities in a similar way that iSeries does, however, more modern Field Programmable Gate Arrays (FPGA's), CPU, and crypto offload capabilities have been introduced. The new F5OS platform layer allows rSeries to run different types of tenants within the same appliance. As an example, rSeries will be able to run:
