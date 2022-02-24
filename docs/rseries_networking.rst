@@ -45,7 +45,7 @@ Only F5 branded optics are officially supported on rSeries appliances. On rSerie
 
 https://support.f5.com/csp/article/K8153. 
 
-More details on each optic can be found in the F5 Platforms Accessories webUIde:
+More details on each optic can be found in the F5 Platforms Accessories guide:
 
 https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html
 

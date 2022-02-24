@@ -2,7 +2,7 @@
 Montoring rSeries Health & Alert Status
 =====================================
 
-rSeries has many components and subsystems which can be monitored via CLI, webUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quicky provide health of the chassis. This section will provide webUIdance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
+rSeries has many components and subsystems which can be monitored via CLI, webUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quicky provide health of the chassis. This section will provide guidance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
 
 Active Alerts
 =============

@@ -91,7 +91,7 @@ In the body of the API call you can specifiy the file name you want to save the 
         "f5-database:name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
 
-**Note: In the current F5OS releases, the ConfD system database can be backed up via CLI/webUI/API but it cannot be restored using the F5OS webUI. This will be added in a subsequent release.**
+**Note: In the current F5OS releases, the ConfD system database can be backed up via CLI, webUI, API but it cannot be restored using the F5OS webUI. This will be added in a subsequent release.**
 
 Exporting F5OS Backup to an External Location
 =============================================

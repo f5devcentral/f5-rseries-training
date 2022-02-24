@@ -2654,7 +2654,7 @@ https://support.f5.com/csp/article/K1689
 
 https://support.f5.com/csp/article/K13142
 
-The following solution article provides webUIdance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches and this would be similar webUIdance for rSeries:
+The following solution article provides guidance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches and this would be similar guidance for rSeries:
 
 https://support.f5.com/csp/article/K33431212
 
