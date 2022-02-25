@@ -64,9 +64,9 @@ To generate a qkview from the CLI run the command **system diagnostics qkview ca
 
 .. code-block:: bash
 
-    appliance-1(config)# system diagnostics qkview capture 
+    appliance-1(config)# system diagnostics qkview capture filename f5support.qkview.tgz maxfilesize 1000
     result  Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. 
-    Qkview file appliance-1.qkview is being collected.
+    Qkview file f5support.qkview.tgz is being collected.
     return code 200
     
     resultint 0
@@ -77,7 +77,7 @@ You can view the status of the capture using the command **system diagnostics qk
 .. code-block:: bash
 
     appliance-1# system diagnostics qkview status
-    result  {"Busy":true,"Percent":97,"Status":"collating","Message":"Collating data","Filename":"appliance-1.qkview"}
+    result  {"Busy":true,"Percent":97,"Status":"collating","Message":"Collating data","Filename":"f5support.qkview.tgz"}
     
     resultint 0
     appliance-1# 
@@ -89,12 +89,12 @@ You may also confirm the file has been created by using the **file list** comman
     appliance-1# file list path diags/shared/qkview/
     entries {
         name 
-    appliance-1.qkview
+    f5support.qkview.tgz
     }
     appliance-1# 
 
     appliance-1# system diagnostics qkview list 
-    result  {"Qkviews":[{"Filename":"appliance-1.qkview","Date":"2022-01-16T16:57:22.983013886Z","Size":208510806}]}
+    result  {"Qkviews":[{"Filename":"f5support.qkview.tgz","Date":"2022-01-16T16:57:22.983013886Z","Size":208510806}]}
     
     resultint 0
     appliance-1# 
@@ -103,7 +103,7 @@ To upload the qkview file to iHealth using the CLI use the following command **s
 
 .. code-block:: bash
 
-    appliance-1# system diagnostics ihealth upload qkview-file appliance-1.qkview description "This is a test" 
+    appliance-1# system diagnostics ihealth upload qkview-file af5support.qkview.tgz description "This is a test" 
     message HTTP/1.1 202 Accepted
     Location: /support/ihealth/status/Z3HydOfa
     Date: Sun, 16 Jan 2022 17:02:36 GMT
