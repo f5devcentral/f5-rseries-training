@@ -7,37 +7,37 @@ Deploying an rSeries Tenant
 Tenant Image Types
 ------------------
 
-rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether or not they allow in place upgrades. rSeries only supports specific TMOS releases (currently 15.1.5), they can be found on downloads.f5.com:
+rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether or not they allow in-place upgrades. rSeries only supports specific TMOS releases (currently 15.1.5); they can be found on downloads.f5.com:
 
 .. image:: images/rseries_deploying_a_tenant/image1.png
   :align: center
   :scale: 70% 
 
-Ensure you choose the option that is labeled specifically for rSeries. i.e. **15.1.5_Tenant-F5OS**:
+Ensure you choose the option that is labeled specifically for rSeries that is **15.1.5_Tenant-F5OS**:
 
 .. image:: images/rseries_deploying_a_tenant/image2.png
   :align: center
   :scale: 70% 
 
-There are 4 different types of tenant images to choose from as seen below, please read the rest of this section to determine the best image type for your environment:
+There are 4 different types of tenant images to choose from as seen below; please read the rest of this section to determine the best image type for your environment:
 
 .. image:: images/rseries_deploying_a_tenant/image3.png
   :align: center
   :scale: 70% 
 
-The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave & nuke strategies are preferred over in place upgrades.   
+The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
 
 .. image:: images/rseries_deploying_a_tenant/image4.png
   :align: center
   :scale: 70% 
 
-The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in place upgrades; however, they all default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage.
+The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in-place upgrades; however, they each default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage.
 
-The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPUs per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over provisioning situation. Because tenants are deployed in sparse mode which allows over provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk than other BIG-IP modules which do extensive local logging and utilize databases on disk.
+The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPUs per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk space per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over-provisioning situation. Because tenants are deployed in sparse mode which allows over-provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to the disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk space than other BIG-IP modules, which do extensive local logging and utilize databases on disk.
 
-The **All-F5OS** image is suitable for any module configuration and supports a default of 76GB for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk typically require more CPU/Memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach, it may be best to default using the T4-F5OS image as that is essentially the default size for vCMP deployments today. 
+The **All-F5OS** image is suitable for any module configuration and supports a default of 76GB for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk space typically require more CPU/memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space, and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach; it may be best to default using the T4-F5OS image as that is essentially the default size for vCMP deployments today. 
 
-The **T4-F5OS** image also supports any module combination but has additional disk capacity. If you intend to have lots of software images, databases for modules, run modules like SWG which utilize a lot of disk, and local logging then the added capacity is recommended. More detail on the image types can be found in the following solution article.
+The **T4-F5OS** image also supports any module combination but has additional disk capacity. If you intend to have lot of software images, databases for modules, run modules like SWG which utilize a lot of disk space, and local logging then the added capacity is recommended. More detail on the image types can be found in the following solution article.
 
 https://support.f5.com/csp/article/K45191957
 
@@ -59,7 +59,7 @@ However, the 76GB image is allocated in a sparse manner meaning the tenant is on
   :align: center
   :scale: 70% 
 
-This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where tenant running in production for a long time can end up with lots of extra space consumed on disk. This could be due to many in place software upgrades, local logging, core files, database use etc…There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over utilized, you could backup the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
+This is analogous to thin-provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc…There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all of the unused space again.
 
 ------------------
 Tenant Deployments
@@ -73,15 +73,15 @@ Tenant Deployment via CLI
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries supported tenant version are v15.1.5 for the r5000 & r10000, and v15.1.6 for the r2000 & r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for intial deployment only.
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries, supported tenant versions are v15.1.5 for the r5000 and r10000, and v15.1.6 for the r2000 and r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only.
 
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply scp an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options avilable in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
 
 .. code-block:: bash
 
     scp BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle admin@10.255.0.132:IMAGES
 
-You may also import the tenant image file from the F5OS CLI. Use the **file import** command to get the tenant image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example importing from a remote HTTPS server. Note the target directory should be **images/tenant**:
+You may also import the tenant image file from the F5OS CLI. Use the **file import** command to get the tenant image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example of importing from a remote HTTPS server. Note the target directory should be **images/tenant**:
 
 .. code-block:: bash
 
@@ -267,7 +267,7 @@ Tenant Deployment via webUI
 Uploading a Tenant Image via webUI
 ================================
 
-You can upload a tenant image via the webUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page, you may click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
+You can upload a tenant image via the webUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page; you can click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
 
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
@@ -283,7 +283,7 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all of the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_tenant/image50.png
   :align: center
@@ -299,7 +299,7 @@ You can deploy a tenant from the webUI using the **Add** button in the **Tenant 
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. You’ll supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix and gateway and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning, choosing Recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto & Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once **Save** is clicked the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPU’s allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (Recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -339,13 +339,13 @@ You can view a more detailed tenant status using the **Tenant Managment > Tenant
   :align: center
   :scale: 70% 
 
-At this point the tenant should be running and can be accessed via it's out-of-band management IP address. You can go to the **Dashboard** page in the webUI to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
+At this point the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
   :scale: 70% 
 
-Clicking on one of the hyperlinks will bring you to the BIG-IP webUI of that tenant, and you'll need to login with default credentials of admin/admin and at that point you will be prompted to change the password for the admin account.
+Clicking on one of the hyperlinks will bring you to the BIG-IP webUI of that tenant, and you'll need to login with default credentials of admin/admin. You will be prompted to change the password for the admin account.
 
 .. image:: images/rseries_deploying_a_tenant/image40.png
   :align: center
@@ -361,7 +361,7 @@ Now login with the new admin password, and you'll be brought into the intial set
   :align: center
   :scale: 70% 
 
-At this point you can configure the tenat as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower level network and system settings, and then use AS3 to automate application deployments.
+At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower level network and system settings, and then use AS3 to automate application deployments.
 
 Tenant Deployment via API
 -------------------------
@@ -428,7 +428,7 @@ Below is output generated from the previous command:
 Creating a Tenant via API
 =========================
 
-Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant, many of the fields are defined as a variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images and they can be reused easily and adpated to any environment. In the example below the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
+Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as a variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adpated to any environment. In the example below, the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
 
 .. code-block:: bash
 
@@ -675,13 +675,13 @@ Below is webUI output of a single tenant that is in the deployed and running sta
   :align: center
   :scale: 70% 
 
-A pop-up will appear letting you know this will stop the tenant and disrupt traffic, click **OK**. 
+A pop-up will appear letting you know this will stop the tenant and disrupt traffic. Click **OK**. 
 
 .. image:: images/rseries_deploying_a_tenant/image83.png
   :align: center
   :scale: 70% 
 
-This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping** and finally to the **Provisioned** Status.
+This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping**, and finally to the **Provisioned** Status.
 
 .. image:: images/rseries_deploying_a_tenant/image84.png
   :align: center
@@ -691,7 +691,7 @@ This will move the tenant from **Deployed** to **Provisioned** state. You will s
   :align: center
   :scale: 70%   
 
-Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **Deployed**. When finished click **Save** and the tenant will start up again with the new configuration.
+Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848**, and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
 
 .. image:: images/rseries_deploying_a_tenant/image86.png
   :align: center
@@ -705,7 +705,7 @@ Next click on the hyperlink for tenant1. This will bring you into the configurat
 Expanding a Tenant via CLI
 --------------------------
 
-Expanding a tenant via the CLI follows the same workflows as the webUI. You must first put the tenant in a **Provisioned** state, and then make configuration changes, and then change back to **Deployed** state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPU, and 7680 MB of memory.
+Expanding a tenant via the CLI follows the same workflows as the webUI. You must first put the tenant in a **Provisioned** state, and then make configuration changes, and then change back to a **Deployed** state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPUs, and 7680 MB of memory.
 
 .. code-block:: bash
 
@@ -765,7 +765,7 @@ You can also view the tenants running status by issuing the CLI command **show t
     Boston-r10900-1# 
 
 
-To change the tenant configuration, you must first enter config mode and then change the tenant running state to **provisioned**, the change won’t take effect until the **commit** command is issued:
+To change the tenant configuration, you must first enter config mode and then change the tenant running state to the **provisioned**. The change won’t take effect until the **commit** command is issued:
 
 .. code-block:: bash
 
@@ -790,7 +790,7 @@ You can monitor the tenant transition to provisioned state using the show comman
 Expanding a Tenant via API
 --------------------------
 
-First get the current tenant status via the API and note the current CPU Allocation. The tenant in the example below is currently configured and has 2 vCPUs and 7680 of memory:
+First get the current tenant status via the API and note the current CPU allocation. The tenant in the example below is currently configured and has 2 vCPUs and 7680 of memory:
 
 .. code-block:: bash
 
@@ -903,13 +903,13 @@ If you attempt to change the tenant configuration while it is in the deployed st
   }
 
 
-The workflow to change the tenant configuration is to first change the tenant state to be **provisioned** then make the configuration change. Use the following API PATCH call to move the tenant to the provisioned state:
+The workflow to change the tenant configuration is to first change the tenant state to **provisioned** then make the configuration change. Use the following API PATCH call to move the tenant to the provisioned state:
 
 .. code-block:: bash
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
-For the JSON body of the API call change the **running-state** to **provisioned**:
+For the JSON body of the API call, change the **running-state** to **provisioned**:
 
 .. code-block:: json
 
@@ -1063,12 +1063,12 @@ The API output:
 Deleting a Tenant
 -----------------
 
-If you need to delete a tenant it can be removed from the F5OS CLI, webUI, or API.
+If you need to delete a tenant, it can be removed from the F5OS CLI, webUI, or API.
 
 Deleting a Tenant via the CLI
 -----------------------------
 
-To delete a teant from the CLI enter **config** mode and then enter the command **no tenants tenant <tenant-name>**. You will then need to issue the **commit** command for the change to take affect. You can then verify the tenant has been deleted by using the **show tenants** command.
+To delete a tenant from the CLI, enter **config** mode and then enter the command **no tenants tenant <tenant-name>**. You will then need to issue the **commit** command for the change to take effect. You can then verify that the tenant has been deleted by using the **show tenants** command.
 
 .. code-block:: bash
 
@@ -1087,7 +1087,7 @@ To delete a teant from the CLI enter **config** mode and then enter the command 
 Deleting a Tenant via the webUI
 -----------------------------
 
-To delete a teant from the webUI go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
+To delete a tenant from the webUI, go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
 
 .. image:: images/rseries_deploying_a_tenant/image88.png
   :align: center
@@ -1102,7 +1102,7 @@ You will be prompted before confirming the delete:
 Deleting a Tenant via the API
 -----------------------------
 
-To delete a tenant from the API issue the following **DELETE** API call.
+To delete a tenant from the API, issue the following **DELETE** API call.
 
 .. code-block:: bash
 
