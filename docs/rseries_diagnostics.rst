@@ -4,10 +4,10 @@ rSeries Diagnostics
 
 This section will go through some of the diagnostic capabilities within the new F5OS layer. Inside the tenant the same BIG-IP diagnostic utilities that customers are used to are still available.
 
-Qkviews
+qkviews
 =======
 
-rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
+rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
 https://support.f5.com/csp/article/K76100544
 
@@ -20,21 +20,21 @@ Note: The qkview utility on the rSeries system does not capture diagnostic data 
 K12878: Generating diagnostic data using the qkview utility: https://support.f5.com/csp/article/K12878
 
 
-The qkview utility on the rSeries system generates machine-readable JavaScript Object Notation (JSON) diagnostic data and combines the data into a single compressed Tape ARchive (TAR) format file. The single TAR file is comprised of embedded TAR files containing the diagnostic data of individual containers running on the system, as well as diagnostic data from the rSeries system. You can upload this file, called a QKView file, to iHealth, or give it to F5 Support to help them troubleshoot any issues.
+The qkview utility on the rSeries system generates machine-readable JavaScript Object Notation (JSON) diagnostic data and combines the data into a single compressed Tape ARchive (TAR) format file. The single TAR file is comprised of embedded TAR files containing the diagnostic data of individual containers running on the system, as well as diagnostic data from the rSeries system. You can upload this file, called a qkview file, to iHealth, or give it to F5 Support to help them troubleshoot any issues.
 
-Note: F5 Support requires a QKView file in all cases in which remote access to the product is not available.
+Note: F5 Support requires a qkview file in all cases in which remote access to the product is not available.
 
-Qkview Creation and Upload via webUI
+qkview Creation and Upload via webUI
 ----------------------------------
 
 
-A QKView for the F5OS layer can be generated from the **System Settings > System Reports** page. Once finished it can also be uploaded them to iHealth. 
+A qkview file for the F5OS layer can be generated from the **System Settings > System Reports** page. Once finished it can also be uploaded to iHealth. 
 
 .. image:: images/rseries_diagnostics/image1.png
   :align: center
   :scale: 70%
 
-To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  Once the qkview is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if you entered them previously and can be cleared if you want to use another account, you can optionally add an **F5 Support Case Number** and **Description** when uploading to iHealth.
+To generate a qkview, click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  Once the qkview is generated, you can click the checkbox next to it, and then select **Upload to iHealth**. Your iHealth credentials will automatically fill in if you entered them previously and can be cleared if you want to use another account; you can optionally add an **F5 Support Case Number** and **Description** when uploading to iHealth.
 
 
 .. image:: images/rseries_diagnostics/image2.png
@@ -45,7 +45,7 @@ To generate a qkview click on the button in the upper right-hand corner. It will
   :align: center
   :scale: 70%
 
-Qkview Creation and Upload via CLI
+qkview Creation and Upload via CLI
 ----------------------------------
 
 If you would like to store iHealth credentials within the configuration you may do so via the F5OS CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a **username** and **password**.
@@ -60,13 +60,13 @@ If you would like to store iHealth credentials within the configuration you may 
     Commit complete.
     appliance-1(config)# 
 
-To generate a qkview from the CLI run the command **system diagnostics qkview capture**.
+To generate a qkview from the CLI, run the command **system diagnostics qkview capture**.
 
 .. code-block:: bash
 
     appliance-1(config)# system diagnostics qkview capture filename f5support.qkview.tgz maxfilesize 1000
-    result  Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. 
-    Qkview file f5support.qkview.tgz is being collected.
+    result  Warning: qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. 
+    qkview file f5support.qkview.tgz is being collected.
     return code 200
     
     resultint 0
@@ -82,7 +82,7 @@ You can view the status of the capture using the command **system diagnostics qk
     resultint 0
     appliance-1# 
 
-You may also confirm the file has been created by using the **file list** command, or the command **system diagnostics qkview list** to see more details about the size and creation date of the file:
+You may also confirm the file has been created by using the **file list** command, or the **system diagnostics qkview list** command to see more details about the size and creation date of the file:
 
 .. code-block:: bash
 
@@ -94,12 +94,12 @@ You may also confirm the file has been created by using the **file list** comman
     appliance-1# 
 
     appliance-1# system diagnostics qkview list 
-    result  {"Qkviews":[{"Filename":"f5support.qkview.tgz","Date":"2022-01-16T16:57:22.983013886Z","Size":208510806}]}
+    result  {"qkviews":[{"Filename":"f5support.qkview.tgz","Date":"2022-01-16T16:57:22.983013886Z","Size":208510806}]}
     
     resultint 0
     appliance-1# 
 
-To upload the qkview file to iHealth using the CLI use the following command **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
+To upload the qkview file to iHealth using the CLI use the following command; **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
 
 .. code-block:: bash
 
@@ -114,7 +114,7 @@ To upload the qkview file to iHealth using the CLI use the following command **s
     appliance-1# 
 
 
-Qkview Creation and Upload via API
+qkview Creation and Upload via API
 ----------------------------------
 
 To generate a qkview from the API, POST the following API call to the F5OS out-of-band management IP.
@@ -123,7 +123,7 @@ To generate a qkview from the API, POST the following API call to the F5OS out-o
 
     POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:capture
 
-In the body of the API call supply the filename for the qkview:
+In the body of the API call, supply the filename for the qkview:
 
 .. code-block:: json
 
@@ -138,7 +138,7 @@ Below is the following output showing successful intiation of the qkview:
 
     {
         "f5-system-diagnostics-qkview:output": {
-            "result": " Warning: Qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. \nQkview file my-qkview4.tgz is being collected.\nreturn code 200\n ",
+            "result": " Warning: qkview may contain sensitive data such as secrets, passwords and core files. Handle with care. Please send this file to F5 support. \nqkview file my-qkview4.tgz is being collected.\nreturn code 200\n ",
             "resultint": 0
         }
     }
@@ -160,7 +160,7 @@ The output will display the percentage complete, error, or complete status:
         }
     }
 
-To upload the qkview file to iHealth using the API use the following POST API call:
+To upload the qkview file to iHealth using the API, use the following POST API call:
 
 .. code-block:: bash
 
@@ -176,7 +176,7 @@ Below is the body of the POST API call:
     "f5-system-diagnostics-ihealth:service-request-number": ""
     }
 
-In the output of the API call the upload initiation is confirmed.
+In the output of the API call, the upload initiation is confirmed.
 
 .. code-block:: json
 
@@ -196,7 +196,7 @@ Many functions inside the F5OS layer will log their events to the **platform.log
 Viewing Logs from the CLI
 --------------------------
 
-In the F5OS CLI the paths are simplified so that you don’t have know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory, use the tab complete to see the options:
+In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options:
 
 .. code-block:: bash
 
@@ -211,7 +211,7 @@ In the F5OS CLI the paths are simplified so that you don’t have know the under
     vconsole_startup.log           velos.log          webUI/        
     appliance-1# file list path log/system/
 
-To view the contents of the **platform.log** file use the command **file show path /log/system/platform.log**. This will show the entire log file from the beginning, and may not be the best way to troubleshoot a recent event:
+To view the contents of the **platform.log** file, use the command **file show path /log/system/platform.log**. This will show the entire log file from the beginning, but may not be the best way to troubleshoot a recent event:
 
 .. code-block:: bash
 
@@ -225,7 +225,7 @@ To view the contents of the **platform.log** file use the command **file show pa
     2021-10-18T20:53:28.620593+00:00 appliance-1 utils-agent[9]: priority="Info" version=1.0 msgid=0x6602000000000006 msg="DB state monitor started".
     2021-10-18T20:53:28.620900+00:00 appliance-1 /usr/sbin/fips-service[9]: priority="Info" version=1.0 msgid=0x6602000000000006 msg="DB state monitor started".
 
-There are options to manipulate the output of the file by adding **| ?**  to see the options.
+There are options to manipulate the output of the file. Add **| ?** to the command to see the options available to manipulate the file output.
 
 .. code-block:: bash
 
@@ -285,7 +285,7 @@ There are also other file options to tail the log file using **file tail -f** fo
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
-Within the bash shell the path for the logging is different it is **/var/F5/system/log**. 
+Within the bash shell, the path for the logging is different; **/var/F5/system/log**. 
 
 .. code-block:: bash
 
@@ -319,7 +319,7 @@ Within the bash shell the path for the logging is different it is **/var/F5/syst
     drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webUI
     [root@appliance-1 /]# 
 
-If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take affect. Be sure to set logging levels back to normal after troubleshooting has completed.
+If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take effect. Be sure to set logging levels back to normal after troubleshooting has completed.
 
 
 .. code-block:: bash
@@ -355,13 +355,13 @@ If you would like to change any of the logging levels via the CLI you must be in
 Viewing Logs from the webUI
 --------------------------
 
-In the intial release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the intial release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
   :scale: 70%
 
-If you want to download the main **platform.log** select the directoy **/log/system**.
+If you want to download the main **platform.log**, select the directory **/log/system**.
 
 
 .. image:: images/rseries_diagnostics/image5.png
@@ -369,7 +369,7 @@ If you want to download the main **platform.log** select the directoy **/log/sys
   :scale: 70%
 
 
-Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbosity going to the remote logging host, you can raise its severity to see additional messages.
+Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbose information going to the remote logging host, you can raise its severity to see additional messages.
 
 .. image:: images/rseries_diagnostics/image6.png
   :align: center
@@ -378,7 +378,7 @@ Currently F5OS webUI’s logging levels can be configured for local logging, and
 Viewing Logs from the API
 --------------------------
 
-If the system currently has an any active Alarms you can view them via the following API call:
+If the system currently has any active Alarms you can view them via the following API call:
 
 .. code-block:: bash
 
@@ -1059,7 +1059,7 @@ This will display all events (not just the active ones) from the beginning in th
         }
     }
 
-You can display all the logging subsystems logging levels via the following API call:
+You can display all the logging subsystem's logging levels via the following API call:
 
 
 .. code-block:: bash
@@ -1446,7 +1446,7 @@ Every subsystem will be displayed along with its current setting:
         }
     }
 
-If you need to change logging level to troubleshoot an issue, you can change the logging level via the API's. Below is an example of changing the logging level for the **l2-agent** subsystem to **DEBUG**.
+If you need to change the logging level to troubleshoot an issue, you can change the logging level via the APIs. Below is an example of changing the logging level for the **l2-agent** subsystem to **DEBUG**.
 
 .. code-block:: bash
 
@@ -1470,7 +1470,7 @@ If you need to change logging level to troubleshoot an issue, you can change the
         }
     }
 
-When finished troubleshooting you can set the logging level back to default (INFORMATIONAL)
+When you are finished troubleshooting, you can set the logging level back to default (INFORMATIONAL).
 
 .. code-block:: json
 
@@ -1509,13 +1509,13 @@ You can see this in the following example output:
 
     02:28:55.385343 IP 10.10.11.12 > 10.10.11.13: ICMP echo request, id 19463, seq 4, length 64 did:0F sid:04 sep:F svc:08 ld:1 rd:0
 
-More detail on configuration and filtering of tcpdump is provide here:
+More detail on configuration and filtering of tcpdump is provided here:
 
 https://support.f5.com/csp/article/K80685750
 
 
 
-You can capture traffic for a specific interface using the interface keyword in the tcpdump command. You specify the interface using the following syntax: <port>.<subport>. If you do not supply the interface keyword, or if you specify 0.0 for the interface, no interface filtering occurs and the command captures all interfaces.
+You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface, no interface filtering occurs and the command captures all interfaces.
 
 **Important: The interfaces on the rSeries system are capable of very high traffic rates. To prevent dropped packets during traffic capture, specify appropriate filters to capture only the intended traffic and reduce the total amount of captured traffic.**
 
@@ -1558,13 +1558,13 @@ For example, the following command sends the output of the tcpdump command to th
 Export TCPDUMP From CLI
 -----------------------
 
-You can export the tcpdump output file from the rSeries system using the command line file utility in F5OS-A or using the scp utility as the root user. To export a tcpdump output file using the file utility, perform the following procedure:
+You can export the tcpdump output file from the rSeries system using the command line file utility in F5OS-A or using the scp utility as the root user. To export a tcpdump output file using the file utility, perform the following procedure.
 
-Note: When using the file utility for export, first copy the tcpdump output file to the /var/shared/ directory. The local-file path for the file export command is then diags/shared/<filename>, as shown in the following example.
+**Note: When using the file utility for export, first copy the tcpdump output file to the /var/shared/ directory. The local-file path for the file export command is then diags/shared/<filename>, as shown in the following example.**
 
 Impact of procedure: Performing the following procedure should not have a negative impact on your system.
 
-Log in to the command line on the rSeries system as the admin user.To export a file, use the following syntax:
+Log in to the command line on the rSeries system as the admin user. To export a file, use the following syntax:
 
 .. code-block:: bash
 
@@ -1587,20 +1587,20 @@ At the prompt, to transfer the file, enter the password for the remote host. To 
 Console Access via Built-In Terminal Server
 ==============================================
 
-You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to individual tenant console ports. Specific TCP ports on the rSeries F5OS IP address have been reserved and mapped to console ports of as follows:
+You may have a need to access the console of a tenant to diagnose a problem, or to watch it boot up. rSeries provides a built-in terminal server function that will proxy network connections to individual tenant console ports. Specific TCP ports on the rSeries F5OS IP address have been reserved and mapped to console ports as follows:
 
-•	Chassis partition ports 700x map to tenant ID’s (requires tenant name as username)
+•	Chassis partition ports 700x map to tenant IDs (requires tenant name as username)
 
 
 Console Access to Tenant via Built-In Terminal Server
 -----------------------------------------------------
 
 
-You may have a need to access the console of a tenant to diagnose a problem, or to watch it bootup. rSeries provides a built-in terminal server function that will proxy network connections to a tenant console. VIPRION & iSeries provided a **vconsole** capability for vCMP guest access which required a user to authenticate to the device CLI first before they could run the vconsole command. 
+You may have a need to access the console of a tenant to diagnose a problem, or to watch it boot up. rSeries provides a built-in terminal server function that will proxy network connections to a tenant console. VIPRION and iSeries provided a **vconsole** capability for vCMP guest access, which required a user to authenticate to the device CLI first before they could run the vconsole command. 
 
-When an rSeries tenant is created and deployed a listening ssh port will be configured on port 700x of the F5OS layer (where x is the tenant instance ID). After a tenant is created, you will need to set the tenant password and tweak the expiry date to force a password change before a user can connect via the terminal server.
+When an rSeries tenant is created and deployed, a listening ssh port will be configured on port 700x of the F5OS layer (where x is the tenant instance ID). After a tenant is created, you will need to set the tenant password and tweak the **Expiry Date** to force a password change before a user can connect via the terminal server.
 
-Once a tenant is created from the F5OS CLI enter the command **show system aaa authentication**. Note that there is a **username** that corresponds to each tenant that has been created (tenant1, tenant2, tenant3, etc... but will match the configured name of the tenant) and each of these have the role of **tenant-console**. Note the expiry date is set for **1**, which means expired.
+Once a tenant is created from the F5OS CLI, enter the command **show system aaa authentication**. Note that there is a **username** that corresponds to each tenant that has been created (tenant1, tenant2, tenant3, etc... but will match the configured name of the tenant) and each of these have the role of **tenant-console**. Note the expiry date is set for **1**, which means expired.
 
 .. code-block:: bash
 
@@ -1623,7 +1623,7 @@ Once a tenant is created from the F5OS CLI enter the command **show system aaa a
 
 
 
-For tenant1 to have console access you must first set a password for that user using the command **system aaa authentication users user <tenant-name> config set-password password**. When prompted enter the desired password for this tenant’s console access. Next set the tenants **expiry-date** to **-1** (no expiration date) and then **commit** to enable the changes.
+For tenant1 to have console access you must first set a password for that user using the command **system aaa authentication users user <tenant-name> config set-password password**. When prompted, enter the desired password for this tenant’s console access. Next, set the tenants **expiry-date** to **-1** (no expiration date) and then **commit** to enable the changes.
 
 .. code-block:: bash
 
@@ -1638,7 +1638,7 @@ For tenant1 to have console access you must first set a password for that user u
     Commit complete.
     r5900-2(config-user-tenant1)#
 
-Now it will be possible to remotely ssh using a specific username and port pointed at the F5OS IP address to connect directly to the console port of the tenant. The username will be the name of the tenant, and the port will be the instance tcp port 700x (where x is the Instance ID of that tenant). Below is an example of the output from the **show tenants** command within the F5OS layer. The tenant **tenant1** has an instance ID’s of 1. You can connect to this instance via the F5OS out-of-band management IP using tenant1 as the username and port 7001. 
+Now it will be possible to remotely ssh using a specific username and port pointed at the F5OS IP address to connect directly to the console port of the tenant. The username will be the name of the tenant, and the port will be the instance tcp port 700x (where x is the Instance ID of that tenant). Below is an example of the output from the **show tenants** command within the F5OS layer. The tenant **tenant1** has an instance IDs of 1. You can connect to this instance via the F5OS out-of-band management IP using tenant1 as the username and port 7001. 
 
 .. code-block:: bash
 
@@ -1675,7 +1675,7 @@ Now it will be possible to remotely ssh using a specific username and port point
 
 
 
-The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to login to the tenant as root and change the default password. In the example below the username is tenant1 (matches the tenant name), and the port is 7001 meaning connect to instance ID 1 of that tenant. 
+The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below the username is tenant1 (matches the tenant name), and the port is 7001, meaning connect to instance ID 1 of that tenant. 
 
 .. code-block:: bash
 
