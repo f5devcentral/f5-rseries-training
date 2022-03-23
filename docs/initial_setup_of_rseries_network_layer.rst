@@ -8,13 +8,13 @@ Initial Setup of the rSeries Network Layer
 rSeries Dashboard
 -----------------
 
-The rSeries Dashboard will provide a visual system summary of the appliance including **System Summary**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPU’s available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. 
+The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image1.png
   :align: center
   :scale: 70% 
 
-The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** or **Down** status. The current **Pipeline** mapping is also displayed which shows the external port mapping to internal pipelines.
+The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
@@ -36,13 +36,13 @@ The  **Active Alarms** tab will display any active alerts or alarms for the syst
 F5OS Networking Configuration
 -----------------------------
 
-Before configuring any tenants, you’ll need to setup networking for the F5OS platform layer. All in-band networking (Interfaces, VLANs, Link Aggregation Groups) is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar to how vCMP guests work on previous generation of BIG-IP like iSeries and VIPRION. 
+Before configuring any tenants, you’ll need to set up networking for the F5OS platform layer. All in-band networking (interfaces, VLANs, Link Aggregation Groups) is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar to how vCMP guests work on previous generations of BIG-IP like iSeries and VIPRION. 
 
 
 Network Settings - > Port Groups
 ================================
 
-Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match on the adjacent high speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
+Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled, and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** and **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both are configured for 100Gb; you cannot mix and match on the adjacent high speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term, **portgroup** is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
@@ -51,13 +51,13 @@ Before configuring any Interfaces, VLANs, or Link Aggregation Groups (LAG’s) y
 Configuring PortGroups from the webUI
 -----------------------------------
 
-To configure Portgroups go to **Network Settings > Port Groups** in the F5OS webUI. This should be configured before any Interface, VLAN, or LAG configuration. 
+To configure portgroups go to **Network Settings > Port Groups** in the F5OS webUI. This should be configured before any interface, VLAN, or LAG configuration. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image6.png
   :align: center
   :scale: 70% 
 
-If you do make a change the applaince will be forced to reboot to load a new bitstream image into the FPGA.
+If you do make a change, the appliance will be forced to reboot to load a new bitstream image into the FPGA.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image7.png
   :align: center
@@ -81,7 +81,7 @@ Portgroups can be configured from the F5OS CLI using the **portgroups** command 
     appliance-1(config-portgroup-10)# 
 
 
-You must commit for any changes to take affect. This will require a reboot of the appliance:
+You must commit for any changes to take effect. This will require a reboot of the appliance:
 
 .. code-block:: bash
 
@@ -93,7 +93,7 @@ You must commit for any changes to take affect. This will require a reboot of th
     appliance-1(config-portgroup-10)# 
 
 
-Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000 supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
+Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 
@@ -200,7 +200,7 @@ Possible options for **MODE** depend on which port you are configuring. For the 
 Configuring PortGroups from the API
 -----------------------------------
 
-To list the current portgroup configuration issue the following API call:
+To list the current portgroup configuration, issue the following API call:
 
 .. code-block:: bash
 
@@ -918,13 +918,13 @@ Below is an exmaple output from an r10000 series appliance:
     }
 
 
-To change the portgroup configuration via the API use the following API call
+To change the portgroup configuration via the API, use the following API call.
 
 .. code-block:: bash
 
   PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-portgroup:portgroups
 
-Below is an exmaple configuration change in the body of the API call above, this is changing portgroup 10 to 25Gb mode:
+Below is an example configuration change in the body of the API call, this is changing portgroup 10 to 25Gb mode:
 
 .. code-block:: json
 
@@ -958,13 +958,13 @@ Interface numbering will vary depending on which rSeries model is being used. In
 Configuring Interfaces from the webUI
 -----------------------------------
 
-Within the F5OS webUI the physical ports of the appliance will be visible by going to **Network Settings > Interfaces** page. 
+Within the F5OS webUI, the physical ports of the appliance will be visible by going to **Network Settings > Interfaces** page. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image10.png
   :align: center
   :scale: 70% 
 
-You can click on any interface to view its settings or edit them. You can currently change the interface State via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of the LAG then the VLAN configuration is done within the LAG rather than the interface.
+You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of a LAG then the VLAN configuration is done within the LAG rather than the interface.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center
@@ -973,7 +973,7 @@ You can click on any interface to view its settings or edit them. You can curren
 Configuring Interfaces from the CLI
 -----------------------------------
 
-Interfaces can be configured in the F5OS CLI. As mentioned previously, portgroups should be configured for their desired state before configuring any interfaces. In the CLI enter config mode and then specify the interface you want to configure. If the interface is going to be part of a LAG, then most of the configuration is done within the LAG. Use the command **show running-config interfaces** to see the current configuration:
+Interfaces can be configured in the F5OS CLI. As mentioned previously, portgroups should be configured for their desired state before configuring any interfaces. In the CLI, enter config mode and then specify the interface you want to configure. If the interface is going to be part of a LAG, then most of the configuration is done within the LAG. Use the command **show running-config interfaces** to see the current configuration:
 
 
 .. code-block:: bash
@@ -1057,7 +1057,7 @@ Interfaces can be configured in the F5OS CLI. As mentioned previously, portgroup
     !
     appliance-1# 
 
-To make any changes you will need to enter **config** mode and then enter the interface config mode to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0. Be sure to commit any changes as they don’t take effect until the commit is issued.
+To make any changes, you will need to enter **config** mode and then enter the interface config mode to make changes. The example below is adding an 802.1Q tagged VLAN 500 to interface 6.0. Be sure to commit any changes as they don’t take effect until the commit is issued.
 
 .. code-block:: bash
     
@@ -2358,7 +2358,7 @@ The following API command will list all the current interfaces within the applia
     }
 
 
-To configure interfaces (that are not part of a LAG), use the following PATCH API call. In the example below VLANs are being assigned to the physical interfaces.
+To configure interfaces (that are not part of a LAG), use the following PATCH API call. In the example below, VLANs are being assigned to the physical interfaces.
 
 .. code-block:: bash
 
@@ -2402,7 +2402,7 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
 Network Settings -> VLANs
 =========================
 
-All in-band networking including VLANs are configured in the F5OS layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by rSeries tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the F5OS layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAG’s and VLANs. 
+All in-band networking, including VLANs, is configured in the F5OS layer, and just like vCMP guests inherit VLANs, VLANs will be inherited by rSeries tenants. This allows administrators to assign the VLANs that are authorized for use by the tenant at the F5OS layer, and then within the tenant there is no ability to configure lower-level networking like interfaces, LAGs and VLANs. 
 
 rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, webUI, or API.
 
@@ -2425,9 +2425,9 @@ VLANs can be created in the F5OS webUI under **Network Settings > VLANs**. When 
 Configuring VLANs from the CLI
 ------------------------------
 
-VLANs can be configured within the F5OS CLI. Once VLANs are created they can either be assigned to a physical interfaces or LAGs within the appliance. VLANs must be given a name and a VLAN ID. You can choose if a VLAN is tagged or untagged within the physical interface or LAG configuration.
+VLANs can be configured within the F5OS CLI. Once VLANs are created, they can be assigned to either a physical interface or LAG within the appliance. VLANs must be given a name and a VLAN ID. You can choose if a VLAN is tagged or untagged within the physical interface or LAG configuration.
 
-To show the current configured VLANs and their options use the command **show running-config vlans**.
+To show the current configured VLANs and their options, use the command **show running-config vlans**.
 
 .. code-block:: bash
 
@@ -2451,7 +2451,7 @@ To show the current configured VLANs and their options use the command **show ru
     appliance-1# 
 
 
-You can also see configured state of VLANs by running the **show vlans** command:
+You can also see the configured state of VLANs by running the **show vlans** command:
 
 .. code-block:: bash
 
@@ -2467,9 +2467,9 @@ You can also see configured state of VLANs by running the **show vlans** command
 
     appliance-1# 
 
-There are a few other VLAN related commands to show the configuration and running state of **vlan-listeners**. **show running-config vlan-listeners** will show the current configuration. A VLAN listener is created for each VLAN and is responsible for rebroadcasting traffic within the VLAN.
+There are a few other VLAN related commands to show the configuration and running state of **vlan-listeners**. The command **show running-config vlan-listeners** will show the current configuration. A VLAN listener is created for each VLAN and is responsible for rebroadcasting traffic within the VLAN.
 
-**NOTE: For Shared VLANs amongst different tenants, the VLAN must be tied to an external interface or LAG in order for the VLAN listener to be created.** 
+**NOTE: For shared VLANs among different tenants, the VLAN must be tied to an external interface or LAG in order for the VLAN listener to be created.** 
 
 .. code-block:: bash
 
@@ -2518,7 +2518,7 @@ The **show vlan-listeners** command will show the current state:
 Configuring VLANs from the API
 ------------------------------
 
-To configure VLANs use the following API command and JSON body. This will configure VLANs along with their VLAN ID’s. After the VLANs are created you will be able to assign them to either interfaces or LAGs.
+To configure VLANs, use the following API command and JSON body. This will configure VLANs along with their VLAN IDs. After the VLANs are created, you will be able to assign them to either interfaces or LAGs.
 
 .. code-block:: bash
 
@@ -2637,7 +2637,7 @@ The following command will list the configuration and status of all VLANs within
 Network Settings -> LAGs
 ========================
 
-All in-band networking including Link Aggregation Groups (LAGs) are configured in the F5OS layer. The admin will configure interfaces and/or LAGs and they will assign VLANs to those physical interfaces or LAGs. Tenants will then inherit the VLANs that are assigned to them when they are created. It is recommended to spread LAG members across internal rSeries pipelines for added redundancy and optimal performance. 
+All in-band networking, including Link Aggregation Groups (LAGs), is configured in the F5OS layer. The admin will configure interfaces and/or LAGs and they will assign VLANs to those physical interfaces or LAGs. Tenants will then inherit the VLANs that are assigned to them when they are created. It is recommended to spread LAG members across internal rSeries pipelines for added redundancy and optimal performance. 
 
 Configuring LAGs from the webUI
 -----------------------------
@@ -2648,18 +2648,18 @@ Link Aggregation Groups (LAGs) can be configured in the F5OS webUI via the **Net
   :align: center
   :scale: 70%
 
-You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term Trunks is used in place of LAG which is used in F5OS: 
+You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term **Trunks** is used in place of LAG which is used in F5OS: 
 
 https://support.f5.com/csp/article/K1689
 
 https://support.f5.com/csp/article/K13142
 
-The following solution article provides guidance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches and this would be similar guidance for rSeries:
+The following solution article provides guidance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches, and this would be similar guidance for rSeries:
 
 https://support.f5.com/csp/article/K33431212
 
 
-Once you have configured the LAG Type and LACP options, you can add any physical interfaces within the rSeries appliance to be part of a LAG. Finally, you can configure the **Native VLAN** (for untagged VLAN), and what **Trunked VLANs** (tagged) you’d like to add to this LAG interface.
+Once you have configured the **LAG Type** and LACP options, you can add any physical interfaces within the rSeries appliance to be part of a LAG. Finally, you can configure the **Native VLAN** (for untagged VLAN), and what **Trunked VLANs** (tagged) you’d like to add to this LAG interface.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image15.png
   :align: center
@@ -2668,7 +2668,7 @@ Once you have configured the LAG Type and LACP options, you can add any physical
 Configuring LAGs from the CLI
 -----------------------------
 
-Within the webUI LAGs and LACP parameters are configured within the LAG webUI pages. In the CLI they are broken out into separate areas. First enter **config** mode and then use the following interface commands to configure the aggregation and LACP:
+Within the webUI, LAGs and LACP parameters are configured within the LAG webUI pages. In the CLI they are broken out into separate areas. First enter **config** mode and then use the following interface commands to configure the aggregation and LACP:
 
 .. code-block:: bash
 
@@ -2712,7 +2712,7 @@ You can view the current interface aggregation configurations in the CLI by runn
     appliance-1# 
 
 
-Next you must configure interfaces to be part of the LAG. Below are examples of interface 1.0 and 2.0 being added to the aggregate-id **Arista**, and interfaces 8.0 and 9.0 being added to the aggregate **HA-Interconnect**.
+Next, you must configure interfaces to be part of the LAG. Below are examples of interface 1.0 and 2.0 being added to the aggregate-id **Arista**, and interfaces 8.0 and 9.0 being added to the aggregate **HA-Interconnect**.
 
 .. code-block:: bash
 
@@ -2761,7 +2761,7 @@ Finally, configuring the lacp interfaces for **Arista** and **HA-Interconnect** 
     Commit complete.
 
 
-You can also view the current lacp configuration for each LAG by issuing the **show running-config lacp** CLI command. This will show all the LACP parameters such as the system priority, name, interval, and lacp-mode for each LAG. 
+You can also view the current LACP configuration for each LAG by issuing the **show running-config lacp** CLI command. This will show all the LACP parameters such as the system priority, name, interval, and lacp-mode for each LAG. 
 
 .. code-block:: bash
 
@@ -2781,7 +2781,7 @@ You can also view the current lacp configuration for each LAG by issuing the **s
 
 
 
-To see the status of the LACP interfaces run the command **show lacp**. It is best to widen your terminal screen as the output is dynamic and will display better on a wider terminal screen in more of a table format:
+To see the status of the LACP interfaces, run the command **show lacp**. It is best to widen your terminal screen as the output is dynamic and will display better on a wider terminal screen in more of a table format:
 
 .. code-block:: bash
 
@@ -2898,7 +2898,7 @@ If you have shorter width terminal, then the output above may be condensed as se
 Configuring LAGs from the API
 -----------------------------
 
-To create a LAG, add interfaces to it, and add proper LACP configuration will take a few different API calls. First a Link Aggregation Group (LAG) interface must be created. You will define a Name, specify the state, the LAG-type of LACP, and define which VLANs will use this LAG interface. In the Example below two LAG interfaces are being created (Arista & HA-Interconnect):
+To create a LAG, add interfaces to it, and add proper LACP configuration it will take a few different API calls. First a Link Aggregation Group (LAG) interface must be created. You will define a Name, specify the state and the LAG-type of LACP, and define which VLANs will use this LAG interface. In the example below, two LAG interfaces are being created (Arista & HA-Interconnect):
 
 .. code-block:: bash
 
@@ -2960,7 +2960,7 @@ To create a LAG, add interfaces to it, and add proper LACP configuration will ta
     }
 
 
-The next step is to add physical interfaces into the LAG group. Interfaces will be added to the aggregate-id that was created in the previous step. In this case interfaces 1.0 and 2.0 will be added to the LAG called **Arista** and interfaces 8.0 and 9.0 will be added to the interface called **HA-Interconnect**.
+The next step is to add physical interfaces into the LAG group. Interfaces will be added to the aggregate-id that was created in the previous step. In this case, interfaces 1.0 and 2.0 will be added to the LAG called **Arista** and interfaces 8.0 and 9.0 will be added to the interface called **HA-Interconnect**.
 
 .. code-block:: bash
 
@@ -3054,7 +3054,7 @@ The final step is adding LACP configuration for each LAG with the LACP mode **AC
         }
     }
 
-To view the final LAG configuration and status via the API use the following API call:
+To view the final LAG configuration and status via the API, use the following API call:
 
 .. code-block:: bash
 
