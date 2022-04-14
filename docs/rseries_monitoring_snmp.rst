@@ -3,7 +3,7 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP v1 and v2c versions. SNMPv3 is currently unsupported in the F5OS-A layer, but is being added in the Q3CY22 timeframe.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP v1 and v2c versions. SNMPv3 is currently unsupported in the F5OS-A layer, but will be added in the Q3CY22 timeframe.
 
 In the F5OS-A v1.x.x versions, SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the physical interfaces. **IF-MIB**, **EtherLike-MIB**, and the **PLATFORM-STATS-MIB**.
 
@@ -453,9 +453,9 @@ Enabling SNMP can de done from the CLI by configuring the **public** SNMP commun
     appliance-1(config-snmpCommunityEntry-public)# exit
   
 
-To configure a Security Group for both SNMPv1 and SNMPv2c
+To configure a Security Group for both SNMPv1 and SNMPv2c.
 
- .. code-block:: bash
+.. code-block:: bash
 
     appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 2 public vacmGroupName read-access
     appliance-1(config-vacmSecurityToGroupEntry-2/public)# exit
