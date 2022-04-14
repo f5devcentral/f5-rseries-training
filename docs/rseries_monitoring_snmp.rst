@@ -453,7 +453,7 @@ Enabling SNMP can de done from the CLI by configuring the **public** SNMP commun
     appliance-1(config-snmpCommunityEntry-public)# exit
   
 
-To configure a Security Group for both SNMPv1 and SNMPv2c:
+To configure a Security Group for both SNMPv1 and SNMPv2c
 
  .. code-block:: bash
 
@@ -464,7 +464,6 @@ To configure a Security Group for both SNMPv1 and SNMPv2c:
     appliance-1(config)# commit
     Commit complete.
     appliance-1(config)# 
-
 
 
 Configuring SNMP Access via API
