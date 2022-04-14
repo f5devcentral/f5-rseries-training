@@ -433,7 +433,7 @@ To enable SNMP, you'll need to configure basic SNMP parameters like **sytem cont
 Configuring SNMP Access via CLI
 -------------------------------
 
-You can configure the SNMP System parameters including the System Contact, System Location, and System Name as seen below:
+You can configure the SNMP System parameters including the **System Contact**, **System Location**, and **System Name** as seen below:
 
 .. code-block:: bash
 
@@ -442,7 +442,7 @@ You can configure the SNMP System parameters including the System Contact, Syste
     Commit complete.
     appliance-1(config)# 
 
-Setting up SNMP can de done from the CLI by enabling the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
 
 .. code-block:: bash
 
@@ -451,6 +451,12 @@ Setting up SNMP can de done from the CLI by enabling the **public** SNMP communi
     Entering configuration mode terminal
     appliance-1(config)# SNMP-COMMUNITY-MIB snmpCommunityTable snmpCommunityEntry public snmpCommunityName public snmpCommunitySecurityName public
     appliance-1(config-snmpCommunityEntry-public)# exit
+  
+
+To configure a Security Group for both SNMPv1 and SNMPv2c:
+
+ .. code-block:: bash
+
     appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 2 public vacmGroupName read-access
     appliance-1(config-vacmSecurityToGroupEntry-2/public)# exit
     appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName read-access
@@ -464,12 +470,24 @@ Setting up SNMP can de done from the CLI by enabling the **public** SNMP communi
 Configuring SNMP Access via API
 -------------------------------
 
-You can configure the SNMP System parameters including the System Contact, System Location, and System Name as seen below:
+You can configure the SNMP System parameters including the **System Contact**, **System Location**, and **System Name** as seen below:
 
 .. code-block:: bash
 
 
+
 .. code-block:: json
+
+
+Enabling SNMP can de done from the API by configuring the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+
+
+.. code-block:: bash
+
+
+
+.. code-block:: json
+
 
 Enabling SNMP Traps
 ===================
@@ -479,7 +497,7 @@ Enabling SNMP Traps in the CLI
 
 Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS-A layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-**Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. The Trap target IP receiver, The 1st octet is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is "10.255.0.144.0.161".**
+**Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is "10.255.0.144.0.161".**
 
 
 .. code-block:: bash
@@ -495,6 +513,18 @@ Enter **config** mode and enter the following commands to enable SNMP traps for 
     r5900-2(config)# commit
     Commit complete.
     r5900-2(config)# 
+
+Enabling SNMP Traps in the API
+------------------------------
+
+.. code-block:: bash
+
+
+
+
+.. code-block:: json
+
+
 
 
 
