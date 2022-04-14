@@ -113,7 +113,7 @@ Within the body of the API call, specific IP address/port combinations can be ad
     {
         "allowed-ip": [
             {
-                "name": "SNMP",
+                "name": "SNMP-143",
                 "config": {
                     "ipv4": {
                         "address": "10.255.0.143",
@@ -122,7 +122,7 @@ Within the body of the API call, specific IP address/port combinations can be ad
                 }
             },
             {
-                "name": "SNMP-WIN-10",
+                "name": "SNMP-144",
                 "config": {
                     "ipv4": {
                         "address": "10.255.0.144",
@@ -131,7 +131,7 @@ Within the body of the API call, specific IP address/port combinations can be ad
                 }
             },
             {
-                "name": "SNMP2",
+                "name": "SNMP-142",
                 "config": {
                     "ipv4": {
                         "address": "10.255.0.142",
