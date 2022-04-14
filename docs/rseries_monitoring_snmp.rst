@@ -70,7 +70,7 @@ Adding Allowed IPs for SNMP
 Adding Allowed IPs for SNMP via CLI
 -----------------------------------
 
-By default SNMP traffic is not allowed into the F5OS layer. Before enabling SNMP you'll need to open up the out-of-band management port on F5OS-A to allow SNMP traffic. Below is an example of allowing an SNMP endpoint at 10.255.0.144 to SNMP poll the system on port 161.
+By default SNMP traffic is not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP traffic. Below is an example of allowing an SNMP endpoint at 10.255.0.144 to SNMP poll the system on port 161.
 
 
 .. code-block:: bash
@@ -95,7 +95,7 @@ Currently you can add one ip address/port pair per **allowed-ip** name. If you r
     Commit complete.
     appliance-1(config-allowed-ip-SNMP)# 
 
-The *allowed-ips** currently allows a specific IP address, and doens't support CIDR configurations. This is being added, and will be avialble ??????
+The **allowed-ips** currently allows a specific IP address, and doesn't support CIDR configurations. This is being added, and will be available in an upcoming F5OS-A release.
 
 Adding Allowed IPs for SNMP via API
 -----------------------------------
