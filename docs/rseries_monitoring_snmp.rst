@@ -7,29 +7,62 @@ Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SN
 
 In the F5OS-A v1.x.x versions, SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the physical interfaces. **IF-MIB**, **EtherLike-MIB**, and the **PLATFORM-STATS-MIB**.
 
-As of F5OS-A 1.x.x the following MIBs available are available:
+As of F5OS-A 1.x.x the following netSNMP MIBs available are available:
 
-- SNMP-FRAMEWORK-MIB
-- SNMP-MPD-MIB
-- SNMP-TARGET-MIB
-- SNMP-USER-BASED-SM-MIB
-- SNMP-COMMUNITY-MIB
-- SNMP-NOTIFICATION-MIB
-- SNMP-VIEW-BASED-ACM-MIB
+- TRANSPORT-ADDRESS-MIB
+- SNMPv2-TC
+- SNMPv2 SMI
 - SNMPv2-MIB
+- SNMPv2-CONF 
+- SNMP-VIEW-BASED-ACM-MIB
+- SNMP-USER-BASED-SM-MIB
+- SNMP-TARGET-MIB
+- SNMP-NOTIFICATION-MIB
+- SNMP-MPD-MIB
+- SNMP-FRAMEWORK-MIB
+- SNMP-COMMUNITY-MIB
+- RFC1213-MIB
+- IPV6-MIB
 - IF-MIB
-- EtherLike-MIB
 - IANAifType-MIB
-- F5-PLATFORM-STATS-MIB
+- HOST-RESOURCES-MIB
+- EtherLike-MIB
+
+As of F5OS-A 1.x.x the following F5OS Appliance MIBs available are available:
+
+- F5-ALERT-DEF-MIB
 - F5-COMMON-SMI-MIB
-- F5-COMMON-SMI
-- F5-ALERT-MIB
+- F5OS-APPLIANCE-ALERT-NOTIF-MIB
+
 
 As of F5OS-A 1.x.x the following alerts and traps are available:
 
 - Interface UP
 - Interface DOWN
 - Cold Start
+- Hardware device fault detected
+- Firmware diagnostic state fault detected
+- Unregistered alarm detected
+- Fault in memory detected
+- Fault in drive detected
+- CPU fault detected
+- Fault in PCIe device detected
+- Running out of drive capacity
+- Power fault detected in hardware
+- Thermal fault detected in hardware
+- Drive has entered a thermal throttle condition
+- Thermal fault detected in blade
+- Hardware fault detected in blade
+- Firmware update status
+- Drive utilization growth rate is high
+- Service health status
+- Change detected in appliance module presence
+- PSU fault detected
+- Fault detected in LCD module
+- Module communication error detected
+- Crypto error identified in one or more services
+- Detected process crash on the system
+
 
 Adding Allowed IPs for SNMP
 ===========================
@@ -67,18 +100,106 @@ The *allowed-ips** currently allows a specific IP address, and doens't support C
 Adding Allowed IPs for SNMP via API
 -----------------------------------
 
+By default SNMP traffic is not allowed into the F5OS layer. Before enabling SNMP you'll need to open up the out-of-band management port on F5OS-A to allow SNMP traffic. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
 
+.. code-block:: bash
+
+    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
+
+Within the body of the API call, specific IP address/port combinations can be added under a given name. In the current release, you are limited to one IP address/port per name. 
+
+.. code-block:: json
+
+    {
+        "allowed-ip": [
+            {
+                "name": "SNMP",
+                "config": {
+                    "ipv4": {
+                        "address": "10.255.0.143",
+                        "port": 161
+                    }
+                }
+            },
+            {
+                "name": "SNMP-WIN-10",
+                "config": {
+                    "ipv4": {
+                        "address": "10.255.0.144",
+                        "port": 161
+                    }
+                }
+            },
+            {
+                "name": "SNMP2",
+                "config": {
+                    "ipv4": {
+                        "address": "10.255.0.142",
+                        "port": 161
+                    }
+                }
+            }
+        ]
+    }
+
+
+
+To view the allowed IP's in the API use the following call.
+
+.. code-block:: bash
+
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
+
+The output will show the previously configured allowed-ip's.
+
+
+.. code-block:: json
+
+    {
+        "f5-allowed-ips:allowed-ips": {
+            "allowed-ip": [
+                {
+                    "name": "SNMP",
+                    "config": {
+                        "ipv4": {
+                            "address": "10.255.0.143",
+                            "port": 161
+                        }
+                    }
+                },
+                {
+                    "name": "SNMP-WIN-10",
+                    "config": {
+                        "ipv4": {
+                            "address": "10.255.0.144",
+                            "port": 161
+                        }
+                    }
+                },
+                {
+                    "name": "SNMP2",
+                    "config": {
+                        "ipv4": {
+                            "address": "10.255.0.142",
+                            "port": 161
+                        }
+                    }
+                }
+            ]
+        }
+    }
 
 
 Adding Interface and LAG descriptions
 =====================================
 
 
+It is highly recommended that you put interface descriptions in your configuration, so that they will show up in the description field when using SNMP polling.
+
 Adding Interface and LAG descriptions via CLI
 ---------------------------------------------
 
-
-It is highly recommend that you put interface descriptions in your configuration so that this will show up in the description field when using SNMP polling. Do this for both the in-band and out-of-band management ports.
+To add descriptions for both the in-band, and out-of-band management ports in the CLI, follow the examples below.
 
 .. code-block:: bash
 
@@ -131,6 +252,148 @@ If Link Aggregation Groups (LAGs) are configured, decriptions should be added to
 Adding Interface and LAG descriptions via API
 ---------------------------------------------
 
+To add descriptions for both the in-band, and out-of-band management ports in the CLI, follow the examples below. The API example below is for the r10000 modela which have 20 interfaces, and one managment port. For the r5000 series models you should adjust for 10 interfaces and one managment.
+
+.. code-block:: bash
+
+    PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+
+.. code-block:: json
+
+    {
+        "openconfig-interfaces:interfaces": {
+            "interface": [
+                {
+                    "name": "1.0",
+                    "config": {
+                        "description": "r10900 Interface 1.0"
+                    }
+                },
+                {
+                    "name": "2.0",
+                    "config": {
+                        "description": "r10900 Interface 2.0"
+                    }
+                },
+                {
+                    "name": "3.0",
+                    "config": {
+                        "description": "r10900 Interface 3.0"
+                    }
+                },
+                {
+                    "name": "4.0",
+                    "config": {
+                        "description": "r10900 Interface 4.0"
+                    }
+                },
+                {
+                    "name": "5.0",
+                    "config": {
+                        "description": "r10900 Interface 5.0"
+                    }
+                },
+                {
+                    "name": "6.0",
+                    "config": {
+                        "description": "r10900 Interface 6.0"
+                    }
+                },
+                {
+                    "name": "7.0",
+                    "config": {
+                        "description": "r10900 Interface 7.0"
+                    }
+                },
+                {
+                    "name": "8.0",
+                    "config": {
+                        "description": "r10900 Interface 8.0"
+                    }
+                },
+                {
+                    "name": "9.0",
+                    "config": {
+                        "description": "r10900 Interface 9.0"
+                    }
+                },
+                {
+                    "name": "10.0",
+                    "config": {
+                        "description": "r10900 Interface 10.0"
+                    }
+                },
+                {
+                    "name": "11.0",
+                    "config": {
+                        "description": "r10900 Interface 11.0"
+                    }
+                },
+                {
+                    "name": "12.0",
+                    "config": {
+                        "description": "r10900 Interface 12.0"
+                    }
+                },
+                {
+                    "name": "13.0",
+                    "config": {
+                        "description": "r10900 Interface 13.0"
+                    }
+                },
+                {
+                    "name": "14.0",
+                    "config": {
+                        "description": "r10900 Interface 14.0"
+                    }
+                },
+                {
+                    "name": "15.0",
+                    "config": {
+                        "description": "r10900 Interface 15.0"
+                    }
+                },
+                {
+                    "name": "16.0",
+                    "config": {
+                        "description": "r10900 Interface 16.0"
+                    }
+                },
+                {
+                    "name": "17.0",
+                    "config": {
+                        "description": "r10900 Interface 17.0"
+                    }
+                },
+                {
+                    "name": "18.0",
+                    "config": {
+                        "description": "r10900 Interface 18.0"
+                    }
+                },
+                {
+                    "name": "19.0",
+                    "config": {
+                        "description": "r10900 Interface 19.0"
+                    }
+                },
+                {
+                    "name": "20.0",
+                    "config": {
+                        "description": "r10900 Interface 20.0"
+                    }
+                },
+                {
+                    "name": "mgmt",
+                    "config": {
+                        "description": "r10900 Interface mgmt"
+                    }
+                }
+            ]
+        }
+    }
+
+
 
 
 Configuring SNMP Access
@@ -150,7 +413,7 @@ You can configure the SNMP System parameters including the System Contact, Syste
     Commit complete.
     appliance-1(config)# 
 
-Setting up SNMP can de done from the CLI by enabling an SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+Setting up SNMP can de done from the CLI by enabling the Public SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
 
 .. code-block:: bash
 
@@ -180,7 +443,7 @@ Enabling SNMP Traps in the CLI
 
 Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS-A layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-**Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. The Trap target IP receiver, The 1st octet is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.139 & 161 UDP port is "10.255.0.139.0.161".**
+**Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. The Trap target IP receiver, The 1st octet is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is "10.255.0.144.0.161".**
 
 
 .. code-block:: bash
@@ -189,7 +452,7 @@ Enter **config** mode and enter the following commands to enable SNMP traps for 
     Entering configuration mode terminal
     r5900-2(config)# SNMP-NOTIFICATION-MIB snmpNotifyTable snmpNotifyEntry v2_trap snmpNotifyTag v2_trap snmpNotifyType trap snmpNotifyStorageType nonVolatile 
     r5900-2(config-snmpNotifyEntry-v2_trap)# exit
-    r5900-2(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.139.0.161 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
+    r5900-2(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.144.0.161 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
     r5900-2(config-snmpTargetAddrEntry-group2)# exit
     r5900-2(config)# SNMP-TARGET-MIB snmpTargetParamsTable snmpTargetParamsEntry group2 snmpTargetParamsMPModel 1 snmpTargetParamsSecurityModel 2 snmpTargetParamsSecurityName public snmpTargetParamsSecurityLevel noAuthNoPriv snmpTargetParamsStorageType nonVolatile
     r5900-2(config-snmpTargetParamsEntry-group2)# exit
@@ -198,46 +461,6 @@ Enter **config** mode and enter the following commands to enable SNMP traps for 
     r5900-2(config)# 
 
 
-
-
-appliance-1(config)# SNMP-COMMUNITY-MIB snmpCommunityTable snmpCommunityEntry public snmpCommunityName public snmpCommunitySecurityName public snmpCommunityContextEngineID 80:00:61:81:05:01 snmpCommunityContextName "" snmpCommunityTransportTag "" snmpCommunityStorageType permanent
-appliance-1(config-snmpCommunityEntry-public)# exit
-appliance-1(config)# 
-appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmViewTreeFamilyTable vacmViewTreeFamilyEntry v1v2_access 1.3.6.1 vacmViewTreeFamilyType included vacmViewTreeFamilyStorageType nonVolatile
-appliance-1(config-vacmViewTreeFamilyEntry-v1v2_access/1.3.6.1)# exit
-appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 2 public vacmGroupName public vacmSecurityToGroupStorageType nonVolatile
-appliance-1(config-vacmSecurityToGroupEntry-2/public)# exit
-appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmAccessTable vacmAccessEntry public "" 0 noAuthNoPriv vacmAccessContextMatch exact vacmAccessReadViewName v1v2_access vacmAccessWriteViewName empty vacmAccessNotifyViewName v1v2_access vacmAccessStorageType nonVolatile
-appliance-1(config-vacmAccessEntry-public//0/noAuthNoPriv)# 
-appliance-1(config-vacmAccessEntry-public//0/noAuthNoPriv)# exit
-appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName boyapati vacmSecurityToGroupStorageType nonVolatile
-appliance-1(config-vacmSecurityToGroupEntry-1/public)# exit
-appliance-1(config)# 
-appliance-1(config)# 
-appliance-1(config)# 
-appliance-1(config)# SNMP-NOTIFICATION-MIB snmpNotifyTable snmpNotifyEntry v2_trap snmpNotifyTag v2_trap snmpNotifyType trap snmpNotifyStorageType nonVolatile
-appliance-1(config-snmpNotifyEntry-v2_trap)# exit
-appliance-1(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.144.23.123 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
-appliance-1(config-snmpTargetAddrEntry-group2)# exit
-appliance-1(config)# SNMP-TARGET-MIB snmpTargetParamsTable snmpTargetParamsEntry group2 snmpTargetParamsMPModel 1 snmpTargetParamsSecurityModel 2 snmpTargetParamsSecurityName public snmpTargetParamsSecurityLevel noAuthNoPriv snmpTargetParamsStorageType nonVolatile
-appliance-1(config-snmpTargetParamsEntry-group2)# exit
-appliance-1(config)# SNMP-TARGET-MIB snmpTargetAddrTable snmpTargetAddrEntry group2 snmpTargetAddrTDomain 1.3.6.1.6.1.1 snmpTargetAddrTAddress 10.255.0.144.23.123 snmpTargetAddrTimeout 1500 snmpTargetAddrRetryCount 3 snmpTargetAddrTagList v2_trap snmpTargetAddrParams group2 snmpTargetAddrStorageType nonVolatile snmpTargetAddrEngineID "" snmpTargetAddrTMask "" snmpTargetAddrMMS 2048 enabled
-appliance-1(config-snmpTargetAddrEntry-group2)# 
-appliance-1(config-snmpTargetAddrEntry-group2)# exit
-appliance-1(config)# commit
-Aborted: illegal reference 'SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName'
-appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmViewTreeFamilyTable vacmViewTreeFamilyEntry v1v2_access 1.3.6.1 vacmViewTreeFamilyType included vacmViewTreeFamilyStorageType nonVolatile
-appliance-1(config-vacmViewTreeFamilyEntry-v1v2_access/1.3.6.1)# exit
-appliance-1(config)# commit
-Aborted: illegal reference 'SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName'
-appliance-1(config)# no SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName boyapati vacmSecurityToGroupStorageType nonVolatile
-appliance-1(config)# commit
-Aborted: 'SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName' is not configured
-appliance-1(config)# SNMP-VIEW-BASED-ACM-MIB vacmSecurityToGroupTable vacmSecurityToGroupEntry 1 public vacmGroupName public vacmSecurityToGroupStorageType nonVolatile     
-appliance-1(config-vacmSecurityToGroupEntry-1/public)# exit
-appliance-1(config)# commit
-Commit complete.
-appliance-1(config)# 
 
 
 appliance-1# show SNMP-FRAMEWORK-MIB 
@@ -318,10 +541,10 @@ Exmaple output:
     .1.3.6.1.2.1.1.9.1.2.2	.1.3.6.1.2.1.31	OID	10.255.0.148:161
 
 ------------
-SNMP ifIndex
+SNMP ifXIndex
 ------------
 
-You can poll the following SNMP OID to get detailed interface stats for each physical port on the BX100 blades and also for Link Aggregation Groups that have been configured. Note that you will only see interfaces and LAG's that are configured within the chassis partition you are monitoring. You will not have visibility into other chassis partition interfaces of LAG's unless you poll them directly.
+You can poll the following SNMP OID to get detailed interface stats for each physical port on the rSeries appliances and also for Link Aggregation Groups that have been configured. 
 
 **NOTE: Stats for LAG interfaces are not currently populated.**
 
