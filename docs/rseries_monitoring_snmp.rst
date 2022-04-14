@@ -113,6 +113,15 @@ Within the body of the API call, specific IP address/port combinations can be ad
     {
         "allowed-ip": [
             {
+                "name": "SNMP-142",
+                "config": {
+                    "ipv4": {
+                        "address": "10.255.0.142",
+                        "port": 161
+                    }
+                }
+            },
+            {
                 "name": "SNMP-143",
                 "config": {
                     "ipv4": {
@@ -129,22 +138,13 @@ Within the body of the API call, specific IP address/port combinations can be ad
                         "port": 161
                     }
                 }
-            },
-            {
-                "name": "SNMP-142",
-                "config": {
-                    "ipv4": {
-                        "address": "10.255.0.142",
-                        "port": 161
-                    }
-                }
             }
         ]
     }
 
 
 
-To view the allowed IP's in the API use the following call.
+To view the allowed IP's in the API, use the following call.
 
 .. code-block:: bash
 
@@ -159,7 +159,16 @@ The output will show the previously configured allowed-ip's.
         "f5-allowed-ips:allowed-ips": {
             "allowed-ip": [
                 {
-                    "name": "SNMP",
+                    "name": "SNMP-142",
+                    "config": {
+                        "ipv4": {
+                            "address": "10.255.0.142",
+                            "port": 161
+                        }
+                    }
+                },
+                {
+                    "name": "SNMP-143",
                     "config": {
                         "ipv4": {
                             "address": "10.255.0.143",
@@ -168,19 +177,10 @@ The output will show the previously configured allowed-ip's.
                     }
                 },
                 {
-                    "name": "SNMP-WIN-10",
+                    "name": "SNMP-144",
                     "config": {
                         "ipv4": {
                             "address": "10.255.0.144",
-                            "port": 161
-                        }
-                    }
-                },
-                {
-                    "name": "SNMP2",
-                    "config": {
-                        "ipv4": {
-                            "address": "10.255.0.142",
                             "port": 161
                         }
                     }
@@ -236,7 +236,7 @@ To add descriptions for both the in-band, and out-of-band management ports in th
     appliance-1(config-interface-mgmt)# commit
 
 
-If Link Aggregation Groups (LAGs) are configured, decriptions should be added to the LAG interfaces as well:
+If Link Aggregation Groups (LAGs) are configured, descriptions should be added to the LAG interfaces as well.
 
 .. code-block:: bash
 
@@ -252,7 +252,7 @@ If Link Aggregation Groups (LAGs) are configured, decriptions should be added to
 Adding Interface and LAG descriptions via API
 ---------------------------------------------
 
-To add descriptions for both the in-band, and out-of-band management ports in the CLI, follow the examples below. The API example below is for the r10000 modela which have 20 interfaces, and one managment port. For the r5000 series models you should adjust for 10 interfaces and one managment.
+To add descriptions for both the in-band, and out-of-band management ports in the CLI, follow the examples below. The API example below is for the r10000 models, which have 20 interfaces and one managment port. For the r5000 series models you should adjust for 10 interfaces and one managment port.
 
 .. code-block:: bash
 
@@ -394,12 +394,41 @@ To add descriptions for both the in-band, and out-of-band management ports in th
     }
 
 
+If Link Aggregation Groups (LAGs) are configured, descriptions should be added to the LAG interfaces as well.
+
+.. code-block:: bash
+
+    PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+
+The body of the API call should contain JSON data that includes the descriptions for each LAG.
+
+.. code-block:: json
+
+    {
+        "openconfig-interfaces:interfaces": {
+            "interface": [
+                {
+                    "name": "Arista",
+                    "config": {
+                        "description": "LAG to Arista"
+                    }
+                },
+                {
+                    "name": "HA-Interconnect",
+                    "config": {
+                        "description": "LAG to other r10900"
+                    }
+                }
+
+            ]
+        }
+    }
 
 
 Configuring SNMP Access
 =======================
 
-To enable SNMP you'll need to configure basic SNMP parameters like sytem contact, location and name. Then you'll configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI or API, but not the webUI. Adding SNMP configuraiton support for the webUI is currently targeted for ??????
+To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI or API, but not the webUI. Adding SNMP configuraiton support for the webUI will be available in a future F5OS-A release.
 
 Configuring SNMP Access via CLI
 -------------------------------
@@ -413,7 +442,7 @@ You can configure the SNMP System parameters including the System Contact, Syste
     Commit complete.
     appliance-1(config)# 
 
-Setting up SNMP can de done from the CLI by enabling the Public SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+Setting up SNMP can de done from the CLI by enabling the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
 
 .. code-block:: bash
 
@@ -434,6 +463,13 @@ Setting up SNMP can de done from the CLI by enabling the Public SNMP community. 
 
 Configuring SNMP Access via API
 -------------------------------
+
+You can configure the SNMP System parameters including the System Contact, System Location, and System Name as seen below:
+
+.. code-block:: bash
+
+
+.. code-block:: json
 
 Enabling SNMP Traps
 ===================
