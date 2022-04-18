@@ -718,34 +718,31 @@ SNMP ifIndex OID: .1.3.6.1.2.1.31.1.1
 
 
 
-SNMP Trap Support in F5OS
-========================
+SNMP Trap Support in F5OS-A
+===========================
 
-You can enable SNMP traps for the F5OS layer. The **F5-CTRLR-ALERT-NOTIF-MIB* & the **F5-PARTITION-ALERT-NOTIF-MIB** provide details about supported system controller and chassis partition SNMP traps. Below is the current full list of traps support by F5OS: 
+You can enable SNMP traps for the F5OS-A layer. The **5OS-APPLIANCE-ALERT-NOTIF-MIB* provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps support by F5OS-A: 
 
-
-For the system controllers, the following SNMP Traps are supported as of F5OS 1.2.x as defined in the **F5-CTRLR-ALERT-NOTIF-MIB.txt**:
-
-SNMP Trap events that note a fault should also trigger an Alert that can be viewed in the show alters output, in the CLI, WebUI, and API. Once the clear SNMP Trap is sent, it should clear the event form the show events output.
+SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. Once the clear SNMP Trap is sent, it should clear the event from the show events output.
 
 +----------------------------+----------------------------------+
 | **Alert**                  | **OID**                          |                            
 +============================+==================================+
-| lcd-fault                  | .1.3.6.1.4.1.12276.1.1.1.65792   |
+| lcd-fault                  | .1.3.6.1.4.1.12276.1.1.1.66306   |
 +----------------------------+----------------------------------+
-| psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.65793   |
+| psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
 +----------------------------+----------------------------------+
-| module-present             | .1.3.6.1.4.1.12276.1.1.1.65794   |
+| module-present  x           | .1.3.6.1.4.1.12276.1.1.1.65794   |
 +----------------------------+----------------------------------+
-| module-communication-error | .1.3.6.1.4.1.12276.1.1.1.65795   |
+| module-communication-error | .1.3.6.1.4.1.12276.1.1.1.66307   |
 +----------------------------+----------------------------------+
-| psu-redundancy-fault       | .1.3.6.1.4.1.12276.1.1.1.65796   |
+| psu-redundancy-fault  x     | .1.3.6.1.4.1.12276.1.1.1.65796   |
 +----------------------------+----------------------------------+
-| arbitration-state          | .1.3.6.1.4.1.12276.1.1.1.66048   |
+| arbitration-state     x     | .1.3.6.1.4.1.12276.1.1.1.66048   |
 +----------------------------+----------------------------------+
-| switch-status              | .1.3.6.1.4.1.12276.1.1.1.66049   |
+| switch-status         x     | .1.3.6.1.4.1.12276.1.1.1.66049   |
 +----------------------------+----------------------------------+
-| link-state                 | .1.3.6.1.4.1.12276.1.1.1.66050   |
+| link-state           x      | .1.3.6.1.4.1.12276.1.1.1.66050   |
 +----------------------------+----------------------------------+
 | hardware-device-fault      | .1.3.6.1.4.1.12276.1.1.1.65536   |
 +----------------------------+----------------------------------+
