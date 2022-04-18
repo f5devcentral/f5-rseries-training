@@ -67,7 +67,7 @@ A combination of Docker Compose and Kubernetes is used within the F5OS rSeries p
 
 .. image:: images/rseries_introduction/imagex.png
   :align: center
-  :scale: 80%
+  :scale: 60%
 
 The diagram above is somewhat simplified as it shows a single software stack for the Kubernetes control plane. There is a software stack for the F5OS layer that provides F5OS CLI, webUI, and API management for the appliance  as well as support for the networking services such as stpd, lldpd, lacpd, that get deployed as workloads.
 
@@ -84,6 +84,6 @@ When configuring High Availability (HA) between two rSeries appliances, there is
 
 .. image:: images/rseries_introduction/image9.png
   :align: center
-  :scale: 60%
+  :scale: 80%
 
 
