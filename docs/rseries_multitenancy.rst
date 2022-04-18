@@ -149,9 +149,7 @@ Since all r5000 models are running on the same hardware appliance, you can easil
 r4000 Series Multitenancy
 ==========================
 
-**NOTE: This is subject to change**
-
-In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPUs or vCPUs. For each physical CPU core there are two logical vCPUs. The r4000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPUs or logical cores these platforms support, they are measured using physical CPU core counts only. The r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
+In the high-end (r10000) and mid-range (r5000) rSeries appliances, each Intel CPU core runs hyperthreading and appears as two logical CPUs or vCPUs. For each physical CPU core there are two logical vCPUs. The r4000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPUs or logical cores these platforms support, they are measured using physical CPU core counts only. The r4000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
 
 Each r4000 appliance has 16 CPU cores (not vCPUs), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPUs dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPUs to interface with, the F5OS platform layer processes can be spread across all the available CPUs. This allows for more CPU's to be used for tenancy.
 
@@ -176,9 +174,7 @@ Since all r4000 models are running on the same hardware appliance, you can easil
 r2000 Series Multitenancy
 ==========================
 
-**NOTE: This is subject to Change**
-
-In the high-end (r10000) and mid-range (r5000) rSeries appliances each Intel CPU core runs hyperthreading and appears as two logical CPUs or vCPUs. For each physical CPU core there are two logical vCPUs. The r2000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPUs or logical cores these platforms support, they are measured using physical CPU core counts only. The r2000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
+In the high-end (r10000) and mid-range (r5000) rSeries appliances, each Intel CPU core runs hyperthreading and appears as two logical CPUs or vCPUs. For each physical CPU core there are two logical vCPUs. The r2000 series of appliances use a different class of Intel CPU that does not utilize hyperthreading. Instead of measuring how many vCPUs or logical cores these platforms support, they are measured using physical CPU core counts only. The r2000 series platforms do not include FPGA's for hardware offloading of workloads like DDoS mitigation, or FASTL4 offload. These workloads are handled by CPU with specialized offload instead. SSL and Compression are part of the Intel CPU complex and are offloaded within the CPU. 
 
 Each r2000 appliance has 8 CPU cores (not vCPUs), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPU's dedicated to the F5OS platform layer. Since there are no FPGA's that require dedicated CPU's to interface with, the F5OS platform layer processes can be spread across all the available CPU's. This allows for more CPU's to be used for tenancy.
 
