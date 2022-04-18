@@ -721,7 +721,7 @@ SNMP ifIndex OID: .1.3.6.1.2.1.31.1.1
 SNMP Trap Support in F5OS-A
 ===========================
 
-You can enable SNMP traps for the F5OS-A layer. The **5OS-APPLIANCE-ALERT-NOTIF-MIB* provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps support by F5OS-A: 
+You can enable SNMP traps for the F5OS-A layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB* provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps support by F5OS-A: 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. Once the clear SNMP Trap is sent, it should clear the event from the show events output.
 
