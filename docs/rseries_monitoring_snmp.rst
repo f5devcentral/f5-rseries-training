@@ -473,10 +473,15 @@ You can configure the SNMP System parameters including the **System Contact**, *
 
 .. code-block:: bash
 
-
+    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMPv2-MIB:SNMPv2-MIB/system/sysContact
 
 .. code-block:: json
 
+    {
+        "SNMPv2-MIB:sysContact": "jim@f5.com",
+        "SNMPv2-MIB:sysName": "Boston-r10900-1",
+        "SNMPv2-MIB:sysLocation": "Boston"
+    }
 
 Enabling SNMP can de done from the API by configuring the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
 
