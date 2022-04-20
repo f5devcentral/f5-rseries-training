@@ -523,10 +523,68 @@ Enabling SNMP Traps in the API
 
 .. code-block:: bash
 
-
+    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB
 
 
 .. code-block:: json
+
+    {
+        "SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB": {
+            "snmpNotifyTable": {
+                "snmpNotifyEntry": [
+                    {
+                        "snmpNotifyName": "v2_trap",
+                        "snmpNotifyTag": "v2_trap",
+                        "snmpNotifyType": "trap",
+                        "snmpNotifyStorageType": "nonVolatile"
+                    }
+                ]
+            }
+        }
+    }
+
+
+.. code-block:: bash
+
+    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMP-TARGET-MIB:SNMP-TARGET-MIB
+
+.. code-block:: json
+
+    {
+        "SNMP-TARGET-MIB:SNMP-TARGET-MIB": {
+            "snmpTargetAddrTable": {
+                "snmpTargetAddrEntry": [
+                    {
+                        "snmpTargetAddrName": "group2",
+                        "snmpTargetAddrTDomain": "1.3.6.1.6.1.1",
+                        "snmpTargetAddrTAddress": "10.255.0.144.0.161",
+                        "snmpTargetAddrTimeout": 1500,
+                        "snmpTargetAddrRetryCount": 3,
+                        "snmpTargetAddrTagList": "v2_trap",
+                        "snmpTargetAddrParams": "group2",
+                        "snmpTargetAddrStorageType": "nonVolatile",
+                        "snmpTargetAddrEngineID": "",
+                        "snmpTargetAddrTMask": "",
+                        "snmpTargetAddrMMS": 2048,
+                        "enabled": true
+                    }
+                ]
+            },
+            "snmpTargetParamsTable": {
+                "snmpTargetParamsEntry": [
+                    {
+                        "snmpTargetParamsName": "group2",
+                        "snmpTargetParamsMPModel": 1,
+                        "snmpTargetParamsSecurityModel": 2,
+                        "snmpTargetParamsSecurityName": "public",
+                        "snmpTargetParamsSecurityLevel": "noAuthNoPriv",
+                        "snmpTargetParamsStorageType": "nonVolatile"
+                    }
+                ]
+            }
+        }
+    }
+
 
 
 There are various SNMP show commands in the CLI to provide configuration and stats.
