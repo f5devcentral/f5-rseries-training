@@ -488,10 +488,55 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
 
 .. code-block:: bash
 
-
+    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMP-VIEW-BASED-ACM-MIB:SNMP-VIEW-BASED-ACM-MIB
 
 .. code-block:: json
 
+    {
+        "SNMP-VIEW-BASED-ACM-MIB:SNMP-VIEW-BASED-ACM-MIB": {
+            "vacmSecurityToGroupTable": {
+                "vacmSecurityToGroupEntry": [
+                    {
+                        "vacmSecurityModel": 1,
+                        "vacmSecurityName": "public",
+                        "vacmGroupName": "read-access",
+                        "vacmSecurityToGroupStorageType": "nonVolatile"
+                    },
+                    {
+                        "vacmSecurityModel": 2,
+                        "vacmSecurityName": "public",
+                        "vacmGroupName": "read-access",
+                        "vacmSecurityToGroupStorageType": "nonVolatile"
+                    }
+                ]
+            },
+            "vacmAccessTable": {
+                "vacmAccessEntry": [
+                    {
+                        "vacmGroupName": "read-access",
+                        "vacmAccessContextPrefix": "",
+                        "vacmAccessSecurityModel": 0,
+                        "vacmAccessSecurityLevel": "noAuthNoPriv",
+                        "vacmAccessContextMatch": "exact",
+                        "vacmAccessReadViewName": "internet",
+                        "vacmAccessNotifyViewName": "internet",
+                        "vacmAccessStorageType": "nonVolatile"
+                    }
+                ]
+            },
+            "vacmViewTreeFamilyTable": {
+                "vacmViewTreeFamilyEntry": [
+                    {
+                        "vacmViewTreeFamilyViewName": "internet",
+                        "vacmViewTreeFamilySubtree": "1.3.6.1",
+                        "vacmViewTreeFamilyMask": "",
+                        "vacmViewTreeFamilyType": "included",
+                        "vacmViewTreeFamilyStorageType": "nonVolatile"
+                    }
+                ]
+            }
+        }
+    }
 
 Enabling SNMP Traps
 ===================
