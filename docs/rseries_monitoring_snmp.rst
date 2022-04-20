@@ -518,6 +518,57 @@ Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement
     Commit complete.
     r5900-2(config)# 
 
+There are various SNMP show commands in the CLI to provide configuration and stats.
+
+.. code-block:: bash
+
+    appliance-1# show SNMP-FRAMEWORK-MIB 
+    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineID 80:00:61:81:05:01
+    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineBoots 26
+    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineTime 15215
+    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineMaxMessageSize 50000
+    
+    appliance-1# show SNMP-MPD-MIB      
+    SNMP-MPD-MIB snmpMPDStats snmpUnknownSecurityModels 0
+    SNMP-MPD-MIB snmpMPDStats snmpInvalidMsgs 0
+    SNMP-MPD-MIB snmpMPDStats snmpUnknownPDUHandlers 0
+   
+    appliance-1# show SNMP-TARGET-MIB 
+    SNMP-TARGET-MIB snmpTargetObjects snmpUnavailableContexts 0
+    SNMP-TARGET-MIB snmpTargetObjects snmpUnknownContexts 0
+    
+    appliance-1# show SNMP-USER-BASED-SM-MIB 
+    SNMP-USER-BASED-SM-MIB usmStats usmStatsUnsupportedSecLevels 0
+    SNMP-USER-BASED-SM-MIB usmStats usmStatsNotInTimeWindows 0
+    SNMP-USER-BASED-SM-MIB usmStats usmStatsUnknownUserNames 0
+    SNMP-USER-BASED-SM-MIB usmStats usmStatsUnknownEngineIDs 0
+    SNMP-USER-BASED-SM-MIB usmStats usmStatsWrongDigests 0
+    SNMP-USER-BASED-SM-MIB usmStats usmStatsDecryptionErrors 0
+    
+    appliance-1# show SNMPv2-MIB            
+    SNMPv2-MIB system sysDescr "Linux 3.10.0-1160.25.1.F5.1.el7_8.x86_64 : Appliance services version 1.1.0-3306"
+    SNMPv2-MIB system sysObjectID 1.3.6.1.2.1.1
+    SNMPv2-MIB system sysUpTime 1525114
+    SNMPv2-MIB system sysServices 72
+    SNMPv2-MIB system sysORLastChange 6
+    SNMPv2-MIB snmp snmpInPkts 1
+    SNMPv2-MIB snmp snmpInBadVersions 0
+    SNMPv2-MIB snmp snmpInBadCommunityNames 1
+    SNMPv2-MIB snmp snmpInBadCommunityUses 0
+    SNMPv2-MIB snmp snmpInASNParseErrs 0
+    SNMPv2-MIB snmp snmpSilentDrops 0
+    SNMPv2-MIB snmp snmpProxyDrops 0
+    SNMPv2-MIB snmpSet snmpSetSerialNo 1200461836
+                                                                                                            SYS   
+    SYS                                                                                                        ORUP  
+    ORINDEX  SYS ORID             SYS ORDESCR                                                                  TIME  
+    -----------------------------------------------------------------------------------------------------------------
+    1        1.3.6.1.4.1.12276.1  F5 Networks enterprise Platform MIB                                          6     
+    2        1.3.6.1.2.1.31       The MIB module to describe generic objects for network interface sub-layers  6     
+
+    appliance-1# 
+
+
 Enabling SNMP Traps in the API
 ------------------------------
 
@@ -587,55 +638,6 @@ Enabling SNMP Traps in the API
 
 
 
-There are various SNMP show commands in the CLI to provide configuration and stats.
-
-.. code-block:: bash
-
-    appliance-1# show SNMP-FRAMEWORK-MIB 
-    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineID 80:00:61:81:05:01
-    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineBoots 26
-    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineTime 15215
-    SNMP-FRAMEWORK-MIB snmpEngine snmpEngineMaxMessageSize 50000
-    
-    appliance-1# show SNMP-MPD-MIB      
-    SNMP-MPD-MIB snmpMPDStats snmpUnknownSecurityModels 0
-    SNMP-MPD-MIB snmpMPDStats snmpInvalidMsgs 0
-    SNMP-MPD-MIB snmpMPDStats snmpUnknownPDUHandlers 0
-   
-    appliance-1# show SNMP-TARGET-MIB 
-    SNMP-TARGET-MIB snmpTargetObjects snmpUnavailableContexts 0
-    SNMP-TARGET-MIB snmpTargetObjects snmpUnknownContexts 0
-    
-    appliance-1# show SNMP-USER-BASED-SM-MIB 
-    SNMP-USER-BASED-SM-MIB usmStats usmStatsUnsupportedSecLevels 0
-    SNMP-USER-BASED-SM-MIB usmStats usmStatsNotInTimeWindows 0
-    SNMP-USER-BASED-SM-MIB usmStats usmStatsUnknownUserNames 0
-    SNMP-USER-BASED-SM-MIB usmStats usmStatsUnknownEngineIDs 0
-    SNMP-USER-BASED-SM-MIB usmStats usmStatsWrongDigests 0
-    SNMP-USER-BASED-SM-MIB usmStats usmStatsDecryptionErrors 0
-    
-    appliance-1# show SNMPv2-MIB            
-    SNMPv2-MIB system sysDescr "Linux 3.10.0-1160.25.1.F5.1.el7_8.x86_64 : Appliance services version 1.1.0-3306"
-    SNMPv2-MIB system sysObjectID 1.3.6.1.2.1.1
-    SNMPv2-MIB system sysUpTime 1525114
-    SNMPv2-MIB system sysServices 72
-    SNMPv2-MIB system sysORLastChange 6
-    SNMPv2-MIB snmp snmpInPkts 1
-    SNMPv2-MIB snmp snmpInBadVersions 0
-    SNMPv2-MIB snmp snmpInBadCommunityNames 1
-    SNMPv2-MIB snmp snmpInBadCommunityUses 0
-    SNMPv2-MIB snmp snmpInASNParseErrs 0
-    SNMPv2-MIB snmp snmpSilentDrops 0
-    SNMPv2-MIB snmp snmpProxyDrops 0
-    SNMPv2-MIB snmpSet snmpSetSerialNo 1200461836
-                                                                                                            SYS   
-    SYS                                                                                                        ORUP  
-    ORINDEX  SYS ORID             SYS ORDESCR                                                                  TIME  
-    -----------------------------------------------------------------------------------------------------------------
-    1        1.3.6.1.4.1.12276.1  F5 Networks enterprise Platform MIB                                          6     
-    2        1.3.6.1.2.1.31       The MIB module to describe generic objects for network interface sub-layers  6     
-
-    appliance-1# 
 
 
 
