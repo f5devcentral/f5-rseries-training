@@ -501,7 +501,7 @@ Enabling SNMP Traps in the CLI
 
 Enter **config** mode, and enter the following commands to enable SNMP traps for the F5OS-A layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-**Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
+Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
 
 
 .. code-block:: bash
