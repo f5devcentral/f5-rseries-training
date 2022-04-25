@@ -1598,7 +1598,7 @@ Console Access to Tenant via Built-In Terminal Server
 
 You may have a need to access the console of a tenant to diagnose a problem, or to watch it boot up. rSeries provides a built-in terminal server function that will proxy network connections to a tenant console. VIPRION and iSeries provided a **vconsole** capability for vCMP guest access, which required a user to authenticate to the device CLI first before they could run the vconsole command. 
 
-When an rSeries tenant is created and deployed, a listening ssh port will be configured on port 700x of the F5OS layer (where x is the tenant instance ID). After a tenant is created, you will need to set the tenant password and tweak the **Expiry Date** to force a password change before a user can connect via the terminal server.
+When an rSeries tenant is created and deployed, a listening ssh port will be configured on port 7001 of the F5OS layer. After a tenant is created, you will need to set the tenant password and tweak the **Expiry Date** to force a password change before a user can connect via the terminal server.
 
 Once a tenant is created from the F5OS CLI, enter the command **show system aaa authentication**. Note that there is a **username** that corresponds to each tenant that has been created (tenant1, tenant2, tenant3, etc... but will match the configured name of the tenant) and each of these have the role of **tenant-console**. Note the expiry date is set for **1**, which means expired.
 
@@ -1638,7 +1638,7 @@ For tenant1 to have console access you must first set a password for that user u
     Commit complete.
     r5900-2(config-user-tenant1)#
 
-Now it will be possible to remotely ssh using a specific username and port pointed at the F5OS IP address to connect directly to the console port of the tenant. The username will be the name of the tenant, and the port will be the instance tcp port 700x (where x is the Instance ID of that tenant). Below is an example of the output from the **show tenants** command within the F5OS layer. The tenant **tenant1** has an instance IDs of 1. You can connect to this instance via the F5OS out-of-band management IP using tenant1 as the username and port 7001. 
+Now it will be possible to remotely ssh using a specific username and port pointed at the F5OS IP address to connect directly to the console port of the tenant. The username will be the name of the tenant, and the port will be tcp port 7001. Below is an example of the output from the **show tenants** command within the F5OS layer. You can connect to this instance via the F5OS out-of-band management IP using tenant1 as the username and port 7001. 
 
 .. code-block:: bash
 
@@ -1675,7 +1675,7 @@ Now it will be possible to remotely ssh using a specific username and port point
 
 
 
-The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below the username is tenant1 (matches the tenant name), and the port is 7001, meaning connect to instance ID 1 of that tenant. 
+The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below the username is tenant1 (matches the tenant name), and the port is 7001.
 
 .. code-block:: bash
 
