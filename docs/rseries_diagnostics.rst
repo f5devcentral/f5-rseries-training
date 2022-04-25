@@ -1675,7 +1675,7 @@ Now it will be possible to remotely ssh using a specific username and port point
 
 
 
-The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below the username is tenant1 (matches the tenant name), and the port is 7001.
+The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below, the username is tenant1 (matches the tenant name), and the port is 7001.
 
 .. code-block:: bash
 
