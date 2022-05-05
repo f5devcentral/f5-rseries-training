@@ -25,7 +25,7 @@ Note that adjacent highspeed (40Gb / 100Gb) ports (**1.0** & **2.0** or **11.0**
   :align: center
   :scale: 100%
 
-The r10000 appliance has a single 10Gb Ethernet out-of-band management port, a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high- level LEDs provide Status, Alarm, and power supply status. The appliance also has an LCD panel.
+The r10000 appliance has a single 1Gb Ethernet out-of-band management port, a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high- level LEDs provide Status, Alarm, and power supply status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image1c.png
   :align: center
@@ -71,7 +71,7 @@ Note that adjacent high-speed (40Gb / 100Gb) ports (**1.0** & **2.0**) must be c
   :align: center
   :scale: 100%
 
-The r5000 has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high- level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r5000 has a single 1Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high- level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image2c.png
   :align: center
@@ -112,7 +112,7 @@ The r4000 appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb p
   :align: center
   :scale: 90%
 
-The r4000 has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering / reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r4000 has a single 1Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering / reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image3b.png
   :align: center
@@ -152,7 +152,7 @@ The r2000 appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb p
   :align: center
   :scale: 90%
 
-The r2000 has a single 10Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
+The r2000 has a single 1Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
 .. image:: images/rseries_appliances/image4b.png
   :align: center
