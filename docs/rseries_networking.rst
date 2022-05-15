@@ -242,7 +242,7 @@ The **4 x 25Gb** profile will allow the four SFP28/SFP+/SFP ports to be configur
   :align: center
   :scale: 80%
 
-The **2 x 25Gb - 4 x 10Gb** profile will allow for 6 total ports to be enabled, and 2 of the SFP/SFP+/SFP28 ports are disabled. The 4 RJ45 ports are enabled and can run either 10Gb or 1Gb modes. 2 of the SFP/SFP+/SPF28 ports are enabled and can run 25Gb, 10Gb or 1Gb modes, and the remaining 2 SFP/SFP+/SFP28 ports are disabled. 
+The **2 x 25Gb - 4 x 10Gb** profile will allow for 6 total ports to be enabled, and 2 of the SFP/SFP+/SFP28 ports are disabled. The 4 RJ45 ports are enabled and can run either 10Gb or 1Gb modes. 2 of the SFP/SFP+/SPF28 ports are enabled and can run 25Gb, 10Gb or 1Gb modes, and the remaining two SFP28/SFP+/SFP ports are disabled. 
 
 .. image:: images/rseries_networking/image12.png
   :align: center
@@ -268,8 +268,8 @@ The following configures for 2 x 25Gb - 4 x 10Gb mode:
 
   r4800-1(config)# port-profile config mode 2x25G-4x10G
 
-To configure the port profiles in the WebUI go to the **Network Settings > Port Group** page, and select the approriate profile from the drop down menu.
+To configure the port profiles in the WebUI go to the **Network Settings > Port Group** page, and select the appropriate profile from the drop down menu.
 
 .. image:: images/rseries_networking/image13.png
   :align: center
-  :scale: 50% 
+  :scale: 80% 
