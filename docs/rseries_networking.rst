@@ -217,7 +217,7 @@ Below is the CLI command to display the pipelines:
 Port Profiles (r2000 and r4000 only)
 ==================================== 
 
-The hardware architecture in the r2000 and r4000 appliances is different then the r5000 and r10000 appliances. The r2000 and r4000 do not leverage FPGA's, and the Intel chipset handles the connection to the front panel interfaces. The Intel chipset supports three different **port profiles** that allow a maximum of 100Gb of front panel bandwdith to be enabled at one time. This means that some ports may be disabled based on the port profile that is selected, as there is a possibility of 140Gb total bandwdith if all eight ports are configured for maximum speed. The diagram below shows the possibility of 140Gb of total front panel bandwidth (4 x 10Gb + 4 x 25Gb). The system will not allow that combination as it exceedes the 100Gb maximum. This is not a limit calculated based on traffic volumes, it is based on configured maximum front panel bandwidth.
+The hardware architecture in the r2000 and r4000 appliances is different then the r5000 and r10000 appliances. The r2000 and r4000 do not leverage FPGA's, and the Intel chipset handles the connection to the front panel interfaces. The Intel chipset supports three different **port profiles** that allow a maximum of 100Gb of front panel bandwdith to be enabled at one time. This means that some ports may be disabled based on the port profile that is selected, as there is a possibility of 140Gb total bandwdith if all eight ports are configured for maximum speed. The diagram below shows the possibility of 140Gb of total front panel bandwidth (4 x 10Gb + 4 x 25Gb). The system will not allow that combination as it exceeds the 100Gb maximum. This is not a limit calculated based on traffic volumes, it is based on configured maximum front panel bandwidth.
 
 .. image:: images/rseries_networking/image9.png
   :align: center
@@ -230,19 +230,19 @@ The r2000 and r4000 appliances support the configuration of 3 different port pro
 - 2 x 25Gb - 4 x 10Gb
 
 
-The **8 x 10Gb** profile will allow all eight ports to be utilized when operating at a maximum of 10Gb each, as this will not exceede the maximum of 100Gb aggregate. The ports can run in either 10Gb or 1Gb modes.
+The **8 x 10Gb** profile will allow all eight ports to be utilized when operating at a maximum of 10Gb each, as this will not exceed the maximum 100Gb aggregate. The ports can run in either 10Gb, or 1Gb modes.
 
 .. image:: images/rseries_networking/image10.png
   :align: center
   :scale: 80%
 
-The **2 x 25Gb** profile will allow the four SFP28 ports to be configured and to run either 25Gb, 10Gb or 1 Gb. But the four RJ45 ports will be disabled, as enabling them could exceede the 100Gb maximum bandwidth. 
+The **4 x 25Gb** profile will allow the four SFP28/SFP+/SFP ports to be configured, and to run either 25Gb, 10Gb or 1Gb speeds. The four RJ45 ports will be disabled, as enabling them could exceed the 100Gb maximum bandwidth. 
 
 .. image:: images/rseries_networking/image11.png
   :align: center
   :scale: 80%
 
-The **2 x 25Gb - 4 x 10Gb** profile will  allow for 6 total ports to be enabled, and 2 of the SFP/SFP+/SFP28 ports are disabled. The 4 RJ45 ports are enabled and can run either 10Gb or 1Gb modes. 2 of the SFP/SFP+/SPF28 ports are enabled and can run 25Gb, 10Gb or 1Gb modes, and the remaining 2 SFP/SFP+/SFP28 ports are disabled. 
+The **2 x 25Gb - 4 x 10Gb** profile will allow for 6 total ports to be enabled, and 2 of the SFP/SFP+/SFP28 ports are disabled. The 4 RJ45 ports are enabled and can run either 10Gb or 1Gb modes. 2 of the SFP/SFP+/SPF28 ports are enabled and can run 25Gb, 10Gb or 1Gb modes, and the remaining 2 SFP/SFP+/SFP28 ports are disabled. 
 
 .. image:: images/rseries_networking/image12.png
   :align: center
