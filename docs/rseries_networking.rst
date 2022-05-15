@@ -230,13 +230,13 @@ The r2000 and r4000 appliances support the configuration of 3 different port pro
 - 2 x 25Gb - 4 x 10Gb
 
 
-The **8 x 10Gb** profile will allow all eight ports to be utilized when operating at a maximum of 10Gb each, as this will not exceed the 100Gb aggregate maximum. The ports can run in either 10Gb, or 1Gb modes.
+The **8 x 10Gb** profile will allow all eight ports to be utilized when operating at a maximum of 10Gb each, as this will not exceed the 100Gb maximum bandwidth. The ports can run in either 10Gb, or 1Gb modes.
 
 .. image:: images/rseries_networking/image10.png
   :align: center
   :scale: 80%
 
-The **4 x 25Gb** profile will allow the four SFP28/SFP+/SFP ports to be configured, and to run either 25Gb, 10Gb or 1Gb speeds. The four RJ45 ports will be disabled, as enabling them could exceed the 100Gb maximum bandwidth. 
+The **4 x 25Gb** profile will allow the four SFP28/SFP+/SFP ports to be configured, and to run either 25Gb, 10Gb, or 1Gb speeds. The four RJ45 ports will be disabled, as enabling them could exceed the 100Gb maximum bandwidth. 
 
 .. image:: images/rseries_networking/image11.png
   :align: center
