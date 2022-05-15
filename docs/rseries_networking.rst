@@ -165,8 +165,8 @@ rSeries allows for bonding of interfaces into Link Aggregation Groups or LAG’s
 
 An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP Mode** to be **Active** or **Passive**, and the **LACP Interval** to **Slow** or **Fast**.
 
-Pipelines
-=========
+Pipelines (r5000 and r10000 only)
+=================================
 
 The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowlwedge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
@@ -211,3 +211,65 @@ Below is the CLI command to display the pipelines:
              PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]      
   default-2  PIPELINE-3  PIPELINEGROUP-2  100       200        OVERSUBSCRIBED  5          8      [ 11.0 13.0 14.0 15.0 16.0 ]  
              PIPELINE-4  PIPELINEGROUP-2  100       185        OVERSUBSCRIBED  5          8      [ 12.0 17.0 18.0 19.0 20.0 ]    
+
+
+
+Port Profiles (r2000 and r4000 only)
+==================================== 
+
+The hardware architecture in the r2000 and r4000 appliances is different then the r5000 and r10000 appliances. The r2000 and r4000 do not leverage FPGA's, and the Intel chipset handles the connection to the front panel interfaces. The Intel chipset supports three different **port profiles** that allow a maximum of 100Gb of front panel bandwdith to be enabled at one time. This means that some ports may be disabled based on the port profile that is selected, as there is a possibility of 140Gb of possible bandwdith if all eight ports are configured for maximum speed. The diagram below shows the possibility of 140Gb of total front panel bandwidth (4 x 10Gb + 4 x 25Gb). The system will not allows that combination as it exceedes the 100Gb maximum. 
+
+.. image:: images/rseries_networking/image9.png
+  :align: center
+  :scale: 50%
+
+The system supports the configuration of 3 different port profiles. 
+
+- 8 x 10Gb
+- 4 x 25Gb
+- 2 x 25Gb - 4 x 10Gb
+
+
+The **8 x 10Gb** profile will allow all eight ports to be utilized when operating at a maximum of 10Gb each, as this will not exceede the maximum of 100Gb aggregate. The ports can run in either 10Gb or 1Gb modes.
+
+.. image:: images/rseries_networking/image10.png
+  :align: center
+  :scale: 50%
+
+The **2 x 25Gb** profile will allow the four SFP28 ports to be configured and to run either 25Gb, 10Gb or 1 Gb. But the four RJ45 ports will be disabled, as enabling them could exceede the 100Gb maximum bandwidth. 
+
+.. image:: images/rseries_networking/image11.png
+  :align: center
+  :scale: 50%
+
+The **2 x 25Gb - 4 x 10Gb** profile will  allow for 6 total ports to be enabled, and 2 of the SFP/SFP+/SFP28 ports are disabled. The 4 RJ45 ports are enabled and can run either 10Gb or 1Gb modes. 2 of the SFP/SFP+/SPF28 ports are enabled and can run 25Gb, 10Gb or 1Gb modes, and the remaining 2 SFP/SFP+/SFP28 ports are disabled. 
+
+.. image:: images/rseries_networking/image12.png
+  :align: center
+  :scale: 50%  
+
+To configure the **port-profile** in the CLI use the following commands:
+
+The following configures for 8 x 10Gb mode:
+
+.. code-block:: bash
+
+  r4800-1(config)# port-profile config mode 8x10G
+
+The following configures for 4 x 25Gb mode:
+
+.. code-block:: bash
+
+  r4800-1(config)# port-profile config mode 4x25G
+
+The following configures for 2 x 25Gb - 4 x 10Gb mode:
+
+.. code-block:: bash
+
+  r4800-1(config)# port-profile config mode 2x25G-4x10G
+
+To configure the port profiles in the WebUI go to the **Network Settings > Port Group** page, and select the approriate profile from the drop down menu.
+
+.. image:: images/rseries_networking/image13.png
+  :align: center
+  :scale: 50% 
