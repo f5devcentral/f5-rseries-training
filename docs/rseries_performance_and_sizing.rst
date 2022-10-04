@@ -37,8 +37,6 @@ The r2000 appliance has a similar architecture to the r4000, but it has less mem
   :align: center
   :scale: 40%  
 
-**Note: In the initial 1.0.x versions of F5OS-A (for rSeries appliances), not all FPGA HW offload functions are enabled. Many will be added in the subsequent TMOS and F5OS releases. AFM DDoS mitigation offload is not fully supported in v1.0.x versions of F5OS-A and will run in software similar to how it would run in a BIG-IP VE. SSL and Compression HW offload are fully supported in the initial v1.0.x F5OS-A releases, as is FASTL4 HW offload. CGNAT, PEM, SPDAG, 802.1Q-in-Q (double) VLAN tagging, vWire, VLAN Groups, are not supported in the initial F5OS-A 1.0.x releases, and are being prioritized for a future release.**
-
 When comparing rSeries to the previous generation iSeries appliances, it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x more performance than the previous generation iSeries appliances.
 
 Looking at comparisons of iSeries i10800 versus the r10000 or the iSeries i5800 versus the r5000 you can see a 1.2x-2.4x increase in performance depending on which metric is looked at. From an SSL perspective the increase is 2.3x-10x for RSA based ciphers, and for Elliptical Curve, rSeries will offload that processing to hardware; some older BIG-IP appliances may have had to process more modern ciphers in software.
