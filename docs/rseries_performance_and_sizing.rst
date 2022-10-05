@@ -138,12 +138,15 @@ In general migrating from an iSeries to the equivalent rSeries model in the mid-
 .. image:: images/rseries_performance_and_sizing/image35.png
   :width: 45%
 
-Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPUs assigned to the guest. Because rSeries has a different architecture than iSeries there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant. 
+Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPUs assigned to the guest. Because rSeries has a different architecture than iSeries there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant for the r5000 series and above. 
 
   min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512
 
+For the r2000 / r4000 appliances the formula is different.
 
-With rSeries the amount of RAM per vCPU will change slightly as more vCPUs are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the rSeries tenants. These are **Recommended** values, but rSeries provides **Advanced** options where memory per tenant can be customized to allocate more memory without having to allocate mor vCPU. See the Multitennancy section for more details on memory customization.
+  min-memory = (3 * 1024 * vcpu-cores-per-node)
+
+With rSeries the amount of RAM per vCPU will change slightly as more vCPUs are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the rSeries tenants (r5000 and above). These are **Recommended** values, but rSeries provides **Advanced** options where memory per tenant can be customized to allocate more memory without having to allocate mor vCPU. See the Multitennancy section for more details on memory customization.
 
 For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can overprovision memory assigned to the tenant. The default memory allocations for Recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs; this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPUs for tenancy.
 
