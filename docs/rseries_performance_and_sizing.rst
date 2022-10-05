@@ -140,11 +140,11 @@ In general migrating from an iSeries to the equivalent rSeries model in the mid-
 
 Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPUs assigned to the guest. Because rSeries has a different architecture than iSeries there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant for the r5000 series and above. 
 
-  min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512
+**min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
 For the r2000 / r4000 appliances the formula is different.
 
-  min-memory = (3 * 1024 * vcpu-cores-per-node)
+**min-memory = (3 * 1024 * vcpu-cores-per-node)**
 
 With rSeries the amount of RAM per vCPU will change slightly as more vCPUs are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the rSeries tenants (r5000 and above). These are **Recommended** values, but rSeries provides **Advanced** options where memory per tenant can be customized to allocate more memory without having to allocate mor vCPU. See the Multitennancy section for more details on memory customization.
 
@@ -209,9 +209,13 @@ For the r2000 / r4000 the following allocations apply. Note that the r2000 / r40
 
 Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM, leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra RAM is available for tenants beyond the recommended values.
 
-Using the minimum Recommended values per tenant ~129GB of RAM will be allocated for the r10000 Series tenants, leaving ~15GB of additional RAM. You may over-allocate RAM to any tenant until the extra 15GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+Using the minimum Recommended values per tenant ~127GB of RAM will be allocated for the r10000 Series tenants, leaving ~105GB of additional RAM. You may over-allocate RAM to any tenant until the extra 105GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
 **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
+
+For the r2000 / r4000 appliances the formula is different.
+
+**min-memory = (3 * 1024 * vcpu-cores-per-node)**
 
 
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
