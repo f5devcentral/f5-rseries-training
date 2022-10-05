@@ -209,7 +209,7 @@ For the r2000 / r4000 the following allocations apply. Note that the r2000 / r40
 
 Each rSeries appliance has an overall amount of memory for the appliance, and the F5OS layer will take a portion of RAM, leaving the rest for use by tenants. Below is the amount of memory used by F5OS on each of the rSeries appliances. The table also displays the total minimum amount of RAM allocated using the recommended values, and how much extra RAM is available for tenants beyond the recommended values.
 
-Using the minimum Recommended values per tenant ~127GB of RAM will be allocated for the r10000 Series tenants, leaving ~105GB of additional RAM. You may over-allocate RAM to any tenant until the extra 105GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
+Using the minimum Recommended values per tenant ~127GB of RAM will be allocated for the r10000 Series tenants, leaving ~104GB of additional RAM. You may over-allocate RAM to any tenant until the extra 104GB of RAM is depleted. There is a formula for figuring out the minimum amount of RAM a particular tenant size will receive using the recommended values:
 
 **min-memory = (3.5 * 1024 * vcpu-cores-per-node) + 512**
 
@@ -221,23 +221,23 @@ For the r2000 / r4000 appliances the formula is different.
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 | **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Mininimum RAM used (Max vCPU)**  |  **Extra RAM Available for Tenants**  |  Max vCPUs  |
 +=======================+=======================+=========================+==================================+====================================+=======================================+=============+
-| r10900 Series         | 256GB RAM             | 25GB                    | 231GB                            | 127GB                              | 105GB                                 | 36          |
+| r10900 Series         | 256GB RAM             | 25GB                    | 231GB                            | 127GB                              | 104GB                                 | 36          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r10800 Series         | 256GB RAM             | 25GB                    | 231GB                            | 99GB                               | 133GB                                 | 28          |
+| r10800 Series         | 256GB RAM             | 25GB                    | 231GB                            | 99GB                               | 132GB                                 | 28          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r10600 Series         | 256GB RAM             | 25GB                    | 231GB                            | 85GB                               | 147GB                                 | 24          |
+| r10600 Series         | 256GB RAM             | 25GB                    | 231GB                            | 85GB                               | 146GB                                 | 24          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r5900 Series          | 128GB RAM             | 15GB                    | 113GB                            | 92GB                               | 22GB                                  | 26          |
+| r5900 Series          | 128GB RAM             | 15GB                    | 113GB                            | 92GB                               | 21GB                                  | 26          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r5800 Series          | 128GB RAM             | 15GB                    | 113GB                            | 57GB                               | 57GB                                  | 16          |
+| r5800 Series          | 128GB RAM             | 15GB                    | 113GB                            | 57GB                               | 56GB                                  | 16          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r5600 Series          | 128GB RAM             | 15GB                    | 113GB                            | 43GB                               | 71GB                                  | 12          |
+| r5600 Series          | 128GB RAM             | 15GB                    | 113GB                            | 43GB                               | 70GB                                  | 12          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r4800 Series          | 64GB RAM              | 14GB                    | 50GB                             | 49GB                               | 2GB                                   | 16          |
+| r4800 Series          | 64GB RAM              | 14GB                    | 50GB                             | 49GB                               | 1GB                                   | 16          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r4600 Series          | 64GB RAM              | 14GB                    | 50GB                             | 37GB                               | 14GB                                  | 12          |
+| r4600 Series          | 64GB RAM              | 14GB                    | 50GB                             | 37GB                               | 13GB                                  | 12          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r2800 Series          | 32GB RAM              | 6.9GB                   | 25GB                             | 25GB                               | 1GB                                   | 8           |
+| r2800 Series          | 32GB RAM              | 6.9GB                   | 25GB                             | 24GB                               | 1GB                                   | 8           |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
-| r2600 Series          | 32GB RAM              | 6.9GB                   | 25GB                             | 13GB                               | 13GB                                  | 4           |
+| r2600 Series          | 32GB RAM              | 6.9GB                   | 25GB                             | 13GB                               | 12GB                                  | 4           |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
