@@ -35,7 +35,7 @@ As of F5OS-A 1.2.0.the following F5OS Appliance MIBs available are available:
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
 
 
-As of F5OS-A 1.2.0 the following alerts and traps are available:
+As of F5OS-A 1.2.0 the following SNMP alerts and traps are available:
 
 - Interface UP
 - Interface DOWN
@@ -208,6 +208,15 @@ The output will show the previously configured allowed-ip's.
             ]
         }
     }
+
+Adding Allowed IPs for SNMP via webUI
+-----------------------------------
+
+By default, SNMP queries are not allowed into the F5OS platform layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries from particular SNMP management endpoints. Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
+
+.. image:: images/rseries_monitoring_snmp/image1.png
+  :align: center
+  :scale: 70%
 
 
 Adding Interface and LAG descriptions
@@ -450,8 +459,8 @@ Configuring SNMP Access
 
 To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI or API, and webUI for some parameters were added in F5OS-A 1.2.0. Adding SNMP configuraiton support for the webUI will be available in a future F5OS-A release.
 
-Configuring SNMP Access via CLI
--------------------------------
+Configuring SNMP Access via CLI F5OS-A 1.2.0 or Later
+-----------------------------------------------------
 
 You can configure the SNMP System parameters including the **System Contact**, **System Location**, and **System Name** as seen below:
 
@@ -462,9 +471,9 @@ You can configure the SNMP System parameters including the **System Contact**, *
     Commit complete.
     appliance-1(config)# 
 
-Prior to F5OS-A 1.2.0, the remaining SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. Version 1.2.0 has improved and streamlined the SNMP configuraiton in the CLI as well as added webUI support. Below is the SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+Prior to F5OS-A 1.2.0, SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuraiton in the CLI and configuration via the webUI was also added. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
 
-The command below sets up an SNMP community of **public** with v1 anf v2c security models. You may chose to enable both of these security models or only one.
+Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a Security Access Group. The command below sets up an SNMP community of **public** with v1 anf v2c security models. You may chose to enable both of these security models or only one.
 
 .. code-block:: bash
 
@@ -508,7 +517,17 @@ You may display the SNMP user configuration by entering the command **show syste
 
     r5900-2(config)# 
 
-Below is the SNMP CLI configuration for systems running a version prior to F5OS-A 1.2.0.
+Configuring SNMP Access via CLI Prior to F5OS-A 1.2.0
+-----------------------------------------------------
+
+Below is the SNMP CLI configuration for systems running a version prior to F5OS-A 1.2.0. You can configure the SNMP System parameters including the **System Contact**, **System Location**, and **System Name** as seen below:
+
+.. code-block:: bash
+
+    appliance-1(config)# SNMPv2-MIB system sysContact jim@f5.com sysLocation Boston sysName r5900-2
+    appliance-1(config)# commit
+    Commit complete.
+    appliance-1(config)# 
 
 .. code-block:: bash
 
