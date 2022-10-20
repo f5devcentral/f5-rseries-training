@@ -635,7 +635,7 @@ SNMP configuration via the webUI was added in the F5OS-A 1.2.0 release. You may 
   :align: center
   :scale: 70%
 
-An SNMPCommunity may be added for v1, v2, or both v1 and v2.
+An SNMP Community may be added for v1, v2, or both v1 and v2.
 
 .. image:: images/rseries_monitoring_snmp/image3.png
   :align: center
