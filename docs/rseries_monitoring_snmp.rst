@@ -625,6 +625,34 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
         }
     }
 
+
+Configuring SNMP Access via webUI
+---------------------------------
+
+SNMP configuration via the webUI was added in the F5OS-A 1.2.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configued under **System Settings -> SNMP Configuration**..
+
+.. image:: images/rseries_monitoring_snmp/image2.png
+  :align: center
+  :scale: 70%
+
+An SNMPCommunity may be added for v1, v2, or both v1 and v2.
+
+.. image:: images/rseries_monitoring_snmp/image3.png
+  :align: center
+  :scale: 70%
+
+SNMP users can be added for SNMPv3.
+
+.. image:: images/rseries_monitoring_snmp/image4.png
+  :align: center
+  :scale: 70%
+
+SNMP Trap receivers may be added.
+
+.. image:: images/rseries_monitoring_snmp/image5.png
+  :align: center
+  :scale: 70%
+
 Enabling SNMP Traps
 ===================
 
