@@ -639,19 +639,19 @@ An SNMP Community may be added for v1, v2c, or both v1 and v2c.
 
 .. image:: images/rseries_monitoring_snmp/image3.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 SNMP users can be added for environments which utilize SNMPv3.
 
 .. image:: images/rseries_monitoring_snmp/image4.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 SNMP Trap receivers may be added and either a community of a user is added depending on the security model.
 
 .. image:: images/rseries_monitoring_snmp/image5.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 Enabling SNMP Traps
 ===================
