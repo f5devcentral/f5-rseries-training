@@ -3,39 +3,39 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. F5OS-A currently supports SNMP v1 and v2c versions. SNMPv3 is currently unsupported in the F5OS-A layer, but will be added in the Q3CY22 timeframe.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. F5OS-A handles the lower level networking, and SNMP MIBs and Traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions intially, with SNMPv3 support added in F5OS-A 1.2.0.
 
-In the F5OS-A v1.x.x versions, SNMP support is limited to SNMP Trap support for certain events like link up/down traps, and **IF-MIB** support for the physical interfaces. **IF-MIB**, **EtherLike-MIB**, and the **PLATFORM-STATS-MIB**.
+As of F5OS-A 1.2.0 the following netSNMP MIBs available are available:
 
-As of F5OS-A 1.x.x the following netSNMP MIBs available are available:
-
-- TRANSPORT-ADDRESS-MIB
-- SNMPv2-TC
-- SNMPv2 SMI
-- SNMPv2-MIB
-- SNMPv2-CONF 
-- SNMP-VIEW-BASED-ACM-MIB
-- SNMP-USER-BASED-SM-MIB
-- SNMP-TARGET-MIB
-- SNMP-NOTIFICATION-MIB
-- SNMP-MPD-MIB
-- SNMP-FRAMEWORK-MIB
-- SNMP-COMMUNITY-MIB
-- RFC1213-MIB
-- IPV6-MIB
-- IF-MIB
-- IANAifType-MIB
 - HOST-RESOURCES-MIB
+- RFC1213-MIB
 - EtherLike-MIB
+- IANAifType-MIB
+- IF-MIB
+- IPV6-TC
+- SNMP-COMMUNITY-MIB
+- SNMP-FRAMEWORK-MIB
+- SNMP-MPD-MIB
+- SNMP-NOTIFICATION-MIB
+- SNMP-TARGET-MIB
+- SNMP-USER-BASED-SM-MIB
+- SNMP-VIEW-BASED-ACM-MIB
+- SNMPv2-CONF 
+- SNMPv2-MIB
+- SNMPv2 SMI
+- SNMPv2-TC
+- TRANSPORT-ADDRESS-MIB
 
-As of F5OS-A 1.x.x the following F5OS Appliance MIBs available are available:
+As of F5OS-A 1.2.0.the following F5OS Appliance MIBs available are available:
 
 - F5-ALERT-DEF-MIB
 - F5-COMMON-SMI-MIB
+- F5-OS-SYSTEM MIB
+- F5-PLATFORM-STATS-MIB
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
 
 
-As of F5OS-A 1.x.x the following alerts and traps are available:
+As of F5OS-A 1.2.0 the following alerts and traps are available:
 
 - Interface UP
 - Interface DOWN
@@ -47,6 +47,7 @@ As of F5OS-A 1.x.x the following alerts and traps are available:
 - Fault in drive detected
 - CPU fault detected
 - Fault in PCIe device detected
+- Fault detected in the AOM
 - Running out of drive capacity
 - Power fault detected in hardware
 - Thermal fault detected in hardware
@@ -62,7 +63,28 @@ As of F5OS-A 1.x.x the following alerts and traps are available:
 - Module communication error detected
 - Crypto error identified in one or more services
 - Detected process crash on the system
-
+- Notification of RAID event
+- Could not establish backplane link with one or more system controllers
+- Transmitter power high alarm
+- Transmitter power high warning
+- Transmitter power low alarm
+- Transmitter power low warning
+- Receiver power high alarm
+- Receiver power high warning
+- Receiver power low alarm
+- Receiver power low warning
+- Transmitter bias high alarm
+- Transmitter bias high warning
+- Transmitter bias low alarm
+- Transmitter bias low warning
+- Optic temperature high alarm
+- Optic temperature high warning
+- Optic temperature low alarm
+- Optic temperature low warning
+- Optic voltage high alarm
+- Optic voltage high warning
+- Optic voltage low alarm
+- Optic voltage low warning
 
 Adding Allowed IPs for SNMP
 ===========================
@@ -70,8 +92,16 @@ Adding Allowed IPs for SNMP
 Adding Allowed IPs for SNMP via CLI
 -----------------------------------
 
-By default SNMP traffic is not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP traffic. Below is an example of allowing an SNMP endpoint at 10.255.0.144 to SNMP poll the system on port 161.
+By default, SNMP queries are not allowed into the F5OS platform layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries from particular SNMP management endpoints. Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
 
+
+.. code-block:: bash
+
+    r10900-2(config)# system allowed-ips allowed-ip snmp config ipv4 address 10.255.0.0 prefix-length 24 port 161
+    r10900-2(config-allowed-ip-snmp)# commit
+    Commit complete.
+
+Currently you can add one ip address/port pair per **allowed-ip** name with an option prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -80,27 +110,17 @@ By default SNMP traffic is not allowed into the F5OS layer. Before enabling SNMP
     Commit complete.
     appliance-1(config-allowed-ip-SNMP)# 
 
-Currently you can add one ip address/port pair per **allowed-ip** name. If you require more than one IP address you can add it under another name as seen below. 
 
-.. code-block:: bash
-
-    appliance-1(config)# system allowed-ips allowed-ip SNMP-144 config ipv4 address 10.255.0.144 port 161 
+    appliance-1(config)# system allowed-ips allowed-ip SNMP-145 config ipv4 address 10.255.2.145 port 161 
     appliance-1(config-allowed-ip-SNMP)# commit
     Commit complete.
     appliance-1(config-allowed-ip-SNMP)# 
 
-
-    appliance-1(config)# system allowed-ips allowed-ip SNMP-145 config ipv4 address 10.255.0.145 port 161 
-    appliance-1(config-allowed-ip-SNMP)# commit
-    Commit complete.
-    appliance-1(config-allowed-ip-SNMP)# 
-
-The **allowed-ips** currently allows a specific IP address, and doesn't support CIDR configurations. This is being added, and will be available in an upcoming F5OS-A release.
 
 Adding Allowed IPs for SNMP via API
 -----------------------------------
 
-By default SNMP traffic is not allowed into the F5OS layer. Before enabling SNMP you'll need to open up the out-of-band management port on F5OS-A to allow SNMP traffic. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
+By default SNMP queries are not allowed into the F5OS layer. Before enabling SNMP you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
 
 .. code-block:: bash
 
@@ -428,7 +448,7 @@ The body of the API call should contain JSON data that includes the descriptions
 Configuring SNMP Access
 =======================
 
-To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI or API, but not the webUI. Adding SNMP configuraiton support for the webUI will be available in a future F5OS-A release.
+To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI or API, and webUI for some parameters were added in F5OS-A 1.2.0. Adding SNMP configuraiton support for the webUI will be available in a future F5OS-A release.
 
 Configuring SNMP Access via CLI
 -------------------------------
@@ -442,7 +462,53 @@ You can configure the SNMP System parameters including the **System Contact**, *
     Commit complete.
     appliance-1(config)# 
 
-Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+Prior to F5OS-A 1.2.0, the remaining SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. Version 1.2.0 has improved and streamlined the SNMP configuraiton in the CLI as well as added webUI support. Below is the SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+
+The command below sets up an SNMP community of **public** with v1 anf v2c security models. You may chose to enable both of these security models or only one.
+
+.. code-block:: bash
+
+    r5900-2(config)# system snmp communities community public config security-model [ v1 v2c ]
+    r5900-2(config-community-public)# exit
+    r5900-2(config)# commit
+
+
+You can then display the SNMP community configuration using the **show system snmp** command.
+
+.. code-block:: bash
+
+    r5900-2(config)# do show system snmp 
+    system snmp engine-id state engine-id 80:00:2f:f4:03:00:94:a1:69:35:02
+    system snmp engine-id state type mac
+                    SECURITY    
+    NAME    NAME    MODEL       
+    ----------------------------
+    public  public  [ v1 v2c ]  
+
+    r5900-2(config)# 
+
+You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides addtional support for authentication and privacy protocols. Authenticatin protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password.
+
+.. code-block:: bash
+
+    r5900-2(config)# system snmp users user snmpv3user config authentication-protocol md5 privacy-protocol aes privacy-password 
+    (<string, min: 8 chars, max: 32 chars>): **************
+    r5900-2(config-user-snmpv3user)# commit
+    Commit complete.
+
+You may display the SNMP user configuration by entering the command **show system snmp users**.
+
+.. code-block:: bash
+
+    r5900-2(config)# do show system snmp users
+                            AUTHENTICATION  PRIVACY   
+    NAME        NAME        PROTOCOL        PROTOCOL  
+    --------------------------------------------------
+    snmpv3user  snmpv3user  md5             aes       
+
+    r5900-2(config)# 
+
+Below is the SNMP CLI configuration for systems running a version prior to F5OS-A 1.2.0.
 
 .. code-block:: bash
 
@@ -543,6 +609,30 @@ Enabling SNMP Traps
 
 Enabling SNMP Traps in the CLI
 ------------------------------
+
+The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release. Use the **system snmp target** command as seen below.
+
+
+.. code-block:: bash
+
+    r5900-2(config)# system snmp targets target v2c-target config community public security-model v2c ipv4 address 10.255.0.144 port 162 
+    r5900-2(config-target-v2c-target)# commit
+    Commit complete.
+    r5900-2(config-target-v2c-target)# 
+
+You can then view the current SNMP configuration with the **show system snmp targets** command.
+
+    r5900-2# show system snmp targets 
+                                            SECURITY                                     
+    NAME        NAME        USER  COMMUNITY  MODEL     ADDRESS       PORT  ADDRESS  PORT  
+    --------------------------------------------------------------------------------------
+    v2c-target  v2c-target  -     public     v2c       10.255.0.144  162   -        -     
+
+    r5900-2# 
+
+
+For releases prior to F5OS-A 1.2.0, the configuration of SNMP was more difficult, and was done as outlined below. It is provided for reference, but the newer configuration above should be used instead.
+
 
 Enter **config** mode, and enter the following commands to enable SNMP traps for the F5OS-A layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
@@ -831,20 +921,12 @@ SNMP ifIndex OID: .1.3.6.1.2.1.31.1.1
 SNMP Trap Support in F5OS-A
 ===========================
 
-You can enable SNMP traps for the F5OS-A layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported by F5OS-A: 
+You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.2.0: 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. Once the clear SNMP Trap is sent, it should clear the event from the show events output.
 
-+----------------------------+----------------------------------+
-| **Alert**                  | **OID**                          |                            
 +============================+==================================+
-| module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
-+----------------------------+----------------------------------+
-| psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
-+----------------------------+----------------------------------+
-| lcd-fault                  | .1.3.6.1.4.1.12276.1.1.1.66306   |
-+----------------------------+----------------------------------+
-| module-communication-error | .1.3.6.1.4.1.12276.1.1.1.66307   |
+| **Alert**                  | **OID**                          |
 +----------------------------+----------------------------------+
 | hardware-device-fault      | .1.3.6.1.4.1.12276.1.1.1.65536   |
 +----------------------------+----------------------------------+
@@ -880,13 +962,62 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | service-health             | .1.3.6.1.4.1.12276.1.1.1.65552   |
 +----------------------------+----------------------------------+
+| module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
++----------------------------+----------------------------------+
+| psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
++----------------------------+----------------------------------+
+| lcd-fault                  | .1.3.6.1.4.1.12276.1.1.1.66306   |
++----------------------------+----------------------------------+
+| module-communication-error | .1.3.6.1.4.1.12276.1.1.1.66307   |
++----------------------------+----------------------------------+
 | fipsError                  | .1.3.6.1.4.1.12276.1.1.1.196608  |
 +----------------------------+----------------------------------+
 | core-dump                  | .1.3.6.1.4.1.12276.1.1.1.327680  |
 +----------------------------+----------------------------------+
 | raid-event                 | .1.3.6.1.4.1.12276.1.1.1.393216  |
 +----------------------------+----------------------------------+
-
+| backplane                  | .1.3.6.1.4.1.12276.1.1.1.262144  |
++----------------------------+----------------------------------+
+| txPwrHiAlarm               | .1.3.6.1.4.1.12276.1.1.1.262400  |
++----------------------------+----------------------------------+
+| txPwrHiWarn                | .1.3.6.1.4.1.12276.1.1.1.262401  |
++----------------------------+----------------------------------+
+| txPwrLoAlarm               | .1.3.6.1.4.1.12276.1.1.1.262402  |
++----------------------------+----------------------------------+
+| txPwrLoWarn                | .1.3.6.1.4.1.12276.1.1.1.262403  |
++----------------------------+----------------------------------+
+| rxPwrHiAlarm               | .1.3.6.1.4.1.12276.1.1.1.262404  |
++----------------------------+----------------------------------+
+| rxPwrHiWarn                | .1.3.6.1.4.1.12276.1.1.1.262405  |
++----------------------------+----------------------------------+
+| rxPwrLoAlarm               | .1.3.6.1.4.1.12276.1.1.1.262406  |
++----------------------------+----------------------------------+
+| rxPwrLoWarn                | .1.3.6.1.4.1.12276.1.1.1.262407  |
++----------------------------+----------------------------------+
+| txBiasHiAlarm              | .1.3.6.1.4.1.12276.1.1.1.262408  |
++----------------------------+----------------------------------+
+| txBiasHiWarn               | .1.3.6.1.4.1.12276.1.1.1.262409  |
++----------------------------+----------------------------------+
+| txBiasLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262410  |
++----------------------------+----------------------------------+
+| txBiasLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262411  |
++----------------------------+----------------------------------+
+| ddmTempHiAlarm             | .1.3.6.1.4.1.12276.1.1.1.262412  |
++----------------------------+----------------------------------+
+| ddmTempHiWarn              | .1.3.6.1.4.1.12276.1.1.1.262413  |
++----------------------------+----------------------------------+
+| ddmTempLoAlarm             | .1.3.6.1.4.1.12276.1.1.1.262414  |
++----------------------------+----------------------------------+
+| ddmTempLoWarn              | .1.3.6.1.4.1.12276.1.1.1.262415  |
++----------------------------+----------------------------------+
+| ddmVccHiAlarm              | .1.3.6.1.4.1.12276.1.1.1.262416  |
++----------------------------+----------------------------------+
+| ddmVccHiWarn               | .1.3.6.1.4.1.12276.1.1.1.262417  |
++----------------------------+----------------------------------+
+| ddmVccLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262418  |
++----------------------------+----------------------------------+
+| ddmVccLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262419  |
++----------------------------+----------------------------------+
 
 Troubleshooting SNMP
 ====================
