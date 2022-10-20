@@ -457,7 +457,7 @@ The body of the API call should contain JSON data that includes the descriptions
 Configuring SNMP Access
 =======================
 
-To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI or API, and webUI for some parameters were added in F5OS-A 1.2.0. Adding SNMP configuraiton support for the webUI will be available in a future F5OS-A release.
+To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI, API, and via webUI (added in F5OS-A 1.2.0). 
 
 Configuring SNMP Access via CLI F5OS-A 1.2.0 or Later
 -----------------------------------------------------
@@ -496,7 +496,7 @@ You can then display the SNMP community configuration using the **show system sn
 
     r5900-2(config)# 
 
-You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides addtional support for authentication and privacy protocols. Authenticatin protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password.
+You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides addtional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password.
 
 .. code-block:: bash
 
@@ -528,6 +528,8 @@ Below is the SNMP CLI configuration for systems running a version prior to F5OS-
     appliance-1(config)# commit
     Commit complete.
     appliance-1(config)# 
+
+Enabling SNMP can de done from the CLI by configuring the public SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring.
 
 .. code-block:: bash
 
@@ -626,11 +628,10 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
 Enabling SNMP Traps
 ===================
 
-Enabling SNMP Traps in the CLI
-------------------------------
+Enabling SNMP Traps in the CLI for F5OS-A 1.2.0 or Later
+--------------------------------------------------------
 
 The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release. Use the **system snmp target** command as seen below.
-
 
 .. code-block:: bash
 
@@ -641,6 +642,8 @@ The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release.
 
 You can then view the current SNMP configuration with the **show system snmp targets** command.
 
+.. code-block:: bash
+
     r5900-2# show system snmp targets 
                                             SECURITY                                     
     NAME        NAME        USER  COMMUNITY  MODEL     ADDRESS       PORT  ADDRESS  PORT  
@@ -649,6 +652,8 @@ You can then view the current SNMP configuration with the **show system snmp tar
 
     r5900-2# 
 
+Enabling SNMP Traps in the CLI for Releases Prior to F5OS-A 1.2.0
+-----------------------------------------------------------------
 
 For releases prior to F5OS-A 1.2.0, the configuration of SNMP was more difficult, and was done as outlined below. It is provided for reference, but the newer configuration above should be used instead.
 
@@ -944,9 +949,9 @@ You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-AL
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. Once the clear SNMP Trap is sent, it should clear the event from the show events output.
 
-+============================+==================================+
-| **Alert**                  | **OID**                          |
 +----------------------------+----------------------------------+
+| **Alert**                  | **OID**                          |
++============================+==================================+
 | hardware-device-fault      | .1.3.6.1.4.1.12276.1.1.1.65536   |
 +----------------------------+----------------------------------+
 | firmware-fault             | .1.3.6.1.4.1.12276.1.1.1.65537   |
