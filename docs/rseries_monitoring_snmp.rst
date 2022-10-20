@@ -635,19 +635,19 @@ SNMP configuration via the webUI was added in the F5OS-A 1.2.0 release. You may 
   :align: center
   :scale: 70%
 
-An SNMP Community may be added for v1, v2, or both v1 and v2.
+An SNMP Community may be added for v1, v2c, or both v1 and v2c.
 
 .. image:: images/rseries_monitoring_snmp/image3.png
   :align: center
   :scale: 70%
 
-SNMP users can be added for SNMPv3.
+SNMP users can be added for environments which utilize SNMPv3.
 
 .. image:: images/rseries_monitoring_snmp/image4.png
   :align: center
   :scale: 70%
 
-SNMP Trap receivers may be added.
+SNMP Trap receivers may be added and either a community of a user is added depending on the security model.
 
 .. image:: images/rseries_monitoring_snmp/image5.png
   :align: center
