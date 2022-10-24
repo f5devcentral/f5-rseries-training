@@ -765,6 +765,24 @@ There are various SNMP show commands in the CLI to provide configuration and sta
     appliance-1# 
 
 
+
+Enabling SNMP Traps in the webUI
+--------------------------------
+
+As of F5OS-A version 1.2.0 you can enable SNMP traps in the webUI. Go to the **System Settings** page, and then select **SNMP Configuration**. Under the **Targets** section, select **Add**. If you are going to use SNMPv3, yyou should setup an SNMP user first.
+
+
+.. image:: images/rseries_monitoring_snmp/image6.png
+  :align: center
+  :scale: 70%
+
+Enter the **Security Model**, **IP Address** and **Port** of the SNMP Trap receiver. You'll be required to add an **SNMP User** when selecting SNMPv3 as the security model.
+
+.. image:: images/rseries_monitoring_snmp/image7.png
+  :align: center
+  :scale: 70%
+
+
 Enabling SNMP Traps in the API
 ------------------------------
 
