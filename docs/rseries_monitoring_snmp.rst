@@ -3,7 +3,7 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can contnue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower level networking, and F5OS SNMP MIBs and Traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions intially, with SNMPv3 support added in F5OS-A 1.2.0.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can contnue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower level networking, and F5OS SNMP MIBs and Traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
 As of F5OS-A 1.2.0 the following netSNMP MIBs available are available:
 
@@ -101,7 +101,7 @@ By default, SNMP queries are not allowed into the F5OS platform layer. Before en
     r10900-2(config-allowed-ip-snmp)# commit
     Commit complete.
 
-Currently you can add one ip address/port pair per **allowed-ip** name with an option prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
+Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -473,7 +473,7 @@ You can configure the SNMP System parameters including the **System Contact**, *
 
 Prior to F5OS-A 1.2.0, SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuraiton in the CLI and configuration via the webUI was also added. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
 
-Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a Security Access Group. The command below sets up an SNMP community of **public** with v1 anf v2c security models. You may chose to enable both of these security models or only one.
+Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may chose to enable both of these security models or only one.
 
 .. code-block:: bash
 
