@@ -775,8 +775,8 @@ This example below uses SNMP v3 and uses an SNMP user instead of a community str
 
 .. code-block:: bash
 
-    r5900-2(config)# system snmp targets target v2c-target config community public security-model v2c ipv4 address 10.255.0.144 port 162 
-    r5900-2(config-target-v2c-target)# commit
+    r5900-2(config)# system snmp targets target snmp-trap-receiver config user snmpv3-user ipv4 address 10.255.0.144 port 162
+    r5900-2(config-target-snmp-trap-receiver)# commit
     Commit complete.
     r5900-2(config-target-v2c-target)# 
 
@@ -784,13 +784,15 @@ You can then view the current SNMP configuration with the **show system snmp tar
 
 .. code-block:: bash
 
-    r5900-2# show system snmp targets 
-                                            SECURITY                                     
-    NAME        NAME        USER  COMMUNITY  MODEL     ADDRESS       PORT  ADDRESS  PORT  
-    --------------------------------------------------------------------------------------
-    v2c-target  v2c-target  -     public     v2c       10.255.0.144  162   -        -     
+    r5900-2(config)# do show system snmp targets 
+                                                                    SECURITY                                     
+    NAME                NAME                USER         COMMUNITY  MODEL     ADDRESS       PORT  ADDRESS  PORT  
+    -------------------------------------------------------------------------------------------------------------
+    snmp-trap-receiver  snmp-trap-receiver  snmpv3-user  -          -         10.255.0.144  162   -        -     
+    v2c-target          v2c-target          -            public     v2c       10.255.0.144  162   -        -     
 
-    r5900-2# 
+    r5900-2(config)# 
+
 
 Enabling SNMP Traps in the CLI for Releases Prior to F5OS-A 1.2.0
 -----------------------------------------------------------------
@@ -800,7 +802,7 @@ For releases prior to F5OS-A 1.2.0, the configuration of SNMP was more difficult
 
 Enter **config** mode, and enter the following commands to enable SNMP traps for the F5OS-A layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-Note: The **snmpTargetAddrTAddress** is currently unintuitive and an enhancement request has been filed to simplify the IP address and port configuration. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
+Note: The **snmpTargetAddrTAddress** is unintuitive in these earlier releases, and is much simpler after upgrading to F5OS-A 1.2.0 or later. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
 
 
 .. code-block:: bash
@@ -1065,7 +1067,7 @@ SNMP ifIndex OID: .1.3.6.1.2.1.10.7.2
 SNMP ifXTable
 ------------
 
-Query the following SNMP OID to get detailed High Speed (64bit) Countersfor each physical port on the rSeries appliances.
+Query the following SNMP OID to get detailed High Speed (64bit) Counters for each physical port on the rSeries appliances.
 
 **NOTE: Stats for LAG interfaces are not currently populated.**
 
