@@ -226,13 +226,13 @@ In the graph below you can see that a an i2600 has 0.9x relative CPU scale compa
 
 .. image:: images/rseries_performance_and_sizing/image19b.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 To see how this translates into real performance, it is better to look at a published Layer7 metric, as that is something that is highly dependent on CPU resources. If you look at the published Layer7 (Inf-Inf) numbers, you’ll notice that each rSeries replacement provides higher numbers than the previous generation iSeries. This is likely due to the newer generation of processors, more processors in some cases, and the fact that the CPU’s may boost higher than previous generations. Generally, each rSeries platform is going to be faster than each iSeries platform it will replace (each metric will vary), but it’s safe to propose the following replacements: i2600 –> r2600, i2800 –> r2800, i4600 –> i4600, and i4800 -> r4800. Also keep in mind, rSeries has the latest Intel processing and crypto support so things like ECC ciphers are now accelerated in hardware which was not the case with appliances before the iSeries line. You will note however; the numbers below do not meet the relative CPU scale comparisons above, and this is why the method below is a better way to understand real differences between the platforms. 
 
 .. image:: images/rseries_performance_and_sizing/image19c.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 Because each appliance has a different number of CPUs, a common sizing exercise is to look at the per vCPU performance by using the formulas above to come up with a per vCPU metric. In the graph below it is done for the published Layer7 RPS (Inf-Inf) but you could use the same math for any metric. Note: the graph below is not derived from a per vCPU test, it is taking a published appliance metric and dividing it by the number of vCPUs (or CPUs in the case of the r2000/r4000) to come up with a per vCPU metric. For some rSeries models, (rx600) some CPUs are disabled so they are not included in the equation. As you will note below, migrating from an i2600 to an r2600 will have better per VCPU performance. When going from an i2800 to an r2800  the per vCPU metrics are lower on rSeries. This is due to a combination of the type of processors being used on the rSeries appliances, as well as the CPU Ghz being throttled on the ix600 iSeries models. The i2600 has a throttled CPU running at 1.2Ghz, while the r2600 is not throttled and runs at 2.2 Ghz, so the per vCPU performance is better when migrating from i2600 to r 2600.
 
