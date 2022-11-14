@@ -207,6 +207,45 @@ It’s also a good idea to have the rSeries appliance send logs for the F5OS pla
 System Settings via the API
 ===========================
 
+If you would prefer to automate the setup of the rSeries appliance, there are F5OS-A API calls for all of the examples above. rSeries supports token based authentication for the F5OS API's. You can send a standard API call with user/password based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth**, and enter the username and password to log into your rSeries appliance.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image5a.png
+  :align: center
+  :scale: 70%
+
+To capture the token and save it for use in subsequent API calls, go to the **Test** option in the API call and enter the following:
+
+.. code-block:: bash
+
+    var headerValue = pm.response.headers.get("x-auth-token");
+    pm.environment.set("x-auth-token_rseries_appliance1", headerValue);
+
+This will capture the auth token and store it in a variable called **x-auth-token_rseries_appliance1**.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image5b.png
+  :align: center
+  :scale: 70%
+
+This will be stored as a variable in the Postman **Environment** as seen below.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image5c.png
+  :align: center
+  :scale: 70%
+
+
+Once the variable is stored with the auth token, it can be used instead of using basic auth on all subsequent API calls. On any subsequent API call under the **Auth** option, set the **Type** to **Bearer Token**, and set the **Token** to the variable name. Note, Postman references variables by encasing the variable name in these types of parentheses **{{Variable-Name}}**. In this case the **Token** is set to **{{x-auth-token_rseries_appliance1}}**. 
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image5d.png
+  :align: center
+  :scale: 70%
+
+You must also add some required headers to any API calls sent to F5OS. It is important to include the header **Content-Type** **application/yang-data+json** and the Token header **X-Auth-Token** with a value of **{{x-auth-token_rseries_appliance1}}**. The variable and header will change depening on the destination of the API call. It can be sent to a second appliance if desired.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image5e.png
+  :align: center
+  :scale: 70%
+
+
 If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for the appliance, use the following API call. For any API calls to the rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
 
 .. code-block:: bash
