@@ -116,21 +116,12 @@ Also consider that these extrapolations for the iSeries appliances are for bare 
   :align: center
   :scale: 90%
 
-In the cases where there are gaps/decreases when migrating to the rSeries as the number of vCPU's in a tenant grows the gap will widen as seen in the chart below (this is not normalized for vCMP overhead). This will require more focus on tenant sizing when moving to rSeries for these specific scenarios. As an example if you wanted to migrate an i5800 appliance into a tenant on an rSeries 5800 appliance you may assume that since the i5800 has 8 vCPU's that you can just migrate it into a 8 vCPU tenant. While this may be possible depending on how utilized the i5800 is, it is better to be conservative in sizing an allocate more vCPU's on the r5900 to bring the performance inline with what an i5800 can support for performance. In the example below to match the i5800 data sheet performance of 1.8M Layer7 RPS, you would need to allocate and additional 2 vCPU's to that tenant. The good news is that the r5900 supports up to 18 vCPU's for tenants so more vCPU's can be allocated if needed. The numbers below are an extrapolation  and not based on real world environments, so results may vary.
+In the cases where there are gaps/decreases when migrating to the rSeries as the number of vCPU's in a tenant grows the gap will widen as seen in the chart below (this is not normalized for vCMP overhead). This will require more focus on tenant sizing when moving to rSeries for these specific scenarios. As an example if you wanted to migrate an i10800 appliance into a tenant on an rSeries 10800 appliance you may assume that since the i10800 has 16 vCPU's that you can just migrate it into a 16 vCPU tenant on rSeries. While this may be possible depending on how utilized the i10800 is, it is better to be conservative in sizing an allocate more vCPU's on the r10800 to bring the performance inline with what an i10800 can support for performance. In the example below to match the i10800 data sheet performance of 3.5M Layer7 RPS, you would need to allocate and additional 4 vCPU's to that tenant. The good news is that the r10800 supports up to 30 vCPU's for tenants so more vCPU's can be allocated if needed. The numbers below are an extrapolation  and not based on real world environments, so results may vary.
 
 .. image:: images/rseries_performance_and_sizing/image12f.png
   :align: center
   :scale: 90%
 
-In the cases where there are gaps/decreases when migrating to the rSeries as the number of vCPU's in a tenant grows the gap will widen as seen in the chart below (this is not normalized for vCMP overhead). This will require more focus on tenant sizing when moving to rSeries for these specific scenarios. As an example if you wanted to migrate an i7800 appliance into a tenant on an rSeries 5900 appliance you may assume that since the i7800 has 12 vCPU's that you can just migrate it into a 12 vCPU tenant. While this may be possible depending on how utilized the i7800 is, it is better to be conservative in sizing an allocate more vCPU's on the r5900 to bring the performance inline with what an i7800 can support for performance. In the example below to match the i7800 data sheet performance of 3M Layer7 RPS, you would need to allocate and additional 6/8 vCPU's to that tenant. The good news is that the r5900 supports up to 26 vCPU's for tenants so more vCPU's can be allocated if needed. The numbers below are an extrapolation  and not based on real world environments, so results may vary.
-
-.. image:: images/rseries_performance_and_sizing/image12g.png
-  :align: center
-  :scale: 90%
-
-.. image:: images/rseries_performance_and_sizing/image12h.png
-  :align: center
-  :scale: 90%  
 
 r5000 vCPU Sizing
 ------------------
