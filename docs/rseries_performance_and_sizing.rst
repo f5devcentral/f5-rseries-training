@@ -94,7 +94,7 @@ In the graph below you can see that an 10600 has 7.4x more aggregate CPU capacit
 
 .. image:: images/rseries_performance_and_sizing/image12b.png
   :align: center
-  :scale: 90%
+  :scale: 100%
 
 To see how this translates into real performance, it is good to look at a Layer7 metric as that is something that is highly dependent on CPU resources. If you look at the published Layer7 (Inf-Inf) numbers, you’ll notice that each rSeries replacement provides higher numbers than the previous generation iSeries. This is likely due to the newer generation of processors, the fact that some processing is dedicated to the F5OS platform layer, and the fact that the CPUs can boost higher than previous generations. Generally, each rSeries platform is going to be faster than each iSeries platform it will replace (each metric will vary), but it’s safe to propose the following replacements: i10600 –> r10600, i10800 –> r10800, i11600/i11800 –> r10900. Also keep in mind rSeries has the latest Intel processing and crypto support so things like ECC ciphers are now accelerated in hardware which was not the case with appliances before the iSeries line.
 
@@ -199,9 +199,6 @@ In the cases where there are gaps/decreases when migrating to the rSeries as the
   :align: center
   :scale: 90%
 
-.. image:: images/rseries_performance_and_sizing/image15h.png
-  :align: center
-  :scale: 90%  
 
 r4000 vCPU Sizing
 ------------------
