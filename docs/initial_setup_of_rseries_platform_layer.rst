@@ -212,17 +212,17 @@ If you would prefer to automate the setup of the rSeries appliance, there are F5
 
 Example of API call using port 8888.  
 
-https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+.. code-block:: bash
 
-Example of API call using port 443. Replace **/restconf** with **/api**. 
+    https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
-https://{{rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
+Example of API call using port 443. Replace **/restconf** with **/api**.
+
+.. code-block:: bash
+
+    https://{{rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
 
  
-
-
-
-
 You can send a standard API call with user/password based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth**, and enter the username and password to log into your rSeries appliance.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5a.png
