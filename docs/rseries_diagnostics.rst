@@ -121,7 +121,7 @@ To generate a qkview from the API, POST the following API call to the F5OS out-o
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:capture
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:capture
 
 In the body of the API call, supply the filename for the qkview:
 
@@ -147,7 +147,7 @@ To view the qkview status via the API, POST the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:status
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-qkview:qkview/f5-system-diagnostics-qkview:status
 
 The output will display the percentage complete, error, or complete status:
 
@@ -164,7 +164,7 @@ To upload the qkview file to iHealth using the API, use the following POST API c
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-ihealth:ihealth/f5-system-diagnostics-ihealth:upload
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-ihealth:ihealth/f5-system-diagnostics-ihealth:upload
 
 Below is the body of the POST API call:
 
@@ -382,7 +382,7 @@ If the system currently has any active Alarms you can view them via the followin
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/alarms
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/alarms
 
 If there are no active alarms, then no output will be displayed.
 
@@ -395,7 +395,7 @@ You can display the F5OS Event Log via the following API call:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-event-log:events
 
 This will display all events (not just the active ones) from the beginning in the F5OS Event log:
 
@@ -1064,7 +1064,7 @@ You can display all the logging subsystem's logging levels via the following API
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/logging
 
 Every subsystem will be displayed along with its current setting:
 
@@ -1450,7 +1450,7 @@ If you need to change the logging level to troubleshoot an issue, you can change
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/logging
 
 .. code-block:: json
 

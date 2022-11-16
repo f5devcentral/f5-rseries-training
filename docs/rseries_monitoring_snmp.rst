@@ -124,7 +124,7 @@ By default SNMP queries are not allowed into the F5OS layer. Before enabling SNM
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
 
 Within the body of the API call, specific IP address/port combinations can be added under a given name. In the current release, you are limited to one IP address/port per name. 
 
@@ -168,7 +168,7 @@ To view the allowed IP's in the API, use the following call.
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
 
 The output will show the previously configured allowed-ip's.
 
@@ -285,7 +285,7 @@ To add descriptions for both the in-band, and out-of-band management ports in th
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -427,7 +427,7 @@ If Link Aggregation Groups (LAGs) are configured, descriptions should be added t
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 The body of the API call should contain JSON data that includes the descriptions for each LAG.
 
@@ -560,7 +560,7 @@ You can configure the SNMP System parameters including the **System Contact**, *
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMPv2-MIB:SNMPv2-MIB/system/sysContact
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMPv2-MIB:SNMPv2-MIB/system/sysContact
 
 .. code-block:: json
 
@@ -575,7 +575,7 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMP-VIEW-BASED-ACM-MIB:SNMP-VIEW-BASED-ACM-MIB
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-VIEW-BASED-ACM-MIB:SNMP-VIEW-BASED-ACM-MIB
 
 .. code-block:: json
 
@@ -893,7 +893,7 @@ Enabling SNMP Traps in the API
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB
 
 
 .. code-block:: json
@@ -916,7 +916,7 @@ Enabling SNMP Traps in the API
 
 .. code-block:: bash
 
-    PATCH https://{{Appliance1_IP}}:8888/restconf/data/SNMP-TARGET-MIB:SNMP-TARGET-MIB
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-TARGET-MIB:SNMP-TARGET-MIB
 
 .. code-block:: json
 

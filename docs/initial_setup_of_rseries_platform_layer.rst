@@ -214,13 +214,13 @@ Example of API call using port 8888.
 
 .. code-block:: bash
 
-    https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+    https://{{rseries_rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
 Example of API call using port 443. Replace **/restconf** with **/api**.
 
 .. code-block:: bash
 
-    https://{{rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
+    https://{{rseries_rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
 
  
 You can send a standard API call with user/password based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth**, and enter the username and password to log into your rSeries appliance.
@@ -266,7 +266,7 @@ If you would prefer to automate the setup of the rSeries appliance, there are AP
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/dns
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/dns
 
 Below is the body of the API call which contains the desired configuration:
 
@@ -296,7 +296,7 @@ You may then view the current DNS configuration with the following API call:
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/dns
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/dns
 
 Below is the output from the API query above:
 
@@ -336,7 +336,7 @@ To set System Time settings, use the following API call as an example. This will
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 Below is the body of the API call contianing the desired configuration:
 
@@ -372,7 +372,7 @@ To confirm the clock and NTP settings, use the following API commands. First que
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/ntp
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
 
 .. code-block:: json
 
@@ -415,7 +415,7 @@ Next query the clock configuration:
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/clock
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/clock
 
 Below is the output showing the date/time and timezone:
 
@@ -441,7 +441,7 @@ Next a remote logging destination will be set up for the F5OS logging. To set a 
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -479,7 +479,7 @@ To query the remote logging:
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/logging
 
 The output will show the logging level of all the software subsystems.
 
@@ -889,7 +889,7 @@ If you would like to change the severity of any of the logging, below is an exam
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/logging
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/logging
 
 Below is the configuration in the body of the API call above to set the **DEBUG** logging level:
 
@@ -1085,7 +1085,7 @@ To get the current licensing status via API use the following API call. Issue a 
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing
 
 .. code-block:: json
 
