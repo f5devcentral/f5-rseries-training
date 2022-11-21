@@ -1,6 +1,6 @@
-=========================
-Securing F5OS on rSeries
-=========================
+====================================
+Securing / Hardening F5OS on rSeries
+====================================
 
 F5OS Platform Layer Isolation
 =============================
@@ -25,7 +25,7 @@ To further lock down access you may add an Allow List entry including an IP addr
 Adding Allow List Entries via CLI
 -----------------------------------
 
-If you would like to lock down one of the protocols to either a single IP address or subnet, use the **system allowed-ip** command. Be sure to commit any changes.
+If you would like to lock down one of the protocols to either a single IP address or subnet, use the **system allowed-ip** command. Be sure to commit any changes. The **prefix-length** parameter is optional. If you omit it, then you will lock down access to a specific IP endpoint, if you add it you can lock down access to a specific subnet.
 
 .. code-block:: bash
 
@@ -33,7 +33,7 @@ If you would like to lock down one of the protocols to either a single IP addres
     r10900-2(config-allowed-ip-snmp)# commit
     Commit complete.
 
-Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
+Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address or subnets you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -52,7 +52,7 @@ Currently you can add one ip address/port pair per **allowed-ip** name with an o
 Adding Allow List Entries via API
 -----------------------------------
 
-By default SNMP queries are not allowed into the F5OS layer. Before enabling SNMP you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
+Below is an example of allowing multiple SNMP endpoints (port 161) to query SNMP on the F5OS platfrom layer.
 
 .. code-block:: bash
 
@@ -144,25 +144,115 @@ The output will show the previously configured allowed-ip's.
 Adding Allow List Entries via webUI
 -----------------------------------
 
-By default, SNMP queries are not allowed into the F5OS platform layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries from particular SNMP management endpoints. Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
+You can configure the **Allow List** in the webUI under the **System Settings** section. 
 
-.. image:: images/rseries_monitoring_snmp/image1.png
+.. image:: images/rseries_security/image2.png
   :align: center
   :scale: 70%
 
+Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
 
+.. image:: images/rseries_security/image3.png
+  :align: center
+  :scale: 70%
 
 
 Certificates
 =============
 
-Appliance Mode
-=================
+Appliance Mode for F5OS
+=======================
+
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance more will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulberabilites can be avodied by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occuring directly in the bash shell.
+
+Enabling Appliance Mode via the CLI
+-----------------------------------
+
+Appliance mode can be enabled or disabled via the CLI using the command **system appliance-mode config** and entering either **enabled** or **disabled**. The command **show system appliance-mode** will display the current status. Be sure to commit any changes. 
+
+.. code-block:: bash
+
+    r10900(config)# system appliance-mode config enabled 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)# 
+
+To display the current status.
+
+.. code-block:: bash
+
+    r10900(config)# do show system appliance-mode       
+    system appliance-mode state enabled
+    r10900(config)# 
+
+If you then try to login as root, you will get a permission denied error. You can still login as admin to gain access to the F5OS CLI.
+
+To disable appliance mode.
+
+.. code-block:: bash
+
+    r10900(config)# system appliance-mode config disabled 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)#
+
+Enabling Appliance Mode via the webUI
+------------------------------------- 
+
+Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page.
+
+.. image:: images/rseries_security/image4.png
+  :align: center
+  :scale: 70%
+
+
+Enabling Appliance Mode via the API
+-----------------------------------
+
+Appliance mode can be enabled or disabled via the API. To view the current status of appliance mode use the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-security-appliance-mode:appliance-mode
+
+
+You will see output similar to the response below showing the config and state of appliance mode for F5OS.
+
+.. code-block:: json
+
+    {
+        "f5-security-appliance-mode:appliance-mode": {
+            "config": {
+                "enabled": false
+            },
+            "state": {
+                "enabled": false
+            }
+        }
+    }
+
+To change the mode from disable to enabled use the following API call.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-security-appliance-mode:appliance-mode/f5-security-appliance-mode:config
+
+In the body of the API call add the following:
+
+.. code-block:: json
+
+    {
+        "f5-security-appliance-mode:config": {
+            "f5-security-appliance-mode:enabled": "true"
+        }
+    }
 
 Disabling Basic Authentication
 ==============================
 
-F5OS utilizes basic authentication (username / password) as well as token based authentication for both the API and the webUI. Generally, username / password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authntication can still be utilized to access the devices and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, excpet for the means of obtaining a token. Once the token is issued it is the only way to access both the webUI and the API. 
+F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authntication can still be utilized to access the devices and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once the token is issued it is the only way to access both the webUI and the API. 
+
+
 
 Token lifetime details
 
