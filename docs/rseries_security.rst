@@ -231,7 +231,7 @@ You will see output similar to the response below showing the config and state o
         }
     }
 
-To change the mode from disable to enabled use the following API call.
+To change the mode from disable to enabled, use the following API call.
 
 .. code-block:: bash
 
