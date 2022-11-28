@@ -250,16 +250,13 @@ In the body of the API call add the following:
 Disabling Basic Authentication
 ==============================
 
-F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authntication can still be utilized to access the devices and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once the token is issued it is the only way to access both the webUI and the API. 
+F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authentication can still be utilized to access the devices and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once the token is issued it is the only way to access both the webUI and the API. 
 
-
-
-Token lifetime details
 
 Disabling Basic Auth via the CLI
 --------------------------------
 
-The default setting for basic auth is enabled, and the current state can be seen by utilizing the **show system aaa** command.
+The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. 
 
 .. code-block:: bash
 
@@ -308,7 +305,8 @@ To re-enable basic auth change the state to enabled and commit.
     r10900(config)# commit
     Commit complete.
     r10900(config)#
-  
+
+
 
 Disabling Basic Auth via the API
 --------------------------------
@@ -316,8 +314,67 @@ Disabling Basic Auth via the API
 Disabling Basic Auth via the webUI
 ----------------------------------
 
-Disabling of basic authentication via the webUI is a new feature that has been added in F5OS-A 1.4.0.
+Disabling basic authentication via the webUI is a new feature that has been added in F5OS-A 1.4.0. In the webUI got to **User Management -> Authentication Settings** and you'll see a drop down box to enable or disable **Basic Authentication**.
 
+.. image:: images/rseries_security/image5.png
+  :align: center
+  :scale: 70%
+
+Token Lifetime via CLI
+----------------------
+
+You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifeftime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+
+.. code-block:: bash
+
+    r10900(config)# system aaa restconf-token config lifetime 1 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)# 
+
+To display the current restconf-token lifetime setting, use the command **show system aaa***.
+
+.. code-block:: bash
+
+    r10900(config)# do show system aaa
+    system aaa restconf-token state lifetime 1
+    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
+    system aaa primary-key state status NONE
+    system aaa authentication state basic enabled
+            LAST        TALLY  EXPIRY                  
+    USERNAME  CHANGE      COUNT  DATE    ROLE            
+    -----------------------------------------------------
+    admin     2022-06-02  0      -1      admin           
+    jim-test  2022-09-02  10     -1      admin           
+    operator  2022-10-11  0      -1      operator        
+    root      2022-06-02  0      -1      root            
+    tenant1   0           0      1       tenant-console  
+    tenant2   0           0      1       tenant-console  
+
+    ROLENAME        GID   USERS  
+    -----------------------------
+    admin           9000  -      
+    operator        9001  -      
+    tenant-console  9100  -      
+
+    NAME    NAME    TYPE    
+    ------------------------
+    tacacs  tacacs  TACACS  
+
+    system aaa tls state verify-client false
+    system aaa tls state verify-client-depth 1
+
+Token Lifetime via webUI
+------------------------
+
+You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifeftime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+
+.. image:: images/rseries_security/image6.png
+  :align: center
+  :scale: 70%
+
+Token Lifetime via API
+----------------------
 
 Remote Authentication
 =====================
