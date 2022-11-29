@@ -475,6 +475,10 @@ In the body of the API call adjust the restconf-token lifetime setting to the de
 Remote Authentication
 =====================
 
+The F5OS platform layer supports both local and remote authentication. By default there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on intial login. Many customers will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, or TACACS+.
+
+
+
 Audit Logs / Audit Logs to Remote Server
 ========================================
 
@@ -515,9 +519,82 @@ Configuring SSH and HTTPS Timeouts via webUI
 ------------------------------------------
 
 
-Login Banner / MOTD
+Login Banner / Message of the Day
 ===================
 
+Some environments require warning or acceptance messages to be displayed to clients connecting to the F5OS layer at intial connection time and/or upon successful login. The F5OS layer supports configurable Message of the Day (MoTD) and Login Banners that are displayed to clients connecting to the F5OS layer via both CLI and the webUI. The MoTD and Login Banner can be configured via CLI, webUI, or API. The Login Banner is displayed at initial connect time and is commonly used to notify users they are connecting to a specific resource, and that they should not connect if they are not authorized. The MoTD is displayed after successful login, and may also display some information about the resource the user is connecting to.
+
+Configuring Login Banner / MoTD via CLI
+---------------------------------------
+
+.. code-block:: bash
+
+    r10900(config)# system config login-banner "This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized."                                                 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)# 
+
+.. code-block:: bash
+
+    r10900(config)# system config motd-banner "Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket." 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)# 
+
+.. code-block:: bash
+
+    r10900# show system state 
+    system state hostname r10900.f5demo.net
+    system state login-banner This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.
+    system state motd-banner Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket.
+    system state current-datetime "2022-11-29 11:12:27-05:00"
+    system state base-mac 00:94:a1:69:59:00
+    system state mac-pool-size 256
+    r10900# 
+
+
+
+Configuring Login Banner / MoTD via webUI
+-----------------------------------------
+
+.. image:: images/rseries_security/image7.png
+  :align: center
+  :scale: 70%
+
+
+
+Configuring Login Banner / MoTD via API
+---------------------------------------
+
+Display of Login Banner and MoTD
+--------------------------------
+
+Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successfull user login, the MoTD is then displayed. Both are highlighted in bold below. 
+
+.. code-block:: bash
+
+    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.132
+    **This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.**
+    admin@10.255.0.132's password: 
+    Last login: Tue Nov 29 10:41:06 2022 from 10.10.10.16
+    **Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket.**
+    System Time: 2022-11-29 11:17:00 EST
+    Welcome to the Management CLI
+    User admin last logged in 2022-11-29T16:17:00.008317+00:00, to appliance-1, from 10.10.10.16 using cli-ssh
+    admin connected from 10.10.10.16 using ssh on r10900.f5demo.net
+    r10900# 
+
+Below is an example of the Login Banner being displayed before the user is prompted for a password during a webUI connection to the F5OS platform layer. After a successfull user login, the MoTD is then displayed.
+
+
+.. image:: images/rseries_security/image8.png
+  :align: center
+  :scale: 70%
+
+
+.. image:: images/rseries_security/image9.png
+  :align: center
+  :scale: 70%  
 
 Console Logins
 ==============
