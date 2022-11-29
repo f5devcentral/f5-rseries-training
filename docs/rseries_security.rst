@@ -25,7 +25,7 @@ To further lock down access you may add an Allow List entry including an IP addr
 Adding Allow List Entries via CLI
 -----------------------------------
 
-If you would like to lock down one of the protocols to either a single IP address or subnet, use the **system allowed-ip** command. Be sure to commit any changes. The **prefix-length** parameter is optional. If you omit it, then you will lock down access to a specific IP endpoint, if you add it you can lock down access to a specific subnet.
+If you would like to lock down one of the protocols to either a single IP address or subnet, use the **system allowed-ips** command. Be sure to commit any changes. The **prefix-length** parameter is optional. If you omit it, then you will lock down access to a specific IP endpoint, if you add it you can lock down access to a specific subnet.
 
 .. code-block:: bash
 
@@ -163,7 +163,7 @@ Certificates
 Appliance Mode for F5OS
 =======================
 
-If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance more will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulberabilites can be avodied by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occuring directly in the bash shell.
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulberabilites can be avodied by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occuring directly in the bash shell.
 
 Enabling Appliance Mode via the CLI
 -----------------------------------
@@ -231,7 +231,7 @@ You will see output similar to the response below showing the config and state o
         }
     }
 
-To change the mode from disable to enabled, use the following API call.
+To change the mode from disabled to enabled, use the following API call.
 
 .. code-block:: bash
 
@@ -311,6 +311,54 @@ To re-enable basic auth change the state to enabled and commit.
 Disabling Basic Auth via the API
 --------------------------------
 
+You may enable or disable basic authentication via the API. The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. 
+
+Use the following API PATCH call to set the restconf-token:basic setting to **true** or **false**, or any other password policy parameter.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+In the body of the API call adjust the restconf-token:basic setting to to **true** or **false**.
+
+.. code-block:: json
+
+    {
+        "openconfig-system:aaa": {
+            "authentication": {
+                "config": {
+                    "f5-aaa-confd-restconf-token:basic": {
+                        "enabled": true
+                    }
+                }
+            },
+            "f5-aaa-confd-restconf-token:restconf-token": {
+                "config": {
+                    "lifetime": 10
+                }
+            },
+            "f5-openconfig-aaa-password-policy:password-policy": {
+                "config": {
+                    "min-length": 6,
+                    "required-numeric": 0,
+                    "required-uppercase": 0,
+                    "required-lowercase": 0,
+                    "required-special": 0,
+                    "required-differences": 8,
+                    "reject-username": false,
+                    "apply-to-root": true,
+                    "retries": 3,
+                    "max-login-failures": 10,
+                    "unlock-time": 60,
+                    "root-lockout": true,
+                    "root-unlock-time": 60,
+                    "max-age": 0
+                }
+            }
+        }
+    }
+
+
 Disabling Basic Auth via the webUI
 ----------------------------------
 
@@ -375,6 +423,54 @@ You may configure the restconf-token lifetime via the webUI (new feature added i
 
 Token Lifetime via API
 ----------------------
+
+You may configure the restconf-token lifetime via the API. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifeftime is set to 1 minute, an inactive webUI session or API session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+
+Use the following API PATCH call to set the restconf-token lifetime, or any other password policy parameter.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+In the body of the API call adjust the restconf-token lifetime setting to the desired timeout in minutes. The example below is 10 minutes, and the session will timeout at five times the value of the lifetime setting due to tken refresh.
+
+.. code-block:: json
+
+    {
+        "openconfig-system:aaa": {
+            "authentication": {
+                "config": {
+                    "f5-aaa-confd-restconf-token:basic": {
+                        "enabled": true
+                    }
+                }
+            },
+            "f5-aaa-confd-restconf-token:restconf-token": {
+                "config": {
+                    "lifetime": 10
+                }
+            },
+            "f5-openconfig-aaa-password-policy:password-policy": {
+                "config": {
+                    "min-length": 6,
+                    "required-numeric": 0,
+                    "required-uppercase": 0,
+                    "required-lowercase": 0,
+                    "required-special": 0,
+                    "required-differences": 8,
+                    "reject-username": false,
+                    "apply-to-root": true,
+                    "retries": 3,
+                    "max-login-failures": 10,
+                    "unlock-time": 60,
+                    "root-lockout": true,
+                    "root-unlock-time": 60,
+                    "max-age": 0
+                }
+            }
+        }
+    }
+
 
 Remote Authentication
 =====================
