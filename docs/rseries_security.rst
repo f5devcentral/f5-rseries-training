@@ -527,6 +527,8 @@ Some environments require warning or acceptance messages to be displayed to clie
 Configuring Login Banner / MoTD via CLI
 ---------------------------------------
 
+Enter config mode and use the command **system config login-banner** to configure the login banner via the CLI. You must commit the change afterwards.
+
 .. code-block:: bash
 
     r10900(config)# system config login-banner "This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized."                                                 
@@ -534,12 +536,16 @@ Configuring Login Banner / MoTD via CLI
     Commit complete.
     r10900(config)# 
 
+Enter config mode and use the command **system config motd-banner** to configure the Message of the Day banner via the CLI. You must commit the change afterwards.
+
 .. code-block:: bash
 
     r10900(config)# system config motd-banner "Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket." 
     r10900(config)# commit
     Commit complete.
     r10900(config)# 
+
+To display both settings, use the **show system state** command.
 
 .. code-block:: bash
 
@@ -557,6 +563,8 @@ Configuring Login Banner / MoTD via CLI
 Configuring Login Banner / MoTD via webUI
 -----------------------------------------
 
+You may configure both the Login Banner and the Message of the Day Banner via the webUI on the **System Settings -> General** page.
+
 .. image:: images/rseries_security/image7.png
   :align: center
   :scale: 70%
@@ -565,6 +573,42 @@ Configuring Login Banner / MoTD via webUI
 
 Configuring Login Banner / MoTD via API
 ---------------------------------------
+
+You may configure both the Login Banner and the Message of the Day Banner via the API using the following API calls.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system
+
+In the body of the API call configure the desired message of the day and login banner settings.
+
+.. code-block:: json
+
+    {
+        "openconfig-system:system": {
+            "config": {
+                "hostname": "r10900-1.f5demo.net",
+                "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to Jim McCarron with any questions.",
+                "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
+            }
+        }
+    }
+
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/config
+
+.. code-block:: json
+
+    {
+        "openconfig-system:config": {
+            "hostname": "r10900.f5demo.net",
+            "login-banner": "This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.",
+            "motd-banner": "This is a test"
+        }
+    }
+
 
 Display of Login Banner and MoTD
 --------------------------------
