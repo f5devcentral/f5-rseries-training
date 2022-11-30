@@ -250,13 +250,13 @@ In the body of the API call add the following:
 Disabling Basic Authentication
 ==============================
 
-F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authentication can still be utilized to access the devices and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once the token is issued it is the only way to access both the webUI and the API. 
+F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authentication can still be utilized to access F5OS and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once a token is issued, it will be the only way to make changes via the webUI or the API. 
 
 
 Disabling Basic Auth via the CLI
 --------------------------------
 
-The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. 
+The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. The line **system aaa authentication state basic enabled** indicates that basic authentication is still enabled. 
 
 .. code-block:: bash
 
@@ -288,7 +288,7 @@ The default setting for basic auth is enabled, and the current state can be seen
 
     r10900# 
 
-You may disable basic auth by issuing the cli command **system aaa authenitcation config basic disabled**, and then committing the change.
+You may disable basic authentication by issuing the cli command **system aaa authenitcation config basic disabled**, and then committing the change.
 
 .. code-block:: bash
 
@@ -297,7 +297,7 @@ You may disable basic auth by issuing the cli command **system aaa authenitcatio
     Commit complete.
     r10900(config)#
 
-To re-enable basic auth change the state to enabled and commit.
+To re-enable basic authentication, change the state to enabled and commit.
 
 .. code-block:: bash
 
@@ -311,7 +311,23 @@ To re-enable basic auth change the state to enabled and commit.
 Disabling Basic Auth via the API
 --------------------------------
 
-You may enable or disable basic authentication via the API. The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. 
+You may enable or disable basic authentication via the API. The default setting for basic autentication is enabled, and the current state can be seen by entering the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/config
+
+You should see the returned output below with the basic authentication state set to either **true** or **false**.
+
+.. code-block:: json
+
+    {
+        "openconfig-system:config": {
+            "f5-aaa-confd-restconf-token:basic": {
+                "enabled": true
+            }
+        }
+    }
 
 Use the following API PATCH call to set the restconf-token:basic setting to **true** or **false**, or any other password policy parameter.
 
