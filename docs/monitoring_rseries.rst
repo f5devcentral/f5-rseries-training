@@ -342,7 +342,7 @@ The overall appliance component status can be queried via the following API comm
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components
 
 .. code-block:: json
 
@@ -907,7 +907,7 @@ The appliance LCD panel status can be queried via the following API command:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=lcd
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=lcd
 
 .. code-block:: json
 
@@ -935,7 +935,7 @@ The rSeries appliance may have 1 or 2 power supplies installed. Each can be quer
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=psu-1
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=psu-1
 
 .. code-block:: json
 
@@ -973,7 +973,7 @@ You may query the status of the disks within the rSeries appliance:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/storage
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/storage
 
 .. code-block:: json
 
@@ -1018,7 +1018,7 @@ You can query the detais about the CPU's within each rSeries device. Every CPU t
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/cpu
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/cpu
 
 Below is the exmaple output for CPU's:
 
@@ -1340,7 +1340,7 @@ The API call below shows the total system memory:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:memory
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:memory
 
 .. code-block:: json
 
@@ -1359,7 +1359,7 @@ rSeries supports the Trusted Protection Module (TPM) to validate certain softwar
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:tpm-integrity-status
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:tpm-integrity-status
 
 .. code-block:: json
 
@@ -1632,7 +1632,7 @@ This command will display the health of the underlying Kubernetes (K3S) cluster 
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-cluster:cluster
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-cluster:cluster
 
 .. code-block:: json
 
@@ -1810,7 +1810,7 @@ This API call displays some of the software processes running within the F5OS pl
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-service-instances:service-instances
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-service-instances:service-instances
 
 .. code-block:: json
 
@@ -1928,7 +1928,7 @@ F5 Services Status
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-services:services
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-services:services
 
 
 .. code-block:: json
@@ -1967,7 +1967,7 @@ This API call displays the Forwarding Database:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-l2fdb:fdb
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-l2fdb:fdb
 
 .. code-block:: json
 
@@ -2244,7 +2244,7 @@ The following API call displays the details used to feed the overall system heal
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
 
 .. code-block:: json
 

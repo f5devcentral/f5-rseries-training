@@ -137,7 +137,7 @@ List the current F5OS images in the **images/staging** directory via the followi
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 In the API call body/payload add the directory you want to query:
 
@@ -165,7 +165,7 @@ You can then query the **images/import** directory for various image types like 
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 For the body you can enter the specific path you want to query. For example /images/import/<path> where path can be **iso**, **service**, or **os**:
 
@@ -194,7 +194,7 @@ To import an F5OS-A image, use the following API example:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
@@ -216,7 +216,7 @@ You can then check on the file transfer status with the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status
 
 A response like the one below will provide the status of the transfer:
 
@@ -232,7 +232,7 @@ After transferring the file you can view the contents of the images/staging dire
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 .. code-block:: json
 
@@ -258,7 +258,7 @@ You can then monitor the images/import/iso directory to see when the file is rea
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 .. code-block:: json
 
@@ -285,7 +285,7 @@ You can then query the image status via the API:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888//api/data/openconfig-system:system/f5-system-image:image/state
+    GET https://{{rseries_appliance1_ip}}:8888//api/data/openconfig-system:system/f5-system-image:image/state
 
 The output will show the status for the OS, Service, ISO, and Install Status.
 
@@ -420,7 +420,7 @@ To upgrade F5OS via the API you must first run the check version API call with t
 
 .. code-block:: bash
 
- POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/check-version
+ POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/check-version
 
 The body of the API should contain the version you want to upgrade to:
 
@@ -446,7 +446,7 @@ This is the Set Version API call that will initiate the upgrade:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/set-version
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/set-version
 
 .. code-block:: json
 
@@ -541,7 +541,7 @@ To copy a tenant image into F5OS over the API, use the following API call to the
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
@@ -562,7 +562,7 @@ To list the current tenant images available on the appliance, use the following 
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenant-images:images
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenant-images:images
 
 Below is output generated from the previous command:
 

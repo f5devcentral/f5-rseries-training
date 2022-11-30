@@ -4026,7 +4026,7 @@ Just like the CLI output you can dump the full system health and all its subsyst
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
 
 
 This provides a very large output of all the subsystems and their subcomponents. Below the large output are examples of how to futher filter/reduce the output via API calls.
@@ -18166,15 +18166,15 @@ You can filter the above output in many ways. Below is an example of how to only
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=lcd
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=lcd
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=psu-1
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=psu-1
 
 To get a further summarized high level system health status that is easier to consume:
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=blade-1/hardware=blade%2Fhardware%2Fcpu
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=blade-1/hardware=blade%2Fhardware%2Fcpu
 
 
 This will provide a much smaller output, where you can drill down into a specific area of system health can be determined very quickly:

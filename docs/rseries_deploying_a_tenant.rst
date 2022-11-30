@@ -376,7 +376,7 @@ To copy a tenant image into the appliance, use the following API call to the out
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
@@ -397,7 +397,7 @@ To list the current tenant images available within F5OS use the following API Ca
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenant-images:images
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenant-images:images
 
 Below is output generated from the previous command:
 
@@ -432,7 +432,7 @@ Tenant creation via the API is as simple as defining the parameters below and se
 
 .. code-block:: bash
 
-  POST https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+  POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
 
 
 Below is the body of the API call above.
@@ -473,7 +473,7 @@ The command below will show the current state and status of the tenant. Remember
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
 
 The output of the above API call shows the state and status of the tenant.
 
@@ -553,7 +553,7 @@ Next a new API call will be sent to set the tenant's **running-state** to **Depl
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
 The body/payload of the API call will set the **running-state** to **Deployed**:
 
@@ -568,7 +568,7 @@ You may then re-check the tenant status and see how the state changes, and the a
 
 .. code-block:: bash
 
-    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
 
 Below is the output from the above API call:
 
@@ -794,7 +794,7 @@ First get the current tenant status via the API and note the current CPU allocat
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
 
 The API output:
 
@@ -907,7 +907,7 @@ The workflow to change the tenant configuration is to first change the tenant st
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
 For the JSON body of the API call, change the **running-state** to **provisioned**:
 
@@ -937,7 +937,7 @@ Send a PATCH API command to change the CPU and memory configuration so the tenan
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/vcpu-cores-per-node
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/vcpu-cores-per-node
 
 The payload should contain the following:
 
@@ -952,7 +952,7 @@ Finally change the tenant status back to **deployed** and then check the status 
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
 
 The payload should contain the following:
 
@@ -967,7 +967,7 @@ Validate the new status of the tenant with the correct vCPU and memory sizes, an
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
 
 The API output:
 
@@ -1106,7 +1106,7 @@ To delete a tenant from the API, issue the following **DELETE** API call.
 
 .. code-block:: bash
 
-    DELETE https://{{Appliance1_IP}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
+    DELETE https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
 
 There is no need to enter anything in the payload of the API call. This should delete the specified tenant.
 

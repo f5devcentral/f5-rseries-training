@@ -204,7 +204,7 @@ To list the current portgroup configuration, issue the following API call:
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/f5-portgroup:portgroups
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-portgroup:portgroups
 
 Below is an exmaple output from an r10000 series appliance:
 
@@ -922,7 +922,7 @@ To change the portgroup configuration via the API, use the following API call.
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/f5-portgroup:portgroups
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-portgroup:portgroups
 
 Below is an example configuration change in the body of the API call, this is changing portgroup 10 to 25Gb mode:
 
@@ -1075,7 +1075,7 @@ The following API command will list all the current interfaces within the applia
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-interfaces:interfaces
 
 .. code-block:: json
 
@@ -2362,7 +2362,7 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-interfaces:interfaces
 
 .. code-block:: json
 
@@ -2522,7 +2522,7 @@ To configure VLANs, use the following API command and JSON body. This will confi
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -2580,7 +2580,7 @@ The following command will list the configuration and status of all VLANs within
 
 .. code-block:: bash
 
-  GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-vlan:vlans
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-vlan:vlans
 
 .. code-block:: json
 
@@ -2902,7 +2902,7 @@ To create a LAG, add interfaces to it, and add proper LACP configuration it will
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -2964,7 +2964,7 @@ The next step is to add physical interfaces into the LAG group. Interfaces will 
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -3023,7 +3023,7 @@ The final step is adding LACP configuration for each LAG with the LACP mode **AC
 
 .. code-block:: bash
 
-  PATCH https://{{Appliance1_IP}}:8888/restconf/data/
+  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
 .. code-block:: json
 
@@ -3058,7 +3058,7 @@ To view the final LAG configuration and status via the API, use the following AP
 
 .. code-block:: bash
 
-	GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-lacp:lacp
+	GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-lacp:lacp
 
 .. code-block:: json
 
@@ -3217,7 +3217,7 @@ You can get more granular information down to the interface level using the foll
 
 .. code-block:: bash
 
-	GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-interfaces:interfaces
+	GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-interfaces:interfaces
 
 .. code-block:: json
 

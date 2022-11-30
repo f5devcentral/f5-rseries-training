@@ -81,7 +81,7 @@ Using the F5OS API you can backup the F5OS configuration database using the foll
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
 
 In the body of the API call you can specifiy the file name you want to save the backup as.
 
@@ -191,7 +191,7 @@ To copy a configuration backup file from the appliance to a remote https server 
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/export
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/export
 
 .. code-block:: json
 
@@ -209,7 +209,7 @@ You can then check on the status of the export via the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
 
 .. code-block:: json
@@ -293,7 +293,7 @@ There is no webUI support for this functionality currently. To do this via API c
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:reset-to-default
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:reset-to-default
 
 The body of the above API call must contain the following:
 
@@ -307,7 +307,7 @@ After resettting the system database reboot the system to ensure the configurati
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-system-reboot:reboot
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-reboot:reboot
 
 
 
@@ -394,7 +394,7 @@ After the reboot of the system, you'll need to log in and change the default pas
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/operations/openconfig-system:system/aaa/authentication/users/user=admin/config/change-password
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/operations/openconfig-system:system/aaa/authentication/users/user=admin/config/change-password
 
 The body of the API call contains the following:
 
@@ -415,7 +415,7 @@ You'll need to use the new password/token on subsequent API calls. Post the foll
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/import
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import
 
 Below is the body of the API call above:
 
@@ -449,7 +449,7 @@ If you want to list the contents of the config directory via API use the followi
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/f5-utils-file-transfer:file/list
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
 The body of the API call above will list the **configs** directory as the one to be queried:
 
@@ -527,7 +527,7 @@ To restore the F5OS configuration database use the following API call:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_IP}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
 
 The body/payload must include the text below to specifiy the file to be restored:
 
