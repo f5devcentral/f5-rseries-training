@@ -517,7 +517,7 @@ To configure the CLI timeout via the CLI, use the command **system settings conf
     Commit complete.     
  
  
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on 5 token refreshes failing, so the value is essentiallyu 5 times the configured tken lifetime. Use the command **
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on 5 token refreshes failing, so the value is essentiallyu 5 times the configured tken lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>**.
 
 .. code-block:: bash
 
