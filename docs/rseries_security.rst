@@ -502,12 +502,12 @@ Audit Logs / Audit Logs to Remote Server
 Session Timeouts
 ================
 
-Idle timeouts were configurable in previous releases, but the configuration only applied to the current sesssion and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for both the CLI and webUI. The CLI timeout is configured under system settings, and is controlled via the idle-timeout option. For the webUI a toekn based timeout is now configurable under the system aaa settings. a restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the toekn lifetime is set to 1 minute, then a timeout won't occur until five times that value or 5 minutes later. This is because of the token refresh has to fail 5 times before disconnecting the client.  
+Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for both the CLI and webUI. The CLI timeout is configured under system settings, and is controlled via the idle-timeout option. For the webUI a token based timeout is now configurable under the system aaa settings. a restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value or 5 minutes later. This is because of the token refresh has to fail 5 times before disconnecting the client.  
 
 Configuring SSH and HTTPS Timeouts via CLI
 ------------------------------------------
 
-To configure the CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seonds of inactivity.
+To configure the CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
 
 
 .. code-block:: bash
