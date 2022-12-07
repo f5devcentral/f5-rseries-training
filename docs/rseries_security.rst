@@ -494,11 +494,6 @@ Remote Authentication
 The F5OS platform layer supports both local and remote authentication. By default there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on intial login. Many customers will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, or TACACS+.
 
 
-
-Audit Logs / Audit Logs to Remote Server
-========================================
-
-
 Session Timeouts
 ================
 
