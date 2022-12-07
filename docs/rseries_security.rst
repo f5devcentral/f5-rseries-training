@@ -867,14 +867,14 @@ Viewing Logs from the webUI
 
 In the current F5OS releases, you cannot view the F5OS audit.log file directly from the webUI, although you can download it from the webUI. To view the audit.log, you can use the CLI or API, or download the files and then view. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
-.. image:: images/rseries_security/image9.png
+.. image:: images/rseries_security/image10.png
   :align: center
   :scale: 70%
 
 If you want to download the main **audit.log**, select the directory **/log/system**.
 
 
-.. image:: images/rseries_security/image10.png
+.. image:: images/rseries_security/image11.png
   :align: center
   :scale: 70%
 
