@@ -664,15 +664,20 @@ SNMPv3
 =======
 
 
-NTP Auth
-========
+NTP Authentication
+==================
 
+NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries form the F5OS platform layer.
 
 Disable IPv6
 ============
 
 Encrypt TLS Private Key
 =======================
+
+It looks like we already encrypt the certificate key using AES256-GCM(AKA $8$) even before 1.3.0.
+So the user can see on the GUI is the encrypted key, not the real/plain key.
+
 
 Configurable Management Ciphers
 ===============================
@@ -682,4 +687,227 @@ Client Certificate Based Auth
 
 iHealth Proxy Server
 ====================
+
+F5OS supports the ability to capture detialed logs and configuration using the qkView utility. To speed up support case resolution the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews through a proxy device.
+
+
+Adding a Proxy Server via CLI
+------------------------------
+
+Adding a Proxy Server via webUI
+-------------------------------
+
+Adding a Proxy Server via API
+------------------------------
+
+Audit Logging
+=============
+
+F5OS will log all access and configuration changes in two seprate **audit.log** files, which reside in the in one of the following paths; **log/system/audit.log** and **log/host/audit.log**. In versions prior to F5OS-A ???? the audit.log file may only be viewed locally within the F5OS layer, the audit log cannot be sent to a remote location. A new enhancement has been added in F5OS-A ?????? to allow audit.log entires to be redirected to a remote location. The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and wether access was granted or not.
+
+
+Viewing Audit Logs via F5OS CLI
+-------------------------------
+
+Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log** in the current F5OS releases. In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options. You may choose either the **log/system** directory or the **log/host** directory. Note the **audit.log** file. 
+
+.. code-block:: bash
+
+    appliance-1# file list path log/
+    Possible completions:
+    confd/  host/  system/
+    appliance-1# file list path log/system/
+    Possible completions:
+    audit.log                      confd.log          devel.log     devel.log.1    lcd.log           lcd.log.1           lcd.log.2.gz       
+    lcd.log.3.gz                   lcd.log.4.gz       lcd.log.5.gz  logrotate.log  logrotate.log.1   logrotate.log.2.gz  platform.log       
+    reprogram_chassis_network.log  rsyslogd_init.log  snmp.log      startup.log    startup.log.prev  trace/              vconsole_auth.log  
+    vconsole_startup.log           velos.log          webUI/        
+    appliance-1# file list path log/system/
+
+To view the contents of the **audit.log** file, use the command **file show path /log/system/audit.log**. This will show the entire log file from the beginning, but may not be the best way to troubleshoot a recent event:
+
+.. code-block:: bash
+
+    r10900# file show log/system/audit.log
+    <INFO> 9-Dec-2021::17:13:57.506 appliance-1 confd[106]: audit user: admin/20518 assigned to groups: admin
+    <INFO> 9-Dec-2021::17:13:57.506 appliance-1 confd[106]: audit user: admin/20518 created new session via cli from 172.27.196.47:52582 with ssh
+    <INFO> 9-Dec-2021::17:13:57.589 appliance-1 confd[106]: audit user: admin/20518 terminated session (reason: normal)
+    <INFO> 9-Dec-2021::17:13:57.633 appliance-1 confd[106]: audit user: admin/20519 assigned to groups: admin
+    <INFO> 9-Dec-2021::17:13:57.633 appliance-1 confd[106]: audit user: admin/20519 created new session via cli from 172.27.196.47:52582 with ssh
+    <INFO> 9-Dec-2021::18:14:14.380 appliance-1 confd[106]: audit user: admin/20519 terminated session (reason: timeout)
+    <INFO> 9-Dec-2021::18:19:38.135 appliance-1 confd[106]: audit user: admin/0 external authentication succeeded via rest from 172.18.3.162:0 with http, member of groups: admin
+    <INFO> 9-Dec-2021::18:19:38.135 appliance-1 confd[106]: audit user: admin/0 logged in via rest from 172.18.3.162:0 with http using external authentication
+    <INFO> 9-Dec-2021::18:19:38.136 appliance-1 confd[106]: audit user: admin/21353 assigned to groups: admin
+    <INFO> 9-Dec-2021::18:19:38.136 appliance-1 confd[106]: audit user: admin/21353 created new session via rest from 172.18.3.162:0 with http
+    <INFO> 9-Dec-2021::18:19:38.136 appliance-1 confd[106]: audit user: admin/21353 RESTCONF: request with http: GET /restconf/ HTTP/1.1
+    <INFO> 9-Dec-2021::18:19:38.137 appliance-1 confd[106]: audit user: admin/21353 terminated session (reason: normal)
+    <INFO> 9-Dec-2021::18:19:38.137 appliance-1 confd[106]: audit user: admin/21353 RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 62361 ms
+
+
+There are options to manipulate the output of the file. Add **| ?** to the command to see the options available to manipulate the file output.
+
+.. code-block:: bash
+
+    r10900# file show log/system/audit.log | ?
+    Possible completions:
+    append    Append output text to a file
+    begin     Begin with the line that matches
+    count     Count the number of lines in the output
+    exclude   Exclude lines that match
+    include   Include lines that match
+    linnum    Enumerate lines in the output
+    more      Paginate output
+    nomore    Suppress pagination
+    save      Save output text to a file
+    until     End with the line that matches
+    r10900# file show log/system/audit.log | 
+
+There are other file options that allow the user to tail the log file using **file tail -f** for a live tail,  or **file tail -n <number of lines>** to view a specific number of the most recent lines.
+
+.. code-block:: bash
+
+    r10900# file tail -f log/system/audit.log
+    <INFO> 7-Dec-2022::15:05:01.996 appliance-1 confd[125]: audit user: admin/13692368 assigned to groups: admin
+    <INFO> 7-Dec-2022::15:05:01.996 appliance-1 confd[125]: audit user: admin/13692368 created new session via cli from 172.18.104.73:60301 with ssh
+    <INFO> 7-Dec-2022::15:05:02.007 appliance-1 confd[125]: audit user: admin/13692368 CLI 'show system state hostname'
+    <INFO> 7-Dec-2022::15:05:02.008 appliance-1 confd[125]: audit user: admin/13692368 CLI done
+    <INFO> 7-Dec-2022::15:05:02.009 appliance-1 confd[125]: audit user: admin/13692368 terminated session (reason: normal)
+    <INFO> 7-Dec-2022::15:05:02.052 appliance-1 confd[125]: audit user: admin/13692371 assigned to groups: admin
+    <INFO> 7-Dec-2022::15:05:02.053 appliance-1 confd[125]: audit user: admin/13692371 created new session via cli from 172.18.104.73:60301 with ssh
+    <INFO> 7-Dec-2022::15:05:19.428 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file show log/system/audit.log'
+    <INFO> 7-Dec-2022::15:05:21.784 appliance-1 confd[125]: audit user: admin/13692371 CLI done
+    <INFO> 7-Dec-2022::15:08:59.462 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file tail -f log/system/audit.log'
+
+
+
+    r10900# file tail -n 20 log/system/audit.log
+    <INFO> 7-Dec-2022::14:46:50.546 appliance-1 confd[125]: audit user: admin/13672920 RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 37668 ms
+    <INFO> 7-Dec-2022::14:47:05.976 appliance-1 confd[125]: audit user: admin/0 external token authentication succeeded via rest from 172.18.104.73:0 with http, member of groups: admin session-id:admin1670421700
+    <INFO> 7-Dec-2022::14:47:05.976 appliance-1 confd[125]: audit user: admin/0 logged in via rest from 172.18.104.73:0 with http using externalvalidation authentication
+    <INFO> 7-Dec-2022::14:47:05.976 appliance-1 confd[125]: audit user: admin/13673201 assigned to groups: admin
+    <INFO> 7-Dec-2022::14:47:05.976 appliance-1 confd[125]: audit user: admin/13673201 created new session via rest from 172.18.104.73:0 with http
+    <INFO> 7-Dec-2022::14:47:05.977 appliance-1 confd[125]: audit user: admin/13673201 RESTCONF: request with http: GET /restconf/ HTTP/1.1
+    <INFO> 7-Dec-2022::14:47:05.980 appliance-1 confd[125]: audit user: admin/13673201 terminated session (reason: normal)
+    <INFO> 7-Dec-2022::14:47:05.981 appliance-1 confd[125]: audit user: admin/13673201 RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 35923 ms
+    <INFO> 7-Dec-2022::15:05:01.996 appliance-1 confd[125]: audit user: admin/13692368 assigned to groups: admin
+    <INFO> 7-Dec-2022::15:05:01.996 appliance-1 confd[125]: audit user: admin/13692368 created new session via cli from 172.18.104.73:60301 with ssh
+    <INFO> 7-Dec-2022::15:05:02.007 appliance-1 confd[125]: audit user: admin/13692368 CLI 'show system state hostname'
+    <INFO> 7-Dec-2022::15:05:02.008 appliance-1 confd[125]: audit user: admin/13692368 CLI done
+    <INFO> 7-Dec-2022::15:05:02.009 appliance-1 confd[125]: audit user: admin/13692368 terminated session (reason: normal)
+    <INFO> 7-Dec-2022::15:05:02.052 appliance-1 confd[125]: audit user: admin/13692371 assigned to groups: admin
+    <INFO> 7-Dec-2022::15:05:02.053 appliance-1 confd[125]: audit user: admin/13692371 created new session via cli from 172.18.104.73:60301 with ssh
+    <INFO> 7-Dec-2022::15:05:19.428 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file show log/system/audit.log'
+    <INFO> 7-Dec-2022::15:05:21.784 appliance-1 confd[125]: audit user: admin/13692371 CLI done
+    <INFO> 7-Dec-2022::15:08:59.462 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file tail -f log/system/audit.log'
+    <INFO> 7-Dec-2022::15:09:22.907 appliance-1 confd[125]: audit user: admin/13692371 CLI done
+    <INFO> 7-Dec-2022::15:09:31.142 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file tail -n 20 log/system/audit.log' 
+
+Within the bash shell if you are logged in as root, the path for the logging is different; **/var/F5/system/log**. Note that older audit.log files are gzipped and rotated.
+
+.. code-block:: bash
+
+    [root@appliance-1(r10900.f5demo.net) ~]# ls -al /var/F5/system/log/
+    total 2541432
+    drwxr-xr-x.  4 root root       4096 Dec  6 20:14 .
+    drwxr-xr-x. 26 root root       4096 Nov 28 12:38 ..
+    -rw-r--r--.  1 root root   71290161 Dec  7 10:10 audit.log
+    -rw-r--r--.  1 root root    1743543 Dec  9  2021 audit.log.1
+    -rw-r--r--.  1 root root         20 Dec  7  2021 audit.log.2.gz
+    -rw-r--r--.  1 root root         20 Dec  7  2021 audit.log.3.gz
+    -rw-r--r--.  1 root root    1847232 Dec  7  2021 audit.log.4.gz
+    -rw-r--r--.  1 root root    9848782 Nov 28 12:35 confd.log
+    -rw-r--r--.  1 root root      29979 Dec  9  2021 confd.log.1
+    -rw-r--r--.  1 root root         20 Dec  7  2021 confd.log.2.gz
+    -rw-r--r--.  1 root root         20 Dec  7  2021 confd.log.3.gz
+    -rw-r--r--.  1 root root      33306 Dec  7  2021 confd.log.4.gz
+    -rw-r--r--.  1 root root   81663088 Dec  7 10:10 devel.log
+    -rw-r--r--.  1 root root  104858977 Nov 13 15:11 devel.log.1
+    -rw-r--r--.  1 root root    4541548 Oct 14 02:37 devel.log.2.gz
+    -rw-r--r--.  1 root root    4838903 Aug 23 01:14 devel.log.3.gz
+    -rw-r--r--.  1 root root    4747221 Jun 22 18:45 devel.log.4.gz
+    -rw-r--r--.  1 root root    4788922 Apr 13  2022 devel.log.5.gz
+    -rw-r--r--.  1 root root   24263778 Nov 28 13:40 k3s_events.log
+    -rw-r--r--.  1 root root  105344182 Nov 28 12:54 k3s_events.log.1
+    -rw-r--r--.  1 root root    8073081 Sep 19 11:30 k3s_events.log.2.gz
+    -rw-r--r--.  1 root root   68972233 Jan 23  2022 lacp_out_132
+    -rw-r--r--.  1 root root   50821845 Dec  7 10:10 lcd.log
+    -rw-r--r--.  1 root root  104858247 Oct  6 23:13 lcd.log.1
+    -rw-r--r--.  1 root root    6501076 Jun 27 10:24 lcd.log.2.gz
+    -rw-r--r--.  1 root root    6518411 Jun  8 00:41 lcd.log.3.gz
+    -rw-r--r--.  1 root root    6541114 May 19  2022 lcd.log.4.gz
+    -rw-r--r--.  1 root root    6561702 Apr 22  2022 lcd.log.5.gz
+    -rw-r--r--.  1 root root    1909130 Dec  7 10:10 logrotate.log
+    -rw-r--r--.  1 root root    5244641 Dec  6 20:14 logrotate.log.1
+    -rw-r--r--.  1 root root      31197 Dec  5 05:57 logrotate.log.2.gz
+    -rw-r--r--.  1 root root  607087556 Dec  7 10:09 platform.log
+    -rw-r--r--.  1 root root 1073833624 Jan 12  2022 platform.log.1
+    -rw-r--r--.  1 root root   60136728 Jan  4  2022 platform.log.2.gz
+    -rw-r--r--.  1 root root     454400 Dec  8  2021 platform.log.3.gz
+    -rw-r--r--.  1 root root        621 Dec  7  2021 platform.log.4.gz
+    -rw-r--r--.  1 root root       7841 Dec  7  2021 platform.log.5.gz
+    -rw-r--r--.  1 root root       7734 Dec  7  2021 platform.log.6.gz
+    -rw-r--r--.  1 root root  152724547 Dec  7  2021 platform.log.7.gz
+    -rw-r--r--.  1 root root          0 Sep 30  2021 reprogram_chassis_network.log
+    -rw-r--r--.  1 root root      41122 Nov 28 12:34 rsyslogd_init.log
+    -rw-r--r--.  1 root root   16070999 Dec  5 23:48 snmp.log
+    -rw-r--r--.  1 root root          0 Dec  9  2021 snmp.log.1
+    -rw-r--r--.  1 root root         20 Dec  7  2021 snmp.log.2.gz
+    -rw-r--r--.  1 root root         20 Dec  7  2021 snmp.log.3.gz
+    -rw-r--r--.  1 root root         20 Dec  7  2021 snmp.log.4.gz
+    -rw-r--r--.  1 root root        435 Nov 28 12:34 startup.log
+    -rw-r--r--.  1 root root        190 Nov 28 12:27 startup.log.prev
+    drwxr-xr-x.  2 root root       4096 Sep 28  2021 trace
+    -rw-r--r--.  1 root root       8424 Nov 28 12:34 vconsole_auth.log
+    -rw-r--r--.  1 root root      31966 Nov 28 12:34 vconsole_startup.log
+    -rw-r--r--.  1 root root          0 Dec  9  2021 velos.log
+    -rw-r--r--.  1 root root          0 Dec  7  2021 velos.log.1
+    -rw-r--r--.  1 root root         20 Dec  7  2021 velos.log.2.gz
+    -rw-r--r--.  1 root root    5960344 Oct 18  2021 velos.log.3.gz
+    -rw-r--r--.  1 root root       4096 Oct 15  2021 .velos.log.swp
+    drwxr-xr-x.  2 root root       4096 Nov 28 12:34 webui
+    [root@appliance-1(r10900.f5demo.net) ~]# 
+  
+Viewing Logs from the webUI
+--------------------------
+
+In the current F5OS releases, you cannot view the F5OS audit.log file directly from the webUI, although you can download it from the webUI. To view the audit.log, you can use the CLI or API, or download the files and then view. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+
+.. image:: images/rseries_security/image9.png
+  :align: center
+  :scale: 70%
+
+If you want to download the main **audit.log**, select the directory **/log/system**.
+
+
+.. image:: images/rseries_security/image10.png
+  :align: center
+  :scale: 70%
+
+
+Viewing Audit Logs via F5OS API
+-------------------------------
+
+Example Audit Logging of CLI Changes
+------------------------------------
+
+
+Example Audit Logging of API Changes
+------------------------------------
+
+In F5OS release prior to F5OS-A 1.4.0 API audit logs captured configuration changes, but did not log the full configuration payload. 
+
+Example Audit Logging of webUI Changes
+--------------------------------------
+
+
+
+
+Downloading Audit Logs via CLI
+------------------------------
+
+Downloading Audit Logs via API
+------------------------------
+
+Downloading Audit Logs via webUI
+-------------------------------
 
