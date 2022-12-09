@@ -157,8 +157,10 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
   :scale: 70%
 
 
-Certificates
-=============
+Certificates for Device Management
+==================================
+
+F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load you own into the system.
 
 Appliance Mode for F5OS
 =======================
@@ -689,8 +691,19 @@ F5OS supports the ability to capture detialed logs and configuration using the q
 Adding a Proxy Server via CLI
 ------------------------------
 
+
+.. code-block:: bash
+
+    r10900(config)# system diagnostics proxy config proxy-username myusername proxy-server https://myproxy.com:3128 proxy-password 
+    (<AES encrypted string>): **************
+    r10900(config)# 
+
 Adding a Proxy Server via webUI
 -------------------------------
+
+.. image:: images/rseries_security/imageproxy1.png
+  :align: center
+  :scale: 70%  
 
 Adding a Proxy Server via API
 ------------------------------
