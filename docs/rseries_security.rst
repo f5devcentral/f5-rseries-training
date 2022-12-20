@@ -608,6 +608,11 @@ In the body of the API call set the desired lifetime in minutes.
 Configuring SSH and HTTPS Timeouts via webUI
 ------------------------------------------
 
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Toekn Lifetime** in the webUI under the **User Management -> Authentication Settings** page.
+
+.. image:: images/rseries_security/imagetoken1.png
+  :align: center
+  :scale: 70%
 
 Login Banner / Message of the Day
 ===================
