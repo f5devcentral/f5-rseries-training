@@ -874,12 +874,14 @@ First you must configure the remote syslog destination. As part of that configur
 
 Then, you can control the level of events that will be logged to the local audit.log file by configuring the **audit-service** **sw-component**. By default all audit events will be logged, but you can turn down the level of events
 
+.. code-block:: bash
+
     r10900# show running-config system logging sw-components sw-component audit-service
-system logging sw-components sw-component audit-service
-config name audit-service
-config description "Audit message handling service"
-config severity DEBUG
-!
+    system logging sw-components sw-component audit-service
+    config name audit-service
+    config description "Audit message handling service"
+    config severity DEBUG
+    !
 
 The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and wether access was granted or not.
 
