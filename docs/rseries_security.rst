@@ -661,6 +661,8 @@ SNMPv3
 =======
 
 
+
+
 NTP Authentication
 ==================
 
@@ -685,12 +687,13 @@ Client Certificate Based Auth
 iHealth Proxy Server
 ====================
 
-F5OS supports the ability to capture detialed logs and configuration using the qkView utility. To speed up support case resolution the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews through a proxy device.
+F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
 
 
 Adding a Proxy Server via CLI
 ------------------------------
 
+To add a proxy server for iHealth uploads via the CLI, use the **system diagnostics proxy** command.
 
 .. code-block:: bash
 
@@ -700,6 +703,8 @@ Adding a Proxy Server via CLI
 
 Adding a Proxy Server via webUI
 -------------------------------
+
+To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics -> iHealth Configuration** page. 
 
 .. image:: images/rseries_security/imageproxy1.png
   :align: center
@@ -711,7 +716,43 @@ Adding a Proxy Server via API
 Audit Logging
 =============
 
-F5OS will log all access and configuration changes in two seprate **audit.log** files, which reside in the in one of the following paths; **log/system/audit.log** and **log/host/audit.log**. In versions prior to F5OS-A ???? the audit.log file may only be viewed locally within the F5OS layer, the audit log cannot be sent to a remote location. A new enhancement has been added in F5OS-A ?????? to allow audit.log entires to be redirected to a remote location. The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and wether access was granted or not.
+F5OS has the ability to log all configuration changes and access to the F5OS layer in audit logs. In versions prior to F5OS-A 1.4.0, all access and configuration changes are logged in one of two separate **audit.log** files, which reside in the in one of the following paths in the F5OS filesystem when logged in as root; **/var/F5/system/log/audit.log** or **/var/log/audit/audit.log**. If you are logged into the F5OS CLI as admin, then the actual paths are simplified to **log/system/audit.log** and **/log/host/audit/audit.log**.
+
+
+add root paths
+
+In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entires to be redirected to a remote syslog location, as well as changing the log format to match standard F5OS syslog format. Details on the two different implementations are below.
+
+Viewing Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
+--------------------------------------------------------
+
+Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicity enable audit events.
+
+First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
+
+.. code-block:: bash
+
+    r10900(config)# system logging remote-servers remote-server 10.255.0.139
+    r10900(config-remote-server-10.255.0.139)# config remote-port 514
+    r10900(config-remote-server-10.255.0.139)# config proto udp
+    r10900(config-remote-server-10.255.0.139)# selectors selector LOCAL0 INFORMATIONAL
+    r10900(config-remote-server-10.255.0.139)# selectors selector AUTHPRIV DEBUG
+    r10900(config-remote-server-10.255.0.139)# commit
+    % No modifications to commit.
+    r10900(config-remote-server-10.255.0.139)#
+
+Then, you can control the level of events that will be logged to the local audit.log file by configuring the **audit-service** **sw-component**. By default all audit events will be logged, but you can turn down the level of events
+
+    r10900# show running-config system logging sw-components sw-component audit-service
+system logging sw-components sw-component audit-service
+config name audit-service
+config description "Audit message handling service"
+config severity DEBUG
+!
+
+The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and wether access was granted or not.
+
+
 
 
 Viewing Audit Logs via F5OS CLI
