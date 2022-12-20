@@ -795,6 +795,55 @@ To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics
 Adding a Proxy Server via API
 ------------------------------
 
+To add a proxy server for iHealth uploads via the API, use the following API call.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-proxy:proxy
+
+In the body of the API call add the username, password, and proxy server configuration. 
+
+NOTE: Need to figure out encoding for password?
+
+.. code-block:: json
+
+
+    {
+        "f5-system-diagnostics-proxy:proxy": {
+            "config": {
+                "proxy-username": "username2",
+                "proxy-password": "$8$8FudCujBpUpoTBaQQw4QaTeyUU8UHdkYAv90Dfx43SA=",
+                "proxy-server": "https://myproxy2.demo.f5net"
+            }
+        }
+    }
+
+
+ To view the current proxy configuration via the API use the following call.
+
+ .. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-proxy:proxy
+
+The API call should return output similar to what is seen below.
+
+ .. code-block:: json
+
+    {
+        "f5-system-diagnostics-proxy:proxy": {
+            "state": {
+                "proxy-username": "username",
+                "proxy-server": "https://myproxy.demo.f5net"
+            },
+            "config": {
+                "proxy-username": "username",
+                "proxy-password": "$8$8FudCujBpUpoTBaQQw4QaTeyUU8UHdkYAv90Dfx43SA=",
+                "proxy-server": "https://myproxy.demo.f5net"
+            }
+        }
+    }
+
+
 Audit Logging
 =============
 
