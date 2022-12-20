@@ -543,11 +543,11 @@ To configure the CLI timeout via the API, use the PATCH API call below. In the c
         }
     }
 
-To view the current idle-timeout setting issue the following GET API call.
+To view the current idle-timeout setting, issue the following GET API call.
 
 .. code-block:: bash
 
-GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings/config
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings/config
 
 
 You'll see output similar to the example below.
