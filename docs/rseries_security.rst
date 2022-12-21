@@ -248,6 +248,124 @@ In the body of the API call add the following:
             "f5-security-appliance-mode:enabled": "true"
         }
     }
+Session Timeouts
+================
+
+Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for both the CLI and webUI. The CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. For the webUI, a token based timeout is now configurable under the **system aaa** settings. a restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
+
+Configuring SSH and HTTPS Timeouts via CLI
+------------------------------------------
+
+To configure the CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+
+
+.. code-block:: bash
+
+    r10900(config)# system settings config idle-timeout 300
+    r10900(config)# commit
+    Commit complete.     
+ 
+ 
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>**.
+
+.. code-block:: bash
+
+    5900-2(config)# system aaa restconf-token config lifetime 1
+    r5900-2(config)# commit
+    Commit complete.
+    r5900-2(config)# 
+ 
+Configuring SSH and Token Based Timeouts via API
+------------------------------------------------
+
+To configure the CLI timeout via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings
+
+
+.. code-block:: json
+
+    {
+        "f5-system-settings:settings": {
+            "f5-system-settings:config": {
+                "f5-system-settings:idle-timeout": 300
+            }
+        }
+    }
+
+To view the current idle-timeout setting, issue the following GET API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings/config
+
+
+You'll see output similar to the example below.
+
+.. code-block:: json
+
+    {
+        "f5-system-settings:config": {
+            "idle-timeout": "300"
+        }
+    }
+
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the following PATCH API call and set the **f5-aaa-confd-restconf-token:restconf-token** **lifetime** to the desired setting.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+In the body of the API call set the desired lifetime in minutes.
+
+.. code-block:: json
+
+    {
+        "openconfig-system:aaa": {
+            "authentication": {
+                "config": {
+                    "f5-aaa-confd-restconf-token:basic": {
+                        "enabled": true
+                    }
+                }
+            },
+            "f5-aaa-confd-restconf-token:restconf-token": {
+                "config": {
+                    "lifetime": 10
+                }
+            },
+            "f5-openconfig-aaa-password-policy:password-policy": {
+                "config": {
+                    "min-length": 6,
+                    "required-numeric": 0,
+                    "required-uppercase": 0,
+                    "required-lowercase": 0,
+                    "required-special": 0,
+                    "required-differences": 8,
+                    "reject-username": false,
+                    "apply-to-root": true,
+                    "retries": 3,
+                    "max-login-failures": 10,
+                    "unlock-time": 60,
+                    "root-lockout": true,
+                    "root-unlock-time": 60,
+                    "max-age": 0
+                }
+            }
+        }
+    }
+
+Configuring SSH and HTTPS Timeouts via webUI
+------------------------------------------
+
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Toekn Lifetime** in the webUI under the **User Management -> Authentication Settings** page.
+
+.. image:: images/rseries_security/imagetoken1.png
+  :align: center
+  :scale: 70%
+
 
 Disabling Basic Authentication
 ==============================
@@ -496,123 +614,7 @@ Remote Authentication
 The F5OS platform layer supports both local and remote authentication. By default, there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on intial login. Many customers will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, or TACACS+.
 
 
-Session Timeouts
-================
 
-Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for both the CLI and webUI. The CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. For the webUI, a token based timeout is now configurable under the **system aaa** settings. a restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
-
-Configuring SSH and HTTPS Timeouts via CLI
-------------------------------------------
-
-To configure the CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
-
-
-.. code-block:: bash
-
-    r10900(config)# system settings config idle-timeout 300
-    r10900(config)# commit
-    Commit complete.     
- 
- 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>**.
-
-.. code-block:: bash
-
-    5900-2(config)# system aaa restconf-token config lifetime 1
-    r5900-2(config)# commit
-    Commit complete.
-    r5900-2(config)# 
- 
-Configuring SSH and Token Based Timeouts via API
-------------------------------------------------
-
-To configure the CLI timeout via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
-
-.. code-block:: bash
-
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings
-
-
-.. code-block:: json
-
-    {
-        "f5-system-settings:settings": {
-            "f5-system-settings:config": {
-                "f5-system-settings:idle-timeout": 300
-            }
-        }
-    }
-
-To view the current idle-timeout setting, issue the following GET API call.
-
-.. code-block:: bash
-
-    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings/config
-
-
-You'll see output similar to the example below.
-
-.. code-block:: json
-
-    {
-        "f5-system-settings:config": {
-            "idle-timeout": "300"
-        }
-    }
-
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the following PATCH API call and set the **f5-aaa-confd-restconf-token:restconf-token** **lifetime** to the desired setting.
-
-.. code-block:: bash
-
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
-
-In the body of the API call set the desired lifetime in minutes.
-
-.. code-block:: json
-
-    {
-        "openconfig-system:aaa": {
-            "authentication": {
-                "config": {
-                    "f5-aaa-confd-restconf-token:basic": {
-                        "enabled": true
-                    }
-                }
-            },
-            "f5-aaa-confd-restconf-token:restconf-token": {
-                "config": {
-                    "lifetime": 10
-                }
-            },
-            "f5-openconfig-aaa-password-policy:password-policy": {
-                "config": {
-                    "min-length": 6,
-                    "required-numeric": 0,
-                    "required-uppercase": 0,
-                    "required-lowercase": 0,
-                    "required-special": 0,
-                    "required-differences": 8,
-                    "reject-username": false,
-                    "apply-to-root": true,
-                    "retries": 3,
-                    "max-login-failures": 10,
-                    "unlock-time": 60,
-                    "root-lockout": true,
-                    "root-unlock-time": 60,
-                    "max-age": 0
-                }
-            }
-        }
-    }
-
-Configuring SSH and HTTPS Timeouts via webUI
-------------------------------------------
-
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Toekn Lifetime** in the webUI under the **User Management -> Authentication Settings** page.
-
-.. image:: images/rseries_security/imagetoken1.png
-  :align: center
-  :scale: 70%
 
 Login Banner / Message of the Day
 ===================
