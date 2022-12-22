@@ -162,6 +162,8 @@ Certificates for Device Management
 
 F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own into the system.
 
+**Details coming soon**.
+
 Appliance Mode for F5OS
 =======================
 
@@ -360,7 +362,7 @@ In the body of the API call set the desired lifetime in minutes.
 Configuring SSH and HTTPS Timeouts via webUI
 ------------------------------------------
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Toekn Lifetime** in the webUI under the **User Management -> Authentication Settings** page.
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Token Lifetime** in the webUI under the **User Management -> Authentication Settings** page. This setting should apply to both webUI and API access.
 
 .. image:: images/rseries_security/imagetoken1.png
   :align: center
@@ -611,10 +613,59 @@ In the body of the API call adjust the restconf-token lifetime setting to the de
 Remote Authentication
 =====================
 
-The F5OS platform layer supports both local and remote authentication. By default, there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on intial login. Many customers will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, or TACACS+.
+The F5OS platform layer supports both local and remote authentication. By default, there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on intial login. Many users will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, AD, or TACACS+. The F5OS TMOS based tenants maintain their own authentication, and details are covered in standard TMOS documentation. Below is an example.
+
+`Configuring Remote User Authentication and Authorization on TMOS <https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/10.html>`_
+
+Users created and managed on external LDAP, Active Directory, RADIUS, or TACACS+ servers must have the same group IDs on the external authenitcation servers as they do within F5OS based systems to enable authentication and authorization to occur. Users created on external LDAP, Active Directory, RADIUS, or TACACS+ servers must be associated with one of these group IDs on the system. The group IDs are specified in a user configuration file on the external server (file locations vary on different servers). You can assign these F5 user attributes: 
+
+  
+- F5-F5OS-UID=1001 
+
+- F5-F5OS-GID=9000   <-- THIS MUST MATCH /etc/group items    
+
+- F5-F5OS-HOMEDIR=/tmp  <-- Optional; prevents sshd warning msgs  
+
+- F5-F5OS-USERINFO=test_user  <-- Optional user info  
+
+- F5-F5OS-SHELL=/bin/bash    <--  Ignored; always set to /var/lib/controller/f5_confd_cli 
+
+Setting F5-F5OS-HOMEDIR=/tmp is a good idea to avoid warning messages from sshd that the directory does not exist. Also, the source address in the TACACS+ configuration is not used by the rSeries system. 
+
+  
+
+If F5-F5OS-UID is not set, it defaults to 1001. If F5-F5OS-GID is not set, it defaults to 0 (disallowed for authentication). The F5-F5OS-USERINFO is a comment field. Essentially, F5-F5OS-GID is the only hard requirement and must coincide with group ID's user role (except for the root role where the GID is 0). 
+
+The **gidNumber** attribute needs to either be on the user or on a group the user is a member of. The **gidNumber** must be one of those listed (9000, 9001, 9100). [The root role is not externally accessible for obvious reasons.] 
+
+the current implementation relies on AD “unix attributes” being installed into the directory.
+
+AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs will be configurable in a future release, but will still be numeric not group names. 
+
+Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded 
+
+Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. 
+
+In a future release, these role numbers will be configurable  
+
+https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview
 
 
+Group IDs for system roles 
 
+This table lists group IDs for system roles. 
+
++----------------+----------+
+| Role           | Group ID | 
++================+==========+
+| admin          | 9000     | 
++----------------+----------+
+| operator       | 9001     |
++----------------+----------+
+| root           | 0        | 
++----------------+----------+
+| tenant-console | 9100     | 
++----------------+----------+
 
 Login Banner / Message of the Day
 ===================
