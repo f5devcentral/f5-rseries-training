@@ -15,6 +15,8 @@ Determining Free Space
 F5OS Configuration Backups
 --------------------------
 
+Backups of the F5OS configuration are stored in the path **/var/F5/system/configs/**. 
+
 .. code-block:: bash
 
   [root@appliance-1(r10900.f5demo.net) log]# cd /var/F5/system/configs/
@@ -25,34 +27,24 @@ F5OS Configuration Backups
 F5OS Images
 -----------
 
-F5OS-A images are uploaded into the system where they are intially written to disk in the following path **/var/import/staging/**. Once the file upload completes the file is then imported into one of the following paths depending on which type of rSeries system it is being installed to. For r5000 or r10000 appliances the path of the import is **/var/images/R5R10**, for r2000 and r4000 applainces the imported path is **/var/images/R2R4**.
+F5OS-A ISO images are uploaded into the system where they are intially written to disk in the following path **/var/import/staging/**. 
 
 .. code-block:: bash
 
-  [root@appliance-1(r10900.f5demo.net) /]# pwd
-  /
-  [root@appliance-1(r10900.f5demo.net) /]# ls /var/import
-  import.json  import.json.backup  staging
+
   [root@appliance-1(r10900.f5demo.net) /]# ls /var/import/staging/
   F5OS-A-1.0.0-8722.R2R4.NSIT.iso        F5OS-A-1.4.0-2631.R5R10.CANDIDATE.iso  F5OS-A-1.4.0-5242.R5R10.CANDIDATE.iso
   F5OS-A-1.4.0-2129.R5R10.CANDIDATE.iso  F5OS-A-1.4.0-3402.R5R10.CANDIDATE.iso  F5OS-A-1.4.0-6325.R5R10.DEV.iso
   [root@appliance-1(r10900.f5demo.net) /]#
 
+Once the file upload completes the file is then imported and extracted into one of the following paths depending on which type of rSeries system it is being installed onto. For r5000 or r10000 appliances, the path of the import is **/var/images/R5R10**. For r2000 and r4000 appliances, the imported path is **/var/images/R2R4**. Below is an example showing various images on an r10000 system.
 
 
 .. code-block:: bash
 
-  [root@appliance-1(r10900.f5demo.net) var]# ls images/
-  R5R10
-  [root@appliance-1(r10900.f5demo.net) var]# ls images/R5R10/
+  [root@appliance-1(r10900.f5demo.net) /]# ls var/images/R5R10/
   1.0.0-10170  1.0.0-11080  1.0.0-8303  1.0.0-8566  1.0.0-8830  1.0.0-9194  1.0.0-9396  1.4.0-2129  1.4.0-2631  1.4.0-3402  1.4.0-5242  1.4.0-6325
-  [root@appliance-1(r10900.f5demo.net) var]# pwd
-  /var
-  [root@appliance-1(r10900.f5demo.net) var]#
-
-  [root@appliance-1(r10900.f5demo.net) var]# ls images/R5R10/1.4.0-6325/
-  DEPENDS  EFI  images  isolinux  ks.cfg  LiveOS  MANIFEST  signing.intermediate  signing.pem  TRANS.TBL  usb.sh  VERSION
-  [root@appliance-1(r10900.f5demo.net) var]#
+  [root@appliance-1(r10900.f5demo.net) /]# 
 
 Tenant Images
 -------------
