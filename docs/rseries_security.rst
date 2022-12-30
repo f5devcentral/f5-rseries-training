@@ -615,6 +615,132 @@ In the body of the API call adjust the restconf-token lifetime setting to the de
         }
     }
 
+Setting Password Policies
+=========================
+
+You may configure the local password polcy to ensure secure passwords are utilized, reusue is minimized, and to limit the amount of failures/retries. Below are some of the settings that can be set.
+
+Minimum Password Length - For Minimum Length, specify the minimum number of characters (6 to 255) required for a valid password.
+Password Required Characters - For Required Characters, specify the minimum number of Numeric, Uppercase, Lowercase, and Special characters that are required in a valid password.
+New/Old Password Differential - For New/Old Password Differential, specify the number of character changes in the new password that differentiate it from the old password. The default value is 8.
+Disallow Username - For Disallow Username, set to True to check whether the name of the user in forward or reversed form is contained in the password. The default value is False.
+Apply Password Policy to Root Account - For Apply Password Policy to Root Account, set to True to use the same password policy for the root account. The default value is True.
+Maximum Password Retries - For Maximum Password Retries, specify the number of times that a user can try to create an acceptable password. The default value is 3.
+Maximum Login Attempts - For Maximum Login Attempts, specify the number of times a user can attempt to log in before the account is temporarily suspended. The default value is 10; 0 means no limit.
+Lockout Duration - For Lockout Duration, specify the duration, in seconds, an account is locked out. The default value is 60.
+Maximum Password Age - For Max Password Age, specify the number of days after which the password will expire after being changed. 0 means never expires.
+
+Setting Password Policies via CLI
+---------------------------------
+
+Local Password Policies can be set in the CLI using the **system aaa password-policy config** command. Adding a question mark after the command will show all the configurable options. Be sure to commit after making any changes.
+
+.. code-block:: bash
+
+    r10900-2(config)# system aaa password-policy config ?
+    Possible completions:
+    apply-to-root          Apply password restrictions to root accounts.
+    max-age                Number of days after which the user will have to change the password.
+    max-login-failures     Number of unsuccessful login attempts allowed before lockout.
+    min-length             Minimum length of a new password.
+    reject-username        Reject passwords that contain the username.
+    required-differences   Required number of differences between the old and new passwords.
+    required-lowercase     Required number of lowercase characters in password.
+    required-numeric       Required number of numeric digits in password.
+    required-special       Required number of 'special' characters in password.
+    required-uppercase     Required number of uppercase character in password.
+    retries                Number of times to prompt before failing.
+    root-lockout           Enable lockout of root users.
+    root-unlock-time       Time (seconds) before the root account is automatically unlocked.
+    unlock-time            Time (seconds) before a locked account is automatically unlocked.
+    r10900-2(config)# 
+
+Setting Password Policies via webUI
+---------------------------------
+
+Local Password Policies can be set in the **User Management -> Authentication Settings** page in the webUI.
+
+.. image:: images/rseries_security/passwordpolicy1.png
+  :align: center
+  :scale: 70%
+
+Setting Password Policies via API
+---------------------------------
+
+Local Password Policies can be viewed or set via the API using the following API calls. To view the current password policy settings issue the following GET API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-password-policy:password-policy
+
+The JSON output will eflect the current settings.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-password-policy:password-policy": {
+            "config": {
+                "min-length": 6,
+                "required-numeric": 0,
+                "required-uppercase": 0,
+                "required-lowercase": 0,
+                "required-special": 0,
+                "required-differences": 8,
+                "reject-username": false,
+                "apply-to-root": true,
+                "retries": 3,
+                "max-login-failures": 10,
+                "unlock-time": 60,
+                "root-lockout": true,
+                "root-unlock-time": 60,
+                "max-age": 0
+            }
+        }
+    }
+
+To change any of the password policy parameters, use the following API GET call.
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+In the payload of the API call adjust the appropriate parameters under **f5-openconfig-aaa-password-policy:password-policy**.
+
+
+.. code-block:: json
+
+    {
+        "openconfig-system:aaa": {
+            "authentication": {
+                "config": {
+                    "f5-aaa-confd-restconf-token:basic": {
+                        "enabled": true
+                    }
+                }
+            },
+            "f5-aaa-confd-restconf-token:restconf-token": {
+                "config": {
+                    "lifetime": 10
+                }
+            },
+            "f5-openconfig-aaa-password-policy:password-policy": {
+                "config": {
+                    "min-length": 6,
+                    "required-numeric": 0,
+                    "required-uppercase": 0,
+                    "required-lowercase": 0,
+                    "required-special": 0,
+                    "required-differences": 8,
+                    "reject-username": false,
+                    "apply-to-root": true,
+                    "retries": 3,
+                    "max-login-failures": 10,
+                    "unlock-time": 60,
+                    "root-lockout": true,
+                    "root-unlock-time": 60,
+                    "max-age": 0
+                }
+            }
+        }
+    }
 
 Remote Authentication
 =====================
@@ -816,7 +942,7 @@ SNMPv3
 NTP Authentication
 ==================
 
-NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries form the F5OS platform layer.
+NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries from the F5OS platform layer.
 
 Disable IPv6
 ============
