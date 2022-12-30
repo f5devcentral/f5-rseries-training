@@ -2,6 +2,12 @@
 Securing / Hardening F5OS on rSeries
 ====================================
 
+F5OS tenants follow the standard hardening/security best practices that are outlined in the following solution article:
+
+`K53108777: Hardening your F5 system <https://support.f5.com/csp/article/K53108777>`_
+
+This section will focus on how to harden/secure the F5OS layer of the rSeries appliances. 
+
 F5OS Platform Layer Isolation
 =============================
 
