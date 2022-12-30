@@ -997,9 +997,7 @@ To add a proxy server for iHealth uploads via the API, use the following API cal
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-proxy:proxy
 
-In the body of the API call add the username, password, and proxy server configuration. 
-
-NOTE: Need to figure out encoding for password?
+In the body of the API call add the username, password, and proxy server configuration. NOTE: Need to figure out encoding for password?
 
 .. code-block:: json
 
