@@ -1015,15 +1015,15 @@ NOTE: Need to figure out encoding for password?
     }
 
 
- To view the current proxy configuration via the API use the following call.
+To view the current proxy configuration via the API use the following call.
 
- .. code-block:: bash
+.. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-proxy:proxy
 
 The API call should return output similar to what is seen below.
 
- .. code-block:: json
+.. code-block:: json
 
     {
         "f5-system-diagnostics-proxy:proxy": {
