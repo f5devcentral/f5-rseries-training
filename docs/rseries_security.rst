@@ -955,9 +955,44 @@ Encrypt TLS Private Key
 It looks like we already encrypt the certificate key using AES256-GCM(AKA $8$) even before 1.3.0.
 So the user can see on the GUI is the encrypted key, not the real/plain key.
 
+.. code-block:: bash
+
+    system aaa tls config passphrase $8$G29mW2amh1F46j2I7fLb3deVdfSU6ClIyrzgxNqUdSM=
+    system aaa tls config verify-client false
+    system aaa tls config verify-client-depth 1
 
 Configurable Management Ciphers
 ===============================
+
+
+.. code-block:: bash
+
+    system security services service httpd
+    config ssl-ciphersuite ""
+    !
+    system security services service sshd
+    config ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
+    config kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
+    !
+
+    r10900(config)# system security services service sshd config ?
+    Possible completions:
+    ciphers         User specified ciphers.
+    kexalgorithms   User specified kexalgorithms.
+    macs            User specified MACs.
+    
+    r10900(config)# system security services service sshd config ciphers ?
+    Description: User specified ciphers.
+    Possible completions:
+    string  [
+
+    r10900(config)# system security services service httpd config ssl-ciphersuite ?
+    Description: User specified ssl-ciphersuite.
+    Possible completions:
+     <string>[]
+
+
+
 
 Client Certificate Based Auth
 =============================
