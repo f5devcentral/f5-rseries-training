@@ -700,6 +700,8 @@ The JSON output will eflect the current settings.
 
 To change any of the password policy parameters, use the following API GET call.
 
+.. code-block:: bash
+
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
 In the payload of the API call adjust the appropriate parameters under **f5-openconfig-aaa-password-policy:password-policy**.
