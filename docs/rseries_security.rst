@@ -948,6 +948,80 @@ NTP Authentication
 
 NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries from the F5OS platform layer.
 
+Enabling NTP Authentication via CLI
+-----------------------------------
+
+.. code-block:: bash
+
+    r10900(config)# system ntp config enable-ntp-auth true 
+    r10900(config)# commit
+    % No modifications to commit.
+    r10900(config)# 
+
+
+Enabling NTP Authentication via webUI
+-------------------------------------
+
+.. image:: images/rseries_security/ntpauth1.png
+  :align: center
+  :scale: 70%  
+
+Enabling NTP Authentication via API
+-----------------------------------
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
+
+.. code-block:: json
+
+    {
+        "openconfig-system:ntp": {
+            "config": {
+                "enabled": true,
+                "enable-ntp-auth": false
+            },
+            "state": {
+                "enabled": true,
+                "enable-ntp-auth": false
+            },
+            "servers": {
+                "server": [
+                    {
+                        "address": "time.f5net.com",
+                        "config": {
+                            "address": "time.f5net.com",
+                            "port": 123,
+                            "version": 4,
+                            "association-type": "SERVER",
+                            "iburst": false,
+                            "prefer": false
+                        },
+                        "state": {
+                            "address": "172.23.241.134",
+                            "port": 123,
+                            "version": 4,
+                            "association-type": "SERVER",
+                            "iburst": false,
+                            "prefer": false,
+                            "stratum": 2,
+                            "root-delay": 30,
+                            "root-dispersion": "37",
+                            "offset": "0",
+                            "poll-interval": 8,
+                            "f5-openconfig-system-ntp:authenticated": false
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+.. code-block:: bash
+
+
+
+
 Disable IPv6
 ============
 
