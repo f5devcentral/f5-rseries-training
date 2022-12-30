@@ -620,15 +620,15 @@ Setting Password Policies
 
 You may configure the local password polcy to ensure secure passwords are utilized, reusue is minimized, and to limit the amount of failures/retries. Below are some of the settings that can be set.
 
-Minimum Password Length - For Minimum Length, specify the minimum number of characters (6 to 255) required for a valid password.
-Password Required Characters - For Required Characters, specify the minimum number of Numeric, Uppercase, Lowercase, and Special characters that are required in a valid password.
-New/Old Password Differential - For New/Old Password Differential, specify the number of character changes in the new password that differentiate it from the old password. The default value is 8.
-Disallow Username - For Disallow Username, set to True to check whether the name of the user in forward or reversed form is contained in the password. The default value is False.
-Apply Password Policy to Root Account - For Apply Password Policy to Root Account, set to True to use the same password policy for the root account. The default value is True.
-Maximum Password Retries - For Maximum Password Retries, specify the number of times that a user can try to create an acceptable password. The default value is 3.
-Maximum Login Attempts - For Maximum Login Attempts, specify the number of times a user can attempt to log in before the account is temporarily suspended. The default value is 10; 0 means no limit.
-Lockout Duration - For Lockout Duration, specify the duration, in seconds, an account is locked out. The default value is 60.
-Maximum Password Age - For Max Password Age, specify the number of days after which the password will expire after being changed. 0 means never expires.
+- Minimum Password Length - For Minimum Length, specify the minimum number of characters (6 to 255) required for a valid password.
+- Password Required Characters - For Required Characters, specify the minimum number of Numeric, Uppercase, Lowercase, and Special characters that are required in a valid password.
+- New/Old Password Differential - For New/Old Password Differential, specify the number of character changes in the new password that differentiate it from the old password. The default value is 8.
+- Disallow Username - For Disallow Username, set to True to check whether the name of the user in forward or reversed form is contained in the password. The default value is False.
+- Apply Password Policy to Root Account - For Apply Password Policy to Root Account, set to True to use the same password policy for the root account. The default value is True.
+- Maximum Password Retries - For Maximum Password Retries, specify the number of times that a user can try to create an acceptable password. The default value is 3.
+- Maximum Login Attempts - For Maximum Login Attempts, specify the number of times a user can attempt to log in before the account is temporarily suspended. The default value is 10; 0 means no limit.
+- Lockout Duration - For Lockout Duration, specify the duration, in seconds, an account is locked out. The default value is 60.
+- Maximum Password Age - For Max Password Age, specify the number of days after which the password will expire after being changed. 0 means never expires.
 
 Setting Password Policies via CLI
 ---------------------------------
