@@ -351,7 +351,7 @@ https://docs.f5net.com/pages/viewpage.action?pageId=738733466
   4m55s       Normal   Created   virtualmachineinstance/dummy-1     VirtualMachineInstance defined.
   [root@appliance-1(r10900.f5demo.net) ~]#
 
-To view console logs of a pod issue the command **kubectl logs <podname> -n <namespace>. First list the current pods to get their names, and namespaces.
+To view console logs of a pod issue the command **kubectl logs <podname> -n <namespace>**. First list the current pods to get their names, and namespaces.
 
 .. code-block:: bash
 
@@ -401,7 +401,7 @@ An example gettings logs for the pod **virt-launcher-dummy-1-5z55d** in the **de
   {"component":"virt-launcher","kind":"","level":"info","msg":"VLCTY: after  cpu swizzle, podCPUset [0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35 36 37 38 39 40 41 42 43 44 45 46 47]","name":"dummy-1","namespace":"default","pos":"manager.go:1265","timestamp":"2022-12-30T19:13:18.466261Z","uid":"2eb19a43-0e88-4431-bbe3-fa4511e1e479"}
 
 
-To view the details of a specific pod enter the command ** kubectl describe pod <podname> -n <namespace>.
+To view the details of a specific pod enter the command **kubectl describe pod <podname> -n <namespace>**.
 
 .. code-block:: bash
 
