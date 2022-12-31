@@ -962,6 +962,7 @@ Enabling NTP Authentication via CLI
 Enabling NTP Authentication via webUI
 -------------------------------------
 
+
 .. image:: images/rseries_security/ntpauth1.png
   :align: center
   :scale: 70%  
@@ -1025,6 +1026,8 @@ Enabling NTP Authentication via API
 Disable IPv6
 ============
 
+Need to confirm if this is in F5OS-A 1.4.0
+
 Encrypt TLS Private Key
 =======================
 
@@ -1072,6 +1075,8 @@ Configurable Management Ciphers
 
 Client Certificate Based Auth
 =============================
+
+No available yet.
 
 iHealth Proxy Server
 ====================
