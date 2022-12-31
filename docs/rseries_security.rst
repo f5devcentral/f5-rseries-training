@@ -946,22 +946,37 @@ F5OS-A 1.2.0 added support for SNMPv3. Earlier version of F5OS-A only supported 
 NTP Authentication
 ==================
 
-NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries from the F5OS platform layer.
+NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries from the F5OS platform layer. In order to utilize NTP authentication you must first enable NTP authntication and then add keys in order to secure communication to your NTP servers.
 
 Enabling NTP Authentication via CLI
 -----------------------------------
+
+To enable NTP authentication use the **system ntp config enable-ntp-auth true** command in rthe CLI, and then commit the change.
 
 .. code-block:: bash
 
     r10900(config)# system ntp config enable-ntp-auth true 
     r10900(config)# commit
-    % No modifications to commit.
+    Commit complete.
     r10900(config)# 
 
+Next you'll need to add keys for NTP Authentication
+
+.. code-block:: bash
+
+    r10900(config)# system ntp ntp-keys ntp-key 11 config key-id 11 key-type F5_NTP_AUTH_SHA1 key-value HEX:E27611234BB5E7CDFC8A8ACE55B567FC5CA7C890
+
+The key ID, key type, and key value on this client system must match the server exactly. Lastly, you'll need to associate the key with an NTP server using the configured key-id above.
+
+.. code-block:: bash
+
+    r10900(config)# system ntp servers server 10.255.0.139
+    r10900(config-server-10.255.0.139)# config key-id 11
 
 Enabling NTP Authentication via webUI
 -------------------------------------
 
+To enable NTP authentication use the
 
 .. image:: images/rseries_security/ntpauth1.png
   :align: center
@@ -970,9 +985,13 @@ Enabling NTP Authentication via webUI
 Enabling NTP Authentication via API
 -----------------------------------
 
+NTP authentication can also be set and viewed using the F5OS API. To view the current NTP setting use the following API call.
+
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
+
+The output will display the current ntp configuration state including authentication and keys.
 
 .. code-block:: json
 
@@ -980,14 +999,53 @@ Enabling NTP Authentication via API
         "openconfig-system:ntp": {
             "config": {
                 "enabled": true,
-                "enable-ntp-auth": false
+                "enable-ntp-auth": true
             },
             "state": {
                 "enabled": true,
-                "enable-ntp-auth": false
+                "enable-ntp-auth": true
+            },
+            "ntp-keys": {
+                "ntp-key": [
+                    {
+                        "key-id": 11,
+                        "config": {
+                            "key-id": 11,
+                            "key-type": "f5-system-ntp:F5_NTP_AUTH_SHA1",
+                            "key-value": "$8$IIACWGpGPUYzian06FdH5PpH/sbSNQmre6DVsBZ2zxCv6S5vM3cXUkn8NwD0BABSeT3Drnmm\npLCQibKafAFFPg=="
+                        },
+                        "state": {
+                            "key-id": 11,
+                            "key-type": "F5_NTP_AUTH_SHA1",
+                            "key-value": "$8$IIACWGpGPUYzian06FdH5PpH/sbSNQmre6DVsBZ2zxCv6S5vM3cXUkn8NwD0BABSeT3Drnmm\npLCQibKafAFFPg=="
+                        }
+                    }
+                ]
             },
             "servers": {
                 "server": [
+                    {
+                        "address": "10.255.0.139",
+                        "config": {
+                            "address": "10.255.0.139",
+                            "port": 123,
+                            "version": 4,
+                            "association-type": "SERVER",
+                            "iburst": false,
+                            "prefer": false,
+                            "f5-openconfig-system-ntp:key-id": 11
+                        },
+                        "state": {
+                            "address": "10.255.0.139",
+                            "port": 123,
+                            "version": 4,
+                            "association-type": "SERVER",
+                            "iburst": false,
+                            "prefer": false,
+                            "f5-openconfig-system-ntp:key-id": 11,
+                            "f5-openconfig-system-ntp:authenticated": false
+                        }
+                    },
                     {
                         "address": "time.f5net.com",
                         "config": {
@@ -999,17 +1057,12 @@ Enabling NTP Authentication via API
                             "prefer": false
                         },
                         "state": {
-                            "address": "172.23.241.134",
+                            "address": "time.f5net.com",
                             "port": 123,
                             "version": 4,
                             "association-type": "SERVER",
                             "iburst": false,
                             "prefer": false,
-                            "stratum": 2,
-                            "root-delay": 30,
-                            "root-dispersion": "37",
-                            "offset": "0",
-                            "poll-interval": 8,
                             "f5-openconfig-system-ntp:authenticated": false
                         }
                     }
@@ -1018,10 +1071,52 @@ Enabling NTP Authentication via API
         }
     }
 
+To enable NTP authentication via the F5OS API use the following API call.
+
 .. code-block:: bash
 
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data
 
+In the body of the API call you can enable NTP authentication, add keys, and associate those keys with an NTP server.
 
+.. code-block:: json
+
+    {
+        "openconfig-system:ntp": {
+            "config": {
+                "enabled": true,
+                "enable-ntp-auth": true
+            },
+            "ntp-keys": {
+                "ntp-key": [
+                    {
+                        "key-id": 11,
+                        "config": {
+                            "key-id": 11,
+                            "key-type": "f5-system-ntp:F5_NTP_AUTH_SHA1",
+                            "key-value": "$8$IIACWGpGPUYzian06FdH5PpH/sbSNQmre6DVsBZ2zxCv6S5vM3cXUkn8NwD0BABSeT3Drnmm\npLCQibKafAFFPg=="
+                        }
+                    }
+                ]
+            },
+            "servers": {
+                "server": [
+                    {
+                        "address": "10.255.0.139",
+                        "config": {
+                            "address": "10.255.0.139",
+                            "port": 123,
+                            "version": 4,
+                            "association-type": "SERVER",
+                            "iburst": false,
+                            "prefer": false,
+                            "f5-openconfig-system-ntp:key-id": 11
+                        }
+                    }
+                ]
+            }
+        }
+    }
 
 Disable IPv6
 ============
@@ -1194,8 +1289,6 @@ Then, you can control the level of events that will be logged to the local audit
     !
 
 The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and wether access was granted or not.
-
-
 
 
 Viewing Audit Logs via F5OS CLI
