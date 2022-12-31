@@ -951,7 +951,7 @@ NTP Authentication can be enabled to provide a secure communication channel for 
 Enabling NTP Authentication via CLI
 -----------------------------------
 
-To enable NTP authentication use the **system ntp config enable-ntp-auth true** command in rthe CLI, and then commit the change.
+To enable NTP authentication use the **system ntp config enable-ntp-auth true** command in the CLI, and then commit the change.
 
 .. code-block:: bash
 
@@ -976,7 +976,7 @@ The key ID, key type, and key value on this client system must match the server 
 Enabling NTP Authentication via webUI
 -------------------------------------
 
-To enable NTP authentication use the
+To enable NTP authentication in the webUI use the **System Settings -> Time Settings** page. You'll need to enable NTP authentication then add the approriate keys, and then associate those keys with an NTP server.
 
 .. image:: images/rseries_security/ntpauth1.png
   :align: center
@@ -1075,9 +1075,9 @@ To enable NTP authentication via the F5OS API use the following API call.
 
 .. code-block:: bash
 
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
 
-In the body of the API call you can enable NTP authentication, add keys, and associate those keys with an NTP server.
+In the body of the API call you can enable NTP authentication, add keys, and associate those keys with an NTP server using the key-id.
 
 .. code-block:: json
 
