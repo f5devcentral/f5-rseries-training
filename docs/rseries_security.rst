@@ -1505,7 +1505,7 @@ Below is an exmaple of a client logging into the F5OS CLI. Note that the logs id
     2023-01-06T17:06:57.775152-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001242" cmd="assigned to groups: admin".
     2023-01-06T17:06:57.775243-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001242" cmd="created new session via cli from 172.18.104.40:61769 with ssh".
 
-Below is an exmaple of a client authenticatin to the F5OS REST API. Note that the logs identify which user has accessed the API as well as what IP address they have sent the request from.
+Below is an exmaple of a client authentication to the F5OS REST API. Note that the logs identify which user has accessed the API as well as what IP address they have sent the request from.
 
 .. code-block:: bash
 
@@ -1521,16 +1521,83 @@ Below is an exmaple of a client authenticatin to the F5OS REST API. Note that th
 Logout Audit Logs
 ----------------
 
-Below is an exmaple of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
+Below is an exmaple of a client logging out of the F5OS CLI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
 
 .. code-block:: bash
 
     2023-01-06T17:16:05.536108-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15014425" cmd="CLI 'logout'".
     2023-01-06T17:16:05.736047-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15014425" cmd="terminated session (reason: normal)".
 
+Below is an exmaple of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
 
-Example Audit Logging of CLI Changes
-------------------------------------
+Not seeing Logs
+
+
+
+
+
+Example Audit Logging of Configuration Changes
+----------------------------------------------
+
+Below is an example audit log of the user **jim-test** entering config mode via the CLI and then changing the description for interface 20.0 and then committing the change.
+
+.. code-block:: bash
+
+    2023-01-06T17:44:16.790917-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI 'config'".
+    2023-01-06T17:44:16.791664-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI done".
+    2023-01-06T17:44:54.864806-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI 'interfaces interface 20.0 config description "This is a test"'".
+    2023-01-06T17:44:54.864822-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI done".
+    2023-01-06T17:44:59.392050-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI 'commit'".
+    2023-01-06T17:44:59.412077-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000005 msg="audit modify" ctx="CLI" user="jim-test/15056017" path="/interfaces/interface{20.0}".
+    2023-01-06T17:44:59.412156-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="CLI" user="jim-test/15056017" path="/interfaces/interface{20.0}/config/description" value="This is a test".
+    2023-01-06T17:44:59.413541-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI done".
+
+Below is an example audit log of the user **jim-test** using the webUI and then changing the VLAN membership for interface 20.0 and then committing the change.
+
+.. code-block:: bash
+
+    2023-01-06T17:50:43.011201-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:jim-test1673045408".
+    2023-01-06T17:50:43.011215-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
+    2023-01-06T17:50:43.014087-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065552" cmd="assigned to groups: admin".
+    2023-01-06T17:50:43.014185-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065552" cmd="created new session via rest from 172.18.104.40:0 with http".
+    2023-01-06T17:50:43.014470-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065552" cmd="RESTCONF: request with http: GET /restconf/ HTTP/1.1".
+    2023-01-06T17:50:43.015325-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065552" cmd="terminated session (reason: normal)".
+    2023-01-06T17:50:43.016496-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065552" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 42906 ms".
+    2023-01-06T17:50:46.109658-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:jim-test1673045408".
+    2023-01-06T17:50:46.110048-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
+    2023-01-06T17:50:46.110850-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065637" cmd="assigned to groups: admin".
+    2023-01-06T17:50:46.110956-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065637" cmd="created new session via rest from 172.18.104.40:0 with http".
+    2023-01-06T17:50:46.111225-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065637" cmd="RESTCONF: request with http: PUT /restconf/data/openconfig-interfaces:interfaces/interface=19.0/openconfig-if-ethernet:ethernet/openconfig-vlan:switched-vlan HTTP/1.1".
+    2023-01-06T17:50:46.146634-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000005 msg="audit modify" ctx="REST" user="jim-test/15065637" path="/interfaces/interface{19.0}".
+    2023-01-06T17:50:46.146728-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000003 msg="audit create" ctx="REST" user="jim-test/15065637" path="/interfaces/interface{19.0}/ethernet/switched-vlan/config/trunk-vlans{503}".
+    2023-01-06T17:50:46.147281-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065637" cmd="terminated session (reason: normal)".
+    2023-01-06T17:50:46.148887-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065637" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-interfaces:interfaces/interface=19.0/openconfig-if-ethernet:ethernet/openconfig-vlan:switched-vlan 204 duration 69082 ms".
+    2023-01-06T17:50:46.207531-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:jim-test1673045408".
+    2023-01-06T17:50:46.207564-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
+    2023-01-06T17:50:46.208310-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065642" cmd="assigned to groups: admin".
+    2023-01-06T17:50:46.208414-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065642" cmd="created new session via rest from 172.18.104.40:0 with http".
+    2023-01-06T17:50:46.208908-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065642" cmd="RESTCONF: request with http: GET /restconf/data/openconfig-interfaces:interfaces HTTP/1.1".
+    2023-01-06T17:50:46.404290-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065642" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-interfaces:interfaces 200 duration 227159 ms".
+    2023-01-06T17:50:46.404731-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065642" cmd="terminated session (reason: normal)".
+
+Below is an example audit log of the user **admin** using the API and then adding VLANs.
+
+
+**NOT Seeing payload**
+
+.. code-block:: bash
+
+
+    2023-01-06T17:54:30.760755-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:admin1673045652".
+    2023-01-06T17:54:30.760768-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
+    2023-01-06T17:54:30.760863-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="assigned to groups: admin".
+    2023-01-06T17:54:30.760954-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="created new session via rest from 172.18.104.40:0 with http".
+    2023-01-06T17:54:30.761331-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15071280" cmd="RESTCONF: request with http: PATCH /restconf/data/openconfig-vlan:vlans HTTP/1.1".
+    2023-01-06T17:54:30.772269-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="terminated session (reason: normal)".
+    2023-01-06T17:54:30.773385-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15071280" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-vlan:vlans 204 duration 44442 ms".
+  
+
+
 
 
 Example Audit Logging of API Changes
