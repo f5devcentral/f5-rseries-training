@@ -292,6 +292,7 @@ To configure the CLI timeout via the API, use the PATCH API call below. In the c
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings
 
+Below is th epayload in the API call above to set the idel-timeout.
 
 .. code-block:: json
 
@@ -439,7 +440,7 @@ To re-enable basic authentication, change the state to enabled and commit.
 Disabling Basic Auth via the API
 --------------------------------
 
-You may enable or disable basic authentication via the API. The default setting for basic autentication is enabled, and the current state can be seen by entering the following API call.
+You may enable or disable basic authentication via the API. The default setting for basic authentication is enabled, and the current state can be seen by entering the following API call.
 
 .. code-block:: bash
 
@@ -449,7 +450,7 @@ You should see the returned output below with the basic authentication state set
 
 .. code-block:: json
 
-    {
+    {`
         "openconfig-system:config": {
             "f5-aaa-confd-restconf-token:basic": {
                 "enabled": true
@@ -463,7 +464,7 @@ Use the following API PATCH call to set the restconf-token:basic setting to **tr
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
-In the body of the API call adjust the restconf-token:basic setting to to **true** or **false**.
+In the body of the API call adjust the restconf-token:basic setting to **true** or **false**.
 
 .. code-block:: json
 
@@ -515,7 +516,7 @@ Disabling basic authentication via the webUI is a new feature that has been adde
 Token Lifetime via CLI
 ----------------------
 
-You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifeftime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
 
 .. code-block:: bash
 
@@ -559,7 +560,7 @@ To display the current restconf-token lifetime setting, use the command **show s
 Token Lifetime via webUI
 ------------------------
 
-You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifeftime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
 
 .. image:: images/rseries_security/image6.png
   :align: center
@@ -568,7 +569,7 @@ You may configure the restconf-token lifetime via the webUI (new feature added i
 Token Lifetime via API
 ----------------------
 
-You may configure the restconf-token lifetime via the API. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifeftime is set to 1 minute, an inactive webUI session or API session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+You may configure the restconf-token lifetime via the API. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session or API session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
 
 Use the following API PATCH call to set the restconf-token lifetime, or any other password policy parameter.
 
@@ -576,7 +577,7 @@ Use the following API PATCH call to set the restconf-token lifetime, or any othe
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
-In the body of the API call adjust the restconf-token lifetime setting to the desired timeout in minutes. The example below is 10 minutes, and the session will timeout at five times the value of the lifetime setting due to tken refresh.
+In the body of the API call adjust the restconf-token lifetime setting to the desired timeout in minutes. The example below is 10 minutes, and the session will timeout at five times the value of the lifetime setting due to token refresh.
 
 .. code-block:: json
 
@@ -618,7 +619,7 @@ In the body of the API call adjust the restconf-token lifetime setting to the de
 Setting Password Policies
 =========================
 
-You may configure the local password polcy to ensure secure passwords are utilized, reusue is minimized, and to limit the amount of failures/retries. Below are some of the settings that can be set.
+You may configure the local password policy to ensure secure passwords are utilized, re-use is minimized, and to limit the amount of failures/retries. Below are some of the settings that can be set.
 
 - **Minimum Password Length** - For Minimum Length, specify the minimum number of characters (6 to 255) required for a valid password.
 - **Password Required Characters** - For Required Characters, specify the minimum number of Numeric, Uppercase, Lowercase, and Special characters that are required in a valid password.
@@ -673,7 +674,7 @@ Local Password Policies can be viewed or set via the API using the following API
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-password-policy:password-policy
 
-The JSON output will eflect the current settings.
+The JSON output will reflect the current settings.
 
 .. code-block:: json
 
@@ -1252,12 +1253,9 @@ The API call should return output similar to what is seen below.
 Audit Logging
 =============
 
-F5OS has the ability to log all configuration changes and access to the F5OS layer in audit logs. In versions prior to F5OS-A 1.4.0, all access and configuration changes are logged in one of two separate **audit.log** files, which reside in the in one of the following paths in the F5OS filesystem when logged in as root; **/var/F5/system/log/audit.log** or **/var/log/audit/audit.log**. If you are logged into the F5OS CLI as admin, then the actual paths are simplified to **log/system/audit.log** and **/log/host/audit/audit.log**.
+F5OS has the ability to log all configuration changes and access to the F5OS layer in audit logs. In versions prior to F5OS-A 1.4.0, all access and configuration changes are logged in one of two separate **audit.log** files. The files reside in the in one of the following paths in the F5OS filesystem when logged in as root; **/var/F5/system/log/audit.log** or **/var/log/audit/audit.log**. If you are logged into the F5OS CLI as admin, then the actual paths are simplified to **log/system/audit.log** and **/log/host/audit/audit.log**.
 
-
-add root paths
-
-In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entires to be redirected to a remote syslog location, as well as changing the log format to match standard F5OS syslog format. Details on the two different implementations are below.
+In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entires to be redirected to a remote syslog location, as well as changing the log format to conform to standard F5OS syslog format fo all audit related eventd. Details on the two different implementations are below.
 
 Viewing Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
 --------------------------------------------------------
@@ -1471,6 +1469,65 @@ If you want to download the main **audit.log**, select the directory **/log/syst
 
 Viewing Audit Logs via F5OS API
 -------------------------------
+
+Example Audit Logging for Login, Logout, Login Failure, and Account Lockout
+---------------------------------------------------------------------------
+
+
+Below are examples seen on a remote syslog server for various login, logout, login failure, and account lockout events for F5OS. These examples are based on F5OS-A 1.4.0 or later.
+
+----------------
+Login Audit Logs
+----------------
+
+Below is an exmaple of a client logging into the F5OS webUI. Note that the logs identify which user has logged in as well as what IP address they have logged in from.
+
+.. code-block:: bash
+
+
+    2023-01-06T16:56:17.475631-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:admin1673042162".
+    2023-01-06T16:56:17.475645-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
+    2023-01-06T16:56:17.475855-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/14985364" cmd="assigned to groups: admin".
+    2023-01-06T16:56:17.476077-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/14985364" cmd="created new session via rest from 172.18.104.40:0 with http".
+    2023-01-06T16:56:17.477346-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/14985364" cmd="RESTCONF: request with http: GET /restconf/ HTTP/1.1".
+    2023-01-06T16:56:17.479784-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/14985364" cmd="terminated session (reason: normal)".
+    2023-01-06T16:56:17.480672-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/14985364" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 50243 ms".
+
+Below is an exmaple of a client logging into the F5OS CLI. Note that the logs identify which user has logged in as well as what IP address they have logged in from.
+
+.. code-block:: bash
+
+    2023-01-06T17:06:57.717699-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001237" cmd="assigned to groups: admin".
+    2023-01-06T17:06:57.717714-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001237" cmd="created new session via cli from 172.18.104.40:61769 with ssh".
+    2023-01-06T17:06:57.728956-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15001237" cmd="CLI 'show system state hostname'".
+    2023-01-06T17:06:57.730238-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15001237" cmd="CLI done".
+    2023-01-06T17:06:57.732901-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001237" cmd="terminated session (reason: normal)".
+    2023-01-06T17:06:57.775152-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001242" cmd="assigned to groups: admin".
+    2023-01-06T17:06:57.775243-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001242" cmd="created new session via cli from 172.18.104.40:61769 with ssh".
+
+Below is an exmaple of a client authenticatin to the F5OS REST API. Note that the logs identify which user has accessed the API as well as what IP address they have sent the request from.
+
+.. code-block:: bash
+
+    2023-01-06T17:09:23.296905-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="external authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:admin1673042963".
+    2023-01-06T17:09:23.296919-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="logged in via rest from 172.18.104.40:0 with http using external authentication".
+    2023-01-06T17:09:23.296926-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15004795" cmd="assigned to groups: admin".
+    2023-01-06T17:09:23.296969-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15004795" cmd="created new session via rest from 172.18.104.40:0 with http".
+    2023-01-06T17:09:23.297161-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15004795" cmd="RESTCONF: request with http: GET /restconf/data/openconfig-system:system/aaa HTTP/1.1".
+    2023-01-06T17:09:23.389320-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15004795" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-system:system/aaa 200 duration 151730 ms".
+    2023-01-06T17:09:23.390141-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15004795" cmd="terminated session (reason: normal)".
+
+----------------
+Logout Audit Logs
+----------------
+
+Below is an exmaple of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
+
+.. code-block:: bash
+
+    2023-01-06T17:16:05.536108-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15014425" cmd="CLI 'logout'".
+    2023-01-06T17:16:05.736047-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15014425" cmd="terminated session (reason: normal)".
+
 
 Example Audit Logging of CLI Changes
 ------------------------------------
