@@ -126,7 +126,7 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
   Boston-r10900-1(config)# commit
   Commit complete.
 
-**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required in order to convert existing internal address space to the new address space; a reboot is not sufficient.**
+**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required in order to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies so the unit is powered off, using the AOM menus is not sufficient.**
 
 -------------------------------
 IP Address Assignment & Routing
