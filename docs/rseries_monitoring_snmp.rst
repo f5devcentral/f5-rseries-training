@@ -3,9 +3,9 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can contnue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower level networking, and F5OS SNMP MIBs and Traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can contnue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
-As of F5OS-A 1.2.0 the following netSNMP MIBs available are available:
+As of F5OS-A 1.2.0 the following netSNMP MIBs are available:
 
 - HOST-RESOURCES-MIB
 - RFC1213-MIB
@@ -26,7 +26,7 @@ As of F5OS-A 1.2.0 the following netSNMP MIBs available are available:
 - SNMPv2-TC
 - TRANSPORT-ADDRESS-MIB
 
-As of F5OS-A 1.2.0.the following F5OS Appliance MIBs available are available:
+As of F5OS-A 1.2.0.the following F5OS Appliance MIBs are available:
 
 - F5-ALERT-DEF-MIB
 - F5-COMMON-SMI-MIB
@@ -101,7 +101,7 @@ By default, SNMP queries are not allowed into the F5OS platform layer. Before en
     r10900-2(config-allowed-ip-snmp)# commit
     Commit complete.
 
-Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
+Currently you can add one IP address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -164,7 +164,7 @@ Within the body of the API call, specific IP address/port combinations can be ad
 
 
 
-To view the allowed IP's in the API, use the following call.
+To view the allowed IPs in the API, use the following call.
 
 .. code-block:: bash
 
@@ -471,9 +471,9 @@ You can configure the SNMP System parameters including the **System Contact**, *
     Commit complete.
     appliance-1(config)# 
 
-Prior to F5OS-A 1.2.0, SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuraiton in the CLI and configuration via the webUI was also added. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
+Prior to F5OS-A 1.2.0, SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuration in the CLI and configuration via the webUI was also added. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
 
-Enabling SNMP can de done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may chose to enable both of these security models or only one.
+Enabling SNMP can be done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may choose to enable both of these security models or only one.
 
 .. code-block:: bash
 
@@ -964,7 +964,7 @@ Polling SNMP Endpoints
 =====================
 
 
-Once SNMP has been fully configured, you can then poll the appliance via SNMP from a remote system to get stats using the following SNMP OID's:
+Once SNMP has been fully configured, you can then poll the appliance via SNMP from a remote system to get stats using the following SNMP OIDs:
 
 SNMP System
 -----------
@@ -1102,7 +1102,7 @@ SNMP ifIndex OID: .1.3.6.1.2.1.31.1.1
 SNMP CpuProcessorStatsTable
 ---------------------------
 
-Query the following SNMP OID to get detailed infromation about the cpus in the system.
+Query the following SNMP OID to get detailed infromation about the CPUs in the system.
 
 SNMP ifIndex OID: .1.3.6.1.4.1.12276.1.2.1.1.1
 
@@ -1116,7 +1116,7 @@ SNMP ifIndex OID: .1.3.6.1.4.1.12276.1.2.1.1.1
 SNMP CpuUtilizationStatsTable
 ---------------------------
 
-Query the following SNMP OID to get detailed utilization for the overall system cpu.
+Query the following SNMP OID to get detailed utilization for the overall system CPU.
 
 SNMP ifIndex OID: .1.3.6.1.4.1.12276.1.2.1.1.2
 
@@ -1262,7 +1262,7 @@ SNMP ifIndex OID: .1.3.6.1.4.1.12276.1.2.1.5.1
 SNMP fwTable
 ----------------------
 
-Query the following SNMP OID to get detailed firware versions installed on the system.
+Query the following SNMP OID to get detailed firmware versions installed on the system.
 
 SNMP ifIndex OID: .1.3.6.1.4.1.12276.1.2.1.6.1
 
