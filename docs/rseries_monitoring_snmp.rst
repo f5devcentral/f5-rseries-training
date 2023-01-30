@@ -457,7 +457,7 @@ The body of the API call should contain JSON data that includes the descriptions
 Configuring SNMP Access
 =======================
 
-To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI, API, and via webUI (added in F5OS-A 1.2.0). 
+To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI and API, with configuration via webUI added in F5OS-A 1.3.0. 
 
 Configuring SNMP Access via CLI F5OS-A 1.2.0 or Later
 -----------------------------------------------------
@@ -471,7 +471,7 @@ You can configure the SNMP System parameters including the **System Contact**, *
     Commit complete.
     appliance-1(config)# 
 
-Prior to F5OS-A 1.2.0, SNMP configuration was only available in the CLI, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuration in the CLI and configuration via the webUI was also added. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
+SNMP configuration was only available in the CLI and API prior to F5OS-A 1.3.0, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuration in the CLI and then configuration via the webUI was also added in F5OS-A 1.3.0. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
 
 Enabling SNMP can be done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may choose to enable both of these security models or only one.
 
@@ -629,7 +629,7 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
 Configuring SNMP Access via webUI
 ---------------------------------
 
-SNMP configuration via the webUI was added in the F5OS-A 1.2.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configued under **System Settings -> SNMP Configuration**..
+SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configued under **System Settings -> SNMP Configuration**..
 
 .. image:: images/rseries_monitoring_snmp/image2.png
   :align: center
@@ -874,7 +874,7 @@ There are various SNMP show commands in the CLI to provide configuration and sta
 Enabling SNMP Traps in the webUI
 --------------------------------
 
-As of F5OS-A version 1.2.0 you can enable SNMP traps in the webUI. Go to the **System Settings** page, and then select **SNMP Configuration**. Under the **Targets** section, select **Add**. If you are going to use SNMPv3, you should setup an SNMP user first.
+As of F5OS-A version 1.3.0 you can enable SNMP traps in the webUI. Go to the **System Settings** page, and then select **SNMP Configuration**. Under the **Targets** section, select **Add**. If you are going to use SNMPv3, you should setup an SNMP user first.
 
 
 .. image:: images/rseries_monitoring_snmp/image6.png
