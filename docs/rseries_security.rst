@@ -1255,12 +1255,12 @@ Audit Logging
 
 F5OS has the ability to log all configuration changes and access to the F5OS layer in audit logs. In versions prior to F5OS-A 1.4.0, all access and configuration changes are logged in one of two separate **audit.log** files. The files reside in the in one of the following paths in the F5OS filesystem when logged in as root; **/var/F5/system/log/audit.log** or **/var/log/audit/audit.log**. If you are logged into the F5OS CLI as admin, then the actual paths are simplified to **log/system/audit.log** and **/log/host/audit/audit.log**.
 
-In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entires to be redirected to a remote syslog location, as well as changing the log format to conform to standard F5OS syslog format fo all audit related eventd. Details on the two different implementations are below.
+In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entries to be redirected to a remote syslog location, as well as changing the log format to conform to standard F5OS syslog format of all audit related events. Details on the two different implementations are below.
 
 Viewing Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
 --------------------------------------------------------
 
-Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicity enable audit events.
+Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
 
 First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
 
@@ -1286,7 +1286,7 @@ Then, you can control the level of events that will be logged to the local audit
     config severity DEBUG
     !
 
-The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and wether access was granted or not.
+The formatting of audit logs provide the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and whether access was granted or not.
 
 
 Viewing Audit Logs via F5OS CLI
@@ -1480,7 +1480,7 @@ Below are examples seen on a remote syslog server for various login, logout, log
 Login Audit Logs
 ----------------
 
-Below is an exmaple of a client logging into the F5OS webUI. Note that the logs identify which user has logged in as well as what IP address they have logged in from.
+Below is an example of a client logging into the F5OS webUI. Note that the logs identify which user has logged in as well as what IP address they have logged in from.
 
 .. code-block:: bash
 
@@ -1493,7 +1493,7 @@ Below is an exmaple of a client logging into the F5OS webUI. Note that the logs 
     2023-01-06T16:56:17.479784-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/14985364" cmd="terminated session (reason: normal)".
     2023-01-06T16:56:17.480672-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/14985364" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 50243 ms".
 
-Below is an exmaple of a client logging into the F5OS CLI. Note that the logs identify which user has logged in as well as what IP address they have logged in from.
+Below is an example of a client logging into the F5OS CLI. Note that the logs identify which user has logged in as well as what IP address they have logged in from.
 
 .. code-block:: bash
 
@@ -1505,7 +1505,7 @@ Below is an exmaple of a client logging into the F5OS CLI. Note that the logs id
     2023-01-06T17:06:57.775152-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001242" cmd="assigned to groups: admin".
     2023-01-06T17:06:57.775243-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15001242" cmd="created new session via cli from 172.18.104.40:61769 with ssh".
 
-Below is an exmaple of a client authentication to the F5OS REST API. Note that the logs identify which user has accessed the API as well as what IP address they have sent the request from.
+Below is an example of a client authentication to the F5OS REST API. Note that the logs identify which user has accessed the API as well as what IP address they have sent the request from.
 
 .. code-block:: bash
 
@@ -1521,14 +1521,14 @@ Below is an exmaple of a client authentication to the F5OS REST API. Note that t
 Logout Audit Logs
 ----------------
 
-Below is an exmaple of a client logging out of the F5OS CLI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
+Below is an example of a client logging out of the F5OS CLI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
 
 .. code-block:: bash
 
     2023-01-06T17:16:05.536108-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15014425" cmd="CLI 'logout'".
     2023-01-06T17:16:05.736047-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15014425" cmd="terminated session (reason: normal)".
 
-Below is an exmaple of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
+Below is an example of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
 
 Not seeing Logs
 
