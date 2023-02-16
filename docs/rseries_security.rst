@@ -39,7 +39,7 @@ If you would like to lock down one of the protocols to either a single IP addres
     r10900-2(config-allowed-ip-snmp)# commit
     Commit complete.
 
-Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address or subnets you can add it under another name as seen below. 
+Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block containing multiple addresses. If you require more than one non-contiguous IP address or subnets you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -58,7 +58,7 @@ Currently you can add one ip address/port pair per **allowed-ip** name with an o
 Adding Allow List Entries via API
 -----------------------------------
 
-Below is an example of allowing multiple SNMP endpoints (port 161) to query SNMP on the F5OS platfrom layer.
+Below is an example of allowing multiple SNMP endpoints (port 161) to query SNMP on the F5OS platform layer.
 
 .. code-block:: bash
 
@@ -173,7 +173,7 @@ F5OS supports TLS device certificates and keys to secure connections to the mana
 Appliance Mode for F5OS
 =======================
 
-If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulberabilites can be avodied by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occuring directly in the bash shell.
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilites can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell.
 
 Enabling Appliance Mode via the CLI
 -----------------------------------
@@ -292,7 +292,7 @@ To configure the CLI timeout via the API, use the PATCH API call below. In the c
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-settings:settings
 
-Below is th epayload in the API call above to set the idel-timeout.
+Below is the payload in the API call above to set the idle-timeout.
 
 .. code-block:: json
 
@@ -417,11 +417,11 @@ The default setting for basic auth is enabled, and the current state can be seen
 
     r10900# 
 
-You may disable basic authentication by issuing the cli command **system aaa authenitcation config basic disabled**, and then committing the change.
+You may disable basic authentication by issuing the cli command **system aaa authentication config basic disabled**, and then committing the change.
 
 .. code-block:: bash
 
-    r10900(config)# system aaa authentication config basic disbaled 
+    r10900(config)# system aaa authentication config basic disabled 
     r10900(config)# commit
     Commit complete.
     r10900(config)#
@@ -788,7 +788,7 @@ Setting F5-F5OS-HOMEDIR=/tmp is a good idea to avoid warning messages from sshd 
 
 If F5-F5OS-UID is not set, it defaults to 1001. If F5-F5OS-GID is not set, it defaults to 0 (disallowed for authentication). The F5-F5OS-USERINFO is a comment field. Essentially, F5-F5OS-GID is the only hard requirement and must coincide with group ID's user role (except for the root role where the GID is 0). 
 
-More specific configuration details can be founf in the **User Management** section of the **rSeries System Administration Guide**.
+More specific configuration details can be found in the **User Management** section of the **rSeries System Administration Guide**.
 
 `F5OS User Management <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#user-management>`_
 
@@ -814,7 +814,7 @@ Group IDs for system roles
 Login Banner / Message of the Day
 ===================
 
-Some environments require warning or acceptance messages to be displayed to clients connecting to the F5OS layer at intial connection time and/or upon successful login. The F5OS layer supports configurable Message of the Day (MoTD) and Login Banners that are displayed to clients connecting to the F5OS layer via both CLI and the webUI. The MoTD and Login Banner can be configured via CLI, webUI, or API. The Login Banner is displayed at initial connect time and is commonly used to notify users they are connecting to a specific resource, and that they should not connect if they are not authorized. The MoTD is displayed after successful login, and may also display some information about the resource the user is connecting to.
+Some environments require warning or acceptance messages to be displayed to clients connecting to the F5OS layer at initial connection time and/or upon successful login. The F5OS layer supports configurable Message of the Day (MoTD) and Login Banners that are displayed to clients connecting to the F5OS layer via both CLI and the webUI. The MoTD and Login Banner can be configured via CLI, webUI, or API. The Login Banner is displayed at initial connect time and is commonly used to notify users they are connecting to a specific resource, and that they should not connect if they are not authorized. The MoTD is displayed after successful login, and may also display some information about the resource the user is connecting to.
 
 Configuring Login Banner / MoTD via CLI
 ---------------------------------------
@@ -905,11 +905,11 @@ In the body of the API call configure the desired message of the day and login b
 Display of Login Banner and MoTD
 --------------------------------
 
-Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successfull user login, the MoTD is then displayed. Both are highlighted in bold below. 
+Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successful user login, the MoTD is then displayed. Both are highlighted in bold below. 
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.132
+    prompt:~ user$ ssh -l admin 10.255.0.132
     **This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.**
     admin@10.255.0.132's password: 
     Last login: Tue Nov 29 10:41:06 2022 from 10.10.10.16
@@ -920,7 +920,7 @@ Below is an example of the Login Banner being displayed before the user is promp
     admin connected from 10.10.10.16 using ssh on r10900.f5demo.net
     r10900# 
 
-Below is an example of the Login Banner being displayed before the user is prompted for a password during a webUI connection to the F5OS platform layer. After a successfull user login, the MoTD is then displayed.
+Below is an example of the Login Banner being displayed before the user is prompted for a password during a webUI connection to the F5OS platform layer. After a successful user login, the MoTD is then displayed.
 
 
 .. image:: images/rseries_security/image8.png
@@ -939,7 +939,7 @@ Console Logins
 SNMPv3
 =======
 
-F5OS-A 1.2.0 added support for SNMPv3. Earlier version of F5OS-A only supported SNMPv1/v2c. SNMPv3 provides a more secure monitoring environment theough the use of authenticated access. More details can be found here:
+F5OS-A 1.2.0 added support for SNMPv3. Earlier version of F5OS-A only supported SNMPv1/v2c. SNMPv3 provides a more secure monitoring environment through the use of authenticated access. More details can be found here:
 
 `rSeries F5OS-A SNMP Monitoring and Alerting <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html>`_
 
@@ -947,7 +947,7 @@ F5OS-A 1.2.0 added support for SNMPv3. Earlier version of F5OS-A only supported 
 NTP Authentication
 ==================
 
-NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries from the F5OS platform layer. In order to utilize NTP authentication you must first enable NTP authntication and then add keys in order to secure communication to your NTP servers.
+NTP Authentication can be enabled to provide a secure communication channel for Network Time Protocol queries from the F5OS platform layer. In order to utilize NTP authentication you must first enable NTP authentication and then add keys in order to secure communication to your NTP servers.
 
 Enabling NTP Authentication via CLI
 -----------------------------------
@@ -977,7 +977,7 @@ The key ID, key type, and key value on this client system must match the server 
 Enabling NTP Authentication via webUI
 -------------------------------------
 
-To enable NTP authentication in the webUI use the **System Settings -> Time Settings** page. You'll need to enable NTP authentication then add the approriate keys, and then associate those keys with an NTP server.
+To enable NTP authentication in the webUI use the **System Settings -> Time Settings** page. You'll need to enable NTP authentication then add the appropriate keys, and then associate those keys with an NTP server.
 
 .. image:: images/rseries_security/ntpauth1.png
   :align: center
@@ -992,7 +992,7 @@ NTP authentication can also be set and viewed using the F5OS API. To view the cu
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
 
-The output will display the current ntp configuration state including authentication and keys.
+The output will display the current NTP configuration state including authentication and keys.
 
 .. code-block:: json
 
