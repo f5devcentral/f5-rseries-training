@@ -260,9 +260,13 @@ In the body of the API call add the following:
 Session Timeouts
 ================
 
-Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for both the CLI and webUI. The CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. For the webUI, a token based timeout is now configurable under the **system aaa** settings. a restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
+Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. 
 
-Configuring SSH and HTTPS Timeouts via CLI
+In F5OS-A 1.4.0 a new **sshd-idle-timeou**t option has been added that will control idle-timouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sesssion over SSH. 
+
+For the webUI, a token based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
+
+Configuring SSH, CLI, and HTTPS Timeouts via CLI
 ------------------------------------------
 
 To configure the CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
@@ -273,9 +277,27 @@ To configure the CLI timeout via the CLI, use the command **system settings conf
     r10900(config)# system settings config idle-timeout 300
     r10900(config)# commit
     Commit complete.     
+
+To configure the SSH timeout via the CLI, use the command **system settings config sshd-idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+
+
+.. code-block:: bash
+
+    r10900(config)# system settings config ssh-idle-timeout 300
+    r10900(config)# commit
+    Commit complete.      
  
- 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>**.
+Both timeout settings can be viewed using the **show system settings** command.
+
+.. code-block:: bash
+
+    r10900-1# show system settings 
+    system settings state idle-timeout 40
+    system settings state sshd-idle-timeout 20
+    system settings dag state gtp-u teid-hash disabled
+    r10900-1#
+
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>** to set the token lifetime.
 
 .. code-block:: bash
 
@@ -284,10 +306,10 @@ As mentioned in the introduction, the webUI uses tokens and the timeout is based
     Commit complete.
     r5900-2(config)# 
  
-Configuring SSH and Token Based Timeouts via API
+Configuring SSH, CLI, and Token Based Timeouts via API
 ------------------------------------------------
 
-To configure the CLI timeout via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
 
 .. code-block:: bash
 
@@ -305,7 +327,7 @@ Below is the payload in the API call above to set the idle-timeout.
         }
     }
 
-To view the current idle-timeout setting, issue the following GET API call.
+To view the current idle-timeout settings, issue the following GET API call.
 
 .. code-block:: bash
 
@@ -318,7 +340,8 @@ You'll see output similar to the example below.
 
     {
         "f5-system-settings:config": {
-            "idle-timeout": "300"
+            "idle-timeout": "40",
+            "sshd-idle-timeout": "20"
         }
     }
 
@@ -367,10 +390,10 @@ In the body of the API call set the desired lifetime in minutes.
         }
     }
 
-Configuring SSH and HTTPS Timeouts via webUI
+Configuring SSH, CLI, and HTTPS Timeouts via webUI
 ------------------------------------------
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Token Lifetime** in the webUI under the **User Management -> Authentication Settings** page. This setting should apply to both webUI and API access.
+Currently only the HTTPS token lifetime is configurable in the webUI. As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Token Lifetime** in the webUI under the **User Management -> Authentication Settings** page. This setting should apply to both webUI and API access.
 
 .. image:: images/rseries_security/imagetoken1.png
   :align: center
