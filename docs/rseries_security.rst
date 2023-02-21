@@ -1561,7 +1561,66 @@ Below is an example of a client logging out of the F5OS webUI. Note that the log
 Account Lockout Audit Logs
 --------------------------
 
+In order to capture all events related to account lockout, you will need to configure F5OS to send both standard syslog events as well as host audit log events to a remote server. This is because some of the audit events related to account lockout are captured before the F5OS layer in the host/audit.log and by default that log is not sent remotely.
 
+To forward the contents of the host audit logs add **config files file audit/audit.log** to the **system logging host-logs** configuration as seen below.
+
+.. code-block:: bash
+
+    default-1# show running-config system logging host-logs
+    system logging host-logs
+    config remote-forwarding enabled
+    config selectors selector AUTHPRIV DEBUG
+    config files file audit/audit.log
+    !
+
+In addtion, you'll want to ensure that **selectors selector AUTHPRIV INFORMATIONAL** is added to the **system logging remote-servers** configuration for your configured syslog location.
+
+.. code-block:: bash
+
+    default-1# show running-config system logging remote-servers
+    system logging remote-servers remote-server 10.255.85.182
+    config remote-port 514
+    config proto udp
+    selectors selector LOCAL0 DEBUG
+    selectors selector AUTHPRIV INFORMATIONAL
+    !
+
+Below is remote syslog example of a client logging into the F5OS CLI and entering an invalid password multiple times, resulting in an account lockout event. The configured password-policy for **max-login-failures** has been set to two, meaning once the client issues two invalid passwords the account will be temporarily locked for the **unlock-time** of sixty seconds. 
+
+
+.. code-block:: bash
+
+    r10900-1# show running-config system aaa password-policy 
+    system aaa password-policy config min-length 6
+    system aaa password-policy config required-numeric 0
+    system aaa password-policy config required-uppercase 0
+    system aaa password-policy config required-lowercase 0
+    system aaa password-policy config required-special 0
+    system aaa password-policy config required-differences 8
+    system aaa password-policy config reject-username true
+    system aaa password-policy config apply-to-root true
+    system aaa password-policy config retries 3
+    system aaa password-policy config max-login-failures 2
+    system aaa password-policy config unlock-time 60
+    system aaa password-policy config root-lockout true
+    system aaa password-policy config root-unlock-time 60
+    system aaa password-policy config max-age 0
+    r10900-1#
+
+In the logs below, a local user **testuser** has entered two consecutive bad passwords resulting in a temporary lock of the account.
+
+.. code-block:: bash
+
+    2023-02-21T12:23:10.495053-05:00 appliance-1 unix_chkpwd[45741]:  password check failed for user (testuser)
+    2023-02-21T12:23:10.495481-05:00 appliance-1 sshd[45026]:  pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=172.18.105.83  user=testuser
+    2023-02-21T12:23:18.298137-05:00 appliance-1 unix_chkpwd[46717]:  password check failed for user (testuser)
+    2023-02-21T12:23:18.298942-05:00 appliance-1 sshd[45026]:  pam_faillock(sshd:auth): Consecutive login failures for user testuser account temporarily locked
+    2023-02-21T12:23:20.223386-05:00 appliance-1 sshd[46957]:  pam_unix(sshd:session): session opened for user root by (uid=0)
+    2023-02-21T12:23:20.274338-05:00 appliance-1 sshd[46957]:  pam_unix(sshd:session): session closed for user root
+    2023-02-21T12:23:20.416710-05:00 appliance-1 HOST-audit/audit.log:  type=RESP_ACCT_UNLOCK_TIMED msg=audit(1677000190.495:250): pid=45026 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam_faillock uid=1003  exe="/usr/sbin/sshd" hostname=172.18.105.83 addr=172.18.105.83 terminal=ssh res=success'
+    2023-02-21T12:23:20.416724-05:00 appliance-1 HOST-audit/audit.log:  type=ANOM_LOGIN_FAILURES msg=audit(1677000198.297:251): pid=45026 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam_faillock uid=1003  exe="/usr/sbin/sshd" hostname=? addr=? terminal=? res=success'
+    2023-02-21T12:23:20.416727-05:00 appliance-1 HOST-audit/audit.log:  type=RESP_ACCT_LOCK msg=audit(1677000198.297:252): pid=45026 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam_faillock uid=1003  exe="/usr/sbin/sshd" hostname=? addr=? terminal=? res=success'
 
 Example Audit Logging of Configuration Changes
 ----------------------------------------------
