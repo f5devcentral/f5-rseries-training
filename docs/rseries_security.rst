@@ -279,7 +279,7 @@ To configure the F5OS CLI timeout via the CLI, use the command **system settings
     r10900(config)# commit
     Commit complete.     
 
-To configure the SSH timeout via the CLI, use the command **system settings config sshd-idle-timeout <value-in-seconds>**. This idle-timeout will apply to both bash sessions over SSH, as well as F5OS CLI sesssions over SSH. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+To configure the SSH timeout via the CLI, use the command **system settings config sshd-idle-timeout <value-in-seconds>**. This idle-timeout will apply to both bash sessions over SSH, as well as F5OS CLI sessions over SSH. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
 
 
 .. code-block:: bash
