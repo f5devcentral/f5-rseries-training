@@ -257,19 +257,19 @@ In the body of the API call add the following:
         }
     }
 
-Session Timeouts
-================
+Session Timeouts and Token Lifetime
+===================================
 
 Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. 
 
-In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sesssion over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
+In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI session over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
 There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed.
 
 For the webUI, a token based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
 
-Configuring SSH, CLI, and HTTPS Timeouts via CLI
-------------------------------------------
+Configuring SSH and CLI Timeouts via CLI
+-----------------------------------------
 
 To configure the F5OS CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, a CLI session to the F5OS CLI should disconnect after 300 seconds of inactivity. This will apply to connections to the F5OS CLI over both console and SSH.
 
@@ -298,17 +298,10 @@ Both timeout settings can be viewed using the **show system settings** command.
     system settings dag state gtp-u teid-hash disabled
     r10900-1#
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>** to set the token lifetime.
 
-.. code-block:: bash
-
-    5900-2(config)# system aaa restconf-token config lifetime 1
-    r5900-2(config)# commit
-    Commit complete.
-    r5900-2(config)# 
  
-Configuring SSH, CLI, and Token Based Timeouts via API
-------------------------------------------------
+Configuring SSH and CLI Timeouts via API
+----------------------------------------
 
 To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
 
@@ -346,13 +339,81 @@ You'll see output similar to the example below.
         }
     }
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the following PATCH API call and set the **f5-aaa-confd-restconf-token:restconf-token** **lifetime** to the desired setting.
+
+Configuring SSH and CLI Timeouts via webUI
+------------------------------------------
+
+Currently only the HTTPS token lifetime is configurable in the webUI. SSH and CLI timeouts are not currently configurable via the webUI.
+
+.. image:: images/rseries_security/imagetoken1.png
+  :align: center
+  :scale: 70%
+
+Token Lifetime via CLI
+----------------------
+
+As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>** to set the token lifetime. You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+
+.. code-block:: bash
+
+    r10900(config)# system aaa restconf-token config lifetime 1 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)# 
+
+To display the current restconf-token lifetime setting, use the command **show system aaa***.
+
+.. code-block:: bash
+
+    r10900(config)# do show system aaa
+    system aaa restconf-token state lifetime 1
+    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
+    system aaa primary-key state status NONE
+    system aaa authentication state basic enabled
+            LAST        TALLY  EXPIRY                  
+    USERNAME  CHANGE      COUNT  DATE    ROLE            
+    -----------------------------------------------------
+    admin     2022-06-02  0      -1      admin           
+    jim-test  2022-09-02  10     -1      admin           
+    operator  2022-10-11  0      -1      operator        
+    root      2022-06-02  0      -1      root            
+    tenant1   0           0      1       tenant-console  
+    tenant2   0           0      1       tenant-console  
+
+    ROLENAME        GID   USERS  
+    -----------------------------
+    admin           9000  -      
+    operator        9001  -      
+    tenant-console  9100  -      
+
+    NAME    NAME    TYPE    
+    ------------------------
+    tacacs  tacacs  TACACS  
+
+    system aaa tls state verify-client false
+    system aaa tls state verify-client-depth 1
+
+Token Lifetime via webUI
+------------------------
+
+You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+
+.. image:: images/rseries_security/image6.png
+  :align: center
+  :scale: 70%
+
+Token Lifetime via API
+----------------------
+
+You may configure the restconf-token lifetime via the API. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session or API session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+
+Use the following API PATCH call to set the restconf-token lifetime, or any other password policy parameter.
 
 .. code-block:: bash
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
-In the body of the API call set the desired lifetime in minutes.
+In the body of the API call adjust the restconf-token lifetime setting to the desired timeout in minutes. The example below is 10 minutes, and the session will timeout at five times the value of the lifetime setting due to token refresh.
 
 .. code-block:: json
 
@@ -390,15 +451,6 @@ In the body of the API call set the desired lifetime in minutes.
             }
         }
     }
-
-Configuring SSH, CLI, and HTTPS Timeouts via webUI
-------------------------------------------
-
-Currently only the HTTPS token lifetime is configurable in the webUI. As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Token Lifetime** in the webUI under the **User Management -> Authentication Settings** page. This setting should apply to both webUI and API access.
-
-.. image:: images/rseries_security/imagetoken1.png
-  :align: center
-  :scale: 70%
 
 
 Disabling Basic Authentication
@@ -538,108 +590,6 @@ Disabling basic authentication via the webUI is a new feature that has been adde
   :align: center
   :scale: 70%
 
-Token Lifetime via CLI
-----------------------
-
-You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
-
-.. code-block:: bash
-
-    r10900(config)# system aaa restconf-token config lifetime 1 
-    r10900(config)# commit
-    Commit complete.
-    r10900(config)# 
-
-To display the current restconf-token lifetime setting, use the command **show system aaa***.
-
-.. code-block:: bash
-
-    r10900(config)# do show system aaa
-    system aaa restconf-token state lifetime 1
-    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
-    system aaa primary-key state status NONE
-    system aaa authentication state basic enabled
-            LAST        TALLY  EXPIRY                  
-    USERNAME  CHANGE      COUNT  DATE    ROLE            
-    -----------------------------------------------------
-    admin     2022-06-02  0      -1      admin           
-    jim-test  2022-09-02  10     -1      admin           
-    operator  2022-10-11  0      -1      operator        
-    root      2022-06-02  0      -1      root            
-    tenant1   0           0      1       tenant-console  
-    tenant2   0           0      1       tenant-console  
-
-    ROLENAME        GID   USERS  
-    -----------------------------
-    admin           9000  -      
-    operator        9001  -      
-    tenant-console  9100  -      
-
-    NAME    NAME    TYPE    
-    ------------------------
-    tacacs  tacacs  TACACS  
-
-    system aaa tls state verify-client false
-    system aaa tls state verify-client-depth 1
-
-Token Lifetime via webUI
-------------------------
-
-You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
-
-.. image:: images/rseries_security/image6.png
-  :align: center
-  :scale: 70%
-
-Token Lifetime via API
-----------------------
-
-You may configure the restconf-token lifetime via the API. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session or API session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
-
-Use the following API PATCH call to set the restconf-token lifetime, or any other password policy parameter.
-
-.. code-block:: bash
-
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
-
-In the body of the API call adjust the restconf-token lifetime setting to the desired timeout in minutes. The example below is 10 minutes, and the session will timeout at five times the value of the lifetime setting due to token refresh.
-
-.. code-block:: json
-
-    {
-        "openconfig-system:aaa": {
-            "authentication": {
-                "config": {
-                    "f5-aaa-confd-restconf-token:basic": {
-                        "enabled": true
-                    }
-                }
-            },
-            "f5-aaa-confd-restconf-token:restconf-token": {
-                "config": {
-                    "lifetime": 10
-                }
-            },
-            "f5-openconfig-aaa-password-policy:password-policy": {
-                "config": {
-                    "min-length": 6,
-                    "required-numeric": 0,
-                    "required-uppercase": 0,
-                    "required-lowercase": 0,
-                    "required-special": 0,
-                    "required-differences": 8,
-                    "reject-username": false,
-                    "apply-to-root": true,
-                    "retries": 3,
-                    "max-login-failures": 10,
-                    "unlock-time": 60,
-                    "root-lockout": true,
-                    "root-unlock-time": 60,
-                    "max-age": 0
-                }
-            }
-        }
-    }
 
 Setting Password Policies
 =========================
