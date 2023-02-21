@@ -262,7 +262,7 @@ Session Timeouts
 
 Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. 
 
-In F5OS-A 1.4.0 a new **sshd-idle-timeou**t option has been added that will control idle-timouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sesssion over SSH. 
+In F5OS-A 1.4.0 a new **sshd-idle-timeout** option has been added that will control idle-timouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sesssion over SSH. 
 
 For the webUI, a token based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
 
@@ -292,8 +292,8 @@ Both timeout settings can be viewed using the **show system settings** command.
 .. code-block:: bash
 
     r10900-1# show system settings 
-    system settings state idle-timeout 40
-    system settings state sshd-idle-timeout 20
+    system settings state idle-timeout 300
+    system settings state sshd-idle-timeout 300
     system settings dag state gtp-u teid-hash disabled
     r10900-1#
 
@@ -1554,9 +1554,11 @@ Below is an example of a client logging out of the F5OS CLI. Note that the logs 
 
 Below is an example of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
 
-Not seeing Logs
+**Do we log logout events from GUI?**
 
-
+--------------------------
+Account Lockout Audit Logs
+--------------------------
 
 
 
@@ -1575,6 +1577,9 @@ Below is an example audit log of the user **jim-test** entering config mode via 
     2023-01-06T17:44:59.412077-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000005 msg="audit modify" ctx="CLI" user="jim-test/15056017" path="/interfaces/interface{20.0}".
     2023-01-06T17:44:59.412156-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="CLI" user="jim-test/15056017" path="/interfaces/interface{20.0}/config/description" value="This is a test".
     2023-01-06T17:44:59.413541-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI done".
+
+Example Audit Logging of webUI Changes
+--------------------------------------
 
 Below is an example audit log of the user **jim-test** using the webUI and then changing the VLAN membership for interface 20.0 and then committing the change.
 
@@ -1604,39 +1609,29 @@ Below is an example audit log of the user **jim-test** using the webUI and then 
     2023-01-06T17:50:46.404290-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065642" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-interfaces:interfaces 200 duration 227159 ms".
     2023-01-06T17:50:46.404731-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065642" cmd="terminated session (reason: normal)".
 
-Below is an example audit log of the user **admin** using the API and then adding VLANs.
+Example Audit Logging of API Changes
+------------------------------------
 
-
-**NOT Seeing payload**
+Below is an example audit log of the user **admin** using the API and then adding a new VLAN to the configuration. In F5OS release prior to F5OS-A 1.4.0 API audit logs captured configuration changes, but did not log the full configuration payload. 
 
 .. code-block:: bash
 
 
-    2023-01-06T17:54:30.760755-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:admin1673045652".
-    2023-01-06T17:54:30.760768-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
-    2023-01-06T17:54:30.760863-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="assigned to groups: admin".
-    2023-01-06T17:54:30.760954-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="created new session via rest from 172.18.104.40:0 with http".
-    2023-01-06T17:54:30.761331-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15071280" cmd="RESTCONF: request with http: PATCH /restconf/data/openconfig-vlan:vlans HTTP/1.1".
-    2023-01-06T17:54:30.772269-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="terminated session (reason: normal)".
-    2023-01-06T17:54:30.773385-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15071280" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-vlan:vlans 204 duration 44442 ms".
-  
-
-
-
-
-Example Audit Logging of API Changes
-------------------------------------
-
-In F5OS release prior to F5OS-A 1.4.0 API audit logs captured configuration changes, but did not log the full configuration payload. 
-
-Example Audit Logging of webUI Changes
---------------------------------------
-
-
+    2023-02-17T17:28:10.290541-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/3104052" cmd="created new session via rest from 172.18.104.20:0 with http".
+    2023-02-17T17:28:10.290769-05:00 appliance-1 audit-service[11]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/3104052" cmd="RESTCONF: request with http: PATCH /restconf/data/openconfig-vlan:vlans HTTP/1.1".
+    2023-02-17T17:28:10.308174-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000003 msg="audit create" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}".
+    2023-02-17T17:28:10.308217-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}/vlan-id" value="600".
+    2023-02-17T17:28:10.308280-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}/config/vlan-id" value="600".
+    2023-02-17T17:28:10.308319-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}/config/name" value="TEST600-VLAN".
+    2023-02-17T17:28:10.308819-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/3104052" cmd="terminated session (reason: normal)".
+    2023-02-17T17:28:10.310149-05:00 appliance-1 audit-service[11]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/3104052" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-vlan:vlans 204 duration 57569 ms".
 
 
 Downloading Audit Logs via CLI
 ------------------------------
+
+Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. 
+
 
 Downloading Audit Logs via API
 ------------------------------
