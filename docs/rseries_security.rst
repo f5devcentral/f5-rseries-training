@@ -162,13 +162,20 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
   :align: center
   :scale: 70%
 
+Setting F5OS Primary Key
+======================== 
+
+The F5 rSeries system uses a primary key to perform encryption and decryption of highly sensitive passwords/passphrases in the configuration database. You should periodically reset this primary key for additional security. You should set this primary key prior to performing any configuration backup if you have not already done so. In the case of a configuration migration such as moving configuration to a replacement device due to RMA, it is important to set the primary key to a known value so that the same key can be used to decrypt the passwords/passphrases in the configuration restored on the replacement device. More details are provided in the solution article below.
+
+`K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://my.f5.com/manage/s/article/K47512994>`_
+
 
 Certificates for Device Management
 ==================================
 
-F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own into the system.
+F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates into the system. More details on certificate management can be found at the link below.
 
-**Details coming soon**.
+`rSeries Certificate Management Overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-system-settings.html#cert-mgmt-overview>`_
 
 Appliance Mode for F5OS
 =======================
