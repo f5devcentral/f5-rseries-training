@@ -173,9 +173,96 @@ The F5 rSeries system uses a primary key to perform encryption and decryption of
 Certificates for Device Management
 ==================================
 
-F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates into the system. More details on certificate management can be found at the link below.
+F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates and keys into the system. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is simlar to the BIG-IP functionality defined in the link below.
+
+`K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
+
+
+
+Managing Device Certificates via CLI
+-------------------------------------
+
+By default F5OS uses a self-signed certicate and key for device management. If you would like to create your own private key and self-signed certificate use the following CLI command:
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls create-self-signed-cert name jim email jim@f5.com city Boston region MA country US organization F5 unit Sales version 1 days-valid 365 key-type encrypted-ecdsa curve-name secp384r1 store-tls true key-passphrase 
+    Value for 'key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    r10900-1(config)#
+
+
+The store-tls option stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored then set **store-tls false** as seen below.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls create-self-signed-cert name jim email jim@f5.com city Boston region MA country US organization F5 unit Sales version 1 days-valid 365 key-type encrypted-ecdsa curve-name secp384r1 store-tls false key-passphrase 
+    Value for 'key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    key-response 
+    -----BEGIN EC PRIVATE KEY-----
+    Proc-Type: 4,ENCRYPTED
+    DEK-Info: AES-256-CBC,BA7ECF55A14EBD39F5DB48EBB6BBB53E
+
+    IF6Uk2tLE6LzIu3mEgy3VB/uADkN53HO4LE7P8QDTLBRt5f81LjxhP5MFJlKFk2a
+    iYpZEqzhZwCAfOetcaK+LFv+z26NzUSdHLmEvM+qG3B5s6U7eQbes6mMPAyOFZcj
+    +1El1olDrHfn+xmcbUFlM7lUVRgIhABy+Y3WT6GaH7CaYghDjKkRoppiiQs3KwXf
+    /ZdO7QFRAWr0Lfi8iBtVZKBqL2CHsBQxfggvP0EB+9o=
+    -----END EC PRIVATE KEY-----
+
+    cert-response 
+    -----BEGIN CERTIFICATE-----
+    MIICDjCCAZUCCQCRNihj9kub1zAKBggqhkjOPQQDAjBxMQwwCgYDVQQDDANqaW0x
+    CzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTEPMA0GA1UEBwwGQm9zdG9uMQswCQYD
+    VQQKDAJGNTEOMAwGA1UECwwFU2FsZXMxGTAXBgkqhkiG9w0BCQEWCmppbUBmNS5j
+    b20wHhcNMjMwMjIzMDUwMDE0WhcNMjQwMjIzMDUwMDE0WjBxMQwwCgYDVQQDDANq
+    aW0xCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTEPMA0GA1UEBwwGQm9zdG9uMQsw
+    CQYDVQQKDAJGNTEOMAwGA1UECwwFU2FsZXMxGTAXBgkqhkiG9w0BCQEWCmppbUBm
+    NS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATDLVWBq7s1nwkZy27DGbqNEkHM
+    /WTXwKo2i+uzoB2fL6DXGlgKJo1WIY5sFMYGv1lNsDte5Ztr11331rmcWghVOHkr
+    FndFmeEnSNRyHZoqHXzVIkp60JAsv2Yv2ZafGJEwCgYIKoZIzj0EAwIDZwAwZAIw
+    EluMBf0X9Zotm6pWMiajR5AL8Z2PMIE3hqpc3IREeSs09xf8ADKoCEEudRMHB1lc
+    AjBelhJIkUoiZBtfAdf6NrUDWQdrN7kvC4h8DLm1XV9lr4Wxh5Es1WSwF1PoTRMt
+    Mqs=
+    -----END CERTIFICATE-----
+    r10900-1(config)# 
+
+The management interface will now use the self-signed certifcate you just created. You can verify by connecting to the F5OS management interface via a browser and then examining the certificate.
+
+.. image:: images/rseries_security/imagecert.png
+  :align: center
+  :scale: 70%
+
+
+
+Managing Device Certificates via webUI
+-------------------------------------
+
+Managing Device Certificates via API
+-------------------------------------
+
+
 
 `rSeries Certificate Management Overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-system-settings.html#cert-mgmt-overview>`_
+
+Encrypt Management TLS Private Key
+=======================
+
+Previously, F5OS allowed an admin to import a TLS certificate and key in clear text. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is simlar to the BIG-IP functionality defined in the link below.
+
+`K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
+
+
+
+
+It looks like we already encrypt the certificate key using AES256-GCM(AKA $8$) even before 1.3.0.
+So the user can see on the GUI is the encrypted key, not the real/plain key.
+
+.. code-block:: bash
+
+    system aaa tls config passphrase $8$G29mW2amh1F46j2I7fLb3deVdfSU6ClIyrzgxNqUdSM=
+    system aaa tls config verify-client false
+    system aaa tls config verify-client-depth 1
 
 Appliance Mode for F5OS
 =======================
@@ -789,10 +876,6 @@ In a future release, these role numbers will be configurable
 https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview
 
 
-Group IDs for system roles 
-
-
-
 Login Banner / Message of the Day
 ===================
 
@@ -921,7 +1004,7 @@ Console Logins
 SNMPv3
 =======
 
-F5OS-A 1.2.0 added support for SNMPv3. Earlier version of F5OS-A only supported SNMPv1/v2c. SNMPv3 provides a more secure monitoring environment through the use of authenticated access. More details can be found here:
+F5OS-A 1.2.0 added support for SNMPv3. Earlier versions of F5OS-A only supported SNMPv1/v2c. SNMPv3 provides a more secure monitoring environment through the use of authenticated access. More details can be found here:
 
 `rSeries F5OS-A SNMP Monitoring and Alerting <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html>`_
 
@@ -1101,22 +1184,8 @@ In the body of the API call you can enable NTP authentication, add keys, and ass
         }
     }
 
-Disable IPv6
-============
 
-Need to confirm if this is in F5OS-A 1.4.0
 
-Encrypt TLS Private Key
-=======================
-
-It looks like we already encrypt the certificate key using AES256-GCM(AKA $8$) even before 1.3.0.
-So the user can see on the GUI is the encrypted key, not the real/plain key.
-
-.. code-block:: bash
-
-    system aaa tls config passphrase $8$G29mW2amh1F46j2I7fLb3deVdfSU6ClIyrzgxNqUdSM=
-    system aaa tls config verify-client false
-    system aaa tls config verify-client-depth 1
 
 Configurable Management Ciphers
 ===============================
