@@ -169,6 +169,21 @@ The F5 rSeries system uses a primary key to perform encryption and decryption of
 
 `K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://my.f5.com/manage/s/article/K47512994>`_
 
+To set the primary-key issue the following command in config mode.
+
+.. code-block:: bash
+
+    system aaa primary-key set passphrase <passphrase string> confirm-passphrase <passphrase string> salt <salt string> confirm-salt <salt string>
+
+Note that the hash key can be used to check and compare the status of the primary-key on both the source and the replacement devices if restoring to a different device. To view the current primary-key hash, issue the following CLI command.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa primary-key 
+    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
+    system aaa primary-key state status NONE
+    r10900-1# 
+
 
 Certificates for Device Management
 ==================================
@@ -176,7 +191,6 @@ Certificates for Device Management
 F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates and keys into the system. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is simlar to the BIG-IP functionality defined in the link below.
 
 `K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
-
 
 
 Managing Device Certificates via CLI
@@ -192,7 +206,7 @@ By default F5OS uses a self-signed certicate and key for device management. If y
     r10900-1(config)#
 
 
-The store-tls option stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored then set **store-tls false** as seen below.
+The **store-tls** option stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored then set **store-tls false** as seen below.
 
 .. code-block:: bash
 
