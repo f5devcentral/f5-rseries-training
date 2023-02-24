@@ -270,13 +270,31 @@ If you choose the **Store TLS** option of **False** then the certifcate details 
   :align: center
   :scale: 70%
 
-You can then use the **Show** options to display the current certificate, key, and details.
+You can then use the **Show** options to display the current certificate, key, and details. Paste the text in the respective text boxes to add a certificate. TLS Key Passphrase is only required if TLS Key is in encrypted format. 
 
 .. image:: images/rseries_security/imagecert5.png
   :align: center
   :scale: 70%
 
 .. image:: images/rseries_security/imagecert6.png
+  :align: center
+  :scale: 70%
+
+You can also create a Certificate Signing Request (CSR) for the self-signed certificate for use when submiting the certificate to the Certificate Authourity (CA).
+
+.. image:: images/rseries_security/imagecsr1.png
+  :align: center
+  :scale: 70%
+
+After clicking **Save** the CSR will appear, and you will be able to **Copy to Clipboard** so you can submit the singning request.
+
+.. image:: images/rseries_security/imagecsr2.png
+  :align: center
+  :scale: 70%
+
+When you install an SSL certificate on the system, you also install a certificate authority (CA) bundle, which is a file that contains root and intermediate certificates. The combination of these two files complete the SSL chain of trust.
+
+.. image:: images/rseries_security/imageca1.png
   :align: center
   :scale: 70%
 
