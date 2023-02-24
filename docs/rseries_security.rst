@@ -311,17 +311,6 @@ Previously, F5OS allowed an admin to import a TLS certificate and key in clear t
 `K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
 
 
-
-
-It looks like we already encrypt the certificate key using AES256-GCM(AKA $8$) even before 1.3.0.
-So the user can see on the GUI is the encrypted key, not the real/plain key.
-
-.. code-block:: bash
-
-    system aaa tls config passphrase $8$G29mW2amh1F46j2I7fLb3deVdfSU6ClIyrzgxNqUdSM=
-    system aaa tls config verify-client false
-    system aaa tls config verify-client-depth 1
-
 Appliance Mode for F5OS
 =======================
 
