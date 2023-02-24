@@ -188,9 +188,9 @@ Note that the hash key can be used to check and compare the status of the primar
 Certificates for Device Management
 ==================================
 
-F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates and keys into the system. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is simlar to the BIG-IP functionality defined in the link below.
+F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates and keys into the system. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. More details can be found in the link below.
 
-`K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
+`rSeries Certificate Management Overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-system-settings.html#cert-mgmt-overview>`_
 
 
 Managing Device Certificates via CLI
@@ -252,12 +252,38 @@ The management interface will now use the self-signed certifcate you just create
 Managing Device Certificates via webUI
 -------------------------------------
 
+In the F5OS webUI toy can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS ccertificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
+
+.. image:: images/rseries_security/imagecert2.png
+  :align: center
+  :scale: 70%
+
+The screen below shows the options when creating a self signed certificate. 
+
+.. image:: images/rseries_security/imagecert3.png
+  :align: center
+  :scale: 70%
+
+If you choose the **Store TLS** option of **False** then the certifcate details will be displayed, and you will be given the option to copy them to the clipboard. If you want to store them on the system, then set the **Store TLS** option to **True**.
+
+.. image:: images/rseries_security/imagecert4.png
+  :align: center
+  :scale: 70%
+
+You can then use the **Show** options to display the current certificate, key, and details.
+
+.. image:: images/rseries_security/imagecert5.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_security/imagecert6.png
+  :align: center
+  :scale: 70%
+
 Managing Device Certificates via API
 -------------------------------------
 
 
-
-`rSeries Certificate Management Overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-system-settings.html#cert-mgmt-overview>`_
 
 Encrypt Management TLS Private Key
 =======================
