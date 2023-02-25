@@ -162,18 +162,285 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
   :align: center
   :scale: 70%
 
+Setting F5OS Primary Key
+======================== 
+
+The F5 rSeries system uses a primary key to perform encryption and decryption of highly sensitive passwords/passphrases in the configuration database. You should periodically reset this primary key for additional security. You should set this primary key prior to performing any configuration backup if you have not already done so. In the case of a configuration migration such as moving configuration to a replacement device due to RMA, it is important to set the primary key to a known value so that the same key can be used to decrypt the passwords/passphrases in the configuration restored on the replacement device. More details are provided in the solution article below.
+
+`K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://my.f5.com/manage/s/article/K47512994>`_
+
+To set the primary-key issue the following command in config mode.
+
+.. code-block:: bash
+
+    system aaa primary-key set passphrase <passphrase string> confirm-passphrase <passphrase string> salt <salt string> confirm-salt <salt string>
+
+Note that the hash key can be used to check and compare the status of the primary-key on both the source and the replacement devices if restoring to a different device. To view the current primary-key hash, issue the following CLI command.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa primary-key 
+    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
+    system aaa primary-key state status NONE
+    r10900-1# 
+
 
 Certificates for Device Management
 ==================================
 
-F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own into the system.
+F5OS supports TLS device certificates and keys to secure connections to the management interface. You can either create a self-signed certificate, or load your own certificates and keys into the system. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. More details can be found in the link below.
 
-**Details coming soon**.
+`rSeries Certificate Management Overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-system-settings.html#cert-mgmt-overview>`_
+
+
+Managing Device Certificates, Keys, CSRs, and CAs via CLI
+--------------------------------------------------------
+
+By default, F5OS uses a self-signed certificate and key for device management. If you would like to create your own private key and self-signed certificate use the following CLI command:
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls create-self-signed-cert name jim email jim@f5.com city Boston region MA country US organization F5 unit Sales version 1 days-valid 365 key-type encrypted-ecdsa curve-name secp384r1 store-tls true key-passphrase 
+    Value for 'key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    r10900-1(config)#
+
+
+The **store-tls** option when set to **true**, stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning the vlaues only in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls create-self-signed-cert name jim email jim@f5.com city Boston region MA country US organization F5 unit Sales version 1 days-valid 365 key-type encrypted-ecdsa curve-name secp384r1 store-tls false key-passphrase 
+    Value for 'key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-key-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    key-response 
+    -----BEGIN EC PRIVATE KEY-----
+    Proc-Type: 4,ENCRYPTED
+    DEK-Info: AES-256-CBC,BA7ECF55A14EBD39F5DB48EBB6BBB53E
+
+    IF6Uk2tLE6LzIu3mEgy3VB/uADkN53HO4LE7P8QDTLBRt5f81LjxhP5MFJlKFk2a
+    iYpZEqzhZwCAfOetcaK+LFv+z26NzUSdHLmEvM+qG3B5s6U7eQbes6mMPAyOFZcj
+    +1El1olDrHfn+xmcbUFlM7lUVRgIhABy+Y3WT6GaH7CaYghDjKkRoppiiQs3KwXf
+    /ZdO7QFRAWr0Lfi8iBtVZKBqL2CHsBQxfggvP0EB+9o=
+    -----END EC PRIVATE KEY-----
+
+    cert-response 
+    -----BEGIN CERTIFICATE-----
+    MIICDjCCAZUCCQCRNihj9kub1zAKBggqhkjOPQQDAjBxMQwwCgYDVQQDDANqaW0x
+    CzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTEPMA0GA1UEBwwGQm9zdG9uMQswCQYD
+    VQQKDAJGNTEOMAwGA1UECwwFU2FsZXMxGTAXBgkqhkiG9w0BCQEWCmppbUBmNS5j
+    b20wHhcNMjMwMjIzMDUwMDE0WhcNMjQwMjIzMDUwMDE0WjBxMQwwCgYDVQQDDANq
+    aW0xCzAJBgNVBAYTAlVTMQswCQYDVQQIDAJNQTEPMA0GA1UEBwwGQm9zdG9uMQsw
+    CQYDVQQKDAJGNTEOMAwGA1UECwwFU2FsZXMxGTAXBgkqhkiG9w0BCQEWCmppbUBm
+    NS5jb20wdjAQBgcqhkjOPQIBBgUrgQQAIgNiAATDLVWBq7s1nwkZy27DGbqNEkHM
+    /WTXwKo2i+uzoB2fL6DXGlgKJo1WIY5sFMYGv1lNsDte5Ztr11331rmcWghVOHkr
+    FndFmeEnSNRyHZoqHXzVIkp60JAsv2Yv2ZafGJEwCgYIKoZIzj0EAwIDZwAwZAIw
+    EluMBf0X9Zotm6pWMiajR5AL8Z2PMIE3hqpc3IREeSs09xf8ADKoCEEudRMHB1lc
+    AjBelhJIkUoiZBtfAdf6NrUDWQdrN7kvC4h8DLm1XV9lr4Wxh5Es1WSwF1PoTRMt
+    Mqs=
+    -----END CERTIFICATE-----
+    r10900-1(config)# 
+
+The management interface will now use the self-signed certifcate you just created. You can verify by connecting to the F5OS management interface via a browser and then examining the certificate.
+
+.. image:: images/rseries_security/imagecert.png
+  :align: center
+  :scale: 70%
+
+
+To create a Certificate Signing Request (CSR) via the CLI use the **system aaa tls create-csr** command.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls create-csr name r10900-1.f5demo.net email jim@f5.com city Boston country US organization F5 region MA unit Sales version 1 
+    response 
+    -----BEGIN CERTIFICATE REQUEST-----
+    MIIBezCCAQECAQEwgYExHDAaBgNVBAMME3IxMDkwMC0xLmY1ZGVtby5uZXQxCzAJ
+    BgNVBAYTAlVTMQswCQYDVQQIDAJNQTEPMA0GA1UEBwwGQm9zdG9uMQswCQYDVQQK
+    DAJGNTEOMAwGA1UECwwFU2FsZXMxGTAXBgkqhkiG9w0BCQEWCmppbUBmNS5jb20w
+    djAQBgcqhkjOPQIBBgUrgQQAIgNiAAQ/8UzZtEGMJ+vtmkEUsgiv2hL8r81sKwB3
+    clwqnXKl08vFCNr4wy7TB28b4EszAQDTBhIipHuC5L2GpetjNsFywkDqZuoJAvmx
+    nrqYQe5z9bDUpO6AJsAaohLG0sc9E4WgADAKBggqhkjOPQQDAgNoADBlAjEAsTST
+    M43RDyve46QJtHf3ofCVuhmxZ8lAcWBX5W3JsDiZcdaNCeXgSk4pX5nwSrDnAjAH
+    GPjWc5CcyCBh8+RyV9zNL7I5WlIsZj1aUAA3PD1CSgFHxaXV6cpHP8H8kQiJjjE=
+    -----END CERTIFICATE REQUEST-----
+    r10900-1(config)# 
+
+To create a CA bundle via the CLI use the **system aaa tls ca-bundle** command.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls ca-bundles ca-bundle ?
+    Possible completions:
+    <Reference to configured name of the CA Bundle.>
+    r10900-1(config)# system aaa tls ca-bundles ca-bundle    
+
+
+To create a Client Revocation List (CRL) via the CLI issue the following command.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls crls crl ?
+    Possible completions:
+    <Reference to configured name of the CRL.>
+    r10900-1(config)# system aaa tls crls crl
+
+You can display the current certificate, keys, and passpharases using the CLI command **show system aaa tls**.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa tls
+    system aaa tls state certificate Certificate:
+                                        Data:
+                                            Version: 1 (0x0)
+                                            Serial Number:
+                                                c9:79:f0:b2:3e:9e:d2:a1
+                                        Signature Algorithm: ecdsa-with-SHA256
+                                            Issuer: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com
+                                            Validity
+                                                Not Before: Feb 24 21:35:31 2023 GMT
+                                                Not After : Feb 24 21:35:31 2024 GMT
+                                            Subject: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com
+                                            Subject Public Key Info:
+                                                Public Key Algorithm: id-ecPublicKey
+                                                    Public-Key: (384 bit)
+                                                    pub: 
+                                                        04:3f:f1:4c:d9:b4:41:8c:27:eb:ed:9a:41:14:b2:
+                                                        08:af:da:12:fc:af:cd:6c:2b:00:77:72:5c:2a:9d:
+                                                        72:a5:d3:cb:c5:08:da:f8:c3:2e:d3:07:6f:1b:e0:
+                                                        4b:33:01:00:d3:06:12:22:a4:7b:82:e4:bd:86:a5:
+                                                        eb:63:36:c1:72:c2:40:ea:66:ea:09:02:f9:b1:9e:
+                                                        ba:98:41:ee:73:f5:b0:d4:a4:ee:80:26:c0:1a:a2:
+                                                        12:c6:d2:c7:3d:13:85
+                                                    ASN1 OID: secp384r1
+                                                    NIST CURVE: P-384
+                                        Signature Algorithm: ecdsa-with-SHA256
+                                            30:66:02:31:00:ad:83:1c:be:06:49:b7:16:36:57:aa:20:f5:
+                                            73:b6:59:2a:48:01:cd:18:3f:8a:65:87:4c:02:17:14:32:47:
+                                            02:db:c6:c7:28:48:ac:6c:9a:fc:e2:88:40:71:1c:31:45:02:
+                                            31:00:b3:06:dc:eb:60:42:df:d7:a6:b2:21:aa:ad:15:e9:70:
+                                            1f:76:d6:1d:2d:25:5a:d0:0f:53:ab:1c:1a:3c:ce:e3:9a:6d:
+                                            c4:e0:1f:38:58:d0:b3:dc:94:6a:02:47:a8:d0
+                                    
+    system aaa tls state verify-client false
+    system aaa tls state verify-client-depth 1
+    r10900-1# 
+
+
+Managing Device Certificates, Keys, CSRs, and CAs via webUI
+-----------------------------------------------------------
+
+In the F5OS webUI you can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS certificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
+
+.. image:: images/rseries_security/imagecert2.png
+  :align: center
+  :scale: 70%
+
+The screen below shows the options when creating a self signed certificate. 
+
+.. image:: images/rseries_security/imagecert3.png
+  :align: center
+  :scale: 70%
+
+If you choose the **Store TLS** option of **False** then the certifcate details will be displayed, and you will be given the option to copy them to the clipboard. If you want to store them on the system, then set the **Store TLS** option to **True**.
+
+.. image:: images/rseries_security/imagecert4.png
+  :align: center
+  :scale: 70%
+
+You can then use the **Show** options to display the current certificate, key, and details. Paste the text into the respective text boxes to add a certificate. TLS Key Passphrase is only required if TLS Key is in encrypted format. 
+
+.. image:: images/rseries_security/imagecert5.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_security/imagecert6.png
+  :align: center
+  :scale: 70%
+
+You can also create a Certificate Signing Request (CSR) for the self-signed certificate for use when submiting the certificate to the Certificate Authourity (CA).
+
+.. image:: images/rseries_security/imagecsr1.png
+  :align: center
+  :scale: 70%
+
+After clicking **Save** the CSR will appear, and you will be able to **Copy to Clipboard** so you can submit the singning request.
+
+.. image:: images/rseries_security/imagecsr2.png
+  :align: center
+  :scale: 70%
+
+When you install an SSL certificate on the system, you also install a certificate authority (CA) bundle, which is a file that contains root and intermediate certificates. The combination of these two files complete the SSL chain of trust.
+
+.. image:: images/rseries_security/imageca1.png
+  :align: center
+  :scale: 70%
+
+Managing Device Certificates, Keys, CSRs, and CAs via API
+-------------------------------------
+
+You can view the current certificates, keys and passphrases via the API using the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-tls:tls
+
+In the response you will notice the certificate, key, and optional passphrase as well as the state.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-tls:tls": {
+            "config": {
+                "certificate": "-----BEGIN CERTIFICATE-----\nMIICEjCCAZcCCQDJefCyPp7SoTAKBggqhkjOPQQDAjByMQ0wCwYDVQQDDARqaW0y\nMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTUExDzANBgNVBAcMBkJvc3RvbjELMAkG\nA1UECgwCRjUxDjAMBgNVBAsMBVNhbGVzMRkwFwYJKoZIhvcNAQkBFgpqaW1AZjUu\nY29tMB4XDTIzMDIyNDIxMzUzMVoXDTI0MDIyNDIxMzUzMVowcjENMAsGA1UEAwwE\namltMjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAk1BMQ8wDQYDVQQHDAZCb3N0b24x\nCzAJBgNVBAoMAkY1MQ4wDAYDVQQLDAVTYWxlczEZMBcGCSqGSIb3DQEJARYKamlt\nQGY1LmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABD/xTNm0QYwn6+2aQRSyCK/a\nEvyvzWwrAHdyXCqdcqXTy8UI2vjDLtMHbxvgSzMBANMGEiKke4LkvYal62M2wXLC\nQOpm6gkC+bGeuphB7nP1sNSk7oAmwBqiEsbSxz0ThTAKBggqhkjOPQQDAgNpADBm\nAjEArYMcvgZJtxY2V6og9XO2WSpIAc0YP4plh0wCFxQyRwLbxscoSKxsmvziiEBx\nHDFFAjEAswbc62BC39emsiGqrRXpcB921h0tJVrQD1OrHBo8zuOabcTgHzhY0LPc\nlGoCR6jQ\n-----END CERTIFICATE-----",
+                "key": "$8$LzRR+5tiwtRDLQI2NFQwJ3aVjXDZw8MAmMEvqO/uM9wPHjzq5AEKf8yWMQWIsmspS8GuYWhi\n4UwWBjRnhmuViENZLm5RXjA02Lr42vzHv05skcnnFfCiRL+L8goee8wI+tbI06x4iDnsYhD2\nAAUW1mV8Kb6zAIJ1/AeobAhgY/MvJdVrRpYAY6CWpRQQiCHJbnIsvw82HXqT8fEcKfNeAvLC\nPeLPXJltU89jGlylj899cWUN+CyxTDxko6mvvRaB2MeJSZ5jwnR8bhIubr/hlG1FPlGaOIbm\nP5BYZmhVmFliwQUzlVp+36AxtGG52amLZmudmW5xskOmnhEze5NcbFp8aIF6yUa7AyKE9Rc9\n0kv4W7gNmm2+0YXaMknj1ahTSYESf5sDxN5R6knz0pFf5fF7caun7gmS5Jfqs4OIwVtDjL7J\n2j4rT7hZuwnzIWbUKGu0N9620mWFpF6S9aI2keLzhwYcad1aPMEF6PabEtQPpZMZ9kJVDROe\n5bvf+8pBvNBCtLRCX7+MpKLeFYTzMQ==",
+                "passphrase": "$8$4hyAzRD/Wy3WCyocZXv6K4XeM8qDmgfX0CIHtfJYZDY=",
+                "verify-client": false,
+                "verify-client-depth": 1
+            },
+            "state": {
+                "certificate": "Certificate:\n    Data:\n        Version: 1 (0x0)\n        Serial Number:\n            c9:79:f0:b2:3e:9e:d2:a1\n    Signature Algorithm: ecdsa-with-SHA256\n        Issuer: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com\n        Validity\n            Not Before: Feb 24 21:35:31 2023 GMT\n            Not After : Feb 24 21:35:31 2024 GMT\n        Subject: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub: \n                    04:3f:f1:4c:d9:b4:41:8c:27:eb:ed:9a:41:14:b2:\n                    08:af:da:12:fc:af:cd:6c:2b:00:77:72:5c:2a:9d:\n                    72:a5:d3:cb:c5:08:da:f8:c3:2e:d3:07:6f:1b:e0:\n                    4b:33:01:00:d3:06:12:22:a4:7b:82:e4:bd:86:a5:\n                    eb:63:36:c1:72:c2:40:ea:66:ea:09:02:f9:b1:9e:\n                    ba:98:41:ee:73:f5:b0:d4:a4:ee:80:26:c0:1a:a2:\n                    12:c6:d2:c7:3d:13:85\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n    Signature Algorithm: ecdsa-with-SHA256\n         30:66:02:31:00:ad:83:1c:be:06:49:b7:16:36:57:aa:20:f5:\n         73:b6:59:2a:48:01:cd:18:3f:8a:65:87:4c:02:17:14:32:47:\n         02:db:c6:c7:28:48:ac:6c:9a:fc:e2:88:40:71:1c:31:45:02:\n         31:00:b3:06:dc:eb:60:42:df:d7:a6:b2:21:aa:ad:15:e9:70:\n         1f:76:d6:1d:2d:25:5a:d0:0f:53:ab:1c:1a:3c:ce:e3:9a:6d:\n         c4:e0:1f:38:58:d0:b3:dc:94:6a:02:47:a8:d0\n",
+                "verify-client": false,
+                "verify-client-depth": 1
+            }
+        }
+    }
+
+If you would like to upload a certificate, key, and passphrase you can issue the following API PUT command.
+
+.. code-block:: bash
+
+    PUT https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-tls:tls
+
+In the body of the API call enter the following JSON syntax.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-tls:tls": {
+            "config": {
+                "certificate": "-----BEGIN CERTIFICATE-----\nMIICEjCCAZcCCQDJefCyPp7SoTAKBggqhkjOPQQDAjByMQ0wCwYDVQQDDARqaW0y\nMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTUExDzANBgNVBAcMBkJvc3RvbjELMAkG\nA1UECgwCRjUxDjAMBgNVBAsMBVNhbGVzMRkwFwYJKoZIhvcNAQkBFgpqaW1AZjUu\nY29tMB4XDTIzMDIyNDIxMzUzMVoXDTI0MDIyNDIxMzUzMVowcjENMAsGA1UEAwwE\namltMjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAk1BMQ8wDQYDVQQHDAZCb3N0b24x\nCzAJBgNVBAoMAkY1MQ4wDAYDVQQLDAVTYWxlczEZMBcGCSqGSIb3DQEJARYKamlt\nQGY1LmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABD/xTNm0QYwn6+2aQRSyCK/a\nEvyvzWwrAHdyXCqdcqXTy8UI2vjDLtMHbxvgSzMBANMGEiKke4LkvYal62M2wXLC\nQOpm6gkC+bGeuphB7nP1sNSk7oAmwBqiEsbSxz0ThTAKBggqhkjOPQQDAgNpADBm\nAjEArYMcvgZJtxY2V6og9XO2WSpIAc0YP4plh0wCFxQyRwLbxscoSKxsmvziiEBx\nHDFFAjEAswbc62BC39emsiGqrRXpcB921h0tJVrQD1OrHBo8zuOabcTgHzhY0LPc\nlGoCR6jQ\n-----END CERTIFICATE-----",
+                "key": "$8$LzRR+5tiwtRDLQI2NFQwJ3aVjXDZw8MAmMEvqO/uM9wPHjzq5AEKf8yWMQWIsmspS8GuYWhi\n4UwWBjRnhmuViENZLm5RXjA02Lr42vzHv05skcnnFfCiRL+L8goee8wI+tbI06x4iDnsYhD2\nAAUW1mV8Kb6zAIJ1/AeobAhgY/MvJdVrRpYAY6CWpRQQiCHJbnIsvw82HXqT8fEcKfNeAvLC\nPeLPXJltU89jGlylj899cWUN+CyxTDxko6mvvRaB2MeJSZ5jwnR8bhIubr/hlG1FPlGaOIbm\nP5BYZmhVmFliwQUzlVp+36AxtGG52amLZmudmW5xskOmnhEze5NcbFp8aIF6yUa7AyKE9Rc9\n0kv4W7gNmm2+0YXaMknj1ahTSYESf5sDxN5R6knz0pFf5fF7caun7gmS5Jfqs4OIwVtDjL7J\n2j4rT7hZuwnzIWbUKGu0N9620mWFpF6S9aI2keLzhwYcad1aPMEF6PabEtQPpZMZ9kJVDROe\n5bvf+8pBvNBCtLRCX7+MpKLeFYTzMQ==",
+                "passphrase": "$8$4hyAzRD/Wy3WCyocZXv6K4XeM8qDmgfX0CIHtfJYZDY=",
+                "verify-client": false,
+                "verify-client-depth": 1
+            }
+        }
+    }
+
+
+Encrypt Management TLS Private Key
+=======================
+
+Previously, F5OS allowed an admin to import a TLS certificate and key in clear text. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is simlar to the BIG-IP functionality defined in the link below.
+
+`K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
+
 
 Appliance Mode for F5OS
 =======================
 
-If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilites can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell.
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilites can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
 
 Enabling Appliance Mode via the CLI
 -----------------------------------
@@ -257,34 +524,39 @@ In the body of the API call add the following:
         }
     }
 
-Session Timeouts
-================
+Session Timeouts and Token Lifetime
+===================================
 
 Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for both the CLI and webUI. The CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. This will logout idle sessions to the F5OS CLI whether they are logged in form the console or over SSH. In F5OS-A 1.4.0 there is an additional parameter that has been added for timing out connections to the bash shell (using the root login) called **ssh-idle-timeout**. For connections to the F5OS CLI over SSH, the timeout with the lowest value will take precedence.
+Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. 
 
-For the webUI, a token based timeout is now configurable under the **system aaa** settings. a restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
+In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-Configuring SSH, CLI, and HTTPS Timeouts via CLI
-------------------------------------------
+There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed. If this is a concern, then applaince mode could be enabled preventing root/bash access to the system.
 
-To configure the F5OS CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, any CLI session to F5OS (either via console or SSH) should disconnect after 300 seconds of inactivity.
+For the webUI, a token based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
 
+Configuring SSH and CLI Timeouts via CLI
+-----------------------------------------
+
+To configure the F5OS CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, a CLI session to the F5OS CLI should disconnect after 300 seconds of inactivity. This will apply to connections to the F5OS CLI over both console and SSH.
 
 .. code-block:: bash
 
     r10900(config)# system settings config idle-timeout 300
     r10900(config)# commit
     Commit complete.     
- 
-To configure the SSH timeout via the CLI, use the command **system settings config ssh-idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, any CLI session to the bash shell or to F5OS over SSH should disconnect after 300 seconds of inactivity.
+
+To configure the SSH timeout via the CLI, use the command **system settings config sshd-idle-timeout <value-in-seconds>**. This idle-timeout will apply to both bash sessions over SSH, as well as F5OS CLI sessions over SSH. Be sure to issue a commit to save the changes. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+
 
 .. code-block:: bash
 
     r10900(config)# system settings config ssh-idle-timeout 300
     r10900(config)# commit
-    Commit complete.  
-
-You can view the current status of both timeouts by issuing the command **show system settings**.
+    Commit complete.      
+ 
+Both timeout settings can be viewed using the **show system settings** command.
 
 .. code-block:: bash
 
@@ -292,53 +564,14 @@ You can view the current status of both timeouts by issuing the command **show s
     system settings state idle-timeout 300
     system settings state sshd-idle-timeout 300
     system settings dag state gtp-u teid-hash disabled
-    r10900-1# 
+    r10900-1#
 
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>**.
-
-.. code-block:: bash
-
-    5900-2(config)# system aaa restconf-token config lifetime 1
-    r5900-2(config)# commit
-    Commit complete.
-    r5900-2(config)# 
-
-To view the current configured setting use the command **show system aaa**.  
-
-
-.. code-block:: bash
-
-    r10900-1# show system aaa 
-    system aaa restconf-token state lifetime 20
-    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
-    system aaa primary-key state status NONE
-    system aaa authentication state basic enabled
-                LAST        TALLY  EXPIRY                  
-    USERNAME       CHANGE      COUNT  DATE    ROLE            
-    ----------------------------------------------------------
-    admin          2023-01-23  0      -1      admin           
-    bigip-tenant1  0           0      1       tenant-console  
-    jimmc          0           0      -1      admin           
-    root           2023-01-08  0      -1      root            
-    testuser       0           0      -1      admin           
-
-                        REMOTE         
-    ROLENAME        GID   GID     USERS  
-    -------------------------------------
-    admin           9000  -       -      
-    operator        9001  -       -      
-    resource-admin  9003  -       -      
-    tenant-console  9100  -       -      
-
-    system aaa tls state verify-client false
-    system aaa tls state verify-client-depth 1
-    r10900-1# 
  
-Configuring SSH and Token Based Timeouts via API
-------------------------------------------------
+Configuring SSH and CLI Timeouts via API
+----------------------------------------
 
-To configure the CLI or SSH timeout via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
 
 .. code-block:: bash
 
@@ -356,7 +589,7 @@ Below is the payload in the API call above to set the idle-timeout.
         }
     }
 
-To view the current idle-timeout and ssh-idle-timeout settings, issue the following GET API call.
+To view the current idle-timeout settings, issue the following GET API call.
 
 .. code-block:: bash
 
@@ -374,202 +607,20 @@ You'll see output similar to the example below.
         }
     }
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the following PATCH API call and set the **f5-aaa-confd-restconf-token:restconf-token** **lifetime** to the desired setting.
 
-.. code-block:: bash
-
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
-
-In the body of the API call set the desired lifetime in minutes.
-
-.. code-block:: json
-
-    {
-        "openconfig-system:aaa": {
-            "authentication": {
-                "config": {
-                    "f5-aaa-confd-restconf-token:basic": {
-                        "enabled": true
-                    }
-                }
-            },
-            "f5-aaa-confd-restconf-token:restconf-token": {
-                "config": {
-                    "lifetime": 10
-                }
-            },
-            "f5-openconfig-aaa-password-policy:password-policy": {
-                "config": {
-                    "min-length": 6,
-                    "required-numeric": 0,
-                    "required-uppercase": 0,
-                    "required-lowercase": 0,
-                    "required-special": 0,
-                    "required-differences": 8,
-                    "reject-username": false,
-                    "apply-to-root": true,
-                    "retries": 3,
-                    "max-login-failures": 10,
-                    "unlock-time": 60,
-                    "root-lockout": true,
-                    "root-unlock-time": 60,
-                    "max-age": 0
-                }
-            }
-        }
-    }
-
-Configuring SSH and HTTPS Timeouts via webUI
+Configuring SSH and CLI Timeouts via webUI
 ------------------------------------------
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. You may configure the **Token Lifetime** in the webUI under the **User Management -> Authentication Settings** page. This setting should apply to both webUI and API access.
+Currently only the HTTPS token lifetime is configurable in the webUI. SSH and CLI timeouts are not currently configurable via the webUI.
 
 .. image:: images/rseries_security/imagetoken1.png
-  :align: center
-  :scale: 70%
-
-
-Disabling Basic Authentication
-==============================
-
-F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authentication can still be utilized to access F5OS and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once a token is issued, it will be the only way to make changes via the webUI or the API. 
-
-
-Disabling Basic Auth via the CLI
---------------------------------
-
-The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. The line **system aaa authentication state basic enabled** indicates that basic authentication is still enabled. 
-
-.. code-block:: bash
-
-    r10900# show system aaa
-    system aaa restconf-token state lifetime 15
-    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
-    system aaa primary-key state status NONE
-    system aaa authentication state basic enabled
-            LAST        TALLY  EXPIRY                  
-    USERNAME  CHANGE      COUNT  DATE    ROLE            
-    -----------------------------------------------------
-    admin     2022-06-02  0      -1      admin           
-    jim-test  2022-09-02  10     -1      admin           
-    operator  2022-10-11  0      -1      operator        
-    root      2022-06-02  0      -1      root            
-    tenant1   0           0      1       tenant-console  
-    tenant2   0           0      1       tenant-console  
-
-    ROLENAME        GID   USERS  
-    -----------------------------
-    admin           9000  -      
-    operator        9001  -      
-    root            0     -      
-    tenant-console  9100  -      
-
-    NAME    NAME    TYPE    
-    ------------------------
-    tacacs  tacacs  TACACS  
-
-    r10900# 
-
-You may disable basic authentication by issuing the cli command **system aaa authentication config basic disabled**, and then committing the change.
-
-.. code-block:: bash
-
-    r10900(config)# system aaa authentication config basic disabled 
-    r10900(config)# commit
-    Commit complete.
-    r10900(config)#
-
-To re-enable basic authentication, change the state to enabled and commit.
-
-.. code-block:: bash
-
-    r10900(config)# system aaa authentication config basic enabled 
-    r10900(config)# commit
-    Commit complete.
-    r10900(config)#
-
-
-
-Disabling Basic Auth via the API
---------------------------------
-
-You may enable or disable basic authentication via the API. The default setting for basic authentication is enabled, and the current state can be seen by entering the following API call.
-
-.. code-block:: bash
-
-    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/config
-
-You should see the returned output below with the basic authentication state set to either **true** or **false**.
-
-.. code-block:: json
-
-    {`
-        "openconfig-system:config": {
-            "f5-aaa-confd-restconf-token:basic": {
-                "enabled": true
-            }
-        }
-    }
-
-Use the following API PATCH call to set the restconf-token:basic setting to **true** or **false**, or any other password policy parameter.
-
-.. code-block:: bash
-
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
-
-In the body of the API call adjust the restconf-token:basic setting to **true** or **false**.
-
-.. code-block:: json
-
-    {
-        "openconfig-system:aaa": {
-            "authentication": {
-                "config": {
-                    "f5-aaa-confd-restconf-token:basic": {
-                        "enabled": true
-                    }
-                }
-            },
-            "f5-aaa-confd-restconf-token:restconf-token": {
-                "config": {
-                    "lifetime": 10
-                }
-            },
-            "f5-openconfig-aaa-password-policy:password-policy": {
-                "config": {
-                    "min-length": 6,
-                    "required-numeric": 0,
-                    "required-uppercase": 0,
-                    "required-lowercase": 0,
-                    "required-special": 0,
-                    "required-differences": 8,
-                    "reject-username": false,
-                    "apply-to-root": true,
-                    "retries": 3,
-                    "max-login-failures": 10,
-                    "unlock-time": 60,
-                    "root-lockout": true,
-                    "root-unlock-time": 60,
-                    "max-age": 0
-                }
-            }
-        }
-    }
-
-
-Disabling Basic Auth via the webUI
-----------------------------------
-
-Disabling basic authentication via the webUI is a new feature that has been added in F5OS-A 1.4.0. In the webUI got to **User Management -> Authentication Settings** and you'll see a drop down box to enable or disable **Basic Authentication**.
-
-.. image:: images/rseries_security/image5.png
   :align: center
   :scale: 70%
 
 Token Lifetime via CLI
 ----------------------
 
-You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+As mentioned in the introduction, the webUI and API use token based authentication and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>** to set the token lifetime. You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in a webUI session or API timing out after 5 minutes.
 
 .. code-block:: bash
 
@@ -668,6 +719,145 @@ In the body of the API call adjust the restconf-token lifetime setting to the de
             }
         }
     }
+
+
+Disabling Basic Authentication
+==============================
+
+F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate using basic authentication again. Although token based authentication is supported, basic authentication can still be utilized to access F5OS and make changes by default. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once a token is issued to a client, it will be the only way to make changes via the webUI or the API. 
+
+
+Disabling Basic Auth via the CLI
+--------------------------------
+
+The default setting for basic auth is enabled, and the current state can be seen by entering the **show system aaa** command. The line **system aaa authentication state basic enabled** indicates that basic authentication is still enabled. 
+
+.. code-block:: bash
+
+    r10900# show system aaa
+    system aaa restconf-token state lifetime 15
+    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
+    system aaa primary-key state status NONE
+    system aaa authentication state basic enabled
+            LAST        TALLY  EXPIRY                  
+    USERNAME  CHANGE      COUNT  DATE    ROLE            
+    -----------------------------------------------------
+    admin     2022-06-02  0      -1      admin           
+    jim-test  2022-09-02  10     -1      admin           
+    operator  2022-10-11  0      -1      operator        
+    root      2022-06-02  0      -1      root            
+    tenant1   0           0      1       tenant-console  
+    tenant2   0           0      1       tenant-console  
+
+    ROLENAME        GID   USERS  
+    -----------------------------
+    admin           9000  -      
+    operator        9001  -      
+    root            0     -      
+    tenant-console  9100  -      
+
+    NAME    NAME    TYPE    
+    ------------------------
+    tacacs  tacacs  TACACS  
+
+    r10900# 
+
+You may disable basic authentication by issuing the cli command **system aaa authentication config basic disabled**, and then committing the change.
+
+.. code-block:: bash
+
+    r10900(config)# system aaa authentication config basic disabled 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)#
+
+To re-enable basic authentication, change the state to enabled and commit.
+
+.. code-block:: bash
+
+    r10900(config)# system aaa authentication config basic enabled 
+    r10900(config)# commit
+    Commit complete.
+    r10900(config)#
+
+
+
+Disabling Basic Auth via the API
+--------------------------------
+
+You may enable or disable basic authentication via the API. The default setting for basic authentication is enabled, and the current state can be seen by entering the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/config
+
+You should see the returned output below with the basic authentication state set to either **true** or **false**.
+
+.. code-block:: json
+
+    {`
+        "openconfig-system:config": {
+            "f5-aaa-confd-restconf-token:basic": {
+                "enabled": true
+            }
+        }
+    }
+
+Use the following API PATCH call to set the restconf-token:basic setting to **true** or **false**, or to adjust any other password policy parameter.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+In the body of the API call adjust the restconf-token:basic setting to **true** or **false**.
+
+.. code-block:: json
+
+    {
+        "openconfig-system:aaa": {
+            "authentication": {
+                "config": {
+                    "f5-aaa-confd-restconf-token:basic": {
+                        "enabled": true
+                    }
+                }
+            },
+            "f5-aaa-confd-restconf-token:restconf-token": {
+                "config": {
+                    "lifetime": 10
+                }
+            },
+            "f5-openconfig-aaa-password-policy:password-policy": {
+                "config": {
+                    "min-length": 6,
+                    "required-numeric": 0,
+                    "required-uppercase": 0,
+                    "required-lowercase": 0,
+                    "required-special": 0,
+                    "required-differences": 8,
+                    "reject-username": false,
+                    "apply-to-root": true,
+                    "retries": 3,
+                    "max-login-failures": 10,
+                    "unlock-time": 60,
+                    "root-lockout": true,
+                    "root-unlock-time": 60,
+                    "max-age": 0
+                }
+            }
+        }
+    }
+
+
+Disabling Basic Auth via the webUI
+----------------------------------
+
+Disabling basic authentication via the webUI is a new feature that has been added in F5OS-A 1.4.0. In the webUI go to **User Management -> Authentication Settings** and you'll see a drop down box to enable or disable **Basic Authentication**.
+
+.. image:: images/rseries_security/image5.png
+  :align: center
+  :scale: 70%
+
 
 Setting Password Policies
 =========================
@@ -805,7 +995,7 @@ The F5OS platform layer supports both local and remote authentication. By defaul
 
 `Configuring Remote User Authentication and Authorization on TMOS <https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/10.html>`_
 
-Currently F5OS only supports static pre-defined roles which in turn map to specific group IDs. Users created and managed on external LDAP, Active Directory, RADIUS, or TACACS+ servers must have the same group IDs on the external authentication servers as they do within F5OS based systems to allow authentication and authorization to occur. Users created on external LDAP, Active Directory, RADIUS, or TACACS+ servers must be associated with one of these group IDs on the system. The supported F5OS group IDs and the roles they map to are seen in the table below. User defined roles are not supported.
+In versions prior to F5OS-A 1.4.0, F5OS only supported static pre-defined roles which in turn map to specific group IDs. Users created and managed on external LDAP, Active Directory, RADIUS, or TACACS+ servers must have the same group IDs on the external authentication servers as they do within F5OS based systems to allow authentication and authorization to occur. Users created on external LDAP, Active Directory, RADIUS, or TACACS+ servers must be associated with one of these group IDs on the system. The supported F5OS static group IDs and the roles they map to are seen in the table below. User defined roles are not supported in version prior to F5OS-A 1.4.0.
 
 +----------------+----------+
 | Role           | Group ID | 
@@ -847,21 +1037,42 @@ More specific configuration details can be found in the **User Management** sect
 
 The **gidNumber** attribute needs to either be on the user or on a group the user is a member of. The **gidNumber** must be one of those listed (9000, 9001, 9100). [The root role is not externally accessible for obvious reasons.] 
 
-the current implementation relies on AD “unix attributes” being installed into the directory.
+The current implementation relies on AD “unix attributes” being installed into the directory.
 
-AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs will be configurable in a future release, but will still be numeric not group names. 
+AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
 
-Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded 
+Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded. 
 
-Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. 
+Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.3.0 can be found below.
 
-In a future release, these role numbers will be configurable  
+`LDAP/AD configuration overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview>`_
 
-https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview
+Changing Group ID Mapping via CLI (F5OS-A 1.4.0 and Later)
+---------------------------------------------------------
 
+F5OS-A 1.4.0 has added the ability to customize the Group ID mapping to the remote authentication server. In previous releases the Group IDs were static, now they can be changed to map to user selectable Group IDs. Below is an example of changing the remote Group ID for the admin account to a custom value of 9200.
 
-Group IDs for system roles 
+.. code-block:: bash
 
+    r10900-1(config)# system aaa authentication roles role admin config remote-gid 9200 
+    r10900-1(config-role-admin)# commit
+    Commit complete.
+    r10900-1(config-role-admin)# 
+
+To view the current mappings use the **show system aaa authentication roles** CLI command.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa authentication roles
+                        REMOTE         
+    ROLENAME        GID   GID     USERS  
+    -------------------------------------
+    admin           9000  9200    -      
+    operator        9001  -       -      
+    resource-admin  9003  -       -      
+    tenant-console  9100  -       -      
+
+    r10900-1# 
 
 
 Login Banner / Message of the Day
@@ -939,10 +1150,13 @@ In the body of the API call configure the desired message of the day and login b
         }
     }
 
+To view the currently configured MoTD and login banner, issue the folowing GET API request.
 
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/config
+
+The output will contain the current MoTD and login banner configuration.
 
 .. code-block:: json
 
@@ -958,15 +1172,15 @@ In the body of the API call configure the desired message of the day and login b
 Display of Login Banner and MoTD
 --------------------------------
 
-Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successful user login, the MoTD is then displayed. Both are highlighted in bold below. 
+Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successful user login, the MoTD is then displayed. 
 
 .. code-block:: bash
 
     prompt:~ user$ ssh -l admin 10.255.0.132
-    **This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.**
+    This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.
     admin@10.255.0.132's password: 
     Last login: Tue Nov 29 10:41:06 2022 from 10.10.10.16
-    **Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket.**
+    Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket.
     System Time: 2022-11-29 11:17:00 EST
     Welcome to the Management CLI
     User admin last logged in 2022-11-29T16:17:00.008317+00:00, to appliance-1, from 10.10.10.16 using cli-ssh
@@ -985,14 +1199,11 @@ Below is an example of the Login Banner being displayed before the user is promp
   :align: center
   :scale: 70%  
 
-Console Logins
-==============
-
 
 SNMPv3
 =======
 
-F5OS-A 1.2.0 added support for SNMPv3. Earlier version of F5OS-A only supported SNMPv1/v2c. SNMPv3 provides a more secure monitoring environment through the use of authenticated access. More details can be found here:
+F5OS-A 1.2.0 added support for SNMPv3. Earlier versions of F5OS-A only supported SNMPv1/v2c. SNMPv3 provides a more secure monitoring environment through the use of authenticated access. More details can be found here:
 
 `rSeries F5OS-A SNMP Monitoring and Alerting <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html>`_
 
@@ -1172,60 +1383,61 @@ In the body of the API call you can enable NTP authentication, add keys, and ass
         }
     }
 
-Disable IPv6
-============
 
-Need to confirm if this is in F5OS-A 1.4.0
 
-Encrypt TLS Private Key
-=======================
-
-It looks like we already encrypt the certificate key using AES256-GCM(AKA $8$) even before 1.3.0.
-So the user can see on the GUI is the encrypted key, not the real/plain key.
-
-.. code-block:: bash
-
-    system aaa tls config passphrase $8$G29mW2amh1F46j2I7fLb3deVdfSU6ClIyrzgxNqUdSM=
-    system aaa tls config verify-client false
-    system aaa tls config verify-client-depth 1
 
 Configurable Management Ciphers
 ===============================
 
+F5OS-A 1.4.0 added the ability to display and configure the ciphers used for the management interface of F5OS. The **show system security** CLI command will display the **ssl-ciphersuite** for the webUI/httpd management interface. It will also display the **ciphers** and **kexalgorithms** for the sshd service. Below is an example of the default settings. 
 
 .. code-block:: bash
 
+    r10900-1# show system security 
     system security services service httpd
-    config ssl-ciphersuite ""
-    !
+    state ssl-ciphersuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
+    system security services service sshd
+    state ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
+    state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
+    r10900-1#
+
+You can change the ciphers offered by F5OS to clients connecting to the httpd service by using the **system security services service httpd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
+
+.. code-block:: bash
+
+    r10900-1(config)# system security services service httpd config ssl-ciphersuite ?
+    Description: User specified ssl-ciphersuite.
+    Possible completions:
+    <string>[ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES2
+    56-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-
+    RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDH
+    E-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-
+    RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA]
+    r10900-1(config)# 
+    
+You can change the ciphers and kexalgorithms offered by F5OS to clients connecting to the sshd service by using the **system security services service sshd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
+
+.. code-block:: bash
+
+    r10900-1(config)# system security services service sshd config ?
+    Possible completions:
+        ciphers         User specified ciphers.
+        kexalgorithms   User specified kexalgorithms.
+        macs            User specified MACs.
+
+
+Below are the current options for sshd cipers and kexalgorithms.
+
     system security services service sshd
     config ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
     config kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
     !
 
-    r10900(config)# system security services service sshd config ?
-    Possible completions:
-    ciphers         User specified ciphers.
-    kexalgorithms   User specified kexalgorithms.
-    macs            User specified MACs.
-    
-    r10900(config)# system security services service sshd config ciphers ?
-    Description: User specified ciphers.
-    Possible completions:
-    string  [
-
-    r10900(config)# system security services service httpd config ssl-ciphersuite ?
-    Description: User specified ssl-ciphersuite.
-    Possible completions:
-     <string>[]
-
-
-
 
 Client Certificate Based Auth
 =============================
 
-No available yet.
+Coming in F5OS-A 1.5.0.
 
 iHealth Proxy Server
 ====================
@@ -1262,7 +1474,7 @@ To add a proxy server for iHealth uploads via the API, use the following API cal
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-proxy:proxy
 
-In the body of the API call add the username, password, and proxy server configuration. NOTE: Need to figure out encoding for password?
+In the body of the API call add the username, password, and proxy server configuration.
 
 .. code-block:: json
 
@@ -1583,11 +1795,72 @@ Below is an example of a client logging out of the F5OS CLI. Note that the logs 
 
 Below is an example of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
 
-Not seeing Logs
+**Do we log logout events from GUI?**
+
+--------------------------
+Account Lockout Audit Logs
+--------------------------
+
+In order to capture all events related to account lockout, you will need to configure F5OS to send both standard syslog events as well as host audit log events to a remote server. This is because some of the audit events related to account lockout are captured before the F5OS layer in the host/audit.log and by default that log is not sent remotely.
+
+To forward the contents of the host audit logs add **config files file audit/audit.log** to the **system logging host-logs** configuration as seen below.
+
+.. code-block:: bash
+
+    default-1# show running-config system logging host-logs
+    system logging host-logs
+    config remote-forwarding enabled
+    config selectors selector AUTHPRIV DEBUG
+    config files file audit/audit.log
+    !
+
+In addtion, you'll want to ensure that **selectors selector AUTHPRIV INFORMATIONAL** is added to the **system logging remote-servers** configuration for your configured syslog location.
+
+.. code-block:: bash
+
+    default-1# show running-config system logging remote-servers
+    system logging remote-servers remote-server 10.255.85.182
+    config remote-port 514
+    config proto udp
+    selectors selector LOCAL0 DEBUG
+    selectors selector AUTHPRIV INFORMATIONAL
+    !
+
+Below is remote syslog example of a client logging into the F5OS CLI and entering an invalid password multiple times, resulting in an account lockout event. The configured password-policy for **max-login-failures** has been set to two, meaning once the client issues two invalid passwords the account will be temporarily locked for the **unlock-time** of sixty seconds. 
 
 
+.. code-block:: bash
 
+    r10900-1# show running-config system aaa password-policy 
+    system aaa password-policy config min-length 6
+    system aaa password-policy config required-numeric 0
+    system aaa password-policy config required-uppercase 0
+    system aaa password-policy config required-lowercase 0
+    system aaa password-policy config required-special 0
+    system aaa password-policy config required-differences 8
+    system aaa password-policy config reject-username true
+    system aaa password-policy config apply-to-root true
+    system aaa password-policy config retries 3
+    system aaa password-policy config max-login-failures 2
+    system aaa password-policy config unlock-time 60
+    system aaa password-policy config root-lockout true
+    system aaa password-policy config root-unlock-time 60
+    system aaa password-policy config max-age 0
+    r10900-1#
 
+In the logs below, a local user **testuser** has entered two consecutive bad passwords resulting in a temporary lock of the account.
+
+.. code-block:: bash
+
+    2023-02-21T12:23:10.495053-05:00 appliance-1 unix_chkpwd[45741]:  password check failed for user (testuser)
+    2023-02-21T12:23:10.495481-05:00 appliance-1 sshd[45026]:  pam_unix(sshd:auth): authentication failure; logname= uid=0 euid=0 tty=ssh ruser= rhost=172.18.105.83  user=testuser
+    2023-02-21T12:23:18.298137-05:00 appliance-1 unix_chkpwd[46717]:  password check failed for user (testuser)
+    2023-02-21T12:23:18.298942-05:00 appliance-1 sshd[45026]:  pam_faillock(sshd:auth): Consecutive login failures for user testuser account temporarily locked
+    2023-02-21T12:23:20.223386-05:00 appliance-1 sshd[46957]:  pam_unix(sshd:session): session opened for user root by (uid=0)
+    2023-02-21T12:23:20.274338-05:00 appliance-1 sshd[46957]:  pam_unix(sshd:session): session closed for user root
+    2023-02-21T12:23:20.416710-05:00 appliance-1 HOST-audit/audit.log:  type=RESP_ACCT_UNLOCK_TIMED msg=audit(1677000190.495:250): pid=45026 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam_faillock uid=1003  exe="/usr/sbin/sshd" hostname=172.18.105.83 addr=172.18.105.83 terminal=ssh res=success'
+    2023-02-21T12:23:20.416724-05:00 appliance-1 HOST-audit/audit.log:  type=ANOM_LOGIN_FAILURES msg=audit(1677000198.297:251): pid=45026 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam_faillock uid=1003  exe="/usr/sbin/sshd" hostname=? addr=? terminal=? res=success'
+    2023-02-21T12:23:20.416727-05:00 appliance-1 HOST-audit/audit.log:  type=RESP_ACCT_LOCK msg=audit(1677000198.297:252): pid=45026 uid=0 auid=4294967295 ses=4294967295 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='pam_faillock uid=1003  exe="/usr/sbin/sshd" hostname=? addr=? terminal=? res=success'
 
 Example Audit Logging of Configuration Changes
 ----------------------------------------------
@@ -1604,6 +1877,9 @@ Below is an example audit log of the user **jim-test** entering config mode via 
     2023-01-06T17:44:59.412077-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000005 msg="audit modify" ctx="CLI" user="jim-test/15056017" path="/interfaces/interface{20.0}".
     2023-01-06T17:44:59.412156-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="CLI" user="jim-test/15056017" path="/interfaces/interface{20.0}/config/description" value="This is a test".
     2023-01-06T17:44:59.413541-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15056017" cmd="CLI done".
+
+Example Audit Logging of webUI Changes
+--------------------------------------
 
 Below is an example audit log of the user **jim-test** using the webUI and then changing the VLAN membership for interface 20.0 and then committing the change.
 
@@ -1633,43 +1909,153 @@ Below is an example audit log of the user **jim-test** using the webUI and then 
     2023-01-06T17:50:46.404290-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="jim-test/15065642" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-interfaces:interfaces 200 duration 227159 ms".
     2023-01-06T17:50:46.404731-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="jim-test/15065642" cmd="terminated session (reason: normal)".
 
-Below is an example audit log of the user **admin** using the API and then adding VLANs.
+Example Audit Logging of API Changes
+------------------------------------
 
-
-**NOT Seeing payload**
+Below is an example audit log of the user **admin** using the API and then adding a new VLAN to the configuration. In F5OS release prior to F5OS-A 1.4.0 API audit logs captured configuration changes, but did not log the full configuration payload. 
 
 .. code-block:: bash
 
 
-    2023-01-06T17:54:30.760755-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="external token authentication succeeded via rest from 172.18.104.40:0 with http, member of groups: admin session-id:admin1673045652".
-    2023-01-06T17:54:30.760768-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/0" cmd="logged in via rest from 172.18.104.40:0 with http using externalvalidation authentication".
-    2023-01-06T17:54:30.760863-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="assigned to groups: admin".
-    2023-01-06T17:54:30.760954-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="created new session via rest from 172.18.104.40:0 with http".
-    2023-01-06T17:54:30.761331-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15071280" cmd="RESTCONF: request with http: PATCH /restconf/data/openconfig-vlan:vlans HTTP/1.1".
-    2023-01-06T17:54:30.772269-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15071280" cmd="terminated session (reason: normal)".
-    2023-01-06T17:54:30.773385-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15071280" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-vlan:vlans 204 duration 44442 ms".
-  
-
-
-
-
-Example Audit Logging of API Changes
-------------------------------------
-
-In F5OS release prior to F5OS-A 1.4.0 API audit logs captured configuration changes, but did not log the full configuration payload. 
-
-Example Audit Logging of webUI Changes
---------------------------------------
-
-
+    2023-02-17T17:28:10.290541-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/3104052" cmd="created new session via rest from 172.18.104.20:0 with http".
+    2023-02-17T17:28:10.290769-05:00 appliance-1 audit-service[11]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/3104052" cmd="RESTCONF: request with http: PATCH /restconf/data/openconfig-vlan:vlans HTTP/1.1".
+    2023-02-17T17:28:10.308174-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000003 msg="audit create" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}".
+    2023-02-17T17:28:10.308217-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}/vlan-id" value="600".
+    2023-02-17T17:28:10.308280-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}/config/vlan-id" value="600".
+    2023-02-17T17:28:10.308319-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000006 msg="audit value set" ctx="REST" user="admin/3104052" path="/vlans/vlan{600}/config/name" value="TEST600-VLAN".
+    2023-02-17T17:28:10.308819-05:00 appliance-1 audit-service[11]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/3104052" cmd="terminated session (reason: normal)".
+    2023-02-17T17:28:10.310149-05:00 appliance-1 audit-service[11]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/3104052" cmd="RESTCONF: response with http: HTTP/1.1 /restconf/data/openconfig-vlan:vlans 204 duration 57569 ms".
 
 
 Downloading Audit Logs via CLI
 ------------------------------
 
+Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. Before transfering a file using the CLI, use the **file list** command to see the contents of the  directory and ensure the file is there. There are two audit.log locations: **log/system/audit.log** where most of the audit.log events are logged, and **log/host/audit/audit.log** where some lower level events are logged.
+
+The path below is the main audit.log.
+
+.. code-block:: bash
+
+    r10900-1# file list path log/system/audit.log
+    entries {
+        name audit.log
+        date Sat Feb 25 21:38:45 UTC 2023
+        size 11MB
+    }
+    r10900-1#
+
+The path below is for lower level audit log events like account lockouts.
+
+.. code-block:: bash
+
+    r10900-1# file list path log/host/audit/audit.log
+    entries {
+        name audit.log
+        date Thu Feb 23 05:05:14 UTC 2023
+        size 50MB
+    }
+    r10900-1# 
+
+To export copies of these files off the system you can use the **file export** command to transfer the file to a remote HTTPS server, or to a remote server using SFTP, or SCP. Below is an example of transferring the log/system/audit.log to a remote HTTPS server:
+
+.. code-block:: bash
+
+    r10900-1# file export local-file log/system/audit.log remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(log/system/audit.log)
+    r10900-1#
+
+To check on status of the export use the **file transfer-status** command:
+
+.. code-block:: bash
+
+    r10900-1# file transfer-status 
+    result 
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Export file|HTTPS   |log/system/audit.log                                        |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Feb 25 16:46:28 2023
+
+    r10900-1# 
+
+You may also transfer from the CLI using SCP or SFTP protocols. Below is an example using SCP:
+
+.. code-block:: bash
+
+    r10900-1# file export local-file log/system/audit.log remote-host 10.255.0.142 protocol scp insecure remote-file r109001-audit.log username root
+    Value for 'password' (<string>): *******
+    result File transfer is initiated.(log/system/audit.log)
+    r10900-1#
+
+The file transfer-status command will show the upload of the SCP transfer as well as HTTPS or SFTP:
+
+.. code-block:: bash
+
+    r10900-1# file transfer-status
+    result 
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Export file|HTTPS   |log/system/audit.log                                        |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Feb 25 16:46:28 2023
+    2    |Export file|SCP     |log/system/audit.log                                        |10.255.0.142        |r109001-audit.log                                           |         Completed|Sat Feb 25 16:50:06 2023
+
+    r10900-1# 
+
+
 Downloading Audit Logs via API
 ------------------------------
+
+To copy the audit.log files from the appliance to a remote https server use the following API call, you can change the local-file path depending on which audit.log you want to export. Below is an API POST call to export the log/system/audit.log to a remote server.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/export
+
+The JSON body of the API call should contain the following syntax.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:insecure": "",
+        "f5-utils-file-transfer:protocol": "https",
+        "f5-utils-file-transfer:username": "corpuser",
+        "f5-utils-file-transfer:password": "password",
+        "f5-utils-file-transfer:remote-host": "10.255.0.142",
+        "f5-utils-file-transfer:remote-file": "/upload/upload.php",
+        "f5-utils-file-transfer:local-file": "log/system/audit.log"
+    }
+
+You can then check on the status of the export via the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+
+In the response the latest file trasnfer status will be displayed.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Export file|HTTPS   |log/system/audit.log                                        |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Feb 25 17:06:00 2023\n2    |Export file|SCP     |log/system/audit.log                                        |10.255.0.142        |r109001-audit.log                                           |         Completed|Sat Feb 25 16:50:06 2023\n"
+        }
+    }
+
+
 
 Downloading Audit Logs via webUI
 -------------------------------
 
+You can download either of the audit.log files from the **System -> File Utilities** page in the webUI. In the drop down menu for the **Base Directory** select log/host, and then you can select the audit directory as seen below.  
+
+.. image:: images/rseries_security/imageaudit1.png
+  :align: center
+  :scale: 70%
+
+Inside the audit directory you can then select the audit.log and then either **Download** to copy the file to you local machine via the browser, or select **Export** to copy to a rmeote HTTPS server.
+
+.. image:: images/rseries_security/imageaudit2.png
+  :align: center
+  :scale: 70%
+
+You can also select the **log/system** path to download the system audit.log.
+
+.. image:: images/rseries_security/imageaudit3.png
+  :align: center
+  :scale: 70%
