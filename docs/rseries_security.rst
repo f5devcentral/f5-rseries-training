@@ -1929,7 +1929,7 @@ Below is an example audit log of the user **admin** using the API and then addin
 Downloading Audit Logs via CLI
 ------------------------------
 
-Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. Before transfering a file using the CLI, use the file list command to see the contents of the  directory and ensure the file is there. There are two audit.log locations: **log/system/audit.log** where most of the audit.log events are logged, and **log/host/audit/audit.log**where some lower level events are logged.
+Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. Before transfering a file using the CLI, use the **file list** command to see the contents of the  directory and ensure the file is there. There are two audit.log locations: **log/system/audit.log** where most of the audit.log events are logged, and **log/host/audit/audit.log** where some lower level events are logged.
 
 The path below is the main audit.log.
 
@@ -1964,7 +1964,7 @@ To export copies of these files off the system you can use the **file export** c
     result File transfer is initiated.(log/system/audit.log)
     r10900-1#
 
-To check on status of the export use the file transfer-status command:
+To check on status of the export use the **file transfer-status** command:
 
 .. code-block:: bash
 
@@ -2000,11 +2000,13 @@ The file transfer-status command will show the upload of the SCP transfer as wel
 Downloading Audit Logs via API
 ------------------------------
 
-To copy the audit.log files from the appliance to a remote https server use the following API call, you can change the local-file path depending on which audit.log you want to export.
+To copy the audit.log files from the appliance to a remote https server use the following API call, you can change the local-file path depending on which audit.log you want to export. Below is an API POST call to export the log/system/audit.log to a remote server.
 
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/export
+
+The JSON body of the API call should contain the following syntax.
 
 .. code-block:: json
 
@@ -2024,6 +2026,7 @@ You can then check on the status of the export via the following API call:
 
     POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
+In the response the latest file trasnfer status will be displayed.
 
 .. code-block:: json
 
