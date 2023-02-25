@@ -266,7 +266,7 @@ To create a Certificate Signing Request (CSR) via the CLI use the **system aaa t
     -----END CERTIFICATE REQUEST-----
     r10900-1(config)# 
 
- To create a CA bundle via the CLI use the **system aaa tls ca-bundle** command.
+To create a CA bundle via the CLI use the **system aaa tls ca-bundle** command.
 
 .. code-block:: bash
 
@@ -330,7 +330,7 @@ You can display the current certificate, keys, and passpharases using the CLI co
 Managing Device Certificates, Keys, CSRs, and CAs via webUI
 -----------------------------------------------------------
 
-In the F5OS webUI toy can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS ccertificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
+In the F5OS webUI you can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS certificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
 
 .. image:: images/rseries_security/imagecert2.png
   :align: center
@@ -348,7 +348,7 @@ If you choose the **Store TLS** option of **False** then the certifcate details 
   :align: center
   :scale: 70%
 
-You can then use the **Show** options to display the current certificate, key, and details. Paste the text in the respective text boxes to add a certificate. TLS Key Passphrase is only required if TLS Key is in encrypted format. 
+You can then use the **Show** options to display the current certificate, key, and details. Paste the text into the respective text boxes to add a certificate. TLS Key Passphrase is only required if TLS Key is in encrypted format. 
 
 .. image:: images/rseries_security/imagecert5.png
   :align: center
@@ -440,7 +440,7 @@ Previously, F5OS allowed an admin to import a TLS certificate and key in clear t
 Appliance Mode for F5OS
 =======================
 
-If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilites can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell.
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilites can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
 
 Enabling Appliance Mode via the CLI
 -----------------------------------
@@ -529,9 +529,9 @@ Session Timeouts and Token Lifetime
 
 Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. 
 
-In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI session over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
+In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed.
+There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed. If this is a concern, then applaince mode could be enabled preventing root/bash access to the system.
 
 For the webUI, a token based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
 
@@ -619,7 +619,7 @@ Currently only the HTTPS token lifetime is configurable in the webUI. SSH and CL
 Token Lifetime via CLI
 ----------------------
 
-As mentioned in the introduction, the webUI uses tokens and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>** to set the token lifetime. You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+As mentioned in the introduction, the webUI and API use token based authentication and the timeout is based on five token refreshes failing, so the value is essentially five times the configured token lifetime. Use the command **system aaa restconf-token config lifetime <value-in-minutes>** to set the token lifetime. You may configure the restconf-token lifetime via the CLI. The value is in minutes, and the client is able to refresh the token five times before it expires. As an example, if the restconf-token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in a webUI session or API timing out after 5 minutes.
 
 .. code-block:: bash
 
@@ -723,7 +723,7 @@ In the body of the API call adjust the restconf-token lifetime setting to the de
 Disabling Basic Authentication
 ==============================
 
-F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate again. Although token based authentication is supported, basic authentication can still be utilized to access F5OS and make changes. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once a token is issued, it will be the only way to make changes via the webUI or the API. 
+F5OS utilizes basic authentication (username/password) as well as token based authentication for both the API and the webUI. Generally, username/password is issued by the client in order to obtain a token from F5OS, which is then used to make further inquiries or changes. Tokens have a relatively short lifetime for security reasons, and the user is allowed to refresh that token a certain number of times before they are forced to re-authenticate using basic authentication again. Although token based authentication is supported, basic authentication can still be utilized to access F5OS and make changes by default. A new option was added in F5OS-A 1.3.0 to allow basic authentication to be disabled, except for the means of obtaining a token. Once a token is issued to a client, it will be the only way to make changes via the webUI or the API. 
 
 
 Disabling Basic Auth via the CLI
@@ -802,7 +802,7 @@ You should see the returned output below with the basic authentication state set
         }
     }
 
-Use the following API PATCH call to set the restconf-token:basic setting to **true** or **false**, or any other password policy parameter.
+Use the following API PATCH call to set the restconf-token:basic setting to **true** or **false**, or to adjust any other password policy parameter.
 
 .. code-block:: bash
 
@@ -851,7 +851,7 @@ In the body of the API call adjust the restconf-token:basic setting to **true** 
 Disabling Basic Auth via the webUI
 ----------------------------------
 
-Disabling basic authentication via the webUI is a new feature that has been added in F5OS-A 1.4.0. In the webUI got to **User Management -> Authentication Settings** and you'll see a drop down box to enable or disable **Basic Authentication**.
+Disabling basic authentication via the webUI is a new feature that has been added in F5OS-A 1.4.0. In the webUI go to **User Management -> Authentication Settings** and you'll see a drop down box to enable or disable **Basic Authentication**.
 
 .. image:: images/rseries_security/image5.png
   :align: center
@@ -994,7 +994,7 @@ The F5OS platform layer supports both local and remote authentication. By defaul
 
 `Configuring Remote User Authentication and Authorization on TMOS <https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/10.html>`_
 
-Currently F5OS only supports static pre-defined roles which in turn map to specific group IDs. Users created and managed on external LDAP, Active Directory, RADIUS, or TACACS+ servers must have the same group IDs on the external authentication servers as they do within F5OS based systems to allow authentication and authorization to occur. Users created on external LDAP, Active Directory, RADIUS, or TACACS+ servers must be associated with one of these group IDs on the system. The supported F5OS group IDs and the roles they map to are seen in the table below. User defined roles are not supported.
+In versions prior to F5OS-A 1.4.0, F5OS only supported static pre-defined roles which in turn map to specific group IDs. Users created and managed on external LDAP, Active Directory, RADIUS, or TACACS+ servers must have the same group IDs on the external authentication servers as they do within F5OS based systems to allow authentication and authorization to occur. Users created on external LDAP, Active Directory, RADIUS, or TACACS+ servers must be associated with one of these group IDs on the system. The supported F5OS static group IDs and the roles they map to are seen in the table below. User defined roles are not supported in version prior to F5OS-A 1.4.0.
 
 +----------------+----------+
 | Role           | Group ID | 
@@ -1036,17 +1036,42 @@ More specific configuration details can be found in the **User Management** sect
 
 The **gidNumber** attribute needs to either be on the user or on a group the user is a member of. The **gidNumber** must be one of those listed (9000, 9001, 9100). [The root role is not externally accessible for obvious reasons.] 
 
-the current implementation relies on AD “unix attributes” being installed into the directory.
+The current implementation relies on AD “unix attributes” being installed into the directory.
 
-AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs will be configurable in a future release, but will still be numeric not group names. 
+AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
 
-Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded 
+Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded. 
 
-Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. 
+Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.3.0 can be found below.
 
-In a future release, these role numbers will be configurable  
+`LDAP/AD configuration overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview>`_
 
-https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview
+Changing Group ID Mapping via CLI (F5OS-A 1.4.0 and Later)
+---------------------------------------------------------
+
+F5OS-A 1.4.0 has added the ability to customize the Group ID mapping to the remote authentication server. In previous releases the Group IDs were static, now they can be changed to map to user selectable IDs. Below is an example of changing the remote Group Id for the admin account to a custom value of 9200.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa authentication roles role admin config remote-gid 9200 
+    r10900-1(config-role-admin)# commit
+    Commit complete.
+    r10900-1(config-role-admin)# 
+
+To view the current mappings use the *show system aaa authentication roles** CLI command.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa authentication roles
+                        REMOTE         
+    ROLENAME        GID   GID     USERS  
+    -------------------------------------
+    admin           9000  9200    -      
+    operator        9001  -       -      
+    resource-admin  9003  -       -      
+    tenant-console  9100  -       -      
+
+    r10900-1# 
 
 
 Login Banner / Message of the Day
