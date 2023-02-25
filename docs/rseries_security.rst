@@ -196,7 +196,7 @@ F5OS supports TLS device certificates and keys to secure connections to the mana
 Managing Device Certificates, Keys, CSRs, and CAs via CLI
 --------------------------------------------------------
 
-By default F5OS uses a self-signed certicate and key for device management. If you would like to create your own private key and self-signed certificate use the following CLI command:
+By default, F5OS uses a self-signed certificate and key for device management. If you would like to create your own private key and self-signed certificate use the following CLI command:
 
 .. code-block:: bash
 
@@ -206,7 +206,7 @@ By default F5OS uses a self-signed certicate and key for device management. If y
     r10900-1(config)#
 
 
-The **store-tls** option stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
+The **store-tls** option when set to **true**, stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning the vlaues only in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
 
 .. code-block:: bash
 
