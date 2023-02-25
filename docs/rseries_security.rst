@@ -1049,7 +1049,7 @@ Roles are mutually exclusive. While it is theoretically possible to assign a use
 Changing Group ID Mapping via CLI (F5OS-A 1.4.0 and Later)
 ---------------------------------------------------------
 
-F5OS-A 1.4.0 has added the ability to customize the Group ID mapping to the remote authentication server. In previous releases the Group IDs were static, now they can be changed to map to user selectable IDs. Below is an example of changing the remote Group Id for the admin account to a custom value of 9200.
+F5OS-A 1.4.0 has added the ability to customize the Group ID mapping to the remote authentication server. In previous releases the Group IDs were static, now they can be changed to map to user selectable Group IDs. Below is an example of changing the remote Group ID for the admin account to a custom value of 9200.
 
 .. code-block:: bash
 
@@ -1058,7 +1058,7 @@ F5OS-A 1.4.0 has added the ability to customize the Group ID mapping to the remo
     Commit complete.
     r10900-1(config-role-admin)# 
 
-To view the current mappings use the *show system aaa authentication roles** CLI command.
+To view the current mappings use the **show system aaa authentication roles** CLI command.
 
 .. code-block:: bash
 
@@ -1149,10 +1149,13 @@ In the body of the API call configure the desired message of the day and login b
         }
     }
 
+To view the currently configured MoTD and login banner, issue the folowing GET API request.
 
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/config
+
+The output will contain the current MoTD and login banner configuration.
 
 .. code-block:: json
 
@@ -1168,15 +1171,15 @@ In the body of the API call configure the desired message of the day and login b
 Display of Login Banner and MoTD
 --------------------------------
 
-Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successful user login, the MoTD is then displayed. Both are highlighted in bold below. 
+Below is an example of the Login Banner being displayed before the user is prompted for a password during an SSH connection to the F5OS platform layer. After a successful user login, the MoTD is then displayed. 
 
 .. code-block:: bash
 
     prompt:~ user$ ssh -l admin 10.255.0.132
-    **This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.**
+    This is a restricted resource. Unauthorized access is prohibited. Please disconnect now if you are not authorized.
     admin@10.255.0.132's password: 
     Last login: Tue Nov 29 10:41:06 2022 from 10.10.10.16
-    **Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket.**
+    Welcome to the GSA r10900 unit#1, do not make any changes to configuration without a ticket.
     System Time: 2022-11-29 11:17:00 EST
     Welcome to the Management CLI
     User admin last logged in 2022-11-29T16:17:00.008317+00:00, to appliance-1, from 10.10.10.16 using cli-ssh
@@ -1194,9 +1197,6 @@ Below is an example of the Login Banner being displayed before the user is promp
 .. image:: images/rseries_security/image9.png
   :align: center
   :scale: 70%  
-
-Console Logins
-==============
 
 
 SNMPv3
@@ -1388,40 +1388,55 @@ In the body of the API call you can enable NTP authentication, add keys, and ass
 Configurable Management Ciphers
 ===============================
 
+F5OS-A 1.4.0 added the ability to display and configure the ciphers used for the management interface of F5OS. The **show system security** CLI command will display the **ssl-ciphersuite** for the webUI/httpd management interface. It will also display the **ciphers** and **kexalgorithms** for the sshd service. Below is an example of the default settings. 
 
 .. code-block:: bash
 
+    r10900-1# show system security 
     system security services service httpd
-    config ssl-ciphersuite ""
-    !
+    state ssl-ciphersuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
+    system security services service sshd
+    state ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
+    state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
+    r10900-1#
+
+You can change the ciphers offered by F5OS to clients connecting to the httpd service by using the **system security services service httpd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
+
+.. code-block:: bash
+
+    r10900-1(config)# system security services service httpd config ssl-ciphersuite ?
+    Description: User specified ssl-ciphersuite.
+    Possible completions:
+    <string>[ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES2
+    56-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-
+    RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDH
+    E-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-
+    RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA]
+    r10900-1(config)# 
+    
+You can change the ciphers and kexalgorithms offered by F5OS to clients connecting to the sshd service by using the **system security services service sshd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
+
+.. code-block:: bash
+
+    r10900-1(config)# system security services service sshd config ?
+    Possible completions:
+        ciphers         User specified ciphers.
+        kexalgorithms   User specified kexalgorithms.
+        macs            User specified MACs.
+
+
+Below are the current options for sshd cipers and kexalgorithms.
+
     system security services service sshd
     config ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
     config kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
     !
 
-    r10900(config)# system security services service sshd config ?
-    Possible completions:
-    ciphers         User specified ciphers.
-    kexalgorithms   User specified kexalgorithms.
-    macs            User specified MACs.
-    
-    r10900(config)# system security services service sshd config ciphers ?
-    Description: User specified ciphers.
-    Possible completions:
-    string  [
-
-    r10900(config)# system security services service httpd config ssl-ciphersuite ?
-    Description: User specified ssl-ciphersuite.
-    Possible completions:
-     <string>[]
-
-
-
 
 Client Certificate Based Auth
 =============================
 
-No available yet.
+Coming in F5OS-A 1.5.0.
 
 iHealth Proxy Server
 ====================
@@ -1458,7 +1473,7 @@ To add a proxy server for iHealth uploads via the API, use the following API cal
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-diagnostics-qkview:diagnostics/f5-system-diagnostics-proxy:proxy
 
-In the body of the API call add the username, password, and proxy server configuration. NOTE: Need to figure out encoding for password?
+In the body of the API call add the username, password, and proxy server configuration.
 
 .. code-block:: json
 
@@ -1914,12 +1929,96 @@ Below is an example audit log of the user **admin** using the API and then addin
 Downloading Audit Logs via CLI
 ------------------------------
 
-Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. 
+Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. Before transfering a file using the CLI, use the file list command to see the contents of the  directory and ensure the file is there. There are two audit.log locations: **log/system/audit.log** where most of the audit.log events are logged, and **log/host/audit/audit.log**where some lower level events are logged.
+
+The path below is the main audit.log.
+
+.. code-block:: bash
+
+    r10900-1# file list path log/system/audit.log
+    entries {
+        name audit.log
+        date Sat Feb 25 21:38:45 UTC 2023
+        size 11MB
+    }
+    r10900-1#
+
+The path below is for lower level audit log events like account lockouts.
+
+.. code-block:: bash
+
+    r10900-1# file list path log/host/audit/audit.log
+    entries {
+        name audit.log
+        date Thu Feb 23 05:05:14 UTC 2023
+        size 50MB
+    }
+    r10900-1# 
+
+To export copies of these files off the system you can use the **file export** command to transfer the file to a remote HTTPS server, or to a remote server using SFTP, or SCP. Below is an example of transferring the log/system/audit.log to a remote HTTPS server:
+
+.. code-block:: bash
+
+    r10900-1# file export local-file log/system/audit.log remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(log/system/audit.log)
+    r10900-1#
+
+To check on status of the export use the file transfer-status command:
+
+.. code-block:: bash
+
+    r10900-1# file transfer-status 
+    result 
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Export file|HTTPS   |log/system/audit.log                                        |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Feb 25 16:46:28 2023
+
+    r10900-1# 
+
+You may also transfer from the CLI using SCP or SFTP protocols. Below is an example using SCP:
+
+.. code-block:: bash
+
+    r10900-1# file export local-file log/system/audit.log remote-host 10.255.0.142 protocol scp insecure remote-file r109001-audit.log username root
+    Value for 'password' (<string>): *******
+    result File transfer is initiated.(log/system/audit.log)
+    r10900-1#
+
+The file transfer-status command will show the upload of the SCP transfer as well as HTTPS or SFTP:
+
+.. code-block:: bash
+
+    r10900-1# file transfer-status
+    result 
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
+    1    |Export file|HTTPS   |log/system/audit.log                                        |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Feb 25 16:46:28 2023
+    2    |Export file|SCP     |log/system/audit.log                                        |10.255.0.142        |r109001-audit.log                                           |         Completed|Sat Feb 25 16:50:06 2023
+
+    r10900-1# 
 
 
 Downloading Audit Logs via API
 ------------------------------
 
+
+
 Downloading Audit Logs via webUI
 -------------------------------
 
+You can download either of the audit.log files from the **System -> File Utilities** page in the webUI. In the drop down menu for the **Base Directory** select log/host, and then you can select the audit directory as seen below.  
+
+.. image:: images/rseries_security/imageaudit1.png
+  :align: center
+  :scale: 70%
+
+Inside the audit directory you can then select the audit.log and then either **Download** to copy the file to you local machine via the browser, or select **Export** to copy to a rmeote HTTPS server.
+
+.. image:: images/rseries_security/imageaudit2.png
+  :align: center
+  :scale: 70%
+
+You can also select the **log/system** path to download the system audit.log.
+
+.. image:: images/rseries_security/imageaudit3.png
+  :align: center
+  :scale: 70%
