@@ -193,8 +193,8 @@ F5OS supports TLS device certificates and keys to secure connections to the mana
 `rSeries Certificate Management Overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-system-settings.html#cert-mgmt-overview>`_
 
 
-Managing Device Certificates via CLI
--------------------------------------
+Managing Device Certificates, Keys, CSRs, and CAs via CLI
+--------------------------------------------------------
 
 By default F5OS uses a self-signed certicate and key for device management. If you would like to create your own private key and self-signed certificate use the following CLI command:
 
@@ -206,7 +206,7 @@ By default F5OS uses a self-signed certicate and key for device management. If y
     r10900-1(config)#
 
 
-The **store-tls** option stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored then set **store-tls false** as seen below.
+The **store-tls** option stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
 
 .. code-block:: bash
 
@@ -248,9 +248,87 @@ The management interface will now use the self-signed certifcate you just create
   :scale: 70%
 
 
+To create a Certificate Signing Request (CSR) via the CLI use the **system aaa tls create-csr** command.
 
-Managing Device Certificates via webUI
--------------------------------------
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls create-csr name r10900-1.f5demo.net email jim@f5.com city Boston country US organization F5 region MA unit Sales version 1 
+    response 
+    -----BEGIN CERTIFICATE REQUEST-----
+    MIIBezCCAQECAQEwgYExHDAaBgNVBAMME3IxMDkwMC0xLmY1ZGVtby5uZXQxCzAJ
+    BgNVBAYTAlVTMQswCQYDVQQIDAJNQTEPMA0GA1UEBwwGQm9zdG9uMQswCQYDVQQK
+    DAJGNTEOMAwGA1UECwwFU2FsZXMxGTAXBgkqhkiG9w0BCQEWCmppbUBmNS5jb20w
+    djAQBgcqhkjOPQIBBgUrgQQAIgNiAAQ/8UzZtEGMJ+vtmkEUsgiv2hL8r81sKwB3
+    clwqnXKl08vFCNr4wy7TB28b4EszAQDTBhIipHuC5L2GpetjNsFywkDqZuoJAvmx
+    nrqYQe5z9bDUpO6AJsAaohLG0sc9E4WgADAKBggqhkjOPQQDAgNoADBlAjEAsTST
+    M43RDyve46QJtHf3ofCVuhmxZ8lAcWBX5W3JsDiZcdaNCeXgSk4pX5nwSrDnAjAH
+    GPjWc5CcyCBh8+RyV9zNL7I5WlIsZj1aUAA3PD1CSgFHxaXV6cpHP8H8kQiJjjE=
+    -----END CERTIFICATE REQUEST-----
+    r10900-1(config)# 
+
+ To create a CA bundle via the CLI use the **system aaa tls ca-bundle** command.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls ca-bundles ca-bundle ?
+    Possible completions:
+    <Reference to configured name of the CA Bundle.>
+    r10900-1(config)# system aaa tls ca-bundles ca-bundle    
+
+
+To create a Client Revocation List (CRL) via the CLI issue the following command.
+
+.. code-block:: bash
+
+    r10900-1(config)# system aaa tls crls crl ?
+    Possible completions:
+    <Reference to configured name of the CRL.>
+    r10900-1(config)# system aaa tls crls crl
+
+You can display the current certificate, keys, and passpharases using the CLI command **show system aaa tls**.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa tls
+    system aaa tls state certificate Certificate:
+                                        Data:
+                                            Version: 1 (0x0)
+                                            Serial Number:
+                                                c9:79:f0:b2:3e:9e:d2:a1
+                                        Signature Algorithm: ecdsa-with-SHA256
+                                            Issuer: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com
+                                            Validity
+                                                Not Before: Feb 24 21:35:31 2023 GMT
+                                                Not After : Feb 24 21:35:31 2024 GMT
+                                            Subject: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com
+                                            Subject Public Key Info:
+                                                Public Key Algorithm: id-ecPublicKey
+                                                    Public-Key: (384 bit)
+                                                    pub: 
+                                                        04:3f:f1:4c:d9:b4:41:8c:27:eb:ed:9a:41:14:b2:
+                                                        08:af:da:12:fc:af:cd:6c:2b:00:77:72:5c:2a:9d:
+                                                        72:a5:d3:cb:c5:08:da:f8:c3:2e:d3:07:6f:1b:e0:
+                                                        4b:33:01:00:d3:06:12:22:a4:7b:82:e4:bd:86:a5:
+                                                        eb:63:36:c1:72:c2:40:ea:66:ea:09:02:f9:b1:9e:
+                                                        ba:98:41:ee:73:f5:b0:d4:a4:ee:80:26:c0:1a:a2:
+                                                        12:c6:d2:c7:3d:13:85
+                                                    ASN1 OID: secp384r1
+                                                    NIST CURVE: P-384
+                                        Signature Algorithm: ecdsa-with-SHA256
+                                            30:66:02:31:00:ad:83:1c:be:06:49:b7:16:36:57:aa:20:f5:
+                                            73:b6:59:2a:48:01:cd:18:3f:8a:65:87:4c:02:17:14:32:47:
+                                            02:db:c6:c7:28:48:ac:6c:9a:fc:e2:88:40:71:1c:31:45:02:
+                                            31:00:b3:06:dc:eb:60:42:df:d7:a6:b2:21:aa:ad:15:e9:70:
+                                            1f:76:d6:1d:2d:25:5a:d0:0f:53:ab:1c:1a:3c:ce:e3:9a:6d:
+                                            c4:e0:1f:38:58:d0:b3:dc:94:6a:02:47:a8:d0
+                                    
+    system aaa tls state verify-client false
+    system aaa tls state verify-client-depth 1
+    r10900-1# 
+
+
+Managing Device Certificates, Keys, CSRs, and CAs via webUI
+-----------------------------------------------------------
 
 In the F5OS webUI toy can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS ccertificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
 
@@ -298,9 +376,57 @@ When you install an SSL certificate on the system, you also install a certificat
   :align: center
   :scale: 70%
 
-Managing Device Certificates via API
+Managing Device Certificates, Keys, CSRs, and CAs via API
 -------------------------------------
 
+You can view the current certificates, keys and passphrases via the API using the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-tls:tls
+
+In the response you will notice the certificate, key, and optional passphrase as well as the state.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-tls:tls": {
+            "config": {
+                "certificate": "-----BEGIN CERTIFICATE-----\nMIICEjCCAZcCCQDJefCyPp7SoTAKBggqhkjOPQQDAjByMQ0wCwYDVQQDDARqaW0y\nMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTUExDzANBgNVBAcMBkJvc3RvbjELMAkG\nA1UECgwCRjUxDjAMBgNVBAsMBVNhbGVzMRkwFwYJKoZIhvcNAQkBFgpqaW1AZjUu\nY29tMB4XDTIzMDIyNDIxMzUzMVoXDTI0MDIyNDIxMzUzMVowcjENMAsGA1UEAwwE\namltMjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAk1BMQ8wDQYDVQQHDAZCb3N0b24x\nCzAJBgNVBAoMAkY1MQ4wDAYDVQQLDAVTYWxlczEZMBcGCSqGSIb3DQEJARYKamlt\nQGY1LmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABD/xTNm0QYwn6+2aQRSyCK/a\nEvyvzWwrAHdyXCqdcqXTy8UI2vjDLtMHbxvgSzMBANMGEiKke4LkvYal62M2wXLC\nQOpm6gkC+bGeuphB7nP1sNSk7oAmwBqiEsbSxz0ThTAKBggqhkjOPQQDAgNpADBm\nAjEArYMcvgZJtxY2V6og9XO2WSpIAc0YP4plh0wCFxQyRwLbxscoSKxsmvziiEBx\nHDFFAjEAswbc62BC39emsiGqrRXpcB921h0tJVrQD1OrHBo8zuOabcTgHzhY0LPc\nlGoCR6jQ\n-----END CERTIFICATE-----",
+                "key": "$8$LzRR+5tiwtRDLQI2NFQwJ3aVjXDZw8MAmMEvqO/uM9wPHjzq5AEKf8yWMQWIsmspS8GuYWhi\n4UwWBjRnhmuViENZLm5RXjA02Lr42vzHv05skcnnFfCiRL+L8goee8wI+tbI06x4iDnsYhD2\nAAUW1mV8Kb6zAIJ1/AeobAhgY/MvJdVrRpYAY6CWpRQQiCHJbnIsvw82HXqT8fEcKfNeAvLC\nPeLPXJltU89jGlylj899cWUN+CyxTDxko6mvvRaB2MeJSZ5jwnR8bhIubr/hlG1FPlGaOIbm\nP5BYZmhVmFliwQUzlVp+36AxtGG52amLZmudmW5xskOmnhEze5NcbFp8aIF6yUa7AyKE9Rc9\n0kv4W7gNmm2+0YXaMknj1ahTSYESf5sDxN5R6knz0pFf5fF7caun7gmS5Jfqs4OIwVtDjL7J\n2j4rT7hZuwnzIWbUKGu0N9620mWFpF6S9aI2keLzhwYcad1aPMEF6PabEtQPpZMZ9kJVDROe\n5bvf+8pBvNBCtLRCX7+MpKLeFYTzMQ==",
+                "passphrase": "$8$4hyAzRD/Wy3WCyocZXv6K4XeM8qDmgfX0CIHtfJYZDY=",
+                "verify-client": false,
+                "verify-client-depth": 1
+            },
+            "state": {
+                "certificate": "Certificate:\n    Data:\n        Version: 1 (0x0)\n        Serial Number:\n            c9:79:f0:b2:3e:9e:d2:a1\n    Signature Algorithm: ecdsa-with-SHA256\n        Issuer: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com\n        Validity\n            Not Before: Feb 24 21:35:31 2023 GMT\n            Not After : Feb 24 21:35:31 2024 GMT\n        Subject: CN=jim2, C=US, ST=MA, L=Boston, O=F5, OU=Sales/emailAddress=jim@f5.com\n        Subject Public Key Info:\n            Public Key Algorithm: id-ecPublicKey\n                Public-Key: (384 bit)\n                pub: \n                    04:3f:f1:4c:d9:b4:41:8c:27:eb:ed:9a:41:14:b2:\n                    08:af:da:12:fc:af:cd:6c:2b:00:77:72:5c:2a:9d:\n                    72:a5:d3:cb:c5:08:da:f8:c3:2e:d3:07:6f:1b:e0:\n                    4b:33:01:00:d3:06:12:22:a4:7b:82:e4:bd:86:a5:\n                    eb:63:36:c1:72:c2:40:ea:66:ea:09:02:f9:b1:9e:\n                    ba:98:41:ee:73:f5:b0:d4:a4:ee:80:26:c0:1a:a2:\n                    12:c6:d2:c7:3d:13:85\n                ASN1 OID: secp384r1\n                NIST CURVE: P-384\n    Signature Algorithm: ecdsa-with-SHA256\n         30:66:02:31:00:ad:83:1c:be:06:49:b7:16:36:57:aa:20:f5:\n         73:b6:59:2a:48:01:cd:18:3f:8a:65:87:4c:02:17:14:32:47:\n         02:db:c6:c7:28:48:ac:6c:9a:fc:e2:88:40:71:1c:31:45:02:\n         31:00:b3:06:dc:eb:60:42:df:d7:a6:b2:21:aa:ad:15:e9:70:\n         1f:76:d6:1d:2d:25:5a:d0:0f:53:ab:1c:1a:3c:ce:e3:9a:6d:\n         c4:e0:1f:38:58:d0:b3:dc:94:6a:02:47:a8:d0\n",
+                "verify-client": false,
+                "verify-client-depth": 1
+            }
+        }
+    }
+
+If you would like to upload a certificate, key, and passphrase you can issue the following API PUT command.
+
+.. code-block:: bash
+
+    PUT https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-tls:tls
+
+In the body of the API call enter the following JSON syntax.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-tls:tls": {
+            "config": {
+                "certificate": "-----BEGIN CERTIFICATE-----\nMIICEjCCAZcCCQDJefCyPp7SoTAKBggqhkjOPQQDAjByMQ0wCwYDVQQDDARqaW0y\nMQswCQYDVQQGEwJVUzELMAkGA1UECAwCTUExDzANBgNVBAcMBkJvc3RvbjELMAkG\nA1UECgwCRjUxDjAMBgNVBAsMBVNhbGVzMRkwFwYJKoZIhvcNAQkBFgpqaW1AZjUu\nY29tMB4XDTIzMDIyNDIxMzUzMVoXDTI0MDIyNDIxMzUzMVowcjENMAsGA1UEAwwE\namltMjELMAkGA1UEBhMCVVMxCzAJBgNVBAgMAk1BMQ8wDQYDVQQHDAZCb3N0b24x\nCzAJBgNVBAoMAkY1MQ4wDAYDVQQLDAVTYWxlczEZMBcGCSqGSIb3DQEJARYKamlt\nQGY1LmNvbTB2MBAGByqGSM49AgEGBSuBBAAiA2IABD/xTNm0QYwn6+2aQRSyCK/a\nEvyvzWwrAHdyXCqdcqXTy8UI2vjDLtMHbxvgSzMBANMGEiKke4LkvYal62M2wXLC\nQOpm6gkC+bGeuphB7nP1sNSk7oAmwBqiEsbSxz0ThTAKBggqhkjOPQQDAgNpADBm\nAjEArYMcvgZJtxY2V6og9XO2WSpIAc0YP4plh0wCFxQyRwLbxscoSKxsmvziiEBx\nHDFFAjEAswbc62BC39emsiGqrRXpcB921h0tJVrQD1OrHBo8zuOabcTgHzhY0LPc\nlGoCR6jQ\n-----END CERTIFICATE-----",
+                "key": "$8$LzRR+5tiwtRDLQI2NFQwJ3aVjXDZw8MAmMEvqO/uM9wPHjzq5AEKf8yWMQWIsmspS8GuYWhi\n4UwWBjRnhmuViENZLm5RXjA02Lr42vzHv05skcnnFfCiRL+L8goee8wI+tbI06x4iDnsYhD2\nAAUW1mV8Kb6zAIJ1/AeobAhgY/MvJdVrRpYAY6CWpRQQiCHJbnIsvw82HXqT8fEcKfNeAvLC\nPeLPXJltU89jGlylj899cWUN+CyxTDxko6mvvRaB2MeJSZ5jwnR8bhIubr/hlG1FPlGaOIbm\nP5BYZmhVmFliwQUzlVp+36AxtGG52amLZmudmW5xskOmnhEze5NcbFp8aIF6yUa7AyKE9Rc9\n0kv4W7gNmm2+0YXaMknj1ahTSYESf5sDxN5R6knz0pFf5fF7caun7gmS5Jfqs4OIwVtDjL7J\n2j4rT7hZuwnzIWbUKGu0N9620mWFpF6S9aI2keLzhwYcad1aPMEF6PabEtQPpZMZ9kJVDROe\n5bvf+8pBvNBCtLRCX7+MpKLeFYTzMQ==",
+                "passphrase": "$8$4hyAzRD/Wy3WCyocZXv6K4XeM8qDmgfX0CIHtfJYZDY=",
+                "verify-client": false,
+                "verify-client-depth": 1
+            }
+        }
+    }
 
 
 Encrypt Management TLS Private Key
