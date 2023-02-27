@@ -180,8 +180,8 @@ Note that the hash key can be used to check and compare the status of the primar
 .. code-block:: bash
 
     r10900-1# show system aaa primary-key 
-    system aaa primary-key state hash gK/F47uQfi7JWYFirStCVhIaGcuoctpbGpx63MNy/korwigBW6piKx9TldiRazHmE8Y+qylGY4MOcs9IZ+KG4Q==
-    system aaa primary-key state status NONE
+    system aaa primary-key state hash IWDanp1tcAO+PJPH2Hti6BSvpFKgRvvFpXNZRIAk3JoXhypflBofHc+IJp8LA2SDGCQ2IgE8Z628lGjCWVjBxg==
+    system aaa primary-key state status "COMPLETE        Initiated: Mon Feb 27 13:38:02 2023"
     r10900-1# 
 
 
