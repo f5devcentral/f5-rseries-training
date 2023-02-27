@@ -39,7 +39,7 @@ If you would like to lock down one of the protocols to either a single IP addres
     r10900-2(config-allowed-ip-snmp)# commit
     Commit complete.
 
-Currently you can add one ip address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block containing multiple addresses. If you require more than one non-contiguous IP address or subnets you can add it under another name as seen below. 
+Currently you can add one IP address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block containing multiple addresses. If you require more than one non-contiguous IP address or subnets you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -108,7 +108,7 @@ To view the allowed IP's in the API, use the following call.
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
 
-The output will show the previously configured allowed-ip's.
+The output will show the previously configured allowed-ips.
 
 
 .. code-block:: json
@@ -167,7 +167,7 @@ Setting F5OS Primary Key
 
 The F5 rSeries system uses a primary key to perform encryption and decryption of highly sensitive passwords/passphrases in the configuration database. You should periodically reset this primary key for additional security. You should set this primary key prior to performing any configuration backup if you have not already done so. In the case of a configuration migration such as moving configuration to a replacement device due to RMA, it is important to set the primary key to a known value so that the same key can be used to decrypt the passwords/passphrases in the configuration restored on the replacement device. More details are provided in the solution article below.
 
-`K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://my.f5.com/manage/s/article/K47512994>`_
+`K47512994: Backup and restore the F5OS-A configuration on an rSeries system <https://my.f5.com/manage/s/article/K47512994>`_
 
 To set the primary-key issue the following command in config mode.
 
@@ -206,7 +206,7 @@ By default, F5OS uses a self-signed certificate and key for device management. I
     r10900-1(config)#
 
 
-The **store-tls** option when set to **true**, stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning the vlaues only in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
+The **store-tls** option when set to **true**, stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning the values only in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
 
 .. code-block:: bash
 
@@ -241,7 +241,7 @@ The **store-tls** option when set to **true**, stores the private key and self-s
     -----END CERTIFICATE-----
     r10900-1(config)# 
 
-The management interface will now use the self-signed certifcate you just created. You can verify by connecting to the F5OS management interface via a browser and then examining the certificate.
+The management interface will now use the self-signed certificate you just created. You can verify by connecting to the F5OS management interface via a browser and then examining the certificate.
 
 .. image:: images/rseries_security/imagecert.png
   :align: center
@@ -285,7 +285,7 @@ To create a Client Revocation List (CRL) via the CLI issue the following command
     <Reference to configured name of the CRL.>
     r10900-1(config)# system aaa tls crls crl
 
-You can display the current certificate, keys, and passpharases using the CLI command **show system aaa tls**.
+You can display the current certificate, keys, and passphrases using the CLI command **show system aaa tls**.
 
 .. code-block:: bash
 
@@ -336,13 +336,13 @@ In the F5OS webUI you can manage device certificates for the management interfac
   :align: center
   :scale: 70%
 
-The screen below shows the options when creating a self signed certificate. 
+The screen below shows the options when creating a self-signed certificate. 
 
 .. image:: images/rseries_security/imagecert3.png
   :align: center
   :scale: 70%
 
-If you choose the **Store TLS** option of **False** then the certifcate details will be displayed, and you will be given the option to copy them to the clipboard. If you want to store them on the system, then set the **Store TLS** option to **True**.
+If you choose the **Store TLS** option of **False** then the certiicate details will be displayed, and you will be given the option to copy them to the clipboard. If you want to store them on the system, then set the **Store TLS** option to **True**.
 
 .. image:: images/rseries_security/imagecert4.png
   :align: center
@@ -358,13 +358,13 @@ You can then use the **Show** options to display the current certificate, key, a
   :align: center
   :scale: 70%
 
-You can also create a Certificate Signing Request (CSR) for the self-signed certificate for use when submiting the certificate to the Certificate Authourity (CA).
+You can also create a Certificate Signing Request (CSR) for the self-signed certificate for use when submitting the certificate to the Certificate Authourity (CA).
 
 .. image:: images/rseries_security/imagecsr1.png
   :align: center
   :scale: 70%
 
-After clicking **Save** the CSR will appear, and you will be able to **Copy to Clipboard** so you can submit the singning request.
+After clicking **Save** the CSR will appear, and you will be able to **Copy to Clipboard** so you can submit the signing request.
 
 .. image:: images/rseries_security/imagecsr2.png
   :align: center
@@ -432,7 +432,7 @@ In the body of the API call enter the following JSON syntax.
 Encrypt Management TLS Private Key
 =======================
 
-Previously, F5OS allowed an admin to import a TLS certificate and key in clear text. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is simlar to the BIG-IP functionality defined in the link below.
+Previously, F5OS allowed an admin to import a TLS certificate and key in clear text. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is similar to the BIG-IP functionality defined in the link below.
 
 `K14912: Adding and removing encryption from private SSL keys (11.x - 16.x) <https://my.f5.com/manage/s/article/K14912>`_
 
@@ -440,7 +440,7 @@ Previously, F5OS allowed an admin to import a TLS certificate and key in clear t
 Appliance Mode for F5OS
 =======================
 
-If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilites can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
 
 Enabling Appliance Mode via the CLI
 -----------------------------------
@@ -531,7 +531,7 @@ Idle timeouts were configurable in previous releases, but the configuration only
 
 In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed. If this is a concern, then applaince mode could be enabled preventing root/bash access to the system.
+There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed. If this is a concern, then appliance mode could be enabled preventing root/bash access to the system.
 
 For the webUI, a token based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh has to fail five times before disconnecting the client.  
 
@@ -990,7 +990,7 @@ In the payload of the API call adjust the appropriate parameters under **f5-open
 Remote Authentication
 =====================
 
-The F5OS platform layer supports both local and remote authentication. By default, there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on intial login. Many users will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, AD, or TACACS+. The F5OS TMOS based tenants maintain their own local or remote authentication, and details are covered in standard TMOS documentation.
+The F5OS platform layer supports both local and remote authentication. By default, there are local users enabled for both admin and root access. You will be forced to change passwords for both of these accounts on initial login. Many users will prefer to configure the F5OS layer to use remote authentication via LDAP, RADIUS, AD, or TACACS+. The F5OS TMOS based tenants maintain their own local or remote authentication, and details are covered in standard TMOS documentation.
 
 `Configuring Remote User Authentication and Authorization on TMOS <https://techdocs.f5.com/kb/en-us/products/big-ip_ltm/manuals/product/tmos-implementations-13-0-0/10.html>`_
 
@@ -1008,7 +1008,7 @@ In versions prior to F5OS-A 1.4.0, F5OS only supported static pre-defined roles 
 | tenant-console | 9100     | 
 +----------------+----------+
 
-From a high level the **admin** role (group ID 9000) is a read/write role with full access to the system to make changes. The **operator** role (group ID 9001) is a read-only role and is prevented form making any configuration changes. The **root** role (group ID 0) gives full access to the bash shell, and in some environments this role will be disabled by enabling appliance mode. Note that the root role is not allowed access via remote authentication. The last role is **tenant-console** (group ID 9100) and this role is used to provide remote access directly to the tenant console as noted here:
+From a high level the **admin** role (group ID 9000) is a read/write role with full access to the system to make changes. The **operator** role (group ID 9001) is a read-only role and is prevented from making any configuration changes. The **root** role (group ID 0) gives full access to the bash shell, and in some environments this role will be disabled by enabling appliance mode. Note that the root role is not allowed access via remote authentication. The last role is **tenant-console** (group ID 9100) and this role is used to provide remote access directly to the tenant console as noted here:
 
 ` Console Access to Tenant via Built-In Terminal Server <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#console-access-via-built-in-terminal-server>`_
 
@@ -1042,7 +1042,7 @@ AD groups are not currently queried. The role IDs are fixed. As noted above, the
 
 Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded. 
 
-Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.3.0 can be found below.
+Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to the underlying Confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.3.0 can be found below.
 
 `LDAP/AD configuration overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview>`_
 
@@ -1149,7 +1149,7 @@ In the body of the API call configure the desired message of the day and login b
         }
     }
 
-To view the currently configured MoTD and login banner, issue the folowing GET API request.
+To view the currently configured MoTD and login banner, issue the following GET API request.
 
 .. code-block:: bash
 
@@ -1426,6 +1426,8 @@ You can change the ciphers and kexalgorithms offered by F5OS to clients connecti
 
 
 Below are the current options for sshd cipers and kexalgorithms.
+
+.. code-block:: bash
 
     system security services service sshd
     config ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
@@ -1813,7 +1815,7 @@ To forward the contents of the host audit logs add **config files file audit/aud
     config files file audit/audit.log
     !
 
-In addtion, you'll want to ensure that **selectors selector AUTHPRIV INFORMATIONAL** is added to the **system logging remote-servers** configuration for your configured syslog location.
+In addition, you'll want to ensure that **selectors selector AUTHPRIV INFORMATIONAL** is added to the **system logging remote-servers** configuration for your configured syslog location.
 
 .. code-block:: bash
 
@@ -1929,7 +1931,7 @@ Below is an example audit log of the user **admin** using the API and then addin
 Downloading Audit Logs via CLI
 ------------------------------
 
-Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. Before transfering a file using the CLI, use the **file list** command to see the contents of the  directory and ensure the file is there. There are two audit.log locations: **log/system/audit.log** where most of the audit.log events are logged, and **log/host/audit/audit.log** where some lower level events are logged.
+Audit logs can be sent to a remote server as outlined above, but they can also be downloaded from the system if needed. Before transferring a file using the CLI, use the **file list** command to see the contents of the  directory and ensure the file is there. There are two audit.log locations: **log/system/audit.log** where most of the audit.log events are logged, and **log/host/audit/audit.log** where some lower level events are logged.
 
 The path below is the main audit.log.
 
@@ -2026,7 +2028,7 @@ You can then check on the status of the export via the following API call:
 
     POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
-In the response the latest file trasnfer status will be displayed.
+In the response the latest file transfer status will be displayed.
 
 .. code-block:: json
 
@@ -2047,7 +2049,7 @@ You can download either of the audit.log files from the **System -> File Utiliti
   :align: center
   :scale: 70%
 
-Inside the audit directory you can then select the audit.log and then either **Download** to copy the file to you local machine via the browser, or select **Export** to copy to a rmeote HTTPS server.
+Inside the audit directory you can then select the audit.log and then either **Download** to copy the file to your local machine via the browser, or select **Export** to copy to a remote HTTPS server.
 
 .. image:: images/rseries_security/imageaudit2.png
   :align: center
