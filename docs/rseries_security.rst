@@ -206,7 +206,7 @@ By default, F5OS uses a self-signed certificate and key for device management. I
     r10900-1(config)#
 
 
-The **store-tls** option when set to **true**, stores the private key and self-signed certificate in system/aaa/tls/config/key and system/aaa/tls/config/certificate instead of returning the values only in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
+The **store-tls** option when set to **true**, stores the private key and self-signed certificate in the system instead of returning the values only in the CLI output. If you would prefer to have the keys returned in the CLI output and not stored in the system, then set **store-tls false** as seen below.
 
 .. code-block:: bash
 
