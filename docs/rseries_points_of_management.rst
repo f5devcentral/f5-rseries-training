@@ -33,7 +33,7 @@ Comparing the management of a non-VCMP (bare metal) iSeries or VIPRION to rSerie
 
 .. image:: images/rseries_points_of_management/image4.png
   :align: center
-  :scale: 80%
+  :scale: 50%
 
 VLANs are created in the F5OS platform layer, and then they can be assigned to separate interfaces or LAGs. When a tenant is created, the administrator can then assign one or more of those VLANs to be accessible by the F5OS tenant. Once the tenant is deployed the configured VLANs will automatically be inherited and will show up in the VLAN configuration inside TMOS. VLANs will automatically show up in Route Domain 0 by default. If you need to assign these VLANs to another Route Domain inside the tenant, then you may delete them from Route Domain 0 inside TMOS and then recreate them with the same VLAN ID inside the proper Route Domain, and connectivity will be restored to the lower F5OS layer. This is the same behavior a vCMP guest would have inside of VIPRION or iSeries as outlined in the following link.
 
@@ -43,14 +43,14 @@ VLANs are created in the F5OS platform layer, and then they can be assigned to s
 
 .. image:: images/rseries_points_of_management/image5.png
   :align: center
-  :scale: 80%
+  :scale: 50%
 
 Monitoring for a bare metal iSeries of VIPRION is all done within TMOS, whereas in rSeries there are now two layers that can be monitored. Interfaces, LAGs, and other platform layer objects such as CPU, memory, temperature, disks can be monitored at the F5OS layer via CLI, GUI, API, or SNMP. Higher level monitoring of virtual servers, pools and L4-7 objects continue to be done inside the TMOS layer of the F5OS tenant.
 
 
 .. image:: images/rseries_points_of_management/image6.png
   :align: center
-  :scale: 80%
+  :scale: 50%
 
 
   
