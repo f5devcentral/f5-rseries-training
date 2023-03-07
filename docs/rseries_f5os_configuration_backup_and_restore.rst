@@ -19,7 +19,7 @@ The F5OS configuration contains data that includes the following:
 
 **Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration of the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself.** For information, refer to:
 
-K13132: Backing up and restoring BIG-IP configuration files with a UCS archive: https://support.f5.com/csp/article/K13132
+`K13132: Backing up and restoring BIG-IP configuration files with a UCS archive <https://support.f5.com/csp/article/K13132>`_
 
 
 - DNS servers
