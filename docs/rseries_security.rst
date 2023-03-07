@@ -1459,7 +1459,7 @@ You can change the ciphers and kexalgorithms offered by F5OS to clients connecti
         macs            User specified MACs.
 
 
-Below are the current options for sshd cipers and kexalgorithms and macs.
+Below are the current options for sshd ciphers, kexalgorithms and macs. You may configure which ciphers F5OS will use for the sshd service by using the **system security services service sshd config ciphers** command.
 
 .. code-block:: bash
 
@@ -1475,7 +1475,7 @@ Below are the current options for sshd cipers and kexalgorithms and macs.
     Proceed? [yes,no] yes
     Commit complete.
 
-
+You may configure which kexalgorithms F5OS will use for the sshd service by using the **system security services service sshd config kexalgorithms** command.
 
 .. code-block:: bash
 
@@ -1485,6 +1485,7 @@ Below are the current options for sshd cipers and kexalgorithms and macs.
     [ diffie-hellman-group1-sha1 diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 diffie-hellman-group18-sha512 diffie-hellman-group-exchange-sha1 diffie-hellman-group-exchange-sha256 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 curve25519-sha256 curve25519-sha256@libssh.org gss-gex-sha1- gss-group1-sha1- gss-group14-sha1- ]
     appliance-1(config)#
 
+You may configure which macs F5OS will use for the sshd service by using the **system security services service sshd config macs** command.
 
 .. code-block:: bash
 
