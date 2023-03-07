@@ -64,7 +64,7 @@ Below is an example of allowing multiple SNMP endpoints (port 161) to query SNMP
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
 
-Within the body of the API call, specific IP address/port combinations can be added under a given name. In the current release, you are limited to one IP address/port per name. 
+Within the body of the API call, specific IP address/port, and optional prefix-length combinations can be added under a given name. In the current releases, you are limited to one IP address/port/prefix per name. 
 
 .. code-block:: json
 
@@ -75,7 +75,9 @@ Within the body of the API call, specific IP address/port combinations can be ad
                 "config": {
                     "ipv4": {
                         "address": "10.255.0.142",
+                        "prefix-length": "32",
                         "port": 161
+                        
                     }
                 }
             },
@@ -84,6 +86,7 @@ Within the body of the API call, specific IP address/port combinations can be ad
                 "config": {
                     "ipv4": {
                         "address": "10.255.0.143",
+                        "prefix-length": "32",
                         "port": 161
                     }
                 }
@@ -93,6 +96,7 @@ Within the body of the API call, specific IP address/port combinations can be ad
                 "config": {
                     "ipv4": {
                         "address": "10.255.0.144",
+                        "prefix-length": "32",
                         "port": 161
                     }
                 }
@@ -121,6 +125,7 @@ The output will show the previously configured allowed-ips.
                     "config": {
                         "ipv4": {
                             "address": "10.255.0.142",
+                            "prefix-length": "32",
                             "port": 161
                         }
                     }
@@ -130,6 +135,7 @@ The output will show the previously configured allowed-ips.
                     "config": {
                         "ipv4": {
                             "address": "10.255.0.143",
+                            "prefix-length": "32",
                             "port": 161
                         }
                     }
@@ -139,6 +145,7 @@ The output will show the previously configured allowed-ips.
                     "config": {
                         "ipv4": {
                             "address": "10.255.0.144",
+                            "prefix-length": "32",
                             "port": 161
                         }
                     }
