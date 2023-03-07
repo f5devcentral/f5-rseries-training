@@ -3,8 +3,8 @@ rSeries Configuration Backup and Restore
 ========================================
 
 
-F5OS Configuration Backup
-=========================
+F5OS & TMOS Configuration Backup Overview
+=========================================
 
 To completely backup the rSeries system, you’ll need to backup each tenant TMOS configuration first, and then back up the F5OS configuration. Tenant backup utilizes the same backup and recovery procedures as existing BIG-IP devices/guests because the tenants themselves are running TMOS. For the F5OS layer a different backup mechanism is utilized because F5OS configuration management is based on ConfD.  
 
@@ -31,12 +31,43 @@ K13132: Backing up and restoring BIG-IP configuration files with a UCS archive: 
 
 To perform a complete backup of the rSeries system, you must:
 
+•	Set the Primary Key for F5OS
 •	Back up the configuration for F5OS
-•	Back up any deployed tenants using the tenants’ backup mechanism (i.e. a UCS)
+•	Copy the configuration backup for F5OS to a remote location
+•	Back up any deployed tenants using the tenants backup mechanism (i.e. a UCS backup)
+•	Copy each tenants UCS backup to a remote location
 
 More detail is covered in the following solution article:
 
-https://support.f5.com/csp/article/K47512994
+`K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://support.f5.com/csp/article/K47512994>`_
+
+Setting the Primary Key on F5OS
+===============================
+
+The F5 rSeries system uses a primary key to perform encryption and decryption of highly sensitive passwords/passphrases in the configuration database. You should periodically reset this primary key for additional security. You should set this primary key prior to performing any configuration backup if you have not already done so. In the case of a configuration migration such as moving configuration to a replacement device due to RMA, it is important to set the primary key to a known value so that the same key can be used to decrypt the passwords/passphrases in the configuration restored on the replacement device.
+
+Setting the F5OS Primary Key via CLI
+====================================
+
+To set the F5OS primary-key issue the following command in config mode.
+
+.. code-block:: bash
+
+    system aaa primary-key set passphrase <passphrase string> confirm-passphrase <passphrase string> salt <salt string> confirm-salt <salt string>
+
+Note that the hash key can be used to check and compare the status of the primary-key on both the source and the replacement devices if restoring to a different device. To view the current primary-key hash, issue the following CLI command.
+
+.. code-block:: bash
+
+    r10900-1# show system aaa primary-key 
+    system aaa primary-key state hash IWDanp1tcAO+PJPH2Hti6BSvpFKgRvvFpXNZRIAk3JoXhypflBofHc+IJp8LA2SDGCQ2IgE8Z628lGjCWVjBxg==
+    system aaa primary-key state status "COMPLETE        Initiated: Mon Feb 27 13:38:02 2023"
+    r10900-1# 
+
+Backing Up F5OS
+===============
+
+F5OS can be backed up via CLI, webUI, or API, but ensure you have set a primary key first as noted in the previous section.
 
 Backing Up F5OS via CLI
 -----------------------
@@ -493,6 +524,19 @@ Restoring F5OS from a Database Backup
 Restore Using the CLI
 ---------------------
 
+If you are restoring an F5OS backup to a different device (an RMA replacement would be an example), you must set the appliance to use the same passphrase string and salt string as the original appliance by entering the following command syntax:
+
+.. code-block:: bash
+
+    system aaa primary-key set passphrase <known_passphrase> confirm-passphrase  <known_passphrase> salt <known_saltstring> confirm-salt <known_saltstring>
+
+Note: Before you run the previous command, you can also check the hash by running following command and comparing it to the one you have already saved.
+
+.. code-block:: bash
+
+    show system aaa primary-key state hash
+
+
 Now that the F5OS backup has been copied into the system, you can restore the previous backup using the **system database config-restore** command as seen below. You can use the **file list** command to verify the file name:
 
 .. code-block:: bash
@@ -522,6 +566,8 @@ The system should restore the F5OS and start any tenant configurations. You may 
 
 Restore Using the API
 ---------------------
+
+If you are restoring an F5OS backup to a different device (an RMA replacement would be an example), you must set the appliance to use the same passphrase string and salt string as the original appliance.
 
 To restore the F5OS configuration database use the following API call:
 
