@@ -259,7 +259,7 @@ Back up all tenants using a UCS archive or other mechanism so that they can be r
 
 UCS Backup is covered in the following solution article on askf5:
 
-https://support.f5.com/csp/article/K13132
+`K13132: Backing up and restoring BIG-IP configuration files with a UCS archive <https://support.f5.com/csp/article/K13132>`_
 
 The following video provides a demo of backing up UCS files from the BIG-IP webUI; this is the same for rSeries tenants.
 
@@ -270,7 +270,7 @@ The following video provides a demo of backing up UCS files from the BIG-IP webU
 
 You can also use BIG-IQ to back up rSeries tenants.
 
-https://techdocs.f5.com/en-us/bigiq-8-0-0/managing-big-ip-devices-from-big-iq/backup-file-management.html
+`BIG-IP Backup File Management from BIG-IQ <https://techdocs.f5.com/en-us/bigiq-8-0-0/managing-big-ip-devices-from-big-iq/backup-file-management.html>`_
 
 
 The following video provides a demo of backing up UCS files from the BIG-IQ webUI, this is the same for rSeries tenants.
@@ -289,7 +289,7 @@ For a proof-of-concept test, this section will provide steps to wipe out the ent
 
 The first step would be to ensure you have completed the previous sections, and have created backups for the F5OS layer and each tenant. These backups should have been copied out of the rSeries system to a remote location so that they can be used to restore to the system after it has been reset. The following solution article has more details about resetting the rSeries system to default:
 
-https://support.f5.com/csp/article/K20024872
+`K20024872: Restore the rSeries configuration to factory default settings <https://support.f5.com/csp/article/K20024872>`_
 
 Resetting the system via CLI
 ----------------------------
@@ -567,7 +567,7 @@ The system should restore the F5OS and start any tenant configurations. You may 
 Restore Using the API
 ---------------------
 
-If you are restoring an F5OS backup to a different device (an RMA replacement would be an example), you must set the appliance to use the same passphrase string and salt string as the original appliance.
+If you are restoring an F5OS backup to a different device (an RMA replacement would be an example), you must set the appliance to use the same passphrase string and salt string as the original appliance using the CLI first, then you can follow the example below to restore via API.
 
 To restore the F5OS configuration database use the following API call:
 
