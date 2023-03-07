@@ -1459,14 +1459,42 @@ You can change the ciphers and kexalgorithms offered by F5OS to clients connecti
         macs            User specified MACs.
 
 
-Below are the current options for sshd cipers and kexalgorithms.
+Below are the current options for sshd cipers and kexalgorithms and macs.
 
 .. code-block:: bash
 
-    system security services service sshd
-    config ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
-    config kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
-    !
+    appliance-1(config)# system security services service sshd config ciphers ?
+    Description: User specified ciphers.
+    Possible completions:
+  [                                                                                                                                                                                                                                              
+  [ 3des-cbc blowfish-cbc cast128-cbc arcfour arcfour128 arcfour256 aes128-cbc aes192-cbc aes256-cbc rijndael-cbc@lysator.liu.se aes128-ctr aes192-ctr aes256-ctr aes128-gcm@openssh.com aes256-gcm@openssh.com chacha20-poly1305@openssh.com ]  
+    appliance-1(config)# system security services service sshd config ciphers [ 3des-cbc blowfish-cbc cast128-cbc arcfour arcfour128 arcfour256 aes128-cbc aes192-cbc aes256-cbc rijndael-cbc@lysator.liu.se ]
+    appliance-1(config-service-sshd)# commit
+    The following warnings were generated:
+    'system security services service sshd': Changing SSH configuration will restart the SSHD service.
+    Proceed? [yes,no] yes
+    Commit complete.
+
+
+
+.. code-block:: bash
+
+    appliance-1(config)# system security services service sshd config kexalgorithms ?
+    Description: User specified kexalgorithms.
+    Possible completions:
+    [ diffie-hellman-group1-sha1 diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 diffie-hellman-group18-sha512 diffie-hellman-group-exchange-sha1 diffie-hellman-group-exchange-sha256 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 curve25519-sha256 curve25519-sha256@libssh.org gss-gex-sha1- gss-group1-sha1- gss-group14-sha1- ]
+    appliance-1(config)#
+
+
+.. code-block:: bash
+
+    appliance-1(config)# system security services service sshd config macs ?        
+    Description: User specified MACs.
+    Possible completions:
+    [  
+    [ hmac-sha1 mac-sha1-96 hmac-sha2-512 hmac-sha1 hmac-sha1-96 hmac-sha2-256 hmac-md5 hmac-md5-96 hmac-ripemd160 hmac-ripemd160 hmac-ripemd160@openssh.com umac-64@openssh.com umac-128@openssh.com hmac-sha1-etm@openssh.com hmac-sha1-96-etm@open
+    ssh.com hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com hmac-md5-etm@openssh.com hmac-md5-96-etm@openssh.com hmac-ripemd160-etm@openssh.com umac-64-etm@openssh.com umac-128-etm@openssh.com ]
+    appliance-1(config)#
 
 
 Client Certificate Based Auth
