@@ -864,6 +864,33 @@ Disabling basic authentication via the webUI is a new feature that has been adde
   :align: center
   :scale: 70%
 
+Confirming Basic Auth is Disallowed
+-----------------------------------
+
+Before disabling basic auth, you can make any configuration change via the API using just basic authentication (username/password). Using the Postman utility this can be demonstrated on any configuration change by setting The Auth Type to **Basic Auth**, and configuring a username and password as seen below.
+
+.. image:: images/rseries_security/imagebasicauth.png
+  :align: center
+  :scale: 70%
+
+While basic auth is enabled, any configuration change using username/password will complete successfully. After disabling basic auth, any attempt to change the configuration via API will fail with a message similar to the one below indicating **access denied**.
+
+.. code-block:: json
+
+    {
+        "ietf-restconf:errors": {
+            "error": [
+                {
+                    "error-type": "application",
+                    "error-tag": "access-denied",
+                    "error-path": "/openconfig-system:system/aaa",
+                    "error-message": "access denied"
+                }
+            ]
+        }
+    }
+
+
 
 Setting Password Policies
 =========================
