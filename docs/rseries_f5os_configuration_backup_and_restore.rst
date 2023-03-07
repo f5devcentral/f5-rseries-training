@@ -17,7 +17,7 @@ The F5OS configuration contains data that includes the following:
 - VLAN configuration
 - Tenant configuration
 
-**Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration of the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself.** For information, refer to:
+**Note: The tenant configuration contains tenant name, type, image, management IP address, gateway, VLANs, assigned vCPUs, memory, storage size, and so on. It does not include the BIG-IP configuration within the tenant. To create a backup copy of the BIG-IP configuration of the tenant, you must perform the backup in the tenant itself. For information, refer to:**
 
 `K13132: Backing up and restoring BIG-IP configuration files with a UCS archive <https://support.f5.com/csp/article/K13132>`_
 
@@ -114,7 +114,7 @@ Using the F5OS API you can backup the F5OS configuration database using the foll
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
 
-In the body of the API call you can specifiy the file name you want to save the backup as.
+In the body of the API call you can specify the file name you want to save the backup as.
 
 .. code-block:: json
 
@@ -291,7 +291,7 @@ The first step would be to ensure you have completed the previous sections, and 
 
 `K20024872: Restore the rSeries configuration to factory default settings <https://support.f5.com/csp/article/K20024872>`_
 
-Resetting the system via CLI
+Resetting the System via CLI
 ----------------------------
 
 To reset the F5OS configuration database to default, use the CLI command **system database reset-to-default**. This will wipe out all tenant configurations, networking, as well as all the system parameters except for out-of-band networking and licensing.
@@ -307,7 +307,7 @@ To reset the F5OS configuration database to default, use the CLI command **syste
     appliance-1(config)# 
 
 
-After resettting the system database, reboot the system to ensure the configuration is completely cleaned up. 
+After resetting the system database, reboot the system to ensure the configuration is completely cleaned up. 
 
 .. code-block:: bash
 
@@ -317,7 +317,7 @@ After resettting the system database, reboot the system to ensure the configurat
 
 
 
-Resetting the system via API
+Resetting the System via API
 ----------------------------
 
 There is no webUI support for this functionality currently. To do this via API call, you will need to send the following API call to the F5OS IP address. Below is an example of sending the database reset to default command:
@@ -334,7 +334,7 @@ The body of the above API call must contain the following:
     "f5-database:proceed": "yes"
     }
 
-After resettting the system database reboot the system to ensure the configuration is completely cleaned up. The API call below will reboot the system.
+After resetting the system database reboot the system to ensure the configuration is completely cleaned up. The API call below will reboot the system.
 
 .. code-block:: bash
 
@@ -343,7 +343,7 @@ After resettting the system database reboot the system to ensure the configurati
 
 
 
-Resetting the system via webUI
+Resetting the System via webUI
 ----------------------------
 
 Currently there is no option to reset the system via the webUI; a reset must be performed via API or CLI.
@@ -575,7 +575,7 @@ To restore the F5OS configuration database use the following API call:
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-restore
 
-The body/payload must include the text below to specifiy the file to be restored:
+The body/payload must include the text below to specify the file to be restored:
 
 .. code-block:: json
 
@@ -593,4 +593,4 @@ Currently there is no webUI support for restoration of the ConfD database, so yo
 Restoring Tenants from a UCS Backup
 ====================================
 
-Once the teant has finished starting up you'll need to load and restore via UCS file. This should follow normal BIG-IP restoration procedures.
+Once the tenant has finished starting up you'll need to load and restore via UCS file. This should follow normal BIG-IP restoration procedures.
