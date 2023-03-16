@@ -867,13 +867,13 @@ Disabling basic authentication via the webUI is a new feature that has been adde
 Confirming Basic Auth is Disallowed
 -----------------------------------
 
-Before disabling basic auth, you can make any configuration change via the API using just basic authentication (username/password). Using the Postman utility this can be demonstrated on any configuration change by setting The Auth Type to **Basic Auth**, and configuring a username and password as seen below.
+With basic authentication enabled (default setting), you can make any API call using username/password (basic auth) autentication. Using the Postman utility this can be demonstrated on any configuration change by setting The Auth Type to **Basic Auth**, and configuring a username and password as seen below.
 
 .. image:: images/rseries_security/imagebasicauth.png
   :align: center
   :scale: 70%
 
-While basic auth is enabled, any configuration change using username/password will complete successfully. After disabling basic auth, any attempt to change the configuration via API will fail with a message similar to the one below indicating **access denied**.
+While basic auth is enabled, any API call using username/password will complete successfully. After disabling basic auth, any attempt to access an API endpoint other than the root URI using basic auth will fail with a message similar to the one below indicating **access denied**.
 
 .. code-block:: json
 
@@ -890,7 +890,141 @@ While basic auth is enabled, any configuration change using username/password wi
         }
     }
 
+When basic authentication is enabled, a client will be allowed to obtain an auth token using username/password at any URI. The client can then choose to use the auth token for subsequent requests, or they can continue to use basic auth (username/password) authenticaton. As an example, the curl command below uses basic auth successfully to the URI endpoint **restconf/data/openconfig-system:system/config**. In the response you can see the **X-Auth-Token** header, which contains the auth token that can then be used by the client for subsequent requests:
 
+.. code-block:: bash
+
+    user1$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.0.132:8888/restconf/data/openconfig-system:system/config
+    HTTP/1.1 200 OK
+    Date: Thu, 16 Mar 2023 13:04:38 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Thu, 16 Mar 2023 12:50:11 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1678-971011-823929"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjc4OTcxODc4IiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiI0MDAiLCJleHAiOjE2Nzg5NzMwNzgsImlhdCI6MTY3ODk3MTg3OCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuNDkifQ.RDMaZfL-g60SqUiGXkNkpIGYh2eualim5wTqbr_XSNc
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "openconfig-system:config": {
+        "hostname": "r10900-1.f5demo.net",
+        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to Jim McCarron with any questions.",
+        "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
+    }
+    }
+
+
+Here is an example of the client issuing the same request with the auth token it received above to the same endpoint. Instead of specifying a user with the -u option, insert the header **X-Auth-Token** and add the token from the initial response above.
+
+.. code-block:: bash
+
+    user1$ curl -i -sk -H "Content-Type: application/yang-data+json" -H "X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjc4OTcxODc4IiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiI0MDAiLCJleHAiOjE2Nzg5NzMwNzgsImlhdCI6MTY3ODk3MTg3OCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuNDkifQ.RDMaZfL-g60SqUiGXkNkpIGYh2eualim5wTqbr_XSNc" https://10.255.0.132:8888/restconf/data/openconfig-system:system/config
+    HTTP/1.1 200 OK
+    Date: Thu, 16 Mar 2023 13:04:53 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Thu, 16 Mar 2023 12:50:11 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1678-971011-823929"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "openconfig-system:config": {
+        "hostname": "r10900-1.f5demo.net",
+        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to Jim McCarron with any questions.",
+        "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
+    }
+    }
+    user1$ 
+
+If the same exercise is repeated after basic auth is disabled, then the user will not be able to run the intial request using basic auth (username/password). It will fail to any non-root URI as seen below. The response will contain and **access-denied** error.
+
+.. code-block:: bash
+
+    user1$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.0.132:8888/restconf/data/openconfig-system:system/config
+    HTTP/1.1 403 Forbidden
+    Date: Thu, 16 Mar 2023 13:09:09 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Content-Length: 189
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+
+    {
+    "ietf-restconf:errors": {
+        "error": [
+        {
+            "error-type": "application",
+            "error-tag": "access-denied",
+            "error-message": "access denied"
+        }
+        ]
+    }
+    }
+    user1$
+
+By changing the URI to use the top level API endpoint: (:8888/restconf/data) or (:443/api/data), the client will now be able to obtain a token using basic authentication, but the token will be needed for any other API endpoints.
+
+.. code-block:: bash
+
+    user1$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.0.132:8888/restconf/data/
+    HTTP/1.1 200 OK
+    Date: Thu, 16 Mar 2023 13:10:00 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Thu, 16 Mar 2023 13:09:04 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1678-972144-404510"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjc4OTcyMjAwIiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiI0MDAiLCJleHAiOjE2Nzg5NzM0MDAsImlhdCI6MTY3ODk3MjIwMCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuNDkifQ.dyhK90B_rkpQFkZGf1t-c6y2Vm1PbJUyO8IcVAjIefc
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "ietf-restconf:data": {
+        "openconfig-system:system": {
+        "aaa": {
+            "authentication": {
+            "f5-system-aaa:users": {
+                "user": [
+                {
+                    "state": {
+                    "username": "admin",
+                    "last-change": "2023-01-23",
+                    "tally-count": 0,
+                    "expiry-date": "-1",
+                    "role": "admin"
+                    }
+                }
+                ]
+            }
+            }
+        }
+        }
+    }
+    }
+    user1$
 
 Setting Password Policies
 =========================
@@ -1506,7 +1640,7 @@ Coming in F5OS-A 1.5.0.
 iHealth Proxy Server
 ====================
 
-F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
+F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
 
 
 Adding a Proxy Server via CLI
