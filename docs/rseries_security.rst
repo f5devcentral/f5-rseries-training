@@ -914,7 +914,7 @@ When basic authentication is enabled, a client will be allowed to obtain an auth
     {
     "openconfig-system:config": {
         "hostname": "r10900-1.f5demo.net",
-        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to Jim McCarron with any questions.",
+        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to admin with any questions.",
         "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
     }
     }
@@ -943,7 +943,7 @@ Here is an example of the client issuing the same request with the auth token it
     {
     "openconfig-system:config": {
         "hostname": "r10900-1.f5demo.net",
-        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to Jim McCarron with any questions.",
+        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to admin with any questions.",
         "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
     }
     }
