@@ -53,4 +53,30 @@ Monitoring for a bare metal iSeries of VIPRION is all done within TMOS, whereas 
   :scale: 50%
 
 
-  
+There are some architectural differences between the r5000/r10000 appliances and the r2000/r4000 appliances that manifest slightly different behavior inside an F5OS tenant. In general, F5OS tenants in the r5000/r10000 platforms have no visibility into the underlying physical interfaces or LAGs that are configured at the F5OS layer. The tenant will be connected to specific interfaces or LAGs based on its VLAN membership. The only exception to this is the HA Group functionality inside the tenant, which has visibility into LAG state and membership to facilitate proper redundancy/failover.
+
+Gernerally, the r2000/r4000 appliances follow these same principles, but due to some architectural differences these platforms have more visibilty into the lower layer interfaces and LAGs that are configured at the F5OS layer. As an example, an F5OS tenant on an r5000/r10000 appliance has no visibility into the physical interfaces at the F5OS layer. Instead, the tenant will see virtual interfaces and the number of interfaces within a tenant will be based upon the number of vCPUs assigned to the tenant. The screenshot below shows the interfaces inside the tenant lining up with the number of physical cores per tenant. In the example there are 36 vCPUs assigned to a single tenant, this will equate to 18 physical CPU’s. 
+
+
+.. image:: images/rseries_inside_the_tenant/image4.png
+  :align: center
+  :scale: 70%
+
+
+.. image:: images/rseries_inside_the_tenant/image3.png
+  :align: center
+  :scale: 70%
+
+A tenant on an r2000/r4000 appliance will actually see the physical interfaces in its configuration, but the interface numbering will be different from the numbering used at the F5OS layer. 
+
+In the example below, a tenant on an r4000 appliance sees 4 interfaces, although the numbering of those interfaces differs from F5OS. 
+
+.. image:: images/rseries_points_of_management/image8.png
+  :align: center
+  :scale: 50%
+
+Those same 4 interfaces can be seen at the F5OS layer, but they are numbered 5.0, 6.0, 7.0 & 8.0.
+
+.. image:: images/rseries_points_of_management/image9.png
+  :align: center
+  :scale: 50%
