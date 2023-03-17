@@ -11,7 +11,7 @@ This section will focus on how to harden/secure the F5OS layer of the rSeries ap
 F5OS Platform Layer Isolation
 =============================
 
-Management of the new F5OS platform layer is completely isolated from in-band traffic, networking, and VLANs. It is purposely isolated so that it is only accessible via the out-of-band management network. In fact, there are no in-band IP addresses assigned to the F5OS layer, only tenants will have in-band management IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
+When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs and is managed via the out-of-band management network only. It is purposely isolated so that it is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
 
 This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. 
 
@@ -864,6 +864,167 @@ Disabling basic authentication via the webUI is a new feature that has been adde
   :align: center
   :scale: 70%
 
+Confirming Basic Auth is Disallowed
+-----------------------------------
+
+With basic authentication enabled (default setting), you can make any API call using username/password (basic auth) autentication. Using the Postman utility this can be demonstrated on any configuration change by setting The Auth Type to **Basic Auth**, and configuring a username and password as seen below.
+
+.. image:: images/rseries_security/imagebasicauth.png
+  :align: center
+  :scale: 70%
+
+While basic auth is enabled, any API call using username/password will complete successfully. After disabling basic auth, any attempt to access an API endpoint other than the root URI using basic auth will fail with a message similar to the one below indicating **access denied**.
+
+.. code-block:: json
+
+    {
+        "ietf-restconf:errors": {
+            "error": [
+                {
+                    "error-type": "application",
+                    "error-tag": "access-denied",
+                    "error-path": "/openconfig-system:system/aaa",
+                    "error-message": "access denied"
+                }
+            ]
+        }
+    }
+
+When basic authentication is enabled, a client will be allowed to obtain an auth token using username/password at any URI. The client can then choose to use the auth token for subsequent requests, or they can continue to use basic auth (username/password) authenticaton. As an example, the curl command below uses basic auth successfully to the URI endpoint **restconf/data/openconfig-system:system/config**. In the response you can see the **X-Auth-Token** header, which contains the auth token that can then be used by the client for subsequent requests:
+
+.. code-block:: bash
+
+    user1$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.0.132:8888/restconf/data/openconfig-system:system/config
+    HTTP/1.1 200 OK
+    Date: Thu, 16 Mar 2023 13:04:38 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Thu, 16 Mar 2023 12:50:11 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1678-971011-823929"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjc4OTcxODc4IiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiI0MDAiLCJleHAiOjE2Nzg5NzMwNzgsImlhdCI6MTY3ODk3MTg3OCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuNDkifQ.RDMaZfL-g60SqUiGXkNkpIGYh2eualim5wTqbr_XSNc
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "openconfig-system:config": {
+        "hostname": "r10900-1.f5demo.net",
+        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to admin with any questions.",
+        "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
+    }
+    }
+
+
+Here is an example of the client issuing the same request with the auth token it received above to the same endpoint. Instead of specifying a user with the -u option, insert the header **X-Auth-Token** and add the token from the initial response above.
+
+.. code-block:: bash
+
+    user1$ curl -i -sk -H "Content-Type: application/yang-data+json" -H "X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjc4OTcxODc4IiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiI0MDAiLCJleHAiOjE2Nzg5NzMwNzgsImlhdCI6MTY3ODk3MTg3OCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuNDkifQ.RDMaZfL-g60SqUiGXkNkpIGYh2eualim5wTqbr_XSNc" https://10.255.0.132:8888/restconf/data/openconfig-system:system/config
+    HTTP/1.1 200 OK
+    Date: Thu, 16 Mar 2023 13:04:53 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Thu, 16 Mar 2023 12:50:11 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1678-971011-823929"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "openconfig-system:config": {
+        "hostname": "r10900-1.f5demo.net",
+        "login-banner": "This is the Global Solution Architect's rSeries r10900 unit-1 in the Boston Lab. Unauthorized use is prohibited. Please reach out to admin with any questions.",
+        "motd-banner": "Welcome to the GSA r10900 Unit 1 in Boston"
+    }
+    }
+    user1$ 
+
+If the same exercise is repeated after basic auth is disabled, then the user will not be able to run the intial request using basic auth (username/password). It will fail to any non-root URI as seen below. The response will contain and **access-denied** error.
+
+.. code-block:: bash
+
+    user1$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.0.132:8888/restconf/data/openconfig-system:system/config
+    HTTP/1.1 403 Forbidden
+    Date: Thu, 16 Mar 2023 13:09:09 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Content-Length: 189
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+
+    {
+    "ietf-restconf:errors": {
+        "error": [
+        {
+            "error-type": "application",
+            "error-tag": "access-denied",
+            "error-message": "access denied"
+        }
+        ]
+    }
+    }
+    user1$
+
+By changing the URI to use the top level API endpoint: (:8888/restconf/data) or (:443/api/data), the client will now be able to obtain a token using basic authentication, but the token will be needed for any other API endpoints.
+
+.. code-block:: bash
+
+    user1$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.0.132:8888/restconf/data/
+    HTTP/1.1 200 OK
+    Date: Thu, 16 Mar 2023 13:10:00 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Thu, 16 Mar 2023 13:09:04 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1678-972144-404510"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjc4OTcyMjAwIiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiI0MDAiLCJleHAiOjE2Nzg5NzM0MDAsImlhdCI6MTY3ODk3MjIwMCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuNDkifQ.dyhK90B_rkpQFkZGf1t-c6y2Vm1PbJUyO8IcVAjIefc
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "ietf-restconf:data": {
+        "openconfig-system:system": {
+        "aaa": {
+            "authentication": {
+            "f5-system-aaa:users": {
+                "user": [
+                {
+                    "state": {
+                    "username": "admin",
+                    "last-change": "2023-01-23",
+                    "tally-count": 0,
+                    "expiry-date": "-1",
+                    "role": "admin"
+                    }
+                }
+                ]
+            }
+            }
+        }
+        }
+    }
+    }
+    user1$
 
 Setting Password Policies
 =========================
@@ -1432,14 +1593,43 @@ You can change the ciphers and kexalgorithms offered by F5OS to clients connecti
         macs            User specified MACs.
 
 
-Below are the current options for sshd cipers and kexalgorithms.
+Below are the current options for sshd ciphers, kexalgorithms and macs. You may configure which ciphers F5OS will use for the sshd service by using the **system security services service sshd config ciphers** command.
 
 .. code-block:: bash
 
-    system security services service sshd
-    config ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
-    config kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
-    !
+    appliance-1(config)# system security services service sshd config ciphers ?
+    Description: User specified ciphers.
+    Possible completions:
+  [                                                                                                                                                                                                                                              
+  [ 3des-cbc blowfish-cbc cast128-cbc arcfour arcfour128 arcfour256 aes128-cbc aes192-cbc aes256-cbc rijndael-cbc@lysator.liu.se aes128-ctr aes192-ctr aes256-ctr aes128-gcm@openssh.com aes256-gcm@openssh.com chacha20-poly1305@openssh.com ]  
+    appliance-1(config)# system security services service sshd config ciphers [ 3des-cbc blowfish-cbc cast128-cbc arcfour arcfour128 arcfour256 aes128-cbc aes192-cbc aes256-cbc rijndael-cbc@lysator.liu.se ]
+    appliance-1(config-service-sshd)# commit
+    The following warnings were generated:
+    'system security services service sshd': Changing SSH configuration will restart the SSHD service.
+    Proceed? [yes,no] yes
+    Commit complete.
+
+You may configure which kexalgorithms F5OS will use for the sshd service by using the **system security services service sshd config kexalgorithms** command.
+
+.. code-block:: bash
+
+    appliance-1(config)# system security services service sshd config kexalgorithms ?
+    Description: User specified kexalgorithms.
+    Possible completions:
+    [ diffie-hellman-group1-sha1 diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 diffie-hellman-group18-sha512 diffie-hellman-group-exchange-sha1 diffie-hellman-group-exchange-sha256 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 curve25519-sha256 curve25519-sha256@libssh.org gss-gex-sha1- gss-group1-sha1- gss-group14-sha1- ]
+    appliance-1(config)#
+
+You may configure which macs F5OS will use for the sshd service by using the **system security services service sshd config macs** command.
+
+.. code-block:: bash
+
+    appliance-1(config)# system security services service sshd config macs ?        
+    Description: User specified MACs.
+    Possible completions:
+    [  
+    [ hmac-sha1 mac-sha1-96 hmac-sha2-512 hmac-sha1 hmac-sha1-96 hmac-sha2-256 hmac-md5 hmac-md5-96 hmac-ripemd160 hmac-ripemd160 hmac-ripemd160@openssh.com umac-64@openssh.com umac-128@openssh.com hmac-sha1-etm@openssh.com hmac-sha1-96-etm@open
+    ssh.com hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com hmac-md5-etm@openssh.com hmac-md5-96-etm@openssh.com hmac-ripemd160-etm@openssh.com umac-64-etm@openssh.com umac-128-etm@openssh.com ]
+    appliance-1(config)#
 
 
 Client Certificate Based Auth
@@ -1450,7 +1640,7 @@ Coming in F5OS-A 1.5.0.
 iHealth Proxy Server
 ====================
 
-F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
+F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
 
 
 Adding a Proxy Server via CLI
@@ -1801,9 +1991,6 @@ Below is an example of a client logging out of the F5OS CLI. Note that the logs 
     2023-01-06T17:16:05.536108-05:00 appliance-1 audit-service[12]: priority="Info" version=1.0 msgid=0x1f03000000000001 msg="audit" user="admin/15014425" cmd="CLI 'logout'".
     2023-01-06T17:16:05.736047-05:00 appliance-1 audit-service[12]: priority="Notice" version=1.0 msgid=0x1f03000000000002 msg="audit" user="admin/15014425" cmd="terminated session (reason: normal)".
 
-Below is an example of a client logging out of the F5OS webUI. Note that the logs identify which user has logged out as well as what IP address they have logged out from.
-
-**Do we log logout events from GUI?**
 
 --------------------------
 Account Lockout Audit Logs
