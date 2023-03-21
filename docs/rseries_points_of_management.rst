@@ -90,7 +90,7 @@ This can be seen in the F5OS interface stats below. Note interfaces 5.0 and 7.0 
   :align: center
   :scale: 50%
 
-Inside the tenant, interfaces 1.5 and 1.7 show statistics incrementing. Note that the stats may not be equal.
+Inside the tenant, interfaces 1.5 and 1.7 show statistics incrementing. Note that the stats may not be equal between the tenant and the F5OS layer.
 
 .. image:: images/rseries_points_of_management/image11.png
   :align: center
