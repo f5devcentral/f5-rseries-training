@@ -697,6 +697,964 @@ To view the details of a specific pod enter the command **kubectl describe pod <
 Networking
 ==========
 
+Troubleshooting Interface / Connectivity Issues
+-------------------------
+
+You can view the status of individual interfaces and get statistics to aid in troubleshooting. You can use the CLI, webUI, or API to get most statistics. Addtional information will also be available in the logs. In some cases, some stats may not be available in the webUI. 
+
+Ensure have the proper port-group coniguration and optics installed if links do not come up.
+
+1.) Check Link Status
+
+You can check the current link status in the CLI, webUI, or API. 
+
+.. code-block:: bash
+
+
+
+2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not offically supported. 
+
+.. code-block:: bash
+
+    r10900-1# show interfaces 
+    interfaces interface 1.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        UP
+    state counters in-octets 349848276
+    state counters in-unicast-pkts 1072
+    state counters in-broadcast-pkts 969637
+    state counters in-multicast-pkts 2128229
+    state counters in-discards 1073224
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 5180044
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 40493
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_UP
+    ethernet state port-speed SPEED_100GB
+    ethernet state hw-mac-address 00:94:a1:69:59:0d
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 2.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 34675
+    state counters in-fcs-errors 23234
+    state counters out-octets 316160
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 2470
+    state counters out-discards 0
+    state counters out-errors 64
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_100GB
+    ethernet state hw-mac-address 00:94:a1:69:59:12
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 23232
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 2
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 3.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:0e
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 4.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:0f
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 5.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:10
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 6.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:11
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 7.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:13
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 8.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:14
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 9.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:15
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 10.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:16
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 11.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_100GB
+    ethernet state hw-mac-address 00:94:a1:69:59:03
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 12.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_100GB
+    ethernet state hw-mac-address 00:94:a1:69:59:08
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 13.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        UP
+    state counters in-octets 155097088
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 1211696
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 155104264
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 1211768
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_UP
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:04
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 14.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        UP
+    state counters in-octets 155100544
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 1211723
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 155104130
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 1211755
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_UP
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:05
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 15.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        UP
+    state counters in-octets 155102720
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 1211740
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 155104642
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 1211759
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_UP
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:06
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 16.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        UP
+    state counters in-octets 155101824
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 1211733
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 155105666
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 1211767
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_UP
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:07
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 17.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:09
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 18.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:0a
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 19.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_25GB
+    ethernet state hw-mac-address 00:94:a1:69:59:0b
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface 20.0
+    state type               ethernetCsmacd
+    state mtu                9600
+    state enabled            true
+    state oper-status        DOWN
+    state counters in-octets 0
+    state counters in-unicast-pkts 0
+    state counters in-broadcast-pkts 0
+    state counters in-multicast-pkts 0
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters in-fcs-errors 0
+    state counters out-octets 0
+    state counters out-unicast-pkts 0
+    state counters out-broadcast-pkts 0
+    state counters out-multicast-pkts 0
+    state counters out-discards 0
+    state counters out-errors 0
+    state forward-error-correction auto
+    state lacp_state         LACP_DEFAULTED
+    ethernet state port-speed SPEED_10GB
+    ethernet state hw-mac-address 00:94:a1:69:59:0c
+    ethernet state counters in-mac-control-frames 0
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-8021q-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-control-frames 0
+    ethernet state counters out-mac-pause-frames 0
+    ethernet state counters out-8021q-frames 0
+    ethernet state flow-control rx on
+    interfaces interface mgmt
+    state type  ethernetCsmacd
+    state enabled true
+    state oper-status UP
+    state counters in-octets 1295568366
+    state counters in-unicast-pkts 231247
+    state counters in-broadcast-pkts 9577135
+    state counters in-multicast-pkts 1798174
+    state counters in-discards 0
+    state counters in-errors 0
+    state counters out-octets 1207615267
+    state counters out-unicast-pkts 940169
+    state counters out-broadcast-pkts 110
+    state counters out-multicast-pkts 211
+    state counters out-discards 0
+    state counters out-errors 0
+    ethernet state auto-negotiate true
+    ethernet state duplex-mode FULL
+    ethernet state port-speed SPEED_1GB
+    ethernet state hw-mac-address 00:94:a1:69:59:02
+    ethernet state negotiated-duplex-mode FULL
+    ethernet state negotiated-port-speed SPEED_1GB
+    ethernet state counters in-mac-pause-frames 0
+    ethernet state counters in-oversize-frames 0
+    ethernet state counters in-jabber-frames 0
+    ethernet state counters in-fragment-frames 0
+    ethernet state counters in-crc-errors 0
+    ethernet state counters out-mac-pause-frames 0
+    interfaces interface Arista
+    state type  ieee8023adLag
+    state mtu   9600
+    state oper-status UP
+    aggregation state lag-type LACP
+    aggregation state lag-speed 100
+    aggregation state distribution-hash src-dst-ipport
+    aggregation state mac-address 00:94:a1:69:59:24
+    aggregation state lagid 1
+    MEMBER  MEMBER  
+    NAME    STATUS  
+    ----------------
+    1.0     UP      
+    2.0     DOWN    
+
+    interfaces interface HA-Interconnect
+    state type  ieee8023adLag
+    state mtu   9600
+    state oper-status UP
+    aggregation state lag-type LACP
+    aggregation state lag-speed 100
+    aggregation state distribution-hash src-dst-ipport
+    aggregation state mac-address 00:94:a1:69:59:25
+    aggregation state lagid 2
+    MEMBER  MEMBER  
+    NAME    STATUS  
+    ----------------
+    13.0    UP      
+    14.0    UP      
+    15.0    UP      
+    16.0    UP      
+
+  r10900-1#
+
+
+.. code-block:: bash
+
+    r10900-1# show interfaces summary 
+                                                    OPER    LAG                
+    NAME             TYPE            MTU   ENABLED  STATUS  TYPE  PORT SPEED   
+    ---------------------------------------------------------------------------
+    1.0              ethernetCsmacd  9600  true     UP      -     SPEED_100GB  
+    2.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
+    3.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    4.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    5.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    6.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    7.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    8.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    9.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    10.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    11.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
+    12.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
+    13.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    14.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    15.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    16.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    17.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    18.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    19.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    20.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_10GB   
+    mgmt             ethernetCsmacd  -     true     UP      -     SPEED_1GB    
+    Arista           ieee8023adLag   9600  -        UP      LACP  -            
+    HA-Interconnect  ieee8023adLag   9600  -        UP      LACP  -            
+
+  r10900-1#
+
+The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output you will be able to see if approved F5 optics are being used, or unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only offical optics are recommended. IF F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with offically supported F5 optics.
+
+
+.. code-block:: bash
+
+  r10900-1# show portgroups 
+  portgroups portgroup 1
+  state vendor-name      "F5 NETWORKS INC."
+  state vendor-oui       009065
+  state vendor-partnum   "OPT-0031        "
+  state vendor-revision  A0
+  state vendor-serialnum "X3CAU6G         "
+  state transmitter-technology "850 nm VCSEL"
+  state media            100GBASE-SR4
+  state optic-state      QUALIFIED
+  state ddm rx-pwr low-threshold alarm -14.0
+  state ddm rx-pwr low-threshold warn -11.0
+  state ddm rx-pwr instant val-lane1 -0.59
+  state ddm rx-pwr instant val-lane2 -0.76
+  state ddm rx-pwr instant val-lane3 -0.76
+  state ddm rx-pwr instant val-lane4 -0.99
+  state ddm rx-pwr high-threshold alarm 3.4
+  state ddm rx-pwr high-threshold warn 2.4
+  state ddm tx-pwr low-threshold alarm -10.0
+  state ddm tx-pwr low-threshold warn -8.0
+  state ddm tx-pwr instant val-lane1 -1.19
+  state ddm tx-pwr instant val-lane2 -0.51
+  state ddm tx-pwr instant val-lane3 -1.0
+  state ddm tx-pwr instant val-lane4 -1.2
+  state ddm tx-pwr high-threshold alarm 5.0
+  state ddm tx-pwr high-threshold warn 3.0
+  state ddm temp low-threshold alarm -5.0
+  state ddm temp low-threshold warn 0.0
+  state ddm temp instant val 30.0507
+  state ddm temp high-threshold alarm 75.0
+  state ddm temp high-threshold warn 70.0
+  state ddm bias low-threshold alarm 0.003
+  state ddm bias low-threshold warn 0.005
+  state ddm bias instant val-lane1 0.00751
+  state ddm bias instant val-lane2 0.007688
+  state ddm bias instant val-lane3 0.007428
+  state ddm bias instant val-lane4 0.007464
+  state ddm bias high-threshold alarm 0.013
+  state ddm bias high-threshold warn 0.011
+  state ddm vcc low-threshold alarm 2.97
+  state ddm vcc low-threshold warn 3.135
+  state ddm vcc instant val 3.3162
+  state ddm vcc high-threshold alarm 3.63
+  state ddm vcc high-threshold warn 3.465
+  portgroups portgroup 2
+  state vendor-name      "F5 NETWORKS INC."
+  state vendor-oui       009065
+  state vendor-partnum   "OPT-0031        "
+  state vendor-revision  A0
+  state vendor-serialnum "XYR00K4         "
+  state transmitter-technology "850 nm VCSEL"
+  state media            100GBASE-SR4
+  state optic-state      QUALIFIED
+  state ddm rx-pwr low-threshold alarm -14.0
+  state ddm rx-pwr low-threshold warn -11.0
+  state ddm rx-pwr instant val-lane1 0.26
+  state ddm rx-pwr instant val-lane2 0.18
+  state ddm rx-pwr instant val-lane3 0.31
+  state ddm rx-pwr instant val-lane4 -0.15
+  state ddm rx-pwr high-threshold alarm 3.4
+  state ddm rx-pwr high-threshold warn 2.4
+  state ddm tx-pwr low-threshold alarm -10.0
+  state ddm tx-pwr low-threshold warn -8.0
+  state ddm tx-pwr instant val-lane1 -0.93
+  state ddm tx-pwr instant val-lane2 -1.02
+  state ddm tx-pwr instant val-lane3 -1.03
+  state ddm tx-pwr instant val-lane4 -0.93
+  state ddm tx-pwr high-threshold alarm 5.0
+  state ddm tx-pwr high-threshold warn 3.0
+  state ddm temp low-threshold alarm -5.0
+  state ddm temp low-threshold warn 0.0
+  state ddm temp instant val 27.3945
+  state ddm temp high-threshold alarm 75.0
+  state ddm temp high-threshold warn 70.0
+  state ddm bias low-threshold alarm 0.003
+  state ddm bias low-threshold warn 0.005
+  state ddm bias instant val-lane1 0.007526
+  state ddm bias instant val-lane2 0.007368
+  state ddm bias instant val-lane3 0.00755
+  state ddm bias instant val-lane4 0.007444
+  state ddm bias high-threshold alarm 0.013
+  state ddm bias high-threshold warn 0.011
+  state ddm vcc low-threshold alarm 2.97
+  state ddm vcc low-threshold warn 3.135
+  state ddm vcc instant val 3.2977
+  state ddm vcc high-threshold alarm 3.63
+  state ddm vcc high-threshold warn 3.465
+  portgroups portgroup 3
+  portgroups portgroup 4
+  portgroups portgroup 5
+  portgroups portgroup 6
+  portgroups portgroup 7
+  portgroups portgroup 8
+  portgroups portgroup 9
+  portgroups portgroup 10
+  portgroups portgroup 11
+  state vendor-name      ""
+  state vendor-oui       ""
+  state vendor-partnum   ""
+  state vendor-revision  ""
+  state vendor-serialnum ""
+  state transmitter-technology ""
+  state media            ""
+  state optic-state      UNKNOWN
+  portgroups portgroup 12
+  state vendor-name      ""
+  state vendor-oui       ""
+  state vendor-partnum   ""
+  state vendor-revision  ""
+  state vendor-serialnum ""
+  state transmitter-technology ""
+  state media            ""
+  state optic-state      UNKNOWN
+  portgroups portgroup 13
+  state vendor-name      "F5 NETWORKS INC."
+  state vendor-oui       009065
+  state vendor-partnum   "OPT-0053        "
+  state vendor-revision  A1
+  state vendor-serialnum "P62BET1         "
+  state transmitter-technology "850 nm"
+  state media            25GBASE-SR
+  state optic-state      QUALIFIED
+  portgroups portgroup 14
+  state vendor-name      "F5 NETWORKS INC."
+  state vendor-oui       009065
+  state vendor-partnum   "OPT-0053        "
+  state vendor-revision  A1
+  state vendor-serialnum "P62BESG         "
+  state transmitter-technology "850 nm"
+  state media            25GBASE-SR
+  state optic-state      QUALIFIED
+  portgroups portgroup 15
+  state vendor-name      "F5 NETWORKS INC."
+  state vendor-oui       009065
+  state vendor-partnum   "OPT-0053        "
+  state vendor-revision  A1
+  state vendor-serialnum "P62BET3         "
+  state transmitter-technology "850 nm"
+  state media            25GBASE-SR
+  state optic-state      QUALIFIED
+  portgroups portgroup 16
+  state vendor-name      "F5 NETWORKS INC."
+  state vendor-oui       009065
+  state vendor-partnum   "OPT-0053        "
+  state vendor-revision  A1
+  state vendor-serialnum "P62BET5         "
+  state transmitter-technology "850 nm"
+  state media            25GBASE-SR
+  state optic-state      QUALIFIED
+  portgroups portgroup 17
+  portgroups portgroup 18
+  portgroups portgroup 19
+  portgroups portgroup 20
+  r10900-1#
+
+Within the webUI there are multiple locations where you can see the individual interfaces and their status. The webUI **Dashboard** page has a **Networking** section that can used to graphically see the interfaces and their status. 
+
+.. image:: images/rseries_troubleshooting/dashboard_network.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_troubleshooting/webui_interfaces.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_troubleshooting/webui_interface_stats.png
+  :align: center
+  :scale: 70%  
+
+.. image:: images/rseries_troubleshooting/webui_portgroup.png
+  :align: center
+  :scale: 70%   
+
+Link Aggreagation Groups
+------------------------
+
+
+
 TCPDUMP 
 -------
 
