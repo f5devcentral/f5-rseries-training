@@ -1645,7 +1645,7 @@ To see the full interface status, along with configuration items like Enable Sta
   :align: center
   :scale: 70%
 
-To see interface statistics go to the **Network Settings -> Interface Statistics Page** page.He you can manaully, or automatically refresh the stats during troubleshooting.
+To see interface statistics go to the **Network Settings -> Interface Statistics Page** page. Hre you can manaully, or automatically refresh the stats during troubleshooting.
 
 .. image:: images/rseries_troubleshooting/webui_interface_stats.png
   :align: center
