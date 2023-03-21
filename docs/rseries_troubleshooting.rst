@@ -702,13 +702,13 @@ Troubleshooting Interface / Connectivity Issues
 
 You can view the status of individual interfaces and get statistics to aid in troubleshooting. You can use the CLI, webUI, or API to get most statistics. Addtional information will also be available in the logs. In some cases, some stats may not be available in the webUI. 
 
-Ensure have the proper port-group coniguration and optics installed if links do not come up.
+Ensure that the appliance has the proper port-group coniguration and optics installed if links do not come up. The portgroup configuration must match the inserted optic type.
 
 1.) Check Link Status
 
 You can check the current link status in the CLI, webUI, or API. 
 
-You can also view a summary of the current interface status. You can start by viewing an summary of the itnerfaces using the **show interface summary** CLI command.
+You may also view a summary of the current interface status. You can start by viewing an summary of the interfaces using the **show interfaces summary** CLI command.
 
 .. code-block:: bash
 
@@ -1473,7 +1473,7 @@ If you want more detail for each interface you can use the **show interfaces** C
 
 
 
-2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not offically supported. The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output you will be able to see if approved F5 optics are being used, or unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only offical optics are recommended. IF F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with offically supported F5 optics.
+2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not offically supported. The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output, you will be able to see if approved F5 optics are being used, or if unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only offical optics are recommended. If F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with offically supported F5 optics.
 
 
 .. code-block:: bash
@@ -1633,19 +1633,25 @@ If you want more detail for each interface you can use the **show interfaces** C
   portgroups portgroup 20
   r10900-1#
 
-Within the webUI there are multiple locations where you can see the individual interfaces and their status. The webUI **Dashboard** page has a **Networking** section that can used to graphically see the interfaces and their status. 
+Within the webUI there are multiple locations where you can see the individual interfaces and their status. The webUI **Dashboard** page has a **Network** section that can used to graphically see the interfaces and their status. 
 
 .. image:: images/rseries_troubleshooting/dashboard_network.png
   :align: center
   :scale: 70%
 
+To see the full interface status, along with configuration items like Enable State, Operational Status, Speed, MAC Address, Native VLAN, and Trunk VLANs go to the **Network Settings -> Interfaces** page.
+
 .. image:: images/rseries_troubleshooting/webui_interfaces.png
   :align: center
   :scale: 70%
 
+To see interface statistics go to the **Network Settings -> Interface Statistics Page** page.He you can manaully, or automatically refresh the stats during troubleshooting.
+
 .. image:: images/rseries_troubleshooting/webui_interface_stats.png
   :align: center
   :scale: 70%  
+
+You may also want to verify the portgroup configuration matches the optics that are inserted. You can go to the **Network Settings -> Port Groups** page to see each ports configuration.
 
 .. image:: images/rseries_troubleshooting/webui_portgroup.png
   :align: center
