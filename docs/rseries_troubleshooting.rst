@@ -708,11 +708,41 @@ Ensure have the proper port-group coniguration and optics installed if links do 
 
 You can check the current link status in the CLI, webUI, or API. 
 
+You can also view a summary of the current interface status. You can start by viewing an summary of the itnerfaces using the **show interface summary** CLI command.
+
 .. code-block:: bash
 
+    r10900-1# show interfaces summary 
+                                                    OPER    LAG                
+    NAME             TYPE            MTU   ENABLED  STATUS  TYPE  PORT SPEED   
+    ---------------------------------------------------------------------------
+    1.0              ethernetCsmacd  9600  true     UP      -     SPEED_100GB  
+    2.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
+    3.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    4.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    5.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    6.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    7.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    8.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    9.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    10.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    11.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
+    12.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
+    13.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    14.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    15.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    16.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
+    17.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    18.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    19.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
+    20.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_10GB   
+    mgmt             ethernetCsmacd  -     true     UP      -     SPEED_1GB    
+    Arista           ieee8023adLag   9600  -        UP      LACP  -            
+    HA-Interconnect  ieee8023adLag   9600  -        UP      LACP  -            
 
+  r10900-1#
 
-2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not offically supported. 
+If you want more detail for each interface you can use the **show interfaces** CLI command to see all interfaces with their details. You may also issue the command **show interfaces interface <Interface number>** to see a specific interface detail.
 
 .. code-block:: bash
 
@@ -1440,39 +1470,10 @@ You can check the current link status in the CLI, webUI, or API.
   r10900-1#
 
 
-.. code-block:: bash
 
-    r10900-1# show interfaces summary 
-                                                    OPER    LAG                
-    NAME             TYPE            MTU   ENABLED  STATUS  TYPE  PORT SPEED   
-    ---------------------------------------------------------------------------
-    1.0              ethernetCsmacd  9600  true     UP      -     SPEED_100GB  
-    2.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
-    3.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    4.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    5.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    6.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    7.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    8.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    9.0              ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    10.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    11.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
-    12.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_100GB  
-    13.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
-    14.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
-    15.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
-    16.0             ethernetCsmacd  9600  true     UP      -     SPEED_25GB   
-    17.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    18.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    19.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_25GB   
-    20.0             ethernetCsmacd  9600  true     DOWN    -     SPEED_10GB   
-    mgmt             ethernetCsmacd  -     true     UP      -     SPEED_1GB    
-    Arista           ieee8023adLag   9600  -        UP      LACP  -            
-    HA-Interconnect  ieee8023adLag   9600  -        UP      LACP  -            
 
-  r10900-1#
 
-The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output you will be able to see if approved F5 optics are being used, or unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only offical optics are recommended. IF F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with offically supported F5 optics.
+2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not offically supported. The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output you will be able to see if approved F5 optics are being used, or unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only offical optics are recommended. IF F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with offically supported F5 optics.
 
 
 .. code-block:: bash
