@@ -138,6 +138,112 @@ Architecture
 
 Describe Namespace/Node/Pod/Container architecture.
 
+Docker Compose 
+--------------
+
+F5 system services are managed via Docker Compose. The docker-compose configuration is in /var/docker/config on the rSeries applainces. To list the services and get their status, source the env_var file and run the appropriate docker-compose command. This will list all the F5 services managed by Docker Compose.
+
+.. code-block:: bash
+
+  [root@appliance-1(r10900-1.f5demo.net) ~]# cd /var/docker/config/
+  [root@appliance-1(r10900-1.f5demo.net) config]# ls
+  appliance  env_var  extra  platform.yml
+  [root@appliance-1(r10900-1.f5demo.net) config]# ls -l
+  total 4
+  drwxr-xr-x. 5 root root 4096 Mar  7 20:43 appliance
+  lrwxrwxrwx. 1 root root   48 Mar  7 14:25 env_var -> /var/docker/config/appliance/1.4.0-10281/env_var
+  lrwxrwxrwx. 1 root root   46 Mar  7 14:25 extra -> /var/docker/config/appliance/1.4.0-10281/extra
+  lrwxrwxrwx. 1 root root   53 Mar  7 14:25 platform.yml -> /var/docker/config/appliance/1.4.0-10281/platform.yml
+  [root@appliance-1(r10900-1.f5demo.net) config]# . ./env_var 
+  [root@appliance-1(r10900-1.f5demo.net) config]# docker-compose -f platform.yml ps
+  WARNING: The slot variable is not set. Defaulting to a blank string.
+              Name                          Command               State                                                                                                        Ports                                                                                                     
+  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  alert-service                  /confd/scripts/alert-service     Up                                                                                                                                                                                                                     
+  authentication-mgr             /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  confd-key-migration-mgr        /usr/bin/confd-primary-key ...   Up                                                                                                                                                                                                                     
+  diag-agent                     /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  dma-agent                      /bin/sh -c dma-agent-launcher    Up                                                                                                                                                                                                                     
+  fips-service                   sh -c /usr/bin/fips-init;        Up                                                                                                                                                                                                                     
+  fips-support-pod               /usr/local/sbin/dumb-init  ...   Exit 0                                                                                                                                                                                                                 
+  firmware                       bash /usr/local/bin/agent        Up                                                                                                                                                                                                                     
+  firmware-fpga                  bash /usr/local/bin/agent        Up                                                                                                                                                                                                                     
+  http-server                    /root/daemon_setup.sh            Up                                                                                                                                                                                                                     
+  ihealth-service                /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  lcd-webserver                  dumb-init -c -- python3 LC ...   Up                                                                                                                                                                                                                     
+  line-dma-agent                 /bin/sh -c vqf-dma-agent-l ...   Up                                                                                                                                                                                                                     
+  lopd                           /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  name-service-ldap              /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  optics-mgr                     /scripts/optics-mgr.sh           Up                                                                                                                                                                                                                     
+  platform-diag                  /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  platform-fwu                   /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  platform-hal                   /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  platform-monitor               /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  platform-stats                 /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  qat-support-pod                /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  qkviewd                        /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  snmp-trapd                     /confd/scripts/snmp-trap         Up                                                                                                                                                                                                                     
+  snmpd                          /confd/scripts/snmp-service      Up                                                                                                                                                                                                                     
+  stream-generator               /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  swdiag-agent                   /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  system-common                  /usr/bin/partition-common. ...   Up                                                                                                                                                                                                                     
+  system-tcam-manager            /usr/bin/tcam-launcher.sh  ...   Up                                                                                                                                                                                                                     
+  system-vconsole                /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  system_L2                      /confd/scripts/agent             Up                                                                                                                                                                                                                     
+  system_TPOB                    /usr/scripts/orchestration ...   Up                                                                                                                                                                                                                     
+  system_api_svc_gateway         /confd/scripts/api_svc_gat ...   Up                                                                                                                                                                                                                     
+  system_audit_service           /confd/scripts/audit-service     Up                                                                                                                                                                                                                     
+  system_confgen                 /usr/local/sbin/dumb_init  ...   Up                                                                                                                                                                                                                     
+  system_control                 /etc/network_setup.sh            Up                                                                                                                                                                                                                     
+  system_dagd                    /usr/bin/run_dagd.sh             Up                                                                                                                                                                                                                     
+  system_datapath_cp_proxy       /usr/local/bin/datapath_cp ...   Up                                                                                                                                                                                                                     
+  system_fpga                    /confd/scripts/fpgamgr           Up                                                                                                                                                                                                                     
+  system_host_config             /usr/bin/sys_host_config_s ...   Up                                                                                                                                                                                                                     
+  system_image_agent             /confd/scripts/image_agent       Up                                                                                                                                                                                                                     
+  system_lacpd                   /confd/scripts/lacpd.init        Up                                                                                                                                                                                                                     
+  system_lacpd_proxy             /confd/scripts/lacpd.init        Up                                                                                                                                                                                                                     
+  system_latest_vers             /bin/bash -c sleep infinit ...   Up       127.0.0.1:1042->1042/udp, 127.0.0.1:1046->1046/tcp, 127.0.0.1:1048->1048/tcp, 127.0.0.1:1063->1063/tcp, 127.0.0.1:1068->1068/tcp, 0.0.0.0:161->161/udp, 0.0.0.0:443->443/tcp, 127.0.0.1:4565->4565/tcp,       
+                                                                          0.0.0.0:7001->7001/tcp, 0.0.0.0:80->80/tcp, 127.0.0.1:8008->8008/tcp, 0.0.0.0:8888->8888/tcp                                                                                                                  
+  system_license_service         /confd/scripts/license-service   Up                                                                                                                                                                                                                     
+  system_lldpd                   /confd/scripts/lldpd             Up                                                                                                                                                                                                                     
+  system_manager                 /confd/scripts/confd.startup     Up                                                                                                                                                                                                                     
+  system_network_manager         /confd/scripts/network_manager   Up                                                                                                                                                                                                                     
+  system_platform-mgr            /confd/scripts/platform-mg ...   Up                                                                                                                                                                                                                     
+  system_platform-stats-bridge   /confd/scripts/PlatformSta ...   Up                                                                                                                                                                                                                     
+  system_rsyslogd                /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  system_stpd                    /confd/scripts/stpd.init         Up                                                                                                                                                                                                                     
+  system_sw_rbcast               /scripts/sw_rbcast.sh            Up                                                                                                                                                                                                                     
+  system_tmstat_merged           /usr/bin/tmstat-merged-init.sh   Up                                                                                                                                                                                                                     
+  system_tmstat_zmq              /usr/bin/zmq_agent_applian ...   Up                                                                                                                                                                                                                     
+  system_user_manager            /root/usrman-init                Up                                                                                                                                                                                                                     
+  system_velocity_rsyslogd       /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  tcpdumpd_manager               /usr/local/sbin/dumb-init  ...   Up                                                                                                                                                                                                                     
+  upgrade-service                /confd/bin/upgrade-service ...   Up                                                                                                                                                                                                                     
+  utils-agent                    sh -c /usr/bin/utils-init; ...   Up                                                                                                                                                                                                                     
+  vanquish-gui                   bash /usr/local/bin/agent        Up                                                                                                                                                                                                                     
+  [root@appliance-1(r10900-1.f5demo.net) config]# 
+
+Restarting an F5 Service Using Docker
+-------------------------------------
+
+You may restart any of the F5 service containers above using the syntax **docker restart <container-name>**. As an example to reset the appliance GUI enter the command **docker restart vanquish-gui** on an r5000/r10000 device.
+
+.. code-block:: bash
+
+  [root@appliance-1(r10900-1.f5demo.net) config]# docker restart <tab>
+  alert-service                     diag-agent                        ihealth-service                   platform-fwu                      snmp-trapd                        system_control                    system_lacpd                      system_platform-mgr               system_tmstat_zmq                 utils-agent
+  appliance_orchestration_manager   dma-agent                         lcd-webserver                     platform-hal                      stream-generator                  system_dagd                       system_lacpd_proxy                system_platform-stats-bridge      system_TPOB                       vanquish-gui
+  appliance-services-registry-2000  fips-service                      line-dma-agent                    platform-monitor                  swdiag-agent                      system_datapath_cp_proxy          system_latest_vers                system_rsyslogd                   system_user_manager               
+  appliance-services-registry-2020  fips-support-pod                  lopd                              platform-stats                    system_api_svc_gateway            system_fpga                       system_license_service            system_stpd                       system-vconsole                   
+  appliance-services-registry-2021  firmware                          name-service-ldap                 qat-support-pod                   system_audit_service              system_host_config                system_lldpd                      system_sw_rbcast                  system_velocity_rsyslogd          
+  authentication-mgr                firmware-fpga                     optics-mgr                        qkviewd                           system-common                     system_image_agent                system_manager                    system-tcam-manager               tcpdumpd_manager                  
+  confd-key-migration-mgr           http-server                       platform-diag                     snmpd                             system_confgen                    system_L2                         system_network_manager            system_tmstat_merged              upgrade-service                   
+  [root@appliance-1(r10900-1.f5demo.net) config]# docker restart vanquish-gui
+  vanquish-gui
+  [root@appliance-1(r10900-1.f5demo.net) config]#
+
+
+
 Nodes
 -----
 
@@ -154,10 +260,15 @@ There is one Kubernetes node in the rSeries K3S arhcitecture. You can view the s
 Namespaces
 ---------
 
-In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsonsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace.
+In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsonsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace. Run the command **kubectl describe node** to see all the pods and their associated namespaces.
 
 .. code-block:: bash
 
+  [root@appliance-1(r10900.f5demo.net) ~]# kubectl describe node
+  Name:               appliance-1.chassis.local
+  Roles:              control-plane,master
+  Labels:             beta.kubernetes.io/arch=amd64
+                      beta.kubernetes.io/instance-type=k3s
   ...
   Non-terminated Pods:          (18 in total)
       Namespace                   Name                                           CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
