@@ -133,8 +133,83 @@ F5OS SNMP MIBs are stored in the path **/var/F5/system/mibs**.
 Kubernetes Environment
 =======================
 
-KubeVirt
---------
+Architecture
+------------
+
+Describe Namespace/Node/Pod/Container architecture.
+
+Nodes
+-----
+
+There is one Kubernetes node in the rSeries K3S arhcitecture. You can view the single node using the **kubectl get nodes** command in the F5OS bash shell.
+
+.. code-block:: bash
+
+  [root@appliance-1(r10900.f5demo.net) ~]# kubectl get nodes
+  NAME                        STATUS   ROLES                  AGE    VERSION
+  appliance-1.chassis.local   Ready    control-plane,master   387d   v1.21.1+k3s-9fb22ec1-dirty
+  [root@appliance-1(r10900.f5demo.net) ~]# 
+
+
+Namespaces
+---------
+
+In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsonsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace.
+
+.. code-block:: bash
+
+  ...
+  Non-terminated Pods:          (18 in total)
+      Namespace                   Name                                           CPU Requests  CPU Limits  Memory Requests  Memory Limits  Age
+      ---------                   ----                                           ------------  ----------  ---------------  -------------  ---
+      kube-system                 traefik-ingress-controller-54c67bc84c-29pq4    0 (0%)        0 (0%)      0 (0%)           0 (0%)         240d
+      kube-system                 local-path-provisioner-9d987bf48-rhhxm         0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h11m
+      kube-system                 pause-58948b59d6-gchsb                         0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h11m
+      kube-system                 coredns-8dc4c7b6d-kzlrb                        0 (0%)        0 (0%)      70Mi (0%)        170Mi (0%)     6h11m
+      kube-system                 metrics-server-79cf557fc9-5b6g9                0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h11m
+      kube-system                 klipper-lb-xm6qj                               0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h11m
+      kube-system                 kube-flannel-ds-877v4                          0 (0%)        0 (0%)      50Mi (0%)        50Mi (0%)      6h11m
+      kube-system                 kube-multus-ds-amd64-xltct                     0 (0%)        0 (0%)      50Mi (0%)        50Mi (0%)      6h11m
+      kubevirt                    virt-operator-6b8985ccd-224tc                  0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h10m
+      kubevirt                    virt-operator-6b8985ccd-pxfrb                  0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h10m
+      kubevirt                    virt-api-8955d745c-kt7wt                       0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h10m
+      kubevirt                    virt-api-8955d745c-mkrn4                       0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h9m
+      kubevirt                    virt-controller-64c77bf5dd-rmpst               0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h9m
+      kubevirt                    virt-handler-9tkzt                             0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h9m
+      kubevirt                    virt-controller-64c77bf5dd-7mwcz               0 (0%)        0 (0%)      0 (0%)           0 (0%)         6h9m
+      default                     virt-launcher-dummy-1-5z55d                    4 (8%)        0 (0%)      485574529 (1%)   0 (0%)         6h8m
+      default                     virt-launcher-tenant1-1-vrxzq                  6 (12%)       0 (0%)      540254593 (2%)   0 (0%)         6h8m
+      default                     virt-launcher-tenant2-1-99b54                  6 (12%)       0 (0%)      540254593 (2%)   0 (0%)         6h8m
+
+
+You can confirm this by running the **kubectl get virtualmachineinstances --all-namespaces** command in the F5OS bash shell. This will display the tenants that are running in the default namespace.
+
+.. code-block:: bash
+
+  [root@appliance-1(r10900.f5demo.net) ~]# kubectl get virtualmachineinstances --all-namespaces
+  NAMESPACE   NAME        AGE    PHASE     IP    NODENAME
+  default     dummy-1     6h6m   Running         appliance-1.chassis.local
+  default     tenant1-1   6h6m   Running         appliance-1.chassis.local
+  default     tenant2-1   6h5m   Running         appliance-1.chassis.local
+  [root@appliance-1(r10900.f5demo.net) ~]# 
+
+
+Pods
+----
+
+Kubernetes pods are deployed as F5OS TMOS tenants are created. BIG-IP tenants run as virtual machines, and leverage Kubevirt to run VM's ontop of the Kubernetes architecture.You can view the pods using the **kubectl get pods** command in the F5OS bash shell. In the output below you can see three different tenants are running (dummy, tenant1, and tenant2) and each is running inside its own pod. 
+
+.. code-block:: bash
+
+  [root@appliance-1(r10900.f5demo.net) ~]# kubectl get pods
+  NAME                            READY   STATUS    RESTARTS   AGE
+  virt-launcher-dummy-1-5z55d     1/1     Running   0          5h44m
+  virt-launcher-tenant1-1-vrxzq   1/1     Running   0          5h44m
+  virt-launcher-tenant2-1-99b54   1/1     Running   0          5h44m
+  [root@appliance-1(r10900.f5demo.net) ~]#
+
+
+
 
 Useful Commands
 ---------------
@@ -1673,6 +1748,7 @@ LLDP
 
 Tenants
 =======
+
 
 
 Logging
