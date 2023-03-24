@@ -133,15 +133,24 @@ F5OS SNMP MIBs are stored in the path **/var/F5/system/mibs**.
 Kubernetes Environment
 =======================
 
-Architecture
-------------
+----------------------------
+The Kubernetes Control Plane
+----------------------------
 
-Describe Namespace/Node/Pod/Container architecture.
+rSeries utilizes an open source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releaases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, webUI, or API’s. 
+
+A combination of Docker Compose and Kubernetes is used within the F5OS rSeries platform layer. The Docker Compose component brings up the software stacks as they need to be fully functional early in the startup process. Then the Kubernetes component takes over and is responsible for deploying workloads to the proper CPU's. 
+
+.. image:: images/rseries_introduction/imagex.png
+  :align: center
+  :scale: 60%
+
+The diagram above is somewhat simplified as it shows a single software stack for the Kubernetes control plane. There is a software stack for the F5OS layer that provides F5OS CLI, webUI, and API management for the appliance as well as support for the networking services such as stpd, lldpd, lacpd, that get deployed as workloads. The Kubernetes control plane is responsible for deploying workloads. This would happen when tenants are configured. 
 
 Docker Compose 
 --------------
 
-F5 system services are managed via Docker Compose. The docker-compose configuration is in /var/docker/config on the rSeries applainces. To list the services and get their status, source the env_var file and run the appropriate docker-compose command. This will list all the F5 services managed by Docker Compose.
+Inside the rSeries F5 system services are managed via Docker Compose. The Docker Compose configuration is in /var/docker/config on the rSeries appliances. To list the F5 services and get their status, source the env_var file and run the appropriate docker-compose command. This will list all the F5 services managed by Docker Compose.
 
 .. code-block:: bash
 
@@ -1859,6 +1868,24 @@ LLDP
 
 Tenants
 =======
+
+- How to determine which vCPU's Tenants are running on?
+
+
+Performance and Utilization
+===========================
+
+CPU
+---
+
+
+
+
+Memory
+------
+
+
+
 
 
 
