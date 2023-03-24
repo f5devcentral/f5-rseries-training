@@ -1171,14 +1171,12 @@ In versions prior to F5OS-A 1.4.0, F5OS only supported static pre-defined roles 
 +----------------+----------+
 | operator       | 9001     |
 +----------------+----------+
-| root           | 0        | 
-+----------------+----------+
 | tenant-console | 9100     | 
 +----------------+----------+
 
 From a high level the **admin** role (group ID 9000) is a read/write role with full access to the system to make changes. The **operator** role (group ID 9001) is a read-only role and is prevented from making any configuration changes. The **root** role (group ID 0) gives full access to the bash shell, and in some environments this role will be disabled by enabling appliance mode. Note that the root role is not allowed access via remote authentication. The last role is **tenant-console** (group ID 9100) and this role is used to provide remote access directly to the tenant console as noted here:
 
-` Console Access to Tenant via Built-In Terminal Server <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#console-access-via-built-in-terminal-server>`_
+`Console Access to Tenant via Built-In Terminal Server <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#console-access-via-built-in-terminal-server>`_
 
 The group IDs are typically specified in a user configuration file on the external server (file locations vary on different servers). You can assign these F5 user attributes: 
 
@@ -1196,19 +1194,15 @@ The group IDs are typically specified in a user configuration file on the extern
 
 Setting F5-F5OS-HOMEDIR=/tmp is a good idea to avoid warning messages from sshd that the directory does not exist. Also, the source address in the TACACS+ configuration is not used by the rSeries system. 
 
-If F5-F5OS-UID is not set, it defaults to 1001. If F5-F5OS-GID is not set, it defaults to 0 (disallowed for authentication). The F5-F5OS-USERINFO is a comment field. Essentially, F5-F5OS-GID is the only hard requirement and must coincide with group ID's user role (except for the root role where the GID is 0). 
+If F5-F5OS-UID is not set, it defaults to 1001. If F5-F5OS-GID is not set, it defaults to 0 (disallowed for authentication). The F5-F5OS-USERINFO is a comment field. Essentially, F5-F5OS-GID is the only hard requirement and must coincide with group ID's user role. 
 
 More specific configuration details can be found in the **User Management** section of the **rSeries System Administration Guide**.
 
 `F5OS User Management <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#user-management>`_
 
-The **gidNumber** attribute needs to either be on the user or on a group the user is a member of. The **gidNumber** must be one of those listed (9000, 9001, 9100). [The root role is not externally accessible for obvious reasons.] 
+The **gidNumber** attribute needs to either be on the user or on a group the user is a member of. The **gidNumber** must be one of those listed (9000, 9001, 9100). [The root role is not externally accessible via remote authentication.] 
 
-The current implementation relies on AD “unix attributes” being installed into the directory.
-
-AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
-
-Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded. 
+Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded. The current implementation relies on AD “unix attributes” being installed into the directory. AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
 
 Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to the underlying Confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.3.0 can be found below.
 
