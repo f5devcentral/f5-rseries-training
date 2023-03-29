@@ -1174,7 +1174,7 @@ In versions prior to F5OS-A 1.4.0, F5OS only supported static pre-defined roles 
 | tenant-console | 9100     | 
 +----------------+----------+
 
-From a high level the **admin** role (group ID 9000) is a read/write role with full access to the system to make changes. The **operator** role (group ID 9001) is a read-only role and is prevented from making any configuration changes. The **root** role (group ID 0) gives full access to the bash shell, and in some environments this role will be disabled by enabling appliance mode. Note that the root role is not allowed access via remote authentication. The last role is **tenant-console** (group ID 9100) and this role is used to provide remote access directly to the tenant console as noted here:
+From a high level the **admin** role (group ID 9000) is a read/write role with full access to the system to make changes. The **operator** role (group ID 9001) is a read-only role and is prevented from making any configuration changes. The **root** role (group ID 0) gives full access to the bash shell, and in some environments this role will be disabled by enabling appliance mode. Note that the root role is valid only for the built-in 'root' user account; no other users have access to the bash shell. The last role is **tenant-console** (group ID 9100) and this role is used to provide remote access directly to the tenant console as noted here:
 
 `Console Access to Tenant via Built-In Terminal Server <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#console-access-via-built-in-terminal-server>`_
 
@@ -1194,7 +1194,7 @@ The group IDs are typically specified in a user configuration file on the extern
 
 Setting F5-F5OS-HOMEDIR=/tmp is a good idea to avoid warning messages from sshd that the directory does not exist. Also, the source address in the TACACS+ configuration is not used by the rSeries system. 
 
-If F5-F5OS-UID is not set, it defaults to 1001. If F5-F5OS-GID is not set, it defaults to 0 (disallowed for authentication). The F5-F5OS-USERINFO is a comment field. Essentially, F5-F5OS-GID is the only hard requirement and must coincide with group ID's user role. 
+If F5-F5OS-UID is not set, it defaults to 1001. F5-F5OS-GID is required; if not set, user authentication will fail. The F5-F5OS-USERINFO is a comment field. Essentially, F5-F5OS-GID is the only hard requirement and must coincide with group ID's user role.
 
 More specific configuration details can be found in the **User Management** section of the **rSeries System Administration Guide**.
 
