@@ -548,7 +548,7 @@ The F5OS-A 1.4.0 release introduced the Resource Admin user role, which is simil
     r10900-2(config-user-res-admin-user)# 
 
 
-When logging in as the resource admin user the aaa options in the CLI will be limited compared to a normal admin user. Below shows the full options available to a typical admin user.
+When logging in as the resource admin user, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
 
 
 .. code-block:: bash
