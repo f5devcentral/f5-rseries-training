@@ -1265,15 +1265,15 @@ If F5-F5OS-UID is not set, it defaults to 1001. F5-F5OS-GID is required; if not 
 
 More specific configuration details can be found in the **User Management** section of the **rSeries System Administration Guide**.
 
-`F5OS User Management <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#user-management>`_
+`F5OS User Management <https://techdocs.f5.com/en-us/f5os-a-1-4-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#user-management>`_
 
 The **gidNumber** attribute needs to either be on the user or on a group the user is a member of. The **gidNumber** must be one of those listed (9000, 9001, 9100). [The root role is not externally accessible via remote authentication.] 
 
-Currently the role numbers (9000, 9001, 9100) are fixed and hard-coded. The current implementation relies on AD “unix attributes” being installed into the directory. AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
+Currently the role numbers (9000, 9001, 9003, 9100) are fixed and hard-coded. The current implementation relies on AD “unix attributes” being installed into the directory. AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
 
-Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to the underlying Confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.3.0 can be found below.
+Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to the underlying Confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.4.0 can be found below.
 
-`LDAP/AD configuration overview <https://techdocs.f5.com/en-us/f5os-a-1-3-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview>`_
+`LDAP/AD configuration overview <https://techdocs.f5.com/en-us/f5os-a-1-4-0/f5-rseries-systems-administration-configuration/title-user-mgmt.html#ldap-config-overview>`_
 
 Changing Group ID Mapping via CLI (F5OS-A 1.4.0 and Later)
 ---------------------------------------------------------
