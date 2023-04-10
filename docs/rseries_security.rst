@@ -535,7 +535,7 @@ In the body of the API call add the following:
 Resource Admin User Role
 ========================
 
-The F5OS-A 1.4.0 release introduced the Resource Admin user role, which is similar to the Admin user role but cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system.
+The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assinging a new user to **role reosurce-admin**, their access will be restricted as noted above.
 
 .. code-block:: bash
 
@@ -547,6 +547,11 @@ The F5OS-A 1.4.0 release introduced the Resource Admin user role, which is simil
     Commit complete.
     r10900-2(config-user-res-admin-user)# 
 
+The webUI also supports the assignment of the resource-admin role to any user.
+
+.. image:: images/rseries_security/imageres-admin.png
+  :align: center
+  :scale: 70%
 
 When logging in as the resource admin user, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
 
