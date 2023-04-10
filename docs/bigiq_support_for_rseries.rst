@@ -164,7 +164,7 @@ At this point the rSeries tenant is managed just like any other BIG-IP device or
 F5OS Backup for rSeries
 ==========================
 
-The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it has to be managed locally on the rSeries appliance using the F5OS CLI, webUI, or API or SNMP. The exception, is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ. The management IP address of the F5OS layer of the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. F5OS tenants are backed up up using the normal **Backup & Restore** workflows in BIG-IQ. The new **F5OS** section allos for on-demand or scheduled backup for all of you VELOS and rSeries F5OS configurations.
+The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it has to be managed locally on the rSeries appliance using the F5OS CLI, webUI, API or SNMP. The exception, is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ. The management IP address of the F5OS layer of the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. F5OS tenants are backed up up using the normal **Backup & Restore** workflows in BIG-IQ. The new **F5OS** section allos for on-demand or scheduled backup for all of you VELOS and rSeries F5OS configurations.
 
 .. image:: images/bigiq_support_for_rseries/image3.png
   :align: center
