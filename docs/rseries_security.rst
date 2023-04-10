@@ -1236,6 +1236,8 @@ In versions prior to F5OS-A 1.4.0, F5OS only supported static pre-defined roles 
 +----------------+----------+
 | operator       | 9001     |
 +----------------+----------+
+| resource-admin | 9003     |
++----------------+----------+
 | tenant-console | 9100     | 
 +----------------+----------+
 
