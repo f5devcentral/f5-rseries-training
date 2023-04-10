@@ -170,6 +170,9 @@ The configuration and monitoring of the F5OS platform layer is not managed by BI
 
 `K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://support.f5.com/csp/article/K47512994>`_
 
+Below are the two sections needed to fully restore an rSeries appliance. The **Backup & Restore** section is used for the F5OS tenants, and the **F5OS** section is used to backup the F5OS platform layer. 
+
+
 .. image:: images/bigiq_support_for_rseries/image3.png
   :align: center
   :scale: 70%
@@ -184,4 +187,4 @@ If a restore of the F5OS layer needs to occur, this is not facilitated from BIG-
 
 `K47512994: Back up and restore the F5OS-A configuration on an rSeries system <https://support.f5.com/csp/article/K47512994>`_
 
-Note you will need to have the passwords used to encrypt the primary key before restoring the F5OS configuration. Tenant configurations are restored separately from the F5OS layer.
+Note: You will need to have the passwords used to encrypt the primary key before restoring the F5OS configuration. Tenant configurations are restored separately from the F5OS layer.
