@@ -164,9 +164,14 @@ At this point the rSeries tenant is managed just like any other BIG-IP device or
 F5OS Backup for rSeries
 ==========================
 
-The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it has to be managed locally on the rSeries appliance using the F5OS CLI, webUI, API or SNMP. The exception, is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ. The management IP address of the F5OS layer of the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. F5OS tenants are backed up up using the normal **Backup & Restore** workflows in BIG-IQ. The new **F5OS** section allos for on-demand or scheduled backup for all of you VELOS and rSeries F5OS configurations.
+The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it has to be managed locally on the rSeries appliance using the F5OS CLI, webUI, API or SNMP. The exception, is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ for the purpose of backing up their F5OS configurations. The management IP address of the F5OS layer belonging to the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. From this section, device credentials can be added to access the F5OS platform layer, and backups may be scheduled or created on demand. The F5OS tenants are backed up up using the normal **Backup & Restore** workflows in BIG-IQ, just as any BIG-IP instance of vCMP guest would be. 
 
 .. image:: images/bigiq_support_for_rseries/image3.png
   :align: center
   :scale: 70%
 
+Below is an example of a scheduled backup where VELOS and/or rSeries devices can be added to a scheduled backup. This will backup the F5OS platform layer only, F5OS tenants are backed up using the normal **Backup & Restore** workflows in BIG-IQ. 
+
+.. image:: images/bigiq_support_for_rseries/image4.png
+  :align: center
+  :scale: 70%
