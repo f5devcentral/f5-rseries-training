@@ -531,6 +531,66 @@ In the body of the API call add the following:
         }
     }
 
+
+Resource Admin User Role
+========================
+
+The F5OS-A 1.4.0 release introduced the Resource Admin user role, which is similar to the Admin user role but cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system.
+
+.. code-block:: bash
+
+    r10900-2(config)# system aaa authentication users user res-admin-user config username res-admin-user role resource-admin             
+    r10900-2(config-user-res-admin-user)# config set-password password 
+    Value for 'password' (<string>): **************
+    Error: application error
+    r10900-2(config-user-res-admin-user)# commit
+    Commit complete.
+    r10900-2(config-user-res-admin-user)# 
+
+
+When logging in as the resource admin user the aaa options in the CLI will be limited compared to a normal admin user. Below shows the full options available to a typical admin user.
+
+
+.. code-block:: bash
+
+    r10900-2(config)# system aaa ?
+    Possible completions:
+    authentication    
+    password-policy   Top-level container for password-policy settings.
+    primary-key       
+    restconf-token    restconf-token lifetime.
+    server-groups     
+    tls               Top-level container for key/certificate settings.
+    r10900-2(config)# system aaa authentication ?
+    Possible completions:
+    config   
+    ldap     Top-level container for LDAP search settings.
+    roles    Enclosing container list of roles.
+    users    Enclosing container list of local users.
+    r10900-2(config)# 
+
+
+The output below shows the limited options available to the resource admin user. Note, that it is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
+
+.. code-block:: bash
+
+    r10900-2(config)# system aaa ?
+    Possible completions:
+    authentication   
+    tls              Top-level container for key/certificate settings.
+    r10900-2(config)# system aaa authentication ?
+    Possible completions:
+    users   Enclosing container list of local users.
+    <cr>    
+    r10900-2(config)# 
+
+
+The same is true for the webUI, any attempt to configure the restricted items above will result in an **Access Denied** error similar to the one below.
+
+.. image:: images/rseries_security/imageaccessdenied.png
+  :align: center
+  :scale: 70%
+
 Session Timeouts and Token Lifetime
 ===================================
 
