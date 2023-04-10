@@ -2,7 +2,7 @@
 BIG-IQ Support for rSeries
 ==========================
 
-Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP is in use. In iSeries, a vCMP guest can be created via the host CLI, webUI, or API and it can then be imported into BIG-IQ as a device. From there, statistics/analytics can be gathered, and L4-7 configurations can be managed in a variety of ways. An rSeries tenant will behave identically to an iSeries vCMP guest from a BIG-IQ perspective, meaning you can import it after it has been created to manage configuration or get analytics.
+Currently rSeries support in BIG-IQ will mimic iSeries functionality when vCMP is in use. In iSeries, a vCMP guest can be created via the local host CLI, webUI, or API and it can then be imported into BIG-IQ as a device. From there, statistics/analytics can be gathered, and L4-7 configurations can be managed in a variety of ways. An rSeries tenant will behave identically to an iSeries vCMP guest from a BIG-IQ perspective, meaning you can import it after it has been created to manage configuration and/or visualize analytics.
 
 When an rSeries tenant is created, it can be imported as a device into BIG-IQ. It will import just like any other BIG-IP instance or device.  Once imported, it will show up with a Type of **BIG-IP Tenant**.
 
@@ -160,3 +160,11 @@ Shortly after the declaration is sent to BIG-IQ, you can see a new onboarding ta
   :scale: 70%
 
 At this point the rSeries tenant is managed just like any other BIG-IP device or guest inside of BIG-IQ. You can manage software upgrades, create and restore backups, maintain configurations, and gather analytics.
+
+The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it has to be managed locally on the rSeries appliance using the F5OS CLI, webUI, or API or SNMP. The exception, is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ. The management IP address of the F5OS layer of the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. F5OS tenants are backed up up using the normal **Backup & Restore** workflows in BIG-IQ. The new **F5OS** section allos for on-demand or scheduled backup for all of you VELOS and rSeries F5OS configurations.
+
+.. image:: images/bigiq_support_for_rseries/image3.png
+  :align: center
+  :scale: 70%
+
+  
