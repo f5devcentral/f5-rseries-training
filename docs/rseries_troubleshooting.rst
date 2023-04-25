@@ -5,10 +5,52 @@ rSeries Troubleshooting
 Storage / Disk
 ==============
 
-Some rSeries appliances have a single disk, while other models have dual disks that are RAID-1 mirrored. 
+Some rSeries appliances have a single SSD disk, while other models have dual SSD disks that are RAID-1 mirrored. The r2600,2800,4600,r4800,r5600,r5800,r5900 models all contain a single SSD, while the r10600,r10800,r10900 contain 2 SSD's that are RAID-1 mirrored. 
+
+Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size.
+
+.. code-block:: bash
+
+  r10900-2# show components component storage 
+                                                                                                                                          READ                                       WRITE    
+            DISK                                                                                TOTAL     READ      READ                  LATENCY  WRITE      WRITE      WRITE       LATENCY  
+  NAME      NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS      IOPS      MERGED    READ BYTES  MS       IOPS       MERGED     BYTES       MS       
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  platform  nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ915001YZ1P0FGN  735.00GB  nvme  38910844  11468112  11302039  2878981018  1139890  220046227  197568554  4049259703  7379344  
+            nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ0065030H1P0FGN  735.00GB  nvme  38756488  11286173  11290150  2875544998  1176491  220046227  197568554  4049259703  7029212  
+
+  r10900-2#
+
+Below is an example of an r5900 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size.
+
+.. code-block:: bash
+
+  r5900-2# show components component storage 
+                                                                                                                                        READ                                       WRITE     
+            DISK                                                                                    TOTAL     READ    READ    READ      LATENCY  WRITE      WRITE      WRITE       LATENCY   
+  NAME      NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE      TYPE  IOPS      IOPS    MERGED  BYTES     MS       IOPS       MERGED     BYTES       MS        
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  platform  nvme0n1  SAMSUNG MZ1LB960HAJQ-00007  Samsung  EDA7602Q  S435NA0NA05748  733.00GB  nvme  12255833  273605  141930  12519719  82978    119699693  129417442  2563679947  15206038  
+
+  r5900-2#
+
+Below is an example of an r4800 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size.
+
+.. code-block:: bash
+
+  r4800-2# show components component storage 
+                                                                                                                                READ                                     WRITE     
+            DISK                                                                            TOTAL     READ    READ    READ      LATENCY  WRITE     WRITE     WRITE       LATENCY   
+  NAME      NAME     MODEL             VENDOR         VERSION  SERIAL NO    SIZE      TYPE  IOPS      IOPS    MERGED  BYTES     MS       IOPS      MERGED    BYTES       MS        
+  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  platform  nvme0n1  SRMP8480GF1S1B71  SMART Modular  FW1354   SPG214106FA  480.00GB  nvme  10017534  252256  136998  10803713  227583   61683460  41269084  1106606207  11972055  
+
+  r4800-2#
 
 How the Disk is Partitioned
 ---------------------------
+
+
 
 Determining Free Space
 
@@ -27,7 +69,7 @@ Backups of the F5OS configuration are stored in the path **/var/F5/system/config
 F5OS Images
 -----------
 
-F5OS-A ISO images are uploaded into the system where they are intially written to disk in the following path **/var/import/staging/**. 
+F5OS-A ISO images are uploaded into the system where they are intially written to disk in the following path **/var/import/staging/**. The images go through a verification process before being extracted to thier final location.
 
 .. code-block:: bash
 
@@ -37,14 +79,26 @@ F5OS-A ISO images are uploaded into the system where they are intially written t
   F5OS-A-1.4.0-2129.R5R10.CANDIDATE.iso  F5OS-A-1.4.0-3402.R5R10.CANDIDATE.iso  F5OS-A-1.4.0-6325.R5R10.DEV.iso
   [root@appliance-1(r10900.f5demo.net) /]#
 
-Once the file upload completes the file is then imported and extracted into one of the following paths depending on which type of rSeries system it is being installed onto. For r5000 or r10000 appliances, the path of the import is **/var/images/R5R10**. For r2000 and r4000 appliances, the imported path is **/var/images/R2R4**. Below is an example showing various images on an r10000 system.
 
+
+
+Once the file upload completes the file is then imported and extracted into one of the following paths depending on which type of rSeries system it is being installed onto. For r5000 or r10000 appliances, the path of the import is **/var/images/R5R10**. For r2000 and r4000 appliances, the imported path is **/var/images/R2R4**. Below is an example showing various images on an r10000 system.
 
 .. code-block:: bash
 
   [root@appliance-1(r10900.f5demo.net) /]# ls var/images/R5R10/
   1.0.0-10170  1.0.0-11080  1.0.0-8303  1.0.0-8566  1.0.0-8830  1.0.0-9194  1.0.0-9396  1.4.0-2129  1.4.0-2631  1.4.0-3402  1.4.0-5242  1.4.0-6325
   [root@appliance-1(r10900.f5demo.net) /]# 
+
+Below is an example showing various images on an r4000 system.
+
+.. code-block:: bash
+
+  [root@appliance-1(r4800-2.demo.f5net.com) ~]# ls /var/images/R2R4/
+  1.4.0-10138  1.4.0-10281  1.4.0-8382  1.4.0-8622  1.4.0-8882  1.4.0-8939  1.4.0-9386
+  [root@appliance-1(r4800-2.demo.f5net.com) ~]# 
+
+
 
 Tenant Images
 -------------
@@ -128,6 +182,14 @@ F5OS SNMP MIBs are stored in the path **/var/F5/system/mibs**.
   [root@appliance-1(r10900.f5demo.net) mibs]# ls
   mibs_f5os_appliance.tar.gz  mibs_netsnmp.tar.gz
   [root@appliance-1(r10900.f5demo.net) mibs]# 
+
+F5OS Diag Files
+---------------
+
+tcpdump , core files, qkviews etc...
+
+
+
 
 
 Kubernetes Environment
