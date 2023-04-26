@@ -364,8 +364,8 @@ You can then use the **Show** options to display the current certificate, key, a
 .. image:: images/rseries_security/imagecert6.png
   :align: center
   :scale: 70%
-
-You can also create a Certificate Signing Request (CSR) for the self-signed certificate for use when submitting the certificate to the Certificate Authourity (CA).
+  
+If you do not want to use a self-signed certificate, you can create a Certificate Signing Request (CSR) for use when submitting the certificate to a Certificate Authority (CA)..
 
 .. image:: images/rseries_security/imagecsr1.png
   :align: center
