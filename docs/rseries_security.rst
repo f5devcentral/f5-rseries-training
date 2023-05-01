@@ -947,7 +947,7 @@ With basic authentication enabled (default setting), you can make any API call u
   :align: center
   :scale: 70%
 
-While basic auth is enabled, any API call using username/password will complete successfully. After disabling basic auth, any attempt to access an API endpoint other than the root URI using basic auth will fail with a message similar to the one below indicating **access denied**.
+While basic auth is enabled, any API call using username/password will complete successfully. After disabling basic auth, any attempt to access an API endpoint other than the root /api URI using basic auth will fail with a message similar to the one below indicating **access denied**.
 
 .. code-block:: json
 
@@ -963,6 +963,46 @@ While basic auth is enabled, any API call using username/password will complete 
             ]
         }
     }
+
+There are two very limited exceptions when basic auth is disabled, that will still allow a post to succede using basic auth. This limited mode still allows a user to use basic auth to query its own authentication state using the following query: **openconfig-system:system/aaa/authentication/f5-system-aaa:users/user=${username}/state**. In the example below, you can see that the user admin is allowed to use a basic authentication query to query the state of that user.
+
+.. code-block:: bash
+
+    prompt$ curl -i -sku admin:admin -H "Content-Type: application/yang-data+json"  https://10.255.2.40:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-system-aaa:users/user=admin/state
+    HTTP/1.1 200 OK
+    Date: Mon, 01 May 2023 16:58:10 GMT
+    Server: Apache/2.4.6 (Red Hat Enterprise Linux) OpenSSL/1.0.2zc-fips-dev
+    Last-Modified: Wed, 26 Apr 2023 18:38:15 GMT
+    Cache-Control: private, no-cache, must-revalidate, proxy-revalidate
+    Etag: "1682-534295-992625"
+    Content-Type: application/yang-data+json
+    Pragma: no-cache
+    X-Auth-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJTZXNzaW9uIElEIjoiYWRtaW4xNjgyOTYwMjkwIiwiYXV0aGluZm8iOiJhZG1pbiAxMDAwIDkwMDAgXC90bXAiLCJidWZmZXJ0aW1lbGltaXQiOiIzMDAiLCJleHAiOjE2ODI5NjExOTAsImlhdCI6MTY4Mjk2MDI5MCwicmVuZXdsaW1pdCI6IjUiLCJ1c2VyaW5mbyI6ImFkbWluIDE3Mi4xOC4xMDUuMTExIn0.s_wSwGlH7avk4HneM0jUXhHAGn38rvA1jv61dJcq2e0
+    Content-Security-Policy: default-src 'self'; block-all-mixed-content; base-uri 'self'; frame-ancestors 'none';
+    Strict-Transport-Security: max-age=15552000; includeSubDomains
+    X-Content-Type-Options: nosniff
+    X-Frame-Options: DENY
+    X-XSS-Protection: 1; mode=block
+    Transfer-Encoding: chunked
+
+    {
+    "f5-system-aaa:state": {
+        "username": "admin",
+        "last-change": "2023-01-23",
+        "tally-count": 0,
+        "expiry-date": "-1"
+        "role": "admin"
+    }
+    }
+    prompt$ 
+    
+The second exception allows a user to change their password using the the following POST command: **operations/openconfig-system:system/aaa/authentication/f5-system-aaa:users/user=${username}/config/change-password**. An example is provided below.
+
+.. code-block:: bash
+
+    prompt:~ jmccarron$ curl  -sku jim-test:admin -H "Content-Type: application/yang-data+json" -d '{     "input": [         {             "old-password": "admin",             "new-password": "Passw0rd1@#",             "confirm-password": "Passw0rd1@#"         }     ] }' \  -X POST https://10.255.2.40:8888/restconf/operations/openconfig-system:system/aaa/authentication/f5-system-aaa:users/user=jim-test/config/change-password
+    prompt:~ jmccarron$ 
+ 
 
 When basic authentication is enabled, a client will be allowed to obtain an auth token using username/password at any URI. The client can then choose to use the auth token for subsequent requests, or they can continue to use basic auth (username/password) authenticaton. As an example, the curl command below uses basic auth successfully to the URI endpoint **restconf/data/openconfig-system:system/config**. In the response you can see the **X-Auth-Token** header, which contains the auth token that can then be used by the client for subsequent requests:
 
@@ -1023,7 +1063,7 @@ Here is an example of the client issuing the same request with the auth token it
     }
     user1$ 
 
-If the same exercise is repeated after basic auth is disabled, then the user will not be able to run the intial request using basic auth (username/password). It will fail to any non-root URI as seen below. The response will contain and **access-denied** error.
+If the same exercise is repeated after basic auth is disabled, then the user will not be able to run the intial request using basic auth (username/password). It will fail to any non-root URI (minus the exceptions noted above) as seen below. The response will contain and **access-denied** error.
 
 .. code-block:: bash
 
