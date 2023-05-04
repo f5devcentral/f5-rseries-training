@@ -48,7 +48,7 @@ The rSeries family of appliances has multiple hardware and software options simi
 
 .. image:: images/rseries_introduction/image2.png
   :align: center
-  :scale: 40%
+  :scale: 80%
 
 For the 2000 and 4000 models, the number of PAYG tiers remains the same as the current iSeries, with each model having an x600 model and an x800 model just like the previous generation iSeries appliances. You can start with an x600 model and upgrade the the x800 model via a simple licensing change.
 
