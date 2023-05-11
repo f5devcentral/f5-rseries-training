@@ -1052,7 +1052,7 @@ Here is an example of the client issuing the same request with the auth token it
     X-Content-Type-Options: nosniff
     X-Frame-Options: DENY
     X-XSS-Protection: 1; mode=block
-    Transfer-Encoding: chunked
+    Transfer-Encoding: chunked 
 
     {
     "openconfig-system:config": {
