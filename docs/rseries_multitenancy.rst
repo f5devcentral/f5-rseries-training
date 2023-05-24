@@ -125,6 +125,18 @@ The r10600 has 48 vCPUs total, 12 vCPUs are disabled via licensing, 12 vCPUs res
 
 Since all r10000 models are running on the same hardware appliance, you can easily upgrade from the r10600 to either the r10800 or r10900 to unlock more performance via a simple license change. The r10800 can be upgraded to an r10900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r10000 appliance.
 
+r10920-DF (FIPS) Series Multitenancy
+==========================
+
+Each r10920-DF appliance has 48 vCPUs, however 12 of those vCPUs are dedicated to the F5OS layer. This leaves 36 vCPUs left over for use by tenants on the r10920-DF. There is a limitation to the total number of FIPS partitions that are needed for each tenant utilizing FIPS. Unlike the r10900 (non FIPS) device which supports a maximum of 36 tenants, the r10920-DF is limited to a maximum of 32 FIPS tenants due to the maximum number of FIPS partitions that are supported by the integrated HSM. You can configure the remaining tenants in a non-FIPS mode. This is an unlikely real world sitation as typical deployments are not configuring the maximum number of minimum size tenants. You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below is an example of the total number of vCPUs supported on the r10920-DF platform.
+
+The r10920-DF has 48 vCPUs total, 12 vCPUs reserved for F5OS, and 36 vCPUs left over for use by tenants, of which 32 can utilize the integrated FIPS HSM:
+
+
+.. image:: images/rseries_multitenancy/image-r10920-DF.png
+  :align: center
+  :scale: 60%
+
 r5000 Series Multitenancy
 ==========================
 

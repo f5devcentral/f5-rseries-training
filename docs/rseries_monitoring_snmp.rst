@@ -5,7 +5,7 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 
 Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can contnue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
-As of F5OS-A 1.2.0 the following netSNMP MIBs are available:
+As of F5OS-A 1.5.0 the following netSNMP MIBs are available:
 
 - HOST-RESOURCES-MIB
 - RFC1213-MIB
@@ -26,7 +26,7 @@ As of F5OS-A 1.2.0 the following netSNMP MIBs are available:
 - SNMPv2-TC
 - TRANSPORT-ADDRESS-MIB
 
-As of F5OS-A 1.2.0.the following F5OS Appliance MIBs are available:
+As of F5OS-A 1.5.0 the following F5OS Appliance MIBs are available:
 
 - F5-ALERT-DEF-MIB
 - F5-COMMON-SMI-MIB
@@ -35,7 +35,7 @@ As of F5OS-A 1.2.0.the following F5OS Appliance MIBs are available:
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
 
 
-As of F5OS-A 1.2.0 the following SNMP alerts and traps are available:
+As of F5OS-A 1.5.0 the following SNMP alerts and traps are available:
 
 - Interface UP
 - Interface DOWN
