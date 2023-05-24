@@ -163,6 +163,18 @@ The r5600 has 32 vCPUs total, 14 vCPUs are disabled via licensing, 6 vCPUs reser
 
 Since all r5000 models are running on the same hardware appliance, you can easily upgrade from the r5600 to either the r5800 or r5900 to unlock more performance via a simple license change. The r5800 can be upgraded to an r5900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r5000 series appliances.
 
+r5920-DF (FIPS) Series Multitenancy
+==========================
+
+Each r5920-DF appliance has 32 vCPUs, however 6 of those vCPUs are dedicated to the F5OS layer. This leaves 26 vCPUs left over for use by tenants on the r5920-DF. You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below is an example of the total number of vCPUs supported on the r5920-DF platform.
+
+The r5920-DF has 32 vCPUs total, 6 vCPUs reserved for F5OS, and 26 vCPUs left over for use by tenants:
+
+
+.. image:: images/rseries_multitenancy/image-r5920-DF.png
+  :align: center
+  :scale: 60%
+
 r4000 Series Multitenancy
 ==========================
 
