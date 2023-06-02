@@ -29,7 +29,7 @@ rSeries continues to provide hardware acceleration and offload capabilities in a
 
 
 
-Customers can migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest running on the VIPRION or iSeries platforms. Once inside the tenant, the management experience is similar to the experience on existing BIG-IP platforms. The BIG-IP tenant is managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator connects directly to the tenant’s webUI, CLI, or API and has the same experience as they have with their existing platforms. 
+Customers can migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest running on the VIPRION or iSeries platforms. Once inside the tenant, the management experience is like the experience on existing BIG-IP platforms. The BIG-IP tenant is managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator connects directly to the tenant’s webUI, CLI, or API and has the same experience as they have with their existing platforms. 
 
 In the future, BIG-IP Next tenants will be supported within the same rSeries appliance (except on the r2000 series, which supports one tenant only), which allows customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What differs is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
@@ -37,7 +37,7 @@ In the future, BIG-IP Next tenants will be supported within the same rSeries app
 Multitenant by Default
 ---------------------------------------------------
 
-The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above, the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the intial release). The rSeries appliances are multitenant by default (with the exception of the r2000, which runs a single tenant), which is a change from the iSeries appliances that run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** on top of a **vCMP Host Layer**, customers will now provision **Tenants** on top of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large BIG-IP tenant on rSeries after the intial F5OS setup is completed. 
+The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above, the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the initial release). The rSeries appliances are multitenant by default (with the exception of the r2000, which runs a single tenant), which is a change from the iSeries appliances that run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** on top of a **vCMP Host Layer**, customers will now provision **Tenants** on top of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large BIG-IP tenant on rSeries after the intial F5OS setup is completed. 
 
 -----------------------------------
 More Pay-as-you-Grow (PAYG) options
@@ -61,7 +61,7 @@ For the 2000 and 4000 models, the number of PAYG tiers remains the same as the c
 The Kubernetes Control Plane
 ----------------------------
 
-rSeries utilizes an open source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releaases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, webUI, or API’s. 
+rSeries utilizes an open source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, webUI, or API’s. 
 
 A combination of Docker Compose and Kubernetes is used within the F5OS rSeries platform layer. The Docker Compose component brings up the software stacks as they need to be fully functional early in the startup process. Then the Kubernetes component takes over and is responsible for deploying workloads to the proper CPU's. 
 
