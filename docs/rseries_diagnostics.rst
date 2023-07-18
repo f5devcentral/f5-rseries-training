@@ -355,7 +355,7 @@ If you would like to change any of the logging levels via the CLI you must be in
 Viewing Logs from the webUI
 --------------------------
 
-In the intial release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
@@ -378,7 +378,7 @@ Currently F5OS webUI’s logging levels can be configured for local logging, and
 Viewing Logs from the API
 --------------------------
 
-If the system currently has any active Alarms you can view them via the following API call:
+If the system currently has any active alarms, you can view them via the following API call:
 
 .. code-block:: bash
 
@@ -1515,7 +1515,7 @@ https://support.f5.com/csp/article/K80685750
 
 
 
-You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface, no interface filtering occurs and the command captures all interfaces.
+You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface no interface filtering occurs and the command captures all interfaces.
 
 **Important: The interfaces on the rSeries system are capable of very high traffic rates. To prevent dropped packets during traffic capture, specify appropriate filters to capture only the intended traffic and reduce the total amount of captured traffic.**
 

@@ -11,7 +11,7 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
   :align: center
   :scale: 80%
 
-Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed on an iSeries appliance. In the future when the next generation BIG-IP Next tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM. They will be able to run side by side on the same appliance (with the exception of the r2000 which only supports one tenant).
+Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed similar to how a vCMP guest is managed on an iSeries appliance. In the future when the next generation BIG-IP Next tenants are supported on rSeries, those tenants will run in their native containerized mode, and not run as a VM. They will be able to run side by side on the same appliance (exceept for the r2000 which only supports one tenant).
 
 Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a supported TMOS tenant image, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer.
 
@@ -19,7 +19,7 @@ Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSe
   :align: center
   :scale: 70%
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPUs for tennancy.
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPUs for tenancy.
 
 +-----------------------+--------------------+--------------------------+-------------------+-----------------+
 | **Tenant Size**       | **Physical Cores** | **Logical Cores (vCPU)** | **Min Bytes RAM** | **RAM/vCPU**    |
@@ -128,7 +128,7 @@ Since all r10000 models are running on the same hardware appliance, you can easi
 r10920-DF (FIPS) Series Multitenancy
 ==========================
 
-Each r10920-DF appliance has 48 vCPUs, however 12 of those vCPUs are dedicated to the F5OS layer. This leaves 36 vCPUs left over for use by tenants on the r10920-DF. There is a limitation to the total number of FIPS partitions that are needed for each tenant utilizing FIPS. Unlike the r10900 (non FIPS) device which supports a maximum of 36 tenants, the r10920-DF is limited to a maximum of 32 FIPS tenants due to the maximum number of FIPS partitions that are supported by the integrated HSM. You can configure the remaining tenants in a non-FIPS mode. This is an unlikely real world sitation as typical deployments are not configuring the maximum number of minimum size tenants. You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below is an example of the total number of vCPUs supported on the r10920-DF platform.
+Each r10920-DF appliance has 48 vCPUs, however 12 of those vCPUs are dedicated to the F5OS layer. This leaves 36 vCPUs left over for use by tenants on the r10920-DF. There is a limitation to the total number of FIPS partitions that are needed for each tenant utilizing FIPS. Unlike the r10900 (non FIPS) device which supports a maximum of 36 tenants, the r10920-DF is limited to a maximum of 32 FIPS tenants due to the maximum number of FIPS partitions that are supported by the integrated HSM. You can configure the remaining tenants in a non-FIPS mode. This is an unlikely real world situation as typical deployments are not configuring the maximum number of minimum size tenants. You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below is an example of the total number of vCPUs supported on the r10920-DF platform.
 
 The r10920-DF has 48 vCPUs total, 12 vCPUs reserved for F5OS, and 36 vCPUs left over for use by tenants, of which 32 can utilize the integrated FIPS HSM:
 
@@ -166,7 +166,7 @@ Since all r5000 models are running on the same hardware appliance, you can easil
 r5920-DF (FIPS) Series Multitenancy
 ==========================
 
-Each r5920-DF appliance has 32 vCPUs, however 6 of those vCPUs are dedicated to the F5OS layer. This leaves 26 vCPUs left over for use by tenants on the r5920-DF. There is a limitation to the total number of FIPS partitions that are needed for each tenant utilizing FIPS. Unlike the r5900 (non FIPS) device which supports a maximum of 26 tenants, the r5920-DF is limited to a maximum of 24 FIPS tenants due to the maximum number of FIPS partitions that are supported by the integrated HSM. You can configure the remaining tenants in a non-FIPS mode. This is an unlikely real world sitation as typical deployments are not configuring the maximum number of minimum size tenants. You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below is an example of the total number of vCPUs supported on the r5920-DF platform.
+Each r5920-DF appliance has 32 vCPUs, however 6 of those vCPUs are dedicated to the F5OS layer. This leaves 26 vCPUs left over for use by tenants on the r5920-DF. There is a limitation to the total number of FIPS partitions that are needed for each tenant utilizing FIPS. Unlike the r5900 (non FIPS) device which supports a maximum of 26 tenants, the r5920-DF is limited to a maximum of 24 FIPS tenants due to the maximum number of FIPS partitions that are supported by the integrated HSM. You can configure the remaining tenants in a non-FIPS mode. This is an unlikely real world situation as typical deployments are not configuring the maximum number of minimum size tenants. You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below is an example of the total number of vCPUs supported on the r5920-DF platform.
 
 The r5920-DF has 32 vCPUs total, 6 vCPUs reserved for F5OS, and 26 vCPUs left over for use by tenants, of which 24 can utilize the integrated FIPS HSM:
 
@@ -184,7 +184,7 @@ Each r4000 appliance has 16 CPU cores (not vCPUs), unlike the high-end (r10000) 
 
 This leaves all 16 CPU cores left over for use by tenants on the r4800, and 12 CPU cores for the r4600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant so that you can deploy many tenants. Below are examples of the total number of CPU cores supported for each r4000 platform.
 
-The r4800 has 16 CPU cores total, There are zero CPU cores reserved for F5OS, and 16 CPU cores left over for use by tenants:
+The r4800 has 16 CPU cores total, there are zero CPU cores reserved for F5OS, and 16 CPU cores left over for use by tenants:
 
 
 .. image:: images/rseries_multitenancy/image9.png
@@ -209,7 +209,7 @@ Each r2000 appliance has 8 CPU cores (not vCPUs), unlike the high-end (r10000) a
 
 This leaves all 8 CPU cores left over for use by a single tenant on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant. Below are examples of the total number of CPU cores supported for each r2000 platform.
 
-The r2800 has 8 CPU cores total, There are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by the single tenant:
+The r2800 has 8 CPU cores total, there are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by the single tenant:
 
 
 .. image:: images/rseries_multitenancy/image11.png
@@ -227,7 +227,7 @@ Since all r2000 models are running on the same hardware appliance, you can easil
 Tenant Sizing
 =============
 
-Single vCPU (Skinny) tenants are supported on the r10000 and r5000 appliances, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. For the r5000 platforms this would allow for 26 single vCPU tenants per r5900 appliance, 18 tenants for the r5800, however the r5600 supports a max of 8 tenants. While single vCPU tenants are supported, they are not recommended for most environments. This is due to the fact that a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option and ideally for non-production envrionements. As always proper sizing should be done to ensure the tenant has enough resources. 
+Single vCPU (Skinny) tenants are supported on the r10000 and r5000 appliances, but that option is hidden under **Advanced** mode. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. For the r5000 platforms this would allow for 26 single vCPU tenants per r5900 appliance, 18 tenants for the r5800, however the r5600 supports a max of 8 tenants. While single vCPU tenants are supported, they are not recommended for most environments. This is bacuase a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option and ideally for non-production environments. As always proper sizing should be done to ensure the tenant has enough resources. 
 
 Tenant States
 =============
@@ -250,10 +250,10 @@ An rSeries tenant supports 3 states: (**Configured**, **Provisioned**, and **Dep
 
 You may also configure **Crypto/Compression Acceleration**. This option is enabled by default, meaning the tenant will utilize and offload to crypto (SSL/TLS) and compression hardware, or it can be disabled meaning all crypto and compression will be done in software. It is highly recommended to use the default enabled option for best performance. 
 
-In some previous generation hardware platforms there is an option to configure an **SSL Mode** for vCMP guests. This option is not available in rSeries, and the behavior may be different:
+In some previous generation hardware platforms, there is an option to configure an **SSL Mode** for vCMP guests. This option is not available in rSeries, and the behavior may be different:
 
 If you currently utilize the SSL Mode feature where SSL resources can be **Dedicated, Shared, or Isolated** for each vCMP guest, this configuration option is not supported on rSeries at initial release. vCMP guests operate in the default shared mode meaning all guests get equal access to the shared SSL hardware resources. You may configure the SSL Mode to **dedicated** where SSL hardware resources are dedicated to a guest in proportion to the vCPUs assigned to a guest. You may also configure **none**, meaning all SSL processing is done in software.  
   
-In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPUs assigned to the tenant. This is conceptually similar to how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. A environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
+In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPUs assigned to the tenant. This is conceptually similar to how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. An environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
 
 Lastly the tenant may be configured to support **Appliance Mode** which is a security option which disables root and bash access to the tenant.

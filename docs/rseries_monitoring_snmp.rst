@@ -3,7 +3,7 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can contnue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can continue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower-level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
 As of F5OS-A 1.2.0 the following netSNMP MIBs are available:
 
@@ -92,7 +92,7 @@ Adding Allowed IPs for SNMP
 Adding Allowed IPs for SNMP via CLI
 -----------------------------------
 
-By default, SNMP queries are not allowed into the F5OS platform layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries from particular SNMP management endpoints. Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
+By default, SNMP queries are not allowed into the F5OS platform layer. Before enabling SNMP, you'll need to open the out-of-band management port on F5OS-A to allow SNMP queries from particular SNMP management endpoints. Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
 
 
 .. code-block:: bash
@@ -101,7 +101,7 @@ By default, SNMP queries are not allowed into the F5OS platform layer. Before en
     r10900-2(config-allowed-ip-snmp)# commit
     Commit complete.
 
-Currently you can add one IP address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block contaning multiple addresses. If you require more than one non-contiguous IP address you can add it under another name as seen below. 
+Currently you can add one IP address/port pair per **allowed-ip** name with an optional prefix length to specify a CIDR block containing multiple addresses. If you require more than one non-contiguous IP address, you can add it under another name as seen below. 
 
 .. code-block:: bash
 
@@ -120,7 +120,7 @@ Currently you can add one IP address/port pair per **allowed-ip** name with an o
 Adding Allowed IPs for SNMP via API
 -----------------------------------
 
-By default SNMP queries are not allowed into the F5OS layer. Before enabling SNMP you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
+By default SNMP queries are not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
 
 .. code-block:: bash
 
@@ -170,7 +170,7 @@ To view the allowed IPs in the API, use the following call.
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-allowed-ips:allowed-ips
 
-The output will show the previously configured allowed-ip's.
+The output will show the previously configured allowed-ips.
 
 
 .. code-block:: json
@@ -281,7 +281,7 @@ If Link Aggregation Groups (LAGs) are configured, descriptions should be added t
 Adding Interface and LAG descriptions via API
 ---------------------------------------------
 
-To add descriptions for both the in-band, and out-of-band management ports in the CLI, follow the examples below. The API example below is for the r10000 models, which have 20 interfaces and one managment port. For the r5000 series models you should adjust for 10 interfaces and one managment port.
+To add descriptions for both the in-band, and out-of-band management ports in the CLI, follow the examples below. The API example below is for the r10000 models, which have 20 interfaces and one management port. For the r5000 series models you should adjust for 10 interfaces and one management port.
 
 .. code-block:: bash
 
@@ -457,7 +457,7 @@ The body of the API call should contain JSON data that includes the descriptions
 Configuring SNMP Access
 =======================
 
-To enable SNMP, you'll need to configure basic SNMP parameters like **sytem contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI and API, with configuration via webUI added in F5OS-A 1.3.0. 
+To enable SNMP, you'll need to configure basic SNMP parameters like **system contact**, **location** and **name**. Then configure access for specific SNMP communities and versions. Currently SNMP can be setup via CLI and API, with configuration via webUI added in F5OS-A 1.3.0. 
 
 Configuring SNMP Access via CLI F5OS-A 1.2.0 or Later
 -----------------------------------------------------
@@ -496,7 +496,7 @@ You can then display the SNMP community configuration using the **show system sn
 
     r5900-2(config)# 
 
-You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides addtional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password.
+You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides additional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password.
 
 .. code-block:: bash
 
@@ -529,7 +529,7 @@ Below is the SNMP CLI configuration for systems running a version prior to F5OS-
     Commit complete.
     appliance-1(config)# 
 
-Enabling SNMP can de done from the CLI by configuring the public SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring.
+Enabling SNMP can be done from the CLI by configuring the public SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring.
 
 .. code-block:: bash
 
@@ -629,7 +629,7 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
 Configuring SNMP Access via webUI
 ---------------------------------
 
-SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configued under **System Settings -> SNMP Configuration**..
+SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**..
 
 .. image:: images/rseries_monitoring_snmp/image2.png
   :align: center
@@ -800,9 +800,9 @@ Enabling SNMP Traps in the CLI for Releases Prior to F5OS-A 1.2.0
 For releases prior to F5OS-A 1.2.0, the configuration of SNMP was more difficult, and was done as outlined below. It is provided for reference, but the newer configuration above should be used instead.
 
 
-Enter **config** mode, and enter the following commands to enable SNMP traps for the F5OS-A layer. Specifiy, your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
+Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS-A layer. Specify your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-Note: The **snmpTargetAddrTAddress** is unintuitive in these earlier releases, and is much simpler after upgrading to F5OS-A 1.2.0 or later. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
+Note: The **snmpTargetAddrTAddress** is unintuitive in these earlier releases and is much simpler after upgrading to F5OS-A 1.2.0 or later. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
 
 
 .. code-block:: bash
@@ -1102,7 +1102,7 @@ SNMP ifIndex OID: .1.3.6.1.2.1.31.1.1
 SNMP CpuProcessorStatsTable
 ---------------------------
 
-Query the following SNMP OID to get detailed infromation about the CPUs in the system.
+Query the following SNMP OID to get detailed information about the CPUs in the system.
 
 SNMP ifIndex OID: .1.3.6.1.4.1.12276.1.2.1.1.1
 

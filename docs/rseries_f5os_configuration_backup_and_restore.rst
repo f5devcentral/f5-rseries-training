@@ -34,8 +34,8 @@ To perform a complete backup of the rSeries system, you must:
 •	Set the Primary Key for F5OS
 •	Back up the configuration for F5OS
 •	Copy the configuration backup for F5OS to a remote location
-•	Back up any deployed tenants using the tenants backup mechanism (i.e. a UCS backup)
-•	Copy each tenants UCS backup to a remote location
+•	Back up any deployed tenants using the tenant's backup mechanism (i.e. a UCS backup)
+•	Copy each tenant's UCS backup to a remote location
 
 More detail is covered in the following solution article:
 
@@ -114,7 +114,7 @@ Using the F5OS API you can backup the F5OS configuration database using the foll
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-database:database/f5-database:config-backup
 
-In the body of the API call you can specify the file name you want to save the backup as.
+In the body of the API call, you can specify the file name you want to save the backup as.
 
 .. code-block:: json
 
@@ -132,7 +132,7 @@ Once the database backup has been completed, you should copy the file to an exte
 Exporting F5OS Backup via webUI
 ------------------------------
 
-In the webUI, use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the webUI require an external HTTPS server. The **Upload** and **Download** options allows for a browser to upload/download from the client's local machine.
+In the webUI, use the **System Settings -> File Utilities** page and from the dropdown select **configs** to see the previously saved backup file. Here you can **Import** or **Export** configuration backups, or you can **Upload** or **Download** directly to your client machine through the browser. Note that the current Import and Export options of files to and from the webUI require an external HTTPS server. The **Upload** and **Download** options allow for a browser to upload/download from the client's local machine.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
@@ -287,7 +287,7 @@ Resetting the System (Not for Production)
 
 For a proof-of-concept test, this section will provide steps to wipe out the entire system configuration in a graceful manner. This is not intended as a workflow for production environments, as you would not typically be deleting entire system configurations, instead you would be restoring pieces of the configuration in the case of failure. 
 
-The first step would be to ensure you have completed the previous sections, and have created backups for the F5OS layer and each tenant. These backups should have been copied out of the rSeries system to a remote location so that they can be used to restore to the system after it has been reset. The following solution article has more details about resetting the rSeries system to default:
+The first step would be to ensure you have completed the previous sections and have created backups for the F5OS layer and each tenant. These backups should have been copied out of the rSeries system to a remote location so that they can be used to restore to the system after it has been reset. The following solution article has more details about resetting the rSeries system to default:
 
 `K20024872: Restore the rSeries configuration to factory default settings <https://support.f5.com/csp/article/K20024872>`_
 

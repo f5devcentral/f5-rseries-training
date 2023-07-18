@@ -8,7 +8,7 @@ There are two main points of management within the rSeries appliances: The **F5O
   :align: center
   :scale: 80%
 
-Additionally, they each run their own version of software; tenants are able to run specific versions of TMOS, which have been approved to run on the rSeries platform. The intial supported version is 15.1.5 for the r10000 and r5000 appliances and 15.1.6 for the r4000 and r2000 appliances. The F5OS platform layer runs its own version of F5OS, which is unique to the rSeries appliances. On downloads.f5.com the rSeries versions of F5OS are referred to as **F5OS-A** where the **A** stands for **Appliances**. The VELOS chassis also runs F5OS, but that version is designated as **F5OS-C**, where **C** stands for **Chassis**.
+Additionally, they each run their own version of software; tenants are able to run specific versions of TMOS, which have been approved to run on the rSeries platform. The initial supported version is 15.1.5 for the r10000 and r5000 appliances and 15.1.6 for the r4000 and r2000 appliances. The F5OS platform layer runs its own version of F5OS, which is unique to the rSeries appliances. On downloads.f5.com the rSeries versions of F5OS are referred to as **F5OS-A** where the **A** stands for **Appliances**. The VELOS chassis also runs F5OS, but that version is designated as **F5OS-C**, where **C** stands for **Chassis**.
 
 .. image:: images/rseries_points_of_management/image2.png
   :align: center
