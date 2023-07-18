@@ -1320,7 +1320,7 @@ You can monitor the rSeries Appliance temperature.  The output will display the 
 
 .. code-block:: bash
 
-    GET https://{{Appliance4_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:temperature
+    GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:temperature
 
 .. code-block:: json
 
@@ -1355,7 +1355,7 @@ The API call below shows the total system memory:
 Trusted Protection Module Status from the API
 ---------------------------------------------
 
-rSeries supports the Trusted Protection Module (TPM) to validate certain software has not been tampered with. You can query the last statsus check which is performed on boot:
+rSeries supports the Trusted Protection Module (TPM) to validate certain software has not been tampered with. You can query the last status check which is performed on boot:
 
 .. code-block:: bash
 
@@ -1371,7 +1371,7 @@ rSeries supports the Trusted Protection Module (TPM) to validate certain softwar
 Software Health and Status from the CLI
 ---------------------------------------
 
-You can monitor the health of the unlerying software and hardware using the following CLI commands.
+You can monitor the health of the underlying software and hardware using the following CLI commands.
 
 F5 Cluster Status via CLI
 -------------------------
@@ -1601,7 +1601,7 @@ The rSeries Dashboard will provide a visual system summary of the appliance incl
   :align: center
   :scale: 70%
 
-The Network tab wil provide a visual representation of all networking ports on the system. Each port will be color coded Green for Up status, and Red or Down status. The current Pipeline mapping is also displayed which shows the external port mapping to internal pipelines.
+The Network tab will provide a visual representation of all networking ports on the system. Each port will be color coded Green for Up status, and Red or Down status. The current Pipeline mapping is also displayed which shows the external port mapping to internal pipelines.
 
 
 .. image:: images/monitoring_rseries/image2.png
@@ -2078,11 +2078,11 @@ This API call displays the Forwarding Database:
 F5 Service-Pods Status
 ----------------------
 
-The following API call displays the service-pods running isinde the F5OS layer:
+The following API call displays the service-pods running inside the F5OS layer:
 
 .. code-block:: bash
 
-    GET https://{{Appliance4_IP}}:8888/restconf/data/f5-service-pod:service-pods
+    GET https://{{Appliance1_IP}}:8888/restconf/data/f5-service-pod:service-pods
 
 .. code-block:: json
 
