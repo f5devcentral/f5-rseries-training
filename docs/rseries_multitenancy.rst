@@ -77,6 +77,12 @@ For the r2000 / r4000 appliances the formula is different.
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 | **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Minimum RAM used (Max vCPU)**    |  **Extra RAM Available for Tenants**  |  Max vCPUs  |
 +=======================+=======================+=========================+==================================+====================================+=======================================+=============+
+| r12900-DS Series      | 512GB RAM             | TBD                     | TBD                              | TBD                                | TBD                                   | 60          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r12800-DS Series      | 512GB RAM             | TBD                     | TBD                              | TBD                                | TBD                                   | 52          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r12600-DS Series      | 512GB RAM             | TBD                     | TBD                              | TBD                                | TBD                                   | 44          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 | r10900 Series         | 256GB RAM             | 25GB                    | 231GB                            | 127GB                              | 104GB                                 | 36          |
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 | r10800 Series         | 256GB RAM             | 25GB                    | 231GB                            | 99GB                               | 132GB                                 | 28          |
@@ -99,31 +105,32 @@ For the r2000 / r4000 appliances the formula is different.
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 
 
-r10000 Series Multitenancy
+
+r12000-DS Series Multitenancy
 ==========================
 
-Each r10000 appliance has 48 vCPUs, however 12 of those vCPUs are dedicated to the F5OS layer. This leaves 36 vCPUs left over for use by tenants on the r10900, 28 vCPUs for the r10800, and 24 vCPUs for the r10600.  You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below are examples of the total number of vCPUs supported for each r10000 platform.
+Each r12000-DS appliance has 72 vCPUs, however 12 of those vCPUs are dedicated to the F5OS layer. This leaves 60 vCPUs left over for use by tenants on the r12900-DS, 52 vCPUs for the r12800-DS, and 44 vCPUs for the r12600-DS.  You can dedicate all vCPUs to one large tenant, or you can allocate smaller numbers of vCPUs per tenant so that you can deploy many tenants. Below are examples of the total number of vCPUs supported for each r12000-DS platform.
 
-The r10900 has 48 vCPUs total, 12 vCPUs reserved for F5OS, and 36 vCPUs left over for use by tenants:
+The r12900-DS has 72 vCPUs total, 12 vCPUs reserved for F5OS, and 60 vCPUs left over for use by tenants:
 
 
-.. image:: images/rseries_multitenancy/image3.png
+.. image:: images/rseries_performance_and_sizing/image10r12000.png
   :align: center
   :scale: 60%
 
-The r10800 has 48 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 28 vCPUs left over for use by tenants:
+The r12800-DS has 72 vCPUs total, 16 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 52 vCPUs left over for use by tenants:
 
-.. image:: images/rseries_multitenancy/image4.png
+.. image:: images/rseries_performance_and_sizing/image11r12000.png
   :align: center
   :scale: 60%
 
-The r10600 has 48 vCPUs total, 12 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 24 vCPUs left over for use by tenants:  
+The r10600 has 48 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 44 vCPUs left over for use by tenants:  
 
-.. image:: images/rseries_multitenancy/image5.png
+.. image:: images/rseries_performance_and_sizing/image12r12000.png
   :align: center
   :scale: 60%
 
-Since all r10000 models are running on the same hardware appliance, you can easily upgrade from the r10600 to either the r10800 or r10900 to unlock more performance via a simple license change. The r10800 can be upgraded to an r10900 to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r10000 appliance.
+Since all r12000-DS models are running on the same hardware appliance, you can easily upgrade from the r12600-DS to either the r12800-DS or r12900-DS to unlock more performance via a simple license change. The r12800-DS can be upgraded to an r12900-DS to unlock more performance. This is all part of the Pay-as-you-Grow or PAYG strategy for the rSeries appliances. There are 3 PAYG tiers within the r12000-DS appliance.
 
 r10920-DF (FIPS) Series Multitenancy
 ==========================
