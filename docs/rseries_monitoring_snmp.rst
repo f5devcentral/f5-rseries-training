@@ -917,9 +917,14 @@ Firmware Update Status Traps
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
 
-These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, vnme0, nvme1). It is important not to interupt the firmware upgrade process.
+These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see an firmware update alert raised for a specific component, you should not make any changes to the system until each componenent returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run, and will disappear when they complete. The banner will have a link to the Alerts page which will show the current status of the firmware updates as seen below.
 
-The CLI command below shows how to filter the snmp.log file to only show firmware relaated events.
+
+.. image:: images/rseries_monitoring_snmp/imagefirmwareupgrade.png
+  :align: center
+  :scale: 100%
+
+The CLI command below shows how to filter the **snmp.log** file to only show firmware related events.
 
 .. code-block:: bash
 
@@ -982,6 +987,60 @@ This trap will indicate that the system has rebooted. Its possible this was a pl
 
 Interface / Optic Related Traps
 -------------------------------
+
+The SNMP traps below will correspond the the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fireoptic trasceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds and current values.
+
+
+.. code-block:: bash
+
+    r10900-1# show portgroups 
+    portgroups portgroup 1
+    state vendor-name      "F5 NETWORKS INC."
+    state vendor-oui       009065
+    state vendor-partnum   "OPT-0031        "
+    state vendor-revision  A0
+    state vendor-serialnum "X3CAU6G         "
+    state transmitter-technology "850 nm VCSEL"
+    state media            100GBASE-SR4
+    state optic-state      QUALIFIED
+    state ddm rx-pwr low-threshold alarm -14.0
+    state ddm rx-pwr low-threshold warn -11.0
+    state ddm rx-pwr instant val-lane1 -0.66
+    state ddm rx-pwr instant val-lane2 -0.77
+    state ddm rx-pwr instant val-lane3 -0.79
+    state ddm rx-pwr instant val-lane4 -0.9
+    state ddm rx-pwr high-threshold alarm 3.4
+    state ddm rx-pwr high-threshold warn 2.4
+    state ddm tx-pwr low-threshold alarm -10.0
+    state ddm tx-pwr low-threshold warn -8.0
+    state ddm tx-pwr instant val-lane1 -1.17
+    state ddm tx-pwr instant val-lane2 -0.52
+    state ddm tx-pwr instant val-lane3 -1.02
+    state ddm tx-pwr instant val-lane4 -1.48
+    state ddm tx-pwr high-threshold alarm 5.0
+    state ddm tx-pwr high-threshold warn 3.0
+    state ddm temp low-threshold alarm -5.0
+    state ddm temp low-threshold warn 0.0
+    state ddm temp instant val 34.5781
+    state ddm temp high-threshold alarm 75.0
+    state ddm temp high-threshold warn 70.0
+    state ddm bias low-threshold alarm 0.003
+    state ddm bias low-threshold warn 0.005
+    state ddm bias instant val-lane1 0.007494
+    state ddm bias instant val-lane2 0.007474
+    state ddm bias instant val-lane3 0.007494
+    state ddm bias instant val-lane4 0.00746
+    state ddm bias high-threshold alarm 0.013
+    state ddm bias high-threshold warn 0.011
+    state ddm vcc low-threshold alarm 2.97
+    state ddm vcc low-threshold warn 3.135
+    state ddm vcc instant val 3.3162
+    state ddm vcc high-threshold alarm 3.63
+    state ddm vcc high-threshold warn 3.465
+
+To keep a balance between the number of DDM alert types that need to be defined and the speficity of the alerts, the type, direction (high/low), and severity uniquely identify each DDM alert type. For example, ddmTempHiWarn is the alert that indicates a high temperature warning condition. Temperature and Voltage (Vcc) are both only specific to the fiber-optic transceiver and not the lanes within Transmitter power, Receiver power, and Transmitter bias are specific to each of the 4 lanes in a fiber-optic transceiver. The lanes that are involved in each alert are embedded at the front of the description string of the alert. A description string might look like: Lanes 1,3 Receiver power low alarm.
+
+
 
 **txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
