@@ -19,6 +19,12 @@ In rSeries there are now multiple FPGA’s, the **Application Traffic Services E
   :align: center
   :scale: 40%
 
+The r12000-DS platform is almost identical to the r10000 platform except that is has extra processing for SSL/TLS as seen in the diagram below.
+
+.. image:: images/rseries_performance_and_sizing/image1r12000.png
+  :align: center
+  :scale: 40%
+
 The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has fewer FPGA's, CPUs, and fewer physical ports.
 
 .. image:: images/rseries_performance_and_sizing/image2.png
@@ -51,6 +57,29 @@ How much performance drops can vary for different metrics, but F5 has always siz
 
 Platform vCPU Sizing
 ====================
+
+r12000-DS vCPU Sizing
+------------------
+
+Each rSeries 12900-DS model has 72 vCPUs, but 12 of those vCPUs are reserved for use by the F5OS platform layer. This is different from iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r12900-DS, 60 vCPUs are available for tenants since the other 12 are reserved by F5OS. The diagram below depicts the r12900-DS vCPU allocation: 
+
+.. image:: images/rseries_performance_and_sizing/image10r12000.png
+  :align: center
+  :scale: 30%
+
+The r12800-DS model has 72 vCPUs, but 12 of those vCPUs are reserved for use by the F5OS platform layer and 8 vCPUs are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r12800-DS, 52 vCPUs are available for tenants since 12 are reserved for F5OS, and 8 are disabled via licensing. The diagram below depicts the r12800-DS vCPU allocation: 
+
+.. image:: images/rseries_performance_and_sizing/image11r12000.png
+  :align: center
+  :scale: 60%
+
+
+The r12600-DS model has 72 vCPUs, but 12 of those vCPUs are reserved for use by the F5OS platform layer and 16 vCPUs are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r12600-DS, 44 vCPUs are available for tenants since the other 12 are reserved for F5OS, and 16 are disabled via licensing. The diagram below depicts the r12600-DS vCPU allocation: 
+
+.. image:: images/rseries_performance_and_sizing/image12r12000.png
+  :align: center
+  :scale: 30%
+
 
 r10000 vCPU Sizing
 ------------------
