@@ -23,7 +23,7 @@ The r12000-DS platform is almost identical to the r10000 platform except that is
 
 .. image:: images/rseries_performance_and_sizing/image1r12000.png
   :align: center
-  :scale: 40%
+  :scale: 60%
 
 The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has fewer FPGA's, CPUs, and fewer physical ports.
 
@@ -65,7 +65,7 @@ Each rSeries 12900-DS model has 72 vCPUs, but 12 of those vCPUs are reserved for
 
 .. image:: images/rseries_performance_and_sizing/image10r12000.png
   :align: center
-  :scale: 30%
+  :scale: 60%
 
 The r12800-DS model has 72 vCPUs, but 12 of those vCPUs are reserved for use by the F5OS platform layer and 8 vCPUs are disabled via licensing. This is different than iSeries where each vCPU gave a portion of its processing and memory to the hypervisor when vCMP was enabled. In the r12800-DS, 52 vCPUs are available for tenants since 12 are reserved for F5OS, and 8 are disabled via licensing. The diagram below depicts the r12800-DS vCPU allocation: 
 
@@ -78,7 +78,7 @@ The r12600-DS model has 72 vCPUs, but 12 of those vCPUs are reserved for use by 
 
 .. image:: images/rseries_performance_and_sizing/image12r12000.png
   :align: center
-  :scale: 30%
+  :scale: 60%
 
 
 r10000 vCPU Sizing
@@ -135,7 +135,7 @@ Because each appliance has a different number of CPUs, a common sizing exercise 
 
 .. image:: images/rseries_performance_and_sizing/image12d.png
   :align: center
-  :scale: 130%
+  :scale: 90%
 
 **NOTE: The per vCPU charts above are based on extrapolations, not per vCPU testing, so results may vary. This is generally acceptable for sizing use, as this is more a means of comparison of platform differences than a guarantee of a certain metric.**
 
@@ -149,7 +149,7 @@ In the cases where there are gaps/decreases in per vCPU performance when migrati
 
 .. image:: images/rseries_performance_and_sizing/image12f.png
   :align: center
-  :scale: 130%
+  :scale: 90%
 
 
 r5000 vCPU Sizing
