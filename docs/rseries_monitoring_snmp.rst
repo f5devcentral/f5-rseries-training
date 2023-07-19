@@ -764,7 +764,7 @@ SNMP Trap Details
 Device Fault Traps
 ------------------
 
-hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536   
+**hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
 
 .. code-block:: bash
 
