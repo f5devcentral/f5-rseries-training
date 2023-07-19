@@ -135,7 +135,7 @@ Because each appliance has a different number of CPUs, a common sizing exercise 
 
 .. image:: images/rseries_performance_and_sizing/image12d.png
   :align: center
-  :scale: 90%
+  :scale: 130%
 
 **NOTE: The per vCPU charts above are based on extrapolations, not per vCPU testing, so results may vary. This is generally acceptable for sizing use, as this is more a means of comparison of platform differences than a guarantee of a certain metric.**
 
@@ -149,7 +149,7 @@ In the cases where there are gaps/decreases in per vCPU performance when migrati
 
 .. image:: images/rseries_performance_and_sizing/image12f.png
   :align: center
-  :scale: 90%
+  :scale: 130%
 
 
 r5000 vCPU Sizing
