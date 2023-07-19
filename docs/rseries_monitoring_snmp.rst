@@ -787,7 +787,7 @@ Device Fault Traps
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.144:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
 
 
-firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537
+**firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
 
 .. code-block:: bash
 
@@ -801,21 +801,21 @@ firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537
     <INFO> 11-Jul-2022::06:29:28.939 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440769 10.255.0.145:161 (TimeTicks sysUpTime=9466)(OBJECT IDENTIFIER snmpTrapOID=firmware-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:19.908471420 UTC)(OCTET STRING alertDescription=Deasserted: Watchdog timer warning)
 
 
-unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538
+**unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538**
 
-memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539
+**memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539**
 
-drive-fault                    .1.3.6.1.4.1.12276.1.1.1.65540
+**drive-fault                    .1.3.6.1.4.1.12276.1.1.1.65540**
 
-cpu-fault                      .1.3.6.1.4.1.12276.1.1.1.65541
+**cpu-fault                      .1.3.6.1.4.1.12276.1.1.1.65541**
 
-pcie-fault                     .1.3.6.1.4.1.12276.1.1.1.65542
+**pcie-fault                     .1.3.6.1.4.1.12276.1.1.1.65542**
 
-aom-fault                      .1.3.6.1.4.1.12276.1.1.1.65543
+**aom-fault                      .1.3.6.1.4.1.12276.1.1.1.65543**
 
-drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544
+**drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
 
-power-fault                    .1.3.6.1.4.1.12276.1.1.1.65545
+**power-fault                    .1.3.6.1.4.1.12276.1.1.1.65545**
 
 .. code-block:: bash
 
@@ -829,7 +829,7 @@ power-fault                    .1.3.6.1.4.1.12276.1.1.1.65545
     <INFO> 10-Jul-2023::13:43:28.257 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423971 10.255.0.144:161 (TimeTicks sysUpTime=15406)(OBJECT IDENTIFIER snmpTrapOID=power-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.306889907 UTC)(OCTET STRING alertDescription=Deasserted: SUS +1.05V PCH fault)
 
 
-thermal-fault                  .1.3.6.1.4.1.12276.1.1.1.65546
+**thermal-fault                  .1.3.6.1.4.1.12276.1.1.1.65546**
 
 .. code-block:: bash
 
@@ -856,17 +856,17 @@ thermal-fault                  .1.3.6.1.4.1.12276.1.1.1.65546
     <INFO> 10-Jul-2023::13:45:26.004 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423994 10.255.0.144:161 (TimeTicks sysUpTime=27181)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:45:25.950878479 UTC)(OCTET STRING alertDescription=CPU TCTL-Delta at -34.0 degC)
     <INFO> 10-Jul-2023::13:45:26.104 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423995 10.255.0.144:161 (TimeTicks sysUpTime=27191)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:45:25.954328495 UTC)(OCTET STRING alertDescription=CPU at +53.0 degC)
 
-drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547
+**drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547**
 
-blade-thermal-fault            .1.3.6.1.4.1.12276.1.1.1.65548
+**blade-thermal-fault            .1.3.6.1.4.1.12276.1.1.1.65548**
 
-blade-hardware-fault           .1.3.6.1.4.1.12276.1.1.1.65549
+**blade-hardware-fault           .1.3.6.1.4.1.12276.1.1.1.65549**
 
-sensor-fault                   .1.3.6.1.4.1.12276.1.1.1.65577
+**sensor-fault                   .1.3.6.1.4.1.12276.1.1.1.65577**
 
-module-present                 .1.3.6.1.4.1.12276.1.1.1.66304
+**module-present                 .1.3.6.1.4.1.12276.1.1.1.66304**
 
-psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305
+**psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
 .. code-block:: bash
 
@@ -887,7 +887,7 @@ psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305
     <INFO> 10-Jul-2023::13:43:28.708 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423977 10.255.0.144:161 (TimeTicks sysUpTime=15451)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:23.951104145 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 input OK)
 
 
-lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306
+**lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306**
 
 .. code-block:: bash
 
@@ -905,7 +905,7 @@ lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306
     <INFO> 15-Feb-2023::15:59:14.685 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418324 10.255.0.144:161 (TimeTicks sysUpTime=22205)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-02-15 20:59:14.588063311 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
 
-module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307
+**module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307**
 
 .. code-block:: bash
 
@@ -915,7 +915,7 @@ module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307
 Firmware Update Status Traps
 ----------------------------
 
-firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550
+**firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
 
 These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, vnme0, nvme1). It is important not to interupt the firmware upgrade process.
 
@@ -944,21 +944,21 @@ The CLI command below shows how to filter the snmp.log file to only show firmwar
 Drive Utilization Traps
 ----------------------------
 
-drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551
+**drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551**
 
 
 FIPS Related Traps
 ------------------
 
-fips-fault                     .1.3.6.1.4.1.12276.1.1.1.196308
+**fips-fault                     .1.3.6.1.4.1.12276.1.1.1.196308**
 
-fipsError                      .1.3.6.1.4.1.12276.1.1.1.196608
+**fipsError                      .1.3.6.1.4.1.12276.1.1.1.196608**
 
 
 System Event Traps
 ------------------
 
-core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680
+**core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680**
 
 This trap will indicate that the system has generated a core-dump file. A support case should be opened to diagnose the failure and a qkview should be taken and uploaded to iHealth to capture the diagnsotics infromation for support to analyze. Below is an example of an SNMP trap indicating that the orchestration manager has generated a core dump.
 
@@ -967,7 +967,7 @@ This trap will indicate that the system has generated a core-dump file. A suppor
     r10900-1# file show log/system/snmp.log | include dump
     <INFO> 27-Apr-2023::07:59:10.169 appliance-1 confd[115]: snmp snmpv2-trap reqid=627600425 10.255.0.144:161 (TimeTicks sysUpTime=223591142)(OBJECT IDENTIFIER snmpTrapOID=core-dump)(OCTET STRING alertSource=Appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-27 11:59:10.166591016 UTC)(OCTET STRING alertDescription=Core dumped on Appliance. process=appliance_orche, location=/var/shared/core/container/core.appliance_orch.appliance_orchestration_manager.18120.1682596749.core.gz)
 
-reboot                         .1.3.6.1.4.1.12276.1.1.1.327681
+**reboot                         .1.3.6.1.4.1.12276.1.1.1.327681**
 
 This trap will indicate that the system has rebooted. Its possible this was a planned reboot initiated by the administrator. Below is an example of a reboot trap.
 
@@ -976,52 +976,52 @@ This trap will indicate that the system has rebooted. Its possible this was a pl
     r10900-1# file show log/system/snmp.log | include reboot
     <INFO> 10-Jul-2023::13:41:23.284 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423794 10.255.0.144:161 (TimeTicks sysUpTime=2909)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:41:23.281740739 UTC)(OCTET STRING alertDescription=reboot - appliance-1.chassis.local F5OS-A R5R10 version 1.7.0-0528)
 
-raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216
+**raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
 
-backplane                      .1.3.6.1.4.1.12276.1.1.1.262144
+**backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
 
 Interface / Optic Related Traps
 -------------------------------
 
-txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400
+**txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
-txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401
+**txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401**
 
-txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262402
+**txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262402**
 
-txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403
+**txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403**
 
-rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262404
+**rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262404**
 
-rxPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262405
+**rxPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262405**
 
-rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262406
+**rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262406**
 
-rxPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262407
+**rxPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262407**
 
-txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262408
+**txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262408**
 
-txBiasHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262409
+**txBiasHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262409**
 
-txBiasLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262410
+**txBiasLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262410**
 
-txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411
+**txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411**
 
-ddmTempHiAlarm                 .1.3.6.1.4.1.12276.1.1.1.262412
+**ddmTempHiAlarm                 .1.3.6.1.4.1.12276.1.1.1.262412**
 
-ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262413
+**ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262413**
 
-ddmTempLoAlarm                 .1.3.6.1.4.1.12276.1.1.1.262414
+**ddmTempLoAlarm                 .1.3.6.1.4.1.12276.1.1.1.262414**
 
-ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262415
+**ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262415**
 
-ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262416
+**ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262416**
 
-ddmVccHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262417
+**ddmVccHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262417**
 
-ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262418
+**ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262418**
 
-ddmVccLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262419
+**ddmVccLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262419**
 
 
 Enabling SNMP Traps
