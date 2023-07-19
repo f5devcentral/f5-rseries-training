@@ -19,7 +19,7 @@ Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSe
   :align: center
   :scale: 70%
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r10900 platform which supports up to 36 vCPUs for tenancy.
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for tenancy.
 
 +-----------------------+--------------------+--------------------------+-------------------+-----------------+
 | **Tenant Size**       | **Physical Cores** | **Logical Cores (vCPU)** | **Min Bytes RAM** | **RAM/vCPU**    |
