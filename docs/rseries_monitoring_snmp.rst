@@ -766,6 +766,8 @@ Device Fault Traps
 
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
 
+This set of taps may indicate a fault with various hardware components on the rSeries applaince like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to persue. 
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include hardware-device-fault
@@ -788,6 +790,8 @@ Device Fault Traps
 
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
+
+This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via
 
 .. code-block:: bash
 
@@ -868,6 +872,8 @@ Device Fault Traps
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
+This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps realted to insetion or removal of power supplies, inputs, and voltage thresholds. IT is best to determine if the trap was a temporary condition, and if an error state persists, then determine if the inputs of the power supplies have become disconnected, or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or thr input source. 
+
 .. code-block:: bash
 
     <INFO> 10-Jul-2023::13:43:13.426 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423818 10.255.0.144:161 (TimeTicks sysUpTime=13923)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:12.676537826 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 present)
@@ -888,6 +894,8 @@ Device Fault Traps
 
 
 **lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306**
+
+This set of SNMP traps will relate to the health of the LCD subsystem on rSeries appliances. You may notice lcf-fault traps as the fimrware on the LCD is updated as part of an upgrade as seen below. These should be temporary states and eventually the system will generate an **LCD Health is OK** trap. If the system continues to show an LCD fault, a support case shoudl be opened to determine if there is a legitimate hardware issue.
 
 .. code-block:: bash
 
