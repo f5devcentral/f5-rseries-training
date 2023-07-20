@@ -954,7 +954,7 @@ This trap will indicate that the system has rebooted. Its possible this was a pl
 Interface / Optic Related Traps
 -------------------------------
 
-The SNMP traps below will correspond the the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fireoptic trasceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds and current values.
+The SNMP traps below will correspond the the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fiberoptic trasceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds for wanring and alarm as well as current values.
 
 
 .. code-block:: bash
@@ -1006,48 +1006,99 @@ The SNMP traps below will correspond the the Digital Diagnostics Monitoring (DDM
 
 To keep a balance between the number of DDM alert types that need to be defined and the speficity of the alerts, the type, direction (high/low), and severity uniquely identify each DDM alert type. For example, ddmTempHiWarn is the alert that indicates a high temperature warning condition. Temperature and Voltage (Vcc) are both only specific to the fiber-optic transceiver and not the lanes within Transmitter power, Receiver power, and Transmitter bias are specific to each of the 4 lanes in a fiber-optic transceiver. The lanes that are involved in each alert are embedded at the front of the description string of the alert. A description string might look like: Lanes 1,3 Receiver power low alarm.
 
+Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold of -11.0 and a low alarm threshold of -14.0. There is also a high warn threshold of 2.4 and a high alarm threshold of 3.4. There are 4 lanes for this specific transceiver, and the current readings are all within acceptable ranges. If any of the lanes were to cross the low or high warn or alarm thresholds, then an SNMP trap would be generated.
 
+.. code-block:: bash
+
+    state ddm rx-pwr low-threshold alarm -14.0  <-- Will trigger SNMP Trap for Low Alarm
+    state ddm rx-pwr low-threshold warn -11.0   <-- Will trigger SNMP Trap for Low Warn
+    state ddm rx-pwr instant val-lane1 -0.66    <-- Current Reading
+    state ddm rx-pwr instant val-lane2 -0.77    <-- Current Reading
+    state ddm rx-pwr instant val-lane3 -0.79    <-- Current Reading
+    state ddm rx-pwr instant val-lane4 -0.9     <-- Current Reading
+    state ddm rx-pwr high-threshold alarm 3.4   <-- Will trigger SNMP Trap for High Alarm
+    state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
 **txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
+The transmit power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver.  
+
 **txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401**
+
+The transmit power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262402**
 
+The transmit power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
 **txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403**
+
+The transmit power threshold for a specific transceiver has reached low txPwrLoWarn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262404**
 
+The receive power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
 **rxPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262405**
+
+The receive power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262406**
 
+The receive power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
 **rxPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262407**
+
+The receive power threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262408**
 
+The transmit bias threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
 **txBiasHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262409**
+
+The transmit bias threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **txBiasLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262410**
 
+The transmit bias threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
 **txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411**
+
+The transmit bias threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **ddmTempHiAlarm                 .1.3.6.1.4.1.12276.1.1.1.262412**
 
+The ddm temperature threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
 **ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262413**
+
+The ddm temperature threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 **ddmTempLoAlarm                 .1.3.6.1.4.1.12276.1.1.1.262414**
 
+The ddm temperature threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
+
 **ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262415**
+
+The ddm temperature threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
 
 **ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262416**
 
+The ddm vcc (Voltage) threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver.
+
 **ddmVccHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262417**
+
+The ddm vcc (Voltage) threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 **ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262418**
 
+The ddm vcc (Voltage) threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
+
 **ddmVccLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262419**
 
+The ddm vcc (Voltage) threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 Enabling SNMP Traps
 ===================
