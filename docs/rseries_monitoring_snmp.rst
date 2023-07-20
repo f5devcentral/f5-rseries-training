@@ -979,13 +979,45 @@ Drive Utilization Traps
 
 **drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551**
 
+The system will monitor the storage utilization of the rSeries disks and warn if the disk usage gets too high. There are 3 levels of events that can occur as seen below:
+
+drive-capacity:critical-limit - Drive Usage exceeded 97%
+drive-capacity:failure-limit  - Drive Usage exceeded 90%
+drive-capacity:warning-limit  - Drive Usage exceeded 85%
+
+You can use the **show system alarms** CLI command to see if the drive is in an overutilized state. 
+
 .. code-block:: bash
 
+    appliance-1# show system alarms
+    ID RESOURCE SEVERITY TEXT TIME CREATED
+    --------------------------------------------------------------------------------------------------
+    65545 appliance EMERGENCY Power fault detected in hardware 2023-03-24 12:37:13.713715583 UTC
+    65544 appliance CRITICAL Running out of drive capacity 2023-03-27 15:41:37.847817761 UTC
+    65545 appliance EMERGENCY Power fault detected in hardware 2023-03-24 12:37:13.713715583 UTC
+
+The **show system events** CLI command will provide more details of the drive events that have occured.
+
+.. code-block:: bash
+
+    appliance-1# show system events | nomore
+    system events event
+    log "65544 appliance drive-capacity-fault ASSERT CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:41:37.847817761 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage exceeded 97%, used=100%\" \"2023-03-27 15:41:37.847831437 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
+
+You can also view the snmp.log file to see the SNMP traps that have been issued for **drive-utilization**.
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include drive-utilization
     <INFO> 12-Apr-2023::12:00:00.042 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130742 10.255.8.22:6011 (TimeTicks sysUpTime=122027)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2023-04-12 12:00:00.037547416 UTC)(OCTET STRING alertDescription=Drive utilization growth rate is high)
 
     <INFO> 12-Apr-2023::12:00:00.092 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130743 10.255.8.22:6011 (TimeTicks sysUpTime=122032)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:00.037560232 UTC)(OCTET STRING alertDescription=Drive usage growth rate exceeded 10%, growth=13%)
-
-
 
     <INFO> 12-Apr-2023::12:00:52.838 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130745 10.255.8.22:6011 (TimeTicks sysUpTime=127307)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:52.834736965 UTC)(OCTET STRING alertDescription=Drive utilization growth rate is high)
 
