@@ -766,7 +766,7 @@ Device Fault Traps
 
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
 
-This set of taps may indicate a fault with various hardware components on the rSeries applaince like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to persue. 
+This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to persue. 
 
 .. code-block:: bash
 
@@ -791,7 +791,12 @@ This set of taps may indicate a fault with various hardware components on the rS
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
 
-This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via
+This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see an firmware update alert raised for a specific component, you should not make any changes to the system until each componenent returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run, and will disappear when they complete. The banner will have a link to the Alerts page which will show the current status of the firmware updates as seen below.
+
+
+.. image:: images/rseries_monitoring_snmp/imagefirmwareupgrade.png
+  :align: center
+  :scale: 100%
 
 .. code-block:: bash
 
@@ -973,7 +978,7 @@ System Event Traps
 
 **core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680**
 
-This trap will indicate that the system has generated a core-dump file. A support case should be opened to diagnose the failure and a qkview should be taken and uploaded to iHealth to capture the diagnsotics infromation for support to analyze. Below is an example of an SNMP trap indicating that the orchestration manager has generated a core dump.
+This trap will indicate that the system has generated a core-dump file. A support case should be opened to diagnose the failure and a qkview should be taken and uploaded to iHealth to capture the diagnostic information for F5 support to analyze. Below is an example of an SNMP trap indicating that the orchestration manager has generated a core dump Files.
 
 .. code-block:: bash
 
@@ -1097,7 +1102,7 @@ Enabling SNMP Traps
 Enabling SNMP Traps in the CLI for F5OS-A 1.2.0 or Later
 --------------------------------------------------------
 
-The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release. Use the **system snmp target** command to configure the SNMP trap destination. The example below uses SNMP v2c and a community string.
+The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release and later. Use the **system snmp target** command to configure the SNMP trap destination. The example below uses SNMP v2c and a community string.
 
 .. code-block:: bash
 
@@ -1310,24 +1315,210 @@ Exmaple output:
 
 .. code-block:: bash
 
-    sysDescr.0	Linux 3.10.0-862.14.4.el7.centos.plus.x86_64 : Partition services version 1.2.1-10781	OctetString	10.255.0.148:161
-    sysObjectID.0	system	OID	10.255.0.148:161
-    sysUpTime.0	1 hour 13 minutes 13.88 seconds (439388)	TimeTicks	10.255.0.148:161
-    sysContact.0	jim@f5.com	OctetString	10.255.0.148:161
-    sysName.0	VELOS-bigpartition	OctetString	10.255.0.148:161
-    sysLocation.0	Boston	OctetString	10.255.0.148:161
-    sysServices.0	72	Integer	10.255.0.148:161
-    .1.3.6.1.2.1.1.8.0	190 milliseconds (19)	TimeTicks	10.255.0.148:161
-    .1.3.6.1.2.1.1.9.1.2.1	platform	OID	10.255.0.148:161
-    .1.3.6.1.2.1.1.9.1.2.2	.1.3.6.1.2.1.31	OID	10.255.0.148:161
+    FLD-ML-00054045$ snmpwalk -ObenU -v2c -c public 10.255.2.40 .1.3.6.1.2.1.1
+    .1.3.6.1.2.1.1.1.0 = STRING: Linux 3.10.0-1160.71.1.F5.1.el7_8.x86_64 : Appliance services version 1.7.0-0528
+    .1.3.6.1.2.1.1.2.0 = OID: .1.3.6.1.4.1.12276.1.3.1.2
+    .1.3.6.1.2.1.1.3.0 = Timeticks: (86134641) 9 days, 23:15:46.41
+    .1.3.6.1.2.1.1.4.0 = STRING: jim@f5.com
+    .1.3.6.1.2.1.1.5.0 = STRING: r10900-1.f5demo.net
+    .1.3.6.1.2.1.1.6.0 = STRING: Boston
+    .1.3.6.1.2.1.1.7.0 = INTEGER: 72
+    .1.3.6.1.2.1.1.8.0 = Timeticks: (8) 0:00:00.08
+    .1.3.6.1.2.1.1.9.1.2.1 = OID: .1.3.6.1.4.1.12276.1
+    .1.3.6.1.2.1.1.9.1.2.2 = OID: .1.3.6.1.2.1.31
+    .1.3.6.1.2.1.1.9.1.3.1 = STRING: F5 Networks enterprise Platform MIB
+    .1.3.6.1.2.1.1.9.1.3.2 = STRING: The MIB module to describe generic objects for network interface sub-layers
+    .1.3.6.1.2.1.1.9.1.4.1 = Timeticks: (8) 0:00:00.08
+    .1.3.6.1.2.1.1.9.1.4.2 = Timeticks: (8) 0:00:00.08
+    FLD-ML-00054045$
+
+SNMP ifTable & ifXTable
+-----------------------
+
+You can poll the following SNMP OIDs to get detailed Interface stats for each physical port on the rSeries appliances, and also for Link Aggregation Groups that have been configured.  Below are table view of the ifTable and ifXTable, you can poll individual interfaces if needed.
+
+**NOTE: Stats for LAG interfaces are not currently populated.**
+
+.. code-block:: bash
+
+    FLD-ML-00054045$ snmptable -v 2c -Cl -CB -Ci -OX -Cb -Cc 32 -Cw 500  -c public 10.255.2.40 ifTable
+    SNMP table: IF-MIB::ifTable
+
+    Index                           Descr                           Type                            Mtu                             Speed                           PhysAddress                     AdminStatus                     OperStatus                      LastChange                      InOctets                        InUcastPkts                     InNUcastPkts                    InDiscards                      InErrors                        InUnknownProtos                 
+    OutOctets                       OutUcastPkts                    OutNUcastPkts                   OutDiscards                     OutErrors                       OutQLen                         Specific                        
+
+    index: [1]
+    1                               r10900 Interface mgmt           ethernetCsmacd                  0                               4294967295                      0:94:a1:69:59:2                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554433]
+    33554433                        this isin 1                     ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:d                 up                              up                              ?                               ?                               ?                               ?                               3423143                         0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554434]
+    33554434                        r10900 Interface 2.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:12                up                              down                            ?                               ?                               ?                               ?                               0                               43290                           ?                               
+    ?                               ?                               ?                               0                               54                              ?                               ?                               
+
+    index: [33554435]
+    33554435                        r10900 Interface 3.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:e                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554436]
+    33554436                        r10900 Interface 4.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:f                 down                            down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554437]
+    33554437                        r10900 Interface 5.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:10                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554438]
+    33554438                        r10900 Interface 6.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:11                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554439]
+    33554439                        r10900 Interface 7.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:13                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554440]
+    33554440                        r10900 Interface 8.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:14                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554441]
+    33554441                        r10900 Interface 9.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:15                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554442]
+    33554442                        r10900 Interface 10.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:16                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554443]
+    33554443                        r10900 Interface 11.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:3                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554444]
+    33554444                        r10900 Interface 12.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:8                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554445]
+    33554445                        r10900 Interface 13.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:4                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554446]
+    33554446                        r10900 Interface 14.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:5                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554447]
+    33554447                        r10900 Interface 15.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:6                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554448]
+    33554448                        r10900 Interface 16.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:7                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554449]
+    33554449                        test2                           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:9                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554450]
+    33554450                        test2                           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:a                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554451]
+    33554451                        r10900 Interface 19.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:b                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554452]
+    33554452                        r10900 Interface 20.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:c                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [67108865]
+    67108865                        LAG to Arista                   ieee8023adLag                   9600                            4294967295                      0:94:a1:69:59:24                up                              up                              ?                               ?                               ?                               ?                               ?                               ?                               ?                               
+    ?                               ?                               ?                               ?                               ?                               ?                               ?                               
+
+    index: [67108866]
+    67108866                        LAG to other r10900             ieee8023adLag                   9600                            4294967295                      0:94:a1:69:59:25                up                              up                              ?                               ?                               ?                               ?                               ?                               ?                               ?                               
+    ?                               ?                               ?                               ?                               ?                               ?                               ?                               
+    FLD-ML-00054045$
 
 
-SNMP ifTable
-------------
+.. code-block:: bash
 
-You can poll the following SNMP OID to get detailed interface stats for each physical port on the rSeries appliances and also for Link Aggregation Groups that have been configured. 
+    FLD-ML-00054045$ snmptable -v 2c -Cl -CB -Ci -OX -Cb -Cc 16 -Cw 384  -c public 10.255.2.40 ifXTable
+    SNMP table: IF-MIB::ifXTable
 
-SNMP ifIndex OID: .1.3.6.1.2.1.2.2
+    Name            InMulticastPkts InBroadcastPkts OutMulticastPkt OutBroadcastPkt HCInOctets      HCInUcastPkts   HCInMulticastPk HCInBroadcastPk HCOutOctets     HCOutUcastPkts  HCOutMulticastP HCOutBroadcastP LinkUpDownTrapE HighSpeed       PromiscuousMode ConnectorPresen Alias           CounterDisconti 
+
+    index: [1]
+    mgmt            ?               ?               ?               ?               928786560       146850          1264798         6763048         52938269        144995          73              20575           ?               1000            ?               ?               ?               ?               
+
+    index: [33554433]
+    1.0             ?               ?               ?               ?               455173154       3309922         918021          662903          9392768         0               73381           0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554434]
+    2.0             ?               ?               ?               ?               0               0               0               0               278528          0               2176            0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554435]
+    3.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554436]
+    4.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554437]
+    5.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554438]
+    6.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554439]
+    7.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554440]
+    8.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554441]
+    9.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554442]
+    10.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554443]
+    11.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554444]
+    12.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554445]
+    13.0            ?               ?               ?               ?               110217730       0               861080          0               110218498       0               861086          0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554446]
+    14.0            ?               ?               ?               ?               110217730       0               861080          0               110218498       0               861086          0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554447]
+    15.0            ?               ?               ?               ?               110216320       0               861065          0               110217088       0               861071          0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554448]
+    16.0            ?               ?               ?               ?               110216320       0               861065          0               110218498       0               861086          0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554449]
+    17.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554450]
+    18.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554451]
+    19.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554452]
+    20.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               10000           ?               ?               ?               ?               
+
+    index: [67108865]
+    Arista          ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               276447232       ?               ?               ?               ?               
+
+    index: [67108866]
+    HA-Interconnect ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               276447232       ?               ?               ?               ?               
+    FLD-ML-00054045$
+
+Below is an example table view from an SNMP manager polling SNMP ifIndex OID: .1.3.6.1.2.1.2.2
 
 
 +-------------+------------------------+----------------+------------+-------------+--------------------+-------------------+------------------+------------------+----------------+-------------------+--------------------+------------------+----------------+-----------------------+-----------------+--------------------+---------------------+-------------------+-----------------+---------------+----------------+-----------------+
