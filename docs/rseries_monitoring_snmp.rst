@@ -5,7 +5,9 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 
 Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can continue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower-level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
-As of F5OS-A 1.2.0 the following netSNMP MIBs are available:
+Below are the latest SNMP MIBs as of the F5OS-A 1.6.0 release.
+
+As of F5OS-A 1.6.0.the following NetSNMP MIBs are available:
 
 - HOST-RESOURCES-MIB
 - RFC1213-MIB
@@ -26,65 +28,16 @@ As of F5OS-A 1.2.0 the following netSNMP MIBs are available:
 - SNMPv2-TC
 - TRANSPORT-ADDRESS-MIB
 
-As of F5OS-A 1.2.0.the following F5OS Appliance MIBs are available:
+As of F5OS-A 1.6.0.the following F5OS Appliance MIBs are available:
 
 - F5-ALERT-DEF-MIB
 - F5-COMMON-SMI-MIB
-- F5-OS-SYSTEM MIB
+- F5-OS-LLDP-MIB
+- F5-OS-PLATFORM-SMI-MIB
+- F5-OS-SYSTEM-MIB
 - F5-PLATFORM-STATS-MIB
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
 
-
-As of F5OS-A 1.2.0 the following SNMP alerts and traps are available:
-
-- Interface UP
-- Interface DOWN
-- Cold Start
-- Hardware device fault detected
-- Firmware diagnostic state fault detected
-- Unregistered alarm detected
-- Fault in memory detected
-- Fault in drive detected
-- CPU fault detected
-- Fault in PCIe device detected
-- Fault detected in the AOM
-- Running out of drive capacity
-- Power fault detected in hardware
-- Thermal fault detected in hardware
-- Drive has entered a thermal throttle condition
-- Thermal fault detected in blade
-- Hardware fault detected in blade
-- Firmware update status
-- Drive utilization growth rate is high
-- Service health status
-- Change detected in appliance module presence
-- PSU fault detected
-- Fault detected in LCD module
-- Module communication error detected
-- Crypto error identified in one or more services
-- Detected process crash on the system
-- Notification of RAID event
-- Could not establish backplane link with one or more system controllers
-- Transmitter power high alarm
-- Transmitter power high warning
-- Transmitter power low alarm
-- Transmitter power low warning
-- Receiver power high alarm
-- Receiver power high warning
-- Receiver power low alarm
-- Receiver power low warning
-- Transmitter bias high alarm
-- Transmitter bias high warning
-- Transmitter bias low alarm
-- Transmitter bias low warning
-- Optic temperature high alarm
-- Optic temperature high warning
-- Optic temperature low alarm
-- Optic temperature low warning
-- Optic voltage high alarm
-- Optic voltage high warning
-- Optic voltage low alarm
-- Optic voltage low warning
 
 Adding Allowed IPs for SNMP
 ===========================
