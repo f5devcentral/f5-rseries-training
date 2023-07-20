@@ -878,7 +878,7 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
     properties fantray-state exhaust-fan-3-speed 6793
     syscon-2-active#
 
-    .. code-block:: bash
+.. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include blade-thermal-fault
 
@@ -1075,6 +1075,9 @@ FIPS Related Traps
 
 **fipsError                      .1.3.6.1.4.1.12276.1.1.1.196608**
 
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include fipsError
 
 System Event Traps
 ------------------
@@ -1098,6 +1101,10 @@ This trap will indicate that the system has rebooted. Its possible this was a pl
     <INFO> 10-Jul-2023::13:41:23.284 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423794 10.255.0.144:161 (TimeTicks sysUpTime=2909)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:41:23.281740739 UTC)(OCTET STRING alertDescription=reboot - appliance-1.chassis.local F5OS-A R5R10 version 1.7.0-0528)
 
 **raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include raid-event
 
 **backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
 
@@ -1169,9 +1176,14 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
     state ddm rx-pwr high-threshold alarm 3.4   <-- Will trigger SNMP Trap for High Alarm
     state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include ddm    
+
 **txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
-The transmit power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver.  
+The transmit power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 **txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401**
 
