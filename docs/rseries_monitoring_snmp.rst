@@ -1108,6 +1108,10 @@ This trap will indicate that the system has rebooted. Its possible this was a pl
 
 **backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
 
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include backplane
+
 Interface / Optic Related Traps
 -------------------------------
 
