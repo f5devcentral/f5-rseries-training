@@ -7,7 +7,7 @@ Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SN
 
 Below are the latest SNMP MIBs as of the F5OS-A 1.6.0 release.
 
-As of F5OS-A 1.6.0.the following NetSNMP MIBs are available:
+As of F5OS-A 1.6.0, the following NetSNMP MIBs are available:
 
 - HOST-RESOURCES-MIB
 - RFC1213-MIB
@@ -38,6 +38,12 @@ As of F5OS-A 1.6.0.the following F5OS Appliance MIBs are available:
 - F5-PLATFORM-STATS-MIB
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
 
+
+MIBs can be downloaded directly from the F5OS layer starting in F5OS-A v1.2.0. From the webUI, you can go to the **System Settings > File Utility** page. Then, from the **Base Directory** drop down, select the **mibs** directory to download the MIB files. There are two separate MIB files: NetSNMP and F5OS MIBs for the appliance. Download both archives and extract them to see the individual MIB files.
+
+.. image:: images/rseries_monitoring_snmp/image8.png
+  :align: center
+  :scale: 70%
 
 Adding Allowed IPs for SNMP
 ===========================
