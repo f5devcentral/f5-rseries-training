@@ -177,6 +177,11 @@ By default, SNMP queries are not allowed into the F5OS platform layer. Before en
   :align: center
   :scale: 70%
 
+In newer releases, the allowed IP functionality has been moved to the **System Settings -> Security** page as seen below.
+
+.. image:: images/rseries_monitoring_snmp/image1a.png
+  :align: center
+  :scale: 70%
 
 Adding Interface and LAG descriptions
 =====================================
@@ -1407,10 +1412,13 @@ Enter the **Security Model**, **IP Address** and **Port** of the SNMP Trap recei
 Enabling SNMP Traps in the API
 ------------------------------
 
+To enable SNMP traps via the API, send the following API call.
+
 .. code-block:: bash
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB
 
+In the body of the API call include the following:
 
 .. code-block:: json
 
@@ -1428,6 +1436,7 @@ Enabling SNMP Traps in the API
             }
         }
     }
+
 
 
 .. code-block:: bash
@@ -1869,7 +1878,7 @@ This MIB displays the memory utilization for the system.
 SNMP FPGA Table
 ---------------
 
-The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Servcie Engine (ATSE) and one Appliance SWitch (ASW). The r10000 and r12000 models have 2 ATSE FPGAs, one ASW, and an addtional FPGA called the Network SOcket (NSO). The output below is form an r10900.
+The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Servcie Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
 
 **F5-PLATFORM-STATS-MIB:fpgaTable OID: .1.3.6.1.4.1.12276.1.2.1.5.1**
 
