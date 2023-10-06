@@ -79,7 +79,7 @@ Currently you can add one IP address/port pair per **allowed-ip** name with an o
 Adding Allowed IPs for SNMP via API
 -----------------------------------
 
-By default SNMP queries are not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
+By default, SNMP queries are not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
 
 .. code-block:: bash
 
@@ -432,7 +432,7 @@ You can configure the SNMP System parameters including the **System Contact**, *
 
 SNMP configuration was only available in the CLI and API prior to F5OS-A 1.3.0, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuration in the CLI and then configuration via the webUI was also added in F5OS-A 1.3.0. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
 
-Enabling SNMP can be done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may choose to enable both of these security models or only one.
+Enabling SNMP can be done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may choose to enable both security models or only one.
 
 .. code-block:: bash
 
@@ -529,7 +529,7 @@ You can configure the SNMP System parameters including the **System Contact**, *
         "SNMPv2-MIB:sysLocation": "Boston"
     }
 
-Enabling SNMP can de done from the API by configuring the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
+Enabling SNMP can be done from the API by configuring the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
 
 
 .. code-block:: bash
@@ -588,7 +588,7 @@ Enabling SNMP can de done from the API by configuring the **public** SNMP commun
 Configuring SNMP Access via webUI
 ---------------------------------
 
-SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**..
+SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**.
 
 .. image:: images/rseries_monitoring_snmp/image2.png
   :align: center
@@ -606,7 +606,7 @@ SNMP users can be added for environments which utilize SNMPv3.
   :align: center
   :scale: 100%
 
-SNMP Trap receivers may be added and either a community of a user is added depending on the security model.
+SNMP Trap receivers may be added and a community or a user is added depending on the security model.
 
 .. image:: images/rseries_monitoring_snmp/image5.png
   :align: center
@@ -725,7 +725,7 @@ Device Fault Traps
 
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
 
-This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to persue. 
+This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to pursue. 
 
 .. code-block:: bash
 
@@ -750,7 +750,7 @@ This set of taps may indicate a fault with various hardware components on the rS
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
 
-This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each componenent returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run, and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
+This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
 
 
 .. image:: images/rseries_monitoring_snmp/imagefirmwareupgrade.png
@@ -864,7 +864,7 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **blade-thermal-fault            .1.3.6.1.4.1.12276.1.1.1.65548**
 
-This SNMP Trap is for the VELOS system, and it monitors various temperature sensors on each VELOS blade. The sensors monitor CPU, FGPA, and memory temperatures and will warn if the temperature goes beyond recommended guidelines. If a thermal fault occurs you can verify if it has cleared due to a temporary condition. You can also check the system fans to ensure they are operating properly in the VELOS system via the command **show components component fantray-1**. You can also check the environment in which the VELOS system is running to ensure the data center is not operating at too high termperature.
+This SNMP Trap is for the VELOS system, and it monitors various temperature sensors on each VELOS blade. The sensors monitor CPU, FGPA, and memory temperatures and will warn if the temperature goes beyond recommended guidelines. If a thermal fault occurs you can verify if it has cleared due to a temporary condition. You can also check the system fans to ensure they are operating properly in the VELOS system via the command **show components component fantray-1**. You can also check the environment in which the VELOS system is running to ensure the data center is not operating at too high temperature.
 
 .. code-block:: bash
 
@@ -908,7 +908,7 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
-This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps realted to insetion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not and an error state persists, then determine if the inputs of the power supplies have become disconnected, or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
+This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not and an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
 .. code-block:: bash
 
@@ -986,7 +986,7 @@ Firmware Update Status Traps
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
 
-These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each componenent returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run, and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
+These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the status of the firmware updates as seen below.
 
 
 .. image:: images/rseries_monitoring_snmp/imagefirmwareupgrade.png
@@ -1040,7 +1040,7 @@ You can use the **show system alarms** CLI command to see if the drive is in an 
     65544 appliance CRITICAL Running out of drive capacity 2023-03-27 15:41:37.847817761 UTC
     65545 appliance EMERGENCY Power fault detected in hardware 2023-03-24 12:37:13.713715583 UTC
 
-The **show system events** CLI command will provide more details of the drive events that have occured.
+The **show system events** CLI command will provide more details of the drive events that have occurred.
 
 .. code-block:: bash
 
@@ -1099,7 +1099,7 @@ This trap will indicate that the system has generated a core-dump file. A suppor
 
 **reboot                         .1.3.6.1.4.1.12276.1.1.1.327681**
 
-This trap will indicate that the system has rebooted. Its possible this was a planned reboot initiated by the administrator. Below is an example of a reboot trap.
+This trap will indicate that the system has rebooted. It's possible this was a planned reboot initiated by the administrator. Below is an example of a reboot trap.
 
 .. code-block:: bash
 
@@ -1121,7 +1121,7 @@ This trap will indicate that the system has rebooted. Its possible this was a pl
 Interface / Optic Related Traps
 -------------------------------
 
-The SNMP traps below will correspond the the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fiberoptic trasceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds for wanring and alarm as well as current values.
+The SNMP traps below will correspond the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fiberoptic transceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds for warning and alarm as well as current values.
 
 
 .. code-block:: bash
@@ -1171,7 +1171,7 @@ The SNMP traps below will correspond the the Digital Diagnostics Monitoring (DDM
     state ddm vcc high-threshold alarm 3.63
     state ddm vcc high-threshold warn 3.465
 
-To keep a balance between the number of DDM alert types that need to be defined and the speficity of the alerts, the type, direction (high/low), and severity uniquely identify each DDM alert type. For example, ddmTempHiWarn is the alert that indicates a high temperature warning condition. Temperature and Voltage (Vcc) are both only specific to the fiber-optic transceiver and not the lanes within Transmitter power, Receiver power, and Transmitter bias are specific to each of the 4 lanes in a fiber-optic transceiver. The lanes that are involved in each alert are embedded at the front of the description string of the alert. A description string might look like: Lanes 1,3 Receiver power low alarm.
+To keep a balance between the number of DDM alert types that need to be defined and the specifics of the alerts, the type, direction (high/low), and severity uniquely identify each DDM alert type. For example, ddmTempHiWarn is the alert that indicates a high temperature warning condition. Temperature and Voltage (Vcc) are both only specific to the fiber-optic transceiver and not the lanes within Transmitter power, Receiver power, and Transmitter bias are specific to each of the 4 lanes in a fiber-optic transceiver. The lanes that are involved in each alert are embedded at the front of the description string of the alert. A description string might look like: Lanes 1,3 Receiver power low alarm.
 
 Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold of -11.0 and a low alarm threshold of -14.0. There is also a high warn threshold of 2.4 and a high alarm threshold of 3.4. There are 4 lanes for this specific transceiver, and the current readings are all within acceptable ranges. If any of the lanes were to cross the low or high warn or alarm thresholds, then an SNMP trap would be generated.
 
@@ -1318,7 +1318,7 @@ For releases prior to F5OS-A 1.2.0, the configuration of SNMP was more difficult
 
 Enter **config** mode and enter the following commands to enable SNMP traps for the F5OS-A layer. Specify your SNMP trap receiver's IP address and port after the **snmpTargetAddrTAddress** field. Make sure to **commit** any changes.
 
-Note: The **snmpTargetAddrTAddress** is unintuitive in these earlier releases and is much simpler after upgrading to F5OS-A 1.2.0 or later. In the snmpTargetAddrTAddress, The 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
+Note: The **snmpTargetAddrTAddress** is unintuitive in these earlier releases and is much simpler after upgrading to F5OS-A 1.2.0 or later. In the snmpTargetAddrTAddress, the 1st octet after the IP address is 161 >> 8 = 0, and 2nd octet 161 & 255 = 161. The IP address configuration for an IP address of 10.255.0.144 & 161 UDP port is **10.255.0.144.0.161**.
 
 
 .. code-block:: bash
@@ -1511,7 +1511,7 @@ Exmaple output:
 SNMP ifTable & ifXTable
 -----------------------
 
-You can poll the following SNMP OIDs to get detailed Interface stats for each physical port on the rSeries appliances, and also for Link Aggregation Groups that have been configured.  Below are table view of the ifTable and ifXTable, you can poll individual interfaces if needed.
+You can poll the following SNMP OIDs to get detailed Interface stats for each physical port on the rSeries appliances, and for Link Aggregation Groups that have been configured.  Below are table views of the ifTable and ifXTable, you can poll individual interfaces if needed.
 
 **NOTE: Stats for LAG interfaces are not currently populated.**
 
@@ -1731,7 +1731,7 @@ Below is an example table view from an SNMP manager polling SNMP ifIndex OID: .1
 SNMP Dot3StatsTable
 -------------------
 
-You can poll the following SNMP OID to get detailed interface stats for each physical port on the rSeries appliances and also for Link Aggregation Groups that have been configured. 
+You can poll the following SNMP OID to get detailed interface stats for each physical port on the rSeries appliances and for Link Aggregation Groups that have been configured. 
 
 SNMP ifIndex OID: .1.3.6.1.2.1.10.7.2
 

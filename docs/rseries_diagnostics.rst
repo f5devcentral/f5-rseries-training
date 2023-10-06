@@ -9,9 +9,10 @@ qkviews
 
 rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
-https://support.f5.com/csp/article/K76100544
+`K2633: Submit a support case <https://my.f5.com/manage/s/article/K2633>_`
 
-https://support.f5.com/csp/article/K04756153
+`K04756153: Generating diagnostic data for rSeries systems using the qkview utility <https://my.f5.com/manage/s/article/K04756153>_`
+
 
 In general, you can use the qkview utility on rSeries systems to automatically collect configuration and diagnostic information from the system. The qkview utility provided in F5OS-A software captures diagnostic information from the rSeries system and associated containers. 
 
@@ -99,7 +100,7 @@ You may also confirm the file has been created by using the **file list** comman
     resultint 0
     appliance-1# 
 
-To upload the qkview file to iHealth using the CLI use the following command; **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
+To upload the qkview file to iHealth using the CLI use the following command: **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
 
 .. code-block:: bash
 
@@ -1675,7 +1676,7 @@ Now it will be possible to remotely ssh using a specific username and port point
 
 
 
-The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below, the username is tenant1 (matches the tenant name), and the port is 7001.
+The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below, the username is tenant1 (matches the tenant's name), and the port is 7001.
 
 .. code-block:: bash
 

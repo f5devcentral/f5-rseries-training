@@ -10,7 +10,7 @@ Some admins may want CLI commands to monitor, or API calls to query the system, 
 Accessing the F5OS API
 ======================
 
-The F5OS platform API’s for the rSeries applainces can be reached on port 8888. In this document we will use the Postman tool to access rSeries F5OS platform layer API’s. You can download the Postman tool at:
+The F5OS platform API’s for the rSeries appliances can be reached on port 8888. In this document we will use the Postman tool to access rSeries F5OS platform layer API’s. You can download the Postman tool at:
 
 https://www.postman.com/downloads/
 
@@ -1014,7 +1014,7 @@ You may query the status of the disks within the rSeries appliance:
 CPU Status from the API
 -----------------------
 
-You can query the detais about the CPU's within each rSeries device. Every CPU thread (vCPU) will display **Current**, **5 Seconds**, **1 Minute**, and **5 Minute** utilization.
+You can query the details about the CPUs within each rSeries device. Every CPU thread (vCPU) will display **Current**, **5 Seconds**, **1 Minute**, and **5 Minute** utilization.
 
 .. code-block:: bash
 

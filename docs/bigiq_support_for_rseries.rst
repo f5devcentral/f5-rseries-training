@@ -159,12 +159,12 @@ Shortly after the declaration is sent to BIG-IQ, you can see a new onboarding ta
   :align: center
   :scale: 70%
 
-At this point the rSeries tenant is managed just like any other BIG-IP device or guest inside of BIG-IQ. You can manage software upgrades, create and restore backups, maintain configurations, and gather analytics.
+At this point the rSeries tenant is managed just like any other BIG-IP device or guest inside of BIG-IQ. You can manage software upgrades, create, and restore backups, maintain configurations, and gather analytics.
 
 F5OS Backup for rSeries
 ==========================
 
-The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it has to be managed locally on the rSeries appliance using the F5OS CLI, webUI, API or SNMP. The exception is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ for the purpose of backing up their F5OS configurations. The management IP address of the F5OS layer belonging to the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. From this section, device credentials can be added to access the F5OS platform layer, and backups may be scheduled or created on demand. The F5OS tenants are backed up using the normal **Backup & Restore** workflows in BIG-IQ, just as any BIG-IP instance or vCMP guest would be.
+The configuration and monitoring of the F5OS platform layer is not managed by BIG-IQ, it must be managed locally on the rSeries appliance using the F5OS CLI, webUI, API or SNMP. The exception is that scheduled backups for F5OS configuration has been added in BIG-IQ version 8.3. This new functionality allows for rSeries and/or VELOS devices to be added to BIG-IQ for the purpose of backing up their F5OS configurations. The management IP address of the F5OS layer belonging to the rSeries appliance or VELOS system controller is added to the **F5OS** section in BIG-IQ. From this section, device credentials can be added to access the F5OS platform layer, and backups may be scheduled or created on demand. The F5OS tenants are backed up using the normal **Backup & Restore** workflows in BIG-IQ, just as any BIG-IP instance or vCMP guest would be.
 
 **IMPORTANT: The F5 rSeries system uses a primary key to perform encryption and decryption of highly sensitive passwords/passphrases in the configuration database. You should set this primary key prior to performing any configuration backup if you have not already done so. In the case of a configuration migration such as moving configuration to a replacement device due to RMA, it is important to set the primary key to a known value so that the same key can be used to decrypt the passwords/passphrases in the configuration restored on the replacement device. More details are in the K article below.** 
 

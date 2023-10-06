@@ -4,3 +4,13 @@ _build/
 docs/errors.txt
 .DS_Store
 .vscode
+.DS_Store
+pdf/*
+*.sublime-*
+.terraform*
+terraform.tfstate*
+*.rpm
+*.swp
+.virtualenv
+.venv
+

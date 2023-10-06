@@ -126,7 +126,7 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
   Boston-r10900-1(config)# commit
   Commit complete.
 
-**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required in order to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies so the unit is powered off, using the AOM menus is not sufficient.**
+**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies so the unit is powered off, using the AOM menus is not sufficient.**
 
 -------------------------------
 IP Address Assignment & Routing
@@ -142,13 +142,13 @@ Once logged in you will configure the static IP addresses (unless DHCP is prefer
   Boston-r10900-1(config)# system mgmt-ip config ipv4 prefix-length 24
   Boston-r10900-1(config)# system mgmt-ip config ipv4 gateway 10.255.0.1
 
-In order to make these changes active you must commit the changes. No configuration changes are executed until the commit command is issued. 
+To make these changes active you must commit the changes. No configuration changes are executed until the commit command is issued. 
 
 .. code-block:: bash
 
   Boston-r10900-1(config)# commit
 
-Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen similar to the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
+Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
@@ -192,7 +192,7 @@ You can configure the DNS and Time settings from the webUI if preferred. DNS is 
   :align: center
   :scale: 70%
 
-Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is synchronized and accurate. In addition to configuring NTP time sources, you can set the local timezone for this appliance's location.
+Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is synchronized and accurate. In addition to configuring NTP time sources, you can set the local time zone for this appliance's location.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
@@ -207,7 +207,7 @@ It’s also a good idea to have the rSeries appliance send logs for the F5OS pla
 System Settings via the API
 ===========================
 
-If you would prefer to automate the setup of the rSeries appliance, there are F5OS-A API calls for all of the examples above. rSeries supports token based authentication for the F5OS API's. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the inital path will be **/api**, while API calls to port 8888 will start with  **/restconf**. F5OS also listens on port 80 and will redirect to TCP port 443.
+If you would prefer to automate the setup of the rSeries appliance, there are F5OS-A API calls for all of the examples above. rSeries supports token-based authentication for the F5OS API's. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the initial path will be **/api**, while API calls to port 8888 will start with **/restconf**. F5OS also listens on port 80 and will redirect to TCP port 443.
  
 
 Example of API call using port 8888.  
@@ -223,7 +223,7 @@ Example of API call using port 443. Replace **/restconf** with **/api**.
     https://{{rseries_rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
 
  
-You can send a standard API call with user/password based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth**, and enter the username and password to log into your rSeries appliance.
+You can send a standard API call with user/password-based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5a.png
   :align: center
@@ -255,14 +255,14 @@ Once the variable is stored with the auth token, it can be used instead of using
   :align: center
   :scale: 70%
 
-You must also add some required headers to any API calls sent to F5OS. It is important to include the header **Content-Type** **application/yang-data+json** and the Token header **X-Auth-Token** with a value of **{{x-auth-token_rseries_appliance1}}**. The variable and header will change depening on the destination of the API call. It can be sent to a second appliance if desired.
+You must also add some required headers to any API calls sent to F5OS. It is important to include the header **Content-Type** **application/yang-data+json** and the Token header **X-Auth-Token** with a value of **{{x-auth-token_rseries_appliance1}}**. The variable and header will change depending on the destination of the API call. It can be sent to a second appliance if desired.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5e.png
   :align: center
   :scale: 70%
 
 
-If you would prefer to automate the setup of the rSeries appliance, there are API calls for all of the examples above. To set the DNS configuration (servers and search domains) for the appliance, use the following API call. For any API calls to the rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
+If you would prefer to automate the setup of the rSeries appliance, there are API calls for all the examples above. To set the DNS configuration (servers and search domains) for the appliance, use the following API call. For any API calls to the rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
 
 .. code-block:: bash
 
@@ -332,7 +332,7 @@ Below is the output from the API query above:
   }
 
 
-To set System Time settings, use the following API call as an example. This will set the Timezone, enable NTP, and configure NTP servers.
+To set System Time settings, use the following API call as an example. This will set the time zone, enable NTP, and configure NTP servers.
 
 .. code-block:: bash
 
@@ -417,7 +417,7 @@ Next query the clock configuration:
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/clock
 
-Below is the output showing the date/time and timezone:
+Below is the output showing the date/time and time zone:
 
 
 .. code-block:: json
@@ -910,7 +910,7 @@ Below is the configuration in the body of the API call above to set the **DEBUG*
       }
   }
 
-When done examining the logs, you can run the same API call but the body will be modified to set the logging level back to **INFORMATIONAL**.
+When done examining the logs, you can run the same API call, but the body will be modified to set the logging level back to **INFORMATIONAL**.
 
 .. code-block:: json
 
@@ -934,7 +934,7 @@ When done examining the logs, you can run the same API call but the body will be
 Licensing the rSeries Appliance
 -------------------------------
 
-Licensing for the rSeries device is handled at the F5OS level. This is similar to how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however there are different levels of perfromance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
+Licensing for the rSeries device is handled at the F5OS level. This is like how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
@@ -1184,7 +1184,7 @@ The **Import/Export** utility requires an external HTTPS server to copy to/from 
 Time Settings
 =============
 
-Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that F5OS time sources are synchronized to a reliable time source. The Time can be set manually and a Time Zone may also be set.
+Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that F5OS time sources are synchronized to a reliable time source. The Time can be set manually, and a Time Zone may also be set.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image20.png
   :align: center
@@ -1266,7 +1266,7 @@ You may back up the confd configuration database for the F5OS platform layer via
 Licensing
 =========
 
-Licensing for the rSeries appliance is handled at the F5OS level. This is similar to how iSeries licensing is handled with vCMP enabled, where the system is licensed once, and all subsystems inherit their licensing from the lower layer. With rSeries, licensing is applied at the F5OS platform layer and tenants will inherit their licenses from the base system. There is no need to add on licenses for MAX SSL/Compression or for tenancy. This is different from iSeries where there was an extra charge for virtualization/vCMP and only certain models supported multitennancy (the r2000 series will only support a single tenant). For rSeries these are included in the base license at no extra cost.
+Licensing for the rSeries appliance is handled at the F5OS level. This is similar to how iSeries licensing is handled with vCMP enabled, where the system is licensed once, and all subsystems inherit their licensing from the lower layer. With rSeries, licensing is applied at the F5OS platform layer and tenants will inherit their licenses from the base system. There is no need to add on licenses for MAX SSL/Compression or for tenancy. This is different from iSeries where there was an extra charge for virtualization/vCMP and only certain models supported multitenancy (the r2000 series will only support a single tenant). For rSeries these are included in the base license at no extra cost.
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
@@ -1277,7 +1277,7 @@ Licenses can be applied via CLI, webUI, or API. A base registration key and opti
 General
 =======
 
-The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access is disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also configure the **Hostname** of the system, and configure a Message of the Day (**MOTD**) which is displayed on login. 
+The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access is disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also configure the **Hostname** of the system and configure a Message of the Day (**MOTD**) which is displayed on login. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image31.png
   :align: center

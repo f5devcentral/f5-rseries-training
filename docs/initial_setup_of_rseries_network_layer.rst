@@ -14,13 +14,13 @@ The rSeries Dashboard will provide a visual system summary of the appliance, inc
   :align: center
   :scale: 70% 
 
-The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
+The **Network** tab will provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
   :scale: 70% 
 
-The **CPU** tab shows all the available CPU's in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
+The **CPU** tab shows all the available CPUs in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
@@ -93,7 +93,7 @@ You must commit for any changes to take effect. This will require a reboot of th
     appliance-1(config-portgroup-10)# 
 
 
-Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
+Possible options for **MODE** depend on which port you are configuring. For the high-speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low-speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 

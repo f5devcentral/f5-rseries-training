@@ -197,7 +197,7 @@ The **file transfer-status** command will show the upload of the SCP transfer as
     1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 15 20:45:29 2022
     2    |Export file|SCP     |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/var/www/server/1/upload/rSeries-59002-backup-1-16-2022     |         Completed|Sat Jan 15 20:48:29 2022
 
-If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and webUI the path is simplified to configs, but in the underlying file system it is actually stored in the **/var/F5/system/configs** directory. Note that this is not an option if the appliance has been configured in Appliance Mode, which disables bash/shell access.
+If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and webUI the path is simplified to configs, but in the underlying file system it is stored in the **/var/F5/system/configs** directory. Note that this is not an option if the appliance has been configured in Appliance Mode, which disables bash/shell access.
 
 .. code-block:: bash
 
@@ -476,7 +476,7 @@ The body of the API call should have the file name you want to query:
         "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE4{{currentdate}}"
     }
 
-If you want to list the contents of the config directory via API use the following API command:
+If you want to list the contents of the config directory via API, use the following API command:
 
 .. code-block:: bash
 
@@ -593,4 +593,4 @@ Currently there is no webUI support for restoration of the ConfD database, so yo
 Restoring Tenants from a UCS Backup
 ====================================
 
-Once the tenant has finished starting up you'll need to load and restore via UCS file. This should follow normal BIG-IP restoration procedures.
+Once the tenant has finished starting up, you'll need to load and restore via UCS file. This should follow normal BIG-IP restoration procedures.

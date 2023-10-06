@@ -1001,16 +1001,16 @@ Below are examples of events from an appliance in a test lab. Note there are ASS
 System Health
 =============
 
-rSeries also has a very robust **system health** utility where all the various hardware and software subsystems will first provide a high level health status, but then deeper detail can be gained on what is monitored via each subsystem.
+rSeries also has a very robust **system health** utility where all the various hardware and software subsystems will first provide a high-level health status, but then deeper detail can be gained on what is monitored via each subsystem.
 
 
 ------------------------------
 Checking System Health via CLI
 ------------------------------
 
-Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher level status.
+Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high-level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher-level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher-level status.
 
-After the full output below some CLI examples of how to filter all this information down into a high level status will be provided.
+After the full output below some CLI examples of how to filter all this information down into a high-level status will be provided.
 
 .. code-block:: bash
 
@@ -3470,7 +3470,7 @@ After the full output below some CLI examples of how to filter all this informat
 Filter to Get a Summary of System Health via CLI
 ------------------------------------------------
 
-You can use the built-in filtering in the CLI to just get the top-level state health of each susbsystem. This doesn't list the subsystems but shows all the top level system health status outputs. If one subsystem shows a status other than **ok** you can then adjust the filtering to only display that subsystem.
+You can use the built-in filtering in the CLI to just get the top-level state health of each susbsystem. This doesn't list the subsystems but shows all the top-level system health status outputs. If one subsystem shows a status other than **ok** you can then adjust the filtering to only display that subsystem.
 
 Use the output modifier after the **show system health** command to **include "state health"**.
 

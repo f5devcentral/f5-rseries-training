@@ -13,7 +13,7 @@ Kubernetes-Based Platform Layer
 -------------------------------
 
 
-A major difference between rSeries and iSeries is the introduction of a new Kubernetes-based platform layer (called F5OS) that allows for some exciting new capabilities. Customers don’t need to learn Kubernetes in order to manage the new appliances; it is abstracted from the administrator who will be able to manage the new platform layer via familiar F5 CLI, webUI, or API interfaces. 
+A major difference between rSeries and iSeries is the introduction of a new Kubernetes-based platform layer (called F5OS) that allows for some exciting new capabilities. Customers don’t need to learn Kubernetes to manage the new appliances; it is abstracted from the administrator who will be able to manage the new platform layer via familiar F5 CLI, webUI, or API interfaces. 
 
 rSeries continues to provide hardware acceleration and offload capabilities in a similar way that iSeries does, however, more modern Field Programmable Gate Arrays (FPGA's), CPU, and crypto offload capabilities have been introduced. The new F5OS platform layer allows rSeries to run different types of tenants within the same appliance. As an example, rSeries will be able to run:
 
@@ -29,7 +29,7 @@ rSeries continues to provide hardware acceleration and offload capabilities in a
 
 
 
-Customers can migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually similar to a vCMP guest running on the VIPRION or iSeries platforms. Once inside the tenant, the management experience is like the experience on existing BIG-IP platforms. The BIG-IP tenant is managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator connects directly to the tenant’s webUI, CLI, or API and has the same experience as they have with their existing platforms. 
+Customers can migrate existing BIG-IP devices such as iSeries, or vCMP guests into tenants running on rSeries. A tenant is conceptually like a vCMP guest running on the VIPRION or iSeries platforms. Once inside the tenant, the management experience is like the experience on existing BIG-IP platforms. The BIG-IP tenant is managed just as a vCMP guest is managed today on VIPRION or iSeries. The administrator connects directly to the tenant’s webUI, CLI, or API and has the same experience as they have with their existing platforms. 
 
 In the future, BIG-IP Next tenants will be supported within the same rSeries appliance (except on the r2000 series, which supports one tenant only), which allows customers to leverage the next generation of BIG-IP software side-by-side with the existing BIG-IP software. What differs is the initial setup of the F5OS platform layer on rSeries. We’ll look at some additional architecture differences between rSeries and iSeries before getting into how to manage and monitor the new F5OS platform layer. 
 
@@ -37,10 +37,10 @@ In the future, BIG-IP Next tenants will be supported within the same rSeries app
 Multitenant by Default
 ---------------------------------------------------
 
-The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above, the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the initial release). The rSeries appliances are multitenant by default (with the exception of the r2000, which runs a single tenant), which is a change from the iSeries appliances that run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** on top of a **vCMP Host Layer**, customers will now provision **Tenants** on top of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large BIG-IP tenant on rSeries after the initial F5OS setup is completed. 
+The physical architecture of rSeries differs from the iSeries platforms in several ways. As mentioned above, the rSeries appliances will run F5OS at the platform layer, and customers will be able to provision BIG-IP tenants running version 15.1.5 (in the initial release). The rSeries appliances are multitenant by default (except for the r2000, which runs a single tenant), which is a change from the iSeries appliances that run in either a bare-metal mode, or virtualized mode by enabling vCMP. F5OS multitenancy provides a similar experience to customers who are used to managing vCMP guests on their current iSeries appliances. Instead of provisioning **vCMP Guests** on top of a **vCMP Host Layer**, customers will now provision **Tenants** on top of the **F5OS platform layer**. For customers who currently run their iSeries appliances in a non-virtualized bare-metal mode, they can emulate that type of configuration by configuring one large BIG-IP tenant on rSeries after the initial F5OS setup is completed. 
 
 -----------------------------------
-More Pay-as-you-Grow (PAYG) options
+More Pay-as-you-Grow (PAYG) Options
 -----------------------------------
 
 The rSeries family of appliances has multiple hardware and software options like the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platforms in the rSeries family but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to a higher model within the same family. For example, you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you could unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
@@ -80,7 +80,7 @@ Tenants
 
 Tenancy is required to deploy any BIG-IP resources. rSeries is a multitenant appliance by default; there is no bare-metal mode, although it can be configured to emulate this mode with a single large tenant. A tenant could then be assigned to utilize all CPU and memory available within the appliance. This would emulate an iSeries system running “bare metal” where vCMP is not provisioned. 
 
-When configuring High Availability (HA) between two rSeries appliances, there is no HA relationship or awareness across systems at the F5OS layer. All HA is configured at the BIG-IP tenant level using Device Service Clustering, similar to how HA is configured between vCMP guests in separate iSeries appliances today. 
+When configuring High Availability (HA) between two rSeries appliances, there is no HA relationship or awareness across systems at the F5OS layer. All HA is configured at the BIG-IP tenant level using Device Service Clustering, like how HA is configured between vCMP guests in separate iSeries appliances today. 
 
 .. image:: images/rseries_introduction/image9.png
   :align: center

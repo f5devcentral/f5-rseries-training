@@ -167,7 +167,7 @@ You can then query the **images/import** directory for various image types like 
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
-For the body you can enter the specific path you want to query. For example /images/import/<path> where path can be **iso**, **service**, or **os**:
+For the body you can enter the specific path you want to query. For example, /images/import/<path> where path can be **iso**, **service**, or **os**:
 
 .. code-block:: json
 
@@ -266,7 +266,7 @@ You can then monitor the images/import/iso directory to see when the file is rea
     "f5-utils-file-transfer:path": "images/import/iso"
     }
 
-You will see output similar to the example below. Once the file shows up here you are ready to upgrade.
+You will see output like the example below. Once the file shows up here you are ready to upgrade.
 
 .. code-block:: json
 
@@ -432,7 +432,7 @@ The body of the API should contain the version you want to upgrade to:
         }
     }
 
-If the compatabillity check passes, then you will get a message like the one below, and it is safe to install the new image via the set-version API call:
+If the compatibility check passes, then you will get a message like the one below, and it is safe to install the new image via the set-version API call:
 
 .. code-block:: json
 
@@ -471,7 +471,7 @@ If the upgrade is successful, you will get notification like the message below a
 Tenant Images and Upgrades
 ==========================
 
-Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS tenants running v15.1.5 or later. No other TMOS versions are supported other than hotfixes or rollups based on this version of software. Tenant upgrades take place inside the tenants themselves, and images don't need to be loaded into the F5OS layer. Versions 16.0, 16.1, and 17.0 are not supported on rSeries. Its not until versions 17.1 and later where current TMOS versions are supported.
+Tenant software images are loaded directly into the F5OS platform layer for use in creating new tenants. The first release of rSeries only supports TMOS tenants running v15.1.5 or later. No other TMOS versions are supported other than hotfixes or rollups based on this version of software. Tenant upgrades take place inside the tenants themselves, and images don't need to be loaded into the F5OS layer. Versions 16.0, 16.1, and 17.0 are not supported on rSeries. It's not until versions 17.1 and later where current TMOS versions are supported.
 
 Loading Tenant Images for New Tenants via webUI
 ---------------------------------------------
