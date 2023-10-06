@@ -46,6 +46,7 @@ More Pay-as-you-Grow (PAYG) Options
 The rSeries family of appliances has multiple hardware and software options like the previous generation iSeries appliances. F5 has reduced the total number of distinct hardware platforms in the rSeries family but increased the number of PAYG options in the mid-range, and high-end rSeries models to allow for similar price and performance points of previous generations. Instead of offering a 7000 series platform in between the 5000 and 10000 models, F5 now offers 3 PAYG tiers/licensing options for both the 5000 and 10000 models. This allows for expansion of performance and resources by upgrading to the next model via a simple software license change to a higher model within the same family. For example, you could start with the entry level model of the 5000 series (r5600), and if performance demand increases you could unlock more CPU resources by upgrading to the r5800 or r5900 via a simple license change.
 
 
+
 .. image:: images/rseries_introduction/image2.png
   :align: center
   :scale: 80%
@@ -56,6 +57,17 @@ For the 2000 and 4000 models, the number of PAYG tiers remains the same as the c
   :align: center
   :scale: 40%
 
+The r12000-DS family are positioned as turbo SSL appliances, and have a similar 3 tier PAYG structure as the r10000 family.
+
+.. image:: images/rseries_introduction/r12k.png
+  :align: center
+  :scale: 80%
+
+For customers that require FIPS 140-3 Level3 HSM appliances there are the r5920-DF and r10920-DF. Neither of these products have a Pay-as-you-grow option.
+
+.. image:: images/rseries_introduction/fips.png
+  :align: center
+  :scale: 80%
 
 ----------------------------
 The Kubernetes Control Plane
