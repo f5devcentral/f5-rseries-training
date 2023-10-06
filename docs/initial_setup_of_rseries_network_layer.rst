@@ -14,13 +14,13 @@ The rSeries Dashboard will provide a visual system summary of the appliance, inc
   :align: center
   :scale: 70% 
 
-The **Network** tab wil provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
+The **Network** tab will provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
   :scale: 70% 
 
-The **CPU** tab shows all the available CPU's in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
+The **CPU** tab shows all the available CPUs in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
@@ -42,7 +42,7 @@ Before configuring any tenants, you’ll need to set up networking for the F5OS 
 Network Settings - > Port Groups
 ================================
 
-Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled, and the port speed. Currently the high speed ports do not support unbundling. Adjacent high speed ports (**1.0** and **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both are configured for 100Gb; you cannot mix and match on the adjacent high speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term, **portgroup** is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
+Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled, and the port speed. Currently the high-speed ports do not support unbundling. Adjacent high-speed ports (**1.0** and **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both are configured for 100Gb; you cannot mix and match on the adjacent high-speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term, **portgroup** is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
@@ -93,7 +93,7 @@ You must commit for any changes to take effect. This will require a reboot of th
     appliance-1(config-portgroup-10)# 
 
 
-Possible options for **MODE** depend on which port you are configuring. For the high speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
+Possible options for **MODE** depend on which port you are configuring. For the high-speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low-speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 
@@ -206,7 +206,7 @@ To list the current portgroup configuration, issue the following API call:
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-portgroup:portgroups
 
-Below is an exmaple output from an r10000 series appliance:
+Below is an example output from an r10000 series appliance:
 
 .. code-block:: json
 
@@ -945,7 +945,7 @@ Below is an example configuration change in the body of the API call, this is ch
 Network Settings -> Interfaces
 ==============================
 
-Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 has a total of 20 ports labled **1.0** - **20.0**, and the r5000 has 10 ports labled **1.0** - **10.0**.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 has a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
@@ -964,7 +964,7 @@ Within the F5OS webUI, the physical ports of the appliance will be visible by go
   :align: center
   :scale: 70% 
 
-You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) as long as the interface is not part of a LAG. If the interface is part of a LAG then the VLAN configuration is done within the LAG rather than the interface.
+You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) if the interface is not part of a LAG. If the interface is part of a LAG then the VLAN configuration is done within the LAG rather than the interface.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center

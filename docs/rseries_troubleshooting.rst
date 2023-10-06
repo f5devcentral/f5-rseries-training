@@ -5,7 +5,7 @@ rSeries Troubleshooting
 Storage / Disk
 ==============
 
-Some rSeries appliances have a single SSD disk, while other models have dual SSD disks that are RAID-1 mirrored. The r2600,2800,4600,r4800,r5600,r5800,r5900 models all contain a single SSD, while the r10600,r10800,r10900 contain 2 SSD's that are RAID-1 mirrored. 
+Some rSeries appliances have a single SSD disk, while other models have dual SSD disks that are RAID-1 mirrored. The r2600,r2800,r4600,r4800,r5600,r5800,r5900 models all contain a single SSD, while the r10600,r10800,r10900 contain 2 SSD's that are RAID-1 mirrored. 
 
 Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size.
 
@@ -69,7 +69,7 @@ Backups of the F5OS configuration are stored in the path **/var/F5/system/config
 F5OS Images
 -----------
 
-F5OS-A ISO images are uploaded into the system where they are intially written to disk in the following path **/var/import/staging/**. The images go through a verification process before being extracted to thier final location.
+F5OS-A ISO images are uploaded into the system where they are initially written to disk in the following path **/var/import/staging/**. The images go through a verification process before being extracted to their final location.
 
 .. code-block:: bash
 
@@ -117,7 +117,7 @@ Tenant Images
 Tenant Virtual Disks
 --------------------
 
-The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-disks/**. You'll see a directory with the configured tenant name for each tenant. Inside that directory will be a file with a .raw extension. As an example the rSeries appliance below has two tenants configured which are named **tenant1** and **tenant2**. There is a directory for each tenant, and inside the tenant1 directory is a **tenant1.raw** file which is the tenants virtual disk.
+The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-disks/**. You'll see a directory with the configured tenant name for each tenant. Inside that directory will be a file with a .raw extension. As an example, the rSeries appliance below has two tenants configured which are named **tenant1** and **tenant2**. There is a directory for each tenant, and inside the tenant1 directory is a **tenant1.raw** file which is the tenants virtual disk.
 
 .. code-block:: bash
 
@@ -199,7 +199,7 @@ Kubernetes Environment
 The Kubernetes Control Plane
 ----------------------------
 
-rSeries utilizes an open source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releaases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, webUI, or API’s. 
+rSeries utilizes an open-source Kubernetes distribution called K3S. This is largely abstracted away from the administrator as they won’t be configuring or monitoring containers or Kubernetes components. In future releases, some Kubernetes-like features might start to be exposed, but it will likely be exposed through the F5OS CLI, webUI, or API’s. 
 
 A combination of Docker Compose and Kubernetes is used within the F5OS rSeries platform layer. The Docker Compose component brings up the software stacks as they need to be fully functional early in the startup process. Then the Kubernetes component takes over and is responsible for deploying workloads to the proper CPU's. 
 
@@ -297,7 +297,7 @@ Inside the rSeries F5 system services are managed via Docker Compose. The Docker
 Restarting an F5 Service Using Docker
 -------------------------------------
 
-You may restart any of the F5 service containers above using the syntax **docker restart <container-name>**. As an example to reset the appliance GUI enter the command **docker restart vanquish-gui** on an r5000/r10000 device.
+You may restart any of the F5 service containers above using the syntax **docker restart <container-name>**. As an example, to reset the appliance GUI enter the command **docker restart vanquish-gui** on an r5000/r10000 device.
 
 .. code-block:: bash
 
@@ -318,7 +318,7 @@ You may restart any of the F5 service containers above using the syntax **docker
 Nodes
 -----
 
-There is one Kubernetes node in the rSeries K3S arhcitecture. You can view the single node using the **kubectl get nodes** command in the F5OS bash shell.
+There is one Kubernetes node in the rSeries K3S architecture. You can view the single node using the **kubectl get nodes** command in the F5OS bash shell.
 
 .. code-block:: bash
 
@@ -331,7 +331,7 @@ There is one Kubernetes node in the rSeries K3S arhcitecture. You can view the s
 Namespaces
 ---------
 
-In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsonsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace. Run the command **kubectl describe node** to see all the pods and their associated namespaces.
+In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example, services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsonsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace. Run the command **kubectl describe node** to see all the pods and their associated namespaces.
 
 .. code-block:: bash
 
@@ -379,7 +379,7 @@ You can confirm this by running the **kubectl get virtualmachineinstances --all-
 Pods
 ----
 
-Kubernetes pods are deployed as F5OS TMOS tenants are created. BIG-IP tenants run as virtual machines, and leverage Kubevirt to run VM's ontop of the Kubernetes architecture.You can view the pods using the **kubectl get pods** command in the F5OS bash shell. In the output below you can see three different tenants are running (dummy, tenant1, and tenant2) and each is running inside its own pod. 
+Kubernetes pods are deployed as F5OS TMOS tenants are created. BIG-IP tenants run as virtual machines, and leverage Kubevirt to run VM's on top of the Kubernetes architecture. You can view the pods using the **kubectl get pods** command in the F5OS bash shell. In the output below you can see three different tenants are running (dummy, tenant1, and tenant2) and each is running inside its own pod. 
 
 .. code-block:: bash
 
@@ -957,9 +957,9 @@ Networking
 Troubleshooting Interface / Connectivity Issues
 -------------------------
 
-You can view the status of individual interfaces and get statistics to aid in troubleshooting. You can use the CLI, webUI, or API to get most statistics. Addtional information will also be available in the logs. In some cases, some stats may not be available in the webUI. 
+You can view the status of individual interfaces and get statistics to aid in troubleshooting. You can use the CLI, webUI, or API to get most statistics. Additional information will also be available in the logs. In some cases, some stats may not be available in the webUI. 
 
-Ensure that the appliance has the proper port-group coniguration and optics installed if links do not come up. The portgroup configuration must match the inserted optic type.
+Ensure that the appliance has the proper port-group configuration and optics installed if links do not come up. The portgroup configuration must match the inserted optic type.
 
 1.) Check Link Status
 
@@ -999,7 +999,7 @@ You may also view a summary of the current interface status. You can start by vi
 
   r10900-1#
 
-If you want more detail for each interface you can use the **show interfaces** CLI command to see all interfaces with their details. You may also issue the command **show interfaces interface <Interface number>** to see a specific interface detail.
+If you want more detail for each interface, you can use the **show interfaces** CLI command to see all interfaces with their details. You may also issue the command **show interfaces interface <Interface number>** to see a specific interface detail.
 
 .. code-block:: bash
 
@@ -1730,7 +1730,7 @@ If you want more detail for each interface you can use the **show interfaces** C
 
 
 
-2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not offically supported. The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output, you will be able to see if approved F5 optics are being used, or if unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only offical optics are recommended. If F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with offically supported F5 optics.
+2.) Check port-group configuration and statistics. Ensure you are using F5 approved optics, as 3rd party optics are not officially supported. The **show portgroups** CLI command will provide detailed information about the optics installed in each port, as well as the current tx and rx power levels. This can be very helpful in troubleshooting link connectivity, cabling, or optics issues. In the output, you will be able to see if approved F5 optics are being used, or if unsupported 3rd party optics are inserted. F5 does not block the use of 3rd party optics, but it cannot guarantee their behavior, which is why only official optics are recommended. If F5 support suspects an issue related to 3rd party optics, you may be asked to replace them with officially supported F5 optics.
 
 
 .. code-block:: bash
@@ -1902,7 +1902,7 @@ To see the full interface status, along with configuration items like Enable Sta
   :align: center
   :scale: 70%
 
-To see interface statistics go to the **Network Settings -> Interface Statistics Page** page. Hre you can manaully, or automatically refresh the stats during troubleshooting.
+To see interface statistics, go to the **Network Settings -> Interface Statistics Page** page. Hre you can manually, or automatically refresh the stats during troubleshooting.
 
 .. image:: images/rseries_troubleshooting/webui_interface_stats.png
   :align: center

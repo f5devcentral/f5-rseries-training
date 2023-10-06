@@ -9,9 +9,10 @@ qkviews
 
 rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
-https://support.f5.com/csp/article/K76100544
+`K2633: Submit a support case <https://my.f5.com/manage/s/article/K2633>_`
 
-https://support.f5.com/csp/article/K04756153
+`K04756153: Generating diagnostic data for rSeries systems using the qkview utility <https://my.f5.com/manage/s/article/K04756153>_`
+
 
 In general, you can use the qkview utility on rSeries systems to automatically collect configuration and diagnostic information from the system. The qkview utility provided in F5OS-A software captures diagnostic information from the rSeries system and associated containers. 
 
@@ -99,7 +100,7 @@ You may also confirm the file has been created by using the **file list** comman
     resultint 0
     appliance-1# 
 
-To upload the qkview file to iHealth using the CLI use the following command; **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
+To upload the qkview file to iHealth using the CLI use the following command: **system diagnostics ihealth upload qkview-file <file-name> description "Text for description" service-request-number <SR Number>**.
 
 .. code-block:: bash
 
@@ -355,7 +356,7 @@ If you would like to change any of the logging levels via the CLI you must be in
 Viewing Logs from the webUI
 --------------------------
 
-In the intial release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
@@ -378,7 +379,7 @@ Currently F5OS webUI’s logging levels can be configured for local logging, and
 Viewing Logs from the API
 --------------------------
 
-If the system currently has any active Alarms you can view them via the following API call:
+If the system currently has any active alarms, you can view them via the following API call:
 
 .. code-block:: bash
 
@@ -1515,7 +1516,7 @@ https://support.f5.com/csp/article/K80685750
 
 
 
-You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface, no interface filtering occurs and the command captures all interfaces.
+You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface no interface filtering occurs and the command captures all interfaces.
 
 **Important: The interfaces on the rSeries system are capable of very high traffic rates. To prevent dropped packets during traffic capture, specify appropriate filters to capture only the intended traffic and reduce the total amount of captured traffic.**
 
@@ -1675,7 +1676,7 @@ Now it will be possible to remotely ssh using a specific username and port point
 
 
 
-The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below, the username is tenant1 (matches the tenant name), and the port is 7001.
+The built-in terminal server will switch the connection to the appropriate tenant terminal server port. Once connected, you will still need to log in to the tenant as root and change the default password. In the example below, the username is tenant1 (matches the tenant's name), and the port is 7001.
 
 .. code-block:: bash
 

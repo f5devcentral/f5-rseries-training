@@ -16,7 +16,7 @@ This allows customers to run a secure/locked-down out-of-band management network
 Port Groups
 ===========
 
-The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high speed ports do not support unbundling. **Adjacent** high speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cables as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
+The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high-speed ports do not support unbundling. **Adjacent** high-speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
 
 .. image:: images/rseries_networking/image2.png
@@ -35,13 +35,13 @@ Below is an example of the F5OS webUI **Port Groups** screen on a r10000 Series 
 Interfaces
 ==========
 
-Interfaces will always be numbered starting with **1.0** and ending with the maximum number of ports on the appliance (**10.0** on the r5000 series and **20.0** on the r10000 series appliances). The type of optic in combination with the **port group** setting will dictate the speed of the interface. Interfaces can be run independetly or bundled together in Link Aggregation Groups. VLANs will be assigned to independent interfaces, or at the LAG configuration level if multiple interfaces are bundled together.
+Interfaces will always be numbered starting with **1.0** and ending with the maximum number of ports on the appliance (**10.0** on the r5000 series and **20.0** on the r10000 series appliances). The type of optic in combination with the **port group** setting will dictate the speed of the interface. Interfaces can be run independently or bundled together in Link Aggregation Groups. VLANs will be assigned to independent interfaces, or at the LAG configuration level if multiple interfaces are bundled together.
 
 
 Supported Optics
 ================
 
-Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. None of the optics support dual mode speeds i.e. 25Gb/10Gb, you must have the right optic and port group configuration for the speed you want to run. 3rd party optics are not officially supported per F5’s support policies: 
+Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. None of the optics support dual mode speeds i.e., 25Gb/10Gb, you must have the right optic and port group configuration for the speed you want to run. 3rd party optics are not officially supported per F5’s support policies: 
 
 https://support.f5.com/csp/article/K8153. 
 
@@ -70,7 +70,7 @@ rSeries 1GB SFP SKU's
 +----------------------+----------------------------------------------------------------------------------------+
 
 The r2000 / r4000 will support both **F5-UPG-SFPC-R** with one caveat. **F5-UPG-SFPC-R** will only be supported at 1000Mbps on r2000 / r4000, there will be no support for 10Mbps or 100Mbps speeds.
-The r5000 / r10000 platforms do not support 1G SFPs at this time, so **F5-UPG-SFPC-R** is not supported on those platforms.
+The r5000 / r10000 platforms do not support 1G SFPs currently, so **F5-UPG-SFPC-R** is not supported on those platforms.
 However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 for 10G operation.
 
 rSeries 10GB SFP+ SKU's
@@ -161,16 +161,16 @@ rSeries supports both 802.1Q tagged and untagged VLAN interfaces. In the current
 Link Aggregation Groups
 =======================
 
-rSeries allows for bonding of interfaces into Link Aggregation Groups or LAG’s. LAG’s can span across any port as long as they are configured to support the same speed. Links within a LAG must be the same type and speed. LAG’s may be configured for static or lacp mode.
+rSeries allows for bonding of interfaces into Link Aggregation Groups or LAGs. LAGs can span across any port if they are configured to support the same speed. Links within a LAG must be the same type and speed. LAGs may be configured for static or lacp mode.
 
 An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP Mode** to be **Active** or **Passive**, and the **LACP Interval** to **Slow** or **Fast**.
 
 Pipelines (r5000 and r10000 only)
 =================================
 
-The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowlwedge of pipelines and planning will avoid any possible internal oversubscription scenarios.
+The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowledge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
-If all ports are utilized and running at max bandwidth capacity simulataneously this may result in an oversubsciprion if the maximum bandwidth for one of the internal pipelines is achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal piepleines is static and not configurable, although F5 may make this a configurable option in the future.
+If all ports are utilized and running at max bandwidth capacity simultaneously this may result in an over-subscription if the maximum bandwidth for one of the internal pipelines is achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal pipelines is static and not configurable, although F5 may make this a configurable option in the future.
 
 Below is an example of the total external front panel theoretical bandwidth exceeding internal pipeline bandwidth:
 
@@ -178,13 +178,13 @@ Below is an example of the total external front panel theoretical bandwidth exce
   :align: center
   :scale: 50%
 
-There are static mappings of external ports to specific internal pipelines. If you are not using all ports you can spread the used ports over the diffferent pipelines by chossing different front panel ports to avoid possible oversubscription scenarios. Below shows the total piplines and ports for the r5000 appliances.
+There are static mappings of external ports to specific internal pipelines. If you are not using all ports, you can spread the used ports over the different pipelines by choosing different front panel ports to avoid possible oversubscription scenarios. Below shows the total pipelines and ports for the r5000 appliances.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
   :scale: 50%
 
-the diagram below shows the 4 total piplines and ports for the r10000 appliances.
+the diagram below shows the 4 total pipelines and ports for the r10000 appliances.
 
 .. image:: images/rseries_networking/image7.png
   :align: center
@@ -217,7 +217,7 @@ Below is the CLI command to display the pipelines:
 Port Profiles (r2000 and r4000 only)
 ==================================== 
 
-The hardware architecture in the r2000 and r4000 appliances is different than the r5000 and r10000 appliances. The r2000 and r4000 do not leverage FPGA's, and the Intel chipset handles the connections to the front panel interfaces. The Intel chipset supports three different **port profiles** that allow a maximum of 100Gb of front panel bandwdith to be enabled at one time. This means that some ports may be disabled based on the port profile that is selected, as there is a possibility of 140Gb total bandwdith if all eight ports are configured for maximum speed. The diagram below shows the possibility of 140Gb of total front panel bandwidth (4 x 10Gb + 4 x 25Gb). The system will not allow that combination as it exceeds the 100Gb maximum. This is not a limit calculated based on traffic volumes, it is based on configured maximum front panel bandwidth.
+The hardware architecture in the r2000 and r4000 appliances is different than the r5000 and r10000 appliances. The r2000 and r4000 do not leverage FPGAs, and the Intel chipset handles the connections to the front panel interfaces. The Intel chipset supports three different **port profiles** that allow a maximum of 100Gb of front panel bandwidth to be enabled at one time. This means that some ports may be disabled based on the port profile that is selected, as there is a possibility of 140Gb total bandwidth if all eight ports are configured for maximum speed. The diagram below shows the possibility of 140Gb of total front panel bandwidth (4 x 10Gb + 4 x 25Gb). The system will not allow that combination as it exceeds the 100Gb maximum. This is not a limit calculated based on traffic volumes, it is based on configured maximum front panel bandwidth.
 
 .. image:: images/rseries_networking/image9.png
   :align: center
@@ -268,7 +268,7 @@ The following configures for 2 x 25Gb - 4 x 10Gb mode:
 
   r4800-1(config)# port-profile config mode 2x25G-4x10G
 
-To configure the port profiles in the WebUI go to the **Network Settings > Port Group** page, and select the appropriate profile from the drop down menu.
+To configure the port profiles in the WebUI go to the **Network Settings > Port Group** page and select the appropriate profile from the drop-down menu.
 
 .. image:: images/rseries_networking/image13.png
   :align: center

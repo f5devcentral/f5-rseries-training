@@ -1,5 +1,5 @@
 =====================================
-Montoring rSeries Health & Alert Status
+Monitoring rSeries Health & Alert Status
 =====================================
 
 rSeries has many components and subsystems which can be monitored via CLI, webUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quicky provide health of the chassis. This section will provide guidance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
@@ -7,7 +7,7 @@ rSeries has many components and subsystems which can be monitored via CLI, webUI
 Active Alerts
 =============
 
-The rSeries system has an alerting system where certain known issues will raise alerts when the occur, and will be be cleared when they are addressed or self-heal.
+The rSeries system has an alerting system where certain known issues will raise alerts when they occur and will also be cleared when they are addressed or self-heal.
 
 ------------------------------
 Checking Active Alerts via CLI
@@ -269,7 +269,7 @@ To see past events use the command **show system events**.
 Checking Active Alerts via webUI
 ------------------------------
 
-In the F5OS webUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the the rSeries F5OS SNMP Monitoring and Alerting section.
+In the F5OS webUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold, then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the rSeries F5OS SNMP Monitoring and Alerting section.
 
 .. image:: images/monitoring_rseries_health_status/image1.png
   :align: center
@@ -279,7 +279,7 @@ In the F5OS webUI you can go to the **System Events > Alarms & Events** page to 
 Checking Active Alerts via API
 ------------------------------
 
-Recent system level alerts can be accessed via the API. Below is an API call to see all the system events that have occured for a particular appliance:
+Recent system level alerts can be accessed via the API. Below is an API call to see all the system events that have occurred for a particular appliance:
 
 .. code-block:: bash
 
@@ -1001,16 +1001,16 @@ Below are examples of events from an appliance in a test lab. Note there are ASS
 System Health
 =============
 
-rSeries also has a very robust **system health** utility where all the various hardware and software subsystems will first provide a high level health status, but then deeper detail can be gained on what is monitored via each subsystem.
+rSeries also has a very robust **system health** utility where all the various hardware and software subsystems will first provide a high-level health status, but then deeper detail can be gained on what is monitored via each subsystem.
 
 
 ------------------------------
 Checking System Health via CLI
 ------------------------------
 
-Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher level status.
+Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high-level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher-level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher-level status.
 
-After the full output below some CLI examples of how to filter all this information down into a high level status will be provided.
+After the full output below some CLI examples of how to filter all this information down into a high-level status will be provided.
 
 .. code-block:: bash
 
@@ -3470,7 +3470,7 @@ After the full output below some CLI examples of how to filter all this informat
 Filter to Get a Summary of System Health via CLI
 ------------------------------------------------
 
-You can use the built-in filtering in the CLI to just get the top level state health of each susbsystem. This doesn't list the subsystems, but shows all the top level system health status outputs. If one subsystem shows a status other than **ok** you can then adjust the filtering to only display that subsystem.
+You can use the built-in filtering in the CLI to just get the top-level state health of each susbsystem. This doesn't list the subsystems but shows all the top-level system health status outputs. If one subsystem shows a status other than **ok** you can then adjust the filtering to only display that subsystem.
 
 Use the output modifier after the **show system health** command to **include "state health"**.
 
@@ -3607,7 +3607,7 @@ Use the output modifier after the **show system health** command to **include "s
     state health ok
     r5900-2#
 
-You can also filter using this CLI command for better summaries. You can see that all service are in an **ok** state meaning there are no faults:
+You can also filter using this CLI command for better summaries. You can see that all services are in an **ok** state meaning there are no faults:
 
 .. code-block:: bash
 
@@ -4029,7 +4029,7 @@ Just like the CLI output you can dump the full system health and all its subsyst
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
 
 
-This provides a very large output of all the subsystems and their subcomponents. Below the large output are examples of how to futher filter/reduce the output via API calls.
+This provides a very large output of all the subsystems and their subcomponents. Below the large output are examples of how to further filter/reduce the output via API calls.
 
 .. code-block:: json
 
