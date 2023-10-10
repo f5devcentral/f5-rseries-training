@@ -43,11 +43,13 @@ Supported Optics
 
 Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. None of the optics support dual mode speeds i.e., 25Gb/10Gb, you must have the right optic and port group configuration for the speed you want to run. 3rd party optics are not officially supported per F5’s support policies: 
 
-https://support.f5.com/csp/article/K8153. 
+
+
+`K8153: F5 support of third-party hardware components <https://my.f5.com/manage/s/article/K8153>_`
 
 More details on each optic can be found in the F5 Platforms Accessories guide:
 
-https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html
+`F5 Platforms: Accessories <https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html>_`
 
 
 Supported rSeries Optics SKU's

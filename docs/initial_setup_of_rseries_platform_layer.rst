@@ -1161,7 +1161,7 @@ Log Settings
 
 Under **System Settings > Log Settings** you may add remote log servers for the F5OS platform layer. You can also specify the **Software Component Log Levels** which may be useful when troubleshooting specific issues.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image17.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
   :scale: 70%
 
@@ -1186,14 +1186,14 @@ Time Settings
 
 Under the **System Settings > Time Settings** page Network Time Protocol servers can be added so that F5OS time sources are synchronized to a reliable time source. The Time can be set manually, and a Time Zone may also be set.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image20.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
   :scale: 70%
 
 Certificate Management
 ======================
 
-Device certificates and keys used for device management can be created via the **Systems Settings > Device Certificates** page.
+Device certificates and keys used for device management can be created via the **Authentication & Access > TLS Configuration** page.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image21.png
   :align: center
@@ -1211,7 +1211,7 @@ Device certificates and keys used for device management can be created via the *
 System Reports
 ==============
 
-The **System Settings > System Reports** page allows an admin to generate qkviews and optionally upload them to iHealth. To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  
+The **Diagnostics > System Reports** page allows an admin to generate qkviews and optionally upload them to iHealth. To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image24.png
   :align: center
