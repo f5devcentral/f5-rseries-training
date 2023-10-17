@@ -21,7 +21,7 @@ In rSeries there are now multiple FPGAs, the **Application Traffic Services Engi
   :align: center
   :scale: 40%
 
-The r12000-DS platform is almost identical to the r10000 platform except that is has extra processing for SSL/TLS as seen in the diagram below.
+The r12000-DS platform is very similar to the r10000 platform except that is has extra processing for SSL/TLS as seen in the diagram below.
 
 .. image:: images/rseries_performance_and_sizing/image1r12000.png
   :align: center
