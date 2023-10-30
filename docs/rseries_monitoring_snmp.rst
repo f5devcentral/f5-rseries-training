@@ -519,75 +519,77 @@ To configure a Security Group for both SNMPv1 and SNMPv2c.
 
 Configuring SNMP Access via API
 -------------------------------
+SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either communities for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
 
-You can configure the SNMP System parameters including the **System Contact**, **System Location**, and **System Name** as seen below:
+To create an SNMPv3 user use the following API call.
 
 .. code-block:: bash
 
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMPv2-MIB:SNMPv2-MIB/system/sysContact
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp
+
+Within the body of the API call, add the following JSON to add a user.
 
 .. code-block:: json
 
     {
-        "SNMPv2-MIB:sysContact": "jim@f5.com",
-        "SNMPv2-MIB:sysName": "Boston-r10900-1",
-        "SNMPv2-MIB:sysLocation": "Boston"
-    }
-
-Enabling SNMP can be done from the API by configuring the **public** SNMP community. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring. 
-
-
-.. code-block:: bash
-
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-VIEW-BASED-ACM-MIB:SNMP-VIEW-BASED-ACM-MIB
-
-.. code-block:: json
-
-    {
-        "SNMP-VIEW-BASED-ACM-MIB:SNMP-VIEW-BASED-ACM-MIB": {
-            "vacmSecurityToGroupTable": {
-                "vacmSecurityToGroupEntry": [
+        "f5-system-snmp:snmp": {
+            "users": {
+                "user": [
                     {
-                        "vacmSecurityModel": 1,
-                        "vacmSecurityName": "public",
-                        "vacmGroupName": "read-access",
-                        "vacmSecurityToGroupStorageType": "nonVolatile"
-                    },
-                    {
-                        "vacmSecurityModel": 2,
-                        "vacmSecurityName": "public",
-                        "vacmGroupName": "read-access",
-                        "vacmSecurityToGroupStorageType": "nonVolatile"
-                    }
-                ]
-            },
-            "vacmAccessTable": {
-                "vacmAccessEntry": [
-                    {
-                        "vacmGroupName": "read-access",
-                        "vacmAccessContextPrefix": "",
-                        "vacmAccessSecurityModel": 0,
-                        "vacmAccessSecurityLevel": "noAuthNoPriv",
-                        "vacmAccessContextMatch": "exact",
-                        "vacmAccessReadViewName": "internet",
-                        "vacmAccessNotifyViewName": "internet",
-                        "vacmAccessStorageType": "nonVolatile"
-                    }
-                ]
-            },
-            "vacmViewTreeFamilyTable": {
-                "vacmViewTreeFamilyEntry": [
-                    {
-                        "vacmViewTreeFamilyViewName": "internet",
-                        "vacmViewTreeFamilySubtree": "1.3.6.1",
-                        "vacmViewTreeFamilyMask": "",
-                        "vacmViewTreeFamilyType": "included",
-                        "vacmViewTreeFamilyStorageType": "nonVolatile"
+                        "name": "snmpv3-user3",
+                        "config": {
+                            "name": "snmpv3-user3",
+                            "authentication-protocol": "md5",
+                            "f5-system-snmp:authentication-password": "{{rseries_password}}",
+                            "privacy-protocol": "aes",
+                            "f5-system-snmp:privacy-password": "{{rseries_password}}"
+                        }
                     }
                 ]
             }
         }
     }
+
+If you are using SNMPv1/v2c then communities are the means of access. You can create an SNMP community via the API with the following API call:
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp
+
+
+In the body of the API call, add the community name you want to use to allow access to SNMP on the rSeries system. In this case a community called public2 is being used to enable access.
+
+.. code-block:: json
+
+    {
+        "f5-system-snmp:snmp": {
+            "communities": {
+                "community": [
+                    {
+                        "name": "public2",
+                        "config": {
+                            "name": "public2",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+To view the current SNMP configuration, issue the following API call:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance_ip}}:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp
+
+The output should appear similar to the example below.
+
+.. code-block:: json
+
 
 
 Configuring SNMP Access via webUI
