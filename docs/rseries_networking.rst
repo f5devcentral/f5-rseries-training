@@ -97,7 +97,7 @@ rSeries 25GB SFP28 SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-SFP28-SR      | Field Upgrade: Transceiver SFP28, 25G-SR, 100M, LC, MMF, DDM (rSeries ONLY)           |
 +----------------------+---------------------------------------------------------------------------------------+
-| F5-UPG-SFP28-LR      | Field Upgrade: Transceiver SFP28, 25G-LR, 100M, LC, MMF, DDM (rSeries ONLY)           |
+| F5-UPG-SFP28-LR      | Field Upgrade: Transceiver SFP28, 25G-LR, 100M, LC, SMF, DDM (rSeries ONLY)           |
 +----------------------+---------------------------------------------------------------------------------------+
 
 
