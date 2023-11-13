@@ -4,8 +4,9 @@ rSeries Diagnostics
 
 This section will go through some of the diagnostic capabilities within the new F5OS layer. Inside the tenant the same BIG-IP diagnostic utilities that customers are used to are still available.
 
+-------
 qkviews
-=======
+-------
 
 rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
@@ -188,9 +189,9 @@ In the output of the API call, the upload initiation is confirmed.
         }
     }
 
-
+-------
 Logging
-=======
+-------
 
 F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addtion, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example there is an **snmp.log** which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
 
@@ -199,8 +200,12 @@ There are published error catalogs for each F5OS-A release here:
 `F5OS-A Error Catalog <https://clouddocs.f5.com/f5os-error-catalog/rseries/rseries-errors-index.html>`_
 
 
+Viewing Logs
+------------
+
+
 Viewing Logs from the CLI
---------------------------
+=========================
 
 In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options:
 
@@ -249,7 +254,7 @@ There are options to manipulate the output of the file. Add **| ?** to the comma
     until     End with the line that matches
     appliance-1# file show log/system/platform.log | 
 
-There are also other file options to tail the log file using **file tail -f** for live tail of the file or **file tail -n <number of lines>**.
+There are also other file options to tail the log file using **file tail -f** for live tail of the file or **file tail -n <number of lines>**. Below is the live tail example.
 
 .. code-block:: bash
 
@@ -266,7 +271,9 @@ There are also other file options to tail the log file using **file tail -f** fo
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
+The example below shows the last 20 lines of the platform.log file.
 
+.. code-block:: bash
 
     appliance-1# file tail -n 20 log/system/platform.log
     2022-01-18T01:42:40.217019+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
@@ -291,7 +298,7 @@ There are also other file options to tail the log file using **file tail -f** fo
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
-Within the bash shell, the path for the logging is different; **/var/F5/system/log**. 
+Within the bash shell, the actaul underlying path for logging is different; it is at the following location: **/var/F5/system/log**. The non-bash shell user interfaces (CLI,webUI,API) do not use the real paths, and instead use the virtual paths to simplify things for administrators. 
 
 .. code-block:: bash
 
@@ -325,41 +332,8 @@ Within the bash shell, the path for the logging is different; **/var/F5/system/l
     drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webUI
     [root@appliance-1 /]# 
 
-If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take effect. Be sure to set logging levels back to normal after troubleshooting has completed.
-
-
-.. code-block:: bash
-
-    appliance-1(config)# system logging sw-components sw-component ?
-    Possible completions:
-    alert-service     api-svc-gateway         appliance-orchestration-agent  appliance-orchestration-manager  authd         confd-key-migrationd  
-    dagd-service      datapath-cp-proxy       diag-agent                     disk-usage-statd                 dma-agent     fips-service          
-    fpgamgr           ihealth-upload-service  ihealthd                       image-agent                      kubehelper    l2-agent              
-    lacpd             license-service         line-dma-agent                 lldpd                            lopd          network-manager       
-    nic-manager       optics-mgr              platform-diag                  platform-fwu                     platform-hal  platform-mgr          
-    platform-monitor  platform-stats-bridge   qkviewd                        rsyslog-configd                  snmp-trapd    stpd                  
-    sw-rbcast         sys-host-config         system-control                 tcpdumpd-manager                 tmstat-agent  tmstat-merged         
-    upgrade-service   user-manager            vconsole                       
-    appliance-1(config)# system logging sw-components sw-component lacpd ?
-    Possible completions:
-    config   Configuration data for platform sw-component logging
-    <cr>     
-    appliance-1(config)# system logging sw-components sw-component lacpd config ?
-    Possible completions:
-    description   Text that describes the platform sw-component (read-only)
-    name          Name of the platform sw-component (read-only)
-    severity      sw-component logging severity level.
-    appliance-1(config)# system logging sw-components sw-component lacpd config severity ?
-    Description: sw-component logging severity level. Default is INFORMATIONAL.
-    Possible completions:
-    [INFORMATIONAL]  ALERT  CRITICAL  DEBUG  EMERGENCY  ERROR  INFORMATIONAL  NOTICE  WARNING
-    appliance-1(config)# system logging sw-components sw-component lacpd config severity DEBUG
-    appliance-1(config-sw-component-lacpd)# commit
-    Commit complete.
-    appliance-1(config-sw-component-lacpd)# 
-  
 Viewing Logs from the webUI
---------------------------
+===========================
 
 In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
 
@@ -382,7 +356,7 @@ Currently F5OS webUI’s logging levels can be configured for local logging, and
   :scale: 70%
 
 Viewing Logs from the API
---------------------------
+=========================
 
 If the system currently has any active alarms, you can view them via the following API call:
 
@@ -1065,6 +1039,60 @@ This will display all events (not just the active ones) from the beginning in th
         }
     }
 
+
+
+
+
+
+-----------------------------------------------
+Logging Subsystems/ Software Componenent Levels
+-----------------------------------------------
+
+
+Changing the Software Componenet Log Levels via CLI
+==================================================
+
+If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take effect. Be sure to set logging levels back to normal after troubleshooting has completed.
+
+
+.. code-block:: bash
+
+    appliance-1(config)# system logging sw-components sw-component ?
+    Possible completions:
+    alert-service     api-svc-gateway         appliance-orchestration-agent  appliance-orchestration-manager  authd         confd-key-migrationd  
+    dagd-service      datapath-cp-proxy       diag-agent                     disk-usage-statd                 dma-agent     fips-service          
+    fpgamgr           ihealth-upload-service  ihealthd                       image-agent                      kubehelper    l2-agent              
+    lacpd             license-service         line-dma-agent                 lldpd                            lopd          network-manager       
+    nic-manager       optics-mgr              platform-diag                  platform-fwu                     platform-hal  platform-mgr          
+    platform-monitor  platform-stats-bridge   qkviewd                        rsyslog-configd                  snmp-trapd    stpd                  
+    sw-rbcast         sys-host-config         system-control                 tcpdumpd-manager                 tmstat-agent  tmstat-merged         
+    upgrade-service   user-manager            vconsole                       
+    appliance-1(config)# system logging sw-components sw-component lacpd ?
+    Possible completions:
+    config   Configuration data for platform sw-component logging
+    <cr>     
+    appliance-1(config)# system logging sw-components sw-component lacpd config ?
+    Possible completions:
+    description   Text that describes the platform sw-component (read-only)
+    name          Name of the platform sw-component (read-only)
+    severity      sw-component logging severity level.
+    appliance-1(config)# system logging sw-components sw-component lacpd config severity ?
+    Description: sw-component logging severity level. Default is INFORMATIONAL.
+    Possible completions:
+    [INFORMATIONAL]  ALERT  CRITICAL  DEBUG  EMERGENCY  ERROR  INFORMATIONAL  NOTICE  WARNING
+    appliance-1(config)# system logging sw-components sw-component lacpd config severity DEBUG
+    appliance-1(config-sw-component-lacpd)# commit
+    Commit complete.
+    appliance-1(config-sw-component-lacpd)# 
+
+
+Changing the Software Componenet Log Levels via webUI
+=====================================================
+
+
+Changing the Software Componenet Log Levels via API
+==================================================
+
 You can display all the logging subsystem's logging levels via the following API call:
 
 
@@ -1494,11 +1522,6 @@ When you are finished troubleshooting, you can set the logging level back to def
             }
         }
     }
-
-Logging Subsystems / Software Component Logging
------------------------------------------------
-
-
 
 Audit Logging
 -------------
