@@ -1560,8 +1560,7 @@ You can see this in the following example output:
 
 More detail on configuration and filtering of tcpdump is provided here:
 
-https://support.f5.com/csp/article/K80685750
-
+`K80685750: Overview of the tcpdump utility on rSeries systems <https://support.f5.com/csp/article/K80685750>`_
 
 
 You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface no interface filtering occurs and the command captures all interfaces.

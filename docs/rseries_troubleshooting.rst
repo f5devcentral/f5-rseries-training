@@ -1963,10 +1963,17 @@ Log rotation is currently hard coded and handled via **/var/F5/system/etc/logrot
 
 .. code-block:: bash
 
-  [root@appliance-1(r10900-2.f5demo.net) logrotate.d]# pwd
-  /var/F5/system/etc/logrotate.d
-  [root@appliance-1(r10900-2.f5demo.net) logrotate.d]# more platform.conf 
-  /var/log/audit.log
+  [root@appliance-1(r10900-1.f5demo.net) ~]# cd /var/F5/system/etc/logrotate.d
+  [root@appliance-1(r10900-1.f5demo.net) logrotate.d]# more platform.conf 
+  /var/log/audit.log {
+      rotate 5
+      size 100M
+      sharedscripts
+      postrotate
+          pkill -HUP rsyslogd
+      endscript
+  }
+
   /var/log/confd.log
   /var/log/devel.log
   /var/log/lcd.log
@@ -1981,16 +1988,34 @@ Log rotation is currently hard coded and handled via **/var/F5/system/etc/logrot
       copytruncate
   }
   /var/log/platform.log {
-      rotate 10
-      size 1G
+      rotate 20
+      size 500M
       sharedscripts
       postrotate
           pkill -HUP rsyslogd
       endscript
   }
   /var/log/logrotate.log 
-  /var/log/rsyslogd.log {
+  /var/log/rsyslogd_init.log {
       rotate 2
       size 5M
       copytruncate
   }
+
+  /var/log/webui/*.access
+  /var/log/vconsole*.log{
+      rotate 5
+      size 50M
+      copytruncate
+  }
+  /var/log/dma-agent.log {
+      rotate 5
+      size 2M
+      copytruncate
+  }
+  /var/log/dma-agent-launcher.log {
+      rotate 1
+      size 256K
+      copytruncate
+  }
+  [root@appliance-1(r10900-1.f5demo.net) logrotate.d]#
