@@ -1930,7 +1930,7 @@ This MIB provides the current firmware status and version for all firmware subsy
     fw-version-drive-u.2.slot2                          VDV10184        false           none
     prompt% 
 
-SNMP Fantry Stats Table
+SNMP Fantray Stats Table
 ----------------------
 
 Query the following SNMP OID to get detailed fan speeds.
