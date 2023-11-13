@@ -4,9 +4,9 @@ rSeries Diagnostics
 
 This section will go through some of the diagnostic capabilities within the F5OS platform layer. Inside the TMOS tenant, the same BIG-IP diagnostic utilities that customers are used to are still available.
 
--------
+
 qkviews
--------
+=======
 
 rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
@@ -189,9 +189,9 @@ In the output of the API call, the upload initiation is confirmed.
         }
     }
 
--------
+
 Logging
--------
+=======
 
 F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addtion, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example there is an **snmp.log** which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
 
@@ -205,7 +205,7 @@ Viewing Logs
 
 
 Viewing Logs from the CLI
-=========================
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options:
 
@@ -298,7 +298,7 @@ The example below shows the last 20 lines of the platform.log file.
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
-Within the bash shell, the actaul underlying path for logging is different; it is at the following location: **/var/F5/system/log**. The non-bash shell user interfaces (CLI,webUI,API) do not use the real paths, and instead use the virtual paths to simplify things for administrators. 
+Within the bash shell, the actual underlying path for logging is different; it is at the following location: **/var/F5/system/log**. The non-bash shell user interfaces (CLI,webUI,API) do not use the real paths, and instead use the virtual paths to simplify things for administrators. 
 
 .. code-block:: bash
 
@@ -348,12 +348,6 @@ If you want to download the main **platform.log**, select the directory **/log/s
   :align: center
   :scale: 70%
 
-
-Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbose information going to the remote logging host, you can raise its severity to see additional messages.
-
-.. image:: images/rseries_diagnostics/image6.png
-  :align: center
-  :scale: 70%
 
 Viewing Logs from the API
 =========================
@@ -1089,6 +1083,11 @@ If you would like to change any of the logging levels via the CLI you must be in
 Changing the Software Componenet Log Levels via webUI
 =====================================================
 
+Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbose information going to the remote logging host, you can raise its severity to see additional messages.
+
+.. image:: images/rseries_diagnostics/image6.png
+  :align: center
+  :scale: 70%
 
 Changing the Software Componenet Log Levels via API
 ==================================================
