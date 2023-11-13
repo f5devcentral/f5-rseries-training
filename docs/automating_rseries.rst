@@ -6,7 +6,7 @@ Since F5OS is an API first architecture, everything is automatable at the F5OS l
 
 If you want to see what API functions are available you can view the API reference documentation for the specific F5OS version you are running. As you can see rSeries / F5OS-A have its own API reference pages, F5OS-C / VELOS have similar pages, and most of the API calls are common expcet for those that are specific to the platform.
 
-`F5OS-A/F5 rSeries - API <https://clouddocs.f5.com/api/rseries-api/rseries-api-index.html>_`
+`F5OS-A/F5 rSeries - API <https://clouddocs.f5.com/api/rseries-api/rseries-api-index.html>`_
 
 .. image:: images/automating_rseries/image1.png
   :align: center
@@ -14,7 +14,7 @@ If you want to see what API functions are available you can view the API referen
 
 The API workflows section has an index which maps to all the common API workflow examples in the rSeries planning guide. In addtion, there is an accompanying Postman collection which can be downloaded and used within your own environment if you want to become familiar with the F5OS API.
 
-`F5 rSeries API Workflows <https://clouddocs.f5.com/api/rseries-api/rseries-api-workflows.html>_`
+`F5 rSeries API Workflows <https://clouddocs.f5.com/api/rseries-api/rseries-api-workflows.html>`_
 
 Below is a smaple of some of the workflows available, and there are many more.
 
@@ -28,18 +28,18 @@ F5OS Ansible Collection
 Ansible collections have been created for F5OS for some of the more common tasks. Addtional API workflows are constantly being added to the collections.
 
 
-`F5OS modules Ansible collection <https://clouddocs.f5.com/products/orchestration/ansible/devel/f5os/F5OS-index.html>_`
+`F5OS modules Ansible collection <https://clouddocs.f5.com/products/orchestration/ansible/devel/f5os/F5OS-index.html>`_
 
 F5OS Terraform Provider
 =======================
 
 Terraform providers have been created for F5OS for some of the more common tasks. Addtional API workflows are constantly being added to the providers. An overview of the F5OS provider is available using the link below.
 
-`F5OS Provider Overview <https://clouddocs.f5.com/products/orchestration/terraform/latest/F5OS/f5os-index.html#f5os-index<_`
+`F5OS Provider Overview <https://clouddocs.f5.com/products/orchestration/terraform/latest/F5OS/f5os-index.html#f5os-index>`_
 
 The github location of the Terraform provider files is at the following location.
 
-`Terraform Provider F5OS v1.3.0 <https://github.com/F5Networks/terraform-provider-F5OS/releases>_`
+`Terraform Provider F5OS v1.3.0 <https://github.com/F5Networks/terraform-provider-F5OS/releases>`_
 
 Getting Started with F5OS Automation
 ====================================

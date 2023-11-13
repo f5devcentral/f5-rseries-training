@@ -192,11 +192,11 @@ In the output of the API call, the upload initiation is confirmed.
 Logging
 =======
 
-F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addtion, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example there is an snmp.log which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
+F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addtion, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example there is an **snmp.log** which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
 
 There are published error catalogs for each F5OS-A release here:
 
-`F5OS-A Error Catalog <https://clouddocs.f5.com/f5os-error-catalog/rseries/rseries-errors-index.html>_`
+`F5OS-A Error Catalog <https://clouddocs.f5.com/f5os-error-catalog/rseries/rseries-errors-index.html>`_
 
 
 Viewing Logs from the CLI
@@ -1505,14 +1505,14 @@ Audit Logging
 
 Details on F5OS-A audit logging can be found here:
 
-`F5OS-A Audit Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#audit-logging>_`
+`F5OS-A Audit Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#audit-logging>`_
 
 SNMP Logging
 ------------
 
 Details on F5OS-A SNMP logging can be found here:
 
-`F5OS-A SNMP Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#troubleshooting-snmp>_`
+`F5OS-A SNMP Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#troubleshooting-snmp>`_
 
 
 
