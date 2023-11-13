@@ -10,16 +10,16 @@ qkviews
 
 rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
-`K2633: Submit a support case <https://my.f5.com/manage/s/article/K2633>_`
+`K2633: Submit a support case <https://my.f5.com/manage/s/article/K2633>'_
 
-`K04756153: Generating diagnostic data for rSeries systems using the qkview utility <https://my.f5.com/manage/s/article/K04756153>_`
+`K04756153: Generating diagnostic data for rSeries systems using the qkview utility <https://my.f5.com/manage/s/article/K04756153>'_
 
 
 In general, you can use the qkview utility on rSeries systems to automatically collect configuration and diagnostic information from the system. The qkview utility provided in F5OS-A software captures diagnostic information from the rSeries system and associated containers. 
 
 Note: The qkview utility on the rSeries system does not capture diagnostic data from tenant BIG-IP systems. To generate diagnostic data for a tenant BIG-IP, log in to the tenant system and perform the relevant procedure in:
 
-K12878: Generating diagnostic data using the qkview utility: https://support.f5.com/csp/article/K12878
+`K12878: Generating diagnostic data using the qkview utility <https://support.f5.com/csp/article/K12878>'_
 
 
 The qkview utility on the rSeries system generates machine-readable JavaScript Object Notation (JSON) diagnostic data and combines the data into a single compressed Tape ARchive (TAR) format file. The single TAR file is comprised of embedded TAR files containing the diagnostic data of individual containers running on the system, as well as diagnostic data from the rSeries system. You can upload this file, called a qkview file, to iHealth, or give it to F5 Support to help them troubleshoot any issues.
