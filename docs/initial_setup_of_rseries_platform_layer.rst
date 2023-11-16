@@ -1082,7 +1082,7 @@ https://support.f5.com/csp/article/K70113407
 Manual Licensing via API
 ========================
 
-Sometimes a manual licensing operation may need to be performed. This is common in environments where the rSeries appliance deosn't have access to the Internet to reach the licensing server. IN this case you may perform a manual licensing operation via the API. First, obtain the **Base Registration Key** that is tied to your system. Below is an example for a temporary evaluation license but the process would be similar for a production license. In the example below, the actual Registration Key has been obsfucated with XXXX's.
+Sometimes a manual licensing operation may need to be performed. This is common in environments where the rSeries appliance doesn't have access to the Internet to reach the licensing server. In this case, you may perform a manual licensing operation via the API. First, obtain the **Base Registration Key** that is tied to your system. Below is an example for a temporary evaluation license but the process would be similar for a production license. In the example below, the actual Registration Key has been obsfucated with XXXX's.
 
 
 
@@ -1105,7 +1105,7 @@ Then send the Base Reg Key in the body of the get-dossier API call below:
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:get-dossier
 
-Within the body of API call enter your registation-key. Note in the example below the actual Registration Key has been obsfucated with XXXX's.
+Within the body of API call, enter your registation-key. Note, in the example below the actual Registration Key has been obsfucated with XXXX's.
 
 
 .. code-block:: json
@@ -1153,7 +1153,7 @@ You'll need to edit the license file to escape any double quotes within the licn
 
 .. image:: images/initial_setup_of_rseries_platform_layer/edit_license.png
   :align: center
-  :scale: 70%
+  :scale: 40%
 
 Send the following API call to install the new license:
 
@@ -1185,7 +1185,7 @@ In the body of the API call enter the edited license in the proper area. Below i
     #       Warning: Changing the system time while this system is running
     #                with a time-limited license may make the system unusable.
     #
-    Usage :                            F5 XXXXXXX
+    Usage :                            Eavluation
     #
     #
     #  Only the specific use referenced above is allowed. Any other uses are prohibited.
@@ -1240,19 +1240,19 @@ In the body of the API call enter the edited license in the proper area. Below i
     perf_SSL_Mbps :                    1
     #
     #       Accumulated Tokens for Module
-    #       Access Policy Manager, Base, r109XX  apm_access_sessions 100000000  key E135699-1129899
+    #       Access Policy Manager, Base, r109XX  apm_access_sessions 100000000  key XXXXXXX-XXXXXXX
     #
     #       Accumulated Tokens for Module
     #       Access Policy Manager, Base, r109XX  apm_sessions 500  key XXXXXXX-XXXXXXX
     #
     #       Accumulated Tokens for Module
-    #       Access Policy Manager, Base, r109XX  apm_urlf_limited_sessions 100000000  key E135699-1129899
+    #       Access Policy Manager, Base, r109XX  apm_urlf_limited_sessions 100000000  key XXXXXXX-XXXXXXX
     #
     apm_access_sessions :              100000000
     apm_sessions :                     500
     apm_urlf_limited_sessions :        100000000
     #
-    #       License Tokens for Module Advanced Web Application Firewall, r10XXX key E135699-1129899
+    #       License Tokens for Module Advanced Web Application Firewall, r10XXX key XXXXXXX-XXXXXXX
     #
     waf_gc :                           enabled
     mod_waf :                          enabled
