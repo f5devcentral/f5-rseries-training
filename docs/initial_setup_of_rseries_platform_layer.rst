@@ -1135,7 +1135,7 @@ Paste in the dossier from your system.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/enter_dossier.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 Next, you'll be prompted to accept the End User License Agreement (EULA). Click on the check box to acknowledge that you have read and agree to the terms in the EULA. Then click Next.
 
@@ -1149,7 +1149,7 @@ A license will be displayed. You can either copy the output, or download the Lic
   :align: center
   :scale: 70%
 
-You'll need to edit the license file to escape any double quotes within the licnese body. In the body of the API call you have to escape any double quotes (inside the license) with slashes ( \ ), as seen below.
+You'll need to edit the license file to escape any double quotes within the license body. In the body of the API call you have to escape any double quotes (inside the license) with slashes ( \ ), as seen below.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/edit_license.png
   :align: center
