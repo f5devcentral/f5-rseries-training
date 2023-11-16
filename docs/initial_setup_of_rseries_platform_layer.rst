@@ -1503,7 +1503,7 @@ You should recieve a success message indicating the License installed successful
 
 To get the current licensing status via API use the following API call. Issue a **GET** to the out-of-band management IP address of the F5OS layer:
 
-    .. code-block:: bash
+.. code-block:: bash
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing
 
