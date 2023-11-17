@@ -2,9 +2,9 @@
 Automating F5OS on rSeries 
 ===========================================
 
-Since F5OS is an API first architecture, everything is automatable at the F5OS layer. There are F5OS API's for every function, and the GUI and CLI are built on top of the API. API reference materials are published on clouddocs.f5.com in addtion to the most common API workflows. In addtion, Terraform providers and Ansible collections are also available for F5OS, and more functionality is being added with each release of those packages.
+Since F5OS is an API first architecture, everything is automatable at the F5OS layer. There are F5OS API's for every function, and the GUI and CLI are built on top of the API. API reference materials are published on clouddocs.f5.com in addtion to the most common API workflows. In addition, Terraform providers and Ansible collections are also available for F5OS, and more functionality is being added with each release of those packages.
 
-If you want to see what API functions are available you can view the API reference documentation for the specific F5OS version you are running. As you can see rSeries / F5OS-A have its own API reference pages, F5OS-C / VELOS have similar pages, and most of the API calls are common expcet for those that are specific to the platform.
+If you want to see what API functions are available you can view the API reference documentation for the specific F5OS version you are running. As you can see, rSeries / F5OS-A have its own API reference pages and F5OS-C / VELOS have similar pages, most of the API calls are common expcept for those that are specific to the platform.
 
 `F5OS-A/F5 rSeries - API <https://clouddocs.f5.com/api/rseries-api/rseries-api-index.html>`_
 
@@ -16,7 +16,7 @@ The API workflows section has an index which maps to all the common API workflow
 
 `F5 rSeries API Workflows <https://clouddocs.f5.com/api/rseries-api/rseries-api-workflows.html>`_
 
-Below is a smaple of some of the workflows available, and there are many more.
+Below is a smaple of some of the workflows available in the link above, and there are many more.
 
 .. image:: images/automating_rseries/image2.png
   :align: center
@@ -99,7 +99,7 @@ You must also add some required headers to any API calls sent to F5OS. It is imp
   :scale: 70%
 
 
-If you would prefer to automate the setup of the rSeries appliance, there are API calls for all the examples above. To set the DNS configuration (servers and search domains) for the appliance, use the following API call. For any API calls to the rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
+Below is an example of using the API. To set the DNS configuration (servers and search domains) for the appliance, use the following API call. For any API calls to the rSeries F5OS layer it is important to include the header **Content-Type** **application/yang-data+json** and use port 8888 as seen below:
 
 .. code-block:: bash
 
@@ -167,3 +167,4 @@ Below is the output from the API query above:
           }
       }
   }
+
