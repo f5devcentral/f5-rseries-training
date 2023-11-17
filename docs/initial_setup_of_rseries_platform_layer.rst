@@ -1185,7 +1185,7 @@ In the body of the API call enter the edited license in the proper area. Below i
     #       Warning: Changing the system time while this system is running
     #                with a time-limited license may make the system unusable.
     #
-    Usage :                            Eavluation
+    Usage :                            Evaluation
     #
     #
     #  Only the specific use referenced above is allowed. Any other uses are prohibited.

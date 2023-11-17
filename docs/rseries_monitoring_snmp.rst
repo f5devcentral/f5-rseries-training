@@ -1977,6 +1977,40 @@ Query the following SNMP OID to get detailed fan speeds.
     prompt% 
 
 
+SNMP LLDP Configuration Table
+-----------------------------
+
+Query the following SNMP OID to get detailed LLDP configuration table.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-LLDP-MIB:lldpIfConfigTable 
+    SNMP table: F5-OS-LLDP-MIB::lldpIfConfigTable
+
+    lldpIfName lldpIfEnabled lldpIfTlvAdvertisement lldpIfTlvmap
+            2.0          true                   txrx       130943
+        13.0          true                   txrx       130943
+    prompt% 
+
+
+SNMP LLDP Neighbors Table
+-----------------------------
+
+Query the following SNMP OID to get detailed LLDP neighbors table.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-LLDP-MIB:lldpNeighborsTable
+    SNMP table: F5-OS-LLDP-MIB::lldpNeighborsTable
+
+    lldpLocalInterface lldpNeighborPortId lldpNeighborChassisId    lldpNeighborPortDesc lldpNeighborSysName     lldpNeighborSysDesc lldpNeighborSysCap lldpNeighborMgmtAddr lldpNeighborPvid lldpNeighborPpvid lldpNeighborVlanName lldpNeighborVlanTag lldpNeighborProtocolIdentity lldpNeighborAutoNego lldpNeighborPmd lldpNeighborMau lldpNeighborAggStatus lldpNeighborAggPortid lldpNeighborMfs lldpNeighborF5ProductModel
+                13.0               13.0          f5-wjex-ngkt Jim McCarron's r10900-2  r1900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10600
+                14.0               14.0          f5-wjex-ngkt Jim McCarron's r10900-2  r1900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10600
+                15.0               15.0          f5-wjex-ngkt Jim McCarron's r10900-2  r1900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10600
+                16.0               16.0          f5-wjex-ngkt Jim McCarron's r10900-2  r1900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10600
+    prompt% 
+
+
 
 Troubleshooting SNMP
 ====================
