@@ -1988,9 +1988,14 @@ Query the following SNMP OID to get detailed LLDP configuration table.
     SNMP table: F5-OS-LLDP-MIB::lldpIfConfigTable
 
     lldpIfName lldpIfEnabled lldpIfTlvAdvertisement lldpIfTlvmap
+            1.0          true                   txrx       130943
             2.0          true                   txrx       130943
-        13.0          true                   txrx       130943
-    prompt% 
+            6.0          true                   txrx       130943
+            13.0         true                   txrx       130943
+            14.0         true                   txrx       130943
+            15.0         true                   txrx       130943
+            16.0         true                   txrx       130943
+    prompt%
 
 
 SNMP LLDP Neighbors Table
