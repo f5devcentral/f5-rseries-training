@@ -133,7 +133,7 @@ In the body of the API call, supply the filename for the qkview:
         "f5-system-diagnostics-qkview:filename": "my-qkview4.tgz"
     }
 
-Below is the following output showing successful intiation of the qkview:
+Below is the following output showing successful initiation of the qkview:
 
 .. code-block:: json
 
@@ -193,7 +193,7 @@ In the output of the API call, the upload initiation is confirmed.
 Logging
 =======
 
-F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addtion, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example there is an **snmp.log** which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
+F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addition, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example, there is an **snmp.log** which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
 
 There are published error catalogs for each F5OS-A release here:
 
@@ -335,7 +335,7 @@ Within the bash shell, the actual underlying path for logging is different; it i
 Viewing Logs from the webUI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
@@ -1039,11 +1039,11 @@ This will display all events (not just the active ones) from the beginning in th
 
 
 
-Logging Subsystems/ Software Componenent Levels
+Logging Subsystems/ Software Component Levels
 -----------------------------------------------
 
 
-Changing the Software Componenet Log Levels via CLI
+Changing the Software Component Log Levels via CLI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take effect. Be sure to set logging levels back to normal after troubleshooting has completed.
@@ -1080,7 +1080,7 @@ If you would like to change any of the logging levels via the CLI you must be in
     appliance-1(config-sw-component-lacpd)# 
 
 
-Changing the Software Componenet Log Levels via webUI
+Changing the Software Component Log Levels via webUI
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbose information going to the remote logging host, you can raise its severity to see additional messages.
