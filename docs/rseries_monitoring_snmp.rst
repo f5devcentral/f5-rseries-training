@@ -519,6 +519,7 @@ To configure a Security Group for both SNMPv1 and SNMPv2c.
 
 Configuring SNMP Access via API
 -------------------------------
+
 SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either a community for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
 
 To create an SNMPv3 user use the following API call.
@@ -590,6 +591,105 @@ The output should appear similar to the example below.
 
 .. code-block:: json
 
+    {
+        "f5-system-snmp:snmp": {
+            "users": {
+                "user": [
+                    {
+                        "name": "jim",
+                        "config": {
+                            "name": "jim",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        },
+                        "state": {
+                            "name": "jim",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        }
+                    },
+                    {
+                        "name": "snmpv3-user3",
+                        "config": {
+                            "name": "snmpv3-user3",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        },
+                        "state": {
+                            "name": "snmpv3-user3",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        }
+                    },
+                    {
+                        "name": "snmpv3user",
+                        "config": {
+                            "name": "snmpv3user",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        },
+                        "state": {
+                            "name": "snmpv3user",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        }
+                    }
+                ]
+            },
+            "communities": {
+                "community": [
+                    {
+                        "name": "public",
+                        "config": {
+                            "name": "public",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        },
+                        "state": {
+                            "name": "public",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "public2",
+                        "config": {
+                            "name": "public2",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        },
+                        "state": {
+                            "name": "public2",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "engine-id": {
+                "config": {
+                    "value": "mac"
+                },
+                "state": {
+                    "engine-id": "80:00:2f:f4:03:00:94:a1:69:59:02",
+                    "type": "mac"
+                }
+            },
+            "config": {
+                "port": 161
+            },
+            "state": {
+                "port": 161
+            }
+        }
 
 
 Configuring SNMP Access via webUI
