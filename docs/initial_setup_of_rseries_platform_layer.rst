@@ -1048,16 +1048,16 @@ The CLI command **show system licensing** will display the appliance level licen
   Boston-r10900-1# show system licensing 
   system licensing license 
                          Licensed version    1.0.0
-                         Registration Key    I5251-44764-04805-81212-8207880
+                         Registration Key    XXXXX-XXXXX-XXXXX-XXXXX-XXXXXXX
                          Licensed date       2022/01/01
                          License start       2021/09/27
                          License end         2022/02/12
                          Service check date  2022/01/13
                          Platform ID         C129
-                         Appliance SN        f5-zcxz-qxpq
+                         Appliance SN        f5-xxxx-xxxx
                          
                          Active Modules
-                          Local Traffic Manager, r5900 (P167390-1282512)
+                          Local Traffic Manager, r5900 (XXXXXXX-XXXXXXX)
                            Rate Shaping
                            Anti-Virus Checks
                            Base Endpoint Security Checks
@@ -1076,13 +1076,13 @@ The CLI command **show system licensing** will display the appliance level licen
 
 **Note: rSeries supports AWAF versus ASM licensing, and modules like AAM are not supported on the rSeries platform since it has reached End-of-Life.**
 
-https://support.f5.com/csp/article/K70113407
+`K70113407: End of Software Development for BIG-IP AAM <https://support.f5.com/csp/article/K70113407>`_
 
 
 Manual Licensing via API
 ========================
 
-Sometimes a manual licensing operation may need to be performed. This is common in environments where the rSeries appliance doesn't have access to the Internet to reach the licensing server. In this case, you may perform a manual licensing operation via the API. First, obtain the **Base Registration Key** that is tied to your system. Below is an example for a temporary evaluation license but the process would be similar for a production license. In the example below, the actual Registration Key has been obsfucated with XXXX's.
+Sometimes a manual licensing operation may need to be performed. This is common in environments where the rSeries appliance doesn't have access to the Internet to reach the licensing server. In this case, you may perform a manual licensing operation via the API. First, obtain the **Base Registration Key** that is tied to your system. Below is an example for a temporary evaluation license but the process would be similar for a production license. In the example below, the actual Registration Key has been obfuscated with XXXX's.
 
 
 
@@ -1105,7 +1105,7 @@ Then send the Base Reg Key in the body of the get-dossier API call below:
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:get-dossier
 
-Within the body of API call, enter your registation-key. Note, in the example below the actual Registration Key has been obsfucated with XXXX's.
+Within the body of API call, enter your registation-key. Note, in the example below the actual Registration Key has been obfuscated with XXXX's.
 
 
 .. code-block:: json
@@ -1115,7 +1115,7 @@ Within the body of API call, enter your registation-key. Note, in the example be
     }
 
 
-If the API call is successful, then the output will give you a system-dossier as seen below.  Note, in the example below the actual system-dossier has been obsfucated with random characters. You'll need to copy and save the dossier, as you'll need to input it into F5's licensing server, to get the license for your system.
+If the API call is successful, then the output will give you a system-dossier as seen below.  Note, in the example below the actual system-dossier has been obfuscated with random characters. You'll need to copy and save the dossier, as you'll need to input it into F5's licensing server, to get the license for your system.
 
 .. code-block:: json
 
@@ -1143,7 +1143,7 @@ Next, you'll be prompted to accept the End User License Agreement (EULA). Click 
   :align: center
   :scale: 70%
 
-A license will be displayed. You can either copy the output, or download the License File. It is recommended you download the file if possible.
+A license will be displayed. You can either copy the output or download the License File. It is recommended you download the file if possible.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/download_license.png
   :align: center
@@ -1162,7 +1162,7 @@ Send the following API call to install the new license:
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:manual-install
 
 
-In the body of the API call enter the edited license in the proper area. Below is the full body with the escaped double quotes in the license. Note the file has been obsfucated from its original:
+In the body of the API call enter the edited license in the proper area. Below is the full body with the escaped double quotes in the license. Note the file has been obfuscated from its original:
 
 .. code-block:: json
 
@@ -1490,7 +1490,7 @@ In the body of the API call add your Base Registration Key:
         ]
     }
 
-You should recieve a success message indicating the License installed successfully.
+You should receive a success message indicating the License installed successfully.
 
 .. code-block:: json
 
@@ -1697,7 +1697,7 @@ Licenses can be applied via CLI, webUI, or API. A base registration key and opti
 General
 =======
 
-The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access is disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also configure the **Hostname** of the system and configure a Message of the Day (**MOTD**) which is displayed on login. 
+The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also configure the **Hostname** of the system and configure a Message of the Day (**MOTD**) which is displayed on login. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image31.png
   :align: center

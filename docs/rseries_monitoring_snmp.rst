@@ -519,7 +519,7 @@ To configure a Security Group for both SNMPv1 and SNMPv2c.
 
 Configuring SNMP Access via API
 -------------------------------
-SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either communities for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
+SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either a community for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
 
 To create an SNMPv3 user use the following API call.
 
@@ -1521,7 +1521,7 @@ Polling SNMP Endpoints
 =====================
 
 
-Once SNMP is properly setup and allow-lists are enabled you can poll SNMP objects from remote endpoints. If you have an SNMP manager it is recommended you download the appropriate MIBs from the rSeries appliance and compile them into you SNMP manager. Alternatively, you can use SNMP command line utilities from a remote client to validate the SNMP endpoints. You can then poll/query the appliance via SNMP to get stats from the system using the following SNMP OID’s:
+Once SNMP is properly setup and allow-lists are enabled you can poll SNMP objects from remote endpoints. If you have an SNMP manager, it is recommended you download the appropriate MIBs from the rSeries appliance and compile them into you SNMP manager. Alternatively, you can use SNMP command line utilities from a remote client to validate the SNMP endpoints. You can then poll/query the appliance via SNMP to get stats from the system using the following SNMP OID’s:
 
 SNMP System
 -----------
@@ -1910,7 +1910,7 @@ This MIB displays the memory utilization for the system.
 SNMP FPGA Table
 ---------------
 
-The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Servcie Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
+The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Service Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
 
 **F5-PLATFORM-STATS-MIB:fpgaTable OID: .1.3.6.1.4.1.12276.1.2.1.5.1**
 
@@ -2022,7 +2022,7 @@ Troubleshooting SNMP
 
 There are SNMP logs within each appliance. SNMP information is captured in the **snmp.log** file located with the **/log/system** directory in the F5OS layer:
 
-**Note: The CLI and webUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
+**Note: The CLI and webUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller SNMP logs is **/var/F5/system/log/snmp.log**
 
 To list the files in the **log/system** directory in the CLI use the **file list path log/system** command:
 
