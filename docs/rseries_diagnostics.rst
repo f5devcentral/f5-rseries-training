@@ -1485,6 +1485,8 @@ If you need to change the logging level to troubleshoot an issue, you can change
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/logging
 
+In the body of the API call, enter the sw-component you want to change, and the severity level you'd like to set.
+
 .. code-block:: json
 
 
