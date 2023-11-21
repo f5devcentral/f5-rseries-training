@@ -57,7 +57,8 @@ Determining Free Space
 F5OS Configuration Backups
 --------------------------
 
-Backups of the F5OS configuration are stored in the path **/var/F5/system/configs/**. 
+Backups of the F5OS configuration are stored in the path **/var/F5/system/configs/** within the underlying linux filesytem. If using the F5OS CLI, API, or webUI then these paths are simplified to the simplified path of **configs**. Below is a view of the **/var/F5/system/configs/** path within the bash shell.
+
 
 .. code-block:: bash
 
@@ -65,6 +66,29 @@ Backups of the F5OS configuration are stored in the path **/var/F5/system/config
   [root@appliance-1(r10900.f5demo.net) configs]# ls
   backup1  F5OS-BACKUP2022-01-20  F5OS-BACKUP-APPLIANCE12022-04-19  jim-backup  jim-backup.db  jim-july  kfo-bkp  kfo-bkup  new-backup
 
+In the F5OS CLI it appears as the simplified **configs** for file import/export commands. The same virtual path will be shown in the other F5OS user interfaces (API/webUI).
+
+.. code-block:: bash
+
+  r10900-1# file export local-file 
+  Possible completions:
+    configs/  diags/  images/  log/  mibs/  tenant/spec/
+  r10900-1# file export local-file configs/
+  Possible completions: (first 100):
+    F5OS-BACKUP-APPLIANCE12022-04-19          F5OS-BACKUP-APPLIANCE12023-01-09          F5OS-BACKUP-APPLIANCE12023-11-17          F5OS-BACKUP2022-01-20                     GSA-Daily_GSA-rSeries-1_20230329070500          GSA-Daily_GSA-rSeries-1_20230330070500    GSA-Daily_GSA-rSeries-1_20230331070500    GSA-Daily_GSA-rSeries-1_20230402070500    
+    GSA-Daily_GSA-rSeries-1_20230403070500    GSA-Daily_GSA-rSeries-1_20230404070500    GSA-Daily_GSA-rSeries-1_20230405070500    GSA-Daily_GSA-rSeries-1_20230406070500    Initial_backup_gsa_GSA-r10900-1_20230410084408  Nightly_F5OS_GSA-r10900-1_20230410210100  Nightly_F5OS_GSA-r10900-1_20230411210100  Nightly_F5OS_GSA-r10900-1_20230412210100  
+    Nightly_F5OS_GSA-r10900-1_20230413210100  Nightly_F5OS_GSA-r10900-1_20230414210100  Nightly_F5OS_GSA-r10900-1_20230415210100  Nightly_F5OS_GSA-r10900-1_20230416210100  Nightly_F5OS_GSA-r10900-1_20230417210100        Nightly_F5OS_GSA-r10900-1_20230418210100  Nightly_F5OS_GSA-r10900-1_20230419210100  Nightly_F5OS_GSA-r10900-1_20230420210100  
+    Nightly_F5OS_GSA-r10900-1_20230421210100  Nightly_F5OS_GSA-r10900-1_20230422210100  Nightly_F5OS_GSA-r10900-1_20230423210100  Nightly_F5OS_GSA-r10900-1_20230424210100  Nightly_F5OS_GSA-r10900-1_20230425210100        Nightly_F5OS_GSA-r10900-1_20230426210100  Nightly_F5OS_GSA-r10900-1_20230427210100  Nightly_F5OS_GSA-r10900-1_20230428210100  
+    Nightly_F5OS_GSA-r10900-1_20230429210100  Nightly_F5OS_GSA-r10900-1_20230430210100  Nightly_F5OS_GSA-r10900-1_20230501210100  Nightly_F5OS_GSA-r10900-1_20230502210100  Nightly_F5OS_GSA-r10900-1_20230503210100        Nightly_F5OS_GSA-r10900-1_20230504210100  Nightly_F5OS_GSA-r10900-1_20230505210100  Nightly_F5OS_GSA-r10900-1_20230506210100  
+    Nightly_F5OS_GSA-r10900-1_20230507210100  Nightly_F5OS_GSA-r10900-1_20230508210100  Nightly_F5OS_GSA-r10900-1_20230509210100  Nightly_F5OS_GSA-r10900-1_20230510210100  Nightly_F5OS_GSA-r10900-1_20230515210100        Nightly_F5OS_GSA-r10900-1_20230516210100  Nightly_F5OS_GSA-r10900-1_20230517210100  Nightly_F5OS_GSA-r10900-1_20230518210100  
+    Nightly_F5OS_GSA-r10900-1_20230519210100  Nightly_F5OS_GSA-r10900-1_20230520210100  Nightly_F5OS_GSA-r10900-1_20230521210100  Nightly_F5OS_GSA-r10900-1_20230522210100  Nightly_F5OS_GSA-r10900-1_20230523210100        Nightly_F5OS_GSA-r10900-1_20230524210100  Nightly_F5OS_GSA-r10900-1_20230525210100  Nightly_F5OS_GSA-r10900-1_20230526210100  
+    Nightly_F5OS_GSA-r10900-1_20230527210100  Nightly_F5OS_GSA-r10900-1_20230528210100  Nightly_F5OS_GSA-r10900-1_20230529210100  Nightly_F5OS_GSA-r10900-1_20230530210100  Nightly_F5OS_GSA-r10900-1_20230531210100        Nightly_F5OS_GSA-r10900-1_20230601210100  Nightly_F5OS_GSA-r10900-1_20230602210100  Nightly_F5OS_GSA-r10900-1_20230603210100  
+    Nightly_F5OS_GSA-r10900-1_20230604210100  Nightly_F5OS_GSA-r10900-1_20230605210100  Nightly_F5OS_GSA-r10900-1_20230606210100  Nightly_F5OS_GSA-r10900-1_20230607210100  Nightly_F5OS_GSA-r10900-1_20230608210100        Nightly_F5OS_GSA-r10900-1_20230609210100  Nightly_F5OS_GSA-r10900-1_20230610210100  Nightly_F5OS_GSA-r10900-1_20230611210100  
+    Nightly_F5OS_GSA-r10900-1_20230612210100  Nightly_F5OS_GSA-r10900-1_20230613210100  Nightly_F5OS_GSA-r10900-1_20230614210100  Nightly_F5OS_GSA-r10900-1_20230615210100  Nightly_F5OS_GSA-r10900-1_20230616210100        Nightly_F5OS_GSA-r10900-1_20230617210100  Nightly_F5OS_GSA-r10900-1_20230618210100  Nightly_F5OS_GSA-r10900-1_20230619210100  
+    Nightly_F5OS_GSA-r10900-1_20230620210100  Nightly_F5OS_GSA-r10900-1_20230621210100  Nightly_F5OS_GSA-r10900-1_20230622210100  Nightly_F5OS_GSA-r10900-1_20230623210100  Nightly_F5OS_GSA-r10900-1_20230624210100        Nightly_F5OS_GSA-r10900-1_20230625210100  Nightly_F5OS_GSA-r10900-1_20230626210100  Nightly_F5OS_GSA-r10900-1_20230627210100  
+    Nightly_F5OS_GSA-r10900-1_20230628210100  backup1                                   dave/                                     jim-backup                                jim-backup.db                                   jim-july                                  jim-test1                                 jim2                                      
+    kfo-bkp                                   kfo-bkup                                  new-backup                                rseriesjim_GSArSeries1_20230227054500     
+  r10900-1#
 
 F5OS Images
 -----------
@@ -187,6 +211,14 @@ F5OS Diag Files
 ---------------
 
 tcpdump , core files, qkviews etc...
+
+
+F5OS System Services
+====================
+
+The rSeries system services perform a variety of functions, such as configuring and controlling switch chips, managing partitions and tenants, and performing high availability (HA) failover actions between system controllers.
+
+`K000134978: Overview of F5 rSeries system services <https://my.f5.com/manage/s/article/K000134978>`_ 
 
 
 
