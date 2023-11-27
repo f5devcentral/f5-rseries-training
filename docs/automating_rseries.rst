@@ -311,7 +311,7 @@ You may send API calls to either port 8888 or port 443. The URI path will change
 
 .. code-block:: bash
 
-    prompt% curl -i -sku admin:Acopia1Acopia! -H "Content-Type: application/yang-data+json"  https://10.255.2.40:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp 
+    prompt% curl -i -sku admin:password -H "Content-Type: application/yang-data+json"  https://10.255.2.40:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp 
     HTTP/1.1 200 OK
     Date: Fri, 17 Nov 2023 20:26:46 GMT
     Server: Apache
