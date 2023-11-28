@@ -27,3 +27,4 @@ Planning for rSeries Guide
    rseries_monitoring_snmp.rst
    automating_rseries.rst
    migration_to_rseries.rst
+   rseries_references.rst
