@@ -348,6 +348,23 @@ If you want to download the main **platform.log**, select the directory **/log/s
   :align: center
   :scale: 70%
 
+Downloading Logs from the API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can download various logs from the F5OS layer using the F5OS API. 
+
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below:
+
+.. image:: images/rseries_diagnostics/platformlog.png
+  :align: center
+  :scale: 70%
+
+
 
 Viewing Logs from the API
 ^^^^^^^^^^^^^^^^^^^^^^^^^
