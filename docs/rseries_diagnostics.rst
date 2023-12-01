@@ -351,9 +351,7 @@ If you want to download the main **platform.log**, select the directory **/log/s
 Downloading Logs from the API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-You can download various logs from the F5OS layer using the F5OS API. 
-
-To list the current log files in the **log/system/** directory use the following API call.
+You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory use the following API call.
 
 .. code-block:: bash
 
@@ -362,7 +360,7 @@ To list the current log files in the **log/system/** directory use the following
 In the body of the API call, add the virtual path you want to list.
 
  .. code-block:: json
-
+ 
     {
     "f5-utils-file-transfer:path": "log/system/"
     }
