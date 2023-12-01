@@ -358,13 +358,24 @@ You can download various logs from the F5OS layer using the F5OS API.
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
-In the body of the API call select **form-data**, and then enter the key/value pairs as seen below:
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **platform.log** file that resides in the **log/system** directory.
 
 .. image:: images/rseries_diagnostics/platformlog.png
   :align: center
   :scale: 70%
 
 
+If you are using Postman instead of clicking **Send**, click on the arrow next to Send, and tehn select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_diagnostics/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+If you wanted to download another log file in the same directory such as the **audit.log** file, simply change the file name in the **form-data** section as seen below.
+
+.. image:: images/rseries_diagnostics/auditlog.png
+  :align: center
+  :scale: 70%
 
 Viewing Logs from the API
 ^^^^^^^^^^^^^^^^^^^^^^^^^
