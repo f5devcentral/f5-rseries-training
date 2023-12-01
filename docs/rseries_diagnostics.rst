@@ -366,6 +366,7 @@ In the body of the API call, add the virtual path you want to list.
     {
     "f5-utils-file-transfer:path": "log/system/"
     }
+
 To download a specific log file use the following API call.
 
 .. code-block:: bash
@@ -378,7 +379,7 @@ In the body of the API call select **form-data**, and then enter the key/value p
   :align: center
   :scale: 70%
 
-If you are using Postman instead of clicking **Send**, click on the arrow next to Send, and tehn select **Send and Download**. You will then be prompted to save the file to your local file system.
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
 
 .. image:: images/rseries_diagnostics/sendanddownload.png
   :align: center
