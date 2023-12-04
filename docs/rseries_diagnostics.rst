@@ -116,8 +116,8 @@ To upload the qkview file to iHealth using the CLI use the following command: **
     appliance-1# 
 
 
-qkview Creation and Upload via API
-----------------------------------
+qkview Creation and Upload to iHealth via API
+---------------------------------------------
 
 To generate a qkview from the API, POST the following API call to the F5OS out-of-band management IP.
 
@@ -189,6 +189,63 @@ In the output of the API call, the upload initiation is confirmed.
         }
     }
 
+qkview Download to Client via API
+--------------------------------
+
+You can download qkviews direct to a client machine using the F5OS API. First list the contents of the path **diags/shared/qkview** to see the save akview files:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call add the follwoing path:
+
+.. code-block:: json
+
+    {
+    "f5-utils-file-transfer:path": "diags/shared/qkview"
+    }
+
+The output should look similar to the output below.
+
+.. code-block:: json
+
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "my-qkview.tar",
+                    "date": "",
+                    "size": "525MB"
+                },
+                {
+                    "name": "my-qkview4.tgz",
+                    "date": "",
+                    "size": "590MB"
+                }
+            ]
+        }
+    }
+
+To copy one of the qkview files to the local client machine enter the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+
+If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
+
+.. image:: images/rseries_diagnostics/qkviewdownloadapi.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_diagnostics/sendanddownload.png
+  :align: center
+  :scale: 70%
 
 Logging
 =======
