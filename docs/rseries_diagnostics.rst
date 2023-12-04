@@ -1787,7 +1787,7 @@ To copy one of the tcpdump files to the local client machine enter the following
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
 
-If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
+If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below. Note, that the path for downloading is currently **diags/shared** and not the full path of **diags/shared/tcpdump**. This may change in a future release.
 
 .. image:: images/rseries_diagnostics/downloadtcpdumpapi.png
   :align: center
