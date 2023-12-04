@@ -1731,6 +1731,76 @@ At the prompt, to transfer the file, enter the password for the remote host. To 
 
     3    |Export file|SCP     |diags/shared/example_capture.pcap                         |10.10.10.100       |/tmp/example_capture.pcap                          |         Completed|
 
+TCPDUMP Download to Client via API
+--------------------------------
+
+You can download tcpdump files direct to a client machine using the F5OS API. First list the contents of the path **diags/shared/tcpdump** to see the save qkview files:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call add the follwowing path:
+
+.. code-block:: json
+
+    {
+    "f5-utils-file-transfer:path": "diags/shared/tcpdump"
+    }
+
+The output should look similar to the output below.
+
+.. code-block:: json
+
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "132.pcap",
+                    "date": "",
+                    "size": "574KB"
+                },
+                {
+                    "name": "132_28.pcap",
+                    "date": "",
+                    "size": "442KB"
+                },
+                {
+                    "name": "jimtcpdump.pcap",
+                    "date": "",
+                    "size": "4.3KB"
+                },
+                {
+                    "name": "test.pcap",
+                    "date": "",
+                    "size": "23KB"
+                }
+            ]
+        }
+    }
+
+To copy one of the tcpdump files to the local client machine enter the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+
+If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
+
+.. image:: images/rseries_diagnostics/downloadtcpdumpapi.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_diagnostics/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+
+
 Console Access via Built-In Terminal Server
 ==============================================
 
