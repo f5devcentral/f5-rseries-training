@@ -389,7 +389,7 @@ If you wanted to download another log file in the same directory such as the **a
   :align: center
   :scale: 70%
 
-Viewing Logs from the API
+Viewing Event Logs from the API
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the system currently has any active alarms, you can view them via the following API call:
