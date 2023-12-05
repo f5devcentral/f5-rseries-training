@@ -268,6 +268,52 @@ In the body of the API call, add the virtual path you want to list.
     "f5-utils-file-transfer:path": "configs/"
     }
 
+You should see output similar to the example below.
+
+ .. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12022-04-19",
+                    "date": "Tue Apr 19 15:19:07 UTC 2022",
+                    "size": "81KB"
+                },
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12023-01-09",
+                    "date": "Mon Jan  9 16:31:10 UTC 2023",
+                    "size": "80KB"
+                },
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12023-11-17",
+                    "date": "Fri Nov 17 18:49:45 UTC 2023",
+                    "size": "88KB"
+                },
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12023-11-28",
+                    "date": "Wed Nov 29 00:21:07 UTC 2023",
+                    "size": "77KB"
+                },
+                {
+                    "name": "F5OS-BACKUP2022-01-20",
+                    "date": "Thu Jan 20 05:09:39 UTC 2022",
+                    "size": "60KB"
+                },
+                {
+                    "name": "jim-july",
+                    "date": "Wed Jul 13 15:35:15 UTC 2022",
+                    "size": "78KB"
+                },
+                {
+                    "name": "jim-test1",
+                    "date": "Wed Nov  8 21:09:09 UTC 2023",
+                    "size": "77KB"
+                }
+            ]
+        }
+    }
+
 To download a specific config file use the following API call.
 
 .. code-block:: bash
@@ -477,6 +523,8 @@ The body of the API call contains the following:
         ]
     }
 
+Importing an F5OS Backup from a Remote Server
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You'll need to use the new password/token on subsequent API calls. Post the following API call to the F5OS out-of-band IP address to import the archived ConfD backup file from a remote HTTPS server to the configs directory on the appliance.
 
@@ -502,15 +550,36 @@ You may query the transfer status of the file via the following API command:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
 The body of the API call should have the file name you want to query:
 
 .. code-block:: json
 
     {
-        "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE4{{currentdate}}"
+        "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
+
+Uploading an F5OS Backup from a Client Machine
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can upload an F5OS backup file directly from a client machine using the API. Use the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload
+
+In the body of the API call, you must enter the **size**, **name**, and **file-path** as seen in the example below.
+
+.. code-block:: json
+
+    {
+        "size":66000,
+        "name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}",
+        "file-path": "configs/"
+    }
+
+
 
 If you want to list the contents of the config directory via API, use the following API command:
 
