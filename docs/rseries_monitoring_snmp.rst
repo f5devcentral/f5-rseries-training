@@ -2207,6 +2207,41 @@ SNMP information (requests/traps) are captured in the **snmp.log** file located 
     <INFO> 12-Apr-2022::16:18:02.471 appliance-1 confd[104]: snmp snmpv2-trap reqid=1799379632 10.255.0.144:6011 (TimeTicks sysUpTime=86087995)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554456)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=2)
     appliance-1# 
 
+Downloading SNMP Logs from the API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call, add the virtual path you want to list.
+
+ .. code-block:: json
+ 
+    {
+    "f5-utils-file-transfer:path": "log/system/"
+    }
+
+To download a specific log file use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **snmp.log** file that resides in the **log/system** directory.
+
+.. image:: images/rseries_monitoriing_snmp/snmplogdownload.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_monitoriing_snmp/sendanddownload.png
+  :align: center
+  :scale: 70%
+
 
 
 
