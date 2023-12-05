@@ -2208,7 +2208,7 @@ SNMP information (requests/traps) are captured in the **snmp.log** file located 
     appliance-1# 
 
 Downloading SNMP Logs from the API
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------
 
 You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory use the following API call.
 
