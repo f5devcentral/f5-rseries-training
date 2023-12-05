@@ -395,7 +395,11 @@ In the body of the API call select **form-data**, and then in the **Value** sect
   :align: center
   :scale: 70%
 
+In the **Headers** section ensure you add the **file-upload-id** header, with the variable used to capture the id in the previous API call.
 
+.. image:: images/rseries_software_upgrades/file-upload-tenant-headers-f5os.png
+  :align: center
+  :scale: 70%
 
 Upgrading F5OS
 ==============
@@ -673,7 +677,7 @@ Below is output generated from the previous command:
     }
 
 
-Uploading F5OS-A Images from a Client Machine via the API
+Uploading Tenant Images from a Client Machine via the API
 ---------------------------------------------------------
 
 You can upload an F5OS tenant image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
@@ -693,20 +697,20 @@ In the body of the API call enter the **size**, **name**, and **file-path** as s
         "file-path": "images/tenant/"
     }
 
-If you are using Postman the API call above will generate an upload-id that will need to be captured so it can be used in the API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the upload-id can be captured and saved to a variable for subsequent API calls.
+If you are using Postman, the API call above will generate an upload-id that will need to be captured so it can be used in the API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the **upload-id** can be captured and saved to a variable called **upload-id** for subsequent API calls.
 
 .. code-block:: bash
 
     var resp = pm.response.json();
     pm.environment.set("upload-id", resp["f5-file-upload-meta-data:output"]["upload-id"])
 
-Below is an example of how this would appear inside the Postman interface.
+Below is an example of how this would appear inside the Postman interface under the **Tests** section.
 
 .. image:: images/rseries_software_upgrades/upload-id.png
   :align: center
   :scale: 70%
 
-Once the upload-id is captured, you can then initiate a file upload of the F5OS image using the following API call.
+Once the upload-id is captured, you can then initiate a file upload of the F5OS TENANT_NAME image using the following API call.
 
 .. code-block:: bash
 
