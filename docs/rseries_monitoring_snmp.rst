@@ -2232,13 +2232,13 @@ To download a specific log file use the following API call.
 
 In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **snmp.log** file that resides in the **log/system** directory.
 
-.. image:: images/rseries_monitoriing_snmp/snmplogdownload.png
+.. image:: images/rseries_monitoring_snmp/snmplogdownload.png
   :align: center
   :scale: 70%
 
 If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
 
-.. image:: images/rseries_monitoriing_snmp/sendanddownload.png
+.. image:: images/rseries_monitoring_snmp/sendanddownload.png
   :align: center
   :scale: 70%
 
