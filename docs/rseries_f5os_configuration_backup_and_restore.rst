@@ -251,6 +251,42 @@ You can then check on the status of the export via the following API call:
         }
     }
 
+Downloading an F5OS Backup via API
+----------------------------------
+
+You can download configuration backup files from the F5OS layer using the F5OS API. To list the current config files in the **configs/** directory use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call, add the virtual path you want to list.
+
+ .. code-block:: json
+ 
+    {
+    "f5-utils-file-transfer:path": "configs/"
+    }
+
+To download a specific config file use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the configuration file named **jim-july** file that resides in the **configs/** directory.
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/configfile.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+
 
 Backing up Tenants
 ==================
