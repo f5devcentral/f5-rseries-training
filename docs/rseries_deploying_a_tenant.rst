@@ -132,6 +132,180 @@ You can view the current tenant images and their status in the F5OS CLI by using
     Boston-r10900-1# 
 
 
+
+
+
+
+
+Loading Tenant Images for New Tenants via webUI
+===============================================
+
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
+
+There is an option to **Import** new releases which will open a pop-up window that will ask for remote host, path, and optional authentication parameters. You may only upload from a remote HTTPS server using this option.  The **Tenant Images** page will also indicate if an image is in use by a tenant, and if the image has been verified. 
+
+.. image:: images/rseries_software_upgrades/image9.png
+  :align: center
+  :scale: 70%
+
+
+.. image:: images/rseries_software_upgrades/image10.png
+  :align: center
+  :scale: 70%
+
+There is also an option to **Upload** a tenant release; this will allow you to upload an image directly from your client machine through the browser.
+
+If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using SCP directly to the appliance. Simply SCP an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
+
+.. code-block:: bash
+
+    scp BIGIP-15.1.5-0.0.8.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
+
+
+Loading Tenant Images from a Remote Server via API
+==================================================
+
+To copy a tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address. The example below copies a tenant image from a remote HTTPS server. You may also edit the API call to copy from remote SFTP or SCP servers by adding the proper **protocol** option.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
+
+.. code-block:: json
+
+    {
+        "input": [
+            {
+                "remote-host": "10.255.0.142",
+                "remote-file": "upload/{{Appliance_Tenant_Image}}",
+                "local-file": "images/tenant/{{Appliance_Tenant_Image}}",
+                "insecure": "",
+                "f5-utils-file-transfer:username": "corpuser",
+                "f5-utils-file-transfer:password": "Pa$$w0rd"
+            }
+        ]
+    }
+
+To list the current tenant images available on the appliance, use the following API Call:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenant-images:images
+
+Below is output generated from the previous command:
+
+.. code-block:: json
+
+    {
+        "f5-tenant-images:images": {
+            "image": [
+                {
+                    "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": true,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "F5OS-A-1.0.0-11432.R5R10.iso",
+                    "in-use": false,
+                    "status": "verification-failed"
+                }
+            ]
+        }
+    }
+
+
+Uploading Tenant Images from a Client Machine via the API
+=========================================================
+
+You can upload an F5OS tenant image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
+
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload
+
+In the body of the API call enter the **size**, **name**, and **file-path** as seen in the example below.
+
+.. code-block:: json
+
+    {
+        "size":2239554028,
+        "name": "BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle",
+        "file-path": "images/tenant/"
+    }
+
+If you are using Postman, the API call above will generate an upload-id that will need to be captured so it can be used in the API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the **upload-id** can be captured and saved to a variable called **upload-id** for subsequent API calls.
+
+.. code-block:: bash
+
+    var resp = pm.response.json();
+    pm.environment.set("upload-id", resp["f5-file-upload-meta-data:output"]["upload-id"])
+
+Below is an example of how this would appear inside the Postman interface under the **Tests** section.
+
+.. image:: images/rseries_software_upgrades/upload-id.png
+  :align: center
+  :scale: 70%
+
+Once the upload-id is captured, you can then initiate a file upload of the F5OS TENANT_NAME image using the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-image-upload:image/upload-image
+
+In the body of the API call select **form-data**, and then in the **Value** section click **Select Files** and select the F5OS tenant image you want to upload as seen in the example below.
+
+.. image:: images/rseries_software_upgrades/file-upload-tenant-body.png
+  :align: center
+  :scale: 70%
+
+In the **Headers** section ensure you add the **file-upload-id** header, with the variable used to capture the id in the previous API call.
+
+.. image:: images/rseries_software_upgrades/file-upload-tenant-headers.png
+  :align: center
+  :scale: 70%
+
+
 Creating a Tenant via CLI
 =========================
 

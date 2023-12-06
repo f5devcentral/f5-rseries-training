@@ -22,7 +22,9 @@ Initial Setup of rSeries F5OS Platform Layer
 
 `Configure System Settings via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#system-settings-via-the-api>`_
 
-`Configure Licensing via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#licensing-via-api>`_
+`Manual Licensing via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#manual-licensing-via-api>`_
+
+`Automatic Licensing via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#automatic-licensing-via-api>`_
 
 Initial Setup of the rSeries Network Layer
 ------------------------------------------
