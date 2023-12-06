@@ -192,13 +192,13 @@ In the output of the API call, the upload initiation is confirmed.
 qkview Download to Client via API
 --------------------------------
 
-You can download qkviews direct to a client machine using the F5OS API. First list the contents of the path **diags/shared/qkview** to see the save qkview files:
+You can download qkviews direct to a client machine using the F5OS API. First, list the contents of the path **diags/shared/qkview** to see the save qkview files:
 
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
-In the body of the API call add the follwowing path:
+In the body of the API call, add the following path:
 
 .. code-block:: json
 
@@ -228,7 +228,7 @@ The output should look similar to the output below.
         }
     }
 
-To copy one of the qkview files to the local client machine enter the following API call.
+To download one of the qkview files to the local client machine enter the following API call.
 
 .. code-block:: bash
 
@@ -1804,7 +1804,7 @@ For the **Headers** secion of the Postman request be sure to add the following h
 .. image:: images/rseries_diagnostics/headers.png
   :align: center
   :scale: 70%
-  
+
 
 If you are using Postman, in the body of the API call select **Body**, then select **form-data**. Then enter the **file-name**, **path**, and **token** as seen below. Note, that the path for downloading is currently **diags/shared/** and not the full path of **diags/shared/tcpdump/**. This may change in a future release.
 
