@@ -156,6 +156,44 @@ Exporting MIBs to a Remote Server via the API
 ---------------------------------------------
 
 
+To copy the SNMP MIB files from the appliance to a remote https server use the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/export
+
+In the body of the API call, add the remote server info and local file you want to export.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:insecure": "",
+        "f5-utils-file-transfer:protocol": "https",
+        "f5-utils-file-transfer:username": "corpuser",
+        "f5-utils-file-transfer:password": "password",
+        "f5-utils-file-transfer:remote-host": "10.255.0.142",
+        "f5-utils-file-transfer:remote-file": "/upload/upload.php",
+        "f5-utils-file-transfer:local-file": "mibs/mibs/mibs_f5os_appliance.tar.gz"
+    }
+    
+You can then check on the status of the export via the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+
+The output will show the status of the file export.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Export file|HTTPS   |mibs/mibs_f5os_appliance.tar.gz                               |10.255.0.142        |/upload/upload.php                                          |         Completed|Thu Jan 20 05:11:44 2022"
+        }
+    }
+
+Repeat the same steps for the other MIB file.
+
 
 Adding Allowed IPs for SNMP
 ===========================
