@@ -56,12 +56,33 @@ Downloading MIBs via webUI
 Downloading MIBs via CLI
 --------------------------
 
-From the CLI, use the file export command to transfer the MIB files to a remote server.
+From the CLI, use the **file export** command to transfer the MIB files to a remote server. First list the MIB files using the **file list** command as seen below.
 
 .. code-block:: bash
 
+    r10900-1# file list path mibs/
+    entries {
+        name mibs_f5os_appliance.tar.gz
+        date Thu Nov 30 20:52:26 UTC 2023
+        size 9.3KB
+    }
+    entries {
+        name mibs_netsnmp.tar.gz
+        date Thu Nov 30 20:52:26 UTC 2023
+        size 110KB
+    }
+    r10900-1# 
 
+To upload each of the files to a remote HTTPS server use the following command.
 
+.. code-block:: bash
+
+    appliance-1# file export local-file mibs/mibs_f5os_appliance.tar.gz remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(mibs/mibs_f5os_appliance.tar.gz)
+    appliance-1#
+
+Repeat the same API call but change the filename for the **mibs_netsnmp.tar.gz** file.
 
 Downloading MIBs via API
 --------------------------
