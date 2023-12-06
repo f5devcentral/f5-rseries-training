@@ -26,5 +26,6 @@ Planning for rSeries Guide
    monitoring_rseries.rst
    rseries_monitoring_snmp.rst
    automating_rseries.rst
+   rseries_api_workflows.rst
    migration_to_rseries.rst
    rseries_references.rst
