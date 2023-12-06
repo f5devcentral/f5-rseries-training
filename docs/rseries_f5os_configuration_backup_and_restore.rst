@@ -262,7 +262,7 @@ You can download configuration backup files from the F5OS layer using the F5OS A
 
 In the body of the API call, add the virtual path you want to list.
 
- .. code-block:: json
+.. code-block:: json
  
     {
     "f5-utils-file-transfer:path": "configs/"
@@ -270,7 +270,7 @@ In the body of the API call, add the virtual path you want to list.
 
 You should see output like the example below.
 
- .. code-block:: json
+.. code-block:: json
 
     {
         "f5-utils-file-transfer:output": {
