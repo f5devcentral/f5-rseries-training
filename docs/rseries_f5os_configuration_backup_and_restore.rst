@@ -599,7 +599,7 @@ The body of the API call above will list the **configs** directory as the one to
 .. code-block:: json
 
     {
-    "f5-utils-file-transfer:path": "configs"
+    "f5-utils-file-transfer:path": "configs/"
     }
 
 You’ll see the contents of the directory in the API response and the file should be listed:
