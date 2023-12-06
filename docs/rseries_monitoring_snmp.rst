@@ -53,10 +53,10 @@ Downloading MIBs via webUI
   :align: center
   :scale: 70%
 
-Downloading MIBs via CLI
---------------------------
+Uploading MIBs to a Remote Server via CLI
+-----------------------------------------
 
-From the CLI, use the **file export** command to transfer the MIB files to a remote server. First list the MIB files using the **file list** command as seen below.
+From the CLI, use the **file export** command to transfer the MIB files to a remote server. First, list the MIB files using the **file list** command as seen below.
 
 .. code-block:: bash
 
@@ -73,7 +73,7 @@ From the CLI, use the **file export** command to transfer the MIB files to a rem
     }
     r10900-1# 
 
-To upload each of the files to a remote HTTPS server use the following command.
+To upload each of the files to a remote HTTPS server use the following command. You can also upload using SCP or SFTP by using the proper protocol option.
 
 .. code-block:: bash
 
@@ -82,12 +82,12 @@ To upload each of the files to a remote HTTPS server use the following command.
     result File transfer is initiated.(mibs/mibs_f5os_appliance.tar.gz)
     appliance-1#
 
-Repeat the same API call but change the filename for the **mibs_netsnmp.tar.gz** file.
+Repeat the same API call but change the filename to the **mibs_netsnmp.tar.gz** file.
 
 Downloading MIBs via API
 --------------------------
 
-You can utilize the F5OS API to download the MIB files directly to a client machine, or to a remote server over HTTPS, SCP, or SFTP. To list the contents of the **mibs/** directory on the rSeries appliance use the following API call.
+You can utilize the F5OS API to download the MIB files directly to a client machine, or to upload to a remote server over HTTPS, SCP, or SFTP. First, list the contents of the **mibs/** directory on the rSeries appliance using the following API call to get the filenames.
 
 .. code-block:: bash
 
@@ -105,13 +105,30 @@ This will list the contents of the mibs directory as seen below.
 
 .. code-block:: json
 
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "mibs_f5os_appliance.tar.gz",
+                    "date": "Thu Nov 30 20:52:26 UTC 2023",
+                    "size": "9.3KB"
+                },
+                {
+                    "name": "mibs_netsnmp.tar.gz",
+                    "date": "Thu Nov 30 20:52:26 UTC 2023",
+                    "size": "110KB"
+                }
+            ]
+        }
+    }
+
 You'll notice there are two separate MIB files, one is for Enterprise MIBs, while the other is for F5 specific MIBs. You'll need to download both files and add them to your SNMP manager. Below are example API calls to download each of the SNMP MIB files.
 
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
-For the **Headers** secion of the Postman request be sure to add the following headers:
+For the **Headers** secion of the Postman request, be sure to add the following headers:
 
 .. image:: images/rseries_monitoring_snmp/snmpheaders.png
   :align: center
