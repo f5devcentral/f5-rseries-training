@@ -422,7 +422,7 @@ You can download various logs from the F5OS layer using the F5OS API. To list th
 
 In the body of the API call, add the virtual path you want to list.
 
- .. code-block:: json
+.. code-block:: json
  
     {
     "f5-utils-file-transfer:path": "log/system/"
