@@ -235,6 +235,12 @@ To copy one of the qkview files to the local client machine enter the following 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
 
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_diagnostics/headers.png
+  :align: center
+  :scale: 70%
+
 If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
 
 .. image:: images/rseries_diagnostics/downloadqkviewapi.png
@@ -250,7 +256,7 @@ If you are using Postman, instead of clicking **Send**, click on the arrow next 
 Logging
 =======
 
-F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be be sent to a remote syslog server. In addition, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example, there is an **snmp.log** which logs all SNMP requests and traps that the system send and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
+F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be sent to a remote syslog server. In addition, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example, there is an **snmp.log** which logs all SNMP requests and traps that the system sends and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
 
 There are published error catalogs for each F5OS-A release here:
 
@@ -431,6 +437,13 @@ To download a specific log file use the following API call.
 In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **platform.log** file that resides in the **log/system** directory.
 
 .. image:: images/rseries_diagnostics/platformlog.png
+  :align: center
+  :scale: 70%
+
+
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_diagnostics/headers.png
   :align: center
   :scale: 70%
 
@@ -1786,8 +1799,14 @@ To copy one of the tcpdump files to the local client machine enter the following
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
+For the **Headers** secion of the Postman request be sure to add the following headers:
 
-If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below. Note, that the path for downloading is currently **diags/shared/** and not the full path of **diags/shared/tcpdump/**. This may change in a future release.
+.. image:: images/rseries_diagnostics/headers.png
+  :align: center
+  :scale: 70%
+  
+
+If you are using Postman, in the body of the API call select **Body**, then select **form-data**. Then enter the **file-name**, **path**, and **token** as seen below. Note, that the path for downloading is currently **diags/shared/** and not the full path of **diags/shared/tcpdump/**. This may change in a future release.
 
 .. image:: images/rseries_diagnostics/downloadtcpdumpapi.png
   :align: center
@@ -1896,7 +1915,7 @@ The built-in terminal server will switch the connection to the appropriate tenan
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh tenant1@10.255.0.135 -p 7001
+    prompt$ssh tenant1@10.255.0.135 -p 7001
     tenant1@10.255.0.135's password: 
     Successfully connected to tenant1-1 console. The escape sequence is ^]
 

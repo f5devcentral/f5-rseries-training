@@ -268,7 +268,7 @@ In the body of the API call, add the virtual path you want to list.
     "f5-utils-file-transfer:path": "configs/"
     }
 
-You should see output similar to the example below.
+You should see output like the example below.
 
  .. code-block:: json
 
@@ -314,11 +314,18 @@ You should see output similar to the example below.
         }
     }
 
-To download a specific config file use the following API call.
+To download a specific config file, use the following API call.
 
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/configheaders.png
+  :align: center
+  :scale: 70%
 
 In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the configuration file named **jim-july** file that resides in the **configs/** directory.
 
@@ -442,7 +449,7 @@ The reset of the database will not completely wipe out the system configuration.
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    prompt$ssh -l admin 10.255.0.133
     admin@10.255.0.133's password: *****
     You are required to change your password immediately (root enforced)
     Last failed login: Thu Jan 20 16:01:00 EST 2022 from 172.18.104.143 on ssh:notty
@@ -462,7 +469,7 @@ After the password is changed for the admin account, you will be disconnected an
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    prompt$ssh -l admin 10.255.0.133
     admin@10.255.0.133's password: 
     Last login: Thu Jan 20 16:01:04 2022 from 172.18.104.143
     Welcome to the Management CLI
