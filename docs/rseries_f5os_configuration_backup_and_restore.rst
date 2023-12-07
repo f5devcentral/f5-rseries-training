@@ -530,8 +530,8 @@ The body of the API call contains the following:
         ]
     }
 
-Importing an F5OS Backup from a Remote Server
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Importing an F5OS Backup from a Remote Server via API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You'll need to use the new password/token on subsequent API calls. Post the following API call to the F5OS out-of-band IP address to import the archived ConfD backup file from a remote HTTPS server to the configs directory on the appliance.
 
@@ -567,8 +567,8 @@ The body of the API call should have the file name you want to query:
         "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
 
-Uploading an F5OS Backup from a Client Machine
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Uploading an F5OS Backup from a Client Machine via API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can upload an F5OS backup file directly from a client machine using the API. Use the following API call:
 

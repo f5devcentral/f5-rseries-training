@@ -40,11 +40,12 @@ Initial Setup of the rSeries Network Layer
 Deploying an rSeries Tenant
 ---------------------------
 
-`Tenant Deployment via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#tenant-deployment-via-api>`_
 
-`Uploading a Tenant Image via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#uploading-a-tenant-image-via-f5os-api>`_
+`Loading Tenant Images from a Remote Server via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#loading-tenant-images-from-a-remote-server-via-api>`_
 
-`Creating a Tenant via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#creating-a-tenant-via-api>`_
+`Uploading Tenant Images from a Client Machine via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#uploading-tenant-images-from-a-client-machine-via-the-api>`_
+
+`Creating a Tenant via API <https://clouddocs.f5networks.net/training/community/rseries-training/html/rseries_deploying_a_tenant.html#creating-a-tenant-via-api>`_
 
 `Validating Tenant Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#validating-tenant-status-via-api>`_
 
@@ -55,11 +56,16 @@ Deploying an rSeries Tenant
 rSeries Software Upgrades
 -------------------------
 
-`Uploading F5OS-A Images via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#uploading-f5os-a-images-via-the-api>`_
+
+`Importing F5OS-A Images from a Remote Server via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#importing-f5os-a-images-from-a-remote-server-via-the-api>`_
+
+`Uploading F5OS-A Images from a Client Machine via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#uploading-f5os-a-images-from-a-client-machine-via-the-api>`_
 
 `Upgrading F5OS via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#upgrading-f5os-via-the-api>`_
 
-`Loading Tenant Images for New Tenants via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#loading-tenant-images-for-new-tenants-via-api>`_
+`Loading Tenant Images from a Remote Server via API <https://clouddocs.f5networks.net/training/community/rseries-training/html/rseries_software_upgrades.html#loading-tenant-images-from-a-remote-server-via-api>`_
+
+`Uploading Tenant Images from a Client Machine via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#uploading-tenant-images-from-a-client-machine-via-the-api>`_
 
 rSeries Configuration Backup and Restore
 ----------------------------------------
@@ -67,6 +73,8 @@ rSeries Configuration Backup and Restore
 `Backing Up F5OS via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#backing-up-f5os-via-api>`_
 
 `Exporting F5OS Backup via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#exporting-f5os-backup-via-api>`_
+
+`Downloading an F5OS Backup via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#downloading-an-f5os-backup-via-api>`_
 
 `Resetting the system via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#resetting-the-system-via-api>`_
 
