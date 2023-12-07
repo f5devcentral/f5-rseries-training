@@ -80,6 +80,10 @@ rSeries Configuration Backup and Restore
 
 `Changing the Default Password and Importing F5OS Backups via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#changing-the-default-password-and-importing-f5os-backups-via-api>`_
 
+`Importing an F5OS Backup from a Remote Server via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#importing-an-f5os-backup-from-a-remote-server-via-api>`_
+
+`Uploading an F5OS Backup from a Client Machine via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#uploading-an-f5os-backup-from-a-client-machine-via-api>`_
+
 `Restore via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_f5os_configuration_backup_and_restore.html#restore-using-the-api>`_
 
 Diagnostics
