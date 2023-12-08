@@ -89,9 +89,17 @@ rSeries Configuration Backup and Restore
 Diagnostics
 -----------
 
-`qkview Creation and Upload via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#qkview-creation-and-upload-via-api>`_
+`qkview Creation and Upload to iHealth via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#qkview-creation-and-upload-to-ihealth-via-api>`_
 
-`Viewing Logs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#viewing-logs-from-the-api>`_
+`qkview Download to Client via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#qkview-download-to-client-via-api>`_
+
+`Downloading Logs from the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#downloading-logs-from-the-api>`_
+
+`Viewing Event Logs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#viewing-event-logs-from-the-api>`_
+
+`Changing the Software Componenet Log Levels via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#changing-the-software-componenet-log-levels-via-api>`_
+
+`TCPDUMP Download to Client via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#tcpdump-download-to-client-via-api>`_
 
 Monitoring rSeries Health & Alert Status
 ----------------------------------------
