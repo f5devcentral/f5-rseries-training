@@ -152,8 +152,6 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 
 `Exporting MIBs to a Remote Server via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#exporting-mibs-to-a-remote-server-via-the-api>`_
 
-<>`_
-
 `Adding Allowed IPs for SNMP via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#adding-allowed-ips-for-snmp-via-api>`_
 
 `Adding Interface and LAG descriptions via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#adding-interface-and-lag-descriptions-via-api>`_
