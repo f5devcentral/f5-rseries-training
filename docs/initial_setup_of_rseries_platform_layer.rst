@@ -5,7 +5,7 @@ Initial Setup of rSeries F5OS Platform Layer
 
 Connect a console or terminal server to the console port of the rSeries appliance. Follow the guidance in the link below:
 
-https://techdocs.f5.com/en-us/hardware/f5-rseries-systems-getting-started/gs-system-initial-config.html#run-setup-wizard
+`Run the Setup wizard <https://techdocs.f5.com/en-us/hardware/f5-rseries-systems-getting-started/gs-system-initial-config.html#run-setup-wizard>`_
 
 
 Login as admin/admin and access the F5OS CLI. F5OS utilizes **ConfD** for configuration management of F5OS and will be a familiar navigation experience if you have used it on other products. The CLI supports command completion and online help and is easy to navigate. There are **show** commands to display current configurations and status, and a **config** mode to alter current configuration.
@@ -1048,16 +1048,16 @@ The CLI command **show system licensing** will display the appliance level licen
   Boston-r10900-1# show system licensing 
   system licensing license 
                          Licensed version    1.0.0
-                         Registration Key    I5251-44764-04805-81212-8207880
+                         Registration Key    XXXXX-XXXXX-XXXXX-XXXXX-XXXXXXX
                          Licensed date       2022/01/01
                          License start       2021/09/27
                          License end         2022/02/12
                          Service check date  2022/01/13
                          Platform ID         C129
-                         Appliance SN        f5-zcxz-qxpq
+                         Appliance SN        f5-xxxx-xxxx
                          
                          Active Modules
-                          Local Traffic Manager, r5900 (P167390-1282512)
+                          Local Traffic Manager, r5900 (XXXXXXX-XXXXXXX)
                            Rate Shaping
                            Anti-Virus Checks
                            Base Endpoint Security Checks
@@ -1076,10 +1076,430 @@ The CLI command **show system licensing** will display the appliance level licen
 
 **Note: rSeries supports AWAF versus ASM licensing, and modules like AAM are not supported on the rSeries platform since it has reached End-of-Life.**
 
-https://support.f5.com/csp/article/K70113407
+`K70113407: End of Software Development for BIG-IP AAM <https://support.f5.com/csp/article/K70113407>`_
 
-Licensing via API
-=================
+
+Manual Licensing via API
+========================
+
+Sometimes a manual licensing operation may need to be performed. This is common in environments where the rSeries appliance doesn't have access to the Internet to reach the licensing server. In this case, you may perform a manual licensing operation via the API. First, obtain the **Base Registration Key** that is tied to your system. Below is an example for a temporary evaluation license but the process would be similar for a production license. In the example below, the actual Registration Key has been obfuscated with XXXX's.
+
+
+
+.. code-block:: bash
+
+
+    ---------------------------------------------------------
+    Contact              : Jim@F5.com
+    ---------------------------------------------------------
+
+    Registration Key     : XXXXX-XXXXX-XXXXX-XXXXX-XXXXXXX
+    F5 Product           : F5-BIG-BT-R10900-LIC-DEV
+    Evaluation Duration  : 30 days
+    Requested Registration Key Configuration
+    ---------------------------------------------------------
+
+Then send the Base Reg Key in the body of the get-dossier API call below:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:get-dossier
+
+Within the body of API call, enter your registation-key. Note, in the example below the actual Registration Key has been obfuscated with XXXX's.
+
+
+.. code-block:: json
+
+    {
+        "registration-key": "XXXXX-XXXXX-XXXXX-XXXXX-XXXXXXX"
+    }
+
+
+If the API call is successful, then the output will give you a system-dossier as seen below.  Note, in the example below the actual system-dossier has been obfuscated with random characters. You'll need to copy and save the dossier, as you'll need to input it into F5's licensing server, to get the license for your system.
+
+.. code-block:: json
+
+    {
+        "f5-system-licensing-install:output": {
+            "system-dossier": "42bd1c9c5c1e9081522beea5ceab5c3e7726f9b5a90dd9d5a8d73d9dba80094317c6aeab2b75219226d9a2f8b335651d395ade0384debe1086ee0f46d0d7043c90b03f08a7fcdc28db75984892f1e28f394d07d569b45a1868ceeb264a272243e4c842c41fbd043fd4bcx19c6f1e3a274589d4f06253c49d31f1ed48731ddda10a5a68eb78d8473c06c38c3ea2cb6db0ae2902c5a9323dccf5e00212a9f541a58cd85fe191b12daa4a6975cee14fe33242cb8183fea43xa21c2a8c1944f14583895eb920306b4f9e0fd7834561026b0c669f736081e9da80bf536874d9a3737bacff59e6240381ddc2b821c380c81d963c95beedc6a940a4db97a527922383096c54d8028f3f3f6dccfe213fdad4a1316b772317cae0d45911469972bd3f761636f3f397467cf8a2e7ae1d22e1ea30d6b21d47ff4d8ab112ebc5d7eaab3819f0ed18b0830bc4250069a80de428ef28a9c4dba725a3623887019b7c31dc210997104140a58b8f172e8c4d0c4ea819b6743df711d0b65eb2c235e79313b1e9ff2dcd1768770e7f23dc626d2e44d0a394916a8b8debaf73971b91cbf3d96f7be6e1afcf18b42f84fd1b2ba7fe021e95417bbe2cf1bdb42077b8aefb350d865ae7db13073781212c8534d204a0e4023023de8b5380463b67b935fce2e4474f8f607130ee01c961cf978ccdb6211d9bc6f8axx4aab784f50c7e71a5bc1297f3453c9d0feb62e809315b7421f598275a2e8435aee8b2658f6a355706259820fde8702cb8940bf324494c4511d62964be657cc570a0947731e8ef025d6d7ea4038d91fe0084f11dda9a4713ae056bb21733958f4963a6051259a78d3336b368c345cc24da99a9ebf10e5f5b7c376484d60fd8d80ed2f6fbc9ef3bdf7b737af9780e7f4f72ea6a79b32a24da84fae44fdc0fd30761b3dd62d6660x462d90c843f1916eb2c01fd5efd25f05c196e6a6eb0ba93db3e549ee4fb2f79b08ed1edaae9aaf01d83fe87b473852b97fa89573ff85247e1c5be23a599b3f8c65d1d7f6d2c4f56d13217bb2ba07d383d038b29ab407e4cf40986a83d0b18933d53078e80b7cd7550"
+        }
+    }
+
+Go to F5 license server: 
+
+
+`Activate F5 License <https://activate.f5.com/license/dossier.jsp>`_
+
+
+Paste in the dossier from your system.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/enter_dossier.png
+  :align: center
+  :scale: 50%
+
+Next, you'll be prompted to accept the End User License Agreement (EULA). Click on the check box to acknowledge that you have read and agree to the terms in the EULA. Then click Next.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/accept_eula.png
+  :align: center
+  :scale: 70%
+
+A license will be displayed. You can either copy the output or download the License File. It is recommended you download the file if possible.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/download_license.png
+  :align: center
+  :scale: 70%
+
+You'll need to edit the license file to escape any double quotes within the license body. In the body of the API call you have to escape any double quotes (inside the license) with slashes ( \ ), as seen below.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/edit_license.png
+  :align: center
+  :scale: 40%
+
+Send the following API call to install the new license:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:manual-install
+
+
+In the body of the API call enter the edited license in the proper area. Below is the full body with the escaped double quotes in the license. Note the file has been obfuscated from its original:
+
+.. code-block:: json
+
+
+    {
+        "input": 
+        [
+            {"license":"#
+    Auth vers :                        5b
+    #
+    #
+    #       BIG-IP System License Key File
+    #       DO NOT EDIT THIS FILE!!
+    #
+    #       Install this file as \"/config/bigip.license\".
+    #
+    #       Contact information in file /CONTACTS
+    #
+    #
+    #       Warning: Changing the system time while this system is running
+    #                with a time-limited license may make the system unusable.
+    #
+    Usage :                            Evaluation
+    #
+    #
+    #  Only the specific use referenced above is allowed. Any other uses are prohibited.
+    #
+    Vendor :                           F5 Networks, Inc.
+    #
+    #       Module List 
+    #
+    active module :                    Best Bundle, r10900|E135699-1129899|Rate Shaping|DNS Services|BIG-IP, DNS (Max)|Routing Bundle|Access Policy Manager, Base, r109XX|Advanced Web Application Firewall, r10XXX|Max Compression, r10900|Max SSL, r10900|Advanced Firewall Manager, r10XXX|DNSSEC|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|DNS Rate Fallback, Unlimited|DNS Licensed Objects, Unlimited|DNS Rate Limit, Unlimited QPS|GTM Rate Fallback, (UNLIMITED)|GTM Licensed Objects, Unlimited|GTM Rate, Unlimited|DNS RATE LIMITED, MAX|Carrier Grade NAT (AFM ONLY)|Protocol Security Manager
+    optional module :                  Advanced Protocols
+    optional module :                  APM, Max Access Sessions, i108XX
+    optional module :                  Basic Policy Enforcement Manager, r10XXX
+    optional module :                  BIG-IP, Multicast Routing
+    optional module :                  BIG-IP, Privileged User Access, 100 Endpoints
+    optional module :                  BIG-IP, Privileged User Access, 1000 Endpoints
+    optional module :                  BIG-IP, Privileged User Access, 250 Endpoints
+    optional module :                  BIG-IP, Privileged User Access, 50 Endpoints
+    optional module :                  BIG-IP, Privileged User Access, 500 Endpoints
+    optional module :                  Carrier-Grade NAT, r10XXX
+    optional module :                  Concurrent Users
+    optional module :                  DDOS, r10XXX
+    optional module :                  Dynamic Policy Provisioning, r10XXX
+    optional module :                  External Interface and Network HSM
+    optional module :                  FIPS 140 License, r10XXX
+    optional module :                  FIX Low Latency
+    optional module :                  Intrusion Prevention System, r10XXX
+    optional module :                  IP Intelligence, 1Yr
+    optional module :                  IP Intelligence, 3Yr
+    optional module :                  IPS, 1Yr
+    optional module :                  IPS, 3Yr
+    optional module :                  Link Controller
+    optional module :                  Policy Enforcement Manager, r10XXX
+    optional module :                  SM2_SM3_SM4
+    optional module :                  SSL Orchestrator, r10XXX
+    optional module :                  Subscriber Discovery, r10XXX
+    optional module :                  SWG Max, 1Yr, 10XXX/i10XXX/12250v/r10XXX
+    optional module :                  SWG Max, 3Yr, 10XXX/i10XXX/12250v/r10XXX
+    optional module :                  SWG, 1Yr, 10XXX/i10XXX/12250v/r10XXX
+    optional module :                  SWG, 3Yr, 10XXX/i10XXX/12250v/r10XXX
+    optional module :                  Threat Campaigns, 1Yr
+    optional module :                  Threat Campaigns, 3Yr
+    optional module :                  Traffic Classification, r10XXX
+    optional module :                  URL Filtering, 1Yr
+    optional module :                  URL Filtering, 1Yr, Max
+    optional module :                  URL Filtering, 3Yr
+    optional module :                  URL Filtering, 3Yr, Max
+    optional module :                  VPN Users
+    #
+    #       Accumulated Tokens for Module
+    #       Max SSL, r10900  perf_SSL_Mbps 1  key XXXXXXX-XXXXXXX
+    #
+    perf_SSL_Mbps :                    1
+    #
+    #       Accumulated Tokens for Module
+    #       Access Policy Manager, Base, r109XX  apm_access_sessions 100000000  key XXXXXXX-XXXXXXX
+    #
+    #       Accumulated Tokens for Module
+    #       Access Policy Manager, Base, r109XX  apm_sessions 500  key XXXXXXX-XXXXXXX
+    #
+    #       Accumulated Tokens for Module
+    #       Access Policy Manager, Base, r109XX  apm_urlf_limited_sessions 100000000  key XXXXXXX-XXXXXXX
+    #
+    apm_access_sessions :              100000000
+    apm_sessions :                     500
+    apm_urlf_limited_sessions :        100000000
+    #
+    #       License Tokens for Module Advanced Web Application Firewall, r10XXX key XXXXXXX-XXXXXXX
+    #
+    waf_gc :                           enabled
+    mod_waf :                          enabled
+    mod_datasafe :                     enabled
+    mod_asm :                          enabled
+    ltm_persist_cookie :               enabled
+    ltm_persist :                      enabled
+    ltm_lb_rr :                        enabled
+    ltm_lb_ratio :                     enabled
+    ltm_lb_priority :                  enabled
+    ltm_lb_pool_member_limit :         UNLIMITED
+    ltm_lb_least_conn :                enabled
+    ltm_lb_l3_addr :                   enabled
+    ltm_lb :                           enabled
+    asm_apps :                         unlimited
+    #
+    #       License Tokens for Module Best Bundle, r10900 key XXXXXXX-XXXXXXX
+    #
+    throttle_level :                   900
+    perf_vcmp_max_guests :             UNLIMITED
+    perf_PVA_dram_limit :              enabled
+    perf_CPU_cores :                   UNLIMITED
+    nw_vlan_groups :                   enabled
+    mod_ltm :                          enabled
+    mod_lbl :                          enabled
+    mod_ilx :                          enabled
+    ltm_network_virtualization :       enabled
+    #
+    #       License Tokens for Module Max SSL, r10900 key XXXXXXX-XXXXXXX
+    #
+    perf_SSL_total_TPS :               UNLIMITED
+    perf_SSL_per_core :                enabled
+    perf_SSL_cmp :                     enabled
+    #
+    #       License Tokens for Module Max Compression, r10900 key XXXXXXX-XXXXXXX
+    #
+    perf_http_compression_Mbps :       UNLIMITED
+    perf_http_compression_hw :         enabled
+    #
+    #       License Tokens for Module Routing Bundle key XXXXXXX-XXXXXXX
+    #
+    nw_routing_rip :                   enabled
+    nw_routing_ospf :                  enabled
+    nw_routing_isis :                  enabled
+    nw_routing_bgp :                   enabled
+    nw_routing_bfd :                   enabled
+    #
+    #       License Tokens for Module Advanced Firewall Manager, r10XXX key XXXXXXX-XXXXXXX
+    #
+    nw_l2_transparent :                enabled
+    mod_afm :                          enabled
+    ltm_netflow_switching :            enabled
+    ltm_monitor_rule :                 enabled
+    #
+    #       License Tokens for Module BIG-IP, DNS (Max) key XXXXXXX-XXXXXXX
+    #
+    mod_dnsgtm :                       enabled
+    ltm_dns_v13 :                      enabled
+    ltm_dns_lite :                     enabled
+    #
+    #       License Tokens for Module Carrier Grade NAT (AFM ONLY) key XXXXXXX-XXXXXXX
+    #
+    mod_cgnat :                        enabled
+    ltm_network_map :                  enabled
+    ltm_monitor_udp :                  enabled
+    ltm_monitor_tcp_ho :               enabled
+    ltm_monitor_tcp :                  enabled
+    ltm_monitor_radius :               enabled
+    ltm_monitor_icmp :                 enabled
+    ltm_monitor_gateway_icmp :         enabled
+    dslite :                           enabled
+    cgnat :                            enabled
+    #
+    #       License Tokens for Module Access Policy Manager, Base, r109XX key XXXXXXX-XXXXXXX
+    #
+    mod_apm :                          enabled
+    apm_pingaccess :                   enabled
+    apm_logon_page_fraud_protection :  enabled
+    apm_api_protection :               enabled
+    api_protection_infra :             enabled
+    #
+    #       License Tokens for Module Protocol Security Manager key XXXXXXX-XXXXXXX
+    #
+    mod_afw :                          enabled
+    #
+    #       License Tokens for Module DNS Services key XXXXXXX-XXXXXXX
+    #
+    ltm_rule_dns_write :               enabled
+    ltm_dnsexpress :                   enabled
+    ltm_dns64 :                        enabled
+    ltm_dns_switching :                enabled
+    ltm_dns_mgmt :                     enabled
+    ltm_dns_cache_resolver :           enabled
+    admin_dns_mgmt :                   enabled
+    #
+    #       License Tokens for Module DNSSEC key XXXXXXX-XXXXXXX
+    #
+    ltm_dnssec :                       enabled
+    #
+    #       License Tokens for Module DNS Rate Limit, Unlimited QPS key XXXXXXX-XXXXXXX
+    #
+    ltm_dns_rate_limit :               UNLIMITED
+    #
+    #       License Tokens for Module DNS Rate Fallback, Unlimited key XXXXXXX-XXXXXXX
+    #
+    ltm_dns_rate_fallback :            UNLIMITED
+    #
+    #       License Tokens for Module DNS Licensed Objects, Unlimited key XXXXXXX-XXXXXXX
+    #
+    ltm_dns_licensed_objects :         UNLIMITED
+    #
+    #       License Tokens for Module Rate Shaping key XXXXXXX-XXXXXXX
+    #
+    ltm_bandw_rate_tosque :            enabled
+    ltm_bandw_rate_fairque :           enabled
+    ltm_bandw_rate_classl7 :           enabled
+    ltm_bandw_rate_classl4 :           enabled
+    ltm_bandw_rate_classes :           enabled
+    #
+    #       License Tokens for Module GTM Rate, Unlimited key XXXXXXX-XXXXXXX
+    #
+    gtm_rate_limit :                   UNLIMITED
+    #
+    #       License Tokens for Module GTM Rate Fallback, (UNLIMITED) key XXXXXXX-XXXXXXX
+    #
+    gtm_rate_fallback :                UNLIMITED
+    #
+    #       License Tokens for Module GTM Licensed Objects, Unlimited key XXXXXXX-XXXXXXX
+    #
+    gtm_licensed_objects :             UNLIMITED
+    #
+    #       License Tokens for Module APM, Web Application key XXXXXXX-XXXXXXX
+    #
+    apm_web_applications :             enabled
+    #
+    #       License Tokens for Module Remote Desktop key XXXXXXX-XXXXXXX
+    #
+    apm_remote_desktop :               enabled
+    #
+    #       License Tokens for Module Network Access key XXXXXXX-XXXXXXX
+    #
+    apm_na :                           enabled
+    #
+    #       License Tokens for Module Secure Virtual Keyboard key XXXXXXX-XXXXXXX
+    #
+    apm_ep_svk :                       enabled
+    #
+    #       License Tokens for Module Protected Workspace key XXXXXXX-XXXXXXX
+    #
+    apm_ep_pws :                       enabled
+    #
+    #       License Tokens for Module Machine Certificate Checks key XXXXXXX-XXXXXXX
+    #
+    apm_ep_machinecert :               enabled
+    #
+    #       License Tokens for Module Firewall Checks key XXXXXXX-XXXXXXX
+    #
+    apm_ep_fwcheck :                   enabled
+    #
+    #       License Tokens for Module Anti-Virus Checks key XXXXXXX-XXXXXXX
+    #
+    apm_ep_avcheck :                   enabled
+    #
+    #       License Tokens for Module Base Endpoint Security Checks key XXXXXXX-XXXXXXX
+    #
+    apm_ep :                           enabled
+    #
+    #       License Tokens for Module App Tunnel key XXXXXXX-XXXXXXX
+    #
+    apm_app_tunnel :                   enabled
+    #
+    #
+    #       Licensing Information 
+    #
+    Licensed date :                    20231115
+    License start :                    20231114
+    License end :                      20231216
+    Service check date :               20231115
+    #
+    #       Platform Information 
+    #
+    Registration Key :                 XXXXX-XXXXX-XXXXX-XXXXX-XXXXXXX
+    Licensed version :                 1.7.0
+    Platform ID :                      C128
+    Appliance SN :                     f5-xxxx-xxxx
+    #
+    #       Outbound License Dossier Validation
+    #
+    Dossier :                          01ac66f1c5a13fad15f3a0eca6428220df12b8e94506a852dae2c13fbbb67556e48f1x73b849d7cd3962e270e73y23218e85871670e84e9485e774357250f8f7299a176f
+    #
+    #       Outbound License Authorization Signature
+    #
+    Authorization :                    185b003ad1b2b9c9e4365ef7315e17cee59c96d958354ba4931bd5c934600acbdf2ecc0f7093db5ded3a5e800038051960d9ab95a45a171d1c0d9f9c0480e2a2e43939c79cecb216bd6bc592b630b9a8787e3847d2bb731915258ef96c921bc6b1e7bd08c0e86bc6476e5ax3bb942e9964d61de662b3e370994335c84193cc03b7adb7f4ef9d1df7d5eb74f53bb1d801604e3d0d4eab875585c88ba708e5832bf5b666aaad894a2218c627666ce6a97f12cf7c9de65c72b6187756008fd8c23cf6475e4c1bd082423ce90f4f0b83455d3c5b1d3ac76b5d5932c9cf506f059d3802a2ba954d4d2ma86d16db40ceeccc59106051fe7d69ab8df5es713914e81f91
+    #
+    #-----------------------------------------
+    # Copyright 1996-2023, F5 Networks, Inc.
+    # All rights reserved. 
+    #-----------------------------------------
+    "
+            }
+        ]
+    }
+
+
+You'll get the following confirmation that the license has been installed successfully:
+
+.. code-block:: json
+
+    {
+        "f5-system-licensing-install:output": {
+            "result": "License installed successfully."
+        }
+    }
+
+
+Automatic Licensing via API
+===========================
+
+You can very easily apply a license automatically with the following API call. This assumes the VELOS system controllers are on the network, have internet access and DNS has been configured. This will allow the system to resolve the domain name for the F5 licensing server to apply the license.
+
+
+.. code-block:: bash
+
+  POST https://{{velos_chassis1_system_controller_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:install
+
+In the body of the API call add your Base Registration Key:
+
+.. code-block:: json
+
+    {
+        "f5-system-licensing-install:input": [
+            {
+                "registration-key": "{{velos_license_registration_key_chassis1}}"
+            }
+        ]
+    }
+
+You should receive a success message indicating the License installed successfully.
+
+.. code-block:: json
+
+    {
+        "f5-system-licensing-install:output": {
+            "result": "License installed successfully."
+        }
+    }
+
 
 To get the current licensing status via API use the following API call. Issue a **GET** to the out-of-band management IP address of the F5OS layer:
 
@@ -1093,13 +1513,13 @@ To get the current licensing status via API use the following API call. Issue a 
       "f5-system-licensing:licensing": {
           "config": {
               "registration-key": {
-                  "base": "B1249-45920-70635-24344-7350724"
+                  "base": "XXXXX-XXXXX-XXXXX-XXXXX-XXXXXXX"
               },
-              "dossier": "01ac66f1c5a13fad15f3a0eca6528220df04f42baa4c48f1c35682c6691dde0e306406407cec3f6b9c3cfa93751f21360bfcf7085585d79b4feb7170a314637e8f99f22b09fcd4a4c54b27def300a8f9c83420b9cc0a6bd097a8f7e958fc2b8c4e93d685f6b70bc415e7999b869eba07d5976183ee31e612b8e94506a852dae2c13fbbb67556e48f1473b849d7cd396be270e73123218e85871670e84e9485e774a57250f8f7299a876f17106158c62efb579aad689ebfc629b31e2175c4485b59a4bed33bd3e2dd31e7fb83",
-              "license": "#\nAuth vers :                   5b\n#\n#\n#       BIG-IP System License Key File\n#       DO NOT EDIT THIS FILE!!\n#\n#       Install this file as \"/config/bigip.license\".\n#\n#       Contact information in file /CONTACTS\n#\n#\n#       Warning: Changing the system time while this system is running\n#                with a time-limited license may make the system unusable.\n#\nUsage :                       F5 Internal Product Development\n#\n#\n#  Only the specific use referenced above is allowed. Any other uses are prohibited.\n#\nVendor :                      F5 Networks, Inc.\n#\n#       Module List \n#\nactive module :               Local Traffic Manager, r10900|Y226037-5242227|Rate Shaping|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|APM, Limited|Max SSL, r10900|Max Compression, r10900\noptional module :             Access Policy Manager, Base, r109XX\noptional module :             Access Policy Manager, Max, r109XX\noptional module :             Advanced Firewall Manager, r10XXX\noptional module :             Advanced Protocols\noptional module :             Advanced Web Application Firewall, r10XXX\noptional module :             App Mode (TMSH Only, No Root/Bash)\noptional module :             Basic Policy Enforcement Manager, i10XXX\noptional module :             BIG-IP, Multicast Routing\noptional module :             BIG-IP, Privileged User Access, 100 Endpoints\noptional module :             BIG-IP, Privileged User Access, 1000 Endpoints\noptional module :             BIG-IP, Privileged User Access, 250 Endpoints\noptional module :             BIG-IP, Privileged User Access, 50 Endpoints\noptional module :             BIG-IP, Privileged User Access, 500 Endpoints\noptional module :             Carrier-Grade NAT, r10XXX\noptional module :             DataSafe, r10XXX\noptional module :             DDOS, r10XXX\noptional module :             DNS 1K, rSeries\noptional module :             DNS Max, rSeries\noptional module :             Dynamic Policy Provisioning, r10XXX\noptional module :             External Interface and Network HSM\noptional module :             FIPS 140-2\noptional module :             FIX Low Latency\noptional module :             Intrusion Prevention System, r10XXX\noptional module :             IP Intelligence, 1Yr\noptional module :             IP Intelligence, 3Yr\noptional module :             IPS, 1Yr\noptional module :             IPS, 3Yr\noptional module :             Link Controller\noptional module :             LTM to Best Upgrade, r109XX\noptional module :             LTM to Better Upgrade, r109XX\noptional module :             Policy Enforcement Manager, r10XXX\noptional module :             Routing Bundle\noptional module :             SM2_SM3_SM4\noptional module :             SSL Orchestrator, r10XXX\noptional module :             Subscriber Discovery, r10XXX\noptional module :             Threat Campaigns, 1Yr\noptional module :             Threat Campaigns, 3Yr\noptional module :             Traffic Classification, r10XXX\noptional module :             URL Filtering, 1Yr\noptional module :             URL Filtering, 1Yr, Max\noptional module :             URL Filtering, 3Yr\noptional module :             URL Filtering, 3Yr, Max\noptional module :             VPN Users\n#\n#       Accumulated Tokens for Module\n#       Max SSL, r10900  perf_SSL_Mbps 1  key Y226037-5242227\n#\nperf_SSL_Mbps :               1\n#\n#       Accumulated Tokens for Module\n#       APM, Limited  apm_urlf_limited_sessions 10  key Y226037-5242227\n#\n#       Accumulated Tokens for Module\n#       APM, Limited  apml_sessions 10  key Y226037-5242227\n#\napm_urlf_limited_sessions :   10\napml_sessions :               10\n#\n#       License Tokens for Module Local Traffic Manager, r10900 key Y226037-5242227\n#\nthrottle_level :              900\nperf_vcmp_max_guests :        UNLIMITED\nperf_PVA_dram_limit :         enabled\nperf_CPU_cores :              UNLIMITED\nnw_vlan_groups :              enabled\nmod_ltm :                     enabled\nmod_lbl :                     enabled\nmod_ilx :                     enabled\nltm_network_virtualization :  enabled\nfpga_performance :            enabled\n#\n#       License Tokens for Module Max SSL, r10900 key Y226037-5242227\n#\nperf_SSL_total_TPS :          UNLIMITED\nperf_SSL_per_core :           enabled\nperf_SSL_cmp :                enabled\n#\n#       License Tokens for Module Max Compression, r10900 key Y226037-5242227\n#\nperf_http_compression_Mbps :  UNLIMITED\nperf_http_compression_hw :    enabled\n#\n#       License Tokens for Module APM, Limited key Y226037-5242227\n#\nmod_apml :                    enabled\n#\n#       License Tokens for Module Rate Shaping key Y226037-5242227\n#\nltm_bandw_rate_tosque :       enabled\nltm_bandw_rate_fairque :      enabled\nltm_bandw_rate_classl7 :      enabled\nltm_bandw_rate_classl4 :      enabled\nltm_bandw_rate_classes :      enabled\n#\n#       License Tokens for Module APM, Web Application key Y226037-5242227\n#\napm_web_applications :        enabled\n#\n#       License Tokens for Module Remote Desktop key Y226037-5242227\n#\napm_remote_desktop :          enabled\n#\n#       License Tokens for Module Network Access key Y226037-5242227\n#\napm_na :                      enabled\n#\n#       License Tokens for Module Secure Virtual Keyboard key Y226037-5242227\n#\napm_ep_svk :                  enabled\n#\n#       License Tokens for Module Protected Workspace key Y226037-5242227\n#\napm_ep_pws :                  enabled\n#\n#       License Tokens for Module Machine Certificate Checks key Y226037-5242227\n#\napm_ep_machinecert :          enabled\n#\n#       License Tokens for Module Firewall Checks key Y226037-5242227\n#\napm_ep_fwcheck :              enabled\n#\n#       License Tokens for Module Anti-Virus Checks key Y226037-5242227\n#\napm_ep_avcheck :              enabled\n#\n#       License Tokens for Module Base Endpoint Security Checks key Y226037-5242227\n#\napm_ep :                      enabled\n#\n#       License Tokens for Module App Tunnel key Y226037-5242227\n#\napm_app_tunnel :              enabled\n#\n# Debug Msg - Is sol18346625 affected; Usage, \"2021-09-28 00.00.00\", started after requirement date \"2016-04-15 00.00.00\"\n#\n# LC disabled in accordance with https://support.f5.com/kb/en-us/solutions/public/k/18/sol18346625.html\n#\ngtm_lc :                      disabled\n#\n#       Licensing Information \n#\nLicensed date :               20211129\nLicense start :               20210927\nLicense end :                 20220121\nService check date :          20211222\n#\n#       Platform Information \n#\nRegistration Key :            B1249-45920-70635-24344-7350724\nLicensed version :            1.0.0\nPlatform ID :                 C128\nAppliance SN :                f5-xpdn-ngmu\n#\n#       Outbound License Dossier Validation\n#\nDossier :                     01ac66f1c5a13fad15f3a0eca6528220df12b8e94506a852dae2c13fbbb67556e48f1473b849d7cd396be270e73123218e85871670e84e9485e774a57250f8f7299a876f\n#\n#       Outbound License Authorization Signature\n#\nAuthorization :               9f41c2f3f96ed6fc9c8112934fab434ba63bce96f73cd24d61b49fa7c9dc8e5d662e27f837ba734c6c8a3c52577b8b9e1a64aefc46aed07441eff37a52575d7341d701597b2ef59d27230cf1b3d41524978f522f23386bc2ab7c1b34756d9be36d433f34d0339227e8ec5f37af432614141f3c749df1e26d3d069ad9a043c2ebedd4bc60f81ff155ade7b172714075786a7916f32b06830747c3da3ee1281e1965042df766ac31c5690b802257685b87d1ff980a83a5ac9e14cc7e5b73045b4a7c34fea60e4a8dd3b7c460cca83d3805006afc4a82071b3cc502e3dc7c2c40958046bfc835eb0386017352b90175b1cb37a4e3e1bc51467d08cd360a957998a4\n#\n#-----------------------------------------\n# Copyright 1996-2021, F5 Networks, Inc.\n# All rights reserved. \n#-----------------------------------------\n"
+              "dossier": "01ac66f1c5a13fad15f3a0eca6528220df04f42baa4c48f1c35682c6691dde0e306406407cec3f6b9c3cfa93751421360bfcf7085585d79b4feb7170a314637e8f99f22b09fcd4a4c54b27def300a8f9c83420b9cc0a6bd097a8f7e958fc2b8c4e93d685f6b70bc415e7999b869eba07d5976183ee31e612b8e94506a852dae2c13fbbb67556e48f1475b849d7xd396be270e73123258e85871670e81e9485e774a57250f8f7299a876f17106158c62efb579aad689ebfc629b31e2175c4485b59a4bed33bd3e2dd31e7fb83",
+              "license": "#\nAuth vers :                   5b\n#\n#\n#       BIG-IP System License Key File\n#       DO NOT EDIT THIS FILE!!\n#\n#       Install this file as \"/config/bigip.license\".\n#\n#       Contact information in file /CONTACTS\n#\n#\n#       Warning: Changing the system time while this system is running\n#                with a time-limited license may make the system unusable.\n#\nUsage :                       F5 Internal Product Development\n#\n#\n#  Only the specific use referenced above is allowed. Any other uses are prohibited.\n#\nVendor :                      F5 Networks, Inc.\n#\n#       Module List \n#\nactive module :               Local Traffic Manager, r10900|XXXXXX-XXXXXX|Rate Shaping|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|APM, Limited|Max SSL, r10900|Max Compression, r10900\noptional module :             Access Policy Manager, Base, r109XX\noptional module :             Access Policy Manager, Max, r109XX\noptional module :             Advanced Firewall Manager, r10XXX\noptional module :             Advanced Protocols\noptional module :             Advanced Web Application Firewall, r10XXX\noptional module :             App Mode (TMSH Only, No Root/Bash)\noptional module :             Basic Policy Enforcement Manager, i10XXX\noptional module :             BIG-IP, Multicast Routing\noptional module :             BIG-IP, Privileged User Access, 100 Endpoints\noptional module :             BIG-IP, Privileged User Access, 1000 Endpoints\noptional module :             BIG-IP, Privileged User Access, 250 Endpoints\noptional module :             BIG-IP, Privileged User Access, 50 Endpoints\noptional module :             BIG-IP, Privileged User Access, 500 Endpoints\noptional module :             Carrier-Grade NAT, r10XXX\noptional module :             DataSafe, r10XXX\noptional module :             DDOS, r10XXX\noptional module :             DNS 1K, rSeries\noptional module :             DNS Max, rSeries\noptional module :             Dynamic Policy Provisioning, r10XXX\noptional module :             External Interface and Network HSM\noptional module :             FIPS 140-2\noptional module :             FIX Low Latency\noptional module :             Intrusion Prevention System, r10XXX\noptional module :             IP Intelligence, 1Yr\noptional module :             IP Intelligence, 3Yr\noptional module :             IPS, 1Yr\noptional module :             IPS, 3Yr\noptional module :             Link Controller\noptional module :             LTM to Best Upgrade, r109XX\noptional module :             LTM to Better Upgrade, r109XX\noptional module :             Policy Enforcement Manager, r10XXX\noptional module :             Routing Bundle\noptional module :             SM2_SM3_SM4\noptional module :             SSL Orchestrator, r10XXX\noptional module :             Subscriber Discovery, r10XXX\noptional module :             Threat Campaigns, 1Yr\noptional module :             Threat Campaigns, 3Yr\noptional module :             Traffic Classification, r10XXX\noptional module :             URL Filtering, 1Yr\noptional module :             URL Filtering, 1Yr, Max\noptional module :             URL Filtering, 3Yr\noptional module :             URL Filtering, 3Yr, Max\noptional module :             VPN Users\n#\n#       Accumulated Tokens for Module\n#       Max SSL, r10900  perf_SSL_Mbps 1  key XXXXXX-XXXXXX\n#\nperf_SSL_Mbps :               1\n#\n#       Accumulated Tokens for Module\n#       APM, Limited  apm_urlf_limited_sessions 10  key XXXXXX-XXXXXX\n#\n#       Accumulated Tokens for Module\n#       APM, Limited  apml_sessions 10  key XXXXXX-XXXXXX\n#\napm_urlf_limited_sessions :   10\napml_sessions :               10\n#\n#       License Tokens for Module Local Traffic Manager, r10900 key XXXXXX-XXXXXX\n#\nthrottle_level :              900\nperf_vcmp_max_guests :        UNLIMITED\nperf_PVA_dram_limit :         enabled\nperf_CPU_cores :              UNLIMITED\nnw_vlan_groups :              enabled\nmod_ltm :                     enabled\nmod_lbl :                     enabled\nmod_ilx :                     enabled\nltm_network_virtualization :  enabled\nfpga_performance :            enabled\n#\n#       License Tokens for Module Max SSL, r10900 key XXXXXX-XXXXXX\n#\nperf_SSL_total_TPS :          UNLIMITED\nperf_SSL_per_core :           enabled\nperf_SSL_cmp :                enabled\n#\n#       License Tokens for Module Max Compression, r10900 key XXXXXX-XXXXXX\n#\nperf_http_compression_Mbps :  UNLIMITED\nperf_http_compression_hw :    enabled\n#\n#       License Tokens for Module APM, Limited key XXXXXX-XXXXXX\n#\nmod_apml :                    enabled\n#\n#       License Tokens for Module Rate Shaping key XXXXXX-XXXXXX\n#\nltm_bandw_rate_tosque :       enabled\nltm_bandw_rate_fairque :      enabled\nltm_bandw_rate_classl7 :      enabled\nltm_bandw_rate_classl4 :      enabled\nltm_bandw_rate_classes :      enabled\n#\n#       License Tokens for Module APM, Web Application key XXXXXX-XXXXXX\n#\napm_web_applications :        enabled\n#\n#       License Tokens for Module Remote Desktop key XXXXXX-XXXXXX\n#\napm_remote_desktop :          enabled\n#\n#       License Tokens for Module Network Access key XXXXXX-XXXXXX\n#\napm_na :                      enabled\n#\n#       License Tokens for Module Secure Virtual Keyboard key XXXXXX-XXXXXX\n#\napm_ep_svk :                  enabled\n#\n#       License Tokens for Module Protected Workspace key XXXXXX-XXXXXX\n#\napm_ep_pws :                  enabled\n#\n#       License Tokens for Module Machine Certificate Checks key XXXXXX-XXXXXX\n#\napm_ep_machinecert :          enabled\n#\n#       License Tokens for Module Firewall Checks key XXXXXX-XXXXXX\n#\napm_ep_fwcheck :              enabled\n#\n#       License Tokens for Module Anti-Virus Checks key XXXXXX-XXXXXX\n#\napm_ep_avcheck :              enabled\n#\n#       License Tokens for Module Base Endpoint Security Checks key XXXXXX-XXXXXX\n#\napm_ep :                      enabled\n#\n#       License Tokens for Module App Tunnel key XXXXXX-XXXXXX\n#\napm_app_tunnel :              enabled\n#\n# Debug Msg - Is sol18346625 affected; Usage, \"2021-09-28 00.00.00\", started after requirement date \"2016-04-15 00.00.00\"\n#\n# LC disabled in accordance with https://support.f5.com/kb/en-us/solutions/public/k/18/sol18346625.html\n#\ngtm_lc :                      disabled\n#\n#       Licensing Information \n#\nLicensed date :               20211129\nLicense start :               20210927\nLicense end :                 20220121\nService check date :          20211222\n#\n#       Platform Information \n#\nRegistration Key :            B1249-45920-70635-24344-7350724\nLicensed version :            1.0.0\nPlatform ID :                 C128\nAppliance SN :                f5-xpdn-ngmu\n#\n#       Outbound License Dossier Validation\n#\nDossier :                     01ac66f1c5a13fad15f3a0eca6528220df12b8e94506a852dae2c13fbbb67556e48f1473b849d7cd396be270e73123218e85871670e84e9485e774a57250f8f7299a876f\n#\n#       Outbound License Authorization Signature\n#\nAuthorization :               9f41c2f3f96ed6fc9c8112934fab434ba63bce96f73cd24d61b49fa7c9dc8e5d662e27f837ba734c6c8a3c52577b8b9e1a63aefc46aed07441eff37a52575d7341d701597b2ef59d27230cf1b3d41524978f522f23386bc2ab7c1b34756d9be36d433f34d0339227e8ec5f37af432614141f3c749df1e26d3d069ad9a043c2ebedd4bc6xf81ff155ade7b172714075786a7916f32b06830787c3da3ee1281e1965042df766ac31c5690b802257685b87d1ff980a83a5ac9e14cc7e5b73045b4a7c34fea60e4a8dd3b7c460cca83d3805006afc4a82071b3cc502e3dc7c2c40958046bfc835eb0386017352b90175b1cb37a4e3e1bc51467d08cd360a957998a4\n#\n#-----------------------------------------\n# Copyright 1996-2021, F5 Networks, Inc.\n# All rights reserved. \n#-----------------------------------------\n"
           },
           "state": {
-              "license": "\nLicensed version    1.0.0\nRegistration Key    B1249-45920-70635-24344-7350724\nLicensed date       2021/11/29\nLicense start       2021/09/27\nLicense end         2022/01/21\nService check date  2021/12/22\nPlatform ID         C128\nAppliance SN        f5-xpdn-ngmu\n\nActive Modules\n Local Traffic Manager, r10900 (Y226037-5242227)\n  Rate Shaping\n  Anti-Virus Checks\n  Base Endpoint Security Checks\n  Firewall Checks\n  Machine Certificate Checks\n  Network Access\n  Protected Workspace\n  Secure Virtual Keyboard\n  APM, Web Application\n  App Tunnel\n  Remote Desktop\n  APM, Limited\n  Max SSL, r10900\n  Max Compression, r10900\n"
+              "license": "\nLicensed version    1.0.0\nRegistration Key    B1249-45920-70635-24344-7350724\nLicensed date       2021/11/29\nLicense start       2021/09/27\nLicense end         2022/01/21\nService check date  2021/12/22\nPlatform ID         C128\nAppliance SN        f5-xpdn-ngmu\n\nActive Modules\n Local Traffic Manager, r10900 (XXXXXX-XXXXXX)\n  Rate Shaping\n  Anti-Virus Checks\n  Base Endpoint Security Checks\n  Firewall Checks\n  Machine Certificate Checks\n  Network Access\n  Protected Workspace\n  Secure Virtual Keyboard\n  APM, Web Application\n  App Tunnel\n  Remote Desktop\n  APM, Limited\n  Max SSL, r10900\n  Max Compression, r10900\n"
           }
       }
   }
@@ -1277,7 +1697,7 @@ Licenses can be applied via CLI, webUI, or API. A base registration key and opti
 General
 =======
 
-The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access is disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also configure the **Hostname** of the system and configure a Message of the Day (**MOTD**) which is displayed on login. 
+The **System Settings > General** page allows you to configure Appliance mode for the F5OS layer. Appliance mode is a security feature where all root and bash shell access are disabled. A user will only be able to utilize the F5OS CLI and not the bash shell when Appliance mode is enabled. The page also displays the Systems Properties which includes the Base OS and Service Versions currently running on the appliance. Here you can also configure the **Hostname** of the system and configure a Message of the Day (**MOTD**) which is displayed on login. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image31.png
   :align: center

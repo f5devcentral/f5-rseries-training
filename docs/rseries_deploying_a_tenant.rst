@@ -74,9 +74,9 @@ Tenant Deployment via CLI
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries, supported tenant versions are v15.1.5 for the r5000 and r10000, and v15.1.6 for the r2000 and r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only.
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries, supported tenant versions are v15.1.5 for the r5000 and r10000, and v15.1.6 for the r2000 and r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x and later.
 
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP).
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client.
 
 .. code-block:: bash
 
@@ -90,7 +90,7 @@ You may also import the tenant image file from the F5OS CLI. Use the **file impo
     Value for 'password' (<string>): ********
     result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
 
-If a remote HTTPS server is not available, you may also copy the file form the CLI over SCP by adding the **protocol scp** option to the command line:
+If a remote HTTPS server is not available, you may also import the file from the CLI over SCP by adding the **protocol scp** option to the command line:
 
 .. code-block:: bash
 
@@ -263,10 +263,13 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
 
 
 Tenant Deployment via webUI
--------------------------
+---------------------------
 
-Uploading a Tenant Image via webUI
-================================
+
+Uploading Tenant Images via webUI
+=================================
+
+Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
 You can upload a tenant image via the webUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page; you can click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
 
@@ -290,6 +293,12 @@ After the image is uploaded, you need to wait until it shows **Verified** status
   :align: center
   :scale: 70% 
 
+If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using SCP directly to the appliance. Simply SCP an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
+
+.. code-block:: bash
+
+    scp BIGIP-15.1.5-0.0.8.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
+
 
 Creating a Tenant via webUI
 =========================
@@ -300,7 +309,7 @@ You can deploy a tenant from the webUI using the **Add** button in the **Tenant 
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply the tenant a name and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
@@ -362,18 +371,15 @@ Now login with the new admin password, and you'll be brought into the initial se
   :align: center
   :scale: 70% 
 
-At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.
+At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.    
 
 Tenant Deployment via API
--------------------------
+---------------------------
 
-The rSeries tenant lifecycle is fully supported in the F5OS API. This section will cover common examples.
+Loading Tenant Images from a Remote Server via API
+==================================================
 
-Uploading a Tenant Image via F5OS API
-=====================================
-
-The upload utility requires a remote HTTPS, SCP, or SFTP server that is hosting the tenant image file. All API calls for tenant lifecycle are posted to the F5OS out-of-band management IP address of the appliance.
-To copy a tenant image into the appliance, use the following API call to the out-of-band F5OS management IP address:
+To copy a tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address. The example below copies a tenant image from a remote HTTPS server. You may also edit the API call to copy from remote SFTP or SCP servers by adding the proper **protocol** option.
 
 .. code-block:: bash
 
@@ -394,7 +400,7 @@ To copy a tenant image into the appliance, use the following API call to the out
         ]
     }
 
-To list the current tenant images available within F5OS use the following API Call:
+To list the current tenant images available on the appliance, use the following API Call:
 
 .. code-block:: bash
 
@@ -421,10 +427,98 @@ Below is output generated from the previous command:
                     "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": true,
                     "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle",
+                    "in-use": false,
+                    "status": "verified"
+                },
+                {
+                    "name": "F5OS-A-1.0.0-11432.R5R10.iso",
+                    "in-use": false,
+                    "status": "verification-failed"
                 }
             ]
         }
     }
+
+
+Uploading Tenant Images from a Client Machine via the API
+=========================================================
+
+You can upload an F5OS tenant image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
+
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload
+
+In the body of the API call enter the **size**, **name**, and **file-path** as seen in the example below.
+
+.. code-block:: json
+
+    {
+        "size":2239554028,
+        "name": "BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle",
+        "file-path": "images/tenant/"
+    }
+
+If you are using Postman, the API call above will generate an upload-id that will need to be captured so it can be used in the API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the **upload-id** can be captured and saved to a variable called **upload-id** for subsequent API calls.
+
+.. code-block:: bash
+
+    var resp = pm.response.json();
+    pm.environment.set("upload-id", resp["f5-file-upload-meta-data:output"]["upload-id"])
+
+Below is an example of how this would appear inside the Postman interface under the **Tests** section.
+
+.. image:: images/rseries_deploying_a_tenant/upload-id.png
+  :align: center
+  :scale: 70%
+
+Once the upload-id is captured, you can then initiate a file upload of the F5OS TENANT_NAME image using the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-image-upload:image/upload-image
+
+In the body of the API call select **form-data**, and then in the **Value** section click **Select Files** and select the F5OS tenant image you want to upload as seen in the example below.
+
+.. image:: images/rseries_deploying_a_tenant/file-upload-tenant-body.png
+  :align: center
+  :scale: 70%
+
+In the **Headers** section ensure you add the **file-upload-id** header, with the variable used to capture the id in the previous API call.
+
+.. image:: images/rseries_deploying_a_tenant/file-upload-tenant-headers.png
+  :align: center
+  :scale: 70%
+
 
 Creating a Tenant via API
 =========================
@@ -658,7 +752,6 @@ Below is the output from the above API call:
             ]
         }
     }
-
 
 
 -----------------

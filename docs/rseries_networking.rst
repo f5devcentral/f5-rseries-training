@@ -72,13 +72,13 @@ rSeries 1GB SFP SKU's
 +----------------------+----------------------------------------------------------------------------------------+
 
 The r2000 / r4000 will support both **F5-UPG-SFPC-R** with one caveat. **F5-UPG-SFPC-R** will only be supported at 1000Mbps on r2000 / r4000, there will be no support for 10Mbps or 100Mbps speeds.
-The r5000 / r10000 platforms do not support 1G SFPs currently, so **F5-UPG-SFPC-R** is not supported on those platforms.
-However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 for 10G operation.
+The r5000 / r10000 / r12000-DS platforms do not support 1G SFPs currently, so **F5-UPG-SFPC-R** is not supported on those platforms.
+However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 / r12000-DS for 10G operation.
 
 rSeries 10GB SFP+ SKU's
 -----------------------
 
-10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms:
+10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000/r12000-DS) platforms:
 
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-SFP+-R        | Field Upgrade: SFP+ Fiber Connector (10G-LC/850nm) ROHS                               |
@@ -92,7 +92,7 @@ rSeries 10GB SFP+ SKU's
 rSeries 25GB SFP28 SKU's
 --------------------------
 
-25Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000) platforms:
+25Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000/r12000-DS) platforms:
 
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-SFP28-SR      | Field Upgrade: Transceiver SFP28, 25G-SR, 100M, LC, MMF, DDM (rSeries ONLY)           |
@@ -104,7 +104,7 @@ rSeries 25GB SFP28 SKU's
 rSeries 40GB QSFP+ SKU's
 --------------------------
 
-40Gb Optics are only supported on the r5000/r10000 platforms:
+40Gb Optics are only supported on the r5000/r10000/r12000-DS platforms:
 
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-QSFP+SR4      | Field Upgrade: QSFP+ Transceiver (40G-SR4, 850NM, 100M, MPO, DDM Support)             |
@@ -119,7 +119,7 @@ rSeries 40GB QSFP+ SKU's
 rSeries 100GB QSFP28 SKU's
 --------------------------
 
-100Gb Optics are only supported on the r5000/r10000 platforms:
+100Gb Optics are only supported on the r5000/r10000/r12000-DS platforms:
 
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-SR4    | Field Upgrade: QSFP28 Transceiver (100G-SR4, 850NM, 70M/100M, OM3/OM4, MMF, MPO, DDM) |

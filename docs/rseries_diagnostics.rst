@@ -2,23 +2,24 @@
 rSeries Diagnostics
 ===================
 
-This section will go through some of the diagnostic capabilities within the new F5OS layer. Inside the tenant the same BIG-IP diagnostic utilities that customers are used to are still available.
+This section will go through some of the diagnostic capabilities within the F5OS platform layer. Inside the TMOS tenant, the same BIG-IP diagnostic utilities that customers are used to are still available.
+
 
 qkviews
 =======
 
 rSeries appliances support the ability to generate qkviews to collect and bundle configuration and diagnostic data that can be sent to F5 support or uploaded to iHealth. It is important to understand the rSeries architecture when generating qkviews. Generating a qkview from the F5OS platform layer will capture OS data, container information, and info related to the health of the underlying F5OS layer. To capture tenant level information, you’ll need to run a qkview inside the TMOS layer of the tenant. The following links provide more details:
 
-`K2633: Submit a support case <https://my.f5.com/manage/s/article/K2633>_`
+`K2633: Submit a support case <https://my.f5.com/manage/s/article/K2633>`_
 
-`K04756153: Generating diagnostic data for rSeries systems using the qkview utility <https://my.f5.com/manage/s/article/K04756153>_`
+`K04756153: Generating diagnostic data for rSeries systems using the qkview utility <https://my.f5.com/manage/s/article/K04756153>`_
 
 
 In general, you can use the qkview utility on rSeries systems to automatically collect configuration and diagnostic information from the system. The qkview utility provided in F5OS-A software captures diagnostic information from the rSeries system and associated containers. 
 
 Note: The qkview utility on the rSeries system does not capture diagnostic data from tenant BIG-IP systems. To generate diagnostic data for a tenant BIG-IP, log in to the tenant system and perform the relevant procedure in:
 
-K12878: Generating diagnostic data using the qkview utility: https://support.f5.com/csp/article/K12878
+`K12878: Generating diagnostic data using the qkview utility <https://support.f5.com/csp/article/K12878>`_
 
 
 The qkview utility on the rSeries system generates machine-readable JavaScript Object Notation (JSON) diagnostic data and combines the data into a single compressed Tape ARchive (TAR) format file. The single TAR file is comprised of embedded TAR files containing the diagnostic data of individual containers running on the system, as well as diagnostic data from the rSeries system. You can upload this file, called a qkview file, to iHealth, or give it to F5 Support to help them troubleshoot any issues.
@@ -115,8 +116,8 @@ To upload the qkview file to iHealth using the CLI use the following command: **
     appliance-1# 
 
 
-qkview Creation and Upload via API
-----------------------------------
+qkview Creation and Upload to iHealth via API
+---------------------------------------------
 
 To generate a qkview from the API, POST the following API call to the F5OS out-of-band management IP.
 
@@ -132,7 +133,7 @@ In the body of the API call, supply the filename for the qkview:
         "f5-system-diagnostics-qkview:filename": "my-qkview4.tgz"
     }
 
-Below is the following output showing successful intiation of the qkview:
+Below is the following output showing successful initiation of the qkview:
 
 .. code-block:: json
 
@@ -188,14 +189,86 @@ In the output of the API call, the upload initiation is confirmed.
         }
     }
 
+qkview Download to Client via API
+--------------------------------
+
+You can download qkviews direct to a client machine using the F5OS API. First, list the contents of the path **diags/shared/qkview** to see the save qkview files:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call, add the following path:
+
+.. code-block:: json
+
+    {
+    "f5-utils-file-transfer:path": "diags/shared/qkview"
+    }
+
+The output should look similar to the output below.
+
+.. code-block:: json
+
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "my-qkview.tar",
+                    "date": "",
+                    "size": "525MB"
+                },
+                {
+                    "name": "my-qkview4.tgz",
+                    "date": "",
+                    "size": "590MB"
+                }
+            ]
+        }
+    }
+
+To download one of the qkview files to the local client machine enter the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_diagnostics/headers.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
+
+.. image:: images/rseries_diagnostics/downloadqkviewapi.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_diagnostics/sendanddownload.png
+  :align: center
+  :scale: 70%
 
 Logging
 =======
 
-Many functions inside the F5OS layer will log their events to the **platform.log** file that resides in the **/log/system/** path. You'll also notice there are other files for other types of logs.
+F5OS has extensive logging and diagnostic capabilities, logs are stored locally on disk and can optionally be sent to a remote syslog server. In addition, there are multiple logging subsystems that can be tweaked to be more or less verbose via the **Software Component Log Levels**. Many functions inside the F5OS layer will log their important events to the default **platform.log** file that resides in the **/log/system/** path. This is the file that will also redirect all logs to a remote location (in addition to local disk) when **Remote Log Servers** are added. There are many other log files available local on the disk (some can also be redirected to be sent remotely) for various functions. As an example, there is an **snmp.log** which logs all SNMP requests and traps that the system sends and receives. Another example is the **audit.log** that captures audit related information such as "who has logged in?", "What changes were made?", "Who made the changes?", and unsuccessful login attempts. This section will provide more details on the various logging subsystems, and how to configure them.
+
+There are published error catalogs for each F5OS-A release here:
+
+`F5OS-A Error Catalog <https://clouddocs.f5.com/f5os-error-catalog/rseries/rseries-errors-index.html>`_
+
+
+Viewing Logs
+------------
+
 
 Viewing Logs from the CLI
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options:
 
@@ -244,7 +317,7 @@ There are options to manipulate the output of the file. Add **| ?** to the comma
     until     End with the line that matches
     appliance-1# file show log/system/platform.log | 
 
-There are also other file options to tail the log file using **file tail -f** for live tail of the file or **file tail -n <number of lines>**.
+There are also other file options to tail the log file using **file tail -f** for live tail of the file or **file tail -n <number of lines>**. Below is the live tail example.
 
 .. code-block:: bash
 
@@ -261,7 +334,9 @@ There are also other file options to tail the log file using **file tail -f** fo
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
+The example below shows the last 20 lines of the platform.log file.
 
+.. code-block:: bash
 
     appliance-1# file tail -n 20 log/system/platform.log
     2022-01-18T01:42:40.217019+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_init(confd_trans_ctx*)".
@@ -286,7 +361,7 @@ There are also other file options to tail the log file using **file tail -f** fo
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
-Within the bash shell, the path for the logging is different; **/var/F5/system/log**. 
+Within the bash shell, the actual underlying path for logging is different; it is at the following location: **/var/F5/system/log**. The non-bash shell user interfaces (CLI,webUI,API) do not use the real paths, and instead use the virtual paths to simplify things for administrators. 
 
 .. code-block:: bash
 
@@ -320,43 +395,10 @@ Within the bash shell, the path for the logging is different; **/var/F5/system/l
     drwxr-xr-x.  2 root root      4096 Jan 17 05:17 webUI
     [root@appliance-1 /]# 
 
-If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take effect. Be sure to set logging levels back to normal after troubleshooting has completed.
-
-
-.. code-block:: bash
-
-    appliance-1(config)# system logging sw-components sw-component ?
-    Possible completions:
-    alert-service     api-svc-gateway         appliance-orchestration-agent  appliance-orchestration-manager  authd         confd-key-migrationd  
-    dagd-service      datapath-cp-proxy       diag-agent                     disk-usage-statd                 dma-agent     fips-service          
-    fpgamgr           ihealth-upload-service  ihealthd                       image-agent                      kubehelper    l2-agent              
-    lacpd             license-service         line-dma-agent                 lldpd                            lopd          network-manager       
-    nic-manager       optics-mgr              platform-diag                  platform-fwu                     platform-hal  platform-mgr          
-    platform-monitor  platform-stats-bridge   qkviewd                        rsyslog-configd                  snmp-trapd    stpd                  
-    sw-rbcast         sys-host-config         system-control                 tcpdumpd-manager                 tmstat-agent  tmstat-merged         
-    upgrade-service   user-manager            vconsole                       
-    appliance-1(config)# system logging sw-components sw-component lacpd ?
-    Possible completions:
-    config   Configuration data for platform sw-component logging
-    <cr>     
-    appliance-1(config)# system logging sw-components sw-component lacpd config ?
-    Possible completions:
-    description   Text that describes the platform sw-component (read-only)
-    name          Name of the platform sw-component (read-only)
-    severity      sw-component logging severity level.
-    appliance-1(config)# system logging sw-components sw-component lacpd config severity ?
-    Description: sw-component logging severity level. Default is INFORMATIONAL.
-    Possible completions:
-    [INFORMATIONAL]  ALERT  CRITICAL  DEBUG  EMERGENCY  ERROR  INFORMATIONAL  NOTICE  WARNING
-    appliance-1(config)# system logging sw-components sw-component lacpd config severity DEBUG
-    appliance-1(config-sw-component-lacpd)# commit
-    Commit complete.
-    appliance-1(config-sw-component-lacpd)# 
-  
 Viewing Logs from the webUI
---------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the current release you cannot view the F5OS logs directly from the webUI, although you can download them from the webUI. To view the logs, you can use the CLI or API, or download the files and then view, or use a remote syslog server. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
@@ -369,15 +411,56 @@ If you want to download the main **platform.log**, select the directory **/log/s
   :align: center
   :scale: 70%
 
+Downloading Logs from the API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbose information going to the remote logging host, you can raise its severity to see additional messages.
+You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory use the following API call.
 
-.. image:: images/rseries_diagnostics/image6.png
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call, add the virtual path you want to list.
+
+.. code-block:: json
+ 
+    {
+    "f5-utils-file-transfer:path": "log/system/"
+    }
+
+To download a specific log file use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **platform.log** file that resides in the **log/system** directory.
+
+.. image:: images/rseries_diagnostics/platformlog.png
   :align: center
   :scale: 70%
 
-Viewing Logs from the API
---------------------------
+
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_diagnostics/headers.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_diagnostics/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+If you wanted to download another log file in the same directory such as the **audit.log** file, simply change the file name in the **form-data** section as seen below.
+
+.. image:: images/rseries_diagnostics/auditlog.png
+  :align: center
+  :scale: 70%
+
+Viewing Event Logs from the API
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 If the system currently has any active alarms, you can view them via the following API call:
 
@@ -1060,6 +1143,65 @@ This will display all events (not just the active ones) from the beginning in th
         }
     }
 
+
+
+
+
+
+
+Logging Subsystems/ Software Component Levels
+-----------------------------------------------
+
+
+Changing the Software Component Log Levels via CLI
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+If you would like to change any of the logging levels via the CLI you must be in config mode. Use the **system logging sw-components sw-component <component name> config <logging severity>** command. You must **commit** for this change to take effect. Be sure to set logging levels back to normal after troubleshooting has completed.
+
+
+.. code-block:: bash
+
+    appliance-1(config)# system logging sw-components sw-component ?
+    Possible completions:
+    alert-service     api-svc-gateway         appliance-orchestration-agent  appliance-orchestration-manager  authd         confd-key-migrationd  
+    dagd-service      datapath-cp-proxy       diag-agent                     disk-usage-statd                 dma-agent     fips-service          
+    fpgamgr           ihealth-upload-service  ihealthd                       image-agent                      kubehelper    l2-agent              
+    lacpd             license-service         line-dma-agent                 lldpd                            lopd          network-manager       
+    nic-manager       optics-mgr              platform-diag                  platform-fwu                     platform-hal  platform-mgr          
+    platform-monitor  platform-stats-bridge   qkviewd                        rsyslog-configd                  snmp-trapd    stpd                  
+    sw-rbcast         sys-host-config         system-control                 tcpdumpd-manager                 tmstat-agent  tmstat-merged         
+    upgrade-service   user-manager            vconsole                       
+    appliance-1(config)# system logging sw-components sw-component lacpd ?
+    Possible completions:
+    config   Configuration data for platform sw-component logging
+    <cr>     
+    appliance-1(config)# system logging sw-components sw-component lacpd config ?
+    Possible completions:
+    description   Text that describes the platform sw-component (read-only)
+    name          Name of the platform sw-component (read-only)
+    severity      sw-component logging severity level.
+    appliance-1(config)# system logging sw-components sw-component lacpd config severity ?
+    Description: sw-component logging severity level. Default is INFORMATIONAL.
+    Possible completions:
+    [INFORMATIONAL]  ALERT  CRITICAL  DEBUG  EMERGENCY  ERROR  INFORMATIONAL  NOTICE  WARNING
+    appliance-1(config)# system logging sw-components sw-component lacpd config severity DEBUG
+    appliance-1(config-sw-component-lacpd)# commit
+    Commit complete.
+    appliance-1(config-sw-component-lacpd)# 
+
+
+Changing the Software Component Log Levels via webUI
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Currently F5OS webUI’s logging levels can be configured for local logging, and remote logging servers can be added. The **Software Component Log Levels** can be changed to have additional logging information sent to the local log.  The remote logging has its own **Severity** level which will ultimately control the maximum level of all messages going to a remote log server regardless of the individual Component Log Levels. This will allow for more information to be logged locally for debug purposes, while keeping remote logging to a minimum. If you would like to have more verbose information going to the remote logging host, you can raise its severity to see additional messages.
+
+.. image:: images/rseries_diagnostics/image6.png
+  :align: center
+  :scale: 70%
+
+Changing the Software Componenet Log Levels via API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 You can display all the logging subsystem's logging levels via the following API call:
 
 
@@ -1453,6 +1595,8 @@ If you need to change the logging level to troubleshoot an issue, you can change
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/logging
 
+In the body of the API call, enter the sw-component you want to change, and the severity level you'd like to set.
+
 .. code-block:: json
 
 
@@ -1490,6 +1634,22 @@ When you are finished troubleshooting, you can set the logging level back to def
         }
     }
 
+Audit Logging
+-------------
+
+Details on F5OS-A audit logging can be found here:
+
+`F5OS-A Audit Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#audit-logging>`_
+
+SNMP Logging
+------------
+
+Details on F5OS-A SNMP logging can be found here:
+
+`F5OS-A SNMP Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#troubleshooting-snmp>`_
+
+
+
 TCPDUMP
 =======
 
@@ -1512,8 +1672,7 @@ You can see this in the following example output:
 
 More detail on configuration and filtering of tcpdump is provided here:
 
-https://support.f5.com/csp/article/K80685750
-
+`K80685750: Overview of the tcpdump utility on rSeries systems <https://support.f5.com/csp/article/K80685750>`_
 
 
 You can capture traffic for a specific interface using the **interface** keyword in the **tcpdump** command. You specify the interface using the following syntax: **<port>.<subport>**. If you do not supply the interface keyword, or if you specify **0.0** for the interface no interface filtering occurs and the command captures all interfaces.
@@ -1584,6 +1743,82 @@ At the prompt, to transfer the file, enter the password for the remote host. To 
 .. code-block:: bash
 
     3    |Export file|SCP     |diags/shared/example_capture.pcap                         |10.10.10.100       |/tmp/example_capture.pcap                          |         Completed|
+
+TCPDUMP Download to Client via API
+--------------------------------
+
+You can download tcpdump files direct to a client machine using the F5OS API. First list the contents of the path **diags/shared/tcpdump** to see the save qkview files:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call add the follwowing path:
+
+.. code-block:: json
+
+    {
+    "f5-utils-file-transfer:path": "diags/shared/tcpdump"
+    }
+
+The output should look similar to the output below.
+
+.. code-block:: json
+
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "132.pcap",
+                    "date": "",
+                    "size": "574KB"
+                },
+                {
+                    "name": "132_28.pcap",
+                    "date": "",
+                    "size": "442KB"
+                },
+                {
+                    "name": "jimtcpdump.pcap",
+                    "date": "",
+                    "size": "4.3KB"
+                },
+                {
+                    "name": "test.pcap",
+                    "date": "",
+                    "size": "23KB"
+                }
+            ]
+        }
+    }
+
+To copy one of the tcpdump files to the local client machine enter the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_diagnostics/headers.png
+  :align: center
+  :scale: 70%
+
+
+If you are using Postman, in the body of the API call select **Body**, then select **form-data**. Then enter the **file-name**, **path**, and **token** as seen below. Note, that the path for downloading is currently **diags/shared/** and not the full path of **diags/shared/tcpdump/**. This may change in a future release.
+
+.. image:: images/rseries_diagnostics/downloadtcpdumpapi.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_diagnostics/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+
 
 Console Access via Built-In Terminal Server
 ==============================================
@@ -1680,7 +1915,7 @@ The built-in terminal server will switch the connection to the appropriate tenan
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh tenant1@10.255.0.135 -p 7001
+    prompt$ssh tenant1@10.255.0.135 -p 7001
     tenant1@10.255.0.135's password: 
     Successfully connected to tenant1-1 console. The escape sequence is ^]
 

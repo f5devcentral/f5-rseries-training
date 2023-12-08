@@ -37,7 +37,7 @@ You can upload F5OS-A images to the appliance via the webUI. This is done from t
 
 Here you'll have the option to **Upload** or **Import** a new F5OS image. If you choose **Import**, you will be prompted to provide the configuration details for a remote HTTPS server where the images can be downloaded from. If you choose **Upload** you will be able to upload an image directly from your local client machine via the browser. 
 
-Alternatively, you may also upload images to the controller through the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area, they will be imported and made available for upgrades after a brief delay.
+Alternatively, you may also upload images to the rSeries appliance via the **System Settings -> File Utilities** page. You can select the **images/staging** option from the drop-down menu to import new F5OS-A images. Once uploaded into the staging area, they will be imported and made available for upgrades after a brief delay.
 
 .. image:: images/rseries_software_upgrades/image5.png
   :align: center
@@ -45,13 +45,13 @@ Alternatively, you may also upload images to the controller through the **System
 
 
 
-After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and webUI. If you don’t see it immediately, be patient and wait a few minutes for it to show up as it will not show up until the file has been verified. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
+After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and webUI. If you don’t see it immediately, be patient and wait a few minutes for it to show up as it may take come time to verify the image file. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
 
 .. image:: images/rseries_software_upgrades/image6.png
   :align: center
   :scale: 70%
 
-When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release, meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled**, where you can upgrade Service and/or OS independently. Note that currently F5 has not released any Service only or OS only releases, but they may be an option in the future. For now, it is recommended to choose **Bundled** upgrades.
+When upgrading the F5OS platform layer, you will have a choice of upgrading either a **Bundled** release, meaning **OS** and **Services** are bundled together in an ISO image or **Unbundled**, where you can upgrade Service and/or OS independently. Note that currently, F5 has not released any Service only or OS only releases, but they may be an option in the future. For now, it is recommended to choose **Bundled** upgrades.
 
 .. image:: images/rseries_software_upgrades/image7.png
   :align: center
@@ -64,7 +64,7 @@ When upgrading the F5OS platform layer, you will have a choice of upgrading eith
 Uploading F5OS Images via the CLI
 ---------------------------------
 
-If you would prefer to upload the F5OS image via the CLI this can be done with the **file import** command. Use the **file import** command to get the F5OS image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example importing from a remote HTTPS server. Note the target directory should be **images/staging**:
+If you would prefer to upload the F5OS image via the CLI, this can be done with the **file import** command. Use the **file import** command to get the F5OS image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example importing from a remote HTTPS server. Note the target directory should be **images/staging**:
 
 .. code-block:: bash
 
@@ -73,7 +73,7 @@ If you would prefer to upload the F5OS image via the CLI this can be done with t
     result File transfer is initiated.(images/staging/F5OS-A-1.0.0-11432.R5R10.iso)
     Boston-r10900-1#
 
-If a remote HTTPS server is not available you may also copy the file from the CLI over SCP by adding the **protocol scp** option to the command line:
+If a remote HTTPS server is not available, you may also copy the file from the CLI over SCP by adding the **protocol scp** option to the command line:
 
 .. code-block:: bash
 
@@ -120,7 +120,7 @@ You can view the current F5OS images and their status in the F5OS CLI by using t
     1.0.0-11432  ready   2021-12-03  false  
 
 
-You can alternatively copy the F5OS images into the management IP address of F5OS from a client machine over SCP. You would use the **root** account and the target directory should be **/var/import/staging/**.
+You can alternatively copy the F5OS images into the management IP address of F5OS from a client machine over SCP. You would use the **root** account and the target directory should be **/var/import/staging/**. Currently, only the root account can copy F5OS images into the system over SCP. An enhancement currently being worked on will allow the admin account to copy F5OS images into the system over SCP.
 
 .. code-block:: bash
 
@@ -128,12 +128,12 @@ You can alternatively copy the F5OS images into the management IP address of F5O
     root@10.255.0.132's password: 
     F5OS-A-1.0.0-11433.R5R10.iso                                                                                                                                                                                         100% 5291MB 110.2MB/s   00:48 
 
-Uploading F5OS-A Images via the API
-------------------------------------
+Importing F5OS-A Images from a Remote Server via the API
+---------------------------------------------------------
 
-When uploading or importing F5OS-A images into the rSeries appliance, the files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls. Below are API calls to upload and monitor status.
+When uploading or importing F5OS-A images into the rSeries appliance, the files should be imported into the **images/staging** directory. Once the file import is initiated you can check its status using the **file transfer-status** API calls. Below are API calls to upload and/or import F5OS images and monitor status.
 
-List the current F5OS images in the **images/staging** directory via the following API call:
+You may list the current F5OS images in the **images/staging** directory via the following API call:
 
 .. code-block:: bash
 
@@ -190,7 +190,7 @@ Below is an example output:
     }
 
 
-To import an F5OS-A image, use the following API example:
+To import an F5OS-A image from a remote HTTPS server, use the following API example. You can optionally import using other protocols such as SFTP or SCP by adding the proper **protocol** option to the API command below.
 
 .. code-block:: bash
 
@@ -227,6 +227,7 @@ A response like the one below will provide the status of the transfer:
             "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Import file|HTTPS   |images/import/iso/F5OS-A-1.1.0-0188.R5R10.CANDIDATE.iso     |artifactory.f5net.com|artifactory/velocity-os-generic-dev/F5OS-A/candidate-testing/1.1.0-0188.VF12.4_Candidate_2.6646b1d9/results/appliance/images/F5OS-A-1.1.0-0188.R5R10.CANDIDATE.iso|         Completed|Thu Jan  6 02:58:41 2022\n2    |Import file|HTTPS   |images/staging/F5OS-A-1.0.0-11432.R5R10.iso                 |10.255.0.142        |/upload/F5OS-A-1.0.0-11432.R5R10.iso                        |         Completed|Wed Jan  5 20:03:03 2022\n3    |Import file|SCP     |images/tenant/F5OS-A-1.0.0-11432.R5R10.iso                  |10.255.0.142        |/var/www/server/1/upload/F5OS-A-1.0.0-11432.R5R10.iso       |         Completed|Wed Jan  5 20:08:24 2022\n"
         }
     }
+
 
 After transferring the file, you can view the contents of the images/staging directory. The file will then go through an import process before it is ready for use.
 
@@ -349,6 +350,56 @@ The output will show the status for the OS, Service, ISO, and Install Status.
         }
     }
 
+Uploading F5OS-A Images from a Client Machine via the API
+---------------------------------------------------------
+
+You can upload an F5OS image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
+
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload
+
+In the body of the API call enter the **size**, **name**, and **file-path** as seen in the example below.
+
+.. code-block:: json
+
+    {
+        "size":4293919232 ,
+        "name": "F5OS-A-1.5.0-5781.R5R10.iso",
+        "file-path": "images/staging/"
+    }
+
+If you are using Postman, the API call above will generate an upload-id that will need to be captured so it can be used in the subsequent API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the upload-id can be captured and saved to a variable for subsequent API calls.
+
+.. code-block:: bash
+
+    var resp = pm.response.json();
+    pm.environment.set("upload-id", resp["f5-file-upload-meta-data:output"]["upload-id"])
+
+Below is an example of how this would appear inside the Postman interface.
+
+.. image:: images/rseries_software_upgrades/upload-id.png
+  :align: center
+  :scale: 70%
+
+Once the upload-id is captured, you can then initiate a file upload of the F5OS image using the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-image-upload:image/upload-image
+
+In the body of the API call select **form-data**, and then in the **Value** section click **Select Files** and select the F5OS-A image you want to upload as seen in the example below.
+
+.. image:: images/rseries_software_upgrades/upload-image-api.png
+  :align: center
+  :scale: 70%
+
+In the **Headers** section ensure you add the **file-upload-id** header, with the variable used to capture the id in the previous API call.
+
+.. image:: images/rseries_software_upgrades/file-upload-tenant-headers-f5os.png
+  :align: center
+  :scale: 70%
 
 Upgrading F5OS
 ==============
@@ -534,10 +585,10 @@ You can view the current tenant images and their status in the F5OS CLI using th
     Boston-r10900-1# 
 
 
-Loading Tenant Images for New Tenants via API
+Loading Tenant Images from a Remote Server via API
 ---------------------------------------------
 
-To copy a tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address:
+To copy a tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address. The example below copies a tenant image from a remote HTTPS server. You may also edit the API call to copy from remote SFTP or SCP servers by adding the proper **protocol** option.
 
 .. code-block:: bash
 
@@ -624,6 +675,58 @@ Below is output generated from the previous command:
             ]
         }
     }
+
+
+Uploading Tenant Images from a Client Machine via the API
+---------------------------------------------------------
+
+You can upload an F5OS tenant image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
+
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload
+
+In the body of the API call enter the **size**, **name**, and **file-path** as seen in the example below.
+
+.. code-block:: json
+
+    {
+        "size":2239554028,
+        "name": "BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle",
+        "file-path": "images/tenant/"
+    }
+
+If you are using Postman, the API call above will generate an upload-id that will need to be captured so it can be used in the API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the **upload-id** can be captured and saved to a variable called **upload-id** for subsequent API calls.
+
+.. code-block:: bash
+
+    var resp = pm.response.json();
+    pm.environment.set("upload-id", resp["f5-file-upload-meta-data:output"]["upload-id"])
+
+Below is an example of how this would appear inside the Postman interface under the **Tests** section.
+
+.. image:: images/rseries_software_upgrades/upload-id.png
+  :align: center
+  :scale: 70%
+
+Once the upload-id is captured, you can then initiate a file upload of the F5OS TENANT_NAME image using the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-image-upload:image/upload-image
+
+In the body of the API call select **form-data**, and then in the **Value** section click **Select Files** and select the F5OS tenant image you want to upload as seen in the example below.
+
+.. image:: images/rseries_software_upgrades/file-upload-tenant-body.png
+  :align: center
+  :scale: 70%
+
+In the **Headers** section ensure you add the **file-upload-id** header, with the variable used to capture the id in the previous API call.
+
+.. image:: images/rseries_software_upgrades/file-upload-tenant-headers.png
+  :align: center
+  :scale: 70%
 
 
 Tenant Upgrades

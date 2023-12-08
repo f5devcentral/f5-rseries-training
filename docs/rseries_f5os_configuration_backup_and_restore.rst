@@ -251,6 +251,95 @@ You can then check on the status of the export via the following API call:
         }
     }
 
+Downloading an F5OS Backup via API
+----------------------------------
+
+You can download configuration backup files from the F5OS layer using the F5OS API. To list the current config files in the **configs/** directory use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call, add the virtual path you want to list.
+
+.. code-block:: json
+ 
+    {
+    "f5-utils-file-transfer:path": "configs/"
+    }
+
+You should see output like the example below.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12022-04-19",
+                    "date": "Tue Apr 19 15:19:07 UTC 2022",
+                    "size": "81KB"
+                },
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12023-01-09",
+                    "date": "Mon Jan  9 16:31:10 UTC 2023",
+                    "size": "80KB"
+                },
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12023-11-17",
+                    "date": "Fri Nov 17 18:49:45 UTC 2023",
+                    "size": "88KB"
+                },
+                {
+                    "name": "F5OS-BACKUP-APPLIANCE12023-11-28",
+                    "date": "Wed Nov 29 00:21:07 UTC 2023",
+                    "size": "77KB"
+                },
+                {
+                    "name": "F5OS-BACKUP2022-01-20",
+                    "date": "Thu Jan 20 05:09:39 UTC 2022",
+                    "size": "60KB"
+                },
+                {
+                    "name": "jim-july",
+                    "date": "Wed Jul 13 15:35:15 UTC 2022",
+                    "size": "78KB"
+                },
+                {
+                    "name": "jim-test1",
+                    "date": "Wed Nov  8 21:09:09 UTC 2023",
+                    "size": "77KB"
+                }
+            ]
+        }
+    }
+
+To download a specific config file, use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+
+For the **Headers** secion of the Postman request be sure to add the following headers:
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/configheaders.png
+  :align: center
+  :scale: 70%
+
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the configuration file named **jim-july** file that resides in the **configs/** directory.
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/configfile.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+
 
 Backing up Tenants
 ==================
@@ -360,7 +449,7 @@ The reset of the database will not completely wipe out the system configuration.
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    prompt$ssh -l admin 10.255.0.133
     admin@10.255.0.133's password: *****
     You are required to change your password immediately (root enforced)
     Last failed login: Thu Jan 20 16:01:00 EST 2022 from 172.18.104.143 on ssh:notty
@@ -380,7 +469,7 @@ After the password is changed for the admin account, you will be disconnected an
 
 .. code-block:: bash
 
-    FLD-ML-00054045:~ jmccarron$ ssh -l admin 10.255.0.133
+    prompt$ssh -l admin 10.255.0.133
     admin@10.255.0.133's password: 
     Last login: Thu Jan 20 16:01:04 2022 from 172.18.104.143
     Welcome to the Management CLI
@@ -441,6 +530,8 @@ The body of the API call contains the following:
         ]
     }
 
+Importing an F5OS Backup from a Remote Server via API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You'll need to use the new password/token on subsequent API calls. Post the following API call to the F5OS out-of-band IP address to import the archived ConfD backup file from a remote HTTPS server to the configs directory on the appliance.
 
@@ -466,15 +557,36 @@ You may query the transfer status of the file via the following API command:
 
 .. code-block:: bash
 
-    POST https://{{Appliance1_Controller_IP}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
 The body of the API call should have the file name you want to query:
 
 .. code-block:: json
 
     {
-        "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE4{{currentdate}}"
+        "f5-utils-file-transfer:file-name": "configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}"
     }
+
+Uploading an F5OS Backup from a Client Machine via API
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+You can upload an F5OS backup file directly from a client machine using the API. Use the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-upload-meta-data:upload/start-upload
+
+In the body of the API call, you must enter the **size**, **name**, and **file-path** as seen in the example below.
+
+.. code-block:: json
+
+    {
+        "size":66000,
+        "name": "F5OS-BACKUP-APPLIANCE1{{currentdate}}",
+        "file-path": "configs/"
+    }
+
+
 
 If you want to list the contents of the config directory via API, use the following API command:
 
@@ -487,7 +599,7 @@ The body of the API call above will list the **configs** directory as the one to
 .. code-block:: json
 
     {
-    "f5-utils-file-transfer:path": "configs"
+    "f5-utils-file-transfer:path": "configs/"
     }
 
 You’ll see the contents of the directory in the API response and the file should be listed:

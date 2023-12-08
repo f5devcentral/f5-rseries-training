@@ -38,12 +38,162 @@ As of F5OS-A 1.6.0.the following F5OS Appliance MIBs are available:
 - F5-PLATFORM-STATS-MIB
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
 
+Downloading MIBs
+================
 
-MIBs can be downloaded directly from the F5OS layer starting in F5OS-A v1.2.0. From the webUI, you can go to the **System Settings > File Utility** page. Then, from the **Base Directory** drop down, select the **mibs** directory to download the MIB files. There are two separate MIB files: NetSNMP and F5OS MIBs for the appliance. Download both archives and extract them to see the individual MIB files.
+MIBs can be downloaded directly from the F5OS layer starting in F5OS-A v1.2.0.
+
+
+Downloading MIBs via webUI
+--------------------------
+
+From the webUI, you can go to the **System Settings > File Utility** page. Then, from the **Base Directory** drop down, select the **mibs** directory to download the MIB files. There are two separate MIB files: NetSNMP and F5OS MIBs for the appliance. Download both archives and extract them to see the individual MIB files.
 
 .. image:: images/rseries_monitoring_snmp/image8.png
   :align: center
   :scale: 70%
+
+Uploading MIBs to a Remote Server via CLI
+-----------------------------------------
+
+From the CLI, use the **file export** command to transfer the MIB files to a remote server. First, list the MIB files using the **file list** command as seen below.
+
+.. code-block:: bash
+
+    r10900-1# file list path mibs/
+    entries {
+        name mibs_f5os_appliance.tar.gz
+        date Thu Nov 30 20:52:26 UTC 2023
+        size 9.3KB
+    }
+    entries {
+        name mibs_netsnmp.tar.gz
+        date Thu Nov 30 20:52:26 UTC 2023
+        size 110KB
+    }
+    r10900-1# 
+
+To upload each of the files to a remote HTTPS server use the following command. You can also upload using SCP or SFTP by using the proper protocol option.
+
+.. code-block:: bash
+
+    appliance-1# file export local-file mibs/mibs_f5os_appliance.tar.gz remote-host 10.255.0.142 remote-file /upload/upload.php username corpuser insecure
+    Value for 'password' (<string>): ********
+    result File transfer is initiated.(mibs/mibs_f5os_appliance.tar.gz)
+    appliance-1#
+
+Repeat the same API call but change the filename to the **mibs_netsnmp.tar.gz** file.
+
+Downloading MIBs via API
+--------------------------
+
+You can utilize the F5OS API to download the MIB files directly to a client machine, or to upload to a remote server over HTTPS, SCP, or SFTP. First, list the contents of the **mibs/** directory on the rSeries appliance using the following API call to get the filenames.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call add the following:
+
+.. code-block:: json
+
+    {
+    "f5-utils-file-transfer:path": "mibs/"
+    }
+
+This will list the contents of the mibs directory as seen below.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "entries": [
+                {
+                    "name": "mibs_f5os_appliance.tar.gz",
+                    "date": "Thu Nov 30 20:52:26 UTC 2023",
+                    "size": "9.3KB"
+                },
+                {
+                    "name": "mibs_netsnmp.tar.gz",
+                    "date": "Thu Nov 30 20:52:26 UTC 2023",
+                    "size": "110KB"
+                }
+            ]
+        }
+    }
+
+You'll notice there are two separate MIB files, one is for Enterprise MIBs, while the other is for F5 specific MIBs. You'll need to download both files and add them to your SNMP manager. Below are example API calls to download each of the SNMP MIB files.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+For the **Headers** secion of the Postman request, be sure to add the following headers:
+
+.. image:: images/rseries_monitoring_snmp/snmpheaders.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, in the body of the API call select **Body**, then select **form-data**. Then enter the **file-name**, **path**, and **token** as seen below. 
+
+.. image:: images/rseries_monitoring_snmp/downloadmibsapi1.png
+  :align: center
+  :scale: 70%
+
+Repeat the same process for the other MIB file.
+
+.. image:: images/rseries_monitoring_snmp/downloadmibsapi2.png
+  :align: center
+  :scale: 70%  
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_monitoring_snmp/sendanddownload.png
+  :align: center
+  :scale: 70%
+
+Exporting MIBs to a Remote Server via the API
+---------------------------------------------
+
+
+To copy the SNMP MIB files from the appliance to a remote https server use the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/export
+
+In the body of the API call, add the remote server info and local file you want to export.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:insecure": "",
+        "f5-utils-file-transfer:protocol": "https",
+        "f5-utils-file-transfer:username": "corpuser",
+        "f5-utils-file-transfer:password": "password",
+        "f5-utils-file-transfer:remote-host": "10.255.0.142",
+        "f5-utils-file-transfer:remote-file": "/upload/upload.php",
+        "f5-utils-file-transfer:local-file": "mibs/mibs/mibs_f5os_appliance.tar.gz"
+    }
+    
+You can then check on the status of the export via the following API call:
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
+
+The output will show the status of the file export.
+
+.. code-block:: json
+
+    {
+        "f5-utils-file-transfer:output": {
+            "result": "\nS.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                \n1    |Export file|HTTPS   |mibs/mibs_f5os_appliance.tar.gz                               |10.255.0.142        |/upload/upload.php                                          |         Completed|Thu Jan 20 05:11:44 2022"
+        }
+    }
+
+Repeat the same steps for the other MIB file.
+
 
 Adding Allowed IPs for SNMP
 ===========================
@@ -519,7 +669,8 @@ To configure a Security Group for both SNMPv1 and SNMPv2c.
 
 Configuring SNMP Access via API
 -------------------------------
-SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either communities for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
+
+SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either a community for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
 
 To create an SNMPv3 user use the following API call.
 
@@ -590,6 +741,105 @@ The output should appear similar to the example below.
 
 .. code-block:: json
 
+    {
+        "f5-system-snmp:snmp": {
+            "users": {
+                "user": [
+                    {
+                        "name": "jim",
+                        "config": {
+                            "name": "jim",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        },
+                        "state": {
+                            "name": "jim",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        }
+                    },
+                    {
+                        "name": "snmpv3-user3",
+                        "config": {
+                            "name": "snmpv3-user3",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        },
+                        "state": {
+                            "name": "snmpv3-user3",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        }
+                    },
+                    {
+                        "name": "snmpv3user",
+                        "config": {
+                            "name": "snmpv3user",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        },
+                        "state": {
+                            "name": "snmpv3user",
+                            "authentication-protocol": "md5",
+                            "privacy-protocol": "aes"
+                        }
+                    }
+                ]
+            },
+            "communities": {
+                "community": [
+                    {
+                        "name": "public",
+                        "config": {
+                            "name": "public",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        },
+                        "state": {
+                            "name": "public",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "public2",
+                        "config": {
+                            "name": "public2",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        },
+                        "state": {
+                            "name": "public2",
+                            "security-model": [
+                                "v1",
+                                "v2c"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "engine-id": {
+                "config": {
+                    "value": "mac"
+                },
+                "state": {
+                    "engine-id": "80:00:2f:f4:03:00:94:a1:69:59:02",
+                    "type": "mac"
+                }
+            },
+            "config": {
+                "port": 161
+            },
+            "state": {
+                "port": 161
+            }
+        }
 
 
 Configuring SNMP Access via webUI
@@ -905,13 +1155,43 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include sensor-fault
+    syscon-1-active# file show log/confd/snmp.log | include sensor-fault        
+    <INFO> 9-Nov-2023::19:21:08.938 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244105 10.255.0.139:162 (TimeTicks sysUpTime=271109396)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927022179 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:21:08.939 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244105 10.255.0.144:162 (TimeTicks sysUpTime=271109396)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927022179 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:21:08.942 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244106 10.255.0.144:162 (TimeTicks sysUpTime=271109396)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927022179 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:21:08.943 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244106 10.255.0.143:162 (TimeTicks sysUpTime=271109396)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927022179 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:21:08.988 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244107 10.255.0.139:162 (TimeTicks sysUpTime=271109401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927133721 UTC)(OCTET STRING alertDescription=Asserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:21:08.989 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244107 10.255.0.144:162 (TimeTicks sysUpTime=271109401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927133721 UTC)(OCTET STRING alertDescription=Asserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:21:08.993 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244108 10.255.0.144:162 (TimeTicks sysUpTime=271109401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927133721 UTC)(OCTET STRING alertDescription=Asserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:21:08.996 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244108 10.255.0.143:162 (TimeTicks sysUpTime=271109401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:21:08.927133721 UTC)(OCTET STRING alertDescription=Asserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:26:08.930 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244111 10.255.0.139:162 (TimeTicks sysUpTime=271139395)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911277769 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:26:08.931 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244111 10.255.0.144:162 (TimeTicks sysUpTime=271139395)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911277769 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:26:08.934 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244112 10.255.0.144:162 (TimeTicks sysUpTime=271139395)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911277769 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:26:08.935 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244112 10.255.0.143:162 (TimeTicks sysUpTime=271139395)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911277769 UTC)(OCTET STRING alertDescription=Sensor fault detected in hardware)
+    <INFO> 9-Nov-2023::19:26:08.989 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244113 10.255.0.139:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:26:08.990 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244113 10.255.0.144:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:26:08.990 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244114 10.255.0.144:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
+    <INFO> 9-Nov-2023::19:26:08.991 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244114 10.255.0.143:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
 
 **module-present                 .1.3.6.1.4.1.12276.1.1.1.66304**
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include module-present
+    syscon-1-active# file show log/confd/snmp.log | include module-present
+    <INFO> 31-Aug-2023::17:29:41.592 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087723 10.255.0.139:162 (TimeTicks sysUpTime=10937)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.554609619 UTC)(OCTET STRING alertDescription=Blade6 removed)
+    <INFO> 31-Aug-2023::17:29:41.593 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087723 10.255.0.144:162 (TimeTicks sysUpTime=10937)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.554609619 UTC)(OCTET STRING alertDescription=Blade6 removed)
+    <INFO> 31-Aug-2023::17:29:41.604 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087731 10.255.0.139:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.596222405 UTC)(OCTET STRING alertDescription=Blade4 removed)
+    <INFO> 31-Aug-2023::17:29:41.605 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087731 10.255.0.144:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.596222405 UTC)(OCTET STRING alertDescription=Blade4 removed)
+    <INFO> 31-Aug-2023::17:29:41.607 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087733 10.255.0.139:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.618843267 UTC)(OCTET STRING alertDescription=Blade5 removed)
+    <INFO> 31-Aug-2023::17:29:41.608 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087733 10.255.0.144:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.618843267 UTC)(OCTET STRING alertDescription=Blade5 removed)
+    <INFO> 31-Aug-2023::17:29:41.611 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087735 10.255.0.139:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.006214637 UTC)(OCTET STRING alertDescription=Vpc1 present)
+    <INFO> 31-Aug-2023::17:29:41.612 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087735 10.255.0.144:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.006214637 UTC)(OCTET STRING alertDescription=Vpc1 present)
+    <INFO> 31-Aug-2023::17:29:41.614 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087737 10.255.0.139:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.018550834 UTC)(OCTET STRING alertDescription=Vpc2 present)
+    <INFO> 31-Aug-2023::17:29:41.615 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087737 10.255.0.144:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.018550834 UTC)(OCTET STRING alertDescription=Vpc2 present)
+    <INFO> 31-Aug-2023::17:29:41.627 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087745 10.255.0.139:162 (TimeTicks sysUpTime=10940)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.040748272 UTC)(OCTET STRING alertDescription=Blade1 present)
+    <INFO> 31-Aug-2023::17:29:41.628 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087745 10.255.0.144:162 (TimeTicks sysUpTime=10940)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.040748272 UTC)(OCTET STRING alertDescription=Blade1 present)
+    <INFO> 31-Aug-2023::17:29:41.630 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087747 10.255.0.139:162 (TimeTicks sysUpTime=10941)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.051477248 UTC)(OCTET STRING alertDescription=Blade2 present)
+
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
@@ -1110,14 +1390,25 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include reboot
-    <INFO> 10-Jul-2023::13:41:23.284 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423794 10.255.0.144:161 (TimeTicks sysUpTime=2909)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:41:23.281740739 UTC)(OCTET STRING alertDescription=reboot - appliance-1.chassis.local F5OS-A R5R10 version 1.7.0-0528)
+    r10900-1# file show log/system/snmp.log
+    <INFO> 17-Nov-2023::12:06:13.587 appliance-1 confd[130]: snmp snmpv2-trap reqid=1025467718 10.255.0.144:161 (TimeTicks sysUpTime=380496)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-17 17:06:13.583723667 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
+    <INFO> 17-Nov-2023::12:09:02.207 appliance-1 confd[117]: snmp snmpv2-trap reqid=1710762179 10.255.0.144:161 (TimeTicks sysUpTime=69)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
 
 **raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include raid-event
+    <INFO> 10-Nov-2023::15:05:09.223 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680977 10.255.0.144:161 (TimeTicks sysUpTime=261782586)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.216697040 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+    <INFO> 10-Nov-2023::15:05:09.274 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680978 10.255.0.144:161 (TimeTicks sysUpTime=261782591)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.264314422 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+    <INFO> 10-Nov-2023::15:05:09.326 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680979 10.255.0.144:161 (TimeTicks sysUpTime=261782596)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.275871180 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+    <INFO> 10-Nov-2023::15:05:09.377 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680980 10.255.0.144:161 (TimeTicks sysUpTime=261782602)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.318350942 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+    <INFO> 10-Nov-2023::15:05:09.430 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680981 10.255.0.144:161 (TimeTicks sysUpTime=261782607)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.330028590 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+    <INFO> 10-Nov-2023::15:05:09.481 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680982 10.255.0.144:161 (TimeTicks sysUpTime=261782612)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.373077858 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+    <INFO> 10-Nov-2023::15:05:09.533 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680983 10.255.0.144:161 (TimeTicks sysUpTime=261782617)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.384442574 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+    <INFO> 10-Nov-2023::15:05:09.584 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680984 10.255.0.144:161 (TimeTicks sysUpTime=261782622)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.425790569 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+    <INFO> 10-Nov-2023::15:05:09.636 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680985 10.255.0.144:161 (TimeTicks sysUpTime=261782627)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.437237512 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+    <INFO> 10-Nov-2023::15:07:15.992 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680986 10.255.0.144:161 (TimeTicks sysUpTime=261795263)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:07:15.972123613 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
 
 **backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
 
@@ -1491,7 +1782,7 @@ Polling SNMP Endpoints
 =====================
 
 
-Once SNMP is properly setup and allow-lists are enabled you can poll SNMP objects from remote endpoints. If you have an SNMP manager it is recommended you download the appropriate MIBs from the rSeries appliance and compile them into you SNMP manager. Alternatively, you can use SNMP command line utilities from a remote client to validate the SNMP endpoints. You can then poll/query the appliance via SNMP to get stats from the system using the following SNMP OID’s:
+Once SNMP is properly setup and allow-lists are enabled you can poll SNMP objects from remote endpoints. If you have an SNMP manager, it is recommended you download the appropriate MIBs from the rSeries appliance and compile them into you SNMP manager. Alternatively, you can use SNMP command line utilities from a remote client to validate the SNMP endpoints. You can then poll/query the appliance via SNMP to get stats from the system using the following SNMP OID’s:
 
 SNMP System
 -----------
@@ -1880,7 +2171,7 @@ This MIB displays the memory utilization for the system.
 SNMP FPGA Table
 ---------------
 
-The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Servcie Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
+The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Service Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
 
 **F5-PLATFORM-STATS-MIB:fpgaTable OID: .1.3.6.1.4.1.12276.1.2.1.5.1**
 
@@ -1930,7 +2221,7 @@ This MIB provides the current firmware status and version for all firmware subsy
     fw-version-drive-u.2.slot2                          VDV10184        false           none
     prompt% 
 
-SNMP Fantry Stats Table
+SNMP Fantray Stats Table
 ----------------------
 
 Query the following SNMP OID to get detailed fan speeds.
@@ -1947,13 +2238,52 @@ Query the following SNMP OID to get detailed fan speeds.
     prompt% 
 
 
+SNMP LLDP Configuration Table
+-----------------------------
+
+Query the following SNMP OID to get detailed LLDP configuration table.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-LLDP-MIB:lldpIfConfigTable 
+    SNMP table: F5-OS-LLDP-MIB::lldpIfConfigTable
+
+    lldpIfName lldpIfEnabled lldpIfTlvAdvertisement lldpIfTlvmap
+            1.0          true                   txrx       130943
+            2.0          true                   txrx       130943
+            6.0          true                   txrx       130943
+            13.0         true                   txrx       130943
+            14.0         true                   txrx       130943
+            15.0         true                   txrx       130943
+            16.0         true                   txrx       130943
+    prompt%
+
+
+SNMP LLDP Neighbors Table
+-----------------------------
+
+Query the following SNMP OID to get detailed LLDP neighbors table.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-LLDP-MIB:lldpNeighborsTable
+    SNMP table: F5-OS-LLDP-MIB::lldpNeighborsTable
+
+    lldpLocalInterface lldpNeighborPortId lldpNeighborChassisId    lldpNeighborPortDesc lldpNeighborSysName     lldpNeighborSysDesc lldpNeighborSysCap lldpNeighborMgmtAddr lldpNeighborPvid lldpNeighborPpvid lldpNeighborVlanName lldpNeighborVlanTag lldpNeighborProtocolIdentity lldpNeighborAutoNego lldpNeighborPmd lldpNeighborMau lldpNeighborAggStatus lldpNeighborAggPortid lldpNeighborMfs lldpNeighborF5ProductModel
+                13.0               13.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
+                14.0               14.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
+                15.0               15.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
+                16.0               16.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
+    prompt% 
+
+
 
 Troubleshooting SNMP
 ====================
 
 There are SNMP logs within each appliance. SNMP information is captured in the **snmp.log** file located with the **/log/system** directory in the F5OS layer:
 
-**Note: The CLI and webUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller snmp logs is **/var/F5/system/log/snmp.log**
+**Note: The CLI and webUI abstract the full paths for logs so that they are easier to find. If using root access to the bash shell, then the full path to the system controller SNMP logs is **/var/F5/system/log/snmp.log**
 
 To list the files in the **log/system** directory in the CLI use the **file list path log/system** command:
 
@@ -2026,6 +2356,41 @@ SNMP information (requests/traps) are captured in the **snmp.log** file located 
     <INFO> 12-Apr-2022::16:18:01.054 appliance-1 confd[104]: snmp snmpv2-trap reqid=1799379631 10.255.0.144:6011 (TimeTicks sysUpTime=86087853)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554456)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
     <INFO> 12-Apr-2022::16:18:02.471 appliance-1 confd[104]: snmp snmpv2-trap reqid=1799379632 10.255.0.144:6011 (TimeTicks sysUpTime=86087995)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554456)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=2)
     appliance-1# 
+
+Downloading SNMP Logs from the API
+----------------------------------
+
+You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API call, add the virtual path you want to list.
+
+ .. code-block:: json
+ 
+    {
+    "f5-utils-file-transfer:path": "log/system/"
+    }
+
+To download a specific log file use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
+
+In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **snmp.log** file that resides in the **log/system** directory.
+
+.. image:: images/rseries_monitoring_snmp/snmplogdownload.png
+  :align: center
+  :scale: 70%
+
+If you are using Postman, instead of clicking **Send**, click on the arrow next to Send, and then select **Send and Download**. You will then be prompted to save the file to your local file system.
+
+.. image:: images/rseries_monitoring_snmp/sendanddownload.png
+  :align: center
+  :scale: 70%
 
 
 
