@@ -5,7 +5,7 @@ Initial Setup of rSeries F5OS Platform Layer
 
 Connect a console or terminal server to the console port of the rSeries appliance. Follow the guidance in the link below:
 
-https://techdocs.f5.com/en-us/hardware/f5-rseries-systems-getting-started/gs-system-initial-config.html#run-setup-wizard
+`Run the Setup wizard <https://techdocs.f5.com/en-us/hardware/f5-rseries-systems-getting-started/gs-system-initial-config.html#run-setup-wizard>`_
 
 
 Login as admin/admin and access the F5OS CLI. F5OS utilizes **ConfD** for configuration management of F5OS and will be a familiar navigation experience if you have used it on other products. The CLI supports command completion and online help and is easy to navigate. There are **show** commands to display current configurations and status, and a **config** mode to alter current configuration.
