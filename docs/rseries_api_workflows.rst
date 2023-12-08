@@ -97,7 +97,7 @@ Diagnostics
 
 `Viewing Event Logs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#viewing-event-logs-from-the-api>`_
 
-`Changing the Software Componenet Log Levels via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#changing-the-software-componenet-log-levels-via-api>`_
+`Changing the Software Component Log Levels via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#changing-the-software-componenet-log-levels-via-api>`_
 
 `TCPDUMP Download to Client via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#tcpdump-download-to-client-via-api>`_
 
@@ -143,9 +143,16 @@ Monitoring
 
 `F5 Service-Pods Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-service-pods-status>`_
 
+`System Health via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#system-health>`_
 
 rSeries F5OS-A SNMP Monitoring and Alerting
 -------------------------------------------
+
+`Downloading MIBs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#downloading-mibs-via-api>`_
+
+`Exporting MIBs to a Remote Server via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#exporting-mibs-to-a-remote-server-via-the-api>`_
+
+<>`_
 
 `Adding Allowed IPs for SNMP via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#adding-allowed-ips-for-snmp-via-api>`_
 
@@ -155,3 +162,4 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 
 `Enabling SNMP Traps in the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#enabling-snmp-traps-in-the-api>`_
 
+`Downloading SNMP Logs from the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#downloading-snmp-logs-from-the-api>`_
