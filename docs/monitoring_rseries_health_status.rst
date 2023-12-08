@@ -18168,6 +18168,8 @@ You can filter the above output in many ways. Below is an example of how to only
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=lcd
 
+.. code-block:: bash
+
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=psu-1
 
 To get a further summarized high level system health status that is easier to consume:
