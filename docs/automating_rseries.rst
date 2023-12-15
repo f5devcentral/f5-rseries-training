@@ -14,7 +14,7 @@ If you want to see what API functions are available you can view the API referen
 
 The API workflows section has an index which maps to all the common API workflow examples in the rSeries planning guide. In addtion, there is an accompanying Postman collection which can be downloaded and used within your own environment if you want to become familiar with the F5OS API.
 
-`F5 rSeries API Workflows <https://clouddocs.f5.com/api/rseries-api/rseries-api-workflows.html>`_
+`F5 rSeries API Workflows <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_api_workflows.html>`_
 
 Below is a smaple of some of the workflows available in the link above, and there are many more.
 
