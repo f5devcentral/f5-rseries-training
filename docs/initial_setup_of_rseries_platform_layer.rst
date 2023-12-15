@@ -1471,12 +1471,12 @@ You'll get the following confirmation that the license has been installed succes
 Automatic Licensing via API
 ===========================
 
-You can very easily apply a license automatically with the following API call. This assumes the VELOS system controllers are on the network, have internet access and DNS has been configured. This will allow the system to resolve the domain name for the F5 licensing server to apply the license.
+You can very easily apply a license automatically with the following API call. This assumes the rSeries appliance is on the network, has Internet access and DNS has been configured. This will allow the system to resolve the domain name for the F5 licensing server to apply the license.
 
 
 .. code-block:: bash
 
-  POST https://{{velos_chassis1_system_controller_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:install
+  POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:install
 
 In the body of the API call add your Base Registration Key:
 

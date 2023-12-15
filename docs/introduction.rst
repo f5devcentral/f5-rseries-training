@@ -18,7 +18,7 @@ A major difference between rSeries and iSeries is the introduction of a new Kube
 rSeries continues to provide hardware acceleration and offload capabilities in a similar way that iSeries does, however, more modern Field Programmable Gate Arrays (FPGA's), CPU, and crypto offload capabilities have been introduced. The new F5OS platform layer allows rSeries to run different types of tenants within the same appliance. As an example, rSeries will be able to run:
 
 •	Existing TMOS/BIG-IP tenants (specific software releases)
-•	Future support for next-generation BIG-IP (BIG-IP Next)
+•	Support for next-generation BIG-IP (BIG-IP Next) tenants
 •	Future possibility of running approved 3rd party tenants 
 
 
