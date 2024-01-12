@@ -169,6 +169,13 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
   :align: center
   :scale: 70%
 
+
+In newer releases, the allowed IP functionality has been moved to the **System Settings -> Security** page as seen below.
+
+.. image:: images/rseries_monitoring_snmp/image1a.png
+  :align: center
+  :scale: 70%  
+
 Setting F5OS Primary Key
 ======================== 
 
