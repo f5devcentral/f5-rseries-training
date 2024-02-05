@@ -2,9 +2,9 @@
 Deploying an rSeries BIG-IP Next Tenant
 =======================================
 
-Starting with F5OS-A 1.7.0 rSeries appliances support both BIG-IP and BIG-IP Next tenants. Since F5OS-A 1.7.0 is the first release supporting BIG-IP Next there are some caveats. Only r5000 (r5600,r5800,r5900) and r10000 (r10600,r10800,r10900) rSeries appliances support BIG-IP Next. BIG-IP Next support for other rSeries platforms will come in a subsequent release.
+Starting with F5OS-A 1.7.0 rSeries appliances support both BIG-IP and BIG-IP Next tenants. Since F5OS-A 1.7.0 is the first release supporting BIG-IP Next, there are some caveats. Only r5000 (r5600,r5800,r5900) and r10000 (r10600,r10800,r10900) rSeries appliances support BIG-IP Next. BIG-IP Next support for other rSeries platforms will come in a subsequent release.
 
-The intial F5OS-A 1.7.0 release, also limits the number of BIG-IP Next tenants that can run on an rSeries appliance. There are 3 BIG-IP Next tenant sizes supported: 4 vCPU, 8 vCPU, and the maximum vCPU allotment for the appliance. As an example, the r5900 supports 4 vCPU, 8 vCPU, and 26 vCPU (The maximum for the platform). There is also a maximum of 2 BIG-IP Next tenants for the F5OS-A 1.7.0 release, but you can configure as many BIG-IP tenants as you wish. 
+The initial F5OS-A 1.7.0 release also limits the number of BIG-IP Next tenants that can run on an rSeries appliance. There are 3 BIG-IP Next tenant sizes supported: 4 vCPU, 8 vCPU, and the maximum vCPU allotment for the appliance. As an example, the r5900 supports 4 vCPU, 8 vCPU, and 26 vCPU (The maximum for the platform). There is also a maximum of 2 BIG-IP Next tenants per rSeries appliance for the F5OS-A 1.7.0 release, but you can configure as many BIG-IP tenants as you wish. The table below outlines the supoorted tenant vCPU sizes for both BIG-IP and BIG-IP Next tenants.
 
 +--------------+------------------------+-----------------------------------------------------+-----------------------------------------+
 | Platform     | # of vCPUs for Tenants | Supported vCPUs for BIG-IP Tenants                  | Supported vCPUs for BIG-IP Next Tenants |
