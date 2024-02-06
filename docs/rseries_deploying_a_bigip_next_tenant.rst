@@ -30,25 +30,25 @@ Tenant Image Types
 
 rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether they allow in-place upgrades. rSeries only supports specific TMOS releases (currently 15.1.5); they can be found on downloads.f5.com:
 
-.. image:: images/rseries_deploying_a_tenant/image1.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image1.png
   :align: center
   :scale: 70% 
 
 Ensure you choose the option that is labeled specifically for rSeries that is **15.1.5_Tenant-F5OS**:
 
-.. image:: images/rseries_deploying_a_tenant/image2.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image2.png
   :align: center
   :scale: 70% 
 
 There are 4 different types of tenant images to choose from as seen below; please read the rest of this section to determine the best image type for your environment:
 
-.. image:: images/rseries_deploying_a_tenant/image3.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image3.png
   :align: center
   :scale: 70% 
 
 The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
 
-.. image:: images/rseries_deploying_a_tenant/image4.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image4.png
   :align: center
   :scale: 70% 
 
@@ -65,19 +65,19 @@ The **T4-F5OS** image also supports any module combination but has additional di
 
 Note that the image sizes in the chart are the default amount of space a tenant could use, not necessarily what it will consume on the physical disk. rSeries tenants are deployed in sparse mode on the file system when they are created. That means that a tenant may think it has a certain amount of disk space, but most of the space that is unutilized is zeroed-out and not consuming any space on the disk. 
 
-.. image:: images/rseries_deploying_a_tenant/image5.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image5.png
   :align: center
   :scale: 70% 
 
 This means the disk consumption on the rSeries disk is much smaller than what appears inside the tenant. In the example below the tenant believes it has 77GB of disk allocated:
 
-.. image:: images/rseries_deploying_a_tenant/image6.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image6.png
   :align: center
   :scale: 70% 
 
 However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is consuming only 6.4GB on the disk. You can confirm this by logging into the bash shell of F5OS as root. Then listing the contents of the directory **/var/F5/system/cbip-disks**, here you will see directories for each tenant. Enter the command **ls -lsh <tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (in this case 6.4GB).
 
-.. image:: images/rseries_deploying_a_tenant/image7.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image7.png
   :align: center
   :scale: 70% 
 
@@ -294,23 +294,23 @@ Before deploying any tenant, you must ensure you have a proper tenant software r
 
 You can upload a tenant image via the webUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page; you can click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
 
-.. image:: images/rseries_deploying_a_tenant/image71.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image71.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_tenant/image72.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image72.png
   :align: center
   :scale: 70% 
 
 The second option is to click the **Upload** button to select an image file that you have previously downloaded directly from your computer via the browser.
 
-.. image:: images/rseries_deploying_a_tenant/image73.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image73.png
   :align: center
   :scale: 70% 
 
 After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
-.. image:: images/rseries_deploying_a_tenant/image50.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image50.png
   :align: center
   :scale: 70% 
 
@@ -326,13 +326,13 @@ Creating a BIG-IP Next Tenant via webUI
 
 You can deploy a BIG-IP Next tenant from the webUI using the **Add** button in the **Tenant Management > Tenant Deployments** screen.
 
-.. image:: images/rseries_deploying_a_tenant/image74.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image74.png
   :align: center
   :scale: 70% 
 
 The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
-.. image:: images/rseries_deploying_a_tenant/image75.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image75.png
   :align: center
   :scale: 70% 
 
@@ -342,53 +342,53 @@ Validating BIG-IP Next Tenant Status via webUI
 
 Once the tenant is deployed you can monitor its status in the **Tenant Management > Tenant Deployments** webUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
 
-.. image:: images/rseries_deploying_a_tenant/image76.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image76.png
   :align: center
   :scale: 70% 
 
 The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Starting**.
 
-.. image:: images/rseries_deploying_a_tenant/image77.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image77.png
   :align: center
   :scale: 70% 
 
 The tenant will then go from **Starting** to **Running** and the **Running Version** will go from **Unavailable** to a blank status for a period of time.
 
-.. image:: images/rseries_deploying_a_tenant/image78.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image78.png
   :align: center
   :scale: 70% 
 
 Finally when the tenant is fully up the Running Version should display the actual software version of the tenant.
 
-.. image:: images/rseries_deploying_a_tenant/image79.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image79.png
   :align: center
   :scale: 70% 
 
 You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
 
-.. image:: images/rseries_deploying_a_tenant/image80.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image80.png
   :align: center
   :scale: 70% 
 
 At this point the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
 
-.. image:: images/rseries_deploying_a_tenant/image81.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image81.png
   :align: center
   :scale: 70% 
 
 Clicking on one of the hyperlinks will bring you to the BIG-IP webUI of that tenant, and you'll need to login with default credentials of admin/admin. You will be prompted to change the password for the admin account.
 
-.. image:: images/rseries_deploying_a_tenant/image40.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image40.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_tenant/image41.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image41.png
   :align: center
   :scale: 70% 
 
 Now login with the new admin password, and you'll be brought into the initial setup wizard of the BIG-IP tenant. 
 
-.. image:: images/rseries_deploying_a_tenant/image42.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image42.png
   :align: center
   :scale: 70% 
 
@@ -518,7 +518,7 @@ If you are using Postman, the API call above will generate an upload-id that wil
 
 Below is an example of how this would appear inside the Postman interface under the **Tests** section.
 
-.. image:: images/rseries_deploying_a_tenant/upload-id.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/upload-id.png
   :align: center
   :scale: 70%
 
@@ -530,13 +530,13 @@ Once the upload-id is captured, you can then initiate a file upload of the F5OS 
 
 In the body of the API call select **form-data**, and then in the **Value** section click **Select Files** and select the F5OS tenant image you want to upload as seen in the example below.
 
-.. image:: images/rseries_deploying_a_tenant/file-upload-tenant-body.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/file-upload-tenant-body.png
   :align: center
   :scale: 70%
 
 In the **Headers** section ensure you add the **file-upload-id** header, with the variable used to capture the id in the previous API call.
 
-.. image:: images/rseries_deploying_a_tenant/file-upload-tenant-headers.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/file-upload-tenant-headers.png
   :align: center
   :scale: 70%
 
@@ -786,33 +786,33 @@ Expanding a BIG-IP Next Tenant via webUI
 
 Below is webUI output of a single tenant that is in the deployed and running state configured with 2 vCPUs and 7680MB of memory. The workflow below will cover expanding the tenant from 2 to 4 vCPUs and the memory from 7680MB to 14848MB. Click the check box next to the tenant, and then select the **Provision** button. 
 
-.. image:: images/rseries_deploying_a_tenant/image82.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image82.png
   :align: center
   :scale: 70% 
 
 A pop-up will appear letting you know this will stop the tenant and disrupt traffic. Click **OK**. 
 
-.. image:: images/rseries_deploying_a_tenant/image83.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image83.png
   :align: center
   :scale: 70% 
 
 This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping**, and finally to the **Provisioned** Status.
 
-.. image:: images/rseries_deploying_a_tenant/image84.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image84.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_tenant/image85.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image85.png
   :align: center
   :scale: 70%   
 
 Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
 
-.. image:: images/rseries_deploying_a_tenant/image86.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image86.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_tenant/image87.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image87.png
   :align: center
   :scale: 70% 
 
@@ -1204,13 +1204,13 @@ Deleting a BIG-IP Next Tenant via the webUI
 
 To delete a tenant from the webUI, go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
 
-.. image:: images/rseries_deploying_a_tenant/image88.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image88.png
   :align: center
   :scale: 70%
 
 You will be prompted before confirming the delete:  
 
-.. image:: images/rseries_deploying_a_tenant/image89.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image89.png
   :align: center
   :scale: 70%   
 
