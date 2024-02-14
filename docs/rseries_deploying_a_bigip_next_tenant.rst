@@ -28,60 +28,18 @@ The initial F5OS-A 1.7.0 release also limits the number of BIG-IP Next tenants t
 Tenant Image Types
 ------------------
 
-rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether they allow in-place upgrades. rSeries only supports specific TMOS releases (currently 15.1.5); they can be found on downloads.f5.com:
+For BIG-IP Next on rSeries, there is a single tenant image type that can be obtained from downloads.f5.com. On the downloads site, you will see a tar.bundle file which you can download and verify using one of the avaialble signature files. In the example below the file **BIG-IP-NEXT-20.1.0-2.279.0+0.0.75.tar.bundle** is the image file that you will use to deploy BIG-IP Next tenants on rSeries appliances or VELOS chassis.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image1.png
   :align: center
   :scale: 70% 
 
-Ensure you choose the option that is labeled specifically for rSeries that is **15.1.5_Tenant-F5OS**:
+You can either download the file to a local machine, and then upload to your rSeries device, or if your rSeries has Internet access, you can **Copy Download Link** and use that url directly on your rSeries appliance.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image2.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image2a.png
   :align: center
   :scale: 70% 
 
-There are 4 different types of tenant images to choose from as seen below; please read the rest of this section to determine the best image type for your environment:
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image3.png
-  :align: center
-  :scale: 70% 
-
-The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image4.png
-  :align: center
-  :scale: 70% 
-
-The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in-place upgrades; however, they each default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage.
-
-The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high-density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPUs per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk space per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over-provisioning situation. Because tenants are deployed in sparse mode which allows over-provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to the disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk space than other BIG-IP modules, which do extensive local logging and utilize databases on disk.
-
-The **All-F5OS** image is suitable for any module configuration and supports a default of 76GB for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk space typically require more CPU/memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space, and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach; it may be best to default using the T4-F5OS image as that is essentially the default size for vCMP deployments today. 
-
-The **T4-F5OS** image also supports any module combination but has additional disk capacity. If you intend to have lot of software images, databases for modules, run modules like SWG which utilize a lot of disk space, and local logging then the added capacity is recommended. More detail on the image types can be found in the following solution article.
-
-`K45191957: Overview of the BIG-IP tenant image types <https://my.f5.com/manage/s/article/K45191957>`_
-
-
-Note that the image sizes in the chart are the default amount of space a tenant could use, not necessarily what it will consume on the physical disk. rSeries tenants are deployed in sparse mode on the file system when they are created. That means that a tenant may think it has a certain amount of disk space, but most of the space that is unutilized is zeroed-out and not consuming any space on the disk. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image5.png
-  :align: center
-  :scale: 70% 
-
-This means the disk consumption on the rSeries disk is much smaller than what appears inside the tenant. In the example below the tenant believes it has 77GB of disk allocated:
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image6.png
-  :align: center
-  :scale: 70% 
-
-However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is consuming only 6.4GB on the disk. You can confirm this by logging into the bash shell of F5OS as root. Then listing the contents of the directory **/var/F5/system/cbip-disks**, here you will see directories for each tenant. Enter the command **ls -lsh <tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (in this case 6.4GB).
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image7.png
-  :align: center
-  :scale: 70% 
-
-This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc… There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
 
 ------------------------------
 BIG-IP Next Tenant Deployments
@@ -95,7 +53,7 @@ BIG-IP Next Tenant Deployment via CLI
 Uploading a BIG-IP Next Tenant Image via CLI
 ============================================
 
-BIG-IP Next tenant software images are loaded directly into the F5OS platform layer in the same manner as BIG-IP tenant images. For the initial release of BIG-IP Next on rSeries, supported tenant versions are v20.1  and later. 
+BIG-IP Next tenant software images are loaded directly into the F5OS platform layer in the same manner as BIG-IP tenant images. For the initial release of BIG-IP Next on rSeries, supported tenant versions are v20.1 and later. 
 
 Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a BIG-IP Next tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client.
 
@@ -302,6 +260,10 @@ You can upload a tenant image via the webUI in two different places. The first i
   :align: center
   :scale: 70% 
 
+.. image:: images/rseries_deploying_a_bigip_next_tenant/image2.png
+  :align: center
+  :scale: 70%   
+
 The second option is to click the **Upload** button to select an image file that you have previously downloaded directly from your computer via the browser.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image73.png
@@ -346,23 +308,16 @@ Once the tenant is deployed you can monitor its status in the **Tenant Managemen
   :align: center
   :scale: 70% 
 
-The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Starting**.
+The tenant will cycle through various phases as the tenant starts initializing. It should go from a **Provisioning** to a **Running** Status.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image77.png
   :align: center
   :scale: 70% 
 
-The tenant will then go from **Starting** to **Running** and the **Running Version** will go from **Unavailable** to a blank status for a period of time.
-
+You can then click 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image78.png
   :align: center
-  :scale: 70% 
-
-Finally when the tenant is fully up the Running Version should display the actual software version of the tenant.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image79.png
-  :align: center
-  :scale: 70% 
+  :scale: 70%   
 
 You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
 
