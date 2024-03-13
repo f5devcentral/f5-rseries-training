@@ -114,8 +114,8 @@ rSeries 40Gb QSFP+ SKU's
 | F5-UPG-QSFP+PSM4     | Field Upgrade: QSFP+ Transceiver (40G-PSM4, 4x10LR, 1310NM, 10KM, MPO/APC, SMF, DDM)  |
 +----------------------+---------------------------------------------------------------------------------------+
 
-rSeries 40Gb/100Gb Dual Rate QSFP+ SKU's
-----------------------------------------
+rSeries 40Gb/100Gb Dual Rate BIDI SKU's (QSFP28 backward compatible with QSFP+)
+------------------------------------------------------------------------------
 
 +-----------------------------------------------------------------+-----------------------------------------------------------------------------------+
 | Dual Rate 40G/100G BIDI (QSFP28 backward compatible with QSFP+) | Field Upgrade Transceiver QSFP28/QSFP+, dual rate 40G/100G SR BIDI, 100M, LC, MMF |
@@ -136,7 +136,7 @@ rSeries 100Gb QSFP28 SKU's
 
 
 
-**Note: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
+**Note: The QSFP+ & QSFP28 optics cannot currently be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
 
 Below are the current rSeries optic SKUs:
 
