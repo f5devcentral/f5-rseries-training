@@ -75,7 +75,7 @@ The r2000 / r4000 will support both **F5-UPG-SFPC-R** with one caveat. **F5-UPG-
 The r5000 / r10000 / r12000-DS platforms do not support 1G SFPs currently, so **F5-UPG-SFPC-R** is not supported on those platforms.
 However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 / r12000-DS for 10G operation.
 
-rSeries 10GB SFP+ SKU's
+rSeries 10Gb SFP+ SKU's
 -----------------------
 
 10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000/r12000-DS) platforms:
@@ -89,7 +89,7 @@ rSeries 10GB SFP+ SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 
 
-rSeries 25GB SFP28 SKU's
+rSeries 25Gb SFP28 SKU's
 --------------------------
 
 25Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000/r12000-DS) platforms:
@@ -101,7 +101,7 @@ rSeries 25GB SFP28 SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 
 
-rSeries 40GB QSFP+ SKU's
+rSeries 40Gb QSFP+ SKU's
 --------------------------
 
 40Gb Optics are only supported on the r5000/r10000/r12000-DS platforms:
@@ -113,10 +113,15 @@ rSeries 40GB QSFP+ SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-QSFP+PSM4     | Field Upgrade: QSFP+ Transceiver (40G-PSM4, 4x10LR, 1310NM, 10KM, MPO/APC, SMF, DDM)  |
 +----------------------+---------------------------------------------------------------------------------------+
-| F5-UPG-QSFP+BD       | Field Upgrade: Transceiver QSFP+, 2X20G BIDI 850NM-900NM, 100M, LC, MMF, DDM          |
-+----------------------+---------------------------------------------------------------------------------------+
 
-rSeries 100GB QSFP28 SKU's
+rSeries 40Gb/100Gb Dual Rate QSFP+ SKU's
+----------------------------------------
+
++-----------------------------------------------------------------+-----------------------------------------------------------------------------------+
+| Dual Rate 40G/100G BIDI (QSFP28 backward compatible with QSFP+) | Field Upgrade Transceiver QSFP28/QSFP+, dual rate 40G/100G SR BIDI, 100M, LC, MMF |
++-----------------------------------------------------------------+-----------------------------------------------------------------------------------+
+
+rSeries 100Gb QSFP28 SKU's
 --------------------------
 
 100Gb Optics are only supported on the r5000/r10000/r12000-DS platforms:
@@ -128,11 +133,30 @@ rSeries 100GB QSFP28 SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-PSM4   | Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS           |
 +----------------------+---------------------------------------------------------------------------------------+
-| F5-UPG-QSFP28-BD     | Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       |
-+----------------------+---------------------------------------------------------------------------------------+
+
 
 
 **Note: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
+
+Below are the current rSeries optic SKUs:
+
+**Note: 100G BiDi is planned (please contact product management to discuss your requirements, as there are different standards available in the market)**.
+
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPGVELQSFP28LR4   | MY   | VELOS Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, DDM) ROHS             |
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPGVELQSFP28PSM4  | TH   | VELOS Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS       |
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPGVELQSFP28-SR4  | PH   | VELOS Field Upgrade: QSFP28 Transceiver (100G-SR4, 100M, MPO MMF, DDM) ROHS             |
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-SRBD   | PH   | VELOS Field Upgrade Transceiver QSFP28/QSFP+, dual rate 40G/100G SR BIDI, 100M, LC, MMF |
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPG-VEL-QSFP+LR4  | MY   | VELOS Field Upgrade: QSFP+ Transceiver (40G-LR, 1310NM, 10KM, LC, SMF, DDM Support)     |
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPG-VEL-QSFP+PSM4 | PH   | VELOS Field Upgrade: QSFP+ Transceiver (40G-PSM4, 1310NM, 10KM, MPO/APC, SMF, DDM )     |
++----------------------+------+-----------------------------------------------------------------------------------------+
+| F5-UPG-VEL-QSFP+SR4  | CN   | VELOS Field Upgrade: QSFP+ Transceiver (40G-SR4, 850NM, 100M, MPO, DDM Support)         |
++----------------------+------+-----------------------------------------------------------------------------------------+
 
 **THESE ARE UNSUPPORTED**
 
