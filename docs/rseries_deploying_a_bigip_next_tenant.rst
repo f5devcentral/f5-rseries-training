@@ -45,7 +45,7 @@ You can either download the file to a local machine, and then upload to your rSe
 BIG-IP Next Tenant Deployments
 ------------------------------
 
-BIG-IP Next Tenants can easily be deployed via the F5OS CLI, webUI, or API.
+BIG-IP Next Tenants can easily be deployed via the F5OS CLI, webUI, or API or from the BIG-IP Next Central Manager Console.
 
 BIG-IP Next Tenant Deployment via CLI
 -------------------------------------
@@ -55,36 +55,36 @@ Uploading a BIG-IP Next Tenant Image via CLI
 
 BIG-IP Next tenant software images are loaded directly into the F5OS platform layer in the same manner as BIG-IP tenant images. For the initial release of BIG-IP Next on rSeries, supported tenant versions are v20.1 and later. 
 
-Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a BIG-IP Next tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client.
+Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a BIG-IP Next tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client. Note, in releases prior to F5OS-A 1.8.0 you can only upload tenant images using SCP vai the root account. In F5OS-A 1.8.0 and later the admin account will be used to SCP tenant images, and root will not longer be required.
 
 .. code-block:: bash
 
-    scp BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle admin@10.255.0.132:IMAGES
+    prompt% scp BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle root@10.255.2.43:IMAGES
 
 You may also import the BIG-IP Next tenant image file from the F5OS CLI. Use the **file import** command to get the tenant image file from a remote HTTPS server or from a remote server over SCP or SFTP. Below is an example of importing from a remote HTTPS server. Note the target directory should be **images/tenant**:
 
 .. code-block:: bash
 
-    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username corpuser insecure
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /upload/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle local-file images/tenant/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle username corpuser insecure
     Value for 'password' (<string>): ********
-    result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
+    result File transfer is initiated.(images/tenant/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle)
 
 If a remote HTTPS server is not available, you may also import the file from the CLI over SCP by adding the **protocol scp** option to the command line:
 
 .. code-block:: bash
 
-    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username root insecure protocol scp
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle local-file images/tenant/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle username root insecure protocol scp
     Value for 'password' (<string>): ********
-    result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
+    result File transfer is initiated.(images/tenant/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle)
 
 
 The command **file transfer-status** will provide details of the transfer progress and any errors:
 
 .. code-block:: bash
 
-    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle local-file images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle username root insecure protocol scp
+    Boston-r10900-1# file import remote-host 10.255.0.142 remote-file /var/www/server/1/upload/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle local-file images/tenant/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle username root insecure protocol scp
     Value for 'password' (<string>): ********
-    result File transfer is initiated.(images/tenant/BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle)
+    result File transfer is initiated.(images/tenant/BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle)
 
 
     Boston-r10900-1# show file transfer-operations
@@ -99,16 +99,18 @@ You can view the current tenant images and their status in the F5OS CLI by using
 
 .. code-block:: bash
 
-    Boston-r10900-1# show images
-                                                                        IN               
-    NAME                                                                 USE    STATUS    
+    r10900-2# show images
+                                                    IN                                    
+    NAME                                            USE    TYPE                STATUS     
     --------------------------------------------------------------------------------------
-    BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle                       false  verified  
-    BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                       false  verified  
-    BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified  
-    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         false  verified  
+    BIG-IP-Next-20.1.0-2.279.0+0.0.75               false  helm-image          processed  
+    BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle    false  helm-bundle         verified   
+    BIG-IP-Next-20.1.0-2.279.0+0.0.75.yaml          false  helm-specification  verified   
+    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle    false  vm-image            verified   
+    BIGIP-15.1.6.1-0.0.6.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
+    BIGIP-17.1.0.1-0.0.4.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
 
-    Boston-r10900-1# 
+    r10900-2# 
 
 
 Creating a BIG-IP Next Tenant via CLI

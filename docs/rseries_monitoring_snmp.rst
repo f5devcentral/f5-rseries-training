@@ -1294,8 +1294,12 @@ LCD Module
     <INFO> 12-Apr-2023::11:51:45.255 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130730 10.255.8.22:6011 (TimeTicks sysUpTime=72549)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.156764576 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
 
+**coldStart     .1.3.6.1.6.3.1.1.5.1**
 
- 
+.. code-block:: bash
+
+    <INFO> 24-Feb-2024::15:09:35.437 appliance-1 confd[124]: snmp snmpv2-trap reqid=1494830098 10.255.80.251:162 (TimeTicks sysUpTime=552)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
+    <INFO> 24-Feb-2024::15:09:35.438 appliance-1 confd[124]: snmp snmpv2-trap reqid=1494830098 10.255.0.144:161 (TimeTicks sysUpTime=552)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
 
 
 Firmware Update Status Traps
