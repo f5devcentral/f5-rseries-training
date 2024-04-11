@@ -1553,16 +1553,18 @@ The receive power threshold for a specific transceiver has reached high warn sta
 
 The receive power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
-r10900-1# file show log/system/platform.log | include Lane
-2024-01-24T22:28:03.462218-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 1 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 03:28:03.458903005 UTC'".
-2024-01-24T22:28:03.564842-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 2 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 03:28:03.489226080 UTC'".
-2024-01-25T02:08:32.951999-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Info" version=1.0 msgid=0x2201000000000028 msg="Received alert clear." alert="262401 Portgroup 1 rxPwr CLEAR ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 07:08:32.946588706 UTC'".
-2024-01-25T02:08:33.057317-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Info" version=1.0 msgid=0x2201000000000028 msg="Received alert clear." alert="262401 Portgroup 2 rxPwr CLEAR ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 07:08:32.977310897 UTC'".
-2024-02-10T10:23:04.177576-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 2 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-02-10 15:23:04.165468894 UTC'".
-2024-02-10T10:23:33.732267-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Info" version=1.0 msgid=0x2201000000000028 msg="Received alert clear." alert="262401 Portgroup 2 rxPwr CLEAR ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-02-10 15:23:33.729144778 UTC'".
-2024-02-10T16:35:33.719480-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 1 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-02-10 21:35:33.716614320 UTC'".
-2024-02-10T16:35:33.821542-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 2 rxPwr ASSERT WARNING 'Lanes: 1,2,3,4 Receiver power low warning' '2024-02-10 21:35:33.747312529 UTC'".
-r10900-1# 
+.. code-block:: bash
+
+    r10900-1# file show log/system/platform.log | include Lane
+    2024-01-24T22:28:03.462218-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 1 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 03:28:03.458903005 UTC'".
+    2024-01-24T22:28:03.564842-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 2 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 03:28:03.489226080 UTC'".
+    2024-01-25T02:08:32.951999-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Info" version=1.0 msgid=0x2201000000000028 msg="Received alert clear." alert="262401 Portgroup 1 rxPwr CLEAR ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 07:08:32.946588706 UTC'".
+    2024-01-25T02:08:33.057317-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Info" version=1.0 msgid=0x2201000000000028 msg="Received alert clear." alert="262401 Portgroup 2 rxPwr CLEAR ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-01-25 07:08:32.977310897 UTC'".
+    2024-02-10T10:23:04.177576-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 2 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-02-10 15:23:04.165468894 UTC'".
+    2024-02-10T10:23:33.732267-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Info" version=1.0 msgid=0x2201000000000028 msg="Received alert clear." alert="262401 Portgroup 2 rxPwr CLEAR ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-02-10 15:23:33.729144778 UTC'".
+    2024-02-10T16:35:33.719480-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 1 rxPwr ASSERT ERROR 'Lanes: 1,2,3,4 Receiver power low alarm' '2024-02-10 21:35:33.716614320 UTC'".
+    2024-02-10T16:35:33.821542-05:00 r10900-1.f5demo2.net alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000027 msg="Received alert assert." alert="262401 Portgroup 2 rxPwr ASSERT WARNING 'Lanes: 1,2,3,4 Receiver power low warning' '2024-02-10 21:35:33.747312529 UTC'".
+    r10900-1# 
 
 
 **rxPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262407**
