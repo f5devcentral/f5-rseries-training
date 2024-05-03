@@ -1888,22 +1888,22 @@ Example output:
 
 .. code-block:: bash
 
-    FLD-ML-00054045$ snmpwalk -ObenU -v2c -c public 10.255.2.40 .1.3.6.1.2.1.1
-    .1.3.6.1.2.1.1.1.0 = STRING: Linux 3.10.0-1160.71.1.F5.1.el7_8.x86_64 : Appliance services version 1.7.0-0528
+    prompt% snmpwalk -ObenU -v2c -c public 10.255.2.40 .1.3.6.1.2.1.1
+    .1.3.6.1.2.1.1.1.0 = STRING: F5 rSeries-r10900 : Linux 3.10.0-1160.71.1.F5.1.el7_8.x86_64 : Appliance services version 1.8.0-9573
     .1.3.6.1.2.1.1.2.0 = OID: .1.3.6.1.4.1.12276.1.3.1.2
-    .1.3.6.1.2.1.1.3.0 = Timeticks: (86134641) 9 days, 23:15:46.41
+    .1.3.6.1.2.1.1.3.0 = Timeticks: (19392145) 2 days, 5:52:01.45
     .1.3.6.1.2.1.1.4.0 = STRING: jim@f5.com
-    .1.3.6.1.2.1.1.5.0 = STRING: r10900-1.f5demo.net
+    .1.3.6.1.2.1.1.5.0 = STRING: r10900-1.f5demo2.net
     .1.3.6.1.2.1.1.6.0 = STRING: Boston
     .1.3.6.1.2.1.1.7.0 = INTEGER: 72
-    .1.3.6.1.2.1.1.8.0 = Timeticks: (8) 0:00:00.08
+    .1.3.6.1.2.1.1.8.0 = Timeticks: (6) 0:00:00.06
     .1.3.6.1.2.1.1.9.1.2.1 = OID: .1.3.6.1.4.1.12276.1
     .1.3.6.1.2.1.1.9.1.2.2 = OID: .1.3.6.1.2.1.31
     .1.3.6.1.2.1.1.9.1.3.1 = STRING: F5 Networks enterprise Platform MIB
     .1.3.6.1.2.1.1.9.1.3.2 = STRING: The MIB module to describe generic objects for network interface sub-layers
-    .1.3.6.1.2.1.1.9.1.4.1 = Timeticks: (8) 0:00:00.08
-    .1.3.6.1.2.1.1.9.1.4.2 = Timeticks: (8) 0:00:00.08
-    FLD-ML-00054045$
+    .1.3.6.1.2.1.1.9.1.4.1 = Timeticks: (6) 0:00:00.06
+    .1.3.6.1.2.1.1.9.1.4.2 = Timeticks: (6) 0:00:00.06
+    prompt% 
 
 SNMP ifTable & ifXTable
 -----------------------
@@ -2223,9 +2223,9 @@ The table below shows the current disk utilization and performance of the disk o
     prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:diskUtilizationStatsTable
     SNMP table: F5-PLATFORM-STATS-MIB::diskUtilizationStatsTable
 
-    diskPercentageUsed diskTotalIops  diskReadIops diskReadMerged       diskReadBytes diskReadLatencyMs  diskWriteIops diskWriteMerged      diskWriteBytes diskWriteLatencyMs
-                    ? 60654918 IOPs 28277459 IOPs       28395176 3679621374464 bytes        2851602 ms 676313185 IOPs       730172911 7019181770752 bytes        26600737 ms
-                    ? 60615247 IOPs 28145076 IOPs       28373245 3677744964608 bytes        2877859 ms 676313185 IOPs       730172911 7019181770752 bytes        26030059 ms
+    diskPercentageUsed diskTotalIops diskReadIops diskReadMerged      diskReadBytes diskReadLatencyMs diskWriteIops diskWriteMerged     diskWriteBytes diskWriteLatencyMs
+        40 percentage        0 IOPs 7808367 IOPs         430038 180736036864 bytes        1280537 ms 94675416 IOPs        73036236 899072663040 bytes         6921453 ms
+        40 percentage        0 IOPs 5505364 IOPs         374782 137111059968 bytes         984633 ms 94675420 IOPs        73036232 899072663040 bytes         6832726 ms
     prompt% 
 
 SNMP Temperature Stats Table
@@ -2293,26 +2293,26 @@ This MIB provides the current firmware status and version for all firmware subsy
     SNMP table: F5-PLATFORM-STATS-MIB::fwTable
 
                         fwName                         fwVersion configurable fwUpdateStatus
-                        QAT0 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT1 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT2 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT3 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT4 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT5 Lewisburg C62X Crypto/Compression        false              ?
-                fw-version-bios                        2.01.134.1        false           none
-                fw-version-cpld                          02.0B.00        false           none
-                fw-version-sirr                            1.1.55        false           none
-            fw-version-lcd-ui                            1.13.3        false           none
-            fw-version-bios-me                         4.4.4.301        false           none
-            fw-version-lcd-app                     1.01.067.00.1        false           none
-            fw-version-lop-app                      2.00.306.0.1        false           none
+                          QAT0 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT1 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT2 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT3 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT4 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT5 Lewisburg C62X Crypto/Compression        false              ?
+               fw-version-bios                        2.02.145.1        false           none
+               fw-version-cpld                          02.0B.00        false           none
+               fw-version-sirr                            1.1.72        false           none
+            f w-version-lcd-ui                           1.13.12        false           none
+            fw-version-bios-me                         4.4.4.603        false           none
+            fw-version-lcd-app                     1.01.069.00.1        false              ?
+            fw-version-lop-app                      2.00.357.0.1        false           none
         fw-version-drive-nvme0                          VDV10170        false           none
         fw-version-drive-nvme1                          VDV10170        false           none
-    fw-version-lcd-bootloader                     1.01.027.00.1        false           none
-    fw-version-lop-bootloader                      1.02.062.0.1        false           none
+     fw-version-lcd-bootloader                     1.01.027.00.1        false           none
+     fw-version-lop-bootloader                      1.02.062.0.1        false           none
     fw-version-drive-u.2.slot1                          VDV10184        false           none
     fw-version-drive-u.2.slot2                          VDV10184        false           none
-    prompt% 
+    prompt%
 
 SNMP Fantray Stats Table
 ----------------------
