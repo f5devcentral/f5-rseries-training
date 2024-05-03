@@ -1051,9 +1051,62 @@ As an example, the following set of traps are from an LCD failure and recovery o
     <INFO> 11-Jul-2022::06:32:53.391 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440817 10.255.0.144:161 (TimeTicks sysUpTime=29911)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.292347336 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
 
+Generic SNMP Traps
+------------------
+
+**coldStart         	1.3.6.1.6.3.1.1.5.1**  
+
+
+A coldStart trap signifies that the SNMP entity,supporting a notification originator application, is reinitializing itself and that its configuration may have been altered.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include cold
+    <INFO> 30-Apr-2024::10:30:40.348 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214784 10.255.80.251:162 (TimeTicks sysUpTime=456)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
+
+
+**link down         	1.3.6.1.6.3.1.1.5.3**  
+
+A linkDown trap signifies that the SNMP entity, acting in an agent role, has detected that the ifOperStatus object for one of its communication links is about to enter the down state from some other state (but not from the notPresent state). This other state is indicated by the included value of ifOperStatus.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include linkDown
+    <INFO> 30-Apr-2024::10:32:21.589 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214828 10.255.80.251:162 (TimeTicks sysUpTime=10581)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554513)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=2)
+    <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
+    r10900-2#
+
+Note: In F5OS-C 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+
+.. code-block:: bash
+
+    <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
+
+    <INFO> 3-May-2024::15:51:52.363 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214840 10.255.80.251:162 (TimeTicks sysUpTime=27847658)(OBJECT IDENTIFIER snmpTrapOID=down)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-05-03 19:51:52.350979671 UTC)(OCTET STRING alertDescription=Interface down)
+
+**link up         	1.3.6.1.6.3.1.1.5.4**  
+
+A linkUp trap signifies that the SNMP entity, acting in an agent role, has detected that the ifOperStatus object for one of its communication links left the down state and transitioned into some other state (but not into the notPresent state). This other state is indicated by the included value of ifOperStatus.
+
+
+.. code-block:: bash
+
+    <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+
+Note: In F5OS-C 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+
+
+.. code-block:: bash
+
+    <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+    
+    <INFO> 3-May-2024::15:59:54.371 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214844 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=up)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-03 19:59:54.359054296 UTC)(OCTET STRING alertDescription=Interface up)   
+
+F5OS Specific Traps
+------------------
 
 Device Fault Traps
-------------------
+^^^^^^^^^^^^^^^^^^
 
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
 
@@ -1348,7 +1401,7 @@ LCD Module
 
 
 Firmware Update Status Traps
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
 
@@ -1385,7 +1438,7 @@ The CLI command below shows how to filter the **snmp.log** file to only show fir
 
 
 Drive Utilization Traps
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 **drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551**
 
@@ -1433,7 +1486,7 @@ You can also view the snmp.log file to see the SNMP traps that have been issued 
 
 
 FIPS Related Traps
-------------------
+^^^^^^^^^^^^^^^^^^
 
 **fips-fault                     .1.3.6.1.4.1.12276.1.1.1.196308**
 
@@ -1452,7 +1505,7 @@ FIPS Related Traps
     r10900-1# file show log/system/snmp.log | include fipsError
 
 System Event Traps
-------------------
+^^^^^^^^^^^^^^^^^^
 
 **core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680**
 
@@ -1496,7 +1549,7 @@ This trap will indicate that the system has rebooted. It's possible this was a p
     r10900-1# file show log/system/snmp.log | include backplane
 
 Interface / Optic Related Traps
---------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The SNMP traps below will correspond the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fiberoptic transceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds for warning and alarm as well as current values.
 
@@ -1564,33 +1617,50 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
     state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
 
-.. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include ddm    
+   
 
 **txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
 The transmit power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+.. code-block:: bash
+
+
 **txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401**
 
 The transmit power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+
+.. code-block:: bash
+
 
 **txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262402**
 
 The transmit power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+.. code-block:: bash
+
+
 **txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403**
 
 The transmit power threshold for a specific transceiver has reached low txPwrLoWarn status. Run the show portgroups command to see what the current values are for that transceiver. 
+
+.. code-block:: bash
+
 
 **rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262404**
 
 The receive power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+.. code-block:: bash
+
+
 **rxPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262405**
 
 The receive power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+
+.. code-block:: bash
+
 
 **rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262406**
 
@@ -1614,54 +1684,92 @@ The receive power threshold for a specific transceiver has reached low alarm sta
 
 The receive power threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+.. code-block:: bash
+
+
 **txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262408**
 
 The transmit bias threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
+.. code-block:: bash
+
 
 **txBiasHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262409**
 
 The transmit bias threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+.. code-block:: bash
+
+
 **txBiasLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262410**
 
 The transmit bias threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
+.. code-block:: bash
+
 
 **txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411**
 
 The transmit bias threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+.. code-block:: bash
+
+
 **ddmTempHiAlarm                 .1.3.6.1.4.1.12276.1.1.1.262412**
 
 The ddm temperature threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+
+.. code-block:: bash
+
 
 **ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262413**
 
 The ddm temperature threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
+.. code-block:: bash
+
+
 **ddmTempLoAlarm                 .1.3.6.1.4.1.12276.1.1.1.262414**
 
 The ddm temperature threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
 
+.. code-block:: bash
+
+
 **ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262415**
 
 The ddm temperature threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+.. code-block:: bash
 
 
 **ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262416**
 
 The ddm vcc (Voltage) threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver.
 
+.. code-block:: bash
+
+
 **ddmVccHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262417**
 
 The ddm vcc (Voltage) threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+.. code-block:: bash
+
 
 **ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262418**
 
 The ddm vcc (Voltage) threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
 
+.. code-block:: bash
+
+
 **ddmVccLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262419**
 
 The ddm vcc (Voltage) threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+.. code-block:: bash
+
 
 Enabling SNMP Traps
 ===================
