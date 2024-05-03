@@ -1640,6 +1640,9 @@ The transmit power threshold for a specific transceiver has reached low alarm st
 
 .. code-block:: bash
 
+    r10900-2# file show log/system/snmp.log | include tx
+    <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
+
 
 **txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403**
 
@@ -1707,6 +1710,8 @@ The transmit bias threshold for a specific transceiver has reached low alarm sta
 
 .. code-block:: bash
 
+    r10900-2# file show log/system/snmp.log | include tx
+    <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
 
 **txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411**
 
