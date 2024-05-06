@@ -915,7 +915,7 @@ SNMP Trap receivers may be added and a community or a user is added depending on
 SNMP Trap Support in F5OS-A
 ===========================
 
-You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.6.0. NOTE: the file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). You only need to rely on one file if you are using both platforms. Some traps may be specific to one platform or the other. 
+You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0. NOTE: the file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). You only need to rely on one file if you are using both platforms. Some traps may be specific to one platform or the other. 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. They are also logged in the snmp.log file. Once a clear SNMP Trap is sent, it should clear the event from the **show events** output.
 
@@ -972,6 +972,10 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | reboot                     | .1.3.6.1.4.1.12276.1.1.1.327681  |
 +----------------------------+----------------------------------+
+| incompatible-image         | .1.3.6.1.4.1.12276.1.1.1.327682  |
++----------------------------+----------------------------------+
+| login-failed               | .1.3.6.1.4.1.12276.1.1.1.327683  |
++----------------------------+----------------------------------+
 | raid-event                 | .1.3.6.1.4.1.12276.1.1.1.393216  |
 +----------------------------+----------------------------------+
 | backplane                  | .1.3.6.1.4.1.12276.1.1.1.262144  |
@@ -1015,6 +1019,20 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 | ddmVccLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262418  |
 +----------------------------+----------------------------------+
 | ddmVccLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262419  |
++----------------------------+----------------------------------+
+| initialization             | .1.3.6.1.4.1.12276.1.1.1.262656  |
++----------------------------+----------------------------------+
+| ePVA                       | .1.3.6.1.4.1.12276.1.1.1.262912  |
++----------------------------+----------------------------------+
+| interface up               | .1.3.6.1.4.1.12276.1.1.1.263168  |
++----------------------------+----------------------------------+
+| interface-down             | .1.3.6.1.4.1.12276.1.1.1.263169  |
++----------------------------+----------------------------------+
+| speed                      | .1.3.6.1.4.1.12276.1.1.1.263170  |
++----------------------------+----------------------------------+
+| incompatible-image         | .1.3.6.1.4.1.12276.1.1.1.327682  |
++----------------------------+----------------------------------+
+| inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
 
 SNMP Trap Details
@@ -1076,7 +1094,9 @@ A linkDown trap signifies that the SNMP entity, acting in an agent role, has det
     <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
     r10900-2#
 
-Note: In F5OS-C 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+**interface down     1.3.6.1.4.1.12276.1.1.1.263169
+
+Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
 
 .. code-block:: bash
 
@@ -1093,7 +1113,9 @@ A linkUp trap signifies that the SNMP entity, acting in an agent role, has detec
 
     <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
 
-Note: In F5OS-C 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+**interface up     1.3.6.1.4.1.12276.1.1.1.263168
+
+Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
 
 
 .. code-block:: bash
