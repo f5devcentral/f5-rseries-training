@@ -1094,7 +1094,7 @@ A linkDown trap signifies that the SNMP entity, acting in an agent role, has det
     <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
     r10900-2#
 
-**interface down     1.3.6.1.4.1.12276.1.1.1.263169
+**interface down     1.3.6.1.4.1.12276.1.1.1.263169**
 
 Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
 
@@ -1113,7 +1113,7 @@ A linkUp trap signifies that the SNMP entity, acting in an agent role, has detec
 
     <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
 
-**interface up     1.3.6.1.4.1.12276.1.1.1.263168
+**interface up     1.3.6.1.4.1.12276.1.1.1.263168**
 
 Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
 
