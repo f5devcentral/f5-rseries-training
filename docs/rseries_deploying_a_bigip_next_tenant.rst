@@ -213,7 +213,7 @@ Click on **VLANs** and note that the VLANs you previously assigned to the instan
 
  In the drop-down box for L1 Networks select the **DefaultL1Network** for all of your VLANs, and then click **Next**.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-picks.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-pick.png
   :align: center
   :scale: 70% 
 
