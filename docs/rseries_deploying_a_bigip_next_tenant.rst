@@ -87,6 +87,10 @@ BIG-IP Next Tenant Deployment via Central Manager
 
 BIG-IP Next tenants (or instances as they are called in Central Manager) can be deployed using an rSeries **Provider**. a Provider in Central Manager provides connectivity to resources such as VELOS, rSeries, or VMware where BIG-IP Next instances can be deployed. 
 
+If you need instructions on installing Central Manager, or general BIG-IP Next documents refer to the link below.
+
+`BIG-IP Next Documentation <https://clouddocs.f5.com/bigip-next/latest/>`_
+
 Setting up an rSeries Provider in Central Manager
 =================================================
 
@@ -211,9 +215,21 @@ Click on **VLANs** and note that the VLANs you previously assigned to the instan
   :align: center
   :scale: 70% 
 
- In the drop-down box for L1 Networks select the **DefaultL1Network** for all of your VLANs, and then click **Next**.
+In the drop-down box for L1 Networks select the **DefaultL1Network** for all of your VLANs, and then click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-pick.png
+  :align: center
+  :scale: 70% 
+
+Finally, you must assign IP addresses to each VLAN. Click on **IP Addresses**, and then click **Create** for each VLAN.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/networking-ip-addresses.png
+  :align: center
+  :scale: 70% 
+
+You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you can assign the VLAN from the drop-down box. Leave the **Device Name** filed blank. When finished, click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/ip-to-vlan.png
   :align: center
   :scale: 70% 
 
