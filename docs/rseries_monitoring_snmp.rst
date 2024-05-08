@@ -980,45 +980,15 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | backplane                  | .1.3.6.1.4.1.12276.1.1.1.262144  |
 +----------------------------+----------------------------------+
-| txPwrHiAlarm               | .1.3.6.1.4.1.12276.1.1.1.262400  |
+| txPwr                      | .1.3.6.1.4.1.12276.1.1.1.262400  |
 +----------------------------+----------------------------------+
-| txPwrHiWarn                | .1.3.6.1.4.1.12276.1.1.1.262401  |
+| rxPwr                      | .1.3.6.1.4.1.12276.1.1.1.262401  |
 +----------------------------+----------------------------------+
-| txPwrLoAlarm               | .1.3.6.1.4.1.12276.1.1.1.262402  |
+| txBias                     | .1.3.6.1.4.1.12276.1.1.1.262402  |
 +----------------------------+----------------------------------+
-| txPwrLoWarn                | .1.3.6.1.4.1.12276.1.1.1.262403  |
+| ddmTemp                    | .1.3.6.1.4.1.12276.1.1.1.262403  |
 +----------------------------+----------------------------------+
-| rxPwrHiAlarm               | .1.3.6.1.4.1.12276.1.1.1.262404  |
-+----------------------------+----------------------------------+
-| rxPwrHiWarn                | .1.3.6.1.4.1.12276.1.1.1.262405  |
-+----------------------------+----------------------------------+
-| rxPwrLoAlarm               | .1.3.6.1.4.1.12276.1.1.1.262406  |
-+----------------------------+----------------------------------+
-| rxPwrLoWarn                | .1.3.6.1.4.1.12276.1.1.1.262407  |
-+----------------------------+----------------------------------+
-| txBiasHiAlarm              | .1.3.6.1.4.1.12276.1.1.1.262408  |
-+----------------------------+----------------------------------+
-| txBiasHiWarn               | .1.3.6.1.4.1.12276.1.1.1.262409  |
-+----------------------------+----------------------------------+
-| txBiasLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262410  |
-+----------------------------+----------------------------------+
-| txBiasLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262411  |
-+----------------------------+----------------------------------+
-| ddmTempHiAlarm             | .1.3.6.1.4.1.12276.1.1.1.262412  |
-+----------------------------+----------------------------------+
-| ddmTempHiWarn              | .1.3.6.1.4.1.12276.1.1.1.262413  |
-+----------------------------+----------------------------------+
-| ddmTempLoAlarm             | .1.3.6.1.4.1.12276.1.1.1.262414  |
-+----------------------------+----------------------------------+
-| ddmTempLoWarn              | .1.3.6.1.4.1.12276.1.1.1.262415  |
-+----------------------------+----------------------------------+
-| ddmVccHiAlarm              | .1.3.6.1.4.1.12276.1.1.1.262416  |
-+----------------------------+----------------------------------+
-| ddmVccHiWarn               | .1.3.6.1.4.1.12276.1.1.1.262417  |
-+----------------------------+----------------------------------+
-| ddmVccLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262418  |
-+----------------------------+----------------------------------+
-| ddmVccLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262419  |
+| ddmVcc                     | .1.3.6.1.4.1.12276.1.1.1.262404  |
 +----------------------------+----------------------------------+
 | initialization             | .1.3.6.1.4.1.12276.1.1.1.262656  |
 +----------------------------+----------------------------------+
@@ -1642,23 +1612,10 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
 
    
 
-**txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
+**txPwr                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
-The transmit power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+The transmit power threshold for a specific transceiver has reached a theshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
-.. code-block:: bash
-
-
-**txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401**
-
-The transmit power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-.. code-block:: bash
-
-
-**txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262402**
-
-The transmit power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 .. code-block:: bash
 
@@ -1666,30 +1623,10 @@ The transmit power threshold for a specific transceiver has reached low alarm st
     <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
 
 
-**txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403**
 
-The transmit power threshold for a specific transceiver has reached low txPwrLoWarn status. Run the show portgroups command to see what the current values are for that transceiver. 
+**rxPwr                   .1.3.6.1.4.1.12276.1.1.1.262401**
 
-.. code-block:: bash
-
-
-**rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262404**
-
-The receive power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-.. code-block:: bash
-
-
-**rxPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262405**
-
-The receive power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-.. code-block:: bash
-
-
-**rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262406**
-
-The receive power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+The receive power threshold for a specific transceiver has reached a theshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 .. code-block:: bash
 
@@ -1705,97 +1642,31 @@ The receive power threshold for a specific transceiver has reached low alarm sta
     r10900-1# 
 
 
-**rxPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262407**
+**txBias                  .1.3.6.1.4.1.12276.1.1.1.262402**
 
-The receive power threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+The transmit bias threshold for a specific transceiver has reached a theshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
-.. code-block:: bash
-
-
-**txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262408**
-
-The transmit bias threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-.. code-block:: bash
-
-
-**txBiasHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262409**
-
-The transmit bias threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-.. code-block:: bash
-
-
-**txBiasLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262410**
-
-The transmit bias threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
 
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include tx
     <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
 
-**txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411**
 
-The transmit bias threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+**ddmTemp                 .1.3.6.1.4.1.12276.1.1.1.262403**
 
-.. code-block:: bash
-
-
-**ddmTempHiAlarm                 .1.3.6.1.4.1.12276.1.1.1.262412**
-
-The ddm temperature threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
+The ddm temperature threshold for a specific transceiver has reached a theshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 .. code-block:: bash
 
 
-**ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262413**
+**ddmVcc                  .1.3.6.1.4.1.12276.1.1.1.262404**
 
-The ddm temperature threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
-
-.. code-block:: bash
-
-
-**ddmTempLoAlarm                 .1.3.6.1.4.1.12276.1.1.1.262414**
-
-The ddm temperature threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
+The ddm vcc (Voltage) threshold for a specific transceiver has reach a theshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 .. code-block:: bash
 
 
-**ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262415**
-
-The ddm temperature threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
-
-.. code-block:: bash
-
-
-**ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262416**
-
-The ddm vcc (Voltage) threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver.
-
-.. code-block:: bash
-
-
-**ddmVccHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262417**
-
-The ddm vcc (Voltage) threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
-
-.. code-block:: bash
-
-
-**ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262418**
-
-The ddm vcc (Voltage) threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
-
-.. code-block:: bash
-
-
-**ddmVccLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262419**
-
-The ddm vcc (Voltage) threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
-
-.. code-block:: bash
 
 
 Enabling SNMP Traps
