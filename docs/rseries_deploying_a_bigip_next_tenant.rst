@@ -81,6 +81,66 @@ BIG-IP Next Tenant Deployments
 
 BIG-IP Next Tenants can easily be deployed via the F5OS CLI, webUI, or API or from the BIG-IP Next Central Manager Console.
 
+
+BIG-IP Next Tenant Deployment via Central Manager
+-------------------------------------------------
+
+BIG-IP Next tenants (or instances as they are called in Central Manager) can be deployed using an rSeries **Provider**. a Provider in Central Manager provides connectivity to resources such as VELOS, rSeries, or VMware where BIG-IP Next instances can be deployed. 
+
+Setting up an rSeries Provider in Central Manager
+=================================================
+
+After logging into Central Manager you can setup an rSeries Provider by going to the **Manage Instances** button on the main home screen, or by using the drop down in the upper right hand corner of the webUI ans selecting
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/central-manager-home.png
+  :align: center
+  :scale: 70% 
+
+Alternatively, select the **Infrastructure** option.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/infrastructure.png
+  :align: center
+  :scale: 70% 
+
+Once on the Infrastructure page, select **Providers**, and then select the **Start Adding Providers** option.
+ 
+.. image:: images/rseries_deploying_a_bigip_next_tenant/providers.png
+  :align: center
+  :scale: 70% 
+
+From the drop down menu, select **rSeries**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/add-an-instance-provider.png
+  :align: center
+  :scale: 70% 
+
+Next, provide a name for the Provider, a Hostname or IP address, and you can also optionally change the default port where the rSeries API is reachable. The default is 8888, but you can also change this to port 443. When done, click the **Connect** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/provider-properties.png
+  :align: center
+  :scale: 70% 
+
+When prompted, enter the **Username** and **Password** for the rSeries device you are connecting to. Then click **Submit**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/provider-username.png
+  :align: center
+  :scale: 70% 
+
+You may be prompted to accept the fingerprint of the device. Click **Accept**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/fingerprint.png
+  :align: center
+  :scale: 70% 
+
+The rSeries device will then be added as a Provider into Central Manager, which means you can now create BIG-IP Next instances directly from Central Manager instead of going directly to the rSeries device. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/provider-summary.png
+  :align: center
+  :scale: 70% 
+
+
+
+
 BIG-IP Next Tenant Deployment via CLI
 -------------------------------------
 
