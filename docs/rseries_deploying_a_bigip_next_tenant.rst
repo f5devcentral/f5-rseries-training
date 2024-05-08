@@ -171,16 +171,71 @@ From the **rSeries Provider** section select to rseries device that you added pr
   :align: center
   :scale: 70% 
 
-Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. 
+Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. When finished, click the **Done** button.
 
-.. Note:: The appropriate BIG-IP Next tenant image file should be loaded on the rSeries platform so that it can be selected in this screen. Currently there is no way to upload the image form Central Manager. 
+.. Note:: The appropriate BIG-IP Next tenant image file should be loaded on the rSeries platform so that the Tenant Image Name and Tenant Deployment File can be selected in this screen. Currently there is no way to upload the image from Central Manager. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/rseries-properties-1.png
   :align: center
   :scale: 70% 
 
+Enter the out-of-band **Management IP address**, **Network Prefix Length**, and **Gateway IP Address** and then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/next-mgmt-addressing.png
+  :align: center
+  :scale: 70% 
+
+In the next section, you will setup the in-band networking for the Next instance. Here, you will map the internal **L1 Networks** inside the Next instance to VLANs and then add IP addresses to them. These would be the equivalent of self-ip addresses on BIG-IP.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/next-networking.png
+  :align: center
+  :scale: 70% 
+
+For VELOS and rSeries r5000 and higher appliances only a single data interface (L1 Network) is surfaced to the BIG-IP Next tenant. For the rSeries r2000/r4000 appliances multiple L1 Networks will be surfaced to the tenant.
+The tenant will see either 4, 6, or 8 L1 Networks, depending on the port-mode that is configured on the rSeries appliance. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/next-internal-networking-diagram.png
+  :align: center
+  :scale: 70% 
 
 
+Below is an example of an r10900 device. Click on **L1 Networks**, and note that the **DefaultL1Network** already exists and is mapped to the internal interface 1.1. Also note that it has Zero VLANs assigned. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/l1networks.png
+  :align: center
+  :scale: 70% 
+
+Click on **VLANs** and note that the VLANs you previously assigned to the instance are listed, however they are not mapped to any L1 Networks yet.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/next-vlans.png
+  :align: center
+  :scale: 70% 
+
+ In the drop-down box for L1 Networks select the **DefaultL1Network** for all of your VLANs, and then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-picks.png
+  :align: center
+  :scale: 70% 
+
+In the **Troubleshooting** section you will setup a new local username and password for the Next instance that you can utilize for direct troubleshooting access. The default username and password will no longer work. Note that one an instance is under central management all configuration should be done though Central Manager, and not direct to the Next instance. Click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/admin-cm.png
+  :align: center
+  :scale: 70% 
+
+Review all the changes, and then click the **Deploy** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/summary-review-deploy.png
+  :align: center
+  :scale: 70% 
+
+You can then monitor the status of the instance being created. It will take some time for the deployment to complete.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/creating-instance.png
+  :align: center
+  :scale: 70% 
+
+ 
 
 BIG-IP Next Tenant Deployment via CLI
 -------------------------------------
