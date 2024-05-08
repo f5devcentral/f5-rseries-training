@@ -138,6 +138,47 @@ The rSeries device will then be added as a Provider into Central Manager, which 
   :align: center
   :scale: 70% 
 
+Creating a BIG-IP Next Instance via the rSeries Provider in Central Manager
+===========================================================================
+
+BIG-IP Next Central Manager refers to BIG-IP Next as **Instances**. This is because the BIG-IP Next Instance could be a **Tenant** running on an F5OS-based platform (rSeries,VELOS), or it could be a VE running on a hypervisor such as VMware. The term Instance is a generic term which will apply to both types of environments. To create a BIG-IP Next Instance go to **Instances->My Instances**, and then click the **Start Adding Instances** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-adding-instances.png
+  :align: center
+  :scale: 70% 
+
+The next option allows you to import a previously created instance, or to create a new one. Select **Create a New Instance**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/create-a-new-instance.png
+  :align: center
+  :scale: 70% 
+
+Review the requirements of what you'll need before proceeding, then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/what-youll-need.png
+  :align: center
+  :scale: 70% 
+
+Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop down box select **rSeries Standalone**, and then click the **Start Creating** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-creating.png
+  :align: center
+  :scale: 70% 
+
+From the **rSeries Provider** section select to rseries device that you added previously. Then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/select-bigip-next-instance.png
+  :align: center
+  :scale: 70% 
+
+Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. 
+
+.. Note:: The appropriate BIG-IP Next tenant image file should be loaded on the rSeries platform so that it can be selected in this screen. Currently there is no way to upload the image form Central Manager. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/rseries-properties-1.png
+  :align: center
+  :scale: 70% 
+
 
 
 
