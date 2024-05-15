@@ -203,7 +203,7 @@ The tenant will see either 4, 6, or 8 L1 Networks, depending on the port-mode th
   :scale: 70% 
 
 
-Below is an example of an r10900 device. Click on **L1 Networks**, and note that the **DefaultL1Network** already exists and is mapped to the internal interface 1.1. Also note that it has Zero VLANs assigned. 
+Below is an example of an r10900 device. Click on **L1 Networks**, and note that the **DefaultL1Network** already exists and is mapped to the internal interface 1.1. Also note that it has zero VLANs assigned. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/l1networks.png
   :align: center
@@ -221,13 +221,13 @@ In the drop-down box for L1 Networks select the **DefaultL1Network** for all of 
   :align: center
   :scale: 70% 
 
-Finally, you must assign IP addresses to each VLAN. Click on **IP Addresses**, and then click **Create** for each VLAN.
+Finally, you must assign an IP addresses to each VLAN. Click on **IP Addresses**, and then click **Create** for each VLAN.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/networking-ip-addresses.png
   :align: center
   :scale: 70% 
 
-You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you can assign the VLAN from the drop-down box. Leave the **Device Name** filed blank. When finished, click **Next**.
+You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you can assign the VLAN from the drop-down box. Leave the **Device Name** field blank. When finished, click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/ip-to-vlan.png
   :align: center
