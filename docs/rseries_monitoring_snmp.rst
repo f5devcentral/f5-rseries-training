@@ -2243,6 +2243,32 @@ The table below shows the current disk utilization and performance of the disk o
         40 percentage        0 IOPs 5505364 IOPs         374782 137111059968 bytes         984633 ms 94675420 IOPs        73036232 899072663040 bytes         6832726 ms
     prompt% 
 
+
+Host Resource Storage Table
+----------------------------
+
+The table below shows the current file system utilization on an rSeries appliance.
+
+
+**hrStorageTable  OID: 1.3.6.1.2.1.25.2.3**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 hrStorageTable                   
+    SNMP table: HOST-RESOURCES-MIB::hrStorageTable
+
+    hrStorageIndex                            hrStorageType                        hrStorageDescr hrStorageAllocationUnits hrStorageSize hrStorageUsed hrStorageAllocationFailures
+            65537 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /dev               4096 Bytes      32945582             0                           ?
+            65538 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /dev/shm               4096 Bytes      32960755             0                           ?
+            65539 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /run               4096 Bytes      32960755         22996                           ?
+            65540 HOST-RESOURCES-TYPES::hrStorageFixedDisk            appliance-1 /sys/fs/cgroup               4096 Bytes      32960755             0                           ?
+            65541 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /sysroot               4096 Bytes      28761637      18427950                           ?
+            65542 HOST-RESOURCES-TYPES::hrStorageFixedDisk                     appliance-1 /boot               4096 Bytes        253422         37382                           ?
+            65543 HOST-RESOURCES-TYPES::hrStorageFixedDisk                 appliance-1 /boot/efi               4096 Bytes        261613          5260                           ?
+            65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes     117595502       5087475                           ?
+            65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58764800      17641442                           ?
+    prompt%
+
 Component Info Table
 ----------------------------
 
