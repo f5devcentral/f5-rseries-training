@@ -2432,7 +2432,7 @@ Tenant State Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.1.1**
 
 .. code-block:: bash
 
@@ -2449,7 +2449,7 @@ Tenant Virtual Wires Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantVirtualWiresTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantVirtualWiresTable  OID: 1.3.6.1.4.1.12276.1.5.1.2.1**
 
 .. code-block:: bash
 
@@ -2460,7 +2460,7 @@ Tenant VLANs Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantVlansTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantVlansTable  OID: 1.3.6.1.4.1.12276.1.5.1.3.1**
 
 .. code-block:: bash
 
@@ -2479,7 +2479,7 @@ Tenant Nodes Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantNodesTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantNodesTable  OID: 1.3.6.1.4.1.12276.1.5.1.4.1**
 
 .. code-block:: bash
 
@@ -2496,7 +2496,7 @@ Tenant CPU Allocation Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantCPUAllocationsStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantCPUAllocationsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.5.1**
 
 .. code-block:: bash
 
@@ -2519,7 +2519,7 @@ Tenant Feature Flags Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantFeatureFlagsStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantFeatureFlagsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.6.1**
 
 .. code-block:: bash
 
@@ -2537,7 +2537,7 @@ Tenant Instances Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantInstancesStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantInstancesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.7.1**
 
 .. code-block:: bash
 
@@ -2578,7 +2578,7 @@ Tenant MAC Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantMacBlockStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantMacBlockStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.8.1**
 
 .. code-block:: bash
 
@@ -2596,7 +2596,7 @@ Tenant Sub Modules Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantSubModulesStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantSubModulesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.9.1**
 
 .. code-block:: bash
 
@@ -2607,7 +2607,7 @@ Tenant Sub Modules VLAN Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantSubModuleVlansStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantSubModuleVlansStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.10.1**
 
 .. code-block:: bash
 
@@ -2618,7 +2618,7 @@ Tenant Sub Modules Hugepage Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantSubModuleHugepagesStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantSubModuleHugepagesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.11.1**
 
 .. code-block:: bash
 
@@ -2629,7 +2629,7 @@ Tenant Upgrade Events Table
 
 Query the following SNMP OID to get detailed tenant status.
 
-**F5-OS-TENANT-MIB:tenantUpgradeEventsStateTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-TENANT-MIB:tenantUpgradeEventsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.12.1**
 
 .. code-block:: bash
 
