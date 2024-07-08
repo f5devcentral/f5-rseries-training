@@ -18,6 +18,7 @@ Port Groups
 
 The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high-speed ports do not support unbundling. **Adjacent** high-speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
+.. note:: F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
 .. image:: images/rseries_networking/image2.png
   :align: center
@@ -135,9 +136,6 @@ rSeries 100Gb QSFP28 SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 
 
-
-**Note: The QSFP+ & QSFP28 optics cannot currently be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
-
 Below are the current rSeries optic SKUs:
 
 
@@ -187,8 +185,10 @@ Below are the current rSeries optic SKUs:
 | F5-UPG-QSFP28-BD     |	Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       |
 +----------------------+----------------------------------------------------------------------------------------+
 
+.. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
-**THESE ARE UNSUPPORTED**
+
+The following breakout cable SKU’s are support in conjunction with F5OS-A 1.8.0, and only for 4 x 10Gb support. 
 
 +---------------------+--------------------------------------------------------------------------------------------+
 | F5-UPGVELSR4XSR3M   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (3 Meter 2 Pack)  |
@@ -199,8 +199,6 @@ Below are the current rSeries optic SKUs:
 +---------------------+--------------------------------------------------------------------------------------------+
 
 Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pack):
-
-**THESE ARE UNSUPPORTED**
 
 +---------------------+----------------------------------------------------------------------------------------------+
 | F5-UPG-VELPSMXLR10M | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)    |
