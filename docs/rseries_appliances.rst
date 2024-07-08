@@ -19,7 +19,7 @@ The r12000-DS Series appliance has 4 x 100Gb/40Gb ports that support QSFP28/QSFP
 
 Note that adjacent highspeed (40Gb / 100Gb) ports (**1.0** & **2.0** or **11.0** & **12.0**) must be configured for the same speed. You cannot have one port at 40Gb and the other at 100Gb currently. You can have ports 1.0 and 2.0 at one speed, and 11.0 & 12.0 at another. Also, the high-speed ports do not support unbundling into lower speeds (25Gb / 10Gb); only 40Gb or 100Gb are supported on those ports. For the low-speed ports (**3.0** - **10.0** & **13.0** - **20.0**) any combination of 10Gb or 25Gb is supported. The SFP28 ports are backwards compatible with SFP+.
 
-.. note:: F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**,**2.0**,**11.0**,**12.0**). These ports do not support 4 x 25Gb at this time.
+.. note:: F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0**). These ports do not support 4 x 25Gb at this time.
 
 .. image:: images/rseries_appliances/image1b.png
   :align: center
