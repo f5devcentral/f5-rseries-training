@@ -8,9 +8,24 @@ Initial Setup of the rSeries Network Layer
 rSeries Dashboard
 -----------------
 
-The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. 
+The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Tenant Overview**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. New in version F5OS-A 1.8.0 is more granular **Memory Utilization** and **Storage Utilization** Details.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image1.png
+  :align: center
+  :scale: 70% 
+
+More granular **Memory Utilization** is displayed showing how much memory is dedicated and in use by **F5OS System** vs. **F5OS Tenants**.
+
+.. image:: images/initial_setup_of_rseries_network_layer/memory-utilization.png
+  :align: center
+  :scale: 70% 
+
+There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for BIG-IP Tenant virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each).
+
+.. NOTE:: storage utilization and allocation may be different on various rSeries platforms.
+
+
+.. image:: images/initial_setup_of_rseries_network_layer/storage-utilization.png
   :align: center
   :scale: 70% 
 
@@ -20,11 +35,25 @@ The **Network** tab will provide a visual representation of all networking ports
   :align: center
   :scale: 70% 
 
-The **CPU** tab shows all the available CPUs in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
+The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r10900 which has 12 vCPUs dedicated to the F5OS/Datamover functions. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
   :scale: 70% 
+
+For reference below is the architecture of the r10900. Note that there are 12 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
+
+.. image:: images/initial_setup_of_rseries_network_layer/r10900-arch.png
+  :align: center
+  :scale: 70% 
+
+Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU's available for F5OS to use as needed. 
+
+.. image:: images/initial_setup_of_rseries_network_layer/cpu-allocation.png
+  :align: center
+  :scale: 70% 
+
+
 
 The  **Active Alarms** tab will display any active alerts or alarms for the system. 
 
