@@ -22,7 +22,7 @@ More granular **Memory Utilization** is displayed showing how much memory is ded
 
 There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for BIG-IP Tenant virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each).
 
-.. NOTE:: storage utilization and allocation may be different on various rSeries platforms.
+.. NOTE:: Storage utilization and allocation may be different on various rSeries platforms.
 
 
 .. image:: images/initial_setup_of_rseries_network_layer/storage-utilization.png
@@ -124,7 +124,7 @@ You must commit for any changes to take effect. This will require a reboot of th
     appliance-1(config-portgroup-10)# 
 
 
-Possible options for **MODE** depend on which port you are configuring. For the high-speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low-speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
+Possible options for **MODE** depend on which port you are configuring. For the high-speed ports on the r10000/r5000, supported modes are: **MODE_40GB**, **MODE_100GB**, or **MODE_4x10GB** (added in F5OS-A 1.8.0). For the low-speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 
@@ -2681,13 +2681,13 @@ Link Aggregation Groups (LAGs) can be configured in the F5OS webUI via the **Net
 
 You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term **Trunks** is used in place of LAG which is used in F5OS: 
 
-https://support.f5.com/csp/article/K1689
+`K1689: Overview of trunks on BIG-IP platforms <https://my.f5.com/manage/s/article/K1689>`_
 
-https://support.f5.com/csp/article/K13142
+`K13142: Configure the BIG-IP system to interface with Cisco virtual PortChannel <https://support.f5.com/csp/article/K13142>`_
 
 The following solution article provides guidance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches, and this would be similar guidance for rSeries:
 
-https://support.f5.com/csp/article/K33431212
+`K33431212: Configure LAGs with LACP between the VELOS system and Cisco Nexus 9000 series switches <https://support.f5.com/csp/article/K33431212>`_
 
 
 Once you have configured the **LAG Type** and LACP options, you can add any physical interfaces within the rSeries appliance to be part of a LAG. Finally, you can configure the **Native VLAN** (for untagged VLAN), and what **Trunked VLANs** (tagged) you’d like to add to this LAG interface.
