@@ -7,7 +7,12 @@ Deploying an rSeries BIG-IP Tenant
 Tenant Image Types
 ------------------
 
-rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether they allow in-place upgrades. rSeries only supports specific TMOS releases (currently 15.1.5); they can be found on downloads.f5.com:
+rSeries allows different packaging options for tenant images. It will be up to administrators to choose the image that is best suited for their environment. The main differences between the image types will be how much space they can consume on disk, and whether they allow in-place upgrades. rSeries only supports specific TMOS releases as defined in the following solution article:
+
+
+`K86001294: F5OS hardware/software support matrix <https://my.f5.com/manage/s/article/K86001294>`_
+
+F5OS tenant images can be found on downloads.f5.com:
 
 .. image:: images/rseries_deploying_a_tenant/image1.png
   :align: center
