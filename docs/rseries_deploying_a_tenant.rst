@@ -18,7 +18,7 @@ F5OS tenant images can be found on downloads.f5.com:
   :align: center
   :scale: 70% 
 
-Ensure you choose the option that is labeled specifically for rSeries that is **15.1.5_Tenant-F5OS**:
+Ensure you choose the option that is labeled specifically for rSeries that is **xx.x.x_Tenant-F5OS**, these are the tenant images for F5OS based systems:
 
 .. image:: images/rseries_deploying_a_tenant/image2.png
   :align: center
@@ -30,17 +30,17 @@ There are 4 different types of tenant images to choose from as seen below; pleas
   :align: center
   :scale: 70% 
 
-The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
+The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume (boot location) for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
 
 .. image:: images/rseries_deploying_a_tenant/image4.png
   :align: center
   :scale: 70% 
 
-The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in-place upgrades; however, they each default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage.
+The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in-place upgrades (they support multiple boot locations); however, they each default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage. Although you can expand the virtual disk, you cannot shrink it, so it is best to not over estimate the image type you need. 
 
 The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high-density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPUs per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk space per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over-provisioning situation. Because tenants are deployed in sparse mode which allows over-provisioning, this may not be an issue initially, but could become a problem later in the tenant’s lifespan as it writes more data to the disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk space than other BIG-IP modules, which do extensive local logging and utilize databases on disk.
 
-The **All-F5OS** image is suitable for any module configuration and supports a default of 76GB for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk space typically require more CPU/memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space, and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach; it may be best to default using the T4-F5OS image as that is essentially the default size for vCMP deployments today. 
+The **All-F5OS** image is suitable for any module configuration and supports a default of 77GB or 82GB (depending on the TMOS version) for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk space typically require more CPU/memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space, and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach; it may be best to default using the T4-F5OS image (if tenant density is not too dense) as that is essentially the default size for vCMP deployments today. 
 
 The **T4-F5OS** image also supports any module combination but has additional disk capacity. If you intend to have lot of software images, databases for modules, run modules like SWG which utilize a lot of disk space, and local logging then the added capacity is recommended. More detail on the image types can be found in the following solution article.
 
@@ -66,6 +66,21 @@ However, the 76GB image is allocated in a sparse manner meaning the tenant is on
   :scale: 70% 
 
 This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc… There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
+
+The Dashboard in the webUI has been enhanced to provide more visibility into the tenants usage of disk vs. what they think they have available to them. 
+
+.. image:: images/rseries_deploying_a_tenant/dashboard.png
+  :align: center
+  :scale: 70% 
+
+There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for BIG-IP Tenant virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each).
+
+.. NOTE:: Storage utilization and allocation may be different on various rSeries platforms.
+
+
+.. image:: images/rseries_deploying_a_tenant/storage-utilization.png
+  :align: center
+  :scale: 70% 
 
 ------------------
 Tenant Deployments
