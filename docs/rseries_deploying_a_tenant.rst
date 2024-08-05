@@ -67,7 +67,7 @@ However, the 76GB image is allocated in a sparse manner meaning the tenant is on
 
 This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc… There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
 
-The Dashboard in the webUI has been enhanced to provide more visibility into the tenants usage of disk vs. what they think they have available to them. 
+The Dashboard in the webUI has been enhanced in F5OS-A 1.8.0 to provide more visibility into the tenants usage of disk vs. what they think they have available to them. 
 
 .. image:: images/rseries_deploying_a_tenant/dashboard.png
   :align: center
@@ -82,6 +82,155 @@ There is also more granularity showing **Storage Utilization**. In the below exa
   :align: center
   :scale: 70% 
 
+You may also view the storage utilization from the F5OS CLI using the command **show components**.
+
+.. code-block:: bash
+
+    r10900-1# show components component platform 
+    components component platform
+    fantray fan-stats fan-1-speed 16233
+    fantray fan-stats fan-2-speed 16242
+    fantray fan-stats fan-3-speed 16322
+    fantray fan-stats fan-4-speed 16216
+    fantray fan-stats fan-5-speed 16207
+    fantray fan-stats fan-6-speed 16260
+    fantray fan-stats fan-7-speed 16384
+    fantray fan-stats fan-8-speed 16251
+    fantray fan-stats fan-9-speed 16251
+    fantray fan-stats fan-10-speed 16242
+    fantray fan-stats fan-11-speed 16304
+    fantray fan-stats fan-12-speed 16313
+    state description    r10900
+    state serial-no      f5-xpdn-ngmu
+    state part-no        "200-0413-02 REV 2"
+    state empty          false
+    state tpm-integrity-status Valid
+    state memory total    270014504960
+    state memory available 23909154816
+    state memory free     16769794048
+    state memory used-percent 91
+    state memory platform-total 34219122688
+    state memory platform-used 9518714880
+    state memory platform-used-percent 27
+    state temperature current 23.9
+    state temperature average 23.7
+    state temperature minimum 23.5
+    state temperature maximum 24.0
+                                                                                            USED     
+    AREA                          CATEGORY            TOTAL         FREE          USED         PERCENT  
+    ----------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System         117807665152  44277043200   67522703360  60       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks   481671176192  434169815040  23010193408  5        
+    tenant/fix-ll                 BIG-IP Tenant       85899345920   77861031936   8038313984   9        
+    tenant/test-tenant            BIG-IP Tenant       88046829568   80219897856   7826931712   8        
+    platform/images               F5OS Images         240700620800  182133891072  46316216320  20       
+    tenant/bigip-next-f5demo-net  BIG-IP Next Tenant  26830438400   24771969024   2058469376   7        
+
+                                                                                UPDATE  
+    NAME                        VALUE                              CONFIGURABLE  STATUS  
+    -------------------------------------------------------------------------------------
+    QAT0                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT1                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT2                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT3                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT4                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT5                        Lewisburg C62X Crypto/Compression  false         -       
+    fw-version-bios             2.02.145.1                         false         none    
+    fw-version-bios-me          4.4.4.603                          false         none    
+    fw-version-cpld             02.0B.00                           false         none    
+    fw-version-drive-nvme0      VDV10170                           false         none    
+    fw-version-drive-nvme1      VDV10170                           false         none    
+    fw-version-drive-u.2.slot1  VDV10184                           false         none    
+    fw-version-drive-u.2.slot2  VDV10184                           false         none    
+    fw-version-lcd-app          1.01.069.00.1                      false         none    
+    fw-version-lcd-bootloader   1.01.027.00.1                      false         none    
+    fw-version-lcd-ui           1.13.12                            false         none    
+    fw-version-lop-app          2.00.357.0.1                       false         none    
+    fw-version-lop-bootloader   1.02.062.0.1                       false         none    
+    fw-version-sirr             1.1.72                             false         none    
+
+                                                                                                                        READ                                       WRITE    
+    DISK                                                                                TOTAL  READ    READ                LATENCY  WRITE     WRITE                   LATENCY  
+    NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS    MERGED  READ BYTES  MS       IOPS      MERGED    WRITE BYTES   MS       
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ1082028K1P0FGN  684.00GB  nvme  0      364078  329634  7207222272  72559    23708925  23792718  238635919360  1547867  
+    nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ108203XB1P0FGN  684.00GB  nvme  0      132095  272411  4044277760  44936    23708924  23792719  238635919360  1769061  
+
+    cpu state cpu-utilization thread cpu
+    cpu state cpu-utilization current 1
+    cpu state cpu-utilization five-second-avg 2
+    cpu state cpu-utilization one-minute-avg 3
+    cpu state cpu-utilization five-minute-avg 3
+    cpu state cpu-utilization used-by ""
+    CPU               CORE                           THREAD                                             
+    INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                  
+    ----------------------------------------------------------------------------------------------------
+    0      36864(KB)  24    3099.902(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
+
+                            FIVE    ONE     FIVE                           
+    THREAD                   SECOND  MINUTE  MINUTE                         
+    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY                
+    ------------------------------------------------------------------------
+    0       cpu0    0        0       1       1       F5OS Dedicated         
+    1       cpu1    0        0       1       1       F5OS Dedicated         
+    2       cpu2    0        0       1       1       F5OS Dedicated         
+    3       cpu3    0        0       0       1       F5OS Dedicated         
+    4       cpu4    0        0       0       1       F5OS Dedicated         
+    5       cpu5    0        0       0       1       F5OS Dedicated         
+    6       cpu6    2        2       3       3       F5OS                   
+    7       cpu7    0        0       0       1       bigip-next-f5demo-net  
+    8       cpu8    3        2       4       3       F5OS                   
+    9       cpu9    0        0       0       1       bigip-next-f5demo-net  
+    10      cpu10   2        2       4       3       F5OS                   
+    11      cpu11   5        5       5       5       fix-ll                 
+    12      cpu12   2        1       4       3       F5OS                   
+    13      cpu13   3        3       4       3       F5OS                   
+    14      cpu14   1        1       3       3       F5OS                   
+    15      cpu15   5        4       3       3       F5OS                   
+    16      cpu16   14       4       5       5       test-tenant            
+    17      cpu17   5        4       5       5       fix-ll                 
+    18      cpu18   2        4       3       3       F5OS                   
+    19      cpu19   4        4       4       5       test-tenant            
+    20      cpu20   2        3       3       3       F5OS                   
+    21      cpu21   3        3       3       3       F5OS                   
+    22      cpu22   4        3       4       3       F5OS                   
+    23      cpu23   1        2       3       3       F5OS                   
+    24      cpu24   2        1       1       1       F5OS Data Mover        
+    25      cpu25   1        1       1       1       F5OS Data Mover        
+    26      cpu26   1        1       1       1       F5OS Data Mover        
+    27      cpu27   0        1       1       1       F5OS Data Mover        
+    28      cpu28   0        1       1       1       F5OS Data Mover        
+    29      cpu29   1        1       1       1       F5OS Data Mover        
+    30      cpu30   5        4       6       6       F5OS                   
+    31      cpu31   0        0       0       1       bigip-next-f5demo-net  
+    32      cpu32   1        1       4       5       F5OS                   
+    33      cpu33   0        0       0       1       bigip-next-f5demo-net  
+    34      cpu34   0        1       5       5       F5OS                   
+    35      cpu35   1        7       6       7       fix-ll                 
+    36      cpu36   1        1       4       5       F5OS                   
+    37      cpu37   1        1       7       5       F5OS                   
+    38      cpu38   0        1       5       5       F5OS                   
+    39      cpu39   1        1       5       5       F5OS                   
+    40      cpu40   5        4       5       5       test-tenant            
+    41      cpu41   0        1       4       5       fix-ll                 
+    42      cpu42   1        1       4       5       F5OS                   
+    43      cpu43   3        5       5       6       test-tenant            
+    44      cpu44   3        1       4       4       F5OS                   
+    45      cpu45   2        2       3       5       F5OS                   
+    46      cpu46   1        2       6       5       F5OS                   
+    47      cpu47   1        5       4       5       F5OS                   
+
+    FPGA                            NUM  NUM   
+    INDEX   VERSION  ID  SLOT  DID  DMS  SEPS  
+    -------------------------------------------
+    asw_0   71.5.1                             
+    atse_0  72.5.4   0   1     15   3    64    
+    atse_1  72.5.4   1   1     63   3    64    
+    nso_0   70.5.1                             
+
+    r10900-1#
+
+
 ------------------
 Tenant Deployments
 ------------------
@@ -94,7 +243,11 @@ Tenant Deployment via CLI
 Uploading a Tenant Image via CLI
 ================================
 
-Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries, supported tenant versions are v15.1.5 for the r5000 and r10000, and v15.1.6 for the r2000 and r4000. No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x and later.
+Tenant software images are loaded directly into the F5OS platform layer. For the initial release of rSeries, supported tenant versions are v15.1.5 for the r5000 and r10000, and v15.1.6 for the r2000 and r4000. For other models, and details on supported TMOS versions the following solution article is the official source:
+
+`K86001294: F5OS hardware/software support matrix <https://my.f5.com/manage/s/article/K86001294>`_
+
+No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions of TMOS happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x and later.
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client.
 
@@ -140,16 +293,31 @@ You can view the current tenant images and their status in the F5OS CLI by using
 
 .. code-block:: bash
 
-    Boston-r10900-1# show images
-                                                                        IN               
-    NAME                                                                 USE    STATUS    
-    --------------------------------------------------------------------------------------
-    BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle                       false  verified  
-    BIGIP-15.1.4-0.0.47.ALL-VELOS.qcow2.zip.bundle                       false  verified  
-    BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified  
-    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         false  verified  
+    r10900-1# show images
+                                                    IN                                    
+    NAME                                             USE    TYPE                STATUS     
+    ---------------------------------------------------------------------------------------
+    BIG-IP-Next-20.0.2-2.139.10+0.0.165              false  helm-image          processed  
+    BIG-IP-Next-20.0.2-2.139.10+0.0.165.tar.bundle   false  helm-bundle         verified   
+    BIG-IP-Next-20.0.2-2.139.10+0.0.165.yaml         false  helm-specification  verified   
+    BIG-IP-Next-20.1.0-2.263.4                       false  helm-image          processed  
+    BIG-IP-Next-20.1.0-2.263.4.tar.bundle            false  helm-bundle         verified   
+    BIG-IP-Next-20.1.0-2.263.4.yaml                  false  helm-specification  verified   
+    BIG-IP-Next-20.2.1-2.429.1                       false  helm-image          processed  
+    BIG-IP-Next-20.2.1-2.429.1.tar.bundle            false  helm-bundle         verified   
+    BIG-IP-Next-20.2.1-2.429.1.yaml                  false  helm-specification  verified   
+    BIG-IP-Next-20.2.1-2.429.4                       true   helm-image          processed  
+    BIG-IP-Next-20.2.1-2.429.4.tar.bundle            true   helm-bundle         verified   
+    BIG-IP-Next-20.2.1-2.429.4.yaml                  true   helm-specification  verified   
+    BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
+    BIGIP-15.1.10.2-0.0.2.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
+    BIGIP-15.1.6.1-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
+    BIGIP-17.1.1.1-0.0.2.T4-F5OS.qcow2.zip.bundle    true   vm-image            verified   
+    BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle    true   vm-image            verified   
+    BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
 
-    Boston-r10900-1# 
+    r10900-1# 
+
 
 
 Creating a Tenant via CLI
@@ -173,34 +341,36 @@ When inside the tenant config mode, you can enter each configuration item one li
 
 .. code-block:: bash
 
-  Boston-r10900-1# config
-  Entering configuration mode terminal
-  Boston-r10900-1(config)# tenants tenant tenant2 
-    Boston-r10900-1(config-tenant-tenant2)# config ?
+    Boston-r10900-1# config
+    Entering configuration mode terminal
+    Boston-r10900-1(config)# tenants tenant tenant2 
+    Boston-r10900-1(config-tenant-test-tenant)# config ?
     Possible completions:
-    appliance-mode        Appliance mode can be enabled/disabled at tenant level
-    cryptos               Crypto devices for the tenant.
-    gateway               User-specified gateway for the tenant mgmt-ip.
-    image                 User-specified image for tenant.
-    memory                User-specified memory in MBs for the tenant.
-    mgmt-ip               User-specified mgmt-ip for the tenant management access.
-    name                  User-specified name for tenant.
-    nodes                 User-specified node-number(s) on which to schedule the tenant.
-    prefix-length         User-specified prefix-length for the tenant mgmt-ip.
-    running-state         User-specified desired state for the tenant.
-    storage               User-specified storage information
-    type                  Tenant type.
-    vcpu-cores-per-node   User-specified number of logical cpu cores for the tenant.
-    vlans                 User-specified vlan-id from vlan table for the tenant.
-  Boston-r10900-1(config-tenant-tenant2)# config ?
-  Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
-  Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
-  Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
-  Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
-  Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
-  Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
-  Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
-  Boston-r10900-1(config-tenant-tenant2)# config memory 14848
+        appliance-mode           Appliance mode can be enabled/disabled at tenant level
+        cryptos                  Enable crypto devices for the tenant.
+        dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
+        gateway                  User-specified gateway for the tenant static mgmt-ip.
+        image                    User-specified image for tenant.
+        mac-data                 
+        memory                   User-specified memory in MBs for the tenant.
+        mgmt-ip                  User-specified mgmt-ip for the tenant management access.
+        nodes                    User-specified node-number(s) in the partition to schedule the tenant.
+        prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
+        running-state            User-specified desired state for the tenant.
+        storage                  User-specified storage information
+        type                     Tenant type.
+        vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
+        virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
+        vlans                    User-specified vlan-id from vlan table for the tenant.
+    Boston-r10900-1(config-tenant-tenant2)# config ?
+    Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
+    Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
+    Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
+    Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
+    Boston-r10900-1(config-tenant-tenant2)# config memory 14848
   
 
 Any changes must be committed for them to be executed:
@@ -252,34 +422,44 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
 
 .. code-block:: bash
 
-  Boston-r10900-1# show tenants 
-  tenants tenant tenant2
-   state name          tenant2
-   state unit-key-hash glbrGy9pGV3BAh1ObpXrryOF23bTEs2BAnQ5MPaIRyBjc8Un1swNfBo2yQhFXC6jKx/F5EhuaJFCehnHJqtDkg==
-   state type          BIG-IP
-   state mgmt-ip       10.255.0.136
-   state prefix-length 24
-   state gateway       10.255.0.1
-   state vlans         [ 500 3010 3011 ]
-   state cryptos       enabled
-   state vcpu-cores-per-node 4
-   state memory        14848
-   state storage size 76
-   state running-state deployed
-   state mac-data base-mac 00:94:a1:69:59:26
-   state mac-data mac-pool-size 1
-   state appliance-mode disabled
-   state status        Running
-   state primary-slot  1
-   state image-version "BIG-IP 15.1.5 0.0.8"
-  NDI      MAC                
-  ----------------------------
-  default  00:94:a1:69:59:24  
+    Boston-r10900-1# show tenants 
+    tenants tenant test-tenant
+        state unit-key-hash    IHJti+ctR9YrfmTuj3F7dElBgXtFyOBFpa+7AudyYif3neHybBiP5v3tyt5AMd7WwDypOCz58US8I9NXzvgqnQ==
+        state type             BIG-IP
+        state image            BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle
+        state mgmt-ip          10.255.2.12
+        state prefix-length    24
+        state gateway          10.255.2.252
+        state dag-ipv6-prefix-length 128
+        state vlans            [ 3010 3011 ]
+        state cryptos          enabled
+        state vcpu-cores-per-node 4
+        state qat-vf-count     6
+        state memory           14848
+        state storage size 82
+        state running-state    deployed
+        state appliance-mode disabled
+        state feature-flags stats-stream-capable true
+        state namespace        default
+        state status           Running
+        state primary-slot     1
+        state image-version    "BIG-IP 17.1.1.2 0.0.1"
+        state mac-data base-mac 00:94:a1:69:59:2b
+        state mac-data mac-pool-size 1
+    MAC                
+    -------------------
+    00:94:a1:69:59:2b  
 
-        INSTANCE                                                                                                                                                 
-  NODE  ID        PHASE    IMAGE NAME                                    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  1     1         Running  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle  2021-12-22T20:47:31Z  2021-12-22T20:47:32Z  Started tenant instance  00:94:a1:69:59:27  
+    NODE  CPUS             
+    -----------------------
+    1     [ 16 19 40 43 ]  
+
+                        INSTANCE  TENANT                                                                                                   
+    NODE  POD NAME       ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+    ----------------------------------------------------------------------------------------------------------------------------------------
+    1     test-tenant-1  1         1       Running  2024-08-01T16:23:56Z  2024-08-01T16:24:38Z  Started tenant instance  00:94:a1:69:59:2c  
+
+    Boston-r10900-1#
 
 
 Tenant Deployment via webUI
@@ -339,13 +519,7 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
 Validating Tenant Status via webUI
 ================================
 
-Once the tenant is deployed you can monitor its status in the **Tenant Management > Tenant Deployments** webUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
-
-.. image:: images/rseries_deploying_a_tenant/image76.png
-  :align: center
-  :scale: 70% 
-
-The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Starting**.
+Once the tenant is deployed you can monitor its status in the **Tenant Management > Tenant Deployments** webUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing. The tenant will cycle through various phases as the tenant starts initializing. It should go from an empty status to **Starting**.
 
 .. image:: images/rseries_deploying_a_tenant/image77.png
   :align: center
@@ -357,19 +531,24 @@ The tenant will then go from **Starting** to **Running** and the **Running Versi
   :align: center
   :scale: 70% 
 
-Finally when the tenant is fully up the Running Version should display the actual software version of the tenant.
+Finally when the tenant is fully you can click the arrow button on the far right to get more detailed status of the tenant. The Running Version should display the actual software version of the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image79.png
   :align: center
   :scale: 70% 
 
-You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
+You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a tenant to view and refresh period, to monitor in deeper detail. As of F5OS-A 1.8.0 this page will display real time and historical tenant CPU, Memory, and Disk usage.
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
   :align: center
   :scale: 70% 
 
-At this point the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
+.. image:: images/rseries_deploying_a_tenant/image80-a.png
+  :align: center
+  :scale: 70% 
+
+
+At this point the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI and then click on **Tenant Overview** to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
