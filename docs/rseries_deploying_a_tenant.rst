@@ -525,13 +525,13 @@ Once the tenant is deployed you can monitor its status in the **Tenant Managemen
   :align: center
   :scale: 70% 
 
-The tenant will then go from **Starting** to **Running** and the **Running Version** will go from **Unavailable** to a blank status for a period of time.
+The tenant will then go from **Starting** to **Running**.
 
 .. image:: images/rseries_deploying_a_tenant/image78.png
   :align: center
   :scale: 70% 
 
-Finally when the tenant is fully you can click the arrow button on the far right to get more detailed status of the tenant. The Running Version should display the actual software version of the tenant.
+Finally, when the tenant is fully operational you can click the arrow button on the far right to get more detailed status of the tenant. The Running Version should display the actual software version of the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image79.png
   :align: center
@@ -548,7 +548,7 @@ You can view a more detailed tenant status using the **Tenant Management > Tenan
   :scale: 70% 
 
 
-At this point the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI and then click on **Tenant Overview** to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
+At this point, the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI and then click on **Tenant Overview** to see the running tenants. There is a hyperlink that will connect to the tenant's webUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
