@@ -157,7 +157,7 @@ The output will show the previously configured allowed-ips.
 Adding Allow List Entries via webUI
 -----------------------------------
 
-You can configure the **Allow List** in the webUI under the **System Settings** section. 
+You can configure the **Allow List** in the webUI under the **System Settings** section in older version of F5OS. In newer versions of F5OS the **Allowed IP Addresses** configuration can be found under **System Settings** -> **System Security**.
 
 .. image:: images/rseries_security/image2.png
   :align: center
@@ -359,6 +359,13 @@ In the F5OS webUI you can manage device certificates for the management interfac
   :align: center
   :scale: 70%
 
+In newer versions of F5OS the Certificate Management is now under the **Authentication & Access** ->  **TLS Configuration** page. 
+
+.. image:: images/rseries_security/imagecert2a.png
+  :align: center
+  :scale: 70%
+
+
 The screen below shows the options when creating a self-signed certificate. 
 
 .. image:: images/rseries_security/imagecert3.png
@@ -505,6 +512,11 @@ Appliance mode can be enabled or disabled via the webUI under the **System Setti
   :align: center
   :scale: 70%
 
+In newer F5OS releases, Appliance Mode configuration has been moved to the **System Settings** -> **System Security** page.
+
+.. image:: images/rseries_security/image4-new.png
+  :align: center
+  :scale: 70%
 
 Enabling Appliance Mode via the API
 -----------------------------------
@@ -650,8 +662,20 @@ Both timeout settings can be viewed using the **show system settings** command.
     r10900-1# show system settings 
     system settings state idle-timeout 300
     system settings state sshd-idle-timeout 300
+    system settings state portgroup-confirmation-warning on
     system settings dag state gtp-u teid-hash disabled
+    system settings gui advisory state disabled
     r10900-1#
+
+In addition, there is a separate setting for aom ssh access as described here:
+
+`K000138036: Configure AOM SSH access in F5OS-A <https://my.f5.com/manage/s/article/K000138036>`_
+
+.. code-block:: bash
+
+    r10900-1(config)# system aom config ssh-session-idle-timeout 300
+    r10900-1(config)# commit
+    Commit complete.
 
 
  
@@ -698,11 +722,8 @@ You'll see output similar to the example below.
 Configuring SSH and CLI Timeouts via webUI
 ------------------------------------------
 
-Currently only the HTTPS token lifetime is configurable in the webUI. SSH and CLI timeouts are not currently configurable via the webUI.
+Currently only the HTTPS token lifetime, and CLI timeout is configurable in the webUI. SSH timeouts are not currently configurable via the webUI.
 
-.. image:: images/rseries_security/imagetoken1.png
-  :align: center
-  :scale: 70%
 
 Token Lifetime via CLI
 ----------------------
