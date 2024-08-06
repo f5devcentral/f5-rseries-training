@@ -6,16 +6,10 @@ rSeries Software Upgrades
 F5OS-A Platform Layer Upgrades
 ==============================
 
-rSeries appliances ship with a new platform layer software called F5OS. There are two different flavors of F5OS, one for VELOS chassis-based systems called F5OS-C (Chassis), and F5OS-A (Appliances) for rSeries appliances. The F5OS platform layer is upgraded independently from the tenant layer, and has its own unique image, which can be downloaded from downloads.f5.com. Below is the default page for downloads.f5.com; note the **F5OS** section under **F5 Product Family** and under **Product Line** select **F5OS Appliance Software**. Click the hyperlink for this section.
+rSeries appliances ship with a new platform layer software called F5OS. There are two different flavors of F5OS, one for VELOS chassis-based systems called F5OS-C (Chassis), and F5OS-A (Appliances) for rSeries appliances. The F5OS platform layer is upgraded independently from the tenant layer, and has its own unique image, which can be downloaded from downloads.f5.com. Below is the default page for downloads.f5.com; note the **F5OS** section under **F5 Product Family** and under **Product Line** select **F5OS Appliance Software**. Click the hyperlink for this section. Here you will see a drop down for the various supported versions available for download. Select the desired version and accept the user agreement.
 
 
 .. image:: images/rseries_software_upgrades/image1.png
-  :align: center
-  :scale: 70%
-
-Here you will see a drop down for the various supported versions available for download. Select the desired version and accept the user agreement.
-
-.. image:: images/rseries_software_upgrades/image2.png
   :align: center
   :scale: 70%
 
@@ -45,7 +39,7 @@ Alternatively, you may also upload images to the rSeries appliance via the **Sys
 
 
 
-After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and webUI. If you don’t see it immediately, be patient and wait a few minutes for it to show up as it may take come time to verify the image file. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.0.0-11432 consists of an **OS** and **Service** with the same version number. 
+After the upload completes, it will take some time for it to be fully imported and verified. At that point it should show up in the CLI and webUI. If you don’t see it immediately, be patient and wait a few minutes for it to show up as it may take come time to verify the image file. Inside the **ISO** file are two different types of software, the **OS** and the **Service**. All three types should be displayed in the **Software Management** page. In the example below the ISO for version 1.8.0-13598 consists of an **OS** and **Service** with the same version number. 
 
 .. image:: images/rseries_software_upgrades/image6.png
   :align: center
