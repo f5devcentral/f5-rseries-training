@@ -5,38 +5,41 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 
 Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can continue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower-level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
-Below are the latest SNMP MIBs as of the F5OS-A 1.6.0 release.
+Below are the latest SNMP MIBs as of the F5OS-A 1.8.0 release.
 
-As of F5OS-A 1.6.0, the following NetSNMP MIBs are available:
+As of F5OS-A 1.8.0, the following NetSNMP MIBs are available:
 
-- HOST-RESOURCES-MIB
-- RFC1213-MIB
-- EtherLike-MIB
-- IANAifType-MIB
-- IF-MIB
-- IPV6-TC
-- SNMP-COMMUNITY-MIB
-- SNMP-FRAMEWORK-MIB
-- SNMP-MPD-MIB
-- SNMP-NOTIFICATION-MIB
-- SNMP-TARGET-MIB
-- SNMP-USER-BASED-SM-MIB
-- SNMP-VIEW-BASED-ACM-MIB
-- SNMPv2-CONF 
-- SNMPv2-MIB
-- SNMPv2 SMI
-- SNMPv2-TC
 - TRANSPORT-ADDRESS-MIB
+- SNMP-VIEW-BASED-ACM-MIB
+- SNMPv2-TC
+- SNMPv2 SMI
+- SNMPv2-MIB
+- SNMPv2-CONF 
+- SNMP-USER-BASED-SM-MIB
+- SNMP-TARGET-MIB
+- SNMP-NOTIFICATION-MIB
+- SNMP-MPD-MIB
+- SNMP-FRAMEWORK-MIB
+- SNMP-COMMUNITY-MIB
+- RFC1213-MIB
+- IPV6-TC
+- IF-MIB
+- IANAifType-MIB
+- HOST-RESOURCES-MIB
+- EtherLike-MIB
 
-As of F5OS-A 1.6.0.the following F5OS Appliance MIBs are available:
 
-- F5-ALERT-DEF-MIB
-- F5-COMMON-SMI-MIB
-- F5-OS-LLDP-MIB
-- F5-OS-PLATFORM-SMI-MIB
-- F5-OS-SYSTEM-MIB
-- F5-PLATFORM-STATS-MIB
+As of F5OS-A 1.8.0 the following F5OS Appliance MIBs are available:
+
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
+- F5-PLATFORM-STATS-MIB
+- F5-OS-TENANT-MIB
+- F5-OS-SYSTEM-MIB
+- F5-OS-PLATFORM-SMI-MIB
+- F5-OS-LLDP-MIB
+- F5-COMMON-SMI-MIB
+- F5-ALERT-DEF-MIB
+
 
 Downloading MIBs
 ================
@@ -888,7 +891,7 @@ The output should appear similar to the example below.
 Configuring SNMP Access via webUI
 ---------------------------------
 
-SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**.
+SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Properties, SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**.
 
 .. image:: images/rseries_monitoring_snmp/image2.png
   :align: center
@@ -956,6 +959,10 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | sensor-fault               | .1.3.6.1.4.1.12276.1.1.1.65577   |
 +----------------------------+----------------------------------+
+| datapath-fault             | .1.3.6.1.4.1.12276.1.1.1.65578   |
++----------------------------+----------------------------------+
+| boot-time-integrity-status | .1.3.6.1.4.1.12276.1.1.1.65579   |
++----------------------------+----------------------------------+
 | module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
 +----------------------------+----------------------------------+
 | psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
@@ -994,13 +1001,11 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | ePVA                       | .1.3.6.1.4.1.12276.1.1.1.262912  |
 +----------------------------+----------------------------------+
-| interface up               | .1.3.6.1.4.1.12276.1.1.1.263168  |
+| interface-up               | .1.3.6.1.4.1.12276.1.1.1.263168  |
 +----------------------------+----------------------------------+
 | interface-down             | .1.3.6.1.4.1.12276.1.1.1.263169  |
 +----------------------------+----------------------------------+
 | speed                      | .1.3.6.1.4.1.12276.1.1.1.263170  |
-+----------------------------+----------------------------------+
-| incompatible-image         | .1.3.6.1.4.1.12276.1.1.1.327682  |
 +----------------------------+----------------------------------+
 | inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
