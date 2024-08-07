@@ -1875,7 +1875,7 @@ For reference below is the architecture of the r10900. Note that there are 12 vC
 
 .. image:: images/monitoring_rseries/r10900-arch.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU's available for F5OS to use as needed. 
 
