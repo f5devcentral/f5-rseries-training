@@ -22,7 +22,9 @@ The initial F5OS-A 1.7.0 release also limits the number of BIG-IP Next tenants t
 | r10900       | 36                     | 1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36 | 4,8,36 – F5OS-A 1.7.0                   | 2                         |    
 +--------------+------------------------+-----------------------------------------------------+-----------------------------------------+---------------------------+
 
-F5OS-A 1.8.0 adds additional rSeries platform support and tenant options as seen below:
+F5OS-A 1.8.0 adds BIG-IP Next support for the rSeries r2000/r4000 devices, as well as the r12000-DS platforms. F5OS-A 1.8.1 will add BIG-IP Next support for the rSeries FIPS platforms (r5920-DF/r10920-DF). Note, that there will be a phasing of vCPU options and maximum numbers of Next Tenants per device across future F5OS and BIG-IP Next releases. 
+
+Although F5OS-A 1.8.0/1.8.1 adds support for BIG-IP Next on specific rSeries platforms, there is also a requirement to run a newer version of BIG-IP Next Central Manager (20.3) to enable support of on the newer platforms. 
 
 +--------------+------------------------+-----------------------------------------------------------------------------------------+--------------------------------------------------------+------------------------------------+
 | Platform     | # of vCPUs for Tenants | Supported vCPUs for BIG-IP Tenants                                                      | Supported vCPUs for BIG-IP Next Tenants (F5OS-A 1.8.0) | Maximum # of Next Tenants          |
