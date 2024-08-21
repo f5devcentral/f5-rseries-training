@@ -2415,13 +2415,49 @@ Query the following SNMP OID to get detailed fan speeds.
     16251 RPM   16384 RPM   16375 RPM   16242 RPM   16277 RPM   16330 RPM   16366 RPM   16224 RPM   16233 RPM    16207 RPM    16322 RPM    16286 RPM
     prompt% 
 
+Licensing Info
+--------------
+
+Query the following SNMP OID to get detailed licensing information.
+
+**F5-OS-SYSTEM-MIB:licenseActiveModuleTable  OID: 1.3.6.1.4.1.12276.1.3.3.9**
+
+The licenseActiveModuleTable will display all actively licensed modules.
+
+.. code-block:: bash
+
+    prompt% snmptable -v2c -c public -m ALL 10.255.2.40 F5-OS-SYSTEM-MIB:licenseActiveModuleTable
+    SNMP table: F5-OS-SYSTEM-MIB::licenseActiveModuleTable
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        activeModule
+    Best Bundle, r10900|M757216-4315179|Advanced Protocols|Rate Shaping|DNS Services|BIG-IP, DNS (Max)|Routing Bundle|Access Policy Manager, Base, r109XX|Advanced Web Application Firewall, r10XXX|Max Compression, r10900|Max SSL, r10900|Advanced Firewall Manager, r10XXX|DNSSEC|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|DNS Rate Fallback, Unlimited|DNS Licensed Objects, Unlimited|DNS Rate Limit, Unlimited QPS|GTM Rate Fallback, (UNLIMITED)|GTM Licensed Objects, Unlimited|GTM Rate, Unlimited|DNS RATE LIMITED, MAX|Protocol Security Manager|Carrier Grade NAT (AFM ONLY)
+    prompt% 
+
+You can also snmpwalk from the OID 1.3.6.1.4.1.12276.1.3 to get more licensing details:
+
+.. code-block:: bash
+
+    prompt% snmpwalk -ObenU -v2c -c public 10.255.2.40 1.3.6.1.4.1.12276.1.3
+    .1.3.6.1.4.1.12276.1.3.3.1.0 = STRING: "1.8.0"
+    .1.3.6.1.4.1.12276.1.3.3.2.0 = STRING: "S1463-27365-79709-55838-3850734"
+    .1.3.6.1.4.1.12276.1.3.3.3.0 = STRING: "2024/07/23"
+    .1.3.6.1.4.1.12276.1.3.3.4.0 = STRING: "2024/06/13"
+    .1.3.6.1.4.1.12276.1.3.3.5.0 = STRING: "2024/09/19"
+    .1.3.6.1.4.1.12276.1.3.3.6.0 = STRING: "2024/08/20"
+    .1.3.6.1.4.1.12276.1.3.3.7.0 = STRING: "C128"
+    .1.3.6.1.4.1.12276.1.3.3.8.0 = STRING: "f5-xpdn-ngmu"
+    .1.3.6.1.4.1.12276.1.3.3.9.1.2.1 = STRING: "Best Bundle, r10900|M757216-4315179|Advanced Protocols|Rate Shaping|DNS Services|BIG-IP, DNS (Max)|Routing Bundle|Access Policy Manager, Base, r109XX|Advanced Web Application Firewall, r10XXX|Max Compression, r10900|Max SSL, r10900|Advanced Firewall Manager, r10XXX|DNSSEC|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|DNS Rate Fallback, Unlimited|DNS Licensed Objects, Unlimited|DNS Rate Limit, Unlimited QPS|GTM Rate Fallback, (UNLIMITED)|GTM Licensed Objects, Unlimited|GTM Rate, Unlimited|DNS RATE LIMITED, MAX|Protocol Security Manager|Carrier Grade NAT (AFM ONLY)"
+    prompt%
+
+
+
 
 LLDP Configuration Table
 -----------------------------
 
 Query the following SNMP OID to get detailed LLDP configuration table.
 
-**F5-OS-LLDP-MIB:lldpIfConfigTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-LLDP-MIB:lldpIfConfigTable  OID: 1.3.6.1.4.1.12276.1.4.1.1.3.1**
 
 .. code-block:: bash
 
@@ -2444,7 +2480,7 @@ LLDP Neighbors Table
 
 Query the following SNMP OID to get detailed LLDP neighbors table.
 
-**F5-OS-LLDP-MIB:lldpNeighborsTable  OID: .1.3.6.1.4.1.12276.x.x.x.x.x**
+**F5-OS-LLDP-MIB:lldpNeighborsTable  OID: 1.3.6.1.4.1.12276.1.4.1.1.4.1**
 
 .. code-block:: bash
 
