@@ -1009,6 +1009,9 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
+| authenticationFailure      | 1.3.6.1.6.3.1.1.5.5              |
++----------------------------+----------------------------------+
+
 
 SNMP Trap Details
 =================
@@ -1098,6 +1101,19 @@ Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that wil
     <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
     
     <INFO> 3-May-2024::15:59:54.371 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214844 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=up)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-03 19:59:54.359054296 UTC)(OCTET STRING alertDescription=Interface up)   
+
+
+**authenticationFailure			1.3.6.1.6.3.1.1.5.5**
+
+An SNMP Trap will be generated for login failures to the F5OS interfaces.
+
+.. code-block:: bash
+
+    <INFO> 21-Aug-2024::17:34:15.907 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940007 10.255.80.251:162 (TimeTicks sysUpTime=174675762)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:34:15.904163686 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
+    <INFO> 21-Aug-2024::17:34:15.907 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940007 10.255.0.144:161 (TimeTicks sysUpTime=174675762)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:34:15.904163686 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
+    <INFO> 21-Aug-2024::17:40:32.211 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940008 10.255.80.251:162 (TimeTicks sysUpTime=174713392)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:40:32.207725999 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
+    <INFO> 21-Aug-2024::17:40:32.211 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940008 10.255.0.144:161 (TimeTicks sysUpTime=174713392)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:40:32.207725999 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
+
 
 F5OS Specific Traps
 ------------------
