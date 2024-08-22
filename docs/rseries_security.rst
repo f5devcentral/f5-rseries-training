@@ -651,7 +651,7 @@ To configure the SSH timeout via the CLI, use the command **system settings conf
 
 .. code-block:: bash
 
-    r10900(config)# system settings config ssh-idle-timeout 300
+    r10900(config)# system settings config sshd-idle-timeout 300
     r10900(config)# commit
     Commit complete.      
  
