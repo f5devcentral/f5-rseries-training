@@ -1325,6 +1325,50 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | PSU fault detected                                                                 |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | <<< Asserted| Deasserted >>: PSU <<psu number>> << sensor that caused the issue>>  |
+|                  |                                                                                    |
+|                  | Examples:                                                                          |
+|                  |                                                                                    |
+|                  | Asserted: PSU 1 input under-voltage warning                                        |
+|                  |                                                                                    |
+|                  | Deasserted: PSU 1 input under-voltage warning                                      |
+|                  |                                                                                    |
+|                  | Sensor could be:                                                                   |
+|                  |                                                                                    |
+|                  | input over-power warning                                                           |
+|                  |                                                                                    |
+|                  | input over-current warning                                                         |
+|                  |                                                                                    |
+|                  | input over-current fault                                                           |
+|                  |                                                                                    |
+|                  | unit off for low input voltage                                                     |
+|                  |                                                                                    |
+|                  | input under-voltage fault                                                          |
+|                  |                                                                                    |
+|                  | input under-voltage warning                                                        |
+|                  |                                                                                    |
+|                  | input over-voltage warning                                                         | 
+|                  |                                                                                    |
+|                  | input over-voltage fault                                                           |
+|                  |                                                                                    |
+|                  | PSU present                                                                        |
+|                  |                                                                                    |
+|                  | PSU input-ok                                                                       |
+|                  |                                                                                    |
+|                  | PSU output-ok                                                                      |
+|                  |                                                                                    |
+|                  | PSU unsupported                                                                    |
+|                  |                                                                                    |
+|                  | PSU mismatch                                                                       |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | PSU fault detected                                                                 |
++------------------+------------------------------------------------------------------------------------+
+
 This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not and an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
 .. code-block:: bash
