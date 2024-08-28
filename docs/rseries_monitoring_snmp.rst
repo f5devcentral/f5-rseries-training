@@ -1103,17 +1103,6 @@ Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that wil
     <INFO> 3-May-2024::15:59:54.371 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214844 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=up)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-03 19:59:54.359054296 UTC)(OCTET STRING alertDescription=Interface up)   
 
 
-**authenticationFailure			1.3.6.1.6.3.1.1.5.5**
-
-An SNMP Trap will be generated for login failures to the F5OS interfaces.
-
-.. code-block:: bash
-
-    <INFO> 21-Aug-2024::17:34:15.907 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940007 10.255.80.251:162 (TimeTicks sysUpTime=174675762)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:34:15.904163686 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
-    <INFO> 21-Aug-2024::17:34:15.907 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940007 10.255.0.144:161 (TimeTicks sysUpTime=174675762)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:34:15.904163686 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
-    <INFO> 21-Aug-2024::17:40:32.211 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940008 10.255.80.251:162 (TimeTicks sysUpTime=174713392)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:40:32.207725999 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
-    <INFO> 21-Aug-2024::17:40:32.211 r10900-1 confd[155]: snmp snmpv2-trap reqid=1741940008 10.255.0.144:161 (TimeTicks sysUpTime=174713392)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-21 21:40:32.207725999 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.105.181)
-
 
 F5OS Specific Traps
 ------------------
@@ -1359,6 +1348,19 @@ This set of SNMP traps will relate to the health of the power supplies in the rS
 
 
 **lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306**
+
++------------------+-----------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                         |
++==================+===========================================================+
+| ASSERT           | Fault detected in LCD module                              |
++------------------+-----------------------------------------------------------+
+| EVENT            | <<LCD is in fault state | LCD is in healthy state >>      |
++------------------+-----------------------------------------------------------+
+| CLEAR            | Fault detected in LCD module                              |
++------------------+-----------------------------------------------------------+
+
+
+
 
 This set of SNMP traps will relate to the health of the LCD subsystem on rSeries appliances. You may notice lcd-fault traps as the firmware on the LCD is updated as part of an upgrade as seen below. These should be temporary states and eventually the system will generate an **LCD Health is OK** trap. If the system continues to show an LCD fault, a support case should be opened to determine if there is a legitimate hardware issue.
 
