@@ -1110,7 +1110,22 @@ F5OS Specific Traps
 Device Fault Traps
 ^^^^^^^^^^^^^^^^^^
 
-**hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
+**hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**  
+
++------------------+-----------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                     |
++==================+=======================================================================+
+| ASSERT           | Hardware device fault detected                                        |
++------------------+-----------------------------------------------------------------------+
+| EVENT            | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
+|                  |                                                                       |
+|                  | Example:                                                              | 
+|                  |                                                                       |
+|                  | Asserted: CPU machine check error                                     |
+|                  |                                                                       |
++------------------+-----------------------------------------------------------------------+
+| CLEAR            | Hardware device fault detected                                        |
++------------------+-----------------------------------------------------------------------+
 
 This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to pursue. 
 
@@ -1136,6 +1151,12 @@ This set of taps may indicate a fault with various hardware components on the rS
 
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            | <<ARM Exception data available | Heap running low | Task stack usage warning | Watchdog timer warning >> |
++------------------+----------------------------------------------------------------------------------------------------------+
 
 This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
 
@@ -1169,6 +1190,65 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
     r10900-1# file show log/system/snmp.log | include memory-fault
 
 **drive-fault                    .1.3.6.1.4.1.12276.1.1.1.65540**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Fault in drive detected                                                            |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | Event can either of these below issues:                                            |
+|                  |                                                                                    |
+|                  |  Drive Available Spare is below threshold                                          |
+|                  |                                                                                    |
+|                  |  Drive Volatile Memory Backup System has failed                                    |
+|                  |                                                                                    |
+|                  |  Drive Endurance consumed has exceeded threshold                                   |
+|                  |                                                                                    |
+|                  |  Drive has encountered Media Errors                                                |
+|                  |                                                                                    |
+|                  |  Allowable program fail count is below 50 percent                                  |
+|                  |                                                                                    |
+|                  |  Allowable program fail count is below 80 percent                                  |
+|                  |                                                                                    |
+|                  |  Allowable erase fail count is below 50 percent                                    |
+|                  |                                                                                    |
+|                  |  Allowable erase fail count is below 80 percent                                    |
+|                  |                                                                                    |
+|                  |  Drive Reliability is degraded due to excessive media or internal errors           |
+|                  |                                                                                    |
+|                  |  More number of CRC errors encountered                                             |
+|                  |                                                                                    |
+|                  |  Less than 50 Percentage of erase cycles remaining                                 |
+|                  |                                                                                    |
+|                  |  Less than 80 Percentage of erase cycles remaining                                 |
+|                  |                                                                                    |
+|                  |  Drive Media is not in read-only mode                                              |
+|                  |                                                                                    |
+|                  | Clear descriptions:                                                                |
+|                  |                                                                                    |
+|                  |  Event can either of these below issues:                                           |
+|                  |                                                                                    |
+|                  |  Drive Available Spare is as expected                                              |
+|                  |                                                                                    |
+|                  |  Drive Volatile Memory Backup System is healthy                                    |
+|                  |                                                                                    |
+|                  |  Drive Endurance consumed is normal                                                |
+|                  |                                                                                    |
+|                  |  Drive has no Internal or Media Errors / Drive has no Media Errors                 |
+|                  |                                                                                    |
+|                  |  Allowable program fail count is above 80 percent                                  |
+|                  |                                                                                    |
+|                  |  Allowable erase fail count is above 80 percent                                    |
+|                  |                                                                                    |
+|                  |  Number of CRC errors are in allowed range                                         |
+|                  |                                                                                    |
+|                  |  More than 80 Percentage of erase cycles remaining                                 |
+|                  |                                                                                    |
+|                  |  Drive Media is placed in read-only mode                                           |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Fault in drive detected                                                            |
++------------------+------------------------------------------------------------------------------------+
+
 
 .. code-block:: bash
 
@@ -1305,6 +1385,15 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 **module-present                 .1.3.6.1.4.1.12276.1.1.1.66304**
 
+
++------------------+-----------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                         |
++==================+===========================================================+
+| EVENT            | <<module>> <<present|removed>>                            |
+|                  |                                                           |
+|                  | Example: blade1 removed                                   |
++------------------+-----------------------------------------------------------+
+
 .. code-block:: bash
 
     syscon-1-active# file show log/confd/snmp.log | include module-present
@@ -1438,6 +1527,24 @@ This set of SNMP traps will relate to the health of the LCD subsystem on rSeries
 
 **module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307**
 
+
++------------------+-----------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                         |
++==================+===========================================================+
+| ASSERT           | Module communication error detected                       |
++------------------+-----------------------------------------------------------+
+| EVENT            | <<module>> communication error detected                   |
+|                  |                                                           |
+|                  | <<module>> communication is OK                            |
+|                  |                                                           |
+|                  | Example:                                                  |
+|                  |                                                           |
+|                  | lcd communication error detected.                         |
+|                  |                                                           |
++------------------+-----------------------------------------------------------+
+| CLEAR            | Module communication error detected                       |
++------------------+-----------------------------------------------------------+
+
 Power Supply Module
 
 .. code-block:: bash
@@ -1460,14 +1567,6 @@ LCD Module
     <INFO> 12-Apr-2023::11:51:45.155 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130728 10.255.8.22:6011 (TimeTicks sysUpTime=72538)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.150848562 UTC)(OCTET STRING alertDescription=Module communication error detected)
     <INFO> 12-Apr-2023::11:51:45.205 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130729 10.255.8.22:6011 (TimeTicks sysUpTime=72543)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.150869755 UTC)(OCTET STRING alertDescription=LCD module communication is OK)
     <INFO> 12-Apr-2023::11:51:45.255 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130730 10.255.8.22:6011 (TimeTicks sysUpTime=72549)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.156764576 UTC)(OCTET STRING alertDescription=LCD Health is OK)
-
-
-**coldStart     .1.3.6.1.6.3.1.1.5.1**
-
-.. code-block:: bash
-
-    <INFO> 24-Feb-2024::15:09:35.437 appliance-1 confd[124]: snmp snmpv2-trap reqid=1494830098 10.255.80.251:162 (TimeTicks sysUpTime=552)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
-    <INFO> 24-Feb-2024::15:09:35.438 appliance-1 confd[124]: snmp snmpv2-trap reqid=1494830098 10.255.0.144:161 (TimeTicks sysUpTime=552)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
 
 
 Firmware Update Status Traps
