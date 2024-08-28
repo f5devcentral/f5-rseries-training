@@ -2083,6 +2083,18 @@ An SNMP Trap will be generated when an admin attempts to upload the wrong F5OS i
     <INFO> 28-Aug-2024::17:51:57.265 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333161 10.255.80.251:162 (TimeTicks sysUpTime=42680703)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.254201062 UTC)(OCTET STRING alertDescription= Un supported platform R5R10)
     <INFO> 28-Aug-2024::17:51:57.337 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333162 10.255.80.251:162 (TimeTicks sysUpTime=42680710)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.332980140 UTC)(OCTET STRING alertDescription= Unexpected error processing [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso')
 
+Looking at the **platform.log** file will provide additional details.
+
+.. code-block:: bash
+
+    r4800-2-gsa# file tail -n 200 log/system/platform.log
+    2024-08-28T17:51:56.558933-04:00 r4800-2-gsa.cpt.f5net.com sw-mgmt: priority=error msgid=0x3501000000000099 msg=Unsupported platform: R5R10
+    2024-08-28T17:51:57.259515-04:00 r4800-2-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="524545 appliance incompatible-image EVENT NA ' Un supported platform R5R10' '2024-08-28 21:51:57.254201062 UTC'".
+    2024-08-28T17:51:57.279796-04:00 r4800-2-gsa.cpt.f5net.com sw-mgmt: priority=info msgid=0x3501000000000196 msg=File /var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso removed from disk. Reason Unsupported platform type.
+    2024-08-28T17:51:57.280605-04:00 r4800-2-gsa.cpt.f5net.com sw-mgmt: priority=error msgid=0x3501000000000154 msg=Unexpected error processing "import /var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso": [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso'
+    2024-08-28T17:51:57.334010-04:00 r4800-2-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="524545 appliance incompatible-image EVENT NA ' Unexpected error processing [Errno 2] No such file or directory: \'/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso\'' '2024-08-28 21:51:57.332980140 UTC'".
+    r4800-2-gsa# 
+
 **login-failed                   .1.3.6.1.4.1.12276.1.1.1.327683**
 
 +------------------+-------------------------------------------------------------------------------------------+
