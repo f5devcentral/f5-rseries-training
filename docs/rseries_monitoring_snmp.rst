@@ -1009,8 +1009,7 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
-| authenticationFailure      | 1.3.6.1.6.3.1.1.5.5              |
-+----------------------------+----------------------------------+
+
 
 
 SNMP Trap Details
@@ -1812,6 +1811,45 @@ LCD Module
     <INFO> 12-Apr-2023::11:51:45.255 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130730 10.255.8.22:6011 (TimeTicks sysUpTime=72549)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.156764576 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
 
+**initialization                 .1.3.6.1.4.1.12276.1.1.1.262656**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+Critical issue in fpga and datapath initialization process.
+
+
+
+.. code-block:: bash
+
+**ePVA	                           .1.3.6.1.4.1.12276.1.1.1.262912**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+Could not initialize ePVA
+
+.. code-block:: bash
+
+**inaccessible-memory	            .1.3.6.1.4.1.12276.1.1.1.458752**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+Notification indicating unusable hugepage memory.
+
+.. code-block:: bash
+    
+
 Firmware Update Status Traps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -1995,6 +2033,18 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 +------------------+-------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
+
+**login-failed                   .1.3.6.1.4.1.12276.1.1.1.327683**
+
++------------------+-------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                         |
++==================+===========================================================================================+
+| EVENT            | F5OS login attempt failed for the user: <username>, rhost: <remote host IP>               |
++------------------+-------------------------------------------------------------------------------------------+
+
+.. code-block:: bash
+
+    <INFO> 28-Aug-2024::10:43:31.003 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902947 10.255.80.251:162 (TimeTicks sysUpTime=134357)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:43:31.000008955 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.104.35)
 
 
 
