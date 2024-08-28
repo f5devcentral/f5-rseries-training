@@ -1188,7 +1188,10 @@ Unregistered alarm detected.
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include unknown-alarm
+    r4800-2-gsa# file show log/system/snmp.log | include unknown
+    <INFO> 30-Jan-2023::09:33:17.616 appliance-1 confd[151]: snmp snmpv2-trap reqid=1133821928 10.255.0.143:162 (TimeTicks sysUpTime=25343)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-01-30 14:33:17.611415038 UTC)(OCTET STRING alertDescription=FW Update)
+    <INFO> 11-Jul-2023::10:12:39.643 appliance-1 confd[159]: snmp snmpv2-trap reqid=1955459347 10.255.0.143:162 (TimeTicks sysUpTime=31172)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-11 14:12:39.638211376 UTC)(OCTET STRING alertDescription=FW Update)
+    r4800-2-gsa#
 
 **memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539**
 
@@ -1344,7 +1347,13 @@ Unregistered alarm detected.
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include aom-fault
+    r4800-1# file show log/system/snmp.log | include aom-fault
+    <INFO> 1-Apr-2023::10:55:27.010 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337677 10.255.0.143:162 (TimeTicks sysUpTime=2403)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-01 14:55:26.862411702 UTC)(OCTET STRING alertDescription=MFG Lockout On)
+    <INFO> 8-Apr-2023::06:00:00.860 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337679 10.255.0.143:162 (TimeTicks sysUpTime=58709788)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-08 10:00:00.853229431 UTC)(OCTET STRING alertDescription=Fault detected in the AOM)
+    <INFO> 8-Apr-2023::06:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337680 10.255.0.143:162 (TimeTicks sysUpTime=58709793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 10:00:00.853246182 UTC)(OCTET STRING alertDescription=Bmc Health Self test failed: Device-specific 'internal' failure.)
+    <INFO> 8-Apr-2023::07:00:00.860 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337681 10.255.0.143:162 (TimeTicks sysUpTime=59069788)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852559128 UTC)(OCTET STRING alertDescription=Fault detected in the AOM)
+    <INFO> 8-Apr-2023::07:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337682 10.255.0.143:162 (TimeTicks sysUpTime=59069793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852594292 UTC)(OCTET STRING alertDescription=Bmc Health Self test passed)
+ 
 
 **drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
 
@@ -2066,6 +2075,7 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 |                  | Unexpected error processing Command '<command details>' returned non-zero exit status 32. |
 +------------------+-------------------------------------------------------------------------------------------+
 
+
 .. code-block:: bash
 
 **login-failed                   .1.3.6.1.4.1.12276.1.1.1.327683**
@@ -2075,6 +2085,8 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 +==================+===========================================================================================+
 | EVENT            | F5OS login attempt failed for the user: <username>, rhost: <remote host IP>               |
 +------------------+-------------------------------------------------------------------------------------------+
+
+The system will send a trap anytime there is a failed login to one of the F5OS user interfaces. The **login-failed** trap will log the username and remote host from where the login was attempted.
 
 .. code-block:: bash
 
