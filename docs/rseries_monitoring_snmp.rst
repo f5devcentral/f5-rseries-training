@@ -2075,8 +2075,13 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 |                  | Unexpected error processing Command '<command details>' returned non-zero exit status 32. |
 +------------------+-------------------------------------------------------------------------------------------+
 
+An SNMP Trap will be generated when an admin attempts to upload the wrong F5OS image type into the system. In the example below, an F5OS **R5R10** image is being loaded into an r4000 series appliance. This image is not compatible with that system and a trap is generated. In this case, the proper **R2R4** image should be uploaded to run on the r4000 series platform.
 
 .. code-block:: bash
+
+    r4800-2-gsa# file show log/system/snmp.log | include incompatible
+    <INFO> 28-Aug-2024::17:51:57.265 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333161 10.255.80.251:162 (TimeTicks sysUpTime=42680703)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.254201062 UTC)(OCTET STRING alertDescription= Un supported platform R5R10)
+    <INFO> 28-Aug-2024::17:51:57.337 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333162 10.255.80.251:162 (TimeTicks sysUpTime=42680710)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.332980140 UTC)(OCTET STRING alertDescription= Unexpected error processing [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso')
 
 **login-failed                   .1.3.6.1.4.1.12276.1.1.1.327683**
 
