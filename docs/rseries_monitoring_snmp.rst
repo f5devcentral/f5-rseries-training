@@ -1178,11 +1178,25 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+Unregistered alarm detected.
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include unknown-alarm
 
 **memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1255,11 +1269,23 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **cpu-fault                      .1.3.6.1.4.1.12276.1.1.1.65541**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include cpu-fault
 
 **pcie-fault                     .1.3.6.1.4.1.12276.1.1.1.65542**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1848,7 +1874,7 @@ Could not initialize ePVA
 Notification indicating unusable hugepage memory.
 
 .. code-block:: bash
-    
+
 
 Firmware Update Status Traps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1962,6 +1988,14 @@ FIPS Related Traps
 
 **fips-fault                     .1.3.6.1.4.1.12276.1.1.1.66308**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+Fault detected in FIPS module.
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include fips-fault
@@ -2050,6 +2084,12 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 
 **raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include raid-event
@@ -2065,6 +2105,12 @@ This trap will indicate that the system has rebooted. It's possible this was a p
     <INFO> 10-Nov-2023::15:07:15.992 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680986 10.255.0.144:161 (TimeTicks sysUpTime=261795263)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:07:15.972123613 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
 
 **backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -2144,6 +2190,12 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
 
 **txPwr                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 The transmit power threshold for a specific transceiver has reached a theshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 
@@ -2155,6 +2207,12 @@ The transmit power threshold for a specific transceiver has reached a theshold i
 
 
 **rxPwr                   .1.3.6.1.4.1.12276.1.1.1.262401**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 The receive power threshold for a specific transceiver has reached a theshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
@@ -2178,6 +2236,12 @@ The receive power threshold for a specific transceiver has reached a theshold in
 
 **txBias                  .1.3.6.1.4.1.12276.1.1.1.262402**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 The transmit bias threshold for a specific transceiver has reached a theshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 
@@ -2189,12 +2253,24 @@ The transmit bias threshold for a specific transceiver has reached a theshold in
 
 **ddmTemp                 .1.3.6.1.4.1.12276.1.1.1.262403**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 The ddm temperature threshold for a specific transceiver has reached a theshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 .. code-block:: bash
 
 
 **ddmVcc                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 The ddm vcc (Voltage) threshold for a specific transceiver has reach a theshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
