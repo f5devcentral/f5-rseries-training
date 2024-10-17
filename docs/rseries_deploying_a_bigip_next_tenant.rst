@@ -62,9 +62,9 @@ Although F5OS-A 1.8.0/1.8.1 adds support for BIG-IP Next on specific rSeries pla
 | r12900-DS    | 60                     | 1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36,38,40,42,44,46,48,50,52,54,56,58,60 | 4,8,60  / 2,4,8,44,52,60 (F5OS-A 2.0)                  | 5 (20.3), 7 (20.4), 7 (F5OS-A 2.0)        |
 +--------------+------------------------+-----------------------------------------------------------------------------------------+--------------------------------------------------------+-------------------------------------------+
 
-------------------
+
 Tenant Image Types
-------------------
+==================
 
 For BIG-IP Next on rSeries, there is a single tenant image type that can be obtained from downloads.f5.com. On the downloads site, you will see a tar.bundle file which you can download and verify using one of the available signature files. In the example below the file **BIG-IP-NEXT-20.1.0-2.279.0+0.0.75.tar.bundle** is the image file that you will use to deploy BIG-IP Next tenants on rSeries appliances or VELOS chassis.
 
@@ -79,9 +79,9 @@ You can either download the file to a local machine, and then upload to your rSe
   :scale: 70% 
 
 
-------------------------------
+
 BIG-IP Next Tenant Deployments
-------------------------------
+==============================
 
 BIG-IP Next Tenants can easily be deployed via the F5OS CLI, webUI, or API or from the BIG-IP Next Central Manager Console.
 
@@ -96,7 +96,7 @@ If you need instructions on installing Central Manager, or general BIG-IP Next d
 `BIG-IP Next Documentation <https://clouddocs.f5.com/bigip-next/latest/>`_
 
 Setting up an rSeries Provider in Central Manager
-=================================================
+-------------------------------------------------
 
 After logging into Central Manager you can setup an rSeries Provider by going to the **Manage Instances** button on the main home screen, or by using the drop down in the upper right hand corner of the webUI ans selecting
 
@@ -147,7 +147,7 @@ The rSeries device will then be added as a Provider into Central Manager, which 
   :scale: 70% 
 
 Creating a BIG-IP Next Instance on rSeries 5k,10k,12k Models via the rSeries Provider in Central Manager
-=======================================================================================================
+--------------------------------------------------------------------------------------------------------
 
 BIG-IP Next Central Manager refers to BIG-IP Next as **Instances**. This is because the BIG-IP Next Instance could be a **Tenant** running on an F5OS-based platform (rSeries, VELOS), or it could be a VE running on a hypervisor such as VMware. The term Instance is a generic term which will apply to both types of environments. To create a BIG-IP Next Instance go to **Instances -> My Instances**, and then click the **Start Adding Instances** button.
 
@@ -256,7 +256,7 @@ You can then monitor the status of the instance being created. It will take some
   :scale: 70% 
 
 Creating a BIG-IP Next Instance on rSeries 2k,4k Models via the rSeries Provider in Central Manager
-=======================================================================================================
+---------------------------------------------------------------------------------------------------
 
 BIG-IP Next Central Manager refers to BIG-IP Next as **Instances**. This is because the BIG-IP Next Instance could be a **Tenant** running on an F5OS-based platform (rSeries, VELOS), or it could be a VE running on a hypervisor such as VMware. The term Instance is a generic term which will apply to both types of environments. To create a BIG-IP Next Instance go to **Instances -> My Instances**, and then click the **Start Adding Instances** button.
 
@@ -365,10 +365,10 @@ You can then monitor the status of the instance being created. It will take some
   :scale: 70%  
 
 BIG-IP Next Tenant Deployment via CLI
--------------------------------------
+======================================
 
 Uploading a BIG-IP Next Tenant Image via CLI
-============================================
+--------------------------------------------
 
 BIG-IP Next tenant software images are loaded directly into the F5OS platform layer in the same manner as BIG-IP tenant images. For the initial release of BIG-IP Next on rSeries, supported tenant versions are v20.1 and later. 
 
@@ -431,7 +431,7 @@ You can view the current tenant images and their status in the F5OS CLI by using
 
 
 Creating a BIG-IP Next Tenant via CLI
-=====================================
+-------------------------------------
 
 BIG-IP Next tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
@@ -500,7 +500,7 @@ You may alternatively put all the parameters on one line instead of using the in
 
 
 Validating BIG-IP Next Tenant Status via CLI
-============================================
+--------------------------------------------
 
 After the tenant is created you can run the command **show running-config tenants** to see what has been configured:
 
@@ -561,11 +561,11 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
 
 
 BIG-IP Next Tenant Deployment via webUI
----------------------------
+=======================================
 
 
 Uploading BIG-IP Next Tenant Images via webUI
-=============================================
+---------------------------------------------
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
 
@@ -603,7 +603,7 @@ If an HTTPS server is not available and uploading from a client machine is not a
 
 
 Creating a BIG-IP Next Tenant via webUI
-=========================
+---------------------------------------
 
 You can deploy a BIG-IP Next tenant from the webUI using the **Add** button in the **Tenant Management > Tenant Deployments** screen.
 
@@ -619,7 +619,7 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
 
 
 Validating BIG-IP Next Tenant Status via webUI
-================================
+----------------------------------------------
 
 Once the tenant is deployed you can monitor its status in the **Tenant Management > Tenant Deployments** webUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
 
@@ -669,10 +669,10 @@ Now login with the new admin password, and you'll be brought into the initial se
 At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.    
 
 BIG-IP Next Tenant Deployment via API
----------------------------------------
+=====================================
 
 Loading BIG-IP Next Tenant Images from a Remote Server via API
-==================================================
+--------------------------------------------------------------
 
 To copy a BIG-IP Next tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address. The example below copies a tenant image from a remote HTTPS server. You may also edit the API call to copy from remote SFTP or SCP servers by adding the proper **protocol** option.
 
@@ -764,7 +764,7 @@ Below is output generated from the previous command:
 
 
 Uploading BIG-IP Next Tenant Images from a Client Machine via the API
-=========================================================
+---------------------------------------------------------------------
 
 You can upload an F5OS BIG-IP Next tenant image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
 
@@ -816,7 +816,7 @@ In the **Headers** section ensure you add the **file-upload-id** header, with th
 
 
 Creating a BIG-IP Next Tenant via API
-=====================================
+-------------------------------------
 
 Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. In the example below, the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
 
@@ -857,7 +857,7 @@ Below is the body of the API call above.
     }
 
 Validating BIG-IP Next Tenant Status via API
-================================
+--------------------------------------------
 
 The command below will show the current state and status of the tenant. Remember it has not been changed to the **Deployed** state yet.
 
@@ -1049,9 +1049,9 @@ Below is the output from the above API call:
     }
 
 
------------------------------
+
 Resizing a BIG-IP Next Tenant
------------------------------
+=============================
 
 rSeries tenants have static vCPU and memory allocations just like vCMP. These can be changed after a tenant has been deployed, but the tenant will have to be suspended (put in the **Provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the **Deployed** state and returned to service.
 
@@ -1448,9 +1448,9 @@ The API output:
         }
     }
 
------------------
+
 Deleting a BIG-IP Next Tenant
------------------
+==============================
 
 If you need to delete a tenant, it can be removed from the F5OS CLI, webUI, or API.
 
