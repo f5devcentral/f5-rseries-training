@@ -337,7 +337,7 @@ Below is an example of an r4800 device. Note there is a single default L1 Networ
   :align: center
   :scale: 70% 
 
-Give Each L1 Network a descriptive name, and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 NEtworking numbering format. i.e. 1.1, 1.2, 1.3 etc...
+Give Each L1 Network a descriptive name, and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 Networking numbering format. i.e. 1.1, 1.2, 1.3 etc...
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/L1-network-interfaces.png
   :align: center
