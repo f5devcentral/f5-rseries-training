@@ -22,7 +22,7 @@ The initial F5OS-A 1.7.0 release also limits the number of BIG-IP Next tenants t
 | r10900       | 36                     | 1,2,4,6,8,10,12,14,16,18,20,22,24,26,28,30,32,34,36 | 4,8,36 – F5OS-A 1.7.0                   | 2                                |    
 +--------------+------------------------+-----------------------------------------------------+-----------------------------------------+----------------------------------+
 
-F5OS-A 1.8.0 adds BIG-IP Next support for the rSeries r2000/r4000 devices, as well as the r12000-DS platforms. F5OS-A 1.8.1 will add BIG-IP Next support for the rSeries FIPS platforms (r5920-DF/r10920-DF). 
+F5OS-A 1.8.0 adds BIG-IP Next support for the rSeries r2000/r4000 devices (Early Access Mode), as well as the r12000-DS platforms. F5OS-A 1.8.1 will add BIG-IP Next support for the rSeries FIPS platforms (r5920-DF/r10920-DF). 
 
 .. Note:: There will be a phasing of supported vCPU options for BIG-IP Next and maximum numbers of Next Tenants per device across future F5OS and BIG-IP Next releases. 
 
@@ -173,7 +173,7 @@ Enter a hostname for the BIG-IP Next instance, and an optional description. Then
   :align: center
   :scale: 70% 
 
-From the **rSeries Provider** section select to rseries device that you added previously. Then click **Next**.
+From the **rSeries Provider** section select the rSeries device that you added previously. Then click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/select-bigip-next-instance.png
   :align: center
@@ -199,8 +199,7 @@ In the next section, you will setup the in-band networking for the Next instance
   :align: center
   :scale: 70% 
 
-For VELOS and rSeries r5000 and higher appliances only a single data interface (L1 Network) is surfaced to the BIG-IP Next tenant. For the rSeries r2000/r4000 appliances multiple L1 Networks will be surfaced to the tenant.
-The tenant will see either 4, 6, or 8 L1 Networks, depending on the port-mode that is configured on the rSeries appliance. 
+For VELOS and rSeries r5000 and higher appliances only a single data interface (L1 Network) is surfaced to the BIG-IP Next tenant. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/next-internal-networking-diagram.png
   :align: center
@@ -278,13 +277,13 @@ Review the requirements of what you'll need before proceeding, then click **Next
 
 Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop down box select **rSeries Standalone**, and then click the **Start Creating** button.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/start-creating.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-creating-4k.png
   :align: center
   :scale: 70% 
 
-From the **rSeries Provider** section select to rseries device that you added previously. Then click **Next**.
+From the **rSeries Provider** section select the rSeries device that you added previously. Then click **Next**.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/select-bigip-next-instance.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/select-bigip-next-instance-4k.png
   :align: center
   :scale: 70% 
 
