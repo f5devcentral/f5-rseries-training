@@ -291,13 +291,13 @@ Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores
 
 .. Note:: The appropriate BIG-IP Next tenant image file should be loaded on the rSeries platform so that the Tenant Image Name and Tenant Deployment File can be selected in this screen. Currently there is no way to upload the image from Central Manager. 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/rseries-properties-1.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/rseries-properties-1-4k.png
   :align: center
   :scale: 70% 
 
 Enter the out-of-band **Management IP address**, **Network Prefix Length**, and **Gateway IP Address** and then click **Next**.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/next-mgmt-addressing.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/next-mgmt-addressing-4k.png
   :align: center
   :scale: 70% 
 
@@ -307,29 +307,51 @@ In the next section, you will setup the in-band networking for the Next instance
   :align: center
   :scale: 70% 
 
-For VELOS and rSeries r5000 and higher appliances only a single data interface (L1 Network) is surfaced to the BIG-IP Next tenant. For the rSeries r2000/r4000 appliances multiple L1 Networks will be surfaced to the tenant.
-The tenant will see either 4, 6, or 8 L1 Networks, depending on the port-mode that is configured on the rSeries appliance. 
+BIG-IP Next support for the r2000/r4000 models is in an Early Access (EA) mode for F5OS 1.8.0. There are restrictions related to configuration of interfaces and LAGs with this release, that will be addressed in follow-on F5OS and BIG-IP NExt releases. What is shown here is what the current support is in the EA versions of F5OS-A 1.8.0 in combination with BIG-IP Next v20.3. 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/next-internal-networking-diagram.png
+In the EA Release the following restrictions apply to the r2000/r4000 appliances.
+
+- LAGs are not supported with BIG-IP Next 
+- For HA configurations the Control Plane VLAN must run on a dedicated physical interface, and it must be the lowest numbered "up" interface. 
+
+Both of these restrictions will be addressed in future releases.
+
+In order to understand how to configure the networking when onboarding a BIG-IP Next tenant it is important to understand the mapping of physical interface numbering on the r2000/r4000 platforms and how they map to internal BIG-IP Next L1 Networking interfaces. In the diagram below, you can see that F5OS physical interface numbering follows the format of:
+
+- 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0
+
+Inside the BIG-IP Next instance/tenant these physical interfaces have to be mapped to L1 Network interfaces manually. You only need to create L1 Networks for ports that you are actually using, unused ports do not need L1 networks created. In the diagram below, you can see that Next L1 Networking interface numbering follows the format of:
+
+- 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/r4k-l1-networking-mapping.png
   :align: center
   :scale: 70% 
 
+Unlike the r5000 and higher rSeries models, L1 Networks are not automatically created. You will need to create an L1 Network for each physical interface you intend to use. You are free to name the L1 NEtworks however you wish but for the sake of simplicity we recommend using naming as seen in the diagram above L1-Network1, L1-Network2 etc.... you'll then map these L1 Networks to the L1 Networking interface numbering (not the physical interface numbering). 
 
-Below is an example of an r10900 device. Click on **L1 Networks**, and note that the **DefaultL1Network** already exists and is mapped to the internal interface 1.1. Also note that it has zero VLANs assigned. 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/l1networks.png
+Below is an example of an r4800 device. Note there is a single default L1 Network. Click on **Create**, and create multiple **L1Networks**. Ideally, you should create one for each physical interface that is going to be used. IN this case we will have 3 total.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/create-3-times.png
+  :align: center
+  :scale: 70% 
+
+Give Each L1 Network a descriptive name, and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 NEtworking numbering format. i.e. 1.1, 1.2, 1.3 etc...
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/L1-network-interfaces.png
   :align: center
   :scale: 70% 
 
 Click on **VLANs** and note that the VLANs you previously assigned to the instance are listed, however they are not mapped to any L1 Networks yet.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/next-vlans.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/next-vlans-4k.png
   :align: center
   :scale: 70% 
 
-In the drop-down box for L1 Networks select the **DefaultL1Network** for all of your VLANs, and then click **Next**.
+In the drop-down box for L1 Networks select the proper L1 Network for all of your VLANs, and then click **Next**.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-pick.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-pick-4k.png
   :align: center
   :scale: 70% 
 
@@ -341,7 +363,7 @@ Finally, you must assign an IP addresses to each VLAN. Click on **IP Addresses**
 
 You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you can assign the VLAN from the drop-down box. Leave the **Device Name** field blank. When finished, click **Next**.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/ip-to-vlan.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/ip-to-vlan-4k.png
   :align: center
   :scale: 70% 
 
@@ -359,7 +381,7 @@ Review all the changes, and then click the **Deploy** button.
 
 You can then monitor the status of the instance being created. It will take some time for the deployment to complete.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/creating-instance.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/creating-instance-4k.png
   :align: center
   :scale: 70%  
 
