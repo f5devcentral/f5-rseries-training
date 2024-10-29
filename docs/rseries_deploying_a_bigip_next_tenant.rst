@@ -346,48 +346,33 @@ Unlike the r5000 and higher rSeries models, L1 Networks are not automatically cr
 | INBAND           | 1.7                         |
 +------------------+-----------------------------+
 
-.. NOTE:: In this example, the first "up" interface on both r4k units is 5.0 (at the F5OS layer), however we will use the L1 Networking style number of 1.5 for the CP HA interface. 
+.. NOTE:: In this example, the first "up" interface on both r4k units is interface 5.0 (at the F5OS layer), however we will use the L1 Networking style numbering of 1.5 for the L1 Networking interfaces. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/lowestnumber.png
   :align: center
   :scale: 70% 
 
 
-Below is an example of an r4800 device. Note there is a single default L1 Network. Click on **Create**, and create multiple **L1Networks**. Ideally, you should create one for each physical interface that is going to be used. IN this case we will have 3 total.
+Below is an example of an r4800 device. Note there are no default L1 Networks defined. Click on **Create**, and create multiple **L1Networks**. Ideally, you should create one for each physical interface that is going to be used. In this case we will have 3 total. Give Each L1 Network a descriptive name (and it must be the same names between members of an HA cluster), and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 Networking numbering format. i.e. 1.1, 1.2, 1.3 etc...
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/create-3-times.png
   :align: center
   :scale: 70% 
 
-Give Each L1 Network a descriptive name, and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 Networking numbering format. i.e. 1.1, 1.2, 1.3 etc...
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/L1-network-interfaces.png
-  :align: center
-  :scale: 70% 
-
-Click on **VLANs** and note that the VLANs you previously assigned to the instance are listed, however they are not mapped to any L1 Networks yet.
+Click on **VLANs** and note that the VLANs you previously assigned to the instance are listed, however they are not mapped to any L1 Networks yet. In the drop-down box for L1 Networks select the proper L1 Network for all of your VLANs, and then click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/next-vlans-4k.png
   :align: center
   :scale: 70% 
 
-In the drop-down box for L1 Networks select the proper L1 Network for all of your VLANs, and then click **Next**.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-pick-4k.png
-  :align: center
-  :scale: 70% 
-
-Finally, you must assign an IP addresses to each VLAN. Click on **IP Addresses**, and then click **Create** for each VLAN.
+Finally, you must assign an IP addresses to each VLAN. Click on **IP Addresses**, and then click **Create** for each VLAN. You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you can assign the VLAN from the drop-down box. Leave the **Device Name** field blank. When finished, click **Next**. Do not assign IP address to the CP and DP HA L1 Networks. You'll do that later in the HA setup.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/networking-ip-addresses.png
   :align: center
   :scale: 70% 
 
-You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you can assign the VLAN from the drop-down box. Leave the **Device Name** field blank. When finished, click **Next**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/ip-to-vlan-4k.png
-  :align: center
-  :scale: 70% 
 
 In the **Troubleshooting** section you will setup a new local username and password for the Next instance that you can utilize for direct troubleshooting access. The default username and password will no longer work. Note that one an instance is under central management all configuration should be done though Central Manager, and not direct to the Next instance. Click **Next**.
 
@@ -406,6 +391,86 @@ You can then monitor the status of the instance being created. It will take some
 .. image:: images/rseries_deploying_a_bigip_next_tenant/creating-instance-4k.png
   :align: center
   :scale: 70%  
+
+You can then begin creating the second standalone instance on your other rSeries device. The **Hostname** must be identical to the first Next instance that was created. (This is a temporary restriction that will be addressed in a subsequent release). Select the provider for the second rseries device.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/create-second-instance.png
+  :align: center
+  :scale: 70%  
+
+Configure the rSeries Properties exactly the same as the first instance, and then configure a unique management IP address for the instance.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/second-management.png
+  :align: center
+  :scale: 70%  
+
+Configure the L1 Networks and VLANs exactly the same as the first Next instance.   
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/second-vlans.png
+  :align: center
+  :scale: 70% 
+
+Configure unique IP address for your in-band VLANs, and do not add IP addresses for the CP or DP HA VLANs. This will be done later when you enable HA.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/second-ip-addresses.png
+  :align: center
+  :scale: 70% 
+
+Finally, review the configuration and then press the **Deploy** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/review-and-deploy-second.png
+  :align: center
+  :scale: 70% 
+
+You'll then see the second instance being created.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/second-instance-create.png
+  :align: center
+  :scale: 70% 
+
+Once both standalone Next instances are active, you can begin the process to enable HA to join them in a cluster. On one of the instance thick the **Standalone** hyperlink in the **Mode** column. This will take you to a new screen where you can review the requirements for the HA setup. Click the **Enable HA** button. 
+
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/enable-ha.png
+  :align: center
+  :scale: 70% 
+
+On the **HA Nodes** screen, select the second instance (with the same name) from the **Available Standalone Instances** drop-down menu.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/ha-nodes.png
+  :align: center
+  :scale: 70% 
+
+On the **HA VLANs** page Select your CP and DP HA VLANs from the drop-down boxes. Be sure to map the proper VLANs to the Control Plane and Data Plane. ON the next screen you will provide a **HA Name** and floating **HA Management Address**. This is the IP address that will float between the HA cluster on the management network to whichever node is active. Finally, configure your **Control Plane Address** and ** Data Plane Primary Address for each node in the HA cluster. Then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/ha-vlans.png
+  :align: center
+  :scale: 70% 
+
+You should then see you internal and external VLANs. You can click on the Internal VLAN to configure the HA IP addresses. Click the plus sign **+** two times to create two more self-IPs.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/traffic-vlans.png
+  :align: center
+  :scale: 70%
+
+On the first line change the drop-down box to **Active Node IP Address**, on the second line change the drop-down box to **Standby Node IP Address**, and on the third line change the drop-down box to **Floating IP Address**. Then configure the proper IP addresses for the Internal VLAN. Then click and repeat the same process on the External VLAN.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/self-ips.png
+  :align: center
+  :scale: 70%
+
+On the first line change the drop-down box to **Active Node IP Address**, on the second line change the drop-down box to **Standby Node IP Address**, and on the third line change the drop-down box to **Floating IP Address**. Then configure the proper IP addresses for the External VLAN. Both VLANs should now show a green status.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/self-ips-external.png
+  :align: center
+  :scale: 70%
+
+Finally, review the configuration and click the **Deploy HA** button. In the my instances screen, eventually the two standalone instances will merge into one instance with the **Mode** set to **HA**. Central Manager will now manage the HA cluster as one entity via the floating management IP address. There is no need to manage the nodes individually, or worry about synchronizing configurations as is the case with BIG-IP. This shows the simplified HA management provided by Central Manager.
+
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/deploy-ha.png
+  :align: center
+  :scale: 70%
 
 BIG-IP Next Tenant Deployment via CLI
 ======================================
