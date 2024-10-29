@@ -66,7 +66,7 @@ Although F5OS-A 1.8.0/1.8.1 adds support for BIG-IP Next on specific rSeries pla
 Tenant Image Types
 ==================
 
-For BIG-IP Next on rSeries, there is a single tenant image type that can be obtained from downloads.f5.com. On the downloads site, you will see a tar.bundle file which you can download and verify using one of the available signature files. In the example below the file **BIG-IP-NEXT-20.1.0-2.279.0+0.0.75.tar.bundle** is the image file that you will use to deploy BIG-IP Next tenants on rSeries appliances or VELOS chassis.
+For BIG-IP Next on rSeries, there is a single tenant image type that can be obtained from downloads.f5.com. On the downloads site, you will see a tar.bundle file which you can download and verify using one of the available signature files. In the example below the file **BIG-IP-Next-20.3.0-2.716.2+0.0.50.tar.bundle** is the image file that you will use to deploy BIG-IP Next tenants on rSeries appliances or VELOS chassis.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image1.png
   :align: center
@@ -146,7 +146,7 @@ The rSeries device will then be added as a Provider into Central Manager, which 
   :align: center
   :scale: 70% 
 
-Creating a BIG-IP Next Instance on rSeries 5k,10k,12k Models via the rSeries Provider in Central Manager
+Creating a BIG-IP Next Instance on rSeries r5k, r10k, r12k Models via the rSeries Provider in Central Manager
 --------------------------------------------------------------------------------------------------------
 
 BIG-IP Next Central Manager refers to BIG-IP Next as **Instances**. This is because the BIG-IP Next Instance could be a **Tenant** running on an F5OS-based platform (rSeries, VELOS), or it could be a VE running on a hypervisor such as VMware. The term Instance is a generic term which will apply to both types of environments. To create a BIG-IP Next Instance go to **Instances -> My Instances**, and then click the **Start Adding Instances** button.
@@ -254,8 +254,23 @@ You can then monitor the status of the instance being created. It will take some
   :align: center
   :scale: 70% 
 
-Creating a BIG-IP Next Instance on rSeries 2k,4k Models via the rSeries Provider in Central Manager
+Creating a BIG-IP Next Instance on rSeries r2k, r4k Models via the rSeries Provider in Central Manager
 ---------------------------------------------------------------------------------------------------
+
+With the current versions of F5OS-A 1.8.0 and BIG-IP Next 20.3 support for Next on the r2k and r4k platforms is considered Early Access (EA). It is not intended for production environments yet. There are some limitations / caveats in these two releases which will be addressed in upcoming releases. This section will cover the current limitations, and how to properly configure Next on the r2k / r4k platforms, including HA mode. 
+
+Current Limitations and Caveats
+
+- Currently Link Aggregation Groups (LAGs) are not supported on the r2k / r4k when using BIg-IP Next tenants/instances.
+- For HA configurations the control plane HA link must be a dedicated link, and it must be the first "up" interface on that rSeries platform.
+- When configuring standalone instances from Central Manager, both instance must be configured with the exact same name if they will be joined in an HA pair.
+- VLAN naming must be configured identically on any r2k/r4k platforms that will have tenants/instances in an HA pair.
+- Within Central Manager, interfaces for L1 Networks must use L1 Network style numbering (1.1, 1.2, 1.3 etc..) instead of the physical interface numbering (1.0, 2.0, 3.0 etc...) 
+- When configuring a standalone instance from Central Manager, all VLAN naming between nodes in an HA cluster must be identical.
+- When configuring a standalone instance from Central Manager, all L1 Network naming between nodes in an HA cluster must be identical.
+- When configuring a standalone instance from Central Manager, all VLANs must be configured in the Default VRF.
+- When configuring a standalone instance from Central Manager, IP addresses should only be configured for non-HA networks. i.e. don't configure IP addresses for CPHA and DPHA networks when defining the standalone instances.
+
 
 BIG-IP Next Central Manager refers to BIG-IP Next as **Instances**. This is because the BIG-IP Next Instance could be a **Tenant** running on an F5OS-based platform (rSeries, VELOS), or it could be a VE running on a hypervisor such as VMware. The term Instance is a generic term which will apply to both types of environments. To create a BIG-IP Next Instance go to **Instances -> My Instances**, and then click the **Start Adding Instances** button.
 
@@ -275,19 +290,15 @@ Review the requirements of what you'll need before proceeding, then click **Next
   :align: center
   :scale: 70% 
 
-Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop down box select **rSeries Standalone**, and then click the **Start Creating** button.
+Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop down box select **rSeries Standalone**, and then click the **Start Creating** button. From the **rSeries Provider** section select the rSeries device that you added previously. Then click **Next**.
+
+.. Note:: In the current F5OS-A 1.8.0 and BIG-IP Next releases the hostname must be exactly the same for any standalone nodes that wil be later joined as part of an HA cluster.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/start-creating-4k.png
   :align: center
   :scale: 70% 
 
-From the **rSeries Provider** section select the rSeries device that you added previously. Then click **Next**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/select-bigip-next-instance-4k.png
-  :align: center
-  :scale: 70% 
-
-Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. When finished, click the **Done** button.
+Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. You ill need one or more in-band VLANs for client/server traffic, and one VLAN for data plane HA traffic, and another for control plane HA traffic. When finished, click the **Done** button. Enter the out-of-band **Management IP address**, **Network Prefix Length**, and **Gateway IP Address** and then click **Next**.
 
 .. Note:: The appropriate BIG-IP Next tenant image file should be loaded on the rSeries platform so that the Tenant Image Name and Tenant Deployment File can be selected in this screen. Currently there is no way to upload the image from Central Manager. 
 
@@ -295,11 +306,6 @@ Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores
   :align: center
   :scale: 70% 
 
-Enter the out-of-band **Management IP address**, **Network Prefix Length**, and **Gateway IP Address** and then click **Next**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/next-mgmt-addressing-4k.png
-  :align: center
-  :scale: 70% 
 
 In the next section, you will setup the in-band networking for the Next instance. Here, you will map the internal **L1 Networks** inside the Next instance to VLANs and then add IP addresses to them. These would be the equivalent of self-ip addresses on BIG-IP.
 
@@ -307,9 +313,9 @@ In the next section, you will setup the in-band networking for the Next instance
   :align: center
   :scale: 70% 
 
-BIG-IP Next support for the r2000/r4000 models is in an Early Access (EA) mode for F5OS 1.8.0. There are restrictions related to configuration of interfaces and LAGs with this release, that will be addressed in follow-on F5OS and BIG-IP NExt releases. What is shown here is what the current support is in the EA versions of F5OS-A 1.8.0 in combination with BIG-IP Next v20.3. 
+BIG-IP Next support for the r2000/r4000 models is in an Early Access (EA) mode for F5OS 1.8.0. There are restrictions related to configuration of interfaces and LAGs with this release, that will be addressed in follow-on F5OS and BIG-IP Next releases. What is shown here is what the current support is in the EA versions of F5OS-A 1.8.0 in combination with BIG-IP Next v20.3. 
 
-In the EA Release the following restrictions apply to the r2000/r4000 appliances.
+In the EA release the following restrictions apply to the r2000/r4000 appliances.
 
 - LAGs are not supported with BIG-IP Next 
 - For HA configurations the Control Plane VLAN must run on a dedicated physical interface, and it must be the lowest numbered "up" interface. 
@@ -328,7 +334,23 @@ Inside the BIG-IP Next instance/tenant these physical interfaces have to be mapp
   :align: center
   :scale: 70% 
 
-Unlike the r5000 and higher rSeries models, L1 Networks are not automatically created. You will need to create an L1 Network for each physical interface you intend to use. You are free to name the L1 NEtworks however you wish but for the sake of simplicity we recommend using naming as seen in the diagram above L1-Network1, L1-Network2 etc.... you'll then map these L1 Networks to the L1 Networking interface numbering (not the physical interface numbering). 
+Unlike the r5000 and higher rSeries models, L1 Networks are not automatically created. You will need to create an L1 Network for each physical interface you intend to use. You are free to name the L1 Networks however you wish but for the sake of simplicity we recommend using naming as seen below, and remember that they must be identical names and interfaces on both instances in an HA cluster. For this example the following L1 network names and interface mappings are used.
+
++------------------+-----------------------------+
+| L1 Network Name  | L1 Network Interface Number |
++==================+=============================+
+| CPHA             | 1.5                         |
++------------------+-----------------------------+
+| DPHA             | 1.6                         |
++------------------+-----------------------------+
+| INBAND           | 1.7                         |
++------------------+-----------------------------+
+
+.. NOTE:: In this example, the first "up" interface on both r4k units is 5.0 (at the F5OS layer), however we will use the L1 Networking style number of 1.5 for the CP HA interface. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/lowestnumber.png
+  :align: center
+  :scale: 70% 
 
 
 Below is an example of an r4800 device. Note there is a single default L1 Network. Click on **Create**, and create multiple **L1Networks**. Ideally, you should create one for each physical interface that is going to be used. IN this case we will have 3 total.
