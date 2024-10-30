@@ -542,70 +542,39 @@ You can view the current tenant images and their status in the F5OS CLI by using
 Creating a BIG-IP Next Tenant via CLI
 -------------------------------------
 
-BIG-IP Next tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
+BIG-IP Next tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name> config ** where **<tenant-name>** is the name of the tenant you would like to create. Then use tab completion and question marks to see the various options that can be configured for the tenant as seen below:
 
 .. code-block:: bash
 
-    Boston-r10900-1(config)# tenants tenant tenant2
-    Value for 'config image' (<string>): BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
-    Value for 'config nodes' (list): 1
-    Value for 'config mgmt-ip' (<IP address>): 10.255.0.136
-    Value for 'config prefix-length' (<unsignedByte, 0 .. 128>): 24
-    Value for 'config gateway' (<IP address>): 10.255.0.1
-    Boston-r10900-1(config-tenant-tenant2)# 
+  r10900-1-gsa(config)# tenants tenant next-tenant config ?
+  Possible completions:
+    appliance-mode           Appliance mode can be enabled/disabled at tenant level
+    cryptos                  Enable crypto devices for the tenant.
+    dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
+    gateway                  User-specified gateway for the tenant static mgmt-ip.
+    image                    User-specified image for tenant.
+    mac-data                 
+    memory                   User-specified memory in MBs for the tenant.
+    mgmt-ip                  User-specified mgmt-ip for the tenant management access.
+    nodes                    User-specified node-number(s) in the partition to schedule the tenant.
+    prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
+    running-state            User-specified desired state for the tenant.
+    storage                  User-specified storage information
+    type                     Tenant type.
+    vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
+    virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
+    vlans                    User-specified vlan-id from vlan table for the tenant.
+  r10900-1-gsa(config)#
 
-**NOTE: The nodes value is currently required in the interactive CLI mode to remain consistent with VELOS, but should be set for 1 for rSeries tenant deployments.** 
-
-When inside the tenant config mode, you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the available options.
-
-.. code-block:: bash
-
-  Boston-r10900-1# config
-  Entering configuration mode terminal
-  Boston-r10900-1(config)# tenants tenant tenant2 
-    Boston-r10900-1(config-tenant-tenant2)# config ?
-    Possible completions:
-    appliance-mode        Appliance mode can be enabled/disabled at tenant level
-    cryptos               Crypto devices for the tenant.
-    gateway               User-specified gateway for the tenant mgmt-ip.
-    image                 User-specified image for tenant.
-    memory                User-specified memory in MBs for the tenant.
-    mgmt-ip               User-specified mgmt-ip for the tenant management access.
-    name                  User-specified name for tenant.
-    nodes                 User-specified node-number(s) on which to schedule the tenant.
-    prefix-length         User-specified prefix-length for the tenant mgmt-ip.
-    running-state         User-specified desired state for the tenant.
-    storage               User-specified storage information
-    type                  Tenant type.
-    vcpu-cores-per-node   User-specified number of logical cpu cores for the tenant.
-    vlans                 User-specified vlan-id from vlan table for the tenant.
-  Boston-r10900-1(config-tenant-tenant2)# config ?
-  Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
-  Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
-  Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
-  Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
-  Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
-  Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
-  Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
-  Boston-r10900-1(config-tenant-tenant2)# config memory 14848
-  
-
-Any changes must be committed for them to be executed:
+Below is an example of a fully configured tenant specifying all the required options. Bes sure to commit after making any changes.
 
 .. code-block:: bash
 
-  Boston-r10900-1(config-tenant-tenant2)# commit
+  r10900-1-gsa(config)# tenants tenant next-tenant config type BIG-IP-Next image BIG-IP-Next-20.3.0-2.716.2+0.0.50 deployment-file BIG-IP-Next-20.3.0-2.716.2+0.0.50.yaml mgmt-ip 172.22.50.31 prefix-length 26 gateway 172.22.50.62 storage size 25 nodes 1 vcpu-cores-per-node 4 memory 14848 vlans [ 500 501 502 ] running-state deployed  
+  r10900-1-gsa(config-tenant-next-tenant)#
+  r10900-1-gsa(config-tenant-next-tenant)# commit
   Commit complete.
-  Boston-r10900-1(config-tenant-tenant2)# 
-	
-You may alternatively put all the parameters on one line instead of using the interactive mode above:
-
-.. code-block:: bash
-
-    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
-    Boston-r10900-1(config-tenant-tenant2)# commit
-    Commit complete.
-    Boston-r10900-1(config-tenant-tenant2)#
+  r10900-1-gsa(config-tenant-next-tenant)#
 
 
 Validating BIG-IP Next Tenant Status via CLI
@@ -615,59 +584,97 @@ After the tenant is created you can run the command **show running-config tenant
 
 .. code-block:: bash
 
-    Boston-r10900-1# show running-config tenants 
-    tenants tenant tenant2
-    config name         tenant2
-    config type         BIG-IP
-    config image        BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
-    config nodes        [ 1 ]
-    config mgmt-ip      10.255.0.136
-    config prefix-length 24
-    config gateway      10.255.0.1
-    config vlans        [ 500 3010 3011 ]
-    config cryptos      enabled
-    config vcpu-cores-per-node 4
-    config memory       14848
-    config storage size 76
-    config running-state deployed
-    config appliance-mode disabled
-    !
-    Boston-r10900-1# 
+ r10900-1-gsa# show running-config tenants 
+  tenants tenant next-tenant
+  config type            BIG-IP-Next
+  config image           BIG-IP-Next-20.3.0-2.716.2+0.0.50
+  config deployment-file BIG-IP-Next-20.3.0-2.716.2+0.0.50.yaml
+  config nodes           [ 1 ]
+  config mgmt-ip         172.22.50.31
+  config prefix-length   26
+  config gateway         172.22.50.62
+  config dag-ipv6-prefix-length 128
+  config vlans           [ 500 501 502 ]
+  config cryptos         enabled
+  config vcpu-cores-per-node 4
+  config memory          14848
+  config storage size 25
+  config running-state   deployed
+  config mac-data mac-block-size one
+  config appliance-mode disabled
+  !
+  r10900-1-gsa#
 
 
-To see the actual status of the tenants, issue the CLI command **show tenants**.
+
+To see the actual status of the tenants, issue the CLI command **show tenants** or optionally you can specify a specific tenant as seen below. You can keep reissuing the command to see the BIG-IP Next pods start up and change status until they all show **Running** status.
 
 .. code-block:: bash
 
-  Boston-r10900-1# show tenants 
-  tenants tenant tenant2
-   state name          tenant2
-   state unit-key-hash glbrGy9pGV3BAh1ObpXrryOF23bTEs2BAnQ5MPaIRyBjc8Un1swNfBo2yQhFXC6jKx/F5EhuaJFCehnHJqtDkg==
-   state type          BIG-IP
-   state mgmt-ip       10.255.0.136
-   state prefix-length 24
-   state gateway       10.255.0.1
-   state vlans         [ 500 3010 3011 ]
-   state cryptos       enabled
-   state vcpu-cores-per-node 4
-   state memory        14848
-   state storage size 76
-   state running-state deployed
-   state mac-data base-mac 00:94:a1:69:59:26
-   state mac-data mac-pool-size 1
-   state appliance-mode disabled
-   state status        Running
-   state primary-slot  1
-   state image-version "BIG-IP 15.1.5 0.0.8"
-  NDI      MAC                
-  ----------------------------
-  default  00:94:a1:69:59:24  
+  r10900-1-gsa# show tenants tenant next-tenant 
+  tenants tenant next-tenant
+  state unit-key-hash    VWDHXgBMatRWagdRUleaYE73IbGlVyqJbM3MSg/QpprheSlTPvyATR0DI0H77QyRsvXsfAXUq05TEy8u4nL9YA==
+  state type             BIG-IP-Next
+  state image            BIG-IP-Next-20.3.0-2.716.2+0.0.50
+  state deployment-file  BIG-IP-Next-20.3.0-2.716.2+0.0.50.yaml
+  state upgrade-status   not-started
+  state mgmt-ip          172.22.50.31
+  state prefix-length    26
+  state gateway          172.22.50.62
+  state dag-ipv6-prefix-length 128
+  state vlans            [ 500 501 502 ]
+  state cryptos          enabled
+  state vcpu-cores-per-node 4
+  state qat-vf-count     16
+  state memory           14848
+  state storage size 25
+  state running-state    deployed
+  state appliance-mode disabled
+  state ha-state         standalone
+  state feature-flags clustering-as-service true
+  state feature-flags stats-stream-capable true
+  state namespace        default-tid-14
+  state status           Running
+  state mac-data base-mac 00:94:a1:39:aa:25
+  state mac-data mac-pool-size 1
+  MAC                
+  -------------------
+  00:94:a1:39:aa:25  
 
-        INSTANCE                                                                                                                                                 
-  NODE  ID        PHASE    IMAGE NAME                                    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------
-  1     1         Running  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle  2021-12-22T20:47:31Z  2021-12-22T20:47:32Z  Started tenant instance  00:94:a1:69:59:27  
+  NODE  CPUS             
+  -----------------------
+  1     [ 11 12 35 36 ]  
 
+                                                      INSTANCE  TENANT                                                                                                   
+  NODE  POD NAME                                      ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  1     next-tenant-data-store                        1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:12:02Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-access-apmd                    1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:24Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-access-renderer                1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:24Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-access-session-manager         1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:24Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-appsvcs                        1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:23Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-asec-clientside-js-obfuscator  1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:23Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-asec-ip-intelligence           1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:24Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-asec-policy-compiler           1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:25Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-avcl                           1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:42Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-cmsg-mq                        1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:47Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-csm-api-engine                 1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:12:32Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-csm-bird                       1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:25Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-csm-icb                        1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:12:27Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-csm-qkview                     1         -       Running  2024-10-30T22:11:20Z  2024-10-30T22:11:48Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-dssm                           1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:52Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-eesv-licensing                 1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:25Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-eesv-vault                     1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:12:32Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-fcdn-sync                      1         -       Running  2024-10-30T22:11:24Z  2024-10-30T22:11:52Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-fsm-tmm                        1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:52Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-onboarding                     1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:23Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-platform-agent                 1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:13:12Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-toda-logpull                   1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:25Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-toda-observer                  1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:52Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-toda-otel-collector            1         -       Running  2024-10-30T22:11:22Z  2024-10-30T22:11:52Z  Started tenant instance  00:94:a1:39:aa:26  
+  1     next-tenant-f5-toda-server                    1         -       Running  2024-10-30T22:11:21Z  2024-10-30T22:11:22Z  Started tenant instance  00:94:a1:39:aa:26  
+
+  r10900-1-gsa
 
 BIG-IP Next Tenant Deployment via webUI
 =======================================
@@ -676,7 +683,7 @@ BIG-IP Next Tenant Deployment via webUI
 Uploading BIG-IP Next Tenant Images via webUI
 ---------------------------------------------
 
-Before deploying any tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are TMOS images specifically for rSeries. Only supported rSeries TMOS releases should be loaded into this system. Do not attempt to load older or even newer images unless there are officially supported on rSeries. 
+Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are BIG-IP Next tenant images specifically for F5OS based systems.
 
 You can upload a tenant image via the webUI in two different places. The first is by going to the **Tenant Management > Tenant Images** page. There are two options on this page; you can click the **Import** button and you will receive a pop-up asking for the URL of a remote HTTPS server with optional credentials, and the ability to ignore certificate warnings.
 
@@ -708,7 +715,7 @@ If an HTTPS server is not available and uploading from a client machine is not a
 
 .. code-block:: bash
 
-    scp BIGIP-15.1.5-0.0.8.ALL-VELOS.qcow2.zip.bundle admin@10.255.0.148:IMAGES
+    scp BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle admin@10.255.0.148:IMAGES
 
 
 Creating a BIG-IP Next Tenant via webUI
@@ -720,7 +727,7 @@ You can deploy a BIG-IP Next tenant from the webUI using the **Add** button in t
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
+The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the BIG-IP Next tenant image and deployment file for it to run. For **Type** select **BIG-IP-Next**.  Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image75.png
   :align: center
@@ -742,7 +749,8 @@ The tenant will cycle through various phases as the tenant starts initializing. 
   :align: center
   :scale: 70% 
 
-You can then click 
+You can then click
+ 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image78.png
   :align: center
   :scale: 70%   
