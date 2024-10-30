@@ -338,7 +338,7 @@ To set System Time settings, use the following API call as an example. This will
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
-Below is the body of the API call contianing the desired configuration:
+Below is the body of the API call containing the desired configuration:
 
 .. code-block:: json
 
@@ -1105,7 +1105,7 @@ Then send the Base Reg Key in the body of the get-dossier API call below:
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing/f5-system-licensing-install:get-dossier
 
-Within the body of API call, enter your registation-key. Note, in the example below the actual Registration Key has been obfuscated with XXXX's.
+Within the body of API call, enter your registration-key. Note, in the example below the actual Registration Key has been obfuscated with XXXX's.
 
 
 .. code-block:: json
@@ -1653,7 +1653,7 @@ Once the qkview is generated, you can click the checkbox next to it, and then se
   :align: center
   :scale: 70%
 
-If you would like to store iHealth credentials within the configuration you may do so via the CLI. Enter config mode, and then use the system diagnostics ihealth config command to configure a username and password.
+If you would like to store iHealth credentials within the configuration you may do so via the CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a username and password.
 
 .. code-block:: bash
 

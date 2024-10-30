@@ -26,7 +26,7 @@ In some customer environments they may not want to run the HA VLANs over a dedic
   :align: center
   :scale: 40%
 
-If VPC style interconnects are not used, then the same concepts from above are used but slightly altered. In the first case LAGs are not dual homed due to lack of VPC support and instead are configured as point to point LAGs between one rSeries device and one upstream layer2 switch. Again, a dedicated HA link is optional but preferred.
+If VPC style interconnects are not used, then the same concepts from above are used but slightly altered. In the first case LAGs are not dual homed due to lack of VPC support and instead are configured as point-to-point LAGs between one rSeries device and one upstream layer2 switch. Again, a dedicated HA link is optional but preferred.
 
 .. image:: images/rseries_high_availability/image4.png
   :align: center

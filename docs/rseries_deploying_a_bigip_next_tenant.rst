@@ -98,13 +98,13 @@ If you need instructions on installing Central Manager, or general BIG-IP Next d
 Setting up an rSeries Provider in Central Manager
 -------------------------------------------------
 
-After logging into Central Manager you can setup an rSeries Provider by going to the **Manage Instances** button on the main home screen, or by using the drop down in the upper right hand corner of the webUI ans selecting
+After logging into Central Manager you can setup an rSeries Provider by going to the **Manage Instances** button on the main home screen. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/central-manager-home.png
   :align: center
   :scale: 70% 
 
-Alternatively, select the **Infrastructure** option.
+Alternatively, select the **Infrastructure** option by using the drop-down in the upper left-hand corner of the webUI.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/infrastructure.png
   :align: center
@@ -116,7 +116,7 @@ Once on the Infrastructure page, select **Providers**, and then select the **Sta
   :align: center
   :scale: 70% 
 
-From the drop down menu, select **rSeries**.
+From the drop-down menu, select **rSeries**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/add-an-instance-provider.png
   :align: center
@@ -167,7 +167,7 @@ Review the requirements of what you'll need before proceeding, then click **Next
   :align: center
   :scale: 70% 
 
-Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop down box select **rSeries Standalone**, and then click the **Start Creating** button.
+Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop-down box select **rSeries Standalone**, and then click the **Start Creating** button.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/start-creating.png
   :align: center
@@ -206,7 +206,7 @@ For VELOS and rSeries r5000 and higher appliances only a single data interface (
   :scale: 70% 
 
 
-Below is an example of an r10900 device. Click on **L1 Networks**, and note that the **DefaultL1Network** already exists and is mapped to the internal interface 1.1. Also note that it has zero VLANs assigned. 
+Below is an example of an r10900 device. Click on **L1 Networks** and note that the **DefaultL1Network** already exists and is mapped to the internal interface 1.1. Also note that it has zero VLANs assigned. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/l1networks.png
   :align: center
@@ -218,7 +218,7 @@ Click on **VLANs** and note that the VLANs you previously assigned to the instan
   :align: center
   :scale: 70% 
 
-In the drop-down box for L1 Networks select the **DefaultL1Network** for all of your VLANs, and then click **Next**.
+In the drop-down box for L1 Networks select the **DefaultL1Network** for all your VLANs, and then click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/default-l1network-pick.png
   :align: center
@@ -236,7 +236,7 @@ You'll need to add an IP address in <x.x.x.x/xx> format for each VLAN before you
   :align: center
   :scale: 70% 
 
-In the **Troubleshooting** section you will setup a new local username and password for the Next instance that you can utilize for direct troubleshooting access. The default username and password will no longer work. Note that one an instance is under central management all configuration should be done though Central Manager, and not direct to the Next instance. Click **Next**.
+In the **Troubleshooting** section you will setup a new local username and password for the Next instance that you can utilize for direct troubleshooting access. The default username and password will no longer work. Note that once an instance is under central management all configurations should be done though Central Manager, and not direct to the Next instance. Click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/admin-cm.png
   :align: center
@@ -263,7 +263,7 @@ Current Limitations and Caveats
 
 - Currently Link Aggregation Groups (LAGs) are not supported on the r2k / r4k when using BIg-IP Next tenants/instances.
 - For HA configurations the control plane HA link must be a dedicated link, and it must be the first "up" interface on that rSeries platform.
-- When configuring standalone instances from Central Manager, both instance must be configured with the exact same name if they will be joined in an HA pair.
+- When configuring standalone instances from Central Manager, both instances must be configured with the exact same name if they will be joined in an HA pair.
 - VLAN naming must be configured identically on any r2k/r4k platforms that will have tenants/instances in an HA pair.
 - Within Central Manager, interfaces for L1 Networks must use L1 Network style numbering (1.1, 1.2, 1.3 etc..) instead of the physical interface numbering (1.0, 2.0, 3.0 etc...) 
 - When configuring a standalone instance from Central Manager, all VLAN naming between nodes in an HA cluster must be identical.
@@ -290,7 +290,7 @@ Review the requirements of what you'll need before proceeding, then click **Next
   :align: center
   :scale: 70% 
 
-Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop down box select **rSeries Standalone**, and then click the **Start Creating** button. From the **rSeries Provider** section select the rSeries device that you added previously. Then click **Next**.
+Enter a hostname for the BIG-IP Next instance, and an optional description. Then, in the drop-down box select **rSeries Standalone**, and then click the **Start Creating** button. From the **rSeries Provider** section select the rSeries device that you added previously. Then click **Next**.
 
 .. Note:: In the current F5OS-A 1.8.0 and BIG-IP Next releases the hostname must be exactly the same for any standalone nodes that wil be later joined as part of an HA cluster.
 
@@ -298,7 +298,7 @@ Enter a hostname for the BIG-IP Next instance, and an optional description. Then
   :align: center
   :scale: 70% 
 
-Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. You ill need one or more in-band VLANs for client/server traffic, and one VLAN for data plane HA traffic, and another for control plane HA traffic. When finished, click the **Done** button. Enter the out-of-band **Management IP address**, **Network Prefix Length**, and **Gateway IP Address** and then click **Next**.
+Next configure the rSeries Properties, which includes **Disk Size**, **CPU Cores**, **Tenant Image Name**, **Tenant Deployment File**, and **VLAN IDs**. You will need one or more in-band VLANs for client/server traffic, and one VLAN for data plane HA traffic, and another for control plane HA traffic. When finished, click the **Done** button. Enter the out-of-band **Management IP address**, **Network Prefix Length**, and **Gateway IP Address** and then click **Next**.
 
 .. Note:: The appropriate BIG-IP Next tenant image file should be loaded on the rSeries platform so that the Tenant Image Name and Tenant Deployment File can be selected in this screen. Currently there is no way to upload the image from Central Manager. 
 
@@ -320,13 +320,14 @@ In the EA release the following restrictions apply to the r2000/r4000 appliances
 - LAGs are not supported with BIG-IP Next 
 - For HA configurations the Control Plane VLAN must run on a dedicated physical interface, and it must be the lowest numbered "up" interface. 
 
-Both of these restrictions will be addressed in future releases.
+
+Both restrictions will be addressed in future releases.
 
 In order to understand how to configure the networking when onboarding a BIG-IP Next tenant it is important to understand the mapping of physical interface numbering on the r2000/r4000 platforms and how they map to internal BIG-IP Next L1 Networking interfaces. In the diagram below, you can see that F5OS physical interface numbering follows the format of:
 
 - 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 8.0
 
-Inside the BIG-IP Next instance/tenant these physical interfaces have to be mapped to L1 Network interfaces manually. You only need to create L1 Networks for ports that you are actually using, unused ports do not need L1 networks created. In the diagram below, you can see that Next L1 Networking interface numbering follows the format of:
+Inside the BIG-IP Next instance/tenant these physical interfaces must be mapped to L1 Network interfaces manually. You only need to create L1 Networks for ports that you are actually using, unused ports do not need L1 networks created. In the diagram below, you can see that Next L1 Networking interface numbering follows the format of:
 
 - 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 1.7, 1.8
 
@@ -334,7 +335,7 @@ Inside the BIG-IP Next instance/tenant these physical interfaces have to be mapp
   :align: center
   :scale: 70% 
 
-Unlike the r5000 and higher rSeries models, L1 Networks are not automatically created. You will need to create an L1 Network for each physical interface you intend to use. You are free to name the L1 Networks however you wish but for the sake of simplicity we recommend using naming as seen below, and remember that they must be identical names and interfaces on both instances in an HA cluster. For this example the following L1 network names and interface mappings are used.
+Unlike the r5000 and higher rSeries models, L1 Networks are not automatically created. You will need to create an L1 Network for each physical interface you intend to use. You are free to name the L1 Networks however you wish but for the sake of simplicity we recommend using naming as seen below.  Remember that they must be identical names and interfaces on both instances in an HA cluster. For this example, the following L1 network names and interface mappings are used.
 
 +------------------+-----------------------------+
 | L1 Network Name  | L1 Network Interface Number |
@@ -353,14 +354,14 @@ Unlike the r5000 and higher rSeries models, L1 Networks are not automatically cr
   :scale: 70% 
 
 
-Below is an example of an r4800 device. Note there are no default L1 Networks defined. Click on **Create**, and create multiple **L1Networks**. Ideally, you should create one for each physical interface that is going to be used. In this case we will have 3 total. Give Each L1 Network a descriptive name (and it must be the same names between members of an HA cluster), and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 Networking numbering format. i.e. 1.1, 1.2, 1.3 etc...
+Below is an example of an r4800 device. Note there are no default L1 Networks defined. Click on **Create** and create multiple **L1Networks**. Ideally, you should create one for each physical interface that is going to be used. In this case we will have 3 total. Give Each L1 Network a descriptive name (and it must be the same names between members of an HA cluster), and then map it to the L1 Network interface that maps to the F5OS physical interface you are using. Be sure to use the L1 Networking numbering format. i.e. 1.1, 1.2, 1.3 etc...
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/create-3-times.png
   :align: center
   :scale: 70% 
 
 
-Click on **VLANs** and note that the VLANs you previously assigned to the instance are listed, however they are not mapped to any L1 Networks yet. In the drop-down box for L1 Networks select the proper L1 Network for all of your VLANs, and then click **Next**.
+Click on **VLANs** and note that the VLANs you previously assigned to the instance are listed, however they are not mapped to any L1 Networks yet. In the drop-down box for L1 Networks select the proper L1 Network for all your VLANs, and then click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/next-vlans-4k.png
   :align: center
@@ -374,7 +375,7 @@ Finally, you must assign an IP addresses to each VLAN. Click on **IP Addresses**
   :scale: 70% 
 
 
-In the **Troubleshooting** section you will setup a new local username and password for the Next instance that you can utilize for direct troubleshooting access. The default username and password will no longer work. Note that one an instance is under central management all configuration should be done though Central Manager, and not direct to the Next instance. Click **Next**.
+In the **Troubleshooting** section you will setup a new local username and password for the Next instance that you can utilize for direct troubleshooting access. The default username and password will no longer work. Note that one an instance is under central management all configurations should be done though Central Manager, and not direct to the Next instance. Click **Next**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/admin-cm.png
   :align: center
@@ -392,7 +393,7 @@ You can then monitor the status of the instance being created. It will take some
   :align: center
   :scale: 70%  
 
-You can then begin creating the second standalone instance on your other rSeries device. The **Hostname** must be identical to the first Next instance that was created. (This is a temporary restriction that will be addressed in a subsequent release). Select the provider for the second rseries device.
+You can then begin creating the second standalone instance on your other rSeries device. The **Hostname** must be identical to the first Next instance that was created. (This is a temporary restriction that will be addressed in a subsequent release). Select the provider for the second rSeries device.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/create-second-instance.png
   :align: center
@@ -465,7 +466,7 @@ On the first line change the drop-down box to **Active Node IP Address**, on the
   :align: center
   :scale: 70%
 
-Finally, review the configuration and click the **Deploy HA** button. In the my instances screen, eventually the two standalone instances will merge into one instance with the **Mode** set to **HA**. Central Manager will now manage the HA cluster as one entity via the floating management IP address. There is no need to manage the nodes individually, or worry about synchronizing configurations as is the case with BIG-IP. This shows the simplified HA management provided by Central Manager.
+Finally, review the configuration and click the **Deploy HA** button. In the **My Instances** screen, eventually the two standalone instances will merge into one instance with the **Mode** set to **HA**. Central Manager will now manage the HA cluster as one entity via the floating management IP address. There is no need to manage the nodes individually or worry about synchronizing configurations as is the case with BIG-IP. This shows the simplified HA management provided by Central Manager.
 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/deploy-ha.png
@@ -480,7 +481,7 @@ Uploading a BIG-IP Next Tenant Image via CLI
 
 BIG-IP Next tenant software images are loaded directly into the F5OS platform layer in the same manner as BIG-IP tenant images. For the initial release of BIG-IP Next on rSeries, supported tenant versions are v20.1 and later. 
 
-Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a BIG-IP Next tenant image using scp directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client. Note, in releases prior to F5OS-A 1.8.0 you can only upload tenant images using SCP vai the root account. In F5OS-A 1.8.0 and later the admin account will be used to SCP tenant images, and root will not longer be required.
+Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a BIG-IP Next tenant image using SCP directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client. Note, in releases prior to F5OS-A 1.8.0 you can only upload tenant images using SCP via the root account. In F5OS-A 1.8.0 and later the admin account will be used to SCP tenant images, and root access will no longer be required.
 
 .. code-block:: bash
 
@@ -697,7 +698,7 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop-down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image50.png
   :align: center
