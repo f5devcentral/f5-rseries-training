@@ -785,20 +785,20 @@ Once the tenant is fully running. You can then go back to the **Tenant Deploymen
   :align: center
   :scale: 70% 
 
-Now re-examine the dashboards in the webUI. Examine the **System Summary** and click the **Show Utilization** to see how memory and storage is allocated. Examine how all the resources are allocated within your partition.
+Now re-examine the dashboards in the webUI. Examine the **System Summary** and click the **Show Utilization** to see how memory and storage is allocated. Examine how all the resources are allocated within your rSeries appliance.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/dashboard-system.png
   :align: center
   :scale: 70% 
 
-Click on the **Tenant Overview** and examine the dashboard. Play around with the filtering options to see hoe the display is adjusted.
+Click on the **Tenant Overview** tab and examine the dashboard. 
 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/tenant-overview.png
   :align: center
   :scale: 70% 
 
-Click on the **CPU** and examine the dashboard.
+Click on the **CPU** tab and examine the dashboard. Here you can see how vCPus are allocated within the rSeries system as well as their utilization.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/cpu-dashboard.png
   :align: center
