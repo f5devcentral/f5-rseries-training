@@ -727,7 +727,7 @@ You can deploy a BIG-IP Next tenant from the webUI using the **Add** button in t
   :align: center
   :scale: 70% 
 
-The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the BIG-IP Next tenant image and deployment file for it to run. For **Type** select **BIG-IP-Next**.  Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
+The tenant deployment options are almost identical to deploying a vCMP guest on older generations of BIG-IP, with a few minor differences and almost identical to deploying a BIG-IP tenant on rSeries. For **Type** select **BIG-IP-Next**. Supply a name for the tenant and choose the BIG-IP Next **Image** and **Deployment File** for it to run.  Next, you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space, you can set this for 25GB. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. Be sure to consult the supported vCPU options in this guide or in the releases notes for a specific release, not all vCPU options are supported.  You can choose different states (Configured or Deployed, Provisioned is not supported for BIG-IP Next) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image75.png
   :align: center
@@ -749,41 +749,208 @@ The tenant will cycle through various phases as the tenant starts initializing. 
   :align: center
   :scale: 70% 
 
-You can then click
- 
+You can then click the carat in the right-hand side of the the webUI row to get more detailed status.
+
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image78.png
   :align: center
   :scale: 70%   
 
-You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a refresh period, and a specific tenant to monitor in deeper detail:
+To watch the status of the BIG-IP Next tenant's containers during startup go to **Tenant Management -> Tenant Details**. Click the **Hide** buttons showing tenant CPU, Memory, and Disk Usage. 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image80.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11aaa.png
+  :align: center
+  :scale: 70%   
+
+Select the BIG-IP Next **Tenant Name** and set **Auto Refresh** for 10 seconds. You can then hover over the **Phase** column to get more details while resources are being allocated.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11aa.png
+  :align: center
+  :scale: 70%   
+
+Eventually, you will see various containers starting up and showing **Pending** status.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11ab.png
+  :align: center
+  :scale: 70%   
+
+You can continue monitor until they all go into the **Running** phase. This means that the tenant is now operational. If there were issues with any of the containers starting it would show up in this webUI page.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11ac.png
+  :align: center
+  :scale: 70%   
+
+Once the tenant is fully running. You can then go back to the **Tenant Deployments** screen and click the Carat in the right hand column for the BIG-IP Next Tenant to see more details. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11b.png
   :align: center
   :scale: 70% 
 
-At this point the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI to see the running tenants, and there is a hyperlink that will connect to the tenant's webUI IP address as seen below.
+Now re-examine the dashboards in the webUI. Examine the **System Summary** and click the **Show Utilization** to see how memory and storage is allocated. Examine how all the resources are allocated within your partition.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image81.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/dashboard-system.png
   :align: center
   :scale: 70% 
 
-Clicking on one of the hyperlinks will bring you to the BIG-IP webUI of that tenant, and you'll need to login with default credentials of admin/admin. You will be prompted to change the password for the admin account.
+Click on the **Tenant Overview** and examine the dashboard. Play around with the filtering options to see hoe the display is adjusted.
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image40.png
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant-overview.png
   :align: center
   :scale: 70% 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image41.png
+Click on the **CPU** and examine the dashboard.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/cpu-dashboard.png
   :align: center
   :scale: 70% 
 
-Now login with the new admin password, and you'll be brought into the initial setup wizard of the BIG-IP tenant. 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image42.png
+Importing the Tenant into Central Manager
+-----------------------------------------
+
+In this section of the lab you will import the BIG-IP Next tenant from your VELOS partition into Central Manager.
+
+**Nominate one person in your group to change the local password and then add the BIG-IP Next tenant into Central Manager.**
+
+Before bringing your locally created Next instance into Central Manager, you must first change its default password. (This is not an ideal flow, and an enhancement has been filed to have Central Manager perform this step as part of the import process). For now, you'll need to send an API call direct to the Next instance to change the default password. 
+
+If you have Postman running on your machine you can use that, or you can use curl from your client machine.
+
+First login locally to the Next instance using basic auth with the credentials admin/admin. Send a GET call to /api/v1/login URI.
+
+.. code-block:: bash
+
+  GET https://{{next-instance-ip}}:5443/api/v1/login
+
+You should see a response similar to the one below indicating that a "self password update" is required.
+
+.. code-block:: bash
+
+  {
+      "_errors": [
+          {
+              "id": "b9dc8fe1-fd77-4324-9ea7-7924d4786cb1",
+              "code": "13158-00319",
+              "title": "",
+              "detail": "Password change: password must be changed; use 'self password update' endpoint and change it.",
+              "status": "403"
+          }
+      ]
+  }
+
+Below is an example of running a curl command:
+
+.. code-block:: bash
+
+  prompt%  curl -k -u admin:admin https://172.22.50.19:5443/api/v1/login
+  {"_errors":[{"id":"ec3e2210-2368-48a6-aae7-8279c753a2e8","code":"13158-00319","title":"","detail":"Password change: password must be changed; use 'self password update' endpoint and change it.","status":"403"}]}
+  prompt% 
+
+
+Next, send the following PUT call with basic-auth using the admin/admin account directly to your Next instance to the URI /api/v1/me.
+
+.. code-block:: bash
+
+  PUT https://{{next-instance-ip}}:5443/api/v1/me
+
+In the body of the API call enter the following, which will change the current password of admin to Welcome123!Welcome123!.
+
+
+.. code-block:: bash
+
+  {
+  "currentPassword": "admin",
+  "newPassword": "Welcome123!Welcome123!"
+  }
+
+Below is an example of running a curl command to set the new password:
+
+.. code-block:: bash
+
+  prompt% curl -k -u admin:admin -X PUT https://172.22.50.19:5443/api/v1/me -H 'Content-Type: application/json' -d   '{"currentPassword": "admin", "newPassword": "Welcome123!Welcome123!"}'
+  prompt%
+
+
+Your BIG-IP Next instance is now ready to be imported into central Manager. After logging into Central Manager you can setup a VELOS Provider by going to the **Manage Instances** button on the main home screen.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/central-manager-home.png
   :align: center
   :scale: 70% 
 
-At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.    
+Alternatively, by using the drop down in the upper left hand corner of the webUI and selecting the **Infrastructure** option.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/infrastructure.png
+  :align: center
+  :scale: 70% 
+
+Click on the **Start Adding Instances** button.  
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-adding-instances.png
+  :align: center
+  :scale: 70% 
+
+Enter the management IP Address assigned to your BIG-IP Next tenant, and then click **Connect**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-managing.png
+  :align: center
+  :scale: 70% 
+
+Enter the login credentials for your tenant (admin/Welcome123!Welcome123!), then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/login.png
+  :align: center
+  :scale: 70% 
+
+You'll now need to create a new admin account/password in order for Central Manager to manage the device. For **Username** enter **admin-cm**. For **Password** enter **Welcome123!Welcome123!** and confirm the password. Then click **Add Instance**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/add-instance.png
+  :align: center
+  :scale: 70%   
+
+You should then see a pop-up asking you to confirm the Fingerprint. Click **Accept**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/fingerprint.png
+  :align: center
+  :scale: 70%  
+
+The Instance should be imported successfully into Central Manager and show a healthy green status:
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/healthy-instance.png
+  :align: center
+  :scale: 70%  
+
+Click on the instance to review its configuration. You should see stats being populated under the **Instance Data Metrics** section, but the majority of the configuration is blank as the device has not been on-boarded or licensed yet. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/metrics.png
+  :align: center
+  :scale: 70% 
+
+The workflow to on-board the Next instance is currently very cumbersome and not intuitive. We will not go through the manual process here, and instead will focus on creating a Next instance through a provider, which is a more preferred workflow, and on-boarding is more mature for this use case. 
+
+When you are done with this section you will need to delete your Next tenant from Central Manager.  Go to the **Instances** page, then click the checkbox next to your instance, then go to **Actions**, and select **Delete**. You'll then be asked to review what will get deleted and to confirm the deletion. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-instance-from-cm.png
+  :align: center
+  :scale: 70%  
+
+You can then monitor the deletion status. Once the instance is gone it is removed from Central Manager, but it is not removed from the VELOS partition.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/deletion-in-progress.png
+  :align: center
+  :scale: 70%  
+
+Log into your teams VELOS partition and go to the **Tenant Management**  -> **Tenant Deployments** page. Here you can confirm that your BIG-IP Next Tenant is still running. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant-running.png
+  :align: center
+  :scale: 70%  
+
+You'll need to delete this tenant before moving onto the next section of the lab. Click the checkbox beside the Next tenant to select it, and then click the **Delete** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-tenant-locally.png
+  :align: center
+  :scale: 70%  
+
 
 BIG-IP Next Tenant Deployment via API
 =====================================
@@ -930,6 +1097,11 @@ In the **Headers** section ensure you add the **file-upload-id** header, with th
 .. image:: images/rseries_deploying_a_bigip_next_tenant/file-upload-tenant-headers.png
   :align: center
   :scale: 70%
+
+
+
+
+
 
 
 Creating a BIG-IP Next Tenant via API
@@ -1165,454 +1337,4 @@ Below is the output from the above API call:
         }
     }
 
-
-
-Resizing a BIG-IP Next Tenant
-=============================
-
-rSeries tenants have static vCPU and memory allocations just like vCMP. These can be changed after a tenant has been deployed, but the tenant will have to be suspended (put in the **Provisioned** state), then the change to CPU and or memory allocation can be made. A tenant can be expanded assuming adequate resources are available. Once the changes are completed the tenant can be put into the **Deployed** state and returned to service.
-
-Expanding a BIG-IP Next Tenant via webUI
-----------------------------------------
-
-Below is webUI output of a single tenant that is in the deployed and running state configured with 2 vCPUs and 7680MB of memory. The workflow below will cover expanding the tenant from 2 to 4 vCPUs and the memory from 7680MB to 14848MB. Click the check box next to the tenant, and then select the **Provision** button. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image82.png
-  :align: center
-  :scale: 70% 
-
-A pop-up will appear letting you know this will stop the tenant and disrupt traffic. Click **OK**. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image83.png
-  :align: center
-  :scale: 70% 
-
-This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping**, and finally to the **Provisioned** Status.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image84.png
-  :align: center
-  :scale: 70% 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image85.png
-  :align: center
-  :scale: 70%   
-
-Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image86.png
-  :align: center
-  :scale: 70% 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image87.png
-  :align: center
-  :scale: 70% 
-
-
-Expanding a BIG-IP Next Tenant via CLI
----------------------------------------
-
-Expanding a tenant via the CLI follows the same workflows as the webUI. You must first put the tenant in a **Provisioned** state, and then make configuration changes, and then change back to a **Deployed** state. You can view the current configuration of the tenant by issuing the **show running-config tenants** command. Note the tenant currently has 2 vCPUs, and 7680 MB of memory.
-
-.. code-block:: bash
-
-    Boston-r10900-1# show running-config tenants 
-    tenants tenant tenant1
-    config name         tenant1
-    config type         BIG-IP
-    config image        BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
-    config nodes        [ 1 ]
-    config mgmt-ip      10.255.0.149
-    config prefix-length 24
-    config gateway      10.255.0.1
-    config vlans        [ 500 3010 3011 ]
-    config cryptos      enabled
-    config vcpu-cores-per-node 2
-    config memory       7680
-    config storage size 76
-    config running-state provisioned
-    config appliance-mode disabled
-    !
-    Boston-r10900-1# 
-
-
-You can also view the tenant's running status by issuing the CLI command **show tenants**.
-
-.. code-block:: bash
-
-    Boston-r10900-1# show tenants 
-    tenants tenant tenant1
-    state name          tenant1
-    state unit-key-hash QnBzdWEYTr3oTmTgtyvQLc9m+ANYIrHlwcd6Z84qKOiYa61b3eqqbxBtaVTzWFOxn19xrXp37gz4CKC8Et2PsQ==
-    state type          BIG-IP
-    state mgmt-ip       10.255.0.149
-    state prefix-length 24
-    state gateway       10.255.0.1
-    state vlans         [ 500 3010 3011 ]
-    state cryptos       enabled
-    state vcpu-cores-per-node 2
-    state memory        7680
-    state storage size 76
-    state running-state provisioned
-    state mac-data base-mac 00:94:a1:69:59:26
-    state mac-data mac-pool-size 1
-    state appliance-mode disabled
-    state status        Provisioned
-    state primary-slot  1
-    state image-version "BIG-IP 15.1.5 0.0.8"
-    NDI      MAC                
-    ----------------------------
-    default  00:94:a1:69:59:24  
-
-        INSTANCE                                                                 CREATION  READY          MGMT  
-    NODE  ID        PHASE            IMAGE NAME                                    TIME      TIME   STATUS  MAC   
-    --------------------------------------------------------------------------------------------------------------
-    1     1         Ready to deploy  BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                           -     
-
-    Boston-r10900-1# 
-
-
-To change the tenant configuration, you must first enter config mode and then change the tenant running state to the **provisioned**. The change won’t take effect until the **commit** command is issued:
-
-.. code-block:: bash
-
-    Boston-r10900-1# config
-    Entering configuration mode terminal
-    Boston-r10900-1(config)# tenants tenant tenant1 config running-state provisioned 
-    Boston-r10900-1(config-tenant-tenant1)# commit
-    Commit complete.
-
-You can monitor the tenant transition to provisioned state using the show commands above. Once in the provisioned state you can change the vCPU and memory configurations as well as the **running-state** back to deployed. Then issue the **commit** command to execute the changes.
-
-.. code-block:: bash
-
-    Boston-r10900-1# config
-    Entering configuration mode terminal
-    Boston-r10900-1(config)# tenants tenant tenant1 config vcpu-cores-per-node 4 memory 14848 running-state deployed 
-    Boston-r10900-1(config-tenant-tenant1)# commit
-    Commit complete.
-
-
-
-Expanding a BIG-IP Next Tenant via API
---------------------------------------
-
-First get the current tenant status via the API and note the current CPU allocation. The tenant in the example below is currently configured and has 2 vCPUs and 7680 of memory:
-
-.. code-block:: bash
-
-  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
-
-The API output:
-
-.. code-block:: json
-
-    {
-        "f5-tenants:tenants": {
-            "tenant": [
-                {
-                    "name": "tenant1",
-                    "config": {
-                        "name": "tenant1",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                        "nodes": [
-                            1
-                        ],
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 2,
-                        "memory": "7680",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "appliance-mode": {
-                            "enabled": false
-                        }
-                    },
-                    "state": {
-                        "name": "tenant1",
-                        "unit-key-hash": "ppgxFYFyOnpn4GT6fL5Ej8Y+PbR5UUu/pBQb0P2nFOwCx1eQpHtFgvWdwqCKpwofjlRKNossj5y5y9OE0vCWpw==",
-                        "type": "BIG-IP",
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "mac-ndi-set": [
-                            {
-                                "ndi": "default",
-                                "mac": "00:94:a1:69:59:24"
-                            }
-                        ],
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 2,
-                        "memory": "7680",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "mac-data": {
-                            "base-mac": "00:94:a1:69:59:26",
-                            "mac-pool-size": 1
-                        },
-                        "appliance-mode": {
-                            "enabled": false
-                        },
-                        "status": "Running",
-                        "instances": {
-                            "instance": [
-                                {
-                                    "node": 1,
-                                    "instance-id": 1,
-                                    "phase": "Running",
-                                    "image-name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                                    "creation-time": "2021-12-23T17:14:05Z",
-                                    "ready-time": "2021-12-23T17:14:06Z",
-                                    "status": "Started tenant instance",
-                                    "mgmt-mac": "00:94:a1:69:59:27"
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
-    }
-
-
-If you attempt to change the tenant configuration while it is in the deployed state it will fail with an error like the one below.  It will notify you that config changes when in the **deployed** state are not allowed:
-
-.. code-block:: json
-
-  {
-      "errors": {
-          "error": [
-              {
-                  "error-message": "/tenants/tenant{tenant1}/config/vcpu-cores-per-node (value \"4\"): cannot change vcpu-cores-per-node when tenant is in deployed state",
-                  "error-path": "/f5-tenants:tenants/tenant=tenant1/config/vcpu-cores-per-node",
-                  "error-tag": "invalid-value",
-                  "error-type": "application"
-              }
-          ]
-      }
-  }
-
-
-The workflow to change the tenant configuration is to first change the tenant state to **provisioned** then make the configuration change. Use the following API PATCH call to move the tenant to the provisioned state:
-
-.. code-block:: bash
-
-  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
-
-For the JSON body of the API call, change the **running-state** to **provisioned**:
-
-.. code-block:: json
-
-  {
-      "running-state": "provisioned"
-  }
-
-Next reissue the GET command above to obtain the tenant status and note that its running state has changed to **provisioned**:
-
-.. code-block:: json
-
-                    "vcpu-cores-per-node": 2,
-                    "memory": "7680",
-                    "storage": {
-                        "size": 76
-                    },
-                    "running-state": "provisioned",
-                    "mac-data": {
-                        "base-mac": "00:94:a1:69:59:26",
-                        "mac-pool-size": 1
-                    },
-
-
-Send a PATCH API command to change the CPU and memory configuration so the tenant can expand from 2 to 4 vCPUs and from 7680 to 14848 GB of memory. It’s important to change both the CPU and memory allocation when expanding the tenant.
-
-.. code-block:: bash
-
-  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/vcpu-cores-per-node
-
-The payload should contain the following:
-
-.. code-block:: json
-
-  {
-      "vcpu-cores-per-node": 4,
-      "memory": 14848
-  }
-
-Finally change the tenant status back to **deployed** and then check the status again to confirm the change. The tenant should boot up with the expanded memory and CPU.
-
-.. code-block:: bash
-
-  PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}/config/running-state
-
-The payload should contain the following:
-
-.. code-block:: json
-
-  {
-      "running-state": "deployed"
-  }
-
-
-Validate the new status of the tenant with the correct vCPU and memory sizes, and the running-state of deployed:
-
-.. code-block:: bash
-
-  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
-
-The API output:
-
-.. code-block:: json
-
-    {
-        "f5-tenants:tenants": {
-            "tenant": [
-                {
-                    "name": "tenant1",
-                    "config": {
-                        "name": "tenant1",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                        "nodes": [
-                            1
-                        ],
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 4,
-                        "memory": "14848",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "appliance-mode": {
-                            "enabled": false
-                        }
-                    },
-                    "state": {
-                        "name": "tenant1",
-                        "unit-key-hash": "ppgxFYFyOnpn4GT6fL5Ej8Y+PbR5UUu/pBQb0P2nFOwCx1eQpHtFgvWdwqCKpwofjlRKNossj5y5y9OE0vCWpw==",
-                        "type": "BIG-IP",
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "mac-ndi-set": [
-                            {
-                                "ndi": "default",
-                                "mac": "00:94:a1:69:59:24"
-                            }
-                        ],
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 4,
-                        "memory": "14848",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "mac-data": {
-                            "base-mac": "00:94:a1:69:59:26",
-                            "mac-pool-size": 1
-                        },
-                        "appliance-mode": {
-                            "enabled": false
-                        },
-                        "status": "Running",
-                        "primary-slot": 1,
-                        "image-version": "BIG-IP 15.1.5 0.0.8",
-                        "instances": {
-                            "instance": [
-                                {
-                                    "node": 1,
-                                    "instance-id": 1,
-                                    "phase": "Running",
-                                    "image-name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                                    "creation-time": "2021-12-23T17:19:16Z",
-                                    "ready-time": "2021-12-23T17:19:17Z",
-                                    "status": "Started tenant instance",
-                                    "mgmt-mac": "00:94:a1:69:59:27"
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
-    }
-
-
-Deleting a BIG-IP Next Tenant
-==============================
-
-If you need to delete a tenant, it can be removed from the F5OS CLI, webUI, or API.
-
-Deleting a BIG-IP Next Tenant via the CLI
-------------------------------------------
-
-To delete a tenant from the CLI, enter **config** mode and then enter the command **no tenants tenant <tenant-name>**. You will then need to issue the **commit** command for the change to take effect. You can then verify that the tenant has been deleted by using the **show tenants** command.
-
-.. code-block:: bash
-
-
-    Boston-r10900-1# config
-    Entering configuration mode terminal
-    Boston-r10900-1(config)# no tenants tenant tenant1 
-    Boston-r10900-1(config)# commit
-    Commit complete.
-    Boston-r10900-1(config)# 
-    Boston-r10900-1# show tenants 
-    % No entries found.
-    Boston-r10900-1# 
-
-
-Deleting a BIG-IP Next Tenant via the webUI
--------------------------------------------
-
-To delete a tenant from the webUI, go to the **Tenant Management > Tenant Deployments** page. Select the check box next to the tenant you wish to remove, and then click the **Delete** button.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image88.png
-  :align: center
-  :scale: 70%
-
-You will be prompted before confirming the delete:  
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/image89.png
-  :align: center
-  :scale: 70%   
-
-Deleting a BIG-IP Next Tenant via the API
------------------------------------------
-
-To delete a tenant from the API, issue the following **DELETE** API call.
-
-.. code-block:: bash
-
-    DELETE https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants/tenant={{New_Tenant1_Name}}
-
-There is no need to enter anything in the payload of the API call. This should delete the specified tenant.
 
