@@ -1271,7 +1271,7 @@ In addition, there is a separate setting for aom ssh access as described here:
 Configuring SSH and CLI Timeouts & Deny Root SSH Settings via API
 -----------------------------------------------------------------
 
-To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 40 seconds of inactivity.
 
 .. code-block:: bash
 
@@ -1284,7 +1284,8 @@ Below is the payload in the API call above to set the idle-timeout.
     {
         "f5-system-settings:settings": {
             "f5-system-settings:config": {
-                "f5-system-settings:idle-timeout": 300
+                "f5-system-settings:idle-timeout": 40,
+                "f5-system-settings:sshd-idle-timeout: 20"
             }
         }
     }
