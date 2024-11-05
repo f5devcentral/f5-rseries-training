@@ -1311,7 +1311,18 @@ You'll see output similar to the example below.
 Configuring SSH and CLI Timeouts via webUI
 ------------------------------------------
 
-Currently only the HTTPS token lifetime, and CLI timeout is configurable in the webUI. SSH timeouts are not currently configurable via the webUI.
+The HTTPS token lifetime, CLI timeout, and deny-root-ssh settings are all configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The HTTPS Token Lifetime is configurable under the **Authentication & Access -> Authentication Settings** page.
+
+.. image:: images/rseries_security/token-lifetime.png
+  :align: center
+  :scale: 70%
+
+
+The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
+
+.. image:: images/rseries_security/deny-root-ssh.png
+  :align: center
+  :scale: 70%
 
 
 Token Lifetime via CLI
