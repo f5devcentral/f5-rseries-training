@@ -2568,7 +2568,7 @@ Configuring Client Certificate Authentication via API
 Proxy Server Configuration
 ==========================
 
-F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device and F5OS-A 1.8.0 added support for licensing via proxy.
+F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device and F5OS-A 1.8.0 added support for activating a license via proxy.
 
 
 Proxy Server via CLI for Licensing and Qkview Uploads to iHealth
@@ -2582,7 +2582,7 @@ To add a proxy server via the CLI which can be used for iHealth uploads or licen
     (<AES encrypted string>): **************
     r10900(config)# 
 
-In F5OS-A 1.8.0 the system licnesing command has been extended to accept proxy configuration details as seen below.
+In F5OS-A 1.8.0 the system licensing command has been extended to accept proxy configuration details as seen below.
 
 .. code-block:: bash
 
@@ -2597,6 +2597,12 @@ Proxy Server via webUI for Licensing and Qkview Uploads to iHealth
 To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics -> iHealth Configuration** page. 
 
 .. image:: images/rseries_security/imageproxy1.png
+  :align: center
+  :scale: 70%  
+
+To add a proxy server for license activation via the webUI, go to the **System Settings -> Licensing** page. 
+
+.. image:: images/rseries_security/proxy-licensing.png
   :align: center
   :scale: 70%  
 

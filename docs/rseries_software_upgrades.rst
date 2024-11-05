@@ -114,7 +114,7 @@ You can view the current F5OS images and their status in the F5OS CLI by using t
     1.0.0-11432  ready   2021-12-03  false  
 
 
-You can alternatively copy the F5OS images into the management IP address of F5OS from a client machine over SCP. You would use the **root** account and the target directory should be **/var/import/staging/**. Currently, only the root account can copy F5OS images into the system over SCP. An enhancement currently being worked on will allow the admin account to copy F5OS images into the system over SCP.
+You can alternatively copy the F5OS images into the management IP address of F5OS from a client machine over SCP. You would use the **root** account and the target directory should be **/var/import/staging/**. Prior to F5OS-A 1.8.0 only the root account can copy F5OS images into the system over SCP. F5OS-A 1.8.0 has altered this behavior so that the admin account can copy F5OS images into the system over SCP, copying via the root account is no longer supported.
 
 .. code-block:: bash
 
