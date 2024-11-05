@@ -793,6 +793,8 @@ When logging in as the resource-admin user, the **aaa** and **aaa authentication
     server-groups     
     tls               Top-level container for key/certificate settings.
 
+Below is a typical output for an **admin** role.
+
 .. code-block:: bash    
     
     r10900-2(config)# system aaa authentication ?
@@ -812,7 +814,9 @@ The output below shows the limited **aaa** and **aaa authentication** options av
     Possible completions:
     authentication   
     tls              Top-level container for key/certificate settings.
-    
+
+Below is a limited output for an **resource-admin** role.
+
 .. code-block:: bash    
     
     r10900-2(config)# system aaa authentication ?
