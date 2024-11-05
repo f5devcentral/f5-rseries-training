@@ -831,6 +831,330 @@ Resource Admin User Role via API
 
 The API also supports the assignment of the resource-admin role to any user.
 
+To view the current user roles:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication
+
+The output will look similar to the response below. Note, the **resource-admin** role.
+
+.. code-block:: bash
+
+
+    {
+        "openconfig-system:authentication": {
+            "config": {
+                "f5-aaa-confd-restconf-token:basic": {
+                    "enabled": true
+                },
+                "f5-openconfig-aaa-clientcert:cert-auth": {
+                    "enabled": false
+                },
+                "f5-openconfig-aaa-superuser:superuser-bash-access": false
+            },
+            "state": {
+                "f5-aaa-confd-restconf-token:basic": {
+                    "enabled": true
+                },
+                "f5-openconfig-aaa-clientcert:cert-auth": {
+                    "enabled": false
+                },
+                "f5-openconfig-aaa-superuser:superuser-bash-access": false
+            },
+            "f5-aaa-confd-restconf-token:state": {
+                "basic": {
+                    "enabled": true
+                }
+            },
+            "f5-openconfig-aaa-clientcert:clientcert": {
+                "config": {
+                    "client-cert-name-field": "subjectname-cn",
+                    "OID": "UPN"
+                },
+                "state": {
+                    "client-cert-name-field": "subjectname-cn",
+                    "OID": "UPN"
+                }
+            },
+            "f5-openconfig-aaa-ldap:ldap": {
+                "bind_timelimit": 10,
+                "timelimit": 0,
+                "idle_timelimit": 0,
+                "ldap_version": 3,
+                "ssl": "off",
+                "active_directory": false,
+                "unix_attributes": true,
+                "tls_reqcert": "demand",
+                "chase-referrals": true
+            },
+            "f5-openconfig-aaa-ocsp:ocsp": {
+                "config": {
+                    "override-responder": "off",
+                    "response-max-age": -1,
+                    "response-time-skew": 300,
+                    "nonce-request": "on",
+                    "enabled": false
+                },
+                "state": {
+                    "override-responder": "off",
+                    "response-max-age": -1,
+                    "response-time-skew": 300,
+                    "nonce-request": "on",
+                    "enabled": false
+                }
+            },
+            "f5-openconfig-aaa-radius:radius": {
+                "require_message_authenticator": false
+            },
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "admin",
+                        "config": {
+                            "username": "admin",
+                            "last-change": "2021-09-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "admin",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "authorized-keys": "-",
+                            "username": "admin",
+                            "last-change": "2021-09-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "admin",
+                            "expiry-status": "enabled"
+                        }
+                    },
+                    {
+                        "username": "operator",
+                        "config": {
+                            "username": "operator",
+                            "last-change": "2024-04-09",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "operator",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "authorized-keys": "-",
+                            "username": "operator",
+                            "last-change": "2024-04-09",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "operator",
+                            "expiry-status": "enabled"
+                        }
+                    },
+                    {
+                        "username": "root",
+                        "config": {
+                            "username": "root",
+                            "last-change": "2021-11-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "root",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "username": "root",
+                            "last-change": "2021-11-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "root",
+                            "expiry-status": "enabled"
+                        }
+                    }
+                ]
+            },
+            "f5-system-aaa:roles": {
+                "role": [
+                    {
+                        "rolename": "admin",
+                        "config": {
+                            "rolename": "admin",
+                            "gid": 9000,
+                            "description": "Unrestricted read/write access."
+                        },
+                        "state": {
+                            "rolename": "admin",
+                            "gid": 9000,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Unrestricted read/write access."
+                        }
+                    },
+                    {
+                        "rolename": "operator",
+                        "config": {
+                            "rolename": "operator",
+                            "gid": 9001,
+                            "description": "Read-only access to system level data."
+                        },
+                        "state": {
+                            "rolename": "operator",
+                            "gid": 9001,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Read-only access to system level data."
+                        }
+                    },
+                    {
+                        "rolename": "resource-admin",
+                        "config": {
+                            "rolename": "resource-admin",
+                            "gid": 9003,
+                            "description": "Restricted read/write access. No access to modify authentication configuration."
+                        },
+                        "state": {
+                            "rolename": "resource-admin",
+                            "gid": 9003,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Restricted read/write access. No access to modify authentication configuration."
+                        }
+                    },
+                    {
+                        "rolename": "superuser",
+                        "config": {
+                            "rolename": "superuser",
+                            "gid": 9004,
+                            "description": "Sudo privileges and Bash access to the system (if enabled)."
+                        },
+                        "state": {
+                            "rolename": "superuser",
+                            "gid": 9004,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Sudo privileges and Bash access to the system (if enabled)."
+                        }
+                    },
+                    {
+                        "rolename": "user",
+                        "config": {
+                            "rolename": "user",
+                            "gid": 9002,
+                            "description": "Read-only access to non-sensitive system level data."
+                        },
+                        "state": {
+                            "rolename": "user",
+                            "gid": 9002,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Read-only access to non-sensitive system level data."
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+To see the current user accounts on the system.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-system-aaa:users
+
+The response will detail all the configured user accounts on the system.
+
+.. code-block:: bash
+
+
+    {
+        "f5-system-aaa:users": {
+            "user": [
+                {
+                    "username": "admin",
+                    "config": {
+                        "username": "admin",
+                        "last-change": "2021-09-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "admin",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "authorized-keys": "-",
+                        "username": "admin",
+                        "last-change": "2021-09-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "admin",
+                        "expiry-status": "enabled"
+                    }
+                },
+                {
+                    "username": "operator",
+                    "config": {
+                        "username": "operator",
+                        "last-change": "2024-04-09",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "operator",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "authorized-keys": "-",
+                        "username": "operator",
+                        "last-change": "2024-04-09",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "operator",
+                        "expiry-status": "enabled"
+                    }
+                },
+                {
+                    "username": "root",
+                    "config": {
+                        "username": "root",
+                        "last-change": "2021-11-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "root",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "username": "root",
+                        "last-change": "2021-11-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "root",
+                        "expiry-status": "enabled"
+                    }
+                }
+            ]
+        }
+    }
+
+
+To create a new user and assign it to the resoource-admin role use the following API call.
+
+.. code-block:: bash
+    
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+
+.. code-block:: bash
+
+    {
+    "openconfig-system:aaa": {
+        "authentication": {
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "resource-admin-user",
+                        "config": {
+                            "role": "resource-admin"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+}
 
 
 
@@ -841,7 +1165,29 @@ Idle timeouts were configurable in previous releases, but the configuration only
 
 In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed. If this is a concern, then appliance mode could be enabled preventing root/bash access to the system.
+There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the bevahior of the setting in conjunction with the appliance mode setting. a
+
++-----------------------------------------------------------+
+|                Appliance-mode = Disabled                  |
++===========================================================+
+| deny-root-ssh  | root console access  | root ssh access   |
++----------------+----------------------+-------------------+
+| enabled        | Yes                  | No                |
++----------------+----------------------+-------------------+
+| disabled       | Yes                  | Yes               |
++----------------+----------------------+-------------------+
+
+
++-----------------------------------------------------------+
+|                Appliance-mode = Enabled                   |
++===========================================================+
+| deny-root-ssh  | root console access  | root ssh access   |
++----------------+----------------------+-------------------+
+| enabled        | No                   | No                |
++----------------+----------------------+-------------------+
+| disabled       | No                   | No               |
++----------------+----------------------+-------------------+
+
 
 For the webUI, a token-based timeout is now configurable under the **system aaa** settings. The default RESTCONF token lifetime is 15 minutes and can be configured for a maximum of 1440 minutes. RESTCONF token will be automatically renewed when the token’s lifetime is less than one-third of its original token lifetime. For example, if we set the token lifetime to two minutes, it will be renewed and a new token will be generated, when the token’s lifetime is less than one-third of its original lifetime, that is, anytime between 80 to 120 seconds. However, if a new RESTCONF request is not received within the buffer time (80 to 120 seconds), the token will expire and you will be logged out of the session. The RESTCONF token will be renewed up to five times, after that the token will not be renewed and you will need to log back in to the system.
 
