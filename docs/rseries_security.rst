@@ -820,13 +820,14 @@ Below is an example of setting up a new user with the built-in **user** role.
 
 .. code-block:: bash
 
-    r10900-2(config)# system aaa authentication users user res-admin-user config username guest-user role user             
-    r10900-2(config-user-res-admin-user)# config set-password password 
-    Value for 'password' (<string>): **************
-    Error: application error
-    r10900-2(config-user-res-admin-user)# commit
+    r10900-1-gsa(config)# system aaa authentication users user guest-user2 config username guest-user2 role user 
+    r10900-1-gsa(config-user-guest-user2)# commit
     Commit complete.
-    r10900-2(config-user-res-admin-user)# 
+    r10900-1-gsa(config-user-guest-user2)# config set-password
+    Value for 'password' (<string>): **************
+    response Password successfully updated.
+    r10900-1-gsa(config-user-guest-user2)# 
+
 
 When logging in as the user with the **user** role assigned, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
 
