@@ -600,6 +600,7 @@ When creating a BIG-IP tenant via the CLI you have the option of enabling or dis
     Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
     Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
     Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
+    Boston-r10900-1(config-tenant-tenant2)# config appliance-mode enabled 
     Boston-r10900-1(config-tenant-tenant2)# config memory 14848
   
 
@@ -615,7 +616,7 @@ You may alternatively put all the parameters on one line instead of using the in
 
 .. code-block:: bash
 
-    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
+    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed appliance-mode enabled
     Boston-r10900-1(config-tenant-tenant2)# commit
     Commit complete.
     Boston-r10900-1(config-tenant-tenant2)#
@@ -666,6 +667,7 @@ Below is the body of the API call above.
                     "memory": 7680,
                     "cryptos": "enabled",
                     "running-state": "configured"
+                    "appliance-mode": "enabled"
                 }
             }
         ]
@@ -1130,12 +1132,14 @@ The response will detail all the configured user accounts on the system.
     }
 
 
-To create a new user and assign it to the resoource-admin role use the following API call.
+To create a new user and assign it to the resource-admin role, use the following API call.
 
 .. code-block:: bash
     
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
 
+
+In the body of the API call add the username and role as seen below.
 
 .. code-block:: bash
 
@@ -1185,7 +1189,7 @@ There is one case that is not covered by either of the above idle-timeout settin
 +----------------+----------------------+-------------------+
 | enabled        | No                   | No                |
 +----------------+----------------------+-------------------+
-| disabled       | No                   | No               |
+| disabled       | No                   | No                |
 +----------------+----------------------+-------------------+
 
 
