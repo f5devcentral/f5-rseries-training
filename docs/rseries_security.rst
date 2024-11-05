@@ -760,9 +760,9 @@ The output of the above API call shows the state and status of the tenant.
 Resource Admin & Guest User Role
 ========================
 
-The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to **role resource-admin**, their access will be restricted as noted above.
+The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to role **resource-admin**, their access will be restricted as noted above.
 
-F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however, users can change account passwords.
+F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however, users can change account passwords.
 
 
 Resource Admin & Guest User Role via CLI
@@ -793,7 +793,7 @@ When logging in as the resource-admin user, the **aaa** and **aaa authentication
     server-groups     
     tls               Top-level container for key/certificate settings.
 
-Below is a typical output for an **admin** role.
+Below is a typical output of **system aaa authentication** for an **admin** role.
 
 .. code-block:: bash    
     
@@ -815,7 +815,7 @@ The output below shows the limited **aaa** and **aaa authentication** options av
     authentication   
     tls              Top-level container for key/certificate settings.
 
-Below is a limited output for an **resource-admin** role.
+Below is a limited output of **system aaa authentication** for the **resource-admin** role.
 
 .. code-block:: bash    
     
@@ -1187,7 +1187,7 @@ The response will detail all the configured user accounts on the system.
     }
 
 
-To create a new user and assign it to the resource-admin role, use the following API call.
+To create a new user and assign it to the **resource-admin** role, use the following API call.
 
 .. code-block:: bash
     
@@ -1213,7 +1213,35 @@ In the body of the API call add the username and role as seen below.
             }
         }
     }
-}
+
+
+To create a new user and assign it to the **user** role, use the following API call.
+
+.. code-block:: bash
+    
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+
+In the body of the API call add the username and role as seen below.
+
+.. code-block:: bash
+
+    {
+    "openconfig-system:aaa": {
+        "authentication": {
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "guest-user",
+                        "config": {
+                            "role": "user"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
 
 
 
@@ -1340,7 +1368,7 @@ Below is the payload in the API call above to set the idle-timeout.
         "f5-system-settings:settings": {
             "f5-system-settings:config": {
                 "f5-system-settings:idle-timeout": 40,
-                "f5-system-settings:sshd-idle-timeout: 20"
+                "f5-system-settings:sshd-idle-timeout": 20"
             }
         }
     }
@@ -2719,8 +2747,9 @@ F5OS can log all configuration changes and access to the F5OS layer in audit log
 
 In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entries to be redirected to a remote syslog location, as well as changing the log format to conform to standard F5OS syslog format of all audit related events. Details on the two different implementations are below.
 
-Viewing Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
---------------------------------------------------------
+
+Configuration of Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
+-----------------------------------------------------------------
 
 Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default, these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
 
@@ -2749,6 +2778,27 @@ Then, you can control the level of events that will be logged to the local audit
     !
 
 The formatting of audit logs provides the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and whether access was granted or not.
+
+Configuration of Audit Logs via F5OS webUI (F5OS-A 1.4.0 and Later)
+-----------------------------------------------------------------
+
+Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default, these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
+
+First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
+
+
+.. image:: images/rseries_security/audit-logging.png
+  :align: center
+  :scale: 70%  
+
+Configuration of Audit Logs via F5OS API (F5OS-A 1.4.0 and Later)
+-----------------------------------------------------------------
+
+Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default, these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
+
+First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
+
+
 
 
 Viewing Audit Logs via F5OS CLI
