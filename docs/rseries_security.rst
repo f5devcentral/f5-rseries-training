@@ -2541,8 +2541,17 @@ You can configure client certificate based authentication to the F5OS management
 Configuring Client Certificate Authentication via CLI
 -----------------------------------------------------
 
+Before you can log in to the webUI using client certificate authentication, you must have configured client certificate authentication from the CLI and imported the certificate to your browser. 
+
+https://techdocs.f5.com/en-us/f5os-a-1-8-0/f5-rseries-systems-administration-configuration/title-auth-access.html#ssh-public-key-auth-overview
+
+
 Configuring Client Certificate Authentication via webUI
 -------------------------------------------------------
+
+Although you can enable client certificate authentication via the webUI, you must upload or create your certifcate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full conifugraton is configured.
+
+See the section above about configuration of the certificate before moving on. If you have loaded a certificate, then you can enable client certificate authenticatin via the webUI as seen below.
 
 .. image:: images/rseries_security/client-cert1.png
   :align: center
@@ -2556,16 +2565,16 @@ Configuring Client Certificate Authentication via webUI
 Configuring Client Certificate Authentication via API
 -----------------------------------------------------
 
-iHealth Proxy Server
-====================
+Proxy Server Configuration
+==========================
 
-F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
+F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device and F5OS-A 1.8.0 added support for licensing via proxy.
 
 
-Adding a Proxy Server via CLI
-------------------------------
+Proxy Server via CLI for Licensing and Qkview Uploads to iHealth
+----------------------------------------------------------------
 
-To add a proxy server for iHealth uploads via the CLI, use the **system diagnostics proxy** command.
+To add a proxy server via the CLI which can be used for iHealth uploads or license activation, use the **system diagnostics proxy** command.
 
 .. code-block:: bash
 
@@ -2573,8 +2582,17 @@ To add a proxy server for iHealth uploads via the CLI, use the **system diagnost
     (<AES encrypted string>): **************
     r10900(config)# 
 
-Adding a Proxy Server via webUI
--------------------------------
+In F5OS-A 1.8.0 the system licnesing command has been extended to accept proxy configuration details as seen below.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)# system licensing install registration-key F9832-03399-18781-56079-7591756 proxy-server https://myproxy.com:3128 proxy-username user1 proxy-password 
+    Value for 'proxy-password' (<AES encrypted string>): **************
+    result License installed successfully.
+    r10900-1-gsa(config)#
+
+Proxy Server via webUI for Licensing and Qkview Uploads to iHealth
+----------------------------------------------------------------
 
 To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics -> iHealth Configuration** page. 
 
@@ -2582,8 +2600,8 @@ To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics
   :align: center
   :scale: 70%  
 
-Adding a Proxy Server via API
-------------------------------
+Proxy Server via API for Licensing and Qkview Uploads to iHealth
+----------------------------------------------------------------
 
 To add a proxy server for iHealth uploads via the API, use the following API call.
 
