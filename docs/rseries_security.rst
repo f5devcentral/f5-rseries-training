@@ -1767,6 +1767,7 @@ Setting Password Policies
 
 You may configure the local password policy to ensure secure passwords are utilized, re-use is minimized, and to limit the amount of failures/retries. Below are some of the settings that can be set.
 
+
 - **Minimum Password Length** - For Minimum Length, specify the minimum number of characters (6 to 255) required for a valid password.
 - **Password Required Characters** - For Required Characters, specify the minimum number of Numeric, Uppercase, Lowercase, and Special characters that are required in a valid password.
 - **New/Old Password Differential** - For New/Old Password Differential, specify the number of character changes in the new password that differentiate it from the old password. The default value is 8.
@@ -1784,11 +1785,14 @@ Local Password Policies can be set in the CLI using the **system aaa password-po
 
 .. code-block:: bash
 
-    r10900-2(config)# system aaa password-policy config ?
+    r5900-1-gsa(config)# system aaa password-policy config ?
     Possible completions:
-    apply-to-root          Apply password restrictions to root accounts.
+    apply-to-root          Apply password policy to administrators when setting passwords for other user accounts.
     max-age                Number of days after which the user will have to change the password.
+    max-class-repeat       Reject passwords with this many repeating upper/lowercase letters, digits or special characters such as '!@#$%' in the password.
+    max-letter-repeat      Reject passwords with this many repeating lower-case letters in the password.
     max-login-failures     Number of unsuccessful login attempts allowed before lockout.
+    max-sequence-repeat    Reject passwords with this many repeating upper/lowercase letters or digits in the password.
     min-length             Minimum length of a new password.
     reject-username        Reject passwords that contain the username.
     required-differences   Required number of differences between the old and new passwords.
@@ -1800,7 +1804,7 @@ Local Password Policies can be set in the CLI using the **system aaa password-po
     root-lockout           Enable lockout of root users.
     root-unlock-time       Time (seconds) before the root account is automatically unlocked.
     unlock-time            Time (seconds) before a locked account is automatically unlocked.
-    r10900-2(config)# 
+    r5900-1-gsa(config)# 
 
 Setting Password Policies via webUI
 ---------------------------------
@@ -1832,9 +1836,12 @@ The JSON output will reflect the current settings.
                 "required-uppercase": 0,
                 "required-lowercase": 0,
                 "required-special": 0,
-                "required-differences": 8,
+                "max-letter-repeat": 3,
+                "max-sequence-repeat": 0,
+                "max-class-repeat": 0,
+                "required-differences": 0,
                 "reject-username": false,
-                "apply-to-root": true,
+                "apply-to-root": false,
                 "retries": 3,
                 "max-login-failures": 10,
                 "unlock-time": 60,
@@ -1975,7 +1982,7 @@ To view the current mappings use the **show system aaa authentication roles** CL
 
 
 Login Banner / Message of the Day
-===================
+================================
 
 Some environments require warning or acceptance messages to be displayed to clients connecting to the F5OS layer at initial connection time and/or upon successful login. The F5OS layer supports configurable Message of the Day (MoTD) and Login Banners that are displayed to clients connecting to the F5OS layer via both CLI and the webUI. The MoTD and Login Banner can be configured via CLI, webUI, or API. The Login Banner is displayed at initial connect time and is commonly used to notify users they are connecting to a specific resource, and that they should not connect if they are not authorized. The MoTD is displayed after successful login and may also display some information about the resource the user is connecting to.
 
@@ -2288,31 +2295,37 @@ In the body of the API call you can enable NTP authentication, add keys, and ass
 Configurable Management Ciphers
 ===============================
 
+You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS.
+
+Configuring Management Ciphers via CLI
+--------------------------------------
+
 F5OS-A 1.4.0 added the ability to display and configure the ciphers used for the management interface of F5OS. The **show system security** CLI command will display the **ssl-ciphersuite** for the webUI/httpd management interface. It will also display the **ciphers** and **kexalgorithms** for the sshd service. Below is an example of the default settings. 
 
 .. code-block:: bash
 
-    r10900-1# show system security 
+    r5900-1-gsa# show system security 
+    system security firewall state logging disabled
+    system security state deny-root-ssh disabled
     system security services service httpd
     state ssl-ciphersuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
     system security services service sshd
     state ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
     state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
-    r10900-1#
+    r5900-1-gsa# 
 
 You can change the ciphers offered by F5OS to clients connecting to the httpd service by using the **system security services service httpd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
 
 .. code-block:: bash
 
-    r10900-1(config)# system security services service httpd config ssl-ciphersuite ?
-    Description: User specified ssl-ciphersuite.
+    r5900-1-gsa(config)# system security services service httpd config ssl-ciphersuite ?
     Possible completions:
-    <string>[ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES2
-    56-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-
-    RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDH
-    E-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-
-    RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA]
-    r10900-1(config)# 
+    ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-D
+    SS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-E
+    CDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDS
+    A-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-
+    AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
+    r5900-1-gsa(config)# 
     
 You can change the ciphers and kexalgorithms offered by F5OS to clients connecting to the sshd service by using the **system security services service sshd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
 
@@ -2363,11 +2376,185 @@ You may configure which macs F5OS will use for the sshd service by using the **s
     ssh.com hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com hmac-md5-etm@openssh.com hmac-md5-96-etm@openssh.com hmac-ripemd160-etm@openssh.com umac-64-etm@openssh.com umac-128-etm@openssh.com ]
     appliance-1(config)#
 
+Configuring Management Ciphers via webUI
+--------------------------------------
+
+You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS. Go to the **System Settings -> System Security** page to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+
+.. image:: images/rseries_security/security-ciphers.png
+  :align: center
+  :scale: 70%  
+
+
+
+
+
+Configuring Management Ciphers via API
+--------------------------------------
+
+You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS. Use the following API call to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-security-ciphers:security
+
+In the body of the API call enter your httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+
+.. code-block:: bash
+
+    {
+        "f5-security-ciphers:security": {
+            "services": {
+                "service": [
+                    {
+                        "name": "httpd",
+                        "config": {
+                            "name": "httpd",
+                            "ssl-ciphersuite": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA"
+                        }
+                    },
+                    {
+                        "name": "sshd",
+                        "config": {
+                            "name": "sshd",
+                            "ciphers": [
+                                "aes128-cbc",
+                                "aes128-ctr",
+                                "aes128-gcm@openssh.com",
+                                "aes256-cbc",
+                                "aes256-ctr",
+                                "aes256-gcm@openssh.com"
+                            ],
+                            "kexalgorithms": [
+                                "diffie-hellman-group14-sha1",
+                                "diffie-hellman-group14-sha256",
+                                "diffie-hellman-group16-sha512",
+                                "ecdh-sha2-nistp256",
+                                "ecdh-sha2-nistp384",
+                                "ecdh-sha2-nistp521"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+You can then view the current configuration by issuing the folowing API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-security-ciphers:security
+
+The output will look similar to the response below.
+
+.. code-block:: bash
+
+    {
+        "f5-security-ciphers:security": {
+            "services": {
+                "service": [
+                    {
+                        "name": "httpd",
+                        "config": {
+                            "name": "httpd",
+                            "ssl-ciphersuite": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA"
+                        },
+                        "state": {
+                            "name": "httpd",
+                            "ssl-ciphersuite": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA"
+                        }
+                    },
+                    {
+                        "name": "sshd",
+                        "config": {
+                            "name": "sshd",
+                            "ciphers": [
+                                "aes128-cbc",
+                                "aes128-ctr",
+                                "aes128-gcm@openssh.com",
+                                "aes256-cbc",
+                                "aes256-ctr",
+                                "aes256-gcm@openssh.com"
+                            ],
+                            "kexalgorithms": [
+                                "diffie-hellman-group14-sha1",
+                                "diffie-hellman-group14-sha256",
+                                "diffie-hellman-group16-sha512",
+                                "ecdh-sha2-nistp256",
+                                "ecdh-sha2-nistp384",
+                                "ecdh-sha2-nistp521"
+                            ]
+                        },
+                        "state": {
+                            "name": "sshd",
+                            "ciphers": [
+                                "aes128-cbc",
+                                "aes128-ctr",
+                                "aes128-gcm@openssh.com",
+                                "aes256-cbc",
+                                "aes256-ctr",
+                                "aes256-gcm@openssh.com"
+                            ],
+                            "kexalgorithms": [
+                                "diffie-hellman-group14-sha1",
+                                "diffie-hellman-group14-sha256",
+                                "diffie-hellman-group16-sha512",
+                                "ecdh-sha2-nistp256",
+                                "ecdh-sha2-nistp384",
+                                "ecdh-sha2-nistp521"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "firewall": {
+                "config": {
+                    "logging": {
+                        "enabled": false
+                    }
+                },
+                "state": {
+                    "logging": {
+                        "enabled": false
+                    }
+                }
+            },
+            "config": {
+                "deny-root-ssh": {
+                    "enabled": false
+                }
+            },
+            "state": {
+                "deny-root-ssh": {
+                    "enabled": false
+                }
+            }
+        }
+    }
 
 Client Certificate Based Auth
 =============================
 
-Coming in F5OS-A 1.5.0.
+You can configure client certificate based authentication to the F5OS management interfaces.
+
+Configuring Client Certificate Authentication via CLI
+-----------------------------------------------------
+
+Configuring Client Certificate Authentication via webUI
+-------------------------------------------------------
+
+.. image:: images/rseries_security/client-cert1.png
+  :align: center
+  :scale: 70% 
+
+
+.. image:: images/rseries_security/client-cert2.png
+  :align: center
+  :scale: 70%     
+
+Configuring Client Certificate Authentication via API
+-----------------------------------------------------
 
 iHealth Proxy Server
 ====================
