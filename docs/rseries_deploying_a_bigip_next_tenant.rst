@@ -72,7 +72,7 @@ For BIG-IP Next on rSeries, there is a single tenant image type that can be obta
   :align: center
   :scale: 70% 
 
-You can either download the file to a local machine, and then upload to your rSeries device, or if your rSeries has Internet access, you can **Copy Download Link** and use that url directly on your rSeries appliance.
+You can either download the file to a local machine, and then upload to your rSeries device, or if your rSeries appliance has Internet access, you can **Copy Download Link** and use that url directly on your rSeries appliance.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/image2a.png
   :align: center
@@ -83,7 +83,13 @@ You can either download the file to a local machine, and then upload to your rSe
 BIG-IP Next Tenant Deployments
 ==============================
 
-BIG-IP Next Tenants can easily be deployed via the F5OS CLI, webUI, or API or from the BIG-IP Next Central Manager Console.
+BIG-IP Next Tenants can easily be deployed via the F5OS CLI, webUI, or API or from the BIG-IP Next Central Manager Console. If you choose to create the BIG-IP Next tenant locally on your rSeries appliance, you will be able to import it into Central Manager, however it cannot have any l4-l7 application configuration defined. When Central Manager imports a BIG-IP Next tenant that has already been created, it will wipe out any application layer configuration as part of the import process.
+
+You will also need to change the default password on the Next tenant via an API call before importing it into Central Manager. This section will step through the steps to create a tenant locally via the rSeries/F5OS CLI, and then changing the password via API, and finally importing the BIG-IP Next tenant/instance into Central Manager.
+
+Although this is a supported workflow, it is much easier to create an rSeries provider on Central Manager, and then manage the Next instance lifecycle from Central Manager, vs creating the tenant locally on rSeries and then importing into Central Manager. 
+
+Both local and Central Manager deployment options will be covered in this section starting with the preferred method of tenant/instance creation via the Central Manager rSeries Provider.
 
 
 BIG-IP Next Tenant Deployment via Central Manager
@@ -96,9 +102,9 @@ If you need instructions on installing Central Manager, or general BIG-IP Next d
 `BIG-IP Next Documentation <https://clouddocs.f5.com/bigip-next/latest/>`_
 
 Setting up an rSeries Provider in Central Manager
--------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-After logging into Central Manager you can setup an rSeries Provider by going to the **Manage Instances** button on the main home screen. 
+After logging into Central Manager, you can setup an rSeries Provider by going to the **Manage Instances** button on the main home screen. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/central-manager-home.png
   :align: center
@@ -147,7 +153,7 @@ The rSeries device will then be added as a Provider into Central Manager, which 
   :scale: 70% 
 
 Creating a BIG-IP Next Instance on rSeries r5k, r10k, r12k Models via the rSeries Provider in Central Manager
---------------------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 BIG-IP Next Central Manager refers to BIG-IP Next as **Instances**. This is because the BIG-IP Next Instance could be a **Tenant** running on an F5OS-based platform (rSeries, VELOS), or it could be a VE running on a hypervisor such as VMware. The term Instance is a generic term which will apply to both types of environments. To create a BIG-IP Next Instance go to **Instances -> My Instances**, and then click the **Start Adding Instances** button.
 
@@ -255,7 +261,7 @@ You can then monitor the status of the instance being created. It will take some
   :scale: 70% 
 
 Creating a BIG-IP Next Instance on rSeries r2k, r4k Models via the rSeries Provider in Central Manager
----------------------------------------------------------------------------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 With the current versions of F5OS-A 1.8.0 and BIG-IP Next 20.3 support for Next on the r2k and r4k platforms is considered Early Access (EA). It is not intended for production environments yet. There are some limitations / caveats in these two releases which will be addressed in upcoming releases. This section will cover the current limitations, and how to properly configure Next on the r2k / r4k platforms, including HA mode. 
 
@@ -473,11 +479,17 @@ Finally, review the configuration and click the **Deploy HA** button. In the **M
   :align: center
   :scale: 70%
 
-BIG-IP Next Tenant Deployment via CLI
-======================================
+BIG-IP Next Tenant Deployment via F5OS CLI
+==========================================
 
-Uploading a BIG-IP Next Tenant Image via CLI
---------------------------------------------
+If you choose to create the BIG-IP Next tenant locally on your rSeries appliance, you will be able to import it into Central Manager, however it cannot have any l4-l7 application configuration defined. When Central Manager imports a BIG-IP Next tenant that has already been created, it will wipe out any application layer configuration as part of the import process.
+
+You will also need to change the default password on the Next tenant via an API call before importing it into Central Manager. This section will step through the steps to create a tenant locally via the rSeries/F5OS CLI, and then changing the password via API, and finally importing the BIG-IP Next tenant/instance into Central Manager.
+
+Although this is a supported workflow, it is much easier to create an rSeries provider on Central Manager, and then manage the Next instance lifecycle from Central Manager, vs creating the tenant locally on rSeries and then importing into Central Manager.
+
+Uploading a BIG-IP Next Tenant Image via F5OS CLI
+-------------------------------------------------
 
 BIG-IP Next tenant software images are loaded directly into the F5OS platform layer in the same manner as BIG-IP tenant images. For the initial release of BIG-IP Next on rSeries, supported tenant versions are v20.1 and later. 
 
@@ -539,8 +551,8 @@ You can view the current tenant images and their status in the F5OS CLI by using
     r10900-2# 
 
 
-Creating a BIG-IP Next Tenant via CLI
--------------------------------------
+Creating a BIG-IP Next Tenant via F5OS CLI
+------------------------------------------
 
 BIG-IP Next tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name> config ** where **<tenant-name>** is the name of the tenant you would like to create. Then use tab completion and question marks to see the various options that can be configured for the tenant as seen below:
 
@@ -577,8 +589,8 @@ Below is an example of a fully configured tenant specifying all the required opt
   r10900-1-gsa(config-tenant-next-tenant)#
 
 
-Validating BIG-IP Next Tenant Status via CLI
---------------------------------------------
+Validating BIG-IP Next Tenant Status via F5OS CLI
+-------------------------------------------------
 
 After the tenant is created you can run the command **show running-config tenants** to see what has been configured:
 
@@ -676,12 +688,17 @@ To see the actual status of the tenants, issue the CLI command **show tenants** 
 
   r10900-1-gsa
 
-BIG-IP Next Tenant Deployment via webUI
-=======================================
+BIG-IP Next Tenant Deployment via F5OS webUI
+============================================
 
+If you choose to create the BIG-IP Next tenant locally on your rSeries appliance, you will be able to import it into Central Manager, however it cannot have any l4-l7 application configuration defined. When Central Manager imports a BIG-IP Next tenant that has already been created, it will wipe out any application layer configuration as part of the import process.
 
-Uploading BIG-IP Next Tenant Images via webUI
----------------------------------------------
+You will also need to change the default password on the Next tenant via an API call before importing it into Central Manager. This section will step through the steps to create a tenant locally via the rSeries/F5OS  webUI, and then changing the password via API, and finally importing the BIG-IP Next tenant/instance into Central Manager.
+
+Although this is a supported workflow, it is much easier to create an rSeries provider on Central Manager, and then manage the Next instance lifecycle from Central Manager, vs creating the tenant locally on rSeries and then importing into Central Manager.
+
+Uploading BIG-IP Next Tenant Images via F5OS webUI
+--------------------------------------------------
 
 Before deploying any BIG-IP Next tenant, you must ensure you have a proper tenant software release loaded into F5OS. Under **Tenant Management** there is a page for uploading tenant software images. There are BIG-IP Next tenant images specifically for F5OS based systems.
 
@@ -718,8 +735,8 @@ If an HTTPS server is not available and uploading from a client machine is not a
     scp BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle admin@10.255.0.148:IMAGES
 
 
-Creating a BIG-IP Next Tenant via webUI
----------------------------------------
+Creating a BIG-IP Next Tenant via F5OS webUI
+--------------------------------------------
 
 You can deploy a BIG-IP Next tenant from the webUI using the **Add** button in the **Tenant Management > Tenant Deployments** screen.
 
@@ -734,8 +751,8 @@ The tenant deployment options are almost identical to deploying a vCMP guest on 
   :scale: 70% 
 
 
-Validating BIG-IP Next Tenant Status via webUI
-----------------------------------------------
+Validating BIG-IP Next Tenant Status via F5OS webUI
+---------------------------------------------------
 
 Once the tenant is deployed you can monitor its status in the **Tenant Management > Tenant Deployments** webUI page. You'll see the **State** show **Deployed** but the **Status** column will be empty until the tenant starts initializing.
 
@@ -755,7 +772,7 @@ You can then click the carat in the right-hand side of the the webUI row to get 
   :align: center
   :scale: 70%   
 
-To watch the status of the BIG-IP Next tenant's containers during startup go to **Tenant Management -> Tenant Details**. Click the **Hide** buttons showing tenant CPU, Memory, and Disk Usage. 
+To watch the status of the BIG-IP Next tenant's containers during startup, go to **Tenant Management -> Tenant Details**. Click the **Hide** buttons showing tenant CPU, Memory, and Disk Usage. 
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11aaa.png
   :align: center
@@ -767,13 +784,13 @@ Select the BIG-IP Next **Tenant Name** and set **Auto Refresh** for 10 seconds. 
   :align: center
   :scale: 70%   
 
-Eventually, you will see various containers starting up and showing **Pending** status.
+Eventually, you will see various pods starting up and showing **Pending** status.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11ab.png
   :align: center
   :scale: 70%   
 
-You can continue monitor until they all go into the **Running** phase. This means that the tenant is now operational. If there were issues with any of the containers starting it would show up in this webUI page.
+You can continue monitor the pods until they all go into the **Running** phase. This means that the tenant is now operational. If there were issues with any of the containers starting, it would show up in this webUI page.
 
 .. image:: images/rseries_deploying_a_bigip_next_tenant/tenant11ac.png
   :align: center
@@ -805,158 +822,17 @@ Click on the **CPU** tab and examine the dashboard. Here you can see how vCPus a
   :scale: 70% 
 
 
-Importing the Tenant into Central Manager
------------------------------------------
+BIG-IP Next Tenant Deployment via F5OS API
+==========================================
 
-In this section of the lab you will import the BIG-IP Next tenant from your VELOS partition into Central Manager.
+If you choose to create the BIG-IP Next tenant locally on your rSeries appliance, you will be able to import it into Central Manager, however it cannot have any l4-l7 application configuration defined. When Central Manager imports a BIG-IP Next tenant that has already been created, it will wipe out any application layer configuration as part of the import process.
 
-**Nominate one person in your group to change the local password and then add the BIG-IP Next tenant into Central Manager.**
+You will also need to change the default password on the Next tenant via an API call before importing it into Central Manager. This section will step through the steps to create a tenant locally via the rSeries/F5OS API, and then changing the password via API, and finally importing the BIG-IP Next tenant/instance into Central Manager.
 
-Before bringing your locally created Next instance into Central Manager, you must first change its default password. (This is not an ideal flow, and an enhancement has been filed to have Central Manager perform this step as part of the import process). For now, you'll need to send an API call direct to the Next instance to change the default password. 
+Although this is a supported workflow, it is much easier to create an rSeries provider on Central Manager, and then manage the Next instance lifecycle from Central Manager, vs creating the tenant locally on rSeries and then importing into Central Manager.
 
-If you have Postman running on your machine you can use that, or you can use curl from your client machine.
-
-First login locally to the Next instance using basic auth with the credentials admin/admin. Send a GET call to /api/v1/login URI.
-
-.. code-block:: bash
-
-  GET https://{{next-instance-ip}}:5443/api/v1/login
-
-You should see a response similar to the one below indicating that a "self password update" is required.
-
-.. code-block:: bash
-
-  {
-      "_errors": [
-          {
-              "id": "b9dc8fe1-fd77-4324-9ea7-7924d4786cb1",
-              "code": "13158-00319",
-              "title": "",
-              "detail": "Password change: password must be changed; use 'self password update' endpoint and change it.",
-              "status": "403"
-          }
-      ]
-  }
-
-Below is an example of running a curl command:
-
-.. code-block:: bash
-
-  prompt%  curl -k -u admin:admin https://172.22.50.19:5443/api/v1/login
-  {"_errors":[{"id":"ec3e2210-2368-48a6-aae7-8279c753a2e8","code":"13158-00319","title":"","detail":"Password change: password must be changed; use 'self password update' endpoint and change it.","status":"403"}]}
-  prompt% 
-
-
-Next, send the following PUT call with basic-auth using the admin/admin account directly to your Next instance to the URI /api/v1/me.
-
-.. code-block:: bash
-
-  PUT https://{{next-instance-ip}}:5443/api/v1/me
-
-In the body of the API call enter the following, which will change the current password of admin to Welcome123!Welcome123!.
-
-
-.. code-block:: bash
-
-  {
-  "currentPassword": "admin",
-  "newPassword": "Welcome123!Welcome123!"
-  }
-
-Below is an example of running a curl command to set the new password:
-
-.. code-block:: bash
-
-  prompt% curl -k -u admin:admin -X PUT https://172.22.50.19:5443/api/v1/me -H 'Content-Type: application/json' -d   '{"currentPassword": "admin", "newPassword": "Welcome123!Welcome123!"}'
-  prompt%
-
-
-Your BIG-IP Next instance is now ready to be imported into central Manager. After logging into Central Manager you can setup a VELOS Provider by going to the **Manage Instances** button on the main home screen.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/central-manager-home.png
-  :align: center
-  :scale: 70% 
-
-Alternatively, by using the drop down in the upper left hand corner of the webUI and selecting the **Infrastructure** option.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/infrastructure.png
-  :align: center
-  :scale: 70% 
-
-Click on the **Start Adding Instances** button.  
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/start-adding-instances.png
-  :align: center
-  :scale: 70% 
-
-Enter the management IP Address assigned to your BIG-IP Next tenant, and then click **Connect**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/start-managing.png
-  :align: center
-  :scale: 70% 
-
-Enter the login credentials for your tenant (admin/Welcome123!Welcome123!), then click **Next**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/login.png
-  :align: center
-  :scale: 70% 
-
-You'll now need to create a new admin account/password in order for Central Manager to manage the device. For **Username** enter **admin-cm**. For **Password** enter **Welcome123!Welcome123!** and confirm the password. Then click **Add Instance**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/add-instance.png
-  :align: center
-  :scale: 70%   
-
-You should then see a pop-up asking you to confirm the Fingerprint. Click **Accept**.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/fingerprint.png
-  :align: center
-  :scale: 70%  
-
-The Instance should be imported successfully into Central Manager and show a healthy green status:
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/healthy-instance.png
-  :align: center
-  :scale: 70%  
-
-Click on the instance to review its configuration. You should see stats being populated under the **Instance Data Metrics** section, but the majority of the configuration is blank as the device has not been on-boarded or licensed yet. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/metrics.png
-  :align: center
-  :scale: 70% 
-
-The workflow to on-board the Next instance is currently very cumbersome and not intuitive. We will not go through the manual process here, and instead will focus on creating a Next instance through a provider, which is a more preferred workflow, and on-boarding is more mature for this use case. 
-
-When you are done with this section you will need to delete your Next tenant from Central Manager.  Go to the **Instances** page, then click the checkbox next to your instance, then go to **Actions**, and select **Delete**. You'll then be asked to review what will get deleted and to confirm the deletion. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-instance-from-cm.png
-  :align: center
-  :scale: 70%  
-
-You can then monitor the deletion status. Once the instance is gone it is removed from Central Manager, but it is not removed from the VELOS partition.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/deletion-in-progress.png
-  :align: center
-  :scale: 70%  
-
-Log into your teams VELOS partition and go to the **Tenant Management**  -> **Tenant Deployments** page. Here you can confirm that your BIG-IP Next Tenant is still running. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant-running.png
-  :align: center
-  :scale: 70%  
-
-You'll need to delete this tenant before moving onto the next section of the lab. Click the checkbox beside the Next tenant to select it, and then click the **Delete** button.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-tenant-locally.png
-  :align: center
-  :scale: 70%  
-
-
-BIG-IP Next Tenant Deployment via API
-=====================================
-
-Loading BIG-IP Next Tenant Images from a Remote Server via API
---------------------------------------------------------------
+Loading BIG-IP Next Tenant Images from a Remote Server via F5OS API
+-------------------------------------------------------------------
 
 To copy a BIG-IP Next tenant image into F5OS over the API, use the following API call to the F5OS out-of-band management IP address. The example below copies a tenant image from a remote HTTPS server. You may also edit the API call to copy from remote SFTP or SCP servers by adding the proper **protocol** option.
 
@@ -1047,8 +923,8 @@ Below is output generated from the previous command:
     }
 
 
-Uploading BIG-IP Next Tenant Images from a Client Machine via the API
----------------------------------------------------------------------
+Uploading BIG-IP Next Tenant Images from a Client Machine via the F5OS API
+--------------------------------------------------------------------------
 
 You can upload an F5OS BIG-IP Next tenant image from a client machine over the API. First you must obtain an **upload-id** using the following API call.
 
@@ -1099,15 +975,10 @@ In the **Headers** section ensure you add the **file-upload-id** header, with th
   :scale: 70%
 
 
+Creating a BIG-IP Next Tenant via F5OS API
+------------------------------------------
 
-
-
-
-
-Creating a BIG-IP Next Tenant via API
--------------------------------------
-
-Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. In the example below, the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
+BIG-IP Next tenant creation via the F5OS API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. In the example below, the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
 
 .. code-block:: bash
 
@@ -1145,8 +1016,8 @@ Below is the body of the API call above.
         ]
     }
 
-Validating BIG-IP Next Tenant Status via API
---------------------------------------------
+Validating BIG-IP Next Tenant Status via F5OS API
+-------------------------------------------------
 
 The command below will show the current state and status of the tenant. Remember it has not been changed to the **Deployed** state yet.
 
@@ -1336,5 +1207,171 @@ Below is the output from the above API call:
             ]
         }
     }
+
+
+Importing the BIG-IP Next Tenant into Central Manager
+=====================================================
+
+In this section you will import the BIG-IP Next tenant from your rSeries appliance into Central Manager. Before bringing your locally created Next instance into Central Manager, you must first change its default password. (This is not an ideal flow, and an enhancement has been filed to have Central Manager perform this step as part of the import process). For now, you'll need to send an API call direct to the Next instances management IP address to change the default password. 
+
+If you have Postman running on your machine you can use that, or you can use curl from your client machine.
+
+First login locally to the BIG-IP Next instance using basic auth with the credentials admin/admin. Send a GET call to **/api/v1/login** URI.
+
+.. code-block:: bash
+
+  GET https://{{next-instance-ip}}:5443/api/v1/login
+
+You should see a response similar to the one below indicating that a "self password update" is required.
+
+.. code-block:: bash
+
+  {
+      "_errors": [
+          {
+              "id": "b9dc8fe1-fd77-4324-9ea7-7924d4786cb1",
+              "code": "13158-00319",
+              "title": "",
+              "detail": "Password change: password must be changed; use 'self password update' endpoint and change it.",
+              "status": "403"
+          }
+      ]
+  }
+
+Below is an example of running a curl command:
+
+.. code-block:: bash
+
+  prompt%  curl -k -u admin:admin https://172.22.50.19:5443/api/v1/login
+  {"_errors":[{"id":"ec3e2210-2368-48a6-aae7-8279c753a2e8","code":"13158-00319","title":"","detail":"Password change: password must be changed; use 'self password update' endpoint and change it.","status":"403"}]}
+  prompt% 
+
+
+Next, send the following PUT call with basic-auth using the admin/admin account directly to your Next instance to the URI **/api/v1/me**.
+
+.. code-block:: bash
+
+  PUT https://{{next-instance-ip}}:5443/api/v1/me
+
+In the body of the API call enter the following, which will change the current password of admin to Welcome123!Welcome123!.
+
+
+.. code-block:: bash
+
+  {
+  "currentPassword": "admin",
+  "newPassword": "Welcome123!Welcome123!"
+  }
+
+Below is an example of running a curl command to set the new password:
+
+.. code-block:: bash
+
+  prompt% curl -k -u admin:admin -X PUT https://172.22.50.19:5443/api/v1/me -H 'Content-Type: application/json' -d   '{"currentPassword": "admin", "newPassword": "Welcome123!Welcome123!"}'
+  prompt%
+
+
+Your BIG-IP Next instance is now ready to be imported into central Manager. After logging into Central Manager you can import the BIG-IP Next tenant/instance by going to the **Manage Instances** button on the main home screen.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/central-manager-home.png
+  :align: center
+  :scale: 70% 
+
+Alternatively, by using the drop-down in the upper left hand corner of the webUI and selecting the **Infrastructure** option.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/infrastructure.png
+  :align: center
+  :scale: 70% 
+
+Click on the **Start Adding Instances** button.  
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-adding-instances.png
+  :align: center
+  :scale: 70% 
+
+Enter the management IP Address assigned to your BIG-IP Next tenant, and then click **Connect**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/start-managing.png
+  :align: center
+  :scale: 70% 
+
+Enter the login credentials for your tenant (admin/Welcome123!Welcome123!), then click **Next**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/login.png
+  :align: center
+  :scale: 70% 
+
+You'll now need to create a new admin account/password in order for Central Manager to manage the device. For **Username** enter **admin-cm**. For **Password** enter **Welcome123!Welcome123!** and confirm the password. Then click **Add Instance**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/add-instance.png
+  :align: center
+  :scale: 70%   
+
+You should then see a pop-up asking you to confirm the Fingerprint. Click **Accept**.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/fingerprint.png
+  :align: center
+  :scale: 70%  
+
+The Instance should be imported successfully into Central Manager and show a healthy green status:
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/healthy-instance.png
+  :align: center
+  :scale: 70%  
+
+Click on the instance to review its configuration. You should see stats being populated under the **Instance Data Metrics** section, but the majority of the configuration is blank as the device has not been on-boarded or licensed yet. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/metrics.png
+  :align: center
+  :scale: 70% 
+
+Onboarding and Licensing a Locally (F5OS) Created BIG-IP Next Instance
+======================================================================
+
+The workflow to on-board the Next instance is not as optimal as creating the instance from the Central Manager Provider. Creating a BIG-IP Next instance through a provider as outlined above is the preferred method of creating and onboarding a BIG-IP Next instance. This section will cover onboarding a Next instance after it was created locally on an rSeries appliance and then imported into Central Manager.
+
+Once the Next instance is imported into Central Manager, you should license the instance. In the **Instances** page click on your Next instance to see its configuration and go to the **Licensing** section as seen below.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/license.png
+  :align: center
+  :scale: 70%  
+
+Click the **Activate License** button, then load your licensing token that you obtained from F5 for BIG-IP Next. Once the token is uploaded you can than apply it to your instance.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/license-apply.png
+  :align: center
+  :scale: 70%  
+
+Once the instance is successfully licensed, you can then configure the in-band networking which includes L1 Networks, VLANs, and IP addresses. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/networking-instance.png
+  :align: center
+  :scale: 70% 
+
+
+
+When you are done with this section you will need to delete your Next tenant from Central Manager.  Go to the **Instances** page, then click the checkbox next to your instance, then go to **Actions**, and select **Delete**. You'll then be asked to review what will get deleted and to confirm the deletion. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-instance-from-cm.png
+  :align: center
+  :scale: 70%  
+
+You can then monitor the deletion status. Once the instance is gone it is removed from Central Manager, but it is not removed from the VELOS partition.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/deletion-in-progress.png
+  :align: center
+  :scale: 70%  
+
+Log into your teams VELOS partition and go to the **Tenant Management**  -> **Tenant Deployments** page. Here you can confirm that your BIG-IP Next Tenant is still running. 
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant-running.png
+  :align: center
+  :scale: 70%  
+
+You'll need to delete this tenant before moving onto the next section of the lab. Click the checkbox beside the Next tenant to select it, and then click the **Delete** button.
+
+.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-tenant-locally.png
+  :align: center
+  :scale: 70%  
 
 

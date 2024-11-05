@@ -11,9 +11,9 @@ This section will focus on how to harden/secure the F5OS layer of the rSeries ap
 F5OS Platform Layer Isolation
 =============================
 
-When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs and is managed via the out-of-band management network only. It is purposely isolated so that it is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
+When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
 
-This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. 
+This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through the **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. 
 
 .. image:: images/rseries_security/image1.png
   :align: center
@@ -23,9 +23,9 @@ Allow List for F5OS Management
 
 F5OS only allows management access via a single out-of-band management interface. Access to that single management IP address may be restricted to specific IP addresses (both IPv4 and IPv6), subnets (via Prefix Length), as well as protocols - 443 (HTTPS), 80 (HTTP), 8888 (RESTCONF), 161 (SNMP), 7001 (VCONSOLE), and 22 (SSH). An administrator can add one or more Allow List entries via the CLI, webUI or API to lock down access to specific endpoints.
 
-By default, all ports except for 161 (SNMP) are enabled for access, meaning ports 80, 443, 8888, 7001, and 22 are allowed access. Port 80 is only open to allow a redirect to port 443 in case someone tries to access the webUI over port 80. The webUI itself is not accessible over port 80. Port 161 is typically viewed as un-secure and is therefore not accessible until an allow list entry is created for the endpoint trying to access F5OS using SNMP queries. Ideally SNMPv3 should be utilized to provide additional layers of security on an otherwise un-secure protocol. VCONSOLE access also must be explicitly configured before access to the tenants is possible over port 7001. 
+By default, all ports except for 161 (SNMP) are enabled for access, meaning ports 80, 443, 8888, 7001, and 22 are allowed access. Port 80 is only open to allow a redirect to port 443 in case someone tries to access the webUI over port 80. The webUI itself is not accessible over port 80. Port 161 (SNMP) is typically viewed as un-secure and is therefore not accessible until an allow list entry is created for the endpoint trying to access F5OS using SNMP queries. Ideally SNMPv3 should be utilized to provide additional layers of security on an otherwise un-secure protocol. VCONSOLE access also must be explicitly configured before access to the tenants is possible over port 7001. 
 
-To further lock down access you may add an Allow List entry including an IP address and optional prefix for each of the protocols listed above. As an example, if you wanted to restrict API and webUI access to a particular IP address and/or subnet, you can add an Allow List entry for the desired IP or subnet (using the prefix length), specify port 443 and all access from other IP endpoints will be prevented.
+To further lock down access, you may add an Allow List entry including an IP address and optional prefix for each of the protocols listed above. As an example, if you wanted to restrict API and webUI access to a particular IP address and/or subnet, you can add an Allow List entry for the desired IP or subnet (using the prefix length), specify port 443 and all access from other IP endpoints will be prevented.
 
 
 Adding Allow List Entries via CLI
@@ -106,7 +106,7 @@ Within the body of the API call, specific IP address/port, and optional prefix-l
 
 
 
-To view the allowed IPs in the API, use the following call.
+To view the current allowed IP configuration via the API, use the following API call.
 
 .. code-block:: bash
 
@@ -157,7 +157,7 @@ The output will show the previously configured allowed-ips.
 Adding Allow List Entries via webUI
 -----------------------------------
 
-You can configure the **Allow List** in the webUI under the **System Settings** section in older version of F5OS. In newer versions of F5OS the **Allowed IP Addresses** configuration can be found under **System Settings** -> **System Security**.
+You can configure **Allow List** entries in the webUI under the **System Settings** section in older version of F5OS. In newer versions of F5OS the **Allowed IP Addresses** configuration can be found under **System Settings** -> **System Security**.
 
 .. image:: images/rseries_security/image2.png
   :align: center
@@ -353,7 +353,7 @@ You can display the current certificate, keys, and passphrases using the CLI com
 Managing Device Certificates, Keys, CSRs, and CAs via webUI
 -----------------------------------------------------------
 
-In the F5OS webUI you can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS certificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
+In the F5OS webUI you can manage device certificates for the management interface via the **System Settings -> Certificate Management** page in older versions of F5OS. In newer versions of F5OS, certificates are managed under the **Authentication & Access** -> **TLS** page. There are options to view the TLS certificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
 
 .. image:: images/rseries_security/imagecert2.png
   :align: center
@@ -407,7 +407,7 @@ When you install an SSL certificate on the system, you also install a certificat
   :scale: 70%
 
 Managing Device Certificates, Keys, CSRs, and CAs via API
--------------------------------------
+--------------------------------------------------------
 
 You can view the current certificates, keys and passphrases via the API using the following API call.
 
@@ -460,7 +460,7 @@ In the body of the API call enter the following JSON syntax.
 
 
 Encrypt Management TLS Private Key
-=======================
+==================================
 
 Previously, F5OS allowed an admin to import a TLS certificate and key in clear text. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is like the BIG-IP functionality defined in the link below.
 
@@ -559,11 +559,211 @@ In the body of the API call add the following:
         }
     }
 
+Appliance Mode for BIG-IP Tenants
+=================================
+
+If you would like to prevent root / bash level access to the BIG-IP tenants, you can enable **Appliance Mode**. in the tenant settings. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled for BIG-IP. The admin account to the TMOS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
+
+Enabling BIG-IP Tenant Appliance Mode via the CLI
+--------------------------------------------------
+
+When creating a BIG-IP tenant via the CLI you have the option of enabling or disabling (default) appliance-mode as seen below. 
+
+.. code-block:: bash
+
+    Boston-r10900-1# config
+    Entering configuration mode terminal
+    Boston-r10900-1(config)# tenants tenant tenant2 
+    Boston-r10900-1(config-tenant-test-tenant)# config ?
+    Possible completions:
+        appliance-mode           Appliance mode can be enabled/disabled at tenant level
+        cryptos                  Enable crypto devices for the tenant.
+        dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
+        gateway                  User-specified gateway for the tenant static mgmt-ip.
+        image                    User-specified image for tenant.
+        mac-data                 
+        memory                   User-specified memory in MBs for the tenant.
+        mgmt-ip                  User-specified mgmt-ip for the tenant management access.
+        nodes                    User-specified node-number(s) in the partition to schedule the tenant.
+        prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
+        running-state            User-specified desired state for the tenant.
+        storage                  User-specified storage information
+        type                     Tenant type.
+        vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
+        virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
+        vlans                    User-specified vlan-id from vlan table for the tenant.
+    Boston-r10900-1(config-tenant-tenant2)# config ?
+    Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
+    Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
+    Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
+    Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
+    Boston-r10900-1(config-tenant-tenant2)# config memory 14848
+  
+
+Any changes must be committed for them to be executed:
+
+.. code-block:: bash
+
+    Boston-r10900-1(config-tenant-tenant2)# commit
+    Commit complete.
+    Boston-r10900-1(config-tenant-tenant2)# 
+	
+You may alternatively put all the parameters on one line instead of using the interactive mode above:
+
+.. code-block:: bash
+
+    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
+    Boston-r10900-1(config-tenant-tenant2)# commit
+    Commit complete.
+    Boston-r10900-1(config-tenant-tenant2)#
+
+
+Enabling BIG-IP Appliance Mode via the webUI
+--------------------------------------------
+
+When creating a BIG-IP tenant via the webUI you have the option of enabling or disabling (default) appliance-mode as seen below. 
+
+.. image:: images/rseries_security/appliance-mode.png
+  :align: center
+  :scale: 70%
+
+Enabling BIG-IP Appliance Mode via the API
+------------------------------------------
+
+When creating a BIG-IP tenant via the API you have the option of enabling or disabling (default) appliance-mode as seen below. Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. 
+
+.. code-block:: bash
+
+  POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
+
+
+Below is the body of the API call above.
+
+.. code-block:: json
+
+
+    {
+        "tenant": [
+            {
+                "name": "{{New_Tenant1_Name}}",
+                "config": {
+                    "image": "{{Appliance_Tenant_Image}}",
+                    "nodes": [
+                        1
+                    ],
+                    "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
+                    "gateway": "{{OutofBand_DFGW}}",
+                    "prefix-length": 24,
+                    "vlans": [
+                        3010,
+                        3011,
+                        500
+                    ],
+                    "vcpu-cores-per-node": 2,
+                    "memory": 7680,
+                    "cryptos": "enabled",
+                    "running-state": "configured"
+                }
+            }
+        ]
+    }
+
+Validating Tenant Status via API
+================================
+
+The command below will show the current state and status of the tenant. Remember it has not been changed to the **Deployed** state yet.
+
+.. code-block:: bash
+
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
+
+The output of the above API call shows the state and status of the tenant.
+
+.. code-block:: json
+
+    {
+        "f5-tenants:tenants": {
+            "tenant": [
+                {
+                    "name": "tenant1",
+                    "config": {
+                        "name": "tenant1",
+                        "type": "BIG-IP",
+                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                        "nodes": [
+                            1
+                        ],
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "configured",
+                        "appliance-mode": {
+                            "enabled": false
+                        }
+                    },
+                    "state": {
+                        "name": "tenant1",
+                        "unit-key-hash": "ec+5rtpwnIt6awtkadYqXyWzJ/Oty4tRbfPICaz6OzPSw4KILtQMJZETeq/Q6pbfBh8zXQfBPTetgvPw2dW2ig==",
+                        "type": "BIG-IP",
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "mac-ndi-set": [
+                            {
+                                "ndi": "default",
+                                "mac": "00:94:a1:69:59:24"
+                            }
+                        ],
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "configured",
+                        "mac-data": {
+                            "base-mac": "00:94:a1:69:59:26",
+                            "mac-pool-size": 1
+                        },
+                        "appliance-mode": {
+                            "enabled": false
+                        },
+                        "status": "Configured"
+                    }
+                }
+            ]
+        }
+    }
+
 
 Resource Admin User Role
 ========================
 
 The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to **role resource-admin**, their access will be restricted as noted above.
+
+Resource Admin User Role via CLI
+--------------------------------
+
+Below is an example of setting up a new user with the built-in resource-admin role.
 
 .. code-block:: bash
 
@@ -575,13 +775,7 @@ The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is s
     Commit complete.
     r10900-2(config-user-res-admin-user)# 
 
-The webUI also supports the assignment of the resource-admin role to any user.
-
-.. image:: images/rseries_security/imageres-admin.png
-  :align: center
-  :scale: 70%
-
-When logging in as the resource admin user, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
+When logging in as the resource-admin user, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
 
 
 .. code-block:: bash
@@ -603,7 +797,7 @@ When logging in as the resource admin user, the aaa options in the CLI will be l
     r10900-2(config)# 
 
 
-The output below shows the limited options available to the resource admin user. Note, that it is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
+The output below shows the limited options available to the resource-admin user. Note, that it is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
 
 .. code-block:: bash
 
@@ -615,14 +809,30 @@ The output below shows the limited options available to the resource admin user.
     Possible completions:
     users   Enclosing container list of local users.
     <cr>    
-    r10900-2(config)# 
+    r10900-2(config)#
 
+Resource Admin User Role via webUI
+--------------------------------
 
-The same is true for the webUI, any attempt to configure the restricted items above will result in an **Access Denied** error like the one below.
+The webUI also supports the assignment of the resource-admin role to any user.
+
+.. image:: images/rseries_security/imageres-admin.png
+  :align: center
+  :scale: 70%
+
+When logging in as the resource-admin user, any attempt to configure the restricted items above will result in an **Access Denied** error like the one below.
 
 .. image:: images/rseries_security/imageaccessdenied.png
   :align: center
   :scale: 70%
+
+Resource Admin User Role via API
+--------------------------------
+
+The API also supports the assignment of the resource-admin role to any user.
+
+
+
 
 Session Timeouts and Token Lifetime
 ===================================
