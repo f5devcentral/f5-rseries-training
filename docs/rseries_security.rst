@@ -1195,8 +1195,8 @@ There is one case that is not covered by either of the above idle-timeout settin
 
 For the webUI, a token-based timeout is now configurable under the **system aaa** settings. The default RESTCONF token lifetime is 15 minutes and can be configured for a maximum of 1440 minutes. RESTCONF token will be automatically renewed when the token’s lifetime is less than one-third of its original token lifetime. For example, if we set the token lifetime to two minutes, it will be renewed and a new token will be generated, when the token’s lifetime is less than one-third of its original lifetime, that is, anytime between 80 to 120 seconds. However, if a new RESTCONF request is not received within the buffer time (80 to 120 seconds), the token will expire and you will be logged out of the session. The RESTCONF token will be renewed up to five times, after that the token will not be renewed and you will need to log back in to the system.
 
-Configuring SSH and CLI Timeouts via CLI
------------------------------------------
+Configuring SSH and CLI Timeouts & Deny Root SSH Settings via CLI
+----------------------------------------------------------------
 
 To configure the F5OS CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, a CLI session to the F5OS CLI should disconnect after 300 seconds of inactivity. This will apply to connections to the F5OS CLI over both console and SSH.
 
@@ -1268,8 +1268,8 @@ In addition, there is a separate setting for aom ssh access as described here:
 
 
  
-Configuring SSH and CLI Timeouts via API
-----------------------------------------
+Configuring SSH and CLI Timeouts & Deny Root SSH Settings via API
+-----------------------------------------------------------------
 
 To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
 
@@ -1308,17 +1308,10 @@ You'll see output similar to the example below.
     }
 
 
-Configuring SSH and CLI Timeouts via webUI
+Configuring SSH and CLI Timeouts & Deny Root SSH Settings via webUI
 ------------------------------------------
 
-The HTTPS token lifetime, CLI timeout, and deny-root-ssh settings are all configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The HTTPS Token Lifetime is configurable under the **Authentication & Access -> Authentication Settings** page.
-
-.. image:: images/rseries_security/token-lifetime.png
-  :align: center
-  :scale: 70%
-
-
-The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
+The CLI timeout, and deny-root-ssh settings are both configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
 
 .. image:: images/rseries_security/deny-root-ssh.png
   :align: center
@@ -1372,7 +1365,7 @@ To display the current restconf-token lifetime setting, use the command **show s
 Token Lifetime via webUI
 ------------------------
 
-You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client can refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client can refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes. The HTTPS Token Lifetime is configurable under the **Authentication & Access -> Authentication Settings** page.
 
 .. image:: images/rseries_security/image6.png
   :align: center
