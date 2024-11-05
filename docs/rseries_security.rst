@@ -2799,18 +2799,26 @@ Any information related to login/logout or configuration changes are logged in t
 First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
 
 
+Viewing Audit Logs
+==================
 
+All configration and login / logout events are recorded in the systems audit logs. Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log**.
 
 Viewing Audit Logs via F5OS CLI
 -------------------------------
 
-Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log** in the current F5OS releases. In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options. You may choose either the **log/system** directory or the **log/host** directory. Note the **audit.log** file. 
+In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options. You may choose either the **log/system** directory or the **log/host** directory. Note the **audit.log** file. 
 
 .. code-block:: bash
 
     appliance-1# file list path log/
     Possible completions:
     confd/  host/  system/
+    
+Below are the log files in the **/log/system** directory.
+
+.. code-block:: bash
+
     appliance-1# file list path log/system/
     Possible completions:
     audit.log                      confd.log          devel.log     devel.log.1    lcd.log           lcd.log.1           lcd.log.2.gz       
@@ -2857,7 +2865,7 @@ There are options to manipulate the output of the file. Add **| ?** to the comma
     until     End with the line that matches
     r10900# file show log/system/audit.log | 
 
-There are other file options that allow the user to tail the log file using **file tail -f** for a live tail,  or **file tail -n <number of lines>** to view a specific number of the most recent lines.
+There are other file options that allow the user to tail the log file using **file tail -f** for a live tail, or 
 
 .. code-block:: bash
 
@@ -2873,7 +2881,9 @@ There are other file options that allow the user to tail the log file using **fi
     <INFO> 7-Dec-2022::15:05:21.784 appliance-1 confd[125]: audit user: admin/13692371 CLI done
     <INFO> 7-Dec-2022::15:08:59.462 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file tail -f log/system/audit.log'
 
+**file tail -n <number of lines>** to view a specific number of the most recent lines.
 
+.. code-block:: bash
 
     r10900# file tail -n 20 log/system/audit.log
     <INFO> 7-Dec-2022::14:46:50.546 appliance-1 confd[125]: audit user: admin/13672920 RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 37668 ms
@@ -2961,7 +2971,29 @@ Within the bash shell if you are logged in as root, the path for the logging is 
     -rw-r--r--.  1 root root       4096 Oct 15  2021 .velos.log.swp
     drwxr-xr-x.  2 root root       4096 Nov 28 12:34 webui
     [root@appliance-1(r10900.f5demo.net) ~]# 
-  
+
+
+Some audit events don't make it into the main audit.log file in the /log/system directory. An example would be certain login failure events that happen at a lower layer, and are instead captured in the /log/host/audit/audit.log file.
+
+.. code-block:: bash
+
+    r10900-1-gsa# file show log/host/audit/audit.log
+    type=USER_LOGIN msg=audit(1730821588.346:269): pid=25235 uid=0 auid=1000 ses=69895 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.18.11.38 addr=172.18.11.38 terminal=/dev/pts/1 res=success'
+    type=USER_LOGOUT msg=audit(1730823436.684:270): pid=25235 uid=0 auid=1000 ses=69895 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/1 res=success'
+    type=USER_LOGIN msg=audit(1730824052.749:271): pid=8910 uid=0 auid=1000 ses=70022 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.18.11.38 addr=172.18.11.38 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730825355.788:272): pid=8910 uid=0 auid=1000 ses=70022 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730840593.268:273): pid=42201 uid=0 auid=1000 ses=70865 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730842988.585:274): pid=42201 uid=0 auid=1000 ses=70865 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730843105.828:275): pid=10063 uid=0 auid=1000 ses=70993 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730844656.179:276): pid=10063 uid=0 auid=1000 ses=70993 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730844667.844:277): pid=38080 uid=0 auid=1012 ses=71074 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1012 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730844859.612:278): pid=38080 uid=0 auid=1012 ses=71074 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1012 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730844871.745:279): pid=957 uid=0 auid=1000 ses=71084 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730846789.291:280): pid=957 uid=0 auid=1000 ses=71084 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730848953.986:281): pid=4018 uid=0 auid=1000 ses=71293 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    r10900-1-gsa# 
+
+
 Viewing Logs from the webUI
 --------------------------
 
