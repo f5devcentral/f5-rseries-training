@@ -757,12 +757,15 @@ The output of the above API call shows the state and status of the tenant.
     }
 
 
-Resource Admin User Role
+Resource Admin & Guest User Role
 ========================
 
 The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to **role resource-admin**, their access will be restricted as noted above.
 
-Resource Admin User Role via CLI
+F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however, users can change account passwords.
+
+
+Resource Admin & Guest User Role via CLI
 --------------------------------
 
 Below is an example of setting up a new user with the built-in resource-admin role.
@@ -813,10 +816,41 @@ The output below shows the limited options available to the resource-admin user.
     <cr>    
     r10900-2(config)#
 
-Resource Admin User Role via webUI
+Below is an example of setting up a new user with the built-in **user** role.
+
+.. code-block:: bash
+
+    r10900-2(config)# system aaa authentication users user res-admin-user config username guest-user role user             
+    r10900-2(config-user-res-admin-user)# config set-password password 
+    Value for 'password' (<string>): **************
+    Error: application error
+    r10900-2(config-user-res-admin-user)# commit
+    Commit complete.
+    r10900-2(config-user-res-admin-user)# 
+
+When logging in as the user with the **user** role assigned, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
+
+The **user** role will prevent the user from entering config mode.
+
+.. code-block:: bash
+
+    r10900-1-gsa# config
+    --------------^
+    syntax error: expecting 
+
+The **user** role will prevent the user from running **file** operations from the CLI.
+
+.. code-block:: bash
+
+    r10900-1-gsa# file ?
+                ^
+    % Invalid input detected at '^' marker.
+    r10900-1-gsa# file
+
+Resource Admin & Guest User Role via webUI
 --------------------------------
 
-The webUI also supports the assignment of the resource-admin role to any user.
+The webUI also supports the assignment of the **resource-admin** role to any user.
 
 .. image:: images/rseries_security/imageres-admin.png
   :align: center
@@ -828,8 +862,21 @@ When logging in as the resource-admin user, any attempt to configure the restric
   :align: center
   :scale: 70%
 
-Resource Admin User Role via API
---------------------------------
+The webUI also supports the assignment of the **user** role to any user.
+
+.. image:: images/rseries_security/guest-user.png
+  :align: center
+  :scale: 70%  
+
+When a user logs in with the **user** role assigned, they can view configuration, but the webUI will prevent any changes from being made by blocking save functions.
+
+.. image:: images/rseries_security/guest-user-restricted.png
+  :align: center
+  :scale: 70%  
+
+
+Resource-Admin & Guest User Role via API
+----------------------------------------
 
 The API also supports the assignment of the resource-admin role to any user.
 
@@ -2654,6 +2701,7 @@ The API call should return output similar to what is seen below.
             }
         }
     }
+
 
 
 Audit Logging
