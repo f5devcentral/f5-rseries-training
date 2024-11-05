@@ -773,14 +773,13 @@ Below is an example of setting up a new user with the built-in resource-admin ro
 .. code-block:: bash
 
     r10900-2(config)# system aaa authentication users user res-admin-user config username res-admin-user role resource-admin             
-    r10900-2(config-user-res-admin-user)# config set-password password 
-    Value for 'password' (<string>): **************
-    Error: application error
     r10900-2(config-user-res-admin-user)# commit
     Commit complete.
+    r10900-2(config-user-res-admin-user)# config set-password password 
+    Value for 'password' (<string>): **************
     r10900-2(config-user-res-admin-user)# 
 
-When logging in as the resource-admin user, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
+When logging in as the resource-admin user, the **aaa** and **aaa authentication** options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
 
 
 .. code-block:: bash
@@ -793,6 +792,9 @@ When logging in as the resource-admin user, the aaa options in the CLI will be l
     restconf-token    restconf-token lifetime.
     server-groups     
     tls               Top-level container for key/certificate settings.
+
+.. code-block:: bash    
+    
     r10900-2(config)# system aaa authentication ?
     Possible completions:
     config   
@@ -802,7 +804,7 @@ When logging in as the resource-admin user, the aaa options in the CLI will be l
     r10900-2(config)# 
 
 
-The output below shows the limited options available to the resource-admin user. Note, that it is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
+The output below shows the limited **aaa** and **aaa authentication** options available to the resource-admin user. Note, that this role is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
 
 .. code-block:: bash
 
@@ -810,6 +812,9 @@ The output below shows the limited options available to the resource-admin user.
     Possible completions:
     authentication   
     tls              Top-level container for key/certificate settings.
+    
+.. code-block:: bash    
+    
     r10900-2(config)# system aaa authentication ?
     Possible completions:
     users   Enclosing container list of local users.
@@ -829,9 +834,7 @@ Below is an example of setting up a new user with the built-in **user** role.
     r10900-1-gsa(config-user-guest-user2)# 
 
 
-When logging in as the user with the **user** role assigned, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
-
-The **user** role will prevent the user from entering config mode.
+When logging in as the user with the **user** role assigned, the configuration mode will be unavailable. The **user** role will prevent the user from entering config mode.
 
 .. code-block:: bash
 
@@ -839,7 +842,7 @@ The **user** role will prevent the user from entering config mode.
     --------------^
     syntax error: expecting 
 
-The **user** role will prevent the user from running **file** operations from the CLI.
+The **user** role will also prevent the user from running **file** operations from the CLI.
 
 .. code-block:: bash
 
