@@ -1169,11 +1169,11 @@ Idle timeouts were configurable in previous releases, but the configuration only
 
 In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the bevahior of the setting in conjunction with the appliance mode setting.
+There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
 
 +-----------------------------------------------------------+
 |                Appliance-mode = Disabled                  |
-+===========================================================+
++================+======================+===================+
 | deny-root-ssh  | root console access  | root ssh access   |
 +----------------+----------------------+-------------------+
 | enabled        | Yes                  | No                |
@@ -1184,7 +1184,7 @@ There is one case that is not covered by either of the above idle-timeout settin
 
 +-----------------------------------------------------------+
 |                Appliance-mode = Enabled                   |
-+===========================================================+
++================+======================+===================+
 | deny-root-ssh  | root console access  | root ssh access   |
 +----------------+----------------------+-------------------+
 | enabled        | No                   | No                |
@@ -1214,7 +1214,15 @@ To configure the SSH timeout via the CLI, use the command **system settings conf
     r10900(config)# system settings config sshd-idle-timeout 300
     r10900(config)# commit
     Commit complete.      
- 
+
+To configure the deny-root-ssh option use the command **system security config deny-ssh-root**.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system security config deny-root-ssh enabled
+    r5900-1-gsa(config)# commit
+    Commit complete.
+
 Both timeout settings can be viewed using the **show system settings** command.
 
 .. code-block:: bash
@@ -1226,6 +1234,27 @@ Both timeout settings can be viewed using the **show system settings** command.
     system settings dag state gtp-u teid-hash disabled
     system settings gui advisory state disabled
     r10900-1#
+
+The deny-root-ssh setting can be seen by issuing the CLI command **show system security**.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show system security 
+    system security firewall state logging disabled
+    system security state deny-root-ssh disabled
+    system security services service httpd
+    state ssl-ciphersuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
+    system security services service sshd
+    state ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
+    state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
+    r5900-1-gsa# show system settings 
+    system settings state idle-timeout 300
+    system settings state sshd-idle-timeout 300
+    system settings state portgroup-confirmation-warning on
+    system settings dag state gtp-u teid-hash disabled
+    system settings gui advisory state disabled
+    r5900-1-gsa# 
+
 
 In addition, there is a separate setting for aom ssh access as described here:
 
