@@ -75,39 +75,38 @@ Securing / Hardening F5OS on rSeries
 
 `Enabling Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-appliance-mode-via-the-api>`_
 
-`Enabling BIG-IP Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-big-ip-appliance-mode-via-the-api>`_
+`Enabling F5OS Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-f5os-appliance-mode-via-the-api>`_
 
-` <>`_
+`Enabling BIG-IP Tenant Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-big-ip-appliance-mode-via-the-api>`_
 
-` <>`_
+`Validating Tenant Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#validating-tenant-status-via-api>`_
 
-` <>`_
+`Resource-Admin & Guest User Role via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#resource-admin-guest-user-role-via-api>`_
 
-` <>`_
+`Configuring SSH and CLI Timeouts & Deny Root SSH Settings via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-ssh-and-cli-timeouts-deny-root-ssh-settings-via-api>`_
 
-` <>`_
+`Token Lifetime via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#token-lifetime-via-api>`_
 
-` <>`_
+`Disabling Basic Auth via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#disabling-basic-auth-via-the-api>`_
 
-` <>`_
+`Setting Password Policies via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#setting-password-policies-via-api>`_
 
-` <>`_
+`Configuring Login Banner / MoTD via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-login-banner-motd-via-api>`_
 
-` <>`_
+`Enabling NTP Authentication via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-ntp-authentication-via-api>`_
 
-` <>`_
+`Configuring Management Ciphers via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-management-ciphers-via-api>`_
 
-` <>`_
+`Configuring Client Certificate Authentication via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-client-certificate-authentication-via-api>`_
 
-` <>`_
+`Proxy Server via API for Licensing and Qkview Uploads to iHealth <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#proxy-server-via-api-for-licensing-and-qkview-uploads-to-ihealth>`_
 
-` <>`_
+`Configuration of Audit Logs via F5OS API (F5OS-A 1.4.0 and Later) <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuration-of-audit-logs-via-f5os-api-f5os-a-1-4-0-and-later>`_
 
-` <>`_
+`Viewing Audit Logs via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#viewing-audit-logs-via-f5os-api>`_
 
-` <>`_
+`Downloading Audit Logs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#downloading-audit-logs-via-api>`_
 
-` <>`_
 
 rSeries Software Upgrades
 -------------------------
