@@ -18,4 +18,4 @@ rSeries References
 
 `F5 rSeries Appliance Datasheet <https://www.f5.com/products/big-ip-services/rseries-adc-hardware-appliance>`_
 
-
+`F5 Professional Services Ansible Collection <https://f5devcentral.github.io/f5-ps-ansible/>`_
