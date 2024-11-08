@@ -472,7 +472,7 @@ Appliance Mode for F5OS
 
 If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
 
-Enabling Appliance Mode via the CLI
+Enabling F5OS Appliance Mode via the CLI
 -----------------------------------
 
 Appliance mode can be enabled or disabled via the CLI using the command **system appliance-mode config** and entering either **enabled** or **disabled**. The command **show system appliance-mode** will display the status. Be sure to commit any changes. 
@@ -503,8 +503,8 @@ To disable appliance mode.
     Commit complete.
     r10900(config)#
 
-Enabling Appliance Mode via the webUI
-------------------------------------- 
+Enabling F5OS Appliance Mode via the webUI
+------------------------------------------ 
 
 Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page.
 
@@ -518,7 +518,7 @@ In newer F5OS releases, Appliance Mode configuration has been moved to the **Sys
   :align: center
   :scale: 70%
 
-Enabling Appliance Mode via the API
+Enabling F5OS Appliance Mode via the API
 -----------------------------------
 
 Appliance mode can be enabled or disabled via the API. To view the current status of appliance mode use the following API call.
@@ -622,7 +622,7 @@ You may alternatively put all the parameters on one line instead of using the in
     Boston-r10900-1(config-tenant-tenant2)#
 
 
-Enabling BIG-IP Appliance Mode via the webUI
+Enabling BIG-IP Tenant Appliance Mode via the webUI
 --------------------------------------------
 
 When creating a BIG-IP tenant via the webUI you have the option of enabling or disabling (default) appliance-mode as seen below. 
@@ -631,7 +631,7 @@ When creating a BIG-IP tenant via the webUI you have the option of enabling or d
   :align: center
   :scale: 70%
 
-Enabling BIG-IP Appliance Mode via the API
+Enabling BIG-IP Tenant Appliance Mode via the API
 ------------------------------------------
 
 When creating a BIG-IP tenant via the API you have the option of enabling or disabling (default) appliance-mode as seen below. Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. 
@@ -3013,6 +3013,11 @@ If you want to download the main **audit.log**, select the directory **/log/syst
 
 Viewing Audit Logs via F5OS API
 -------------------------------
+
+You cannot view audit logs fomr the API, but you may download them from the system.
+
+
+
 
 Example Audit Logging for Login, Logout, Login Failure, and Account Lockout
 ---------------------------------------------------------------------------
