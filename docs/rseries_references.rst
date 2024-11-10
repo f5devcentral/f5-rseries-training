@@ -10,7 +10,7 @@ rSeries References
 
 `F5OS-A/F5 rSeries Error Catalog <https://clouddocs.f5.com/f5os-error-catalog/rseries/rseries-errors-index.html>`_
 
-`F5OS modules Ansible collection <https://clouddocs.f5.com/products/orchestration/ansible/devel/f5os/F5OS-index.html>`_
+`F5OS Modules Ansible Collection <https://clouddocs.f5.com/products/orchestration/ansible/devel/f5os/F5OS-index.html>`_
 
 `F5OS Provider Resources for Terraform <https://clouddocs.f5.com/products/orchestration/terraform/latest/F5OS/f5os-index.html#f5os-index>`_
 
@@ -18,4 +18,4 @@ rSeries References
 
 `F5 rSeries Appliance Datasheet <https://www.f5.com/products/big-ip-services/rseries-adc-hardware-appliance>`_
 
-`F5 Professional Services Ansible Collection <https://f5devcentral.github.io/f5-ps-ansible/>`_
+`F5 Professional Services F5OS Ansible Collection <https://f5devcentral.github.io/f5-ps-ansible/>`_

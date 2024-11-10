@@ -47,7 +47,7 @@ Terraform providers have been created for F5OS for some of the more common tasks
 
 The github location of the Terraform provider files is at the following location.
 
-`Terraform Provider F5OS v1.3.0 <https://github.com/F5Networks/terraform-provider-F5OS/releases>`_
+`Terraform Provider F5OS v1.4.0 <https://github.com/F5Networks/terraform-provider-F5OS/releases>`_
 
 Getting Started with F5OS Automation
 ====================================
