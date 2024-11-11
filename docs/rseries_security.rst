@@ -762,7 +762,7 @@ Resource Admin & Guest User Role
 
 The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to role **resource-admin**, their access will be restricted as noted above.
 
-F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however, users can change account passwords.
+F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however users can change account passwords.
 
 
 Resource Admin & Guest User Role via CLI
@@ -1248,7 +1248,7 @@ In the body of the API call add the username and role as seen below.
 Session Timeouts and Token Lifetime
 ===================================
 
-Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. This will logout idle sessions to the F5OS CLI whether they are logged in from the console or over SSH.
+Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings and is controlled via the **idle-timeout** option. This will logout idle sessions to the F5OS CLI whether they are logged in from the console or over SSH.
 
 In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
@@ -2378,7 +2378,7 @@ In the body of the API call you can enable NTP authentication, add keys, and ass
 Configurable Management Ciphers
 ===============================
 
-You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS.
+You can configure which ciphers are used when connecting to the F5OS management interface using SSH or HTTPS.
 
 Configuring Management Ciphers via CLI
 --------------------------------------
@@ -2619,7 +2619,7 @@ The output will look similar to the response below.
 Client Certificate Based Auth
 =============================
 
-You can configure client certificate based authentication to the F5OS management interfaces.
+You can configure client certificate-based authentication to the F5OS management interfaces.
 
 Configuring Client Certificate Authentication via CLI
 -----------------------------------------------------
@@ -2632,9 +2632,9 @@ https://techdocs.f5.com/en-us/f5os-a-1-8-0/f5-rseries-systems-administration-con
 Configuring Client Certificate Authentication via webUI
 -------------------------------------------------------
 
-Although you can enable client certificate authentication via the webUI, you must upload or create your certifcate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full conifugraton is configured.
+Although you can enable client certificate authentication via the webUI, you must upload or create your certificate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full configraton is completed.
 
-See the section above about configuration of the certificate before moving on. If you have loaded a certificate, then you can enable client certificate authenticatin via the webUI as seen below.
+See the section above about configuration of the certificate before moving on. If you have loaded a certificate, then you can enable client certificate authentication via the webUI as seen below.
 
 .. image:: images/rseries_security/client-cert1.png
   :align: center
@@ -2802,7 +2802,7 @@ First you must configure the remote syslog destination. As part of that configur
 Viewing Audit Logs
 ==================
 
-All configration and login / logout events are recorded in the systems audit logs. Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log**.
+All configuration and login / logout events are recorded in the systems audit logs. Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log**.
 
 Viewing Audit Logs via F5OS CLI
 -------------------------------
