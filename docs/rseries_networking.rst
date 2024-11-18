@@ -48,9 +48,12 @@ Only F5 branded optics are officially supported on rSeries appliances. On rSerie
 
 `K8153: F5 support of third-party hardware components <https://my.f5.com/manage/s/article/K8153>`_
 
-More details on each optic can be found in the F5 Platforms Accessories guide:
+
+More details on each optic can be found in the F5 Platforms Accessories guide & in the solution article below:
 
 `F5 Platforms: Accessories <https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html>`_
+
+`K6097: Specifications of the Fiber Gigabit Ethernet SFP, XFP, SFP+, QSFP+, and QSFP28 module ports on BIG-IP system platforms <https://my.f5.com/manage/s/article/K6097>`_
 
 
 Supported rSeries Optics SKU's
