@@ -18,6 +18,7 @@ Port Groups
 
 The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled and the port speed. Currently the high-speed ports do not support unbundling. **Adjacent** high-speed ports (**1.0** & **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both configured for 100Gb, you cannot mix and match. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series) and (**13.0** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values. The term portgroup is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
+.. note:: F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
 .. image:: images/rseries_networking/image2.png
   :align: center
@@ -41,15 +42,18 @@ Interfaces will always be numbered starting with **1.0** and ending with the max
 Supported Optics
 ================
 
-Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. None of the optics support dual mode speeds i.e., 25Gb/10Gb, you must have the right optic and port group configuration for the speed you want to run. 3rd party optics are not officially supported per F5’s support policies: 
+Only F5 branded optics are officially supported on rSeries appliances. On rSeries r2000/r4000 models speeds of 1Gb, 10Gb, or 25Gb are supported. On the r5000/r10000 models speeds of 10Gb, 25Gb, 40Gb, or 100Gb are supported depending on the type of optics used and the port group configuration. Note the r5000/r10000 appliances do not support 1Gb connectivity. rSeries high speed interfaces will accept F5 approved QSFP+ & QSFP28 optics, while low speed ports will accept SFP28 and SFP+ optics. None of the optics support dual mode speeds (except where noted) i.e., 25Gb/10Gb, you must have the right optic and port group configuration for the speed you want to run. 3rd party optics are not officially supported per F5’s support policies: 
 
 
 
-`K8153: F5 support of third-party hardware components <https://my.f5.com/manage/s/article/K8153>_`
+`K8153: F5 support of third-party hardware components <https://my.f5.com/manage/s/article/K8153>`_
 
-More details on each optic can be found in the F5 Platforms Accessories guide:
 
-`F5 Platforms: Accessories <https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html>_`
+More details on each optic can be found in the F5 Platforms Accessories guide & in the solution article below:
+
+`F5 Platforms: Accessories <https://techdocs.f5.com/en-us/hw-platforms/f5-plat-accessories.html>`_
+
+`K6097: Specifications of the Fiber Gigabit Ethernet SFP, XFP, SFP+, QSFP+, and QSFP28 module ports on BIG-IP system platforms <https://my.f5.com/manage/s/article/K6097>`_
 
 
 Supported rSeries Optics SKU's
@@ -75,7 +79,7 @@ The r2000 / r4000 will support both **F5-UPG-SFPC-R** with one caveat. **F5-UPG-
 The r5000 / r10000 / r12000-DS platforms do not support 1G SFPs currently, so **F5-UPG-SFPC-R** is not supported on those platforms.
 However, **F5-UPG-SFPC+-3M-8** is still supported on r5000 / r10000 / r12000-DS for 10G operation.
 
-rSeries 10GB SFP+ SKU's
+rSeries 10Gb SFP+ SKU's
 -----------------------
 
 10Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000/r12000-DS) platforms:
@@ -89,7 +93,7 @@ rSeries 10GB SFP+ SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 
 
-rSeries 25GB SFP28 SKU's
+rSeries 25Gb SFP28 SKU's
 --------------------------
 
 25Gb Optics are supported on all rSeries (r2000/r4000/r5000/r10000/r12000-DS) platforms:
@@ -101,7 +105,7 @@ rSeries 25GB SFP28 SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 
 
-rSeries 40GB QSFP+ SKU's
+rSeries 40Gb QSFP+ SKU's
 --------------------------
 
 40Gb Optics are only supported on the r5000/r10000/r12000-DS platforms:
@@ -113,10 +117,15 @@ rSeries 40GB QSFP+ SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-QSFP+PSM4     | Field Upgrade: QSFP+ Transceiver (40G-PSM4, 4x10LR, 1310NM, 10KM, MPO/APC, SMF, DDM)  |
 +----------------------+---------------------------------------------------------------------------------------+
-| F5-UPG-QSFP+BD       | Field Upgrade: Transceiver QSFP+, 2X20G BIDI 850NM-900NM, 100M, LC, MMF, DDM          |
-+----------------------+---------------------------------------------------------------------------------------+
 
-rSeries 100GB QSFP28 SKU's
+rSeries 40Gb/100Gb Dual Rate BIDI SKU's (QSFP28 backward compatible with QSFP+)
+------------------------------------------------------------------------------
+
++-----------------------------------------------------------------+-----------------------------------------------------------------------------------+
+| Dual Rate 40G/100G BIDI (QSFP28 backward compatible with QSFP+) | Field Upgrade Transceiver QSFP28/QSFP+, dual rate 40G/100G SR BIDI, 100M, LC, MMF |
++-----------------------------------------------------------------+-----------------------------------------------------------------------------------+
+
+rSeries 100Gb QSFP28 SKU's
 --------------------------
 
 100Gb Optics are only supported on the r5000/r10000/r12000-DS platforms:
@@ -128,31 +137,77 @@ rSeries 100GB QSFP28 SKU's
 +----------------------+---------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-PSM4   | Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS           |
 +----------------------+---------------------------------------------------------------------------------------+
-| F5-UPG-QSFP28-BD     | Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       |
-+----------------------+---------------------------------------------------------------------------------------+
 
 
-**Note: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic).  The following breakout cable SKU’s are not supported on rSeries currently.**
+Below are the current rSeries optic SKUs:
 
-**THESE ARE UNSUPPORTED**
 
-+---------------------+------+--------------------------------------------------------------------------------------------+
-| F5-UPGVELSR4XSR3M   | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (3 Meter 2 Pack)  |
-+---------------------+------+--------------------------------------------------------------------------------------------+
-| F5-UPGVELSR4XSR1M   | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (1 Meter 2 Pack)  |
-+---------------------+------+--------------------------------------------------------------------------------------------+
-| F5-UPGVELSR4XSR10M  | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (10 Meter 2 Pack) |
-+---------------------+------+--------------------------------------------------------------------------------------------+
++----------------------+----------------------------------------------------------------------------------------+
+| 1G Optics	                                                                                                    |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFP-R         |	Field Upgrade: SFP Fiber Connector (1G - LC/850nm) ROHS                               |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFPLX-R       | 	Field Upgrade: SFP LX Fiber Connector (1G - LC/1310nm) ROHS                           |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFPC-R        |	Field Upgrade: SFP Copper Connector (10/100/1000 RJ45)) ROHS                          |
++----------------------+----------------------------------------------------------------------------------------+
+| 10G Optics	                                                                                                  |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFP+-R        |	Field Upgrade: SFP+ Fiber Connector (10G-LC/850nm) ROHS                               |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFP+LR-R      |Field Upgrade: SFP+LR Fiber Connector (10G-LC/1310nm) ROHS                              |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFPC+-3M-8    |	Field Upgrade: Copper SFP+ 10G Direct Attach 8-Pack 3M                                |
++----------------------+----------------------------------------------------------------------------------------+
+| 25G Optics	                                                                                                  |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFP28-SR      |	Field Upgrade: Transceiver SFP28, 25G-SR, 100M, LC, MMF, DDM (rSeries ONLY)           |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-SFP28-LR      |	Field Upgrade: Transceiver SFP28, 25G-LR, 100M, LC, MMF, DDM (rSeries ONLY)           |
++----------------------+----------------------------------------------------------------------------------------+
+| 40G Optics	                                                                                                  |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+SR4      |	Field Upgrade: QSFP+ Transceiver (40G-SR4, 850NM, 100M, MPO, DDM Support)             |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+LR4      |	Field Upgrade: QSFP+ Transceiver (40G-LR4, 1310NM, 10KM, LC, SMF, DDM Support)        |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+PSM4     |	Field Upgrade: QSFP+ Transceiver (40G-PSM4, 4x10LR, 1310NM, 10KM, MPO/APC, SMF, DDM)  |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP+BD       |	Field Upgrade: Transceiver QSFP+, 2X20G BIDI 850NM-900NM, 100M, LC, MMF, DDM          |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-SRBD   |	Field Upgrade Transceiver QSFP28/QSFP+, dual rate 40G/100G SR BIDI, 100M, LC, MMF     |
++----------------------+----------------------------------------------------------------------------------------+
+| 100G Optics	                                                                                                  |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-SR4    |	Field Upgrade: QSFP28 Transceiver (100G-SR4, 850NM, 70M/100M, OM3/OM4, MMF, MPO, DDM) |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-LR4    |	Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, 4.5W, DDM)                |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-PSM4   |	Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS           |
++----------------------+----------------------------------------------------------------------------------------+
+| F5-UPG-QSFP28-BD     |	Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       |
++----------------------+----------------------------------------------------------------------------------------+
+
+.. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
+
+
+The following breakout cable SKU’s are support in conjunction with F5OS-A 1.8.0, and only for 4 x 10Gb support. 
+
++---------------------+--------------------------------------------------------------------------------------------+
+| F5-UPGVELSR4XSR3M   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (3 Meter 2 Pack)  |
++---------------------+--------------------------------------------------------------------------------------------+
+| F5-UPGVELSR4XSR1M   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (1 Meter 2 Pack)  |
++---------------------+--------------------------------------------------------------------------------------------+
+| F5-UPGVELSR4XSR10M  | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (10 Meter 2 Pack) |
++---------------------+--------------------------------------------------------------------------------------------+
 
 Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pack):
 
-**THESE ARE UNSUPPORTED**
-
-+---------------------+------+----------------------------------------------------------------------------------------------+
-| F5-UPG-VELPSMXLR10M | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)    |
-+---------------------+------+----------------------------------------------------------------------------------------------+
-| F5-UPG-VELPSM4XLR3M | CN   | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (3 Meter)     |
-+---------------------+------+----------------------------------------------------------------------------------------------+
++---------------------+----------------------------------------------------------------------------------------------+
+| F5-UPG-VELPSMXLR10M | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)    |
++---------------------+----------------------------------------------------------------------------------------------+
+| F5-UPG-VELPSM4XLR3M | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (3 Meter)     |
++---------------------+----------------------------------------------------------------------------------------------+
 
 VLANs
 =====

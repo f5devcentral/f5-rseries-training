@@ -43,113 +43,174 @@ High level appliance status can be obtained by using the **show components** com
 
 .. code-block:: bash
 
-    appliance-1# show components 
+    r10900-1# show components 
     components component lcd
-    state serial-no sub0872g00d5
+    state serial-no sub0872g00du
+    state part-no "SUB-0872-02 REV 1"
     state empty false
+    state mode standard
     components component platform
-    state description    "BIG-IP r5900"
-    state serial-no      f5-vdvh-bfwi
-    state part-no        "200-0411-02 REV 2"
+    fantray fan-stats fan-1-speed 16224
+    fantray fan-stats fan-2-speed 16268
+    fantray fan-stats fan-3-speed 16330
+    fantray fan-stats fan-4-speed 16251
+    fantray fan-stats fan-5-speed 16233
+    fantray fan-stats fan-6-speed 16286
+    fantray fan-stats fan-7-speed 16393
+    fantray fan-stats fan-8-speed 16224
+    fantray fan-stats fan-9-speed 16224
+    fantray fan-stats fan-10-speed 16268
+    fantray fan-stats fan-11-speed 16304
+    fantray fan-stats fan-12-speed 16357
+    state description    r10900
+    state serial-no      f5-xpdn-ngmu
+    state part-no        "200-0413-02 REV 2"
     state empty          false
     state tpm-integrity-status Valid
-    state memory available 6973112320
-    state memory free 1112055808
-    state memory used-percent 95
-    state temperature current 25.9
-    state temperature average 25.7
-    state temperature minimum 24.5
-    state temperature maximum 26.8
-                                                                                    UPDATE  
-    NAME                        NAME  VALUE                              CONFIGURABLE  STATUS  
-    -------------------------------------------------------------------------------------------
-    QAT0                        -     Lewisburg C62X Crypto/Compression  false         -       
-    QAT1                        -     Lewisburg C62X Crypto/Compression  false         -       
-    QAT2                        -     Lewisburg C62X Crypto/Compression  false         -       
-    fw-version-bios             -     1.02.108.1                         false         none    
-    fw-version-bios-me          -     4.4.4.58                           false         none    
-    fw-version-cpld             -     02.0A.00                           false         none    
-    fw-version-drive-m.2.slot1  -     EDA7602Q                           false         none    
-    fw-version-drive-nvme0      -     EDA7602Q                           false         none    
-    fw-version-lcd-app          -     1.01.057.00.1                      false         none    
-    fw-version-lcd-bootloader   -     1.01.027.00.1                      false         none    
-    fw-version-lcd-ui           -     1.5.1                              false         none    
-    fw-version-lop-app          -     1.00.214.0.1                       false         none    
-    fw-version-lop-bootloader   -     1.02.062.0.1                       false         none    
-    fw-version-sirr             -     1.1.29                             false         none    
+    state memory total    270014504960
+    state memory available 23690534912
+    state memory free     7309426688
+    state memory used-percent 91
+    state memory platform-total 34219122688
+    state memory platform-used 10030964736
+    state memory platform-used-percent 29
+    state temperature current 29.7
+    state temperature average 30.2
+    state temperature minimum 29.2
+    state temperature maximum 31.3
+                                                                                            USED     
+    AREA                          CATEGORY            TOTAL         FREE          USED         PERCENT  
+    ----------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System         117807665152  44114337792   67685408768  60       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks   481671176192  426911313920  30268694528  6        
+    tenant/fix-ll                 BIG-IP Tenant       0             0             8046321664   0        
+    tenant/tenant1                BIG-IP Tenant       88046829568   80804179968   7242649600   8        
+    tenant/tenant2                BIG-IP Tenant       152471339008  145266032640  7205306368   4        
+    tenant/test-tenant            BIG-IP Tenant       0             0             7834767360   0        
+    platform/images               F5OS Images         240700620800  179621085184  48829022208  21       
+    tenant/bigip-next-f5demo-net  BIG-IP Next Tenant  26830438400   24771969024   2058469376   7        
 
-                                                                                                                            READ                             WRITE    
-    DISK                                                                                    TOTAL  READ    READ    READ     LATENCY  WRITE  WRITE   WRITE    LATENCY  
-    NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE      TYPE  IOPS   IOPS    MERGED  BYTES    MS       IOPS   MERGED  BYTES    MS       
-    ------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    nvme0n1  SAMSUNG MZ1LB960HAJQ-00007  Samsung  EDA7602Q  S435NA0NA05748  733.00GB  nvme  10000  106370  90831   5018531  31839    24160  28636   1340660  35097    
+                                                                                UPDATE  
+    NAME                        VALUE                              CONFIGURABLE  STATUS  
+    -------------------------------------------------------------------------------------
+    QAT0                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT1                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT2                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT3                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT4                        Lewisburg C62X Crypto/Compression  false         -       
+    QAT5                        Lewisburg C62X Crypto/Compression  false         -       
+    fw-version-bios             2.02.145.1                         false         none    
+    fw-version-bios-me          4.4.4.603                          false         none    
+    fw-version-cpld             02.0B.00                           false         none    
+    fw-version-drive-nvme0      VDV10170                           false         none    
+    fw-version-drive-nvme1      VDV10170                           false         none    
+    fw-version-drive-u.2.slot1  VDV10184                           false         none    
+    fw-version-drive-u.2.slot2  VDV10184                           false         none    
+    fw-version-lcd-app          1.01.069.00.1                      false         none    
+    fw-version-lcd-bootloader   1.01.027.00.1                      false         none    
+    fw-version-lcd-ui           1.13.12                            false         none    
+    fw-version-lop-app          2.00.357.0.1                       false         none    
+    fw-version-lop-bootloader   1.02.062.0.1                       false         none    
+    fw-version-sirr             1.1.72                             false         none    
+
+                                                                                                                            READ                                          WRITE     
+    DISK                                                                                TOTAL  READ     READ                   LATENCY  WRITE      WRITE                     LATENCY   
+    NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS     MERGED   READ BYTES    MS       IOPS       MERGED     WRITE BYTES    MS        
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ1082028K1P0FGN  684.00GB  nvme  0      6389572  6219783  750856005120  780538   150423059  148810905  1524410142208  19347042  
+    nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ108203XB1P0FGN  684.00GB  nvme  0      5879641  6157944  743701713408  730394   150423058  148810906  1524410142208  19650753  
 
     cpu state cpu-utilization thread cpu
-    cpu state cpu-utilization current 3
-    cpu state cpu-utilization five-second-avg 2
-    cpu state cpu-utilization one-minute-avg 2
-    cpu state cpu-utilization five-minute-avg 2
-    CPU               CORE                           THREAD                                              
-    INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                   
-    -----------------------------------------------------------------------------------------------------
-    0      24576(KB)  16    2899.951(MHz)  6         32      Intel(R) Xeon(R) Silver 4314 CPU @ 2.40GHz  
+    cpu state cpu-utilization current 4
+    cpu state cpu-utilization five-second-avg 3
+    cpu state cpu-utilization one-minute-avg 3
+    cpu state cpu-utilization five-minute-avg 3
+    cpu state cpu-utilization used-by ""
+    CPU               CORE                           THREAD                                             
+    INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                  
+    ----------------------------------------------------------------------------------------------------
+    0      36864(KB)  24    3099.902(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
 
-                            FIVE    ONE     FIVE    
-    THREAD                   SECOND  MINUTE  MINUTE  
-    INDEX   THREAD  CURRENT  AVG     AVG     AVG     
-    -------------------------------------------------
-    0       cpu0    2        1       1       1       
-    1       cpu1    1        1       1       1       
-    2       cpu2    1        1       1       1       
-    3       cpu3    1        1       3       3       
-    4       cpu4    1        1       4       3       
-    5       cpu5    2        1       3       3       
-    6       cpu6    5        2       3       3       
-    7       cpu7    2        2       3       3       
-    8       cpu8    2        3       2       3       
-    9       cpu9    1        3       3       2       
-    10      cpu10   2        2       3       3       
-    11      cpu11   3        2       2       3       
-    12      cpu12   1        1       2       3       
-    13      cpu13   0        2       3       3       
-    14      cpu14   2        5       3       3       
-    15      cpu15   8        3       3       3       
-    16      cpu16   3        1       2       2       
-    17      cpu17   0        0       1       1       
-    18      cpu18   0        0       1       1       
-    19      cpu19   5        2       4       3       
-    20      cpu20   3        1       2       3       
-    21      cpu21   1        1       2       2       
-    22      cpu22   0        1       1       3       
-    23      cpu23   0        1       3       2       
-    24      cpu24   4        1       3       2       
-    25      cpu25   4        2       2       3       
-    26      cpu26   13       6       2       3       
-    27      cpu27   9        3       2       2       
-    28      cpu28   10       4       3       3       
-    29      cpu29   4        2       2       2       
-    30      cpu30   2        1       2       4       
-    31      cpu31   19       7       3       2       
+                            FIVE    ONE     FIVE                           
+    THREAD                   SECOND  MINUTE  MINUTE                         
+    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY                
+    ------------------------------------------------------------------------
+    0       cpu0    0        0       1       1       F5OS Dedicated         
+    1       cpu1    0        0       1       1       F5OS Dedicated         
+    2       cpu2    0        0       1       1       F5OS Dedicated         
+    3       cpu3    0        0       1       1       F5OS Dedicated         
+    4       cpu4    0        0       1       1       F5OS Dedicated         
+    5       cpu5    0        0       0       1       F5OS Dedicated         
+    6       cpu6    3        3       5       4       F5OS                   
+    7       cpu7    0        0       0       1       bigip-next-f5demo-net  
+    8       cpu8    6        5       4       4       F5OS                   
+    9       cpu9    0        0       1       1       bigip-next-f5demo-net  
+    10      cpu10   5        3       4       4       F5OS                   
+    11      cpu11   1        4       4       5       fix-ll                 
+    12      cpu12   4        3       4       4       F5OS                   
+    13      cpu13   4        3       4       4       F5OS                   
+    14      cpu14   4        3       4       4       F5OS                   
+    15      cpu15   1        5       5       6       tenant1                
+    16      cpu16   6        3       5       5       test-tenant            
+    17      cpu17   5        4       4       5       fix-ll                 
+    18      cpu18   1        4       4       5       tenant1                
+    19      cpu19   6        5       4       5       test-tenant            
+    20      cpu20   3        3       4       4       F5OS                   
+    21      cpu21   3        3       4       4       F5OS                   
+    22      cpu22   3        4       4       4       F5OS                   
+    23      cpu23   7        7       5       5       F5OS                   
+    24      cpu24   1        1       1       1       F5OS Data Mover        
+    25      cpu25   0        0       1       1       F5OS Data Mover        
+    26      cpu26   0        1       1       1       F5OS Data Mover        
+    27      cpu27   1        1       1       1       F5OS Data Mover        
+    28      cpu28   0        1       1       1       F5OS Data Mover        
+    29      cpu29   0        0       1       1       F5OS Data Mover        
+    30      cpu30   7        6       6       6       F5OS                   
+    31      cpu31   0        0       0       1       bigip-next-f5demo-net  
+    32      cpu32   4        5       6       6       F5OS                   
+    33      cpu33   0        0       0       1       bigip-next-f5demo-net  
+    34      cpu34   1        3       5       6       F5OS                   
+    35      cpu35   1        4       5       6       fix-ll                 
+    36      cpu36   8        5       6       6       F5OS                   
+    37      cpu37   3        3       7       6       F5OS                   
+    38      cpu38   4        3       6       6       F5OS                   
+    39      cpu39   4        4       5       5       tenant1                
+    40      cpu40   6        6       5       5       test-tenant            
+    41      cpu41   1        4       4       5       fix-ll                 
+    42      cpu42   5        6       5       5       tenant1                
+    43      cpu43   13       13      5       6       test-tenant            
+    44      cpu44   3        2       6       6       F5OS                   
+    45      cpu45   9        5       8       7       F5OS                   
+    46      cpu46   1        3       5       6       F5OS                   
+    47      cpu47   55       23      8       7       F5OS                   
 
-    FPGA             
-    INDEX   VERSION  
-    -----------------
-    asw_0   71.2.7   
-    atse_0  72.2.5   
+    FPGA                            NUM  NUM   
+    INDEX   VERSION  ID  SLOT  DID  DMS  SEPS  
+    -------------------------------------------
+    asw_0   71.5.1                             
+    atse_0  72.5.4   0   1     15   3    64    
+    atse_1  72.5.4   1   1     63   3    64    
+    nso_0   70.5.1                             
 
     components component psu-1
-    state serial-no S92031RC1991
-    state part-no M1845
+    psu-stats psu-power-in 526.0
+    psu-stats psu-power-out 514.0
+    psu-stats psu-current-in 2.578
+    psu-stats psu-current-out 42.875
+    psu-stats psu-voltage-in 205.0
+    psu-stats psu-voltage-out 12.0
+    psu-stats psu-temperature-1 36.0
+    psu-stats psu-temperature-2 42.0
+    psu-stats psu-temperature-3 46.0
+    psu-stats psu-fan-1-speed 11680
+    state serial-no FZ2104Q70036
+    state part-no PWR-0388-00
     state empty false
-    psu-stats psu-current-in 1.718
-    psu-stats psu-current-out 26.562
-    psu-stats psu-voltage-in 204.5
-    psu-stats psu-voltage-out 12.062
-    psu-stats psu-temperature-1 33.0
-    psu-stats psu-temperature-2 44.0
-    psu-stats psu-temperature-3 48.0
-    psu-stats psu-fan-1-speed 9760
-    appliance-1# 
+    components component psu-2
+    state serial-no "Not Available"
+    state part-no "Not Available"
+    state empty true
+    r10900-1# 
 
 Show Component State Only from the CLI
 ----------------------------------------
@@ -158,28 +219,51 @@ If you just want the state and not all the details:
 
 .. code-block:: bash
 
-    appliance-1# show components component state  
+    r10900-1# show components component state
     components component lcd
-    state serial-no sub0872g00d5
+    state serial-no sub0872g00du
+    state part-no "SUB-0872-02 REV 1"
     state empty false
+    state mode standard
     components component platform
-    state description    "BIG-IP r5900"
-    state serial-no      f5-vdvh-bfwi
-    state part-no        "200-0411-02 REV 2"
+    state description    r10900
+    state serial-no      f5-xpdn-ngmu
+    state part-no        "200-0413-02 REV 2"
     state empty          false
     state tpm-integrity-status Valid
-    state memory available 6973259776
-    state memory free 1123016704
-    state memory used-percent 95
-    state temperature current 26.0
-    state temperature average 25.7
-    state temperature minimum 24.5
-    state temperature maximum 26.8
+    state memory total    270014504960
+    state memory available 23670415360
+    state memory free     7288745984
+    state memory used-percent 91
+    state memory platform-total 34219122688
+    state memory platform-used 10051108864
+    state memory platform-used-percent 29
+    state temperature current 29.9
+    state temperature average 30.2
+    state temperature minimum 29.2
+    state temperature maximum 31.3
+                                                                                            USED     
+    AREA                          CATEGORY            TOTAL         FREE          USED         PERCENT  
+    ----------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System         117807665152  44113956864   67685789696  60       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks   481671176192  426911305728  30268702720  6        
+    tenant/fix-ll                 BIG-IP Tenant       0             0             8046321664   0        
+    tenant/tenant1                BIG-IP Tenant       88046829568   80804171776   7242657792   8        
+    tenant/tenant2                BIG-IP Tenant       152471339008  145266032640  7205306368   4        
+    tenant/test-tenant            BIG-IP Tenant       0             0             7834767360   0        
+    platform/images               F5OS Images         240700620800  179621085184  48829022208  21       
+    tenant/bigip-next-f5demo-net  BIG-IP Next Tenant  26830438400   24771969024   2058469376   7        
+
     components component psu-1
-    state serial-no S92031RC1991
-    state part-no M1845
+    state serial-no FZ2104Q70036
+    state part-no PWR-0388-00
     state empty false
-    appliance-1# 
+    components component psu-2
+    state serial-no "Not Available"
+    state part-no "Not Available"
+    state empty true
+    r10900-1# 
+
 
 Show Component Properties from the CLI
 ----------------------------------------
@@ -188,28 +272,32 @@ This command shows the firmware version of the various subsystems:
 
 .. code-block:: bash
 
-    appliance-1# show components component properties 
-                                                                                                UPDATE  
-    NAME      NAME                        NAME  VALUE                              CONFIGURABLE  STATUS  
-    -----------------------------------------------------------------------------------------------------
-    lcd                                                                                                  
-    platform  QAT0                        -     Lewisburg C62X Crypto/Compression  false         -       
-            QAT1                        -     Lewisburg C62X Crypto/Compression  false         -       
-            QAT2                        -     Lewisburg C62X Crypto/Compression  false         -       
-            fw-version-bios             -     1.02.108.1                         false         none    
-            fw-version-bios-me          -     4.4.4.58                           false         none    
-            fw-version-cpld             -     02.0A.00                           false         none    
-            fw-version-drive-m.2.slot1  -     EDA7602Q                           false         none    
-            fw-version-drive-nvme0      -     EDA7602Q                           false         none    
-            fw-version-lcd-app          -     1.01.057.00.1                      false         none    
-            fw-version-lcd-bootloader   -     1.01.027.00.1                      false         none    
-            fw-version-lcd-ui           -     1.5.1                              false         none    
-            fw-version-lop-app          -     1.00.214.0.1                       false         none    
-            fw-version-lop-bootloader   -     1.02.062.0.1                       false         none    
-            fw-version-sirr             -     1.1.29                             false         none    
-    psu-1                                                                                                
+    r10900-1# show components component properties 
+                                                                                        UPDATE  
+    NAME      NAME                        VALUE                              CONFIGURABLE  STATUS  
+    -----------------------------------------------------------------------------------------------
+    platform  QAT0                        Lewisburg C62X Crypto/Compression  false         -       
+            QAT1                        Lewisburg C62X Crypto/Compression  false         -       
+            QAT2                        Lewisburg C62X Crypto/Compression  false         -       
+            QAT3                        Lewisburg C62X Crypto/Compression  false         -       
+            QAT4                        Lewisburg C62X Crypto/Compression  false         -       
+            QAT5                        Lewisburg C62X Crypto/Compression  false         -       
+            fw-version-bios             2.02.145.1                         false         none    
+            fw-version-bios-me          4.4.4.603                          false         none    
+            fw-version-cpld             02.0B.00                           false         none    
+            fw-version-drive-nvme0      VDV10170                           false         none    
+            fw-version-drive-nvme1      VDV10170                           false         none    
+            fw-version-drive-u.2.slot1  VDV10184                           false         none    
+            fw-version-drive-u.2.slot2  VDV10184                           false         none    
+            fw-version-lcd-app          1.01.069.00.1                      false         none    
+            fw-version-lcd-bootloader   1.01.027.00.1                      false         none    
+            fw-version-lcd-ui           1.13.12                            false         none    
+            fw-version-lop-app          2.00.357.0.1                       false         none    
+            fw-version-lop-bootloader   1.02.062.0.1                       false         none    
+            fw-version-sirr             1.1.72                             false         none    
 
-    appliance-1# 
+    r10900-1# 
+
 
 Show Power Supply Status from the CLI
 --------------------------------------
@@ -218,41 +306,37 @@ Or you can view individual subsystems. High level power supply status can be obt
 
 .. code-block:: bash
 
-    appliance-1# show components component psu-
-        PSU      PSU      PSU      PSU      PSU          PSU          PSU          PSU    
-        CURRENT  CURRENT  VOLTAGE  VOLTAGE  TEMPERATURE  TEMPERATURE  TEMPERATURE  FAN 1  
-    NAME   IN       OUT      IN       OUT      1            2            3            SPEED  
-    -----------------------------------------------------------------------------------------
-    psu-1  1.703    26.312   204.5    12.078   33.0         44.0         48.0         9792   
-
-    appliance-1# show components component psu-1
+    r10900-1# show components component psu-1    
     components component psu-1
-    state serial-no S92031RC1991
-    state part-no M1845
+    psu-stats psu-power-in 528.0
+    psu-stats psu-power-out 516.0
+    psu-stats psu-current-in 2.593
+    psu-stats psu-current-out 43.0
+    psu-stats psu-voltage-in 205.0
+    psu-stats psu-voltage-out 12.0
+    psu-stats psu-temperature-1 36.0
+    psu-stats psu-temperature-2 42.0
+    psu-stats psu-temperature-3 46.0
+    psu-stats psu-fan-1-speed 11552
+    state serial-no FZ2104Q70036
+    state part-no PWR-0388-00
     state empty false
-    psu-stats psu-current-in 1.718
-    psu-stats psu-current-out 26.75
-    psu-stats psu-voltage-in 204.0
-    psu-stats psu-voltage-out 12.062
-    psu-stats psu-temperature-1 33.0
-    psu-stats psu-temperature-2 44.0
-    psu-stats psu-temperature-3 48.0
-    psu-stats psu-fan-1-speed 9760
-    appliance-1# 
+    r10900-1# 
 
 
 High level power supply stats can be obtained by using the **show components component psu-stats** command:
 
 .. code-block:: bash
 
-    appliance-1# show components component psu-stats 
-        PSU      PSU      PSU      PSU      PSU          PSU          PSU          PSU    
-        CURRENT  CURRENT  VOLTAGE  VOLTAGE  TEMPERATURE  TEMPERATURE  TEMPERATURE  FAN 1  
-    NAME   IN       OUT      IN       OUT      1            2            3            SPEED  
-    -----------------------------------------------------------------------------------------
-    psu-1  1.703    26.0     204.0    12.062   33.0         44.0         48.0         9792   
+    r10900-1# show components component psu-stats 
+        PSU    PSU    PSU      PSU      PSU      PSU      PSU          PSU          PSU          PSU    
+        POWER  POWER  CURRENT  CURRENT  VOLTAGE  VOLTAGE  TEMPERATURE  TEMPERATURE  TEMPERATURE  FAN 1  
+    NAME   IN     OUT    IN       OUT      IN       OUT      1            2            3            SPEED  
+    -------------------------------------------------------------------------------------------------------
+    psu-1  530.0  518.0  2.593    42.75    205.0    12.0     36.0         41.0         46.0         12192  
+    psu-2  -      -      -        -        -        -        -            -            -            -      
 
-    appliance-1# 
+    r10900-1#
 
 Show LCD Status from the CLI
 --------------------------------------
@@ -261,11 +345,13 @@ High level chassis LCD status can be obtained by using the **show components com
 
 .. code-block:: bash
 
-    appliance-1# show components component lcd
+    r10900-1# show components component lcd  
     components component lcd
-    state serial-no sub0872g00d5
+    state serial-no sub0872g00du
+    state part-no "SUB-0872-02 REV 1"
     state empty false
-    appliance-1# 
+    state mode standard
+    r10900-1# 
 
 
 Show CPU Status from the CLI
@@ -275,45 +361,73 @@ You can view stats on the platform CPU and basic utilization with the command **
 
 .. code-block:: bash
 
-    appliance-1# show components component cpu      
-                            FIVE    ONE     FIVE                                                                                                                                  FIVE    ONE     FIVE    
-                            SECOND  MINUTE  MINUTE  CPU               CORE                           THREAD                                              THREAD                   SECOND  MINUTE  MINUTE  
-    NAME      THREAD  CURRENT  AVG     AVG     AVG     INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                   INDEX   THREAD  CURRENT  AVG     AVG     AVG     
-    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    platform  cpu     2        1       2       2       0      24576(KB)  16    2899.951(MHz)  6         32      Intel(R) Xeon(R) Silver 4314 CPU @ 2.40GHz  0       cpu0    0        0       1       1       
-                                                                                                                                                            1       cpu1    0        0       1       1       
-                                                                                                                                                            2       cpu2    0        1       1       1       
-                                                                                                                                                            3       cpu3    1        2       3       3       
-                                                                                                                                                            4       cpu4    2        1       2       3       
-                                                                                                                                                            5       cpu5    2        3       3       3       
-                                                                                                                                                            6       cpu6    4        2       2       3       
-                                                                                                                                                            7       cpu7    4        3       3       3       
-                                                                                                                                                            8       cpu8    17       5       3       3       
-                                                                                                                                                            9       cpu9    4        2       2       3       
-                                                                                                                                                            10      cpu10   3        1       3       3       
-                                                                                                                                                            11      cpu11   3        1       3       3       
-                                                                                                                                                            12      cpu12   2        1       3       3       
-                                                                                                                                                            13      cpu13   2        1       4       3       
-                                                                                                                                                            14      cpu14   3        1       3       3       
-                                                                                                                                                            15      cpu15   2        1       3       3       
-                                                                                                                                                            16      cpu16   3        2       2       2       
-                                                                                                                                                            17      cpu17   0        1       1       1       
-                                                                                                                                                            18      cpu18   0        0       1       1       
-                                                                                                                                                            19      cpu19   2        1       2       2       
-                                                                                                                                                            20      cpu20   2        2       3       3       
-                                                                                                                                                            21      cpu21   3        1       3       3       
-                                                                                                                                                            22      cpu22   1        1       2       2       
-                                                                                                                                                            23      cpu23   4        1       3       2       
-                                                                                                                                                            24      cpu24   7        3       4       3       
-                                                                                                                                                            25      cpu25   1        1       6       4       
-                                                                                                                                                            26      cpu26   1        1       2       3       
-                                                                                                                                                            27      cpu27   1        1       3       2       
-                                                                                                                                                            28      cpu28   3        1       2       3       
-                                                                                                                                                            29      cpu29   2        1       3       3       
-                                                                                                                                                            30      cpu30   2        1       3       3       
-                                                                                                                                                            31      cpu31   2        1       2       2       
+    r10900-1# show components component cpu
+    components component platform
+    cpu state cpu-utilization thread cpu
+    cpu state cpu-utilization current 4
+    cpu state cpu-utilization five-second-avg 4
+    cpu state cpu-utilization one-minute-avg 3
+    cpu state cpu-utilization five-minute-avg 3
+    cpu state cpu-utilization used-by ""
+    CPU               CORE                           THREAD                                             
+    INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                  
+    ----------------------------------------------------------------------------------------------------
+    0      36864(KB)  24    3099.902(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
 
-    appliance-1# 
+                            FIVE    ONE     FIVE                           
+    THREAD                   SECOND  MINUTE  MINUTE                         
+    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY                
+    ------------------------------------------------------------------------
+    0       cpu0    0        0       1       1       F5OS Dedicated         
+    1       cpu1    0        0       1       1       F5OS Dedicated         
+    2       cpu2    0        0       1       1       F5OS Dedicated         
+    3       cpu3    0        0       1       1       F5OS Dedicated         
+    4       cpu4    0        0       1       1       F5OS Dedicated         
+    5       cpu5    0        0       1       1       F5OS Dedicated         
+    6       cpu6    3        4       4       4       F5OS                   
+    7       cpu7    0        0       0       1       bigip-next-f5demo-net  
+    8       cpu8    4        5       5       4       F5OS                   
+    9       cpu9    0        0       1       1       bigip-next-f5demo-net  
+    10      cpu10   4        3       4       4       F5OS                   
+    11      cpu11   5        5       4       5       fix-ll                 
+    12      cpu12   5        3       4       4       F5OS                   
+    13      cpu13   3        3       5       4       F5OS                   
+    14      cpu14   4        4       4       4       F5OS                   
+    15      cpu15   0        3       5       6       tenant1                
+    16      cpu16   12       6       4       5       test-tenant            
+    17      cpu17   4        5       5       5       fix-ll                 
+    18      cpu18   0        5       4       4       tenant1                
+    19      cpu19   5        5       5       5       test-tenant            
+    20      cpu20   4        4       4       4       F5OS                   
+    21      cpu21   4        3       4       4       F5OS                   
+    22      cpu22   4        4       5       4       F5OS                   
+    23      cpu23   3        3       4       4       F5OS                   
+    24      cpu24   1        1       1       1       F5OS Data Mover        
+    25      cpu25   0        1       1       1       F5OS Data Mover        
+    26      cpu26   0        1       1       1       F5OS Data Mover        
+    27      cpu27   1        1       1       1       F5OS Data Mover        
+    28      cpu28   0        1       1       1       F5OS Data Mover        
+    29      cpu29   0        1       1       1       F5OS Data Mover        
+    30      cpu30   6        7       6       6       F5OS                   
+    31      cpu31   0        0       1       1       bigip-next-f5demo-net  
+    32      cpu32   20       12      8       6       F5OS                   
+    33      cpu33   0        0       1       1       bigip-next-f5demo-net  
+    34      cpu34   15       11      6       6       F5OS                   
+    35      cpu35   1        3       6       5       fix-ll                 
+    36      cpu36   10       9       6       5       F5OS                   
+    37      cpu37   6        9       9       6       F5OS                   
+    38      cpu38   7        7       5       6       F5OS                   
+    39      cpu39   5        5       5       5       tenant1                
+    40      cpu40   5        6       5       5       test-tenant            
+    41      cpu41   2        9       4       5       fix-ll                 
+    42      cpu42   6        4       5       5       tenant1                
+    43      cpu43   5        6       6       6       test-tenant            
+    44      cpu44   6        7       5       6       F5OS                   
+    45      cpu45   3        7       7       7       F5OS                   
+    46      cpu46   21       9       6       6       F5OS                   
+    47      cpu47   11       7       7       7       F5OS                   
+
+    r10900-1# 
 
 Show Storage Status from the CLI
 --------------------------------------
@@ -322,14 +436,15 @@ You can view stats on the storage subsystem:
 
 .. code-block:: bash
 
-    appliance-1# show components component storage  
-                                                                                                                                    READ                             WRITE    
-            DISK                                                                                    TOTAL  READ    READ    READ     LATENCY  WRITE  WRITE   WRITE    LATENCY  
-    NAME      NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE      TYPE  IOPS   IOPS    MERGED  BYTES    MS       IOPS   MERGED  BYTES    MS       
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    platform  nvme0n1  SAMSUNG MZ1LB960HAJQ-00007  Samsung  EDA7602Q  S435NA0NA05748  733.00GB  nvme  10000  106370  90831   5018531  31839    24160  28636   1340660  35097    
+    r10900-1# show components component storage 
+                                                                                                                                        READ                                          WRITE     
+            DISK                                                                                TOTAL  READ     READ                   LATENCY  WRITE      WRITE                     LATENCY   
+    NAME      NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS     MERGED   READ BYTES    MS       IOPS       MERGED     WRITE BYTES    MS        
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    platform  nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ1082028K1P0FGN  684.00GB  nvme  0      6389655  6219783  750856602624  780548   150509104  148896707  1525266036736  19350347  
+            nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ108203XB1P0FGN  684.00GB  nvme  0      5879651  6157944  743701819904  730397   150509103  148896708  1525266036736  19654081  
 
-    appliance-1# 
+    r10900-1# 
 
 -----------------------------------------------------
 Hardware and System Component Monitoring from the API
@@ -1380,7 +1495,7 @@ This command will display the health of the underlying Kubernetes (K3S) cluster 
 
 .. code-block:: bash
 
-    r5900-2# show cluster
+    r10900-1# show cluster 
     cluster state
     cluster disk-usage-threshold state warning-limit 85
     cluster disk-usage-threshold state error-limit 90
@@ -1388,59 +1503,125 @@ This command will display the health of the underlying Kubernetes (K3S) cluster 
     cluster disk-usage-threshold state growth-rate-limit 10
     cluster disk-usage-threshold state interval 60
     cluster nodes node node-1
+    state name         node-1
     state enabled      true
     state node-running-state running
     state platform fpga-state FPGA_RDY
     state platform dma-agent-state DMA_AGENT_RDY
-    state node-info creation-time 2021-09-30T22:22:29Z
-    state node-info cpu 32
-    state node-info pods 110
-    state node-info memory 15730136Ki
+    state slot-number  1
+    state node-info creation-time 2024-02-29T17:25:40Z
+    state node-info cpu        36
+    state node-info pods       500
+    state node-info memory     263686040Ki
+    state node-info available-tenant-vcpu 20
+    state node-info available-tenant-memory 170912MB
+    state node-info available-tenant-disk 186GB
+    state node-info inaccessible-tenant-memory 0MB
     state ready-info ready true
-    state ready-info last-transition-time 2022-01-17T10:17:36Z
+    state ready-info last-transition-time 2024-08-01T16:22:49Z
     state ready-info message "kubelet is posting ready status"
+    state out-of-disk-info out-of-disk false
     state out-of-disk-info last-transition-time ""
     state out-of-disk-info message ""
     state disk-pressure-info disk-pressure false
-    state disk-pressure-info last-transition-time 2021-11-30T03:14:47Z
+    state disk-pressure-info last-transition-time 2024-02-29T17:25:40Z
     state disk-pressure-info message "kubelet has no disk pressure"
-    state disk-usage used-percent 50
+    state tenant-memory tenant-reserved 243168968704
+    state tenant-memory tenant-configured 0
+    state tenant-memory tenant-provisioned 0
+    state tenant-memory tenant-deployed 15569256448
+    state tenant-memory tenant-configured-percent 0
+    state tenant-memory tenant-provisioned-percent 0
+    state tenant-memory tenant-deployed-percent 6
+    state rate-limiting enabled
+    state disk-usage used-percent 61
     state disk-usage growth-rate 0
     state disk-usage status in-range
     DISK DATA  DISK DATA     
     NAME       VALUE         
     -------------------------
-    available  56439144448   
-    capacity   117493108736  
-    used       55061983232   
+    available  44112568320   
+    capacity   117807665152  
+    used       67687178240   
 
-    TENANT                              
-    NAME     QAT DEVICE NAME   BDF      
-    ------------------------------------
-    tenant1  qat_dev_vf00pf00  53:01.0  
-            qat_dev_vf00pf01  54:01.0  
-            qat_dev_vf00pf02  55:01.0  
-            qat_dev_vf01pf00  53:01.1  
-            qat_dev_vf01pf01  54:01.1  
-            qat_dev_vf01pf02  55:01.1  
+                                            ASLA  ASLA  ASLA  SLA   SLA   SLA   
+    TENANT NAME  QAT DEVICE NAME   BDF      MIN   USED  UTIL  MIN   USED  UTIL  
+    ----------------------------------------------------------------------------
+    fix-ll       qat_dev_vf00pf00  53:01.0  2000  0     0     2000  0     0     
+                qat_dev_vf00pf01  54:01.0  2000  0     0     2000  0     0     
+                qat_dev_vf00pf02  55:01.0  2000  0     0     2000  0     0     
+                qat_dev_vf00pf03  c5:01.0  2000  0     0     2000  0     0     
+                qat_dev_vf00pf04  c6:01.0  2000  0     0     2000  0     0     
+                qat_dev_vf00pf05  c7:01.0  2000  0     0     2000  0     0     
+    tenant1      qat_dev_vf02pf00  53:01.2  2000  0     0     2000  0     0     
+                qat_dev_vf02pf01  54:01.2  2000  0     0     2000  0     0     
+                qat_dev_vf02pf02  55:01.2  2000  0     0     2000  0     0     
+                qat_dev_vf02pf03  c5:01.2  2000  0     0     2000  0     0     
+                qat_dev_vf02pf04  c6:01.2  2000  0     0     2000  0     0     
+                qat_dev_vf02pf05  c7:01.2  2000  0     0     2000  0     0     
+    test-tenant  qat_dev_vf01pf00  53:01.1  2000  0     0     2000  0     0     
+                qat_dev_vf01pf01  54:01.1  2000  0     0     2000  0     0     
+                qat_dev_vf01pf02  55:01.1  2000  0     0     2000  0     0     
+                qat_dev_vf01pf03  c5:01.1  2000  0     0     2000  0     0     
+                qat_dev_vf01pf04  c6:01.1  2000  0     0     2000  0     0     
+                qat_dev_vf01pf05  c7:01.1  2000  0     0     2000  0     0     
 
-    NAMESPACE  TYPE    REASON   OBJECT                            MESSAGE                          
-    -----------------------------------------------------------------------------------------------
-    default    Normal  Created  VirtualMachineInstance/tenant1-1  VirtualMachineInstance defined.  
+    NAMESPACE       TYPE     REASON              OBJECT                                                               MESSAGE                                                                                  
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-ip-intelligence-5577b7489c-fdff9   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-cmsg-mq-7844f5b64d-xd8x8                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-mbip-post-install-hook-2ln8q            0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-eesv-vault-758bbc5fb-x7cd7              0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-policy-compiler-5f7c684d85-s2q86   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-icb-85fb7fccc4-f852q                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default         Normal   Created             VirtualMachineInstance/fix-ll-1                                      VirtualMachineInstance defined.                                                          
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-bird-56fffb4dd4-bqblm               0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-data-store-fb68486d9-8pfmr                 0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default         Normal   Created             VirtualMachineInstance/test-tenant-1                                 VirtualMachineInstance defined.                                                          
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-eesv-licensing-f5f45499b-s5gtd          0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-clientside-js-obfuscator-557zchhf  0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-geo-location-kmlsb                 0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-appsvcs-77dd5549d8-jh2tp                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-logpull-5859768d58-9hqvf           0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-fcdn-sync-8598cf57d6-jkg7r              0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default         Normal   Created             VirtualMachineInstance/tenant1-1                                     VirtualMachineInstance defined.                                                          
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-qkview-6b84ccd599-tvxzd             0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-observer-5d74c88c88-zhhtf          0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  ProvisioningFailed  PersistentVolumeClaim/bigip-next-f5demo-net-data-store               storageclass.storage.k8s.io "bigip-next-f5demo-net-data-store-default-tid-75" not found  
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-onboarding-7d8dd97555-z8rdc             0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-platform-agent-6bcff86d59-zqlbj         0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-api-service-5bmzq                       0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-avcl-54f7b459cd-pck5x                   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-otel-collector-55fb999c76-tzx4c    0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-dssm-78df8cd7ff-9dpg6                   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-api-engine-5db85b6594-rtkwg         0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-server-76866dbbcf-c9qgl            0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-fsm-tmm-84c44c656d-p6qrm                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
 
-    STAGE NAME         STATUS  TIMESTAMP            VERSION       
-    --------------------------------------------------------------
-    K3SClusterInstall  done    2021/09/30-22:22:30  1.21.1.1.7.0  
-    K3SClusterUpgrade  done    2021/11/30-03:06:39  1.21.1.1.8.3  
+    STAGE NAME         STATUS  TIMESTAMP                  VERSION        DESCRIPTION                                       
+    -----------------------------------------------------------------------------------------------------------------------
+    FlannelInstall     done    2024-06-25 08:35:03-04:00  0.13.1         Flannel installation/verification is successful   
+    MultusInstall      done    2024-08-01 12:23:51-04:00  3.7.0          Multus installation/verification is successful    
+    KubevirtInstall    done    2024-08-01 12:23:54-04:00  2.9.1          Kubevirt installation/verification is successful  
+    K3SClusterUpgrade  done    2024-06-10 11:44:36-04:00  1.21.1.1.11.7  K3s RPM update is successful                      
+    K3SClusterInstall  done    2024-02-29 12:26:11-05:00  1.21.1.1.11.2  K3s installation/verification is successful       
+    clusterDeployment  done    2024-08-01 12:25:44-04:00  Not Available  Cluster deployment is successful                  
 
     cluster cluster-status summary-status "K3S cluster is initialized and ready for use."
-    INDEX  STATUS                                                                                
-    ---------------------------------------------------------------------------------------------
-    0      2022-01-22 22:13:17.387346 -  applianceMainEventLoop::Orchestration manager startup.  
-    1      2022-01-22 22:13:17.392742 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
-    2      2022-01-22 22:13:17.798753 -  Successfully ssh'd to appliance 127.0.0.1.              
-    3      2022-01-22 22:13:23.293784 -  Appliance 1 is ready in k3s cluster.                    
-    4      2022-01-22 22:13:23.293868 -  K3S cluster is ready.                                   
+    INDEX  STATUS                                                                                      
+    ---------------------------------------------------------------------------------------------------
+    0      2024-08-01 12:21:42.848688-04:00 -  applianceMainEventLoop::Orchestration manager startup.  
+    1      2024-08-01 12:21:43.109500-04:00 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
+    2      2024-08-01 12:21:45.073224-04:00 -  Successfully ssh'd to appliance 127.0.0.1.              
+    3      2024-08-01 12:22:25.679918-04:00 -  Appliance 1 is ready in k3s cluster.                    
+    4      2024-08-01 12:22:48.438588-04:00 -  K3S cluster is ready.                                   
+    5      2024-08-01 12:22:51.551943-04:00 -  K3s IMAGE update is succeeded.                          
+    6      2024-08-03 21:27:49.352504-04:00 -  Can NOT ping appliance-1.chassis.local (100.65.60.1).   
+    7      2024-08-03 21:28:19.468686-04:00 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
+    8      2024-08-06 08:19:06.845065-04:00 -  Failed to ssh to 127.0.0.1.                             
+    9      2024-08-06 08:19:38.547020-04:00 -  Successfully ssh'd to appliance 127.0.0.1.              
+
+    r10900-1#                   
 
 F5 DAG States via CLI
 -------------------------
@@ -1449,14 +1630,18 @@ The command below displays the current DAG-states. DAG stands for Disaggregation
 
 .. code-block:: bash
 
-    r5900-2# show dag-states 
-                                            COMMIT                         TENANT                                                     SDAG   
-    TENANT              PUBLISHER  PUBLISH     TENANT    COMMIT      DAG      INSTANCE                                                   TABLE  
-    NAME     PUBLISHER  INSTANCE   TIME        INSTANCE  TIME        VERSION  IDS       SDAG TABLE                                       HASH   
-    --------------------------------------------------------------------------------------------------------------------------------------------
-    tenant1  dagd       1          1642891753  1         1642891753  16       [ 15 ]    f f f f f f f f f f f f f f f f f f f f f f f f  0      
+    r10900-1# show dag-states 
+                                                                                                                                                                                SDAG    
+                                                            COMMIT                         TENANT                                                                  SDAG   SDAG    MIRROR  
+                                    PUBLISHER  PUBLISH     TENANT    COMMIT      DAG      INSTANCE                                                                TABLE  MIRROR  TABLE   
+    TENANT NAME            PUBLISHER  INSTANCE   TIME        INSTANCE  TIME        VERSION  IDS        SDAG TABLE                                                   HASH   TABLE   HASH    
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    bigip-next-f5demo-net  dagc       1          1718391608  1         1718391608  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
+    fix-ll                 dagd       1          1722529518  1         1722529518  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
+    tenant1                dagd       1          1722868493  1         1722868493  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
+    test-tenant            dagd       1          1722529520  1         1722529520  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
 
-    r5900-2# 
+    r10900-1# 
 
 Show FDB via CLI
 ----------------
@@ -1465,15 +1650,21 @@ The command below displays the Forwarding Database.
 
 .. code-block:: bash
 
-    r5900-2# show fdb 
-                                                                                                NDI                                                        
-    MAC ADDRESS        VLAN  TAG TYPE      VLAN  TAG TYPE      VID   ENTRY TYPE   OWNER    AGE  ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  INTERFACE  
-    -------------------------------------------------------------------------------------------------------------------------------------------------------
-    00:94:a1:69:35:14  500   tag_type_vid  500   tag_type_vid  500   L2-LISTENER  tenant1  -    4095  8    -    -    -    -    1     -          -          
-    00:94:a1:69:35:14  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  tenant1  -    4095  8    -    -    -    -    1     -          -          
-    00:94:a1:69:35:14  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  tenant1  -    4095  8    -    -    -    -    1     -          -          
+    r10900-1# show fdb
+                                                                                                        SUB                                                                  
+                                                                                                        MOD       NDI                                                        
+    MAC ADDRESS        VLAN  TAG TYPE      VLAN  TAG TYPE      VID   ENTRY TYPE   OWNER                  ID   AGE  ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  INTERFACE  
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    00:94:a1:69:59:26  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  bigip-next-f5demo-net  0    -    4095  64   -    -    -    -    1     -          -          
+    00:94:a1:69:59:26  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  bigip-next-f5demo-net  0    -    4095  64   -    -    -    -    1     -          -          
+    00:94:a1:69:59:29  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  fix-ll                 0    -    4095  10   -    -    -    -    1     -          -          
+    00:94:a1:69:59:29  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  fix-ll                 0    -    4095  10   -    -    -    -    1     -          -          
+    00:94:a1:69:59:2b  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  test-tenant            0    -    4095  11   -    -    -    -    1     -          -          
+    00:94:a1:69:59:2b  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  test-tenant            0    -    4095  11   -    -    -    -    1     -          -          
+    00:94:a1:69:59:2d  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  tenant1                0    -    4095  17   -    -    -    -    1     -          -          
+    00:94:a1:69:59:2d  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  tenant1                0    -    4095  17   -    -    -    -    1     -          -          
 
-    r5900-2# 
+    r10900-1# 
 
 
 Show FPGA Tables via CLI
@@ -1482,23 +1673,63 @@ Show FPGA Tables via CLI
 .. code-block:: bash
 
 
-    r5900-2# show fpga-tables
-                                                                                                                                                                                                                                                RX                     
-                                                            MCAST  MCAST                                                                                                                  RX                                                    DST                    
-                                                        TX     RX     TX     RX     RX     RX     RX     RX     RX     RX     RX     TX     TX     TX     TX     TX     TX     TX     TX     MCAST             RX     TX                  TX       DIS    MIRROR  MIRROR  
-                RX PKT   RX BYTE    TX PKT   TX BYTE    OBUFF  FULL   FULL   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   PKT     RX MCAST  MCAST  MCAST    TX MCAST   MCAST    PKT    PKTS    BYTES   
-    NAME        CNT      CNT        CNT      CNT        DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  CNT     BYTE CNT  DROPS  PKT CNT  BYTE CNT   DROPS    CNT    CNT     CNT     
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    port0_mod0  741483   106773552  1646401  237965206  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      60      6360      0      1929920  150506676  0        0      0       0       
-    port1_mod0  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      0        0          0        0      0       0       
-    port2_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      450      35184      1929470  0      0       0       
-    port3_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      0        0          0        0      0       0       
-    port4_mod4  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      450      35184      1929470  0      0       0       
-    port5_mod5  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0         0      450      35184      1929470  0      0       0       
-    port6_mod1  372853   54581052   11963    1722672    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      939297  73409046  0      990623   77097630   0        0      0       0       
-    port7_mod2  1273548  183384154  729520   105050880  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      990563  77091270  0      939357   73415406   0        0      0       0       
+    r10900-1# show fpga-tables
+                                                                                                                                    RX     RX     RX     RX     BAD     BAD     BAD     BAD     MIR     MIR     MIR     MIR                                                                                                                 VMIL    VMIL    VMIL    VMIL    ITW            ITW    ITW                      HLDP         
+                NMIL   NMIL 0  NMIL   NMIL   NMIL 1  NMIL                                                                           ROUTE  ROUTE  ROUTE  ROUTE  IFH     IFH     IFH     IFH     PKT     PKT     PKT     PKT                                                                                                                 RX      RX      RX      RX      RX     ITW RX  RX     TX     NTX               NTX    HLDP  
+                0 RX   RX MD   0 TX   1 RX   RX MD   1 TX   TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  0      1      2      3      CRC     CRC     CRC     CRC     DIS     DIS     DIS     DIS     BC          BC          BC          BC          BC          BC          MIR         MIR         MIR         RUNT    RUNT    RUNT    RUNT    RUNT   JABBER  ERR    ERR    MGR   NTX   NTX   MGR    NTX   
+                RUNT   PARITY  CONG   RUNT   PARITY  CONG   0 DRP   0 DRP   0 DRP   1 DRP   1 DRP   1 DRP   2 DRP   2 DRP   2 DRP   DROP   DROP   DROP   DROP   DROP    DROP    DROP    DROP    MIR     MIR     MIR     MIR     CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  DROP    DROP    DROP    DROP    DROP   DROP    DROP   DROP   DROP  MGR0  MGR1  DROP   MGR0  
+    SLOT  NAME   DROPS  DROPS   DROPS  DROPS  DROPS   DROPS  CNT 0   CNT 1   CNT 2   CNT 0   CNT 1   CNT 2   CNT 0   CNT 1   CNT 2   CNT    CNT    CNT    CNT    CNT 0   CNT 1   CNT 2   CNT 3   PORT 0  PORT 1  PORT 2  PORT 3  DROP 0      DROP 1      DROP 2      DROP HI 0   DROP HI 1   DROP HI 2   DROP 0      DROP 1      DROP 2      CNT 0   CNT 1   CNT 2   CNT 3   CNT    CNT     CNT    CNT    AGGR  DROP  DROP  AGGR   DROP  
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    1     nse_0  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
+    1     nse_1  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       25539  0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
+    1     nse_2  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
+    1     nse_3  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       34591  16560  0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
 
-    r5900-2# 
+                                                                                                RX                             
+                                                                        RX    RX    RX    RX    CTRL                     TX    
+                                                        RX    RX    RX    DROP  CTRL  CTRL  CTRL  L2LS   RX    TX    TX    DROP  
+                                    VLAN                DROP  DROP  DROP  BAD   DFLT  NLS   L2LS  DLF    DROP  DROP  DROP  BAD   
+    SLOT  NAME          STP STATE   PRIORITY  DSCP      DTD   STD   UTD   VLAN  DROP  DROP  DROP  DROP   STP   STD   UTD   NTI   
+    -----------------------------------------------------------------------------------------------------------------------------
+    1     1.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     10.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     11.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     12.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     13.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     14.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     15.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     16.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     17.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     18.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     19.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     2.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     20.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     3.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     4.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     5.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     6.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     7.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     8.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     9.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     nse_0.host20              disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     nse_2.host20              disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+
+                                                                                                                                                                                                                                    RX                     
+                                                            MCAST  MCAST                                                                                                                  RX     RX            TX     TX            DST                    
+                                                        TX     RX     TX     RX     RX     RX     RX     RX     RX     RX     RX     TX     TX     TX     TX     TX     TX     TX     TX     MCAST  MCAST  RX     MCAST  MCAST  TX     DIS    MIRROR  MIRROR  
+                RX PKT   RX BYTE    TX PKT   TX BYTE    OBUFF  FULL   FULL   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   PKT    BYTE   MCAST  PKT    BYTE   MCAST  PKT    PKTS    BYTES   
+    NAME        CNT      CNT        CNT      CNT        DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  CNT    CNT    DROPS  CNT    CNT    DROPS  CNT    CNT     CNT     
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    port0_mod0  1446140  215862822  1347598  196868007  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      135    13860  0      397    67514  0      0      0       0       
+    port1_mod0  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
+    port2_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      262    53654  0      397    67514  0      0      0       0       
+    port3_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
+    port4_mod4  0        0          34711    7142344    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
+    port5_mod5  0        0          38316    6587438    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      397    67514  0      0      0       0       
+    port6_mod1  1347348  196842407  1372863  202107440  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
+    port7_mod2  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      397    67514  0      0      0       0       
+
+    r10900-1#
 
 Show Port-Mappings via CLI
 ------------------------
@@ -1506,15 +1737,17 @@ Show Port-Mappings via CLI
 .. code-block:: bash
 
 
-    r5900-2# show port-mappings 
-                                                                                NUM                                         
-                                            CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                              
-    NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                     
-    -------------------------------------------------------------------------------------------------------------------------
-    default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 1.0 3.0 4.0 5.0 6.0 ]   
-               PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]  
+    r10900-1# show port-mappings 
+                                                                                NUM                                             
+                                            CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                                  
+    NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                         
+    -----------------------------------------------------------------------------------------------------------------------------
+    default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          16     [ 1.0 3.0 4.0 5.0 6.0 ]       
+            PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          16     [ 10.0 2.0 7.0 8.0 9.0 ]      
+    default-2  PIPELINE-3  PIPELINEGROUP-2  100       200        OVERSUBSCRIBED  5          16     [ 11.0 13.0 14.0 15.0 16.0 ]  
+            PIPELINE-4  PIPELINEGROUP-2  100       185        OVERSUBSCRIBED  5          16     [ 12.0 17.0 18.0 19.0 20.0 ]  
 
-    r5900-2# 
+    r10900-1# 
 
 
 Show Service-Instances via CLI
@@ -1522,59 +1755,69 @@ Show Service-Instances via CLI
 
 .. code-block:: bash
 
-    r5900-2# show service-instances 
-                                    ATSE                                                                                                                                                                         
-                SLOT  INSTANCE    MOD                      TENANT  SERVICE  NUM   DM           SVC  DOS                                                                                           VLAN         
-    TENANT NAME   ID    ID          ID    SERVICE TYPE       ID      IDS      SEPS  OFFSET  DID  GRP  GRP  TCO  WP  SP  TP  MSS  TC  WIN  WSCALE  SYNACKTTL  SYNACKHOPLIMIT  INDEX  S1  S2  S3  S4  ID    STATE  
-    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    L2HostLearn   1     713434935   0     ST_SYSTEM_SERVICE  0       [ 2 ]    1     0       15   1    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
-    SwRbcaster-1  1     4039786245  0     ST_SYSTEM_SERVICE  0       [ 5 ]    1     0       15   3    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
-    lacpd         1     19377286    0     ST_SYSTEM_SERVICE  0       [ 1 ]    1     2       15   5    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
-    lldpd         1     1795340596  0     ST_SYSTEM_SERVICE  0       [ 4 ]    1     0       15   2    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
-    stpd          1     19377286    0     ST_SYSTEM_SERVICE  0       [ 3 ]    1     1       15   4    -    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
-    tenant1       1     2823180630  0     ST_TENANT_SERVICE  2       [ 8 ]    2     1       15   6    1    -    -   -   -   -    -   -    -       -          -               -      -   -   -   -                
+    r10900-1# show service-instances 
+                                    ATSE  SUB                                                           TOTAL                                                                                                                                                           
+                SLOT  INSTANCE    MOD   MOD                     TENANT  SERVICE    NUM   DM           NUM    SVC  DOS                                                                                                                                    VLAN         
+    TENANT NAME   ID    ID          ID    ID   SERVICE TYPE       ID      IDS        SEPS  OFFSET  DID  SEPS   GRP  GRP  TCO  WP  SP  TP  MSS  TC  WIN  WSCALE  SYNACKTTL  SYNACKHOPLIMIT  INDEX           S1          S2          S3          S4          ID    STATE  
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    L2HostLearn   1     2145616534  0     0    ST_SYSTEM_SERVICE  0       [ 2 ]      1     0       15   2      1    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
+    L2HostLearn   1     2145616535  3     0    ST_SYSTEM_SERVICE  0       [ 2 ]      1     0       63   2      1    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
+    SwRbcaster-1  1     1236993455  0     0    ST_SYSTEM_SERVICE  0       [ 5 ]      1     0       15   1      3    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
+    fix-ll        1     614204398   0     0    ST_TENANT_SERVICE  78      [ 8 10 ]   1     1       15   2      6    1    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_TWO  2081180134  1972787202  137951967   3196618858               
+    fix-ll        1     614204399   3     0    ST_TENANT_SERVICE  78      [ 8 10 ]   1     1       63   2      2    1    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_TWO  2081180134  1972787202  137951967   3196618858               
+    lacpd         1     1519468704  0     0    ST_SYSTEM_SERVICE  0       [ 1 ]      1     0       15   1      4    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
+    lldpd         1     672042957   0     0    ST_SYSTEM_SERVICE  0       [ 4 ]      1     0       15   1      2    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
+    stpd          1     1519468704  0     0    ST_SYSTEM_SERVICE  0       [ 3 ]      1     0       15   1      5    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
+    tenant1       1     515380303   0     0    ST_TENANT_SERVICE  81      [ 15 17 ]  1     1       15   2      8    3    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  3165290783  3340060162  800311922   2934689344               
+    tenant1       1     515380304   3     0    ST_TENANT_SERVICE  81      [ 15 17 ]  1     0       63   2      4    3    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  3165290783  3340060162  800311922   2934689344               
+    test-tenant   1     614204398   0     0    ST_TENANT_SERVICE  79      [ 9 11 ]   1     2       15   2      7    2    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  2502135663  1002484893  1104246011  3976888041               
+    test-tenant   1     614204399   3     0    ST_TENANT_SERVICE  79      [ 9 11 ]   1     2       63   2      3    2    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  2502135663  1002484893  1104246011  3976888041               
 
-    r5900-2# 
+    r10900-1# 
 
 Show Service-Pods via CLI
 ------------------------------
 
 .. code-block:: bash
 
-    r5900-2# show service-pods     
+    r10900-1# show service-pods     
                                             SERVICE  POD           POD                                     POD      
                             SERVICE         CLUSTER  SLOT  POD     RESTART  POD                            IMAGE    
     SERVICE NAME            CLUSTER IP      PORT     ID    STATUS  COUNT    STATE    POD MESSAGE           VERSION  
     ----------------------------------------------------------------------------------------------------------------
-    compute                                 0        1     true    0        Running  Running Successfully  2.4.6    
-    coredns                                 0        1     true    8        Running  Running Successfully  1.8.3    
-    kube-flannel                            0        1     true    8        Running  Running Successfully  0.13.0   
-    kube-multus                             0        1     true    8        Running  Running Successfully  3.6.0    
-    lb-port-443                             0        1     true    8        Running  Running Successfully  v0.2.0   
-    local-path-provisioner                  0        1     true    12       Running  Running Successfully  v0.0.19  
-    metrics-server          100.75.29.109   443      1     true    8        Running  Running Successfully  v0.3.6   
-    pause                                   0        1     true    8        Running  Running Successfully  3.1      
-    traefik-ingress-lb                      0        1     true    8        Running  Running Successfully  2.4.8    
-    virt-api                100.75.241.212  443      1     true    8        Running  Running Successfully  2.4.6    
-    virt-controller                         0        1     true    12       Running  Running Successfully  2.4.6    
-    virt-handler                            0        1     true    8        Running  Running Successfully  2.4.6    
-    virt-operator                           0        1     true    12       Running  Running Successfully  2.4.6    
+    coredns                 -               -        1     true    0        Running  Running Successfully  1.8.33   
+    kube-flannel            -               -        1     true    0        Running  Running Successfully  0.13.1   
+    kube-multus             -               -        1     true    0        Running  Running Successfully  3.7.0    
+    lb-port-443             -               -        1     true    0        Running  Running Successfully  v0.2.0   
+    local-path-provisioner  -               -        1     true    0        Running  Running Successfully  v0.0.19  
+    metrics-server          100.75.96.137   443      1     true    0        Running  Running Successfully  v0.3.6   
+    pause                   -               -        1     true    0        Running  Running Successfully  3.1      
+    virt-api                100.75.116.218  443      1     true    0        Running  Running Successfully  2.9.1    
+    virt-controller         -               -        1     true    0        Running  Running Successfully  2.7.3    
+    virt-handler            -               -        1     true    0        Running  Running Successfully  2.9.1    
+    virt-operator           -               -        1     true    0        Running  Running Successfully  2.7.3    
 
-    r5900-2# 
+    r10900-1#
 
 Show Services via CLI
 ---------------------
 
 .. code-block:: bash
 
-    r5900-2# show services
-                                                USE                                       USE             
-    SERVICE  HASH   FIELD   FULL        TUNNEL  IP     HASH   FIELD   FULL        TUNNEL  IP     TENANT   
-    ID       ALG    SELECT  MASK  MASK  SELECT  PROTO  ALG    SELECT  MASK  MASK  SELECT  PROTO  NAME     
-    ------------------------------------------------------------------------------------------------------
-    8        dagv2  port    true        outer   false  dagv2  port    true        outer   false  tenant1  
+    r10900-1# show services    
+                                                USE                                             USE                                                  SUB  IPV6    
+    SERVICE  HASH   FIELD   FULL        TUNNEL  IP     L4    HASH   FIELD   FULL        TUNNEL  IP     L4                                            MOD  PREFIX  
+    ID       ALG    SELECT  MASK  MASK  SELECT  PROTO  EXC   ALG    SELECT  MASK  MASK  SELECT  PROTO  EXC   PORT ADJUST      TENANT NAME            ID   LENGTH  
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------
+    8        dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             fix-ll                 0    128     
+    9        dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             test-tenant            0    128     
+    10       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  xor5mid-xor5low  fix-ll                 0    128     
+    11       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  xor5mid-xor5low  test-tenant            0    128     
+    15       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             tenant1                0    128     
+    17       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  xor5mid-xor5low  tenant1                0    128     
+    64       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             bigip-next-f5demo-net  0    128     
 
-    r5900-2# 
+    r10900-1# 
 
 Show VLAN-Listeners via CLI
 ---------------------------
@@ -1595,30 +1838,58 @@ Show VLAN-Listeners via CLI
 Software Health and Status from the webUI
 ---------------------------------------
 
-The rSeries Dashboard will provide a visual system summary of the appliance including System Summary, Network, CPU, and Active Alarms. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters.
+The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Tenant Overview**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. New in version F5OS-A 1.8.0 is more granular **Memory Utilization** and **Storage Utilization** Details.
 
-.. image:: images/monitoring_rseries/image1.png
+.. image:: images/initial_setup_of_rseries_network_layer/image1.png
   :align: center
-  :scale: 70%
+  :scale: 70% 
 
-The Network tab will provide a visual representation of all networking ports on the system. Each port will be color coded Green for Up status, and Red or Down status. The current Pipeline mapping is also displayed which shows the external port mapping to internal pipelines.
+More granular **Memory Utilization** is displayed showing how much memory is dedicated and in use by **F5OS System** vs. **F5OS Tenants**.
 
-
-.. image:: images/monitoring_rseries/image2.png
+.. image:: images/initial_setup_of_rseries_network_layer/memory-utilization.png
   :align: center
-  :scale: 70%
+  :scale: 70% 
 
-The CPU tab shows all the available CPU’s in the system, along with their Current, 5 Second, 1 Minute, and 5 Minute averages.
+There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for **F5OS Tenant Disks** (BIG-IP Tenant) virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality, it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each). Lastly, there is a single BIG-IP Next tenant that has 25GB allocated to it but is currently utilizing 7% of that space.
 
-.. image:: images/monitoring_rseries/image3.png
+.. NOTE:: Storage utilization and allocation may be different on various rSeries platforms.
+
+
+.. image:: images/monitoring_rseries/storage-utilization.png
   :align: center
-  :scale: 70%
+  :scale: 70% 
 
-The Active Alarms tab will display any active alerts or alarms for the system.
+The **Network** tab will provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
-.. image:: images/monitoring_rseries/image4.png
+.. image:: images/monitoring_rseries/image2a.png
   :align: center
-  :scale: 70%
+  :scale: 70% 
+
+The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r10900 which has 12 vCPUs dedicated to the F5OS/Datamover functions. 
+
+.. image:: images/monitoring_rseries/image3a.png
+  :align: center
+  :scale: 70% 
+
+For reference below is the architecture of the r10900. Note that there are 12 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
+
+.. image:: images/monitoring_rseries/r10900-arch.png
+  :align: center
+  :scale: 50% 
+
+Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU's available for F5OS to use as needed. 
+
+.. image:: images/monitoring_rseries/cpu-allocation.png
+  :align: center
+  :scale: 70% 
+
+
+
+The  **Active Alarms** tab will display any active alerts or alarms for the system. 
+
+.. image:: images/monitoring_rseries/image4a.png
+  :align: center
+  :scale: 70% 
 
 
 ---------------------------------------

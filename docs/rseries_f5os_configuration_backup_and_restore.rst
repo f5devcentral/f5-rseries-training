@@ -142,6 +142,15 @@ In the webUI, use the **System Settings -> File Utilities** page and from the dr
   :align: center
   :scale: 70%
 
+Additionally, in newer F5OS releases you can download right from the **Configuration Backup** page. Each file will have a **Download** option next ot it.
+
+
+.. image:: images/rseries_f5os_configuration_backup_and_restore/download.png
+  :align: center
+  :scale: 70%
+
+
+
 
 Exporting F5OS Backup via CLI
 ------------------------------

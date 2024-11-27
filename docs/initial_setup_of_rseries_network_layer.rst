@@ -8,9 +8,24 @@ Initial Setup of the rSeries Network Layer
 rSeries Dashboard
 -----------------
 
-The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. 
+The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Tenant Overview**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. New in version F5OS-A 1.8.0 is more granular **Memory Utilization** and **Storage Utilization** Details.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image1.png
+  :align: center
+  :scale: 70% 
+
+More granular **Memory Utilization** is displayed showing how much memory is dedicated and in use by **F5OS System** vs. **F5OS Tenants**.
+
+.. image:: images/initial_setup_of_rseries_network_layer/memory-utilization.png
+  :align: center
+  :scale: 70% 
+
+There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for **F5OS Tenant Disks** (BIG-IP Tenant) virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each). Lastly, there is a single BIG-IP Next tenant that has 25GB allocated to it, but is currently utilizing 7% of that space.
+
+.. NOTE:: Storage utilization and allocation may be different on various rSeries platforms.
+
+
+.. image:: images/initial_setup_of_rseries_network_layer/storage-utilization.png
   :align: center
   :scale: 70% 
 
@@ -20,11 +35,25 @@ The **Network** tab will provide a visual representation of all networking ports
   :align: center
   :scale: 70% 
 
-The **CPU** tab shows all the available CPUs in the system, along with their **Current**, **5 Second**, **1 Minute**, and **5 Minute** averages.
+The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r10900 which has 12 vCPUs dedicated to the F5OS/Datamover functions. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
   :scale: 70% 
+
+For reference below is the architecture of the r10900. Note that there are 12 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
+
+.. image:: images/initial_setup_of_rseries_network_layer/r10900-arch.png
+  :align: center
+  :scale: 70% 
+
+Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU's available for F5OS to use as needed. 
+
+.. image:: images/initial_setup_of_rseries_network_layer/cpu-allocation.png
+  :align: center
+  :scale: 70% 
+
+
 
 The  **Active Alarms** tab will display any active alerts or alarms for the system. 
 
@@ -43,6 +72,8 @@ Network Settings - > Port Groups
 ================================
 
 Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled, and the port speed. Currently the high-speed ports do not support unbundling. Adjacent high-speed ports (**1.0** and **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both are configured for 100Gb; you cannot mix and match on the adjacent high-speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term, **portgroup** is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
+
+.. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
@@ -93,7 +124,7 @@ You must commit for any changes to take effect. This will require a reboot of th
     appliance-1(config-portgroup-10)# 
 
 
-Possible options for **MODE** depend on which port you are configuring. For the high-speed ports on the r10000/r5000, supported modes are: **MODE_40GB** or **MODE_100GB**. For the low-speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
+Possible options for **MODE** depend on which port you are configuring. For the high-speed ports on the r10000/r5000, supported modes are: **MODE_40GB**, **MODE_100GB**, or **MODE_4x10GB** (added in F5OS-A 1.8.0). For the low-speed ports possible options for **MODE** are: **MODE_10GB** and **MODE_25GB**. You can optionally configure the portgroup **name** and ddm **poll frequency**. You can display the current configuration of the existing portgroups by running the CLI command **show running-config portgroups**. Below is the example output from an r5000 appliance:
 
 .. code-block:: bash
 
@@ -2650,13 +2681,13 @@ Link Aggregation Groups (LAGs) can be configured in the F5OS webUI via the **Net
 
 You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term **Trunks** is used in place of LAG which is used in F5OS: 
 
-https://support.f5.com/csp/article/K1689
+`K1689: Overview of trunks on BIG-IP platforms <https://my.f5.com/manage/s/article/K1689>`_
 
-https://support.f5.com/csp/article/K13142
+`K13142: Configure the BIG-IP system to interface with Cisco virtual PortChannel <https://support.f5.com/csp/article/K13142>`_
 
 The following solution article provides guidance for setting up VELOS LAG interfaces and LACP with Cisco Nexus 9000 series switches, and this would be similar guidance for rSeries:
 
-https://support.f5.com/csp/article/K33431212
+`K33431212: Configure LAGs with LACP between the VELOS system and Cisco Nexus 9000 series switches <https://support.f5.com/csp/article/K33431212>`_
 
 
 Once you have configured the **LAG Type** and LACP options, you can add any physical interfaces within the rSeries appliance to be part of a LAG. Finally, you can configure the **Native VLAN** (for untagged VLAN), and what **Trunked VLANs** (tagged) you’d like to add to this LAG interface.

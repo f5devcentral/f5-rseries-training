@@ -5,38 +5,41 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 
 Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can continue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower-level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
 
-Below are the latest SNMP MIBs as of the F5OS-A 1.6.0 release.
+Below are the latest SNMP MIBs as of the F5OS-A 1.8.0 release.
 
-As of F5OS-A 1.6.0, the following NetSNMP MIBs are available:
+As of F5OS-A 1.8.0, the following NetSNMP MIBs are available:
 
-- HOST-RESOURCES-MIB
-- RFC1213-MIB
-- EtherLike-MIB
-- IANAifType-MIB
-- IF-MIB
-- IPV6-TC
-- SNMP-COMMUNITY-MIB
-- SNMP-FRAMEWORK-MIB
-- SNMP-MPD-MIB
-- SNMP-NOTIFICATION-MIB
-- SNMP-TARGET-MIB
-- SNMP-USER-BASED-SM-MIB
-- SNMP-VIEW-BASED-ACM-MIB
-- SNMPv2-CONF 
-- SNMPv2-MIB
-- SNMPv2 SMI
-- SNMPv2-TC
 - TRANSPORT-ADDRESS-MIB
+- SNMP-VIEW-BASED-ACM-MIB
+- SNMPv2-TC
+- SNMPv2 SMI
+- SNMPv2-MIB
+- SNMPv2-CONF 
+- SNMP-USER-BASED-SM-MIB
+- SNMP-TARGET-MIB
+- SNMP-NOTIFICATION-MIB
+- SNMP-MPD-MIB
+- SNMP-FRAMEWORK-MIB
+- SNMP-COMMUNITY-MIB
+- RFC1213-MIB
+- IPV6-TC
+- IF-MIB
+- IANAifType-MIB
+- HOST-RESOURCES-MIB
+- EtherLike-MIB
 
-As of F5OS-A 1.6.0.the following F5OS Appliance MIBs are available:
 
-- F5-ALERT-DEF-MIB
-- F5-COMMON-SMI-MIB
-- F5-OS-LLDP-MIB
-- F5-OS-PLATFORM-SMI-MIB
-- F5-OS-SYSTEM-MIB
-- F5-PLATFORM-STATS-MIB
+As of F5OS-A 1.8.0 the following F5OS Appliance MIBs are available:
+
 - F5OS-APPLIANCE-ALERT-NOTIF-MIB
+- F5-PLATFORM-STATS-MIB
+- F5-OS-TENANT-MIB
+- F5-OS-SYSTEM-MIB
+- F5-OS-PLATFORM-SMI-MIB
+- F5-OS-LLDP-MIB
+- F5-COMMON-SMI-MIB
+- F5-ALERT-DEF-MIB
+
 
 Downloading MIBs
 ================
@@ -672,6 +675,49 @@ Configuring SNMP Access via API
 
 SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either a community for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
 
+To configure the SNMP system parameters via API use the following API call:
+
+.. code-block:: bash
+
+    PATCH https://{{velos_chassis1_system_controller_ip}}:8888/restconf/data/SNMPv2-MIB:SNMPv2-MIB/system
+
+In the body of the API add the SNMP sysContact, sysName, and sysLocation.
+
+.. code-block:: json
+
+    {
+    "SNMPv2-MIB:system": {
+        "sysContact": "jim@f5.com",
+        "sysName": "r10900-1.f5demo.net",
+        "sysLocation": "Boston"
+        }
+    }
+
+To view the SNMP system parameters use the following API call:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMPv2-MIB:SNMPv2-MIB/system
+
+A response similar to the one below will be displayed.
+
+.. code-block:: json
+
+    {
+        "SNMPv2-MIB:system": {
+            "sysDescr": "F5 rSeries-r10900 : Linux 3.10.0-1160.71.1.F5.1.el7_8.x86_64 : Appliance services version 1.8.0-8478",
+            "sysObjectID": "1.3.6.1.4.1.12276.1.3.1.2",
+            "sysUpTime": 61877485,
+            "sysContact": "jim@f5.com",
+            "sysName": "r10900-1.f5demo2.net",
+            "sysLocation": "Boston",
+            "sysServices": 72,
+            "sysORLastChange": 9
+        }
+    }
+
+
+
 To create an SNMPv3 user use the following API call.
 
 .. code-block:: bash
@@ -845,7 +891,7 @@ The output should appear similar to the example below.
 Configuring SNMP Access via webUI
 ---------------------------------
 
-SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**.
+SNMP configuration via the webUI was added in the F5OS-A 1.3.0 release. You may configure SNMP Properties, SNMP Communities, SNMP Users, and SNMP Targets. SNMP is configured under **System Settings -> SNMP Configuration**.
 
 .. image:: images/rseries_monitoring_snmp/image2.png
   :align: center
@@ -872,7 +918,7 @@ SNMP Trap receivers may be added and a community or a user is added depending on
 SNMP Trap Support in F5OS-A
 ===========================
 
-You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.6.0. NOTE: the file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). You only need to rely on one file if you are using both platforms. Some traps may be specific to one platform or the other. 
+You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0. NOTE: the file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). You only need to rely on one file if you are using both platforms. Some traps may be specific to one platform or the other. 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. They are also logged in the snmp.log file. Once a clear SNMP Trap is sent, it should clear the event from the **show events** output.
 
@@ -913,6 +959,10 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | sensor-fault               | .1.3.6.1.4.1.12276.1.1.1.65577   |
 +----------------------------+----------------------------------+
+| datapath-fault             | .1.3.6.1.4.1.12276.1.1.1.65578   |
++----------------------------+----------------------------------+
+| boot-time-integrity-status | .1.3.6.1.4.1.12276.1.1.1.65579   |
++----------------------------+----------------------------------+
 | module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
 +----------------------------+----------------------------------+
 | psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
@@ -921,7 +971,7 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | module-communication-error | .1.3.6.1.4.1.12276.1.1.1.66307   |
 +----------------------------+----------------------------------+
-| fips-fault                 | .1.3.6.1.4.1.12276.1.1.1.196308  |
+| fips-fault                 | .1.3.6.1.4.1.12276.1.1.1.66308   |
 +----------------------------+----------------------------------+
 | fipsError                  | .1.3.6.1.4.1.12276.1.1.1.196608  |
 +----------------------------+----------------------------------+
@@ -929,58 +979,152 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | reboot                     | .1.3.6.1.4.1.12276.1.1.1.327681  |
 +----------------------------+----------------------------------+
+| incompatible-image         | .1.3.6.1.4.1.12276.1.1.1.327682  |
++----------------------------+----------------------------------+
+| login-failed               | .1.3.6.1.4.1.12276.1.1.1.327683  |
++----------------------------+----------------------------------+
 | raid-event                 | .1.3.6.1.4.1.12276.1.1.1.393216  |
 +----------------------------+----------------------------------+
 | backplane                  | .1.3.6.1.4.1.12276.1.1.1.262144  |
 +----------------------------+----------------------------------+
-| txPwrHiAlarm               | .1.3.6.1.4.1.12276.1.1.1.262400  |
+| txPwr                      | .1.3.6.1.4.1.12276.1.1.1.262400  |
 +----------------------------+----------------------------------+
-| txPwrHiWarn                | .1.3.6.1.4.1.12276.1.1.1.262401  |
+| rxPwr                      | .1.3.6.1.4.1.12276.1.1.1.262401  |
 +----------------------------+----------------------------------+
-| txPwrLoAlarm               | .1.3.6.1.4.1.12276.1.1.1.262402  |
+| txBias                     | .1.3.6.1.4.1.12276.1.1.1.262402  |
 +----------------------------+----------------------------------+
-| txPwrLoWarn                | .1.3.6.1.4.1.12276.1.1.1.262403  |
+| ddmTemp                    | .1.3.6.1.4.1.12276.1.1.1.262403  |
 +----------------------------+----------------------------------+
-| rxPwrHiAlarm               | .1.3.6.1.4.1.12276.1.1.1.262404  |
+| ddmVcc                     | .1.3.6.1.4.1.12276.1.1.1.262404  |
 +----------------------------+----------------------------------+
-| rxPwrHiWarn                | .1.3.6.1.4.1.12276.1.1.1.262405  |
+| initialization             | .1.3.6.1.4.1.12276.1.1.1.262656  |
 +----------------------------+----------------------------------+
-| rxPwrLoAlarm               | .1.3.6.1.4.1.12276.1.1.1.262406  |
+| ePVA                       | .1.3.6.1.4.1.12276.1.1.1.262912  |
 +----------------------------+----------------------------------+
-| rxPwrLoWarn                | .1.3.6.1.4.1.12276.1.1.1.262407  |
+| interface-up               | .1.3.6.1.4.1.12276.1.1.1.263168  |
 +----------------------------+----------------------------------+
-| txBiasHiAlarm              | .1.3.6.1.4.1.12276.1.1.1.262408  |
+| interface-down             | .1.3.6.1.4.1.12276.1.1.1.263169  |
 +----------------------------+----------------------------------+
-| txBiasHiWarn               | .1.3.6.1.4.1.12276.1.1.1.262409  |
+| speed                      | .1.3.6.1.4.1.12276.1.1.1.263170  |
 +----------------------------+----------------------------------+
-| txBiasLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262410  |
+| inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
-| txBiasLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262411  |
-+----------------------------+----------------------------------+
-| ddmTempHiAlarm             | .1.3.6.1.4.1.12276.1.1.1.262412  |
-+----------------------------+----------------------------------+
-| ddmTempHiWarn              | .1.3.6.1.4.1.12276.1.1.1.262413  |
-+----------------------------+----------------------------------+
-| ddmTempLoAlarm             | .1.3.6.1.4.1.12276.1.1.1.262414  |
-+----------------------------+----------------------------------+
-| ddmTempLoWarn              | .1.3.6.1.4.1.12276.1.1.1.262415  |
-+----------------------------+----------------------------------+
-| ddmVccHiAlarm              | .1.3.6.1.4.1.12276.1.1.1.262416  |
-+----------------------------+----------------------------------+
-| ddmVccHiWarn               | .1.3.6.1.4.1.12276.1.1.1.262417  |
-+----------------------------+----------------------------------+
-| ddmVccLoAlarm              | .1.3.6.1.4.1.12276.1.1.1.262418  |
-+----------------------------+----------------------------------+
-| ddmVccLoWarn               | .1.3.6.1.4.1.12276.1.1.1.262419  |
-+----------------------------+----------------------------------+
+
+
 
 SNMP Trap Details
 =================
 
-Device Fault Traps
+This section provides examples of SNMP traps and their associated log messages, and what troubleshooting steps are recommended. Traps will be sent with either an **assert** when an alarm occurs, a **clear** when the alarm is cleared, or an **event** which is providing an update to a raised alarm event.
+
+- assert(1) is reported in alertEffect when alarm is raised.
+- clear(0) is reported in alertEffect when alarm is cleared.
+- event(2) is updated in alertEffect when event notification is reported.
+
+As an example, the following set of traps are from an LCD failure and recovery on an F5OS based rSeries device. Note, that first there are a bunch of alarms being raised noted by **(INTEGER alertEffect=1)**. Then there are follow-on events, which provide additional updates to those alarms that have been raised noted by **(INTEGER alertEffect=2)**. Finally, the alarms are cleared as noted by **(INTEGER alertEffect=0)**, as well as additional informational events related to the clear noted by **(INTEGER alertEffect=2)**.
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include 11-Jul-2022::06:32       
+    <INFO> 11-Jul-2022::06:32:03.334 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440809 10.255.0.145:161 (TimeTicks sysUpTime=24905)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2022-07-11 06:32:03.331289309 UTC)(OCTET STRING alertDescription=Module communication error detected)
+    <INFO> 11-Jul-2022::06:32:03.335 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440809 10.255.0.144:161 (TimeTicks sysUpTime=24905)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2022-07-11 06:32:03.331289309 UTC)(OCTET STRING alertDescription=Module communication error detected)
+    <INFO> 11-Jul-2022::06:32:03.384 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440810 10.255.0.145:161 (TimeTicks sysUpTime=24910)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:03.331305808 UTC)(OCTET STRING alertDescription=LCD module communication error detected)
+    <INFO> 11-Jul-2022::06:32:03.384 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440810 10.255.0.144:161 (TimeTicks sysUpTime=24910)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:03.331305808 UTC)(OCTET STRING alertDescription=LCD module communication error detected)
+    <INFO> 11-Jul-2022::06:32:03.434 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440811 10.255.0.145:161 (TimeTicks sysUpTime=24915)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:03.335454678 UTC)(OCTET STRING alertDescription=LCD Health is Not OK)
+    <INFO> 11-Jul-2022::06:32:03.434 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440811 10.255.0.144:161 (TimeTicks sysUpTime=24915)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:03.335454678 UTC)(OCTET STRING alertDescription=LCD Health is Not OK)
+    <INFO> 11-Jul-2022::06:32:07.371 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440812 10.255.0.145:161 (TimeTicks sysUpTime=25309)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554447)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+    <INFO> 11-Jul-2022::06:32:07.371 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440812 10.255.0.144:161 (TimeTicks sysUpTime=25309)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554447)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+    <INFO> 11-Jul-2022::06:32:23.884 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440813 10.255.0.145:161 (TimeTicks sysUpTime=26960)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554448)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+    <INFO> 11-Jul-2022::06:32:23.884 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440813 10.255.0.144:161 (TimeTicks sysUpTime=26960)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554448)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+    <INFO> 11-Jul-2022::06:32:52.025 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440814 10.255.0.145:161 (TimeTicks sysUpTime=29774)(OBJECT IDENTIFIER snmpTrapOID=firmware-update-status)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:52.020011073 UTC)(OCTET STRING alertDescription=Firmware update completed for lcd app)
+    <INFO> 11-Jul-2022::06:32:52.025 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440814 10.255.0.144:161 (TimeTicks sysUpTime=29774)(OBJECT IDENTIFIER snmpTrapOID=firmware-update-status)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:52.020011073 UTC)(OCTET STRING alertDescription=Firmware update completed for lcd app)
+    <INFO> 11-Jul-2022::06:32:53.291 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440815 10.255.0.145:161 (TimeTicks sysUpTime=29901)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.287950254 UTC)(OCTET STRING alertDescription=Module communication error detected)
+    <INFO> 11-Jul-2022::06:32:53.291 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440815 10.255.0.144:161 (TimeTicks sysUpTime=29901)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.287950254 UTC)(OCTET STRING alertDescription=Module communication error detected)
+    <INFO> 11-Jul-2022::06:32:53.341 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440816 10.255.0.145:161 (TimeTicks sysUpTime=29906)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.287969529 UTC)(OCTET STRING alertDescription=LCD module communication is OK)
+    <INFO> 11-Jul-2022::06:32:53.341 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440816 10.255.0.144:161 (TimeTicks sysUpTime=29906)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.287969529 UTC)(OCTET STRING alertDescription=LCD module communication is OK)
+    <INFO> 11-Jul-2022::06:32:53.391 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440817 10.255.0.145:161 (TimeTicks sysUpTime=29911)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.292347336 UTC)(OCTET STRING alertDescription=LCD Health is OK)
+    <INFO> 11-Jul-2022::06:32:53.391 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440817 10.255.0.144:161 (TimeTicks sysUpTime=29911)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:32:53.292347336 UTC)(OCTET STRING alertDescription=LCD Health is OK)
+
+
+Generic SNMP Traps
 ------------------
 
-**hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**   
+**coldStart         	1.3.6.1.6.3.1.1.5.1**  
+
+
+A coldStart trap signifies that the SNMP entity,supporting a notification originator application, is reinitializing itself and that its configuration may have been altered.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include cold
+    <INFO> 30-Apr-2024::10:30:40.348 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214784 10.255.80.251:162 (TimeTicks sysUpTime=456)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
+
+
+**link down         	1.3.6.1.6.3.1.1.5.3**  
+
+A linkDown trap signifies that the SNMP entity, acting in an agent role, has detected that the ifOperStatus object for one of its communication links is about to enter the down state from some other state (but not from the notPresent state). This other state is indicated by the included value of ifOperStatus.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include linkDown
+    <INFO> 30-Apr-2024::10:32:21.589 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214828 10.255.80.251:162 (TimeTicks sysUpTime=10581)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554513)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=2)
+    <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
+    r10900-2#
+
+**interface down     1.3.6.1.4.1.12276.1.1.1.263169**
+
+Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+
+.. code-block:: bash
+
+    <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
+
+    <INFO> 3-May-2024::15:51:52.363 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214840 10.255.80.251:162 (TimeTicks sysUpTime=27847658)(OBJECT IDENTIFIER snmpTrapOID=down)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-05-03 19:51:52.350979671 UTC)(OCTET STRING alertDescription=Interface down)
+
+**link up         	1.3.6.1.6.3.1.1.5.4**  
+
+A linkUp trap signifies that the SNMP entity, acting in an agent role, has detected that the ifOperStatus object for one of its communication links left the down state and transitioned into some other state (but not into the notPresent state). This other state is indicated by the included value of ifOperStatus.
+
+
+.. code-block:: bash
+
+    <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+
+**interface up     1.3.6.1.4.1.12276.1.1.1.263168**
+
+Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+
+
+.. code-block:: bash
+
+    <INFO> 3-May-2024::15:59:54.373 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214845 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=linkUp)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=1)(INTEGER ifOperStatus.0.=1)
+    
+    <INFO> 3-May-2024::15:59:54.371 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214844 10.255.80.251:162 (TimeTicks sysUpTime=27895859)(OBJECT IDENTIFIER snmpTrapOID=up)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-03 19:59:54.359054296 UTC)(OCTET STRING alertDescription=Interface up)   
+
+
+
+F5OS Specific Traps
+------------------
+
+Device Fault Traps
+^^^^^^^^^^^^^^^^^^
+
+**hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**  
+
++------------------+-----------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                     |
++==================+=======================================================================+
+| ASSERT           | Hardware device fault detected                                        |
++------------------+-----------------------------------------------------------------------+
+| EVENT            | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
+|                  |                                                                       |
+|                  | Example:                                                              | 
+|                  |                                                                       |
+|                  | Asserted: CPU machine check error                                     |
+|                  |                                                                       |
++------------------+-----------------------------------------------------------------------+
+| CLEAR            | Hardware device fault detected                                        |
++------------------+-----------------------------------------------------------------------+
 
 This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. Examine the trap for specific details of what subsystem has failed to determine the proper troubleshooting steps to pursue. 
 
@@ -1007,6 +1151,12 @@ This set of taps may indicate a fault with various hardware components on the rS
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
 
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            | <<ARM Exception data available | Heap running low | Task stack usage warning | Watchdog timer warning >> |
++------------------+----------------------------------------------------------------------------------------------------------+
+
 This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
 
 
@@ -1028,11 +1178,28 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+Unregistered alarm detected.
+
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include unknown-alarm
+    r4800-2-gsa# file show log/system/snmp.log | include unknown
+    <INFO> 30-Jan-2023::09:33:17.616 appliance-1 confd[151]: snmp snmpv2-trap reqid=1133821928 10.255.0.143:162 (TimeTicks sysUpTime=25343)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-01-30 14:33:17.611415038 UTC)(OCTET STRING alertDescription=FW Update)
+    <INFO> 11-Jul-2023::10:12:39.643 appliance-1 confd[159]: snmp snmpv2-trap reqid=1955459347 10.255.0.143:162 (TimeTicks sysUpTime=31172)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-11 14:12:39.638211376 UTC)(OCTET STRING alertDescription=FW Update)
+    r4800-2-gsa#
 
 **memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1040,11 +1207,76 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **drive-fault                    .1.3.6.1.4.1.12276.1.1.1.65540**
 
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Fault in drive detected                                                            |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | Event can either of these below issues:                                            |
+|                  |                                                                                    |
+|                  |  Drive Available Spare is below threshold                                          |
+|                  |                                                                                    |
+|                  |  Drive Volatile Memory Backup System has failed                                    |
+|                  |                                                                                    |
+|                  |  Drive Endurance consumed has exceeded threshold                                   |
+|                  |                                                                                    |
+|                  |  Drive has encountered Media Errors                                                |
+|                  |                                                                                    |
+|                  |  Allowable program fail count is below 50 percent                                  |
+|                  |                                                                                    |
+|                  |  Allowable program fail count is below 80 percent                                  |
+|                  |                                                                                    |
+|                  |  Allowable erase fail count is below 50 percent                                    |
+|                  |                                                                                    |
+|                  |  Allowable erase fail count is below 80 percent                                    |
+|                  |                                                                                    |
+|                  |  Drive Reliability is degraded due to excessive media or internal errors           |
+|                  |                                                                                    |
+|                  |  More number of CRC errors encountered                                             |
+|                  |                                                                                    |
+|                  |  Less than 50 Percentage of erase cycles remaining                                 |
+|                  |                                                                                    |
+|                  |  Less than 80 Percentage of erase cycles remaining                                 |
+|                  |                                                                                    |
+|                  |  Drive Media is not in read-only mode                                              |
+|                  |                                                                                    |
+|                  | Clear descriptions:                                                                |
+|                  |                                                                                    |
+|                  |  Event can either of these below issues:                                           |
+|                  |                                                                                    |
+|                  |  Drive Available Spare is as expected                                              |
+|                  |                                                                                    |
+|                  |  Drive Volatile Memory Backup System is healthy                                    |
+|                  |                                                                                    |
+|                  |  Drive Endurance consumed is normal                                                |
+|                  |                                                                                    |
+|                  |  Drive has no Internal or Media Errors / Drive has no Media Errors                 |
+|                  |                                                                                    |
+|                  |  Allowable program fail count is above 80 percent                                  |
+|                  |                                                                                    |
+|                  |  Allowable erase fail count is above 80 percent                                    |
+|                  |                                                                                    |
+|                  |  Number of CRC errors are in allowed range                                         |
+|                  |                                                                                    |
+|                  |  More than 80 Percentage of erase cycles remaining                                 |
+|                  |                                                                                    |
+|                  |  Drive Media is placed in read-only mode                                           |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Fault in drive detected                                                            |
++------------------+------------------------------------------------------------------------------------+
+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include drive-fault
 
 **cpu-fault                      .1.3.6.1.4.1.12276.1.1.1.65541**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1052,17 +1284,100 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **pcie-fault                     .1.3.6.1.4.1.12276.1.1.1.65542**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include pcie-fault
 
 **aom-fault                      .1.3.6.1.4.1.12276.1.1.1.65543**
 
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Fault detected in the AOM                                                          |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | << Asserted | Deasserted >>: <<sensor name>>                                       |
+|                  |                                                                                    |
+|                  | Sensor names include:                                                              |
+|                  |                                                                                    |
+|                  | I2C-1 PEL EEPROM Ack Fault                                                         |
+|                  |                                                                                    |
+|                  | I2C-1 CPLD EEPROM Ack Fault                                                        |
+|                  |                                                                                    |
+|                  | I2C-1 Platform EEPROM Ack Fault                                                    |
+|                  |                                                                                    |
+|                  | I2C-3 TMP421 Outlet Ack Fault                                                      |
+|                  |                                                                                    |
+|                  | I2C-3 MAX31730 VQF Ack Fault                                                       |
+|                  |                                                                                    |
+|                  | I2C-3 TMP423 Ack Fault                                                             |
+|                  |                                                                                    |
+|                  | I2C-3 MAX31730 ATSE1 Ack Fault                                                     |
+|                  |                                                                                    |
+|                  | I2C-3 MAX31730 ATSE2 Ack Fault                                                     |
+|                  |                                                                                    |
+|                  | I2C-3 LM25066 Hotswap Controller Ack Fault                                         |
+|                  |                                                                                    |
+|                  | I2C-4 TMP468 ATSE Ack Fault                                                        |
+|                  |                                                                                    |
+|                  | I2C-4 TMP421 Inlet Ack Fault                                                       |
+|                  |                                                                                    |
+|                  | I2C-1 Stuck Bus Fault                                                              |
+|                  |                                                                                    |
+|                  | I2C-2 Stuck Bus Fault                                                              |
+|                  |                                                                                    |
+|                  | I2C-3 Stuck Bus Fault                                                              |
+|                  |                                                                                    |
+|                  | I2C-4 Stuck Bus Fault                                                              |
+|                  |                                                                                    |
+|                  | LOP FIT Forced Bad Health                                                          |
+|                  |                                                                                    |
+|                  | Blade-LOP NC-SI / RMII Failure                                                     |
+|                  |                                                                                    |
+|                  | Power-On Self Test (POST) failure                                                  |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Fault detected in the AOM                                                          |
++------------------+------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include aom-fault
+    r4800-1# file show log/system/snmp.log | include aom-fault
+    <INFO> 1-Apr-2023::10:55:27.010 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337677 10.255.0.143:162 (TimeTicks sysUpTime=2403)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-01 14:55:26.862411702 UTC)(OCTET STRING alertDescription=MFG Lockout On)
+    <INFO> 8-Apr-2023::06:00:00.860 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337679 10.255.0.143:162 (TimeTicks sysUpTime=58709788)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-08 10:00:00.853229431 UTC)(OCTET STRING alertDescription=Fault detected in the AOM)
+    <INFO> 8-Apr-2023::06:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337680 10.255.0.143:162 (TimeTicks sysUpTime=58709793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 10:00:00.853246182 UTC)(OCTET STRING alertDescription=Bmc Health Self test failed: Device-specific 'internal' failure.)
+    <INFO> 8-Apr-2023::07:00:00.860 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337681 10.255.0.143:162 (TimeTicks sysUpTime=59069788)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852559128 UTC)(OCTET STRING alertDescription=Fault detected in the AOM)
+    <INFO> 8-Apr-2023::07:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337682 10.255.0.143:162 (TimeTicks sysUpTime=59069793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852594292 UTC)(OCTET STRING alertDescription=Bmc Health Self test passed)
+ 
 
 **drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Running out of drive capacity                                                      |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | << value >> percent of drive capacity left                                         |
+|                  |                                                                                    |
+|                  | Drive capacity is available                                                        |
+|                  |                                                                                    |
+|                  | Example:                                                                           |
+|                  |                                                                                    |
+|                  | Ten percent of drive capacity left                                                 |
+|                  |                                                                                    |
+|                  | Three percent of drive capacity left                                               |
+|                  |                                                                                    |
+|                  | Fifteen percent of drive capacity left                                             |
+|                  |                                                                                    |
+|                  | Drive capacity is available                                                        |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Running out of drive capacity                                                      |
++------------------+------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1073,6 +1388,21 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
     <INFO> 12-Apr-2023::11:54:35.217 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130734 10.255.8.22:6011 (TimeTicks sysUpTime=89545)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:54:35.162734807 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=54%)
 
 **power-fault                    .1.3.6.1.4.1.12276.1.1.1.65545**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Power fault detected in hardware                                                   |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | << Asserted | Deasserted >>: <<sensor name>>                                       |
+|                  |                                                                                    |
+|                  | Example:                                                                           |
+|                  |                                                                                    |
+|                  | Asserted: +5.0V_STBY power fault                                                   |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Power fault detected in hardware                                                   |
++------------------+------------------------------------------------------------------------------------+
+
 
 .. code-block:: bash
 
@@ -1087,6 +1417,18 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 
 **thermal-fault                  .1.3.6.1.4.1.12276.1.1.1.65546**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Thermal fault detected in hardware                                                 |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | << Thermal sensor >> at <<temperature>>                                            |
+|                  |                                                                                    |
+|                  | Example: VQF at +38.1 degC                                                         |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Thermal fault detected in hardware                                                 |
++------------------+------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1115,11 +1457,47 @@ This set of taps may indicate a fault or temporary warning with the firmware upg
 
 **drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547**
 
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Drive has entered a thermal throttle condition                                     |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | Drive's thermal throttling is more than <<value>> percent                          |
+|                  |                                                                                    |
+|                  | Drive has entered a thermal throttle condition                                     |
+|                  |                                                                                    |
+|                  | Examples:                                                                          |
+|                  |                                                                                    |
+|                  | Drive's thermal throttling is more than 15 percent                                 |
+|                  |                                                                                    |
+|                  | Drive's thermal throttling is more than 80 percent                                 | 
+|                  |                                                                                    |
+|                  | Drive has entered a thermal throttle condition                                     |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Drive has entered a thermal throttle condition                                     |
++------------------+------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include drive-thermal-throttle
 
 **blade-thermal-fault            .1.3.6.1.4.1.12276.1.1.1.65548**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Thermal fault detected in blade                                                    |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | Drive Temperature has exceeded threshold                                           |
+|                  |                                                                                    |
+|                  | Drive Sensor Temperature is outside operating range                                |
+|                  |                                                                                    |
+|                  | Drive Temperature is as expected                                                   |
+|                  |                                                                                    |
+|                  | Drive Sensor Temperature is within normal range                                    |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Thermal fault detected in blade                                                    |
++------------------+------------------------------------------------------------------------------------+
 
 This SNMP Trap is for the VELOS system, and it monitors various temperature sensors on each VELOS blade. The sensors monitor CPU, FGPA, and memory temperatures and will warn if the temperature goes beyond recommended guidelines. If a thermal fault occurs you can verify if it has cleared due to a temporary condition. You can also check the system fans to ensure they are operating properly in the VELOS system via the command **show components component fantray-1**. You can also check the environment in which the VELOS system is running to ensure the data center is not operating at too high temperature.
 
@@ -1147,11 +1525,120 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 **blade-hardware-fault           .1.3.6.1.4.1.12276.1.1.1.65549**
 
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Hardware fault detected in blade                                                   |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | << Asserted | Deasserted >> : << ras error>>                                       |
+|                  |                                                                                    |
+|                  | Ras errors list is:                                                                |
+|                  |                                                                                    |
+|                  | RAS AER correctable advisory non-fatal error                                       |
+|                  |                                                                                    |
+|                  | RAS AER correctable BAD DLLP error                                                 |
+|                  |                                                                                    |
+|                  | RAS AER correctable BAD TLP error                                                  |
+|                  |                                                                                    |
+|                  | RAS AER correctable Receiver error                                                 |
+|                  |                                                                                    |
+|                  | RAS AER correctable RELAY_NUM rollover error                                       |
+|                  |                                                                                    |
+|                  | RAS AER correctable replay timer timeout error                                     |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable completer abort error                                        |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable completion timeout error                                     |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable data link protocol error                                     |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable ECRC error                                                   |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable flow control protocol error                                  |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable malformed TLP error                                          |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable Poisoned TLP Error                                           |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable receiver overflow error                                      |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable unexpected completion error                                  |
+|                  |                                                                                    |
+|                  | RAS AER uncorrectable unsupported request error                                    |
+|                  |                                                                                    |
+|                  | RAS AER unknown error                                                              |
+|                  |                                                                                    |
+|                  | RAS Extlog invalid address error                                                   |
+|                  |                                                                                    |
+|                  | RAS Extlog master abort error                                                      |
+|                  |                                                                                    |
+|                  | RAS Extlog memory sparing error                                                    |
+|                  |                                                                                    |
+|                  | RAS Extlog mirror broken error                                                     |
+|                  |                                                                                    |
+|                  | RAS Extlog multi-bit ECC error                                                     |
+|                  |                                                                                    |
+|                  | RAS Extlog multi-symbol chipkill ECC error                                         |
+|                  |                                                                                    |
+|                  | RAS Extlog no error                                                                |
+|                  |                                                                                    |
+|                  | RAS Extlog Parity error                                                            |
+|                  |                                                                                    |
+|                  | RAS Extlog physical memory map-out error                                           |
+|                  |                                                                                    |
+|                  | RAS Extlog scrub corrected error                                                   |
+|                  |                                                                                    |
+|                  | RAS Extlog scrub uncorrected error                                                 |
+|                  |                                                                                    |
+|                  | RAS Extlog single-bit ECC error                                                    |
+|                  |                                                                                    |
+|                  | RAS Extlog single-symbol chipkill ECC error                                        |
+|                  |                                                                                    |
+|                  | RAS Extlog target abort error                                                      |
+|                  |                                                                                    |
+|                  | RAS Extlog Unknown error                                                           |
+|                  |                                                                                    |
+|                  | RAS Extlog unknown type error                                                      |
+|                  |                                                                                    |
+|                  | RAS Extlog watchdog timeout error                                                  |
+|                  |                                                                                    |
+|                  | RAS MCE processor temperature throttling disabled error                            |
+|                  |                                                                                    |
+|                  | RAS MCE address/command error                                                      |
+|                  |                                                                                    |
+|                  | RAS MCE generic undefined request error                                            |
+|                  |                                                                                    |
+|                  | RAS MCE memory read error                                                          |
+|                  |                                                                                    |
+|                  | RAS MCE memory scrubbing error                                                     |
+|                  |                                                                                    |
+|                  | RAS MCE memory write error                                                         |
+|                  |                                                                                    |
+|                  | RAS MCE unknown error                                                              |
+|                  |                                                                                    |
+|                  | RAS memory controller fatal event                                                  |
+|                  |                                                                                    |
+|                  | RAS memory controller uncorrected event                                            |
+|                  |                                                                                    |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Hardware fault detected in blade                                                   |
++------------------+------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include blade-hardware-fault
 
 **sensor-fault                   .1.3.6.1.4.1.12276.1.1.1.65577**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           | Sensor fault detected in hardware                                 |
++------------------+-------------------------------------------------------------------+
+| EVENT            | << Asserted | Deasserted >> : sensor fault: <<sensor name>>       |
++------------------+-------------------------------------------------------------------+
+| CLEAR            | Sensor fault detected in hardware                                 |
++------------------+-------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1175,6 +1662,15 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 **module-present                 .1.3.6.1.4.1.12276.1.1.1.66304**
 
+
++------------------+-----------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                         |
++==================+===========================================================+
+| EVENT            | <<module>> <<present|removed>>                            |
+|                  |                                                           |
+|                  | Example: blade1 removed                                   |
++------------------+-----------------------------------------------------------+
+
 .. code-block:: bash
 
     syscon-1-active# file show log/confd/snmp.log | include module-present
@@ -1195,7 +1691,51 @@ This SNMP Trap is for the VELOS system, and it monitors various temperature sens
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
-This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not and an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | PSU fault detected                                                                 |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | <<< Asserted| Deasserted >>: PSU <<psu number>> << sensor that caused the issue>>  |
+|                  |                                                                                    |
+|                  | Examples:                                                                          |
+|                  |                                                                                    |
+|                  | Asserted: PSU 1 input under-voltage warning                                        |
+|                  |                                                                                    |
+|                  | Deasserted: PSU 1 input under-voltage warning                                      |
+|                  |                                                                                    |
+|                  | Sensor could be:                                                                   |
+|                  |                                                                                    |
+|                  | input over-power warning                                                           |
+|                  |                                                                                    |
+|                  | input over-current warning                                                         |
+|                  |                                                                                    |
+|                  | input over-current fault                                                           |
+|                  |                                                                                    |
+|                  | unit off for low input voltage                                                     |
+|                  |                                                                                    |
+|                  | input under-voltage fault                                                          |
+|                  |                                                                                    |
+|                  | input under-voltage warning                                                        |
+|                  |                                                                                    |
+|                  | input over-voltage warning                                                         | 
+|                  |                                                                                    |
+|                  | input over-voltage fault                                                           |
+|                  |                                                                                    |
+|                  | PSU present                                                                        |
+|                  |                                                                                    |
+|                  | PSU input-ok                                                                       |
+|                  |                                                                                    |
+|                  | PSU output-ok                                                                      |
+|                  |                                                                                    |
+|                  | PSU unsupported                                                                    |
+|                  |                                                                                    |
+|                  | PSU mismatch                                                                       |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | PSU fault detected                                                                 |
++------------------+------------------------------------------------------------------------------------+
+
+This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not if an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
 .. code-block:: bash
 
@@ -1216,8 +1756,32 @@ This set of SNMP traps will relate to the health of the power supplies in the rS
     <INFO> 10-Jul-2023::13:43:27.554 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423964 10.255.0.144:161 (TimeTicks sysUpTime=15336)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.295486581 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
     <INFO> 10-Jul-2023::13:43:28.708 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423977 10.255.0.144:161 (TimeTicks sysUpTime=15451)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:23.951104145 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 input OK)
 
+    <INFO> 28-Aug-2024::08:48:35.127 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993906 10.255.80.251:162 (TimeTicks sysUpTime=39653639)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:48:35.123688343 UTC)(OCTET STRING alertDescription=PSU fault detected)
+    <INFO> 28-Aug-2024::08:48:35.177 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993907 10.255.80.251:162 (TimeTicks sysUpTime=39653644)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:48:35.123694857 UTC)(OCTET STRING alertDescription=Asserted: PSU 2 output OK)
+    <INFO> 28-Aug-2024::08:48:37.245 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993908 10.255.80.251:162 (TimeTicks sysUpTime=39653851)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2024-08-28 12:48:37.241897832 UTC)(OCTET STRING alertDescription=PSU fault detected)
+    <INFO> 28-Aug-2024::08:48:37.295 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993909 10.255.80.251:162 (TimeTicks sysUpTime=39653856)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:48:37.241905067 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 output OK)
+    <INFO> 28-Aug-2024::08:54:32.199 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993910 10.255.80.251:162 (TimeTicks sysUpTime=39689346)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:54:32.195728364 UTC)(OCTET STRING alertDescription=PSU fault detected)
+    <INFO> 28-Aug-2024::08:54:32.249 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993911 10.255.80.251:162 (TimeTicks sysUpTime=39689351)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:54:32.195735630 UTC)(OCTET STRING alertDescription=Asserted: PSU 2 output OK)
+    <INFO> 28-Aug-2024::08:54:34.198 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993912 10.255.80.251:162 (TimeTicks sysUpTime=39689546)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2024-08-28 12:54:34.194929367 UTC)(OCTET STRING alertDescription=PSU fault detected)
+    <INFO> 28-Aug-2024::08:54:34.248 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993913 10.255.80.251:162 (TimeTicks sysUpTime=39689551)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:54:34.194936734 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 output OK)
+    <INFO> 28-Aug-2024::09:00:02.203 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993914 10.255.80.251:162 (TimeTicks sysUpTime=39722346)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 13:00:02.200380119 UTC)(OCTET STRING alertDescription=PSU voltage out value < lower limit, value=9.39)
+    r10900-1-gsa# 
+
 
 **lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306**
+
++------------------+-----------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                         |
++==================+===========================================================+
+| ASSERT           | Fault detected in LCD module                              |
++------------------+-----------------------------------------------------------+
+| EVENT            | <<LCD is in fault state | LCD is in healthy state >>      |
++------------------+-----------------------------------------------------------+
+| CLEAR            | Fault detected in LCD module                              |
++------------------+-----------------------------------------------------------+
+
+
+
 
 This set of SNMP traps will relate to the health of the LCD subsystem on rSeries appliances. You may notice lcd-fault traps as the firmware on the LCD is updated as part of an upgrade as seen below. These should be temporary states and eventually the system will generate an **LCD Health is OK** trap. If the system continues to show an LCD fault, a support case should be opened to determine if there is a legitimate hardware issue.
 
@@ -1239,6 +1803,24 @@ This set of SNMP traps will relate to the health of the LCD subsystem on rSeries
 
 
 **module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307**
+
+
++------------------+-----------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                         |
++==================+===========================================================+
+| ASSERT           | Module communication error detected                       |
++------------------+-----------------------------------------------------------+
+| EVENT            | <<module>> communication error detected                   |
+|                  |                                                           |
+|                  | <<module>> communication is OK                            |
+|                  |                                                           |
+|                  | Example:                                                  |
+|                  |                                                           |
+|                  | lcd communication error detected.                         |
+|                  |                                                           |
++------------------+-----------------------------------------------------------+
+| CLEAR            | Module communication error detected                       |
++------------------+-----------------------------------------------------------+
 
 Power Supply Module
 
@@ -1264,14 +1846,58 @@ LCD Module
     <INFO> 12-Apr-2023::11:51:45.255 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130730 10.255.8.22:6011 (TimeTicks sysUpTime=72549)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.156764576 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
 
+**initialization                 .1.3.6.1.4.1.12276.1.1.1.262656**
 
- 
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+Critical issue in fpga and datapath initialization process.
+
+
+
+.. code-block:: bash
+
+**ePVA	                           .1.3.6.1.4.1.12276.1.1.1.262912**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+Could not initialize ePVA
+
+.. code-block:: bash
+
+**inaccessible-memory	            .1.3.6.1.4.1.12276.1.1.1.458752**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+Notification indicating unusable hugepage memory.
+
+.. code-block:: bash
 
 
 Firmware Update Status Traps
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| EVENT            | Firmware update is <<running | completed >> for <<module>>                                               |
+|                  |                                                                                                          |
+|                  | Example: Firmware update is running for vqf 0                                                            |
++------------------+----------------------------------------------------------------------------------------------------------+
+
 
 These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the status of the firmware updates as seen below.
 
@@ -1306,9 +1932,22 @@ The CLI command below shows how to filter the **snmp.log** file to only show fir
 
 
 Drive Utilization Traps
-----------------------------
+^^^^^^^^^^^^^^^^^^^^^^^
 
 **drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           | Drive utilization growth rate is high                             |
++------------------+-------------------------------------------------------------------+
+| EVENT            | Drive usage growth rate exceeded 10%, growth={{.growthPercent}}   |
+|                  |                                                                   |
+|                  | Drive usage growth rate with in range, growth={{.growthPercent}}% |
+|                  |                                                                   |
++------------------+-------------------------------------------------------------------+
+| CLEAR            | Drive utilization growth rate is high                             |
++------------------+-------------------------------------------------------------------+
 
 The system will monitor the storage utilization of the rSeries disks and warn if the disk usage gets too high. There are 3 levels of events that can occur as seen below:
 
@@ -1354,9 +1993,17 @@ You can also view the snmp.log file to see the SNMP traps that have been issued 
 
 
 FIPS Related Traps
-------------------
+^^^^^^^^^^^^^^^^^^
 
-**fips-fault                     .1.3.6.1.4.1.12276.1.1.1.196308**
+**fips-fault                     .1.3.6.1.4.1.12276.1.1.1.66308**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+Fault detected in FIPS module.
 
 .. code-block:: bash
 
@@ -1368,14 +2015,30 @@ FIPS Related Traps
 
 **fipsError                      .1.3.6.1.4.1.12276.1.1.1.196608**
 
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           | FIPS error identified in one or more services                     |
++------------------+-------------------------------------------------------------------+
+| CLEAR            | FIPS error identified in one or more services                     |
++------------------+-------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include fipsError
 
 System Event Traps
-------------------
+^^^^^^^^^^^^^^^^^^
 
 **core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            | Core dumped on Appliance. process=<service name> location=<core file location>           |
++------------------+------------------------------------------------------------------------------------------+
+
+
 
 This trap will indicate that the system has generated a core-dump file. A support case should be opened to diagnose the failure and a qkview should be taken and uploaded to iHealth to capture the diagnostic information for F5 support to analyze. Below is an example of an SNMP trap indicating that the orchestration manager has generated a core dump Files.
 
@@ -1386,15 +2049,75 @@ This trap will indicate that the system has generated a core-dump file. A suppor
 
 **reboot                         .1.3.6.1.4.1.12276.1.1.1.327681**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            | reboot - appliance-1.chassis.local F5OS-A [R5R10 | R2R4 ] version <Version>              |
++------------------+------------------------------------------------------------------------------------------+
+
+
 This trap will indicate that the system has rebooted. It's possible this was a planned reboot initiated by the administrator. Below is an example of a reboot trap.
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log
-    <INFO> 17-Nov-2023::12:06:13.587 appliance-1 confd[130]: snmp snmpv2-trap reqid=1025467718 10.255.0.144:161 (TimeTicks sysUpTime=380496)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-17 17:06:13.583723667 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
-    <INFO> 17-Nov-2023::12:09:02.207 appliance-1 confd[117]: snmp snmpv2-trap reqid=1710762179 10.255.0.144:161 (TimeTicks sysUpTime=69)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
+    <INFO> 28-Aug-2024::10:18:46.110 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993932 10.255.80.251:162 (TimeTicks sysUpTime=40194737)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:18:46.105502772 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
+    <INFO> 28-Aug-2024::10:21:37.059 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902909 10.255.80.251:162 (TimeTicks sysUpTime=2963)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:21:37.056152494 UTC)(OCTET STRING alertDescription=reboot - appliance-1.chassis.local F5OS-A R5R10 version 1.8.0-13598)
+
+
+**incompatible-image	         .1.3.6.1.4.1.12276.1.1.1.327682**
+
++------------------+-------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                         |
++==================+===========================================================================================+
+| EVENT            | Unsupported platform <Platform Type>                                                      |
+|                  | import file <file path and name> removed incorrect file name                              |
+|                  | import file <file path and name> removed File name has special characters                 |
+|                  | Unexpected error processing Command '<command details>' returned non-zero exit status 32. |
++------------------+-------------------------------------------------------------------------------------------+
+
+An SNMP Trap will be generated when an admin attempts to upload the wrong F5OS image type into the system. In the example below, an F5OS **R5R10** image is being loaded into an r4000 series appliance. This image is not compatible with that system and a trap is generated. In this case, the proper **R2R4** image should be uploaded to run on the r4000 series platform.
+
+.. code-block:: bash
+
+    r4800-2-gsa# file show log/system/snmp.log | include incompatible
+    <INFO> 28-Aug-2024::17:51:57.265 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333161 10.255.80.251:162 (TimeTicks sysUpTime=42680703)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.254201062 UTC)(OCTET STRING alertDescription= Un supported platform R5R10)
+    <INFO> 28-Aug-2024::17:51:57.337 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333162 10.255.80.251:162 (TimeTicks sysUpTime=42680710)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.332980140 UTC)(OCTET STRING alertDescription= Unexpected error processing [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso')
+
+Looking at the **platform.log** file will provide additional details.
+
+.. code-block:: bash
+
+    r4800-2-gsa# file tail -n 200 log/system/platform.log
+    2024-08-28T17:51:56.558933-04:00 r4800-2-gsa.cpt.f5net.com sw-mgmt: priority=error msgid=0x3501000000000099 msg=Unsupported platform: R5R10
+    2024-08-28T17:51:57.259515-04:00 r4800-2-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="524545 appliance incompatible-image EVENT NA ' Un supported platform R5R10' '2024-08-28 21:51:57.254201062 UTC'".
+    2024-08-28T17:51:57.279796-04:00 r4800-2-gsa.cpt.f5net.com sw-mgmt: priority=info msgid=0x3501000000000196 msg=File /var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso removed from disk. Reason Unsupported platform type.
+    2024-08-28T17:51:57.280605-04:00 r4800-2-gsa.cpt.f5net.com sw-mgmt: priority=error msgid=0x3501000000000154 msg=Unexpected error processing "import /var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso": [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso'
+    2024-08-28T17:51:57.334010-04:00 r4800-2-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="524545 appliance incompatible-image EVENT NA ' Unexpected error processing [Errno 2] No such file or directory: \'/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso\'' '2024-08-28 21:51:57.332980140 UTC'".
+    r4800-2-gsa# 
+
+**login-failed                   .1.3.6.1.4.1.12276.1.1.1.327683**
+
++------------------+-------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                         |
++==================+===========================================================================================+
+| EVENT            | F5OS login attempt failed for the user: <username>, rhost: <remote host IP>               |
++------------------+-------------------------------------------------------------------------------------------+
+
+The system will send a trap anytime there is a failed login to one of the F5OS user interfaces. The **login-failed** trap will log the username and remote host from where the login was attempted.
+
+.. code-block:: bash
+
+    <INFO> 28-Aug-2024::10:43:31.003 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902947 10.255.80.251:162 (TimeTicks sysUpTime=134357)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:43:31.000008955 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.104.35)
+
+
 
 **raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1412,12 +2135,18 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 
 **backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
 
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include backplane
 
 Interface / Optic Related Traps
--------------------------------
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 The SNMP traps below will correspond the Digital Diagnostics Monitoring (DDM) that the F5OS layer runs to check the status and health of the fiberoptic transceivers installed. The **show portgroups** CLI command in F5OS will display the current ddm thresholds for warning and alarm as well as current values.
 
@@ -1485,90 +2214,99 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
     state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
 
+
+   
+
+**txPwr                   .1.3.6.1.4.1.12276.1.1.1.262400**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+The transmit power threshold for a specific transceiver has reached a theshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include ddm    
-
-**txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
-
-The transmit power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262401**
-
-The transmit power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262402**
-
-The transmit power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262403**
-
-The transmit power threshold for a specific transceiver has reached low txPwrLoWarn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262404**
-
-The receive power threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**rxPwrHiWarn                    .1.3.6.1.4.1.12276.1.1.1.262405**
-
-The receive power threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262406**
-
-The receive power threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**rxPwrLoWarn                    .1.3.6.1.4.1.12276.1.1.1.262407**
-
-The receive power threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262408**
-
-The transmit bias threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txBiasHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262409**
-
-The transmit bias threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txBiasLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262410**
-
-The transmit bias threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**txBiasLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262411**
-
-The transmit bias threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**ddmTempHiAlarm                 .1.3.6.1.4.1.12276.1.1.1.262412**
-
-The ddm temperature threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver. 
-
-**ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262413**
-
-The ddm temperature threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
-
-**ddmTempLoAlarm                 .1.3.6.1.4.1.12276.1.1.1.262414**
-
-The ddm temperature threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
-
-**ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262415**
-
-The ddm temperature threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+    r10900-2# file show log/system/snmp.log | include tx
+    <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
 
 
-**ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262416**
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reached high alarm status. Run the show portgroups command to see what the current values are for that transceiver.
+**rxPwr                   .1.3.6.1.4.1.12276.1.1.1.262401**
 
-**ddmVccHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262417**
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reached high warn status. Run the show portgroups command to see what the current values are for that transceiver.
+The receive power threshold for a specific transceiver has reached a theshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
-**ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262418**
+.. code-block:: bash
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reached low alarm status. Run the show portgroups command to see what the current values are for that transceiver.
+    r10900-1# file show log/system/snmp.log | include rx
+    <INFO> 12-Apr-2024::12:54:13.079 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.80.251:162 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.0.144:161 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 24-Apr-2024::16:20:42.534 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584533 10.255.80.251:162 (TimeTicks sysUpTime=130543073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-24 20:20:42.526603044 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 24-Apr-2024::16:20:42.534 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584533 10.255.0.144:161 (TimeTicks sysUpTime=130543073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-24 20:20:42.526603044 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 24-Apr-2024::16:21:13.162 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584534 10.255.80.251:162 (TimeTicks sysUpTime=130546136)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-24 20:21:13.155888950 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 24-Apr-2024::16:21:13.162 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584534 10.255.0.144:161 (TimeTicks sysUpTime=130546136)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-24 20:21:13.155888950 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    <INFO> 30-Apr-2024::10:32:45.501 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170483 10.255.80.251:162 (TimeTicks sysUpTime=16401)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-30 14:32:45.496108844 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 30-Apr-2024::10:32:45.501 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170483 10.255.0.144:161 (TimeTicks sysUpTime=16401)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-30 14:32:45.496108844 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 30-Apr-2024::10:33:15.499 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170486 10.255.80.251:162 (TimeTicks sysUpTime=19400)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-30 14:33:15.495468312 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 30-Apr-2024::10:33:15.499 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170486 10.255.0.144:161 (TimeTicks sysUpTime=19400)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-30 14:33:15.495468312 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 3-May-2024::15:52:15.461 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170861 10.255.80.251:162 (TimeTicks sysUpTime=27853397)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:15.455181379 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
 
-**ddmVccLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262419**
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reached low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+**txBias                  .1.3.6.1.4.1.12276.1.1.1.262402**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+The transmit bias threshold for a specific transceiver has reached a theshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include tx
+    <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
+
+
+**ddmTemp                 .1.3.6.1.4.1.12276.1.1.1.262403**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+The ddm temperature threshold for a specific transceiver has reached a theshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+.. code-block:: bash
+
+
+**ddmVcc                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+
+The ddm vcc (Voltage) threshold for a specific transceiver has reach a theshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+
+.. code-block:: bash
+
+
+
 
 Enabling SNMP Traps
 ===================
@@ -1784,7 +2522,7 @@ Polling SNMP Endpoints
 
 Once SNMP is properly setup and allow-lists are enabled you can poll SNMP objects from remote endpoints. If you have an SNMP manager, it is recommended you download the appropriate MIBs from the rSeries appliance and compile them into you SNMP manager. Alternatively, you can use SNMP command line utilities from a remote client to validate the SNMP endpoints. You can then poll/query the appliance via SNMP to get stats from the system using the following SNMP OID’s:
 
-SNMP System
+System
 -----------
 
 You can view system parameters such as SysDescr, sysObjectID, sysUptime, sysContact, sysName, sysLocation, sysServices, sysORLastChange, sysORTable, sysDateAndTime by SNMP walking the following OID.
@@ -1795,33 +2533,32 @@ Example output:
 
 .. code-block:: bash
 
-    FLD-ML-00054045$ snmpwalk -ObenU -v2c -c public 10.255.2.40 .1.3.6.1.2.1.1
-    .1.3.6.1.2.1.1.1.0 = STRING: Linux 3.10.0-1160.71.1.F5.1.el7_8.x86_64 : Appliance services version 1.7.0-0528
+    prompt% snmpwalk -ObenU -v2c -c public 10.255.2.40 .1.3.6.1.2.1.1
+    .1.3.6.1.2.1.1.1.0 = STRING: F5 rSeries-r10900 : Linux 3.10.0-1160.71.1.F5.1.el7_8.x86_64 : Appliance services version 1.8.0-9573
     .1.3.6.1.2.1.1.2.0 = OID: .1.3.6.1.4.1.12276.1.3.1.2
-    .1.3.6.1.2.1.1.3.0 = Timeticks: (86134641) 9 days, 23:15:46.41
+    .1.3.6.1.2.1.1.3.0 = Timeticks: (19392145) 2 days, 5:52:01.45
     .1.3.6.1.2.1.1.4.0 = STRING: jim@f5.com
-    .1.3.6.1.2.1.1.5.0 = STRING: r10900-1.f5demo.net
+    .1.3.6.1.2.1.1.5.0 = STRING: r10900-1.f5demo2.net
     .1.3.6.1.2.1.1.6.0 = STRING: Boston
     .1.3.6.1.2.1.1.7.0 = INTEGER: 72
-    .1.3.6.1.2.1.1.8.0 = Timeticks: (8) 0:00:00.08
+    .1.3.6.1.2.1.1.8.0 = Timeticks: (6) 0:00:00.06
     .1.3.6.1.2.1.1.9.1.2.1 = OID: .1.3.6.1.4.1.12276.1
     .1.3.6.1.2.1.1.9.1.2.2 = OID: .1.3.6.1.2.1.31
     .1.3.6.1.2.1.1.9.1.3.1 = STRING: F5 Networks enterprise Platform MIB
     .1.3.6.1.2.1.1.9.1.3.2 = STRING: The MIB module to describe generic objects for network interface sub-layers
-    .1.3.6.1.2.1.1.9.1.4.1 = Timeticks: (8) 0:00:00.08
-    .1.3.6.1.2.1.1.9.1.4.2 = Timeticks: (8) 0:00:00.08
-    FLD-ML-00054045$
+    .1.3.6.1.2.1.1.9.1.4.1 = Timeticks: (6) 0:00:00.06
+    .1.3.6.1.2.1.1.9.1.4.2 = Timeticks: (6) 0:00:00.06
+    prompt% 
 
-SNMP ifTable & ifXTable
+ifTable & ifXTable
 -----------------------
 
 You can poll the following SNMP OIDs to get detailed Interface stats for each physical port on the rSeries appliances, and for Link Aggregation Groups that have been configured.  Below are table views of the ifTable and ifXTable, you can poll individual interfaces if needed.
 
-**NOTE: Stats for LAG interfaces are not currently populated.**
 
 .. code-block:: bash
 
-    FLD-ML-00054045$ snmptable -v 2c -Cl -CB -Ci -OX -Cb -Cc 32 -Cw 500  -c public 10.255.2.40 ifTable
+    prompt% snmptable -v 2c -Cl -CB -Ci -OX -Cb -Cc 32 -Cw 500  -c public 10.255.2.40 ifTable
     SNMP table: IF-MIB::ifTable
 
     Index                           Descr                           Type                            Mtu                             Speed                           PhysAddress                     AdminStatus                     OperStatus                      LastChange                      InOctets                        InUcastPkts                     InNUcastPkts                    InDiscards                      InErrors                        InUnknownProtos                 
@@ -1831,178 +2568,184 @@ You can poll the following SNMP OIDs to get detailed Interface stats for each ph
     1                               r10900 Interface mgmt           ethernetCsmacd                  0                               4294967295                      0:94:a1:69:59:2                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
     ?                               ?                               ?                               0                               0                               ?                               ?                               
 
-    index: [33554433]
-    33554433                        this isin 1                     ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:d                 up                              up                              ?                               ?                               ?                               ?                               3423143                         0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554434]
-    33554434                        r10900 Interface 2.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:12                up                              down                            ?                               ?                               ?                               ?                               0                               43290                           ?                               
-    ?                               ?                               ?                               0                               54                              ?                               ?                               
-
-    index: [33554435]
-    33554435                        r10900 Interface 3.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:e                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554436]
-    33554436                        r10900 Interface 4.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:f                 down                            down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554437]
-    33554437                        r10900 Interface 5.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:10                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554438]
-    33554438                        r10900 Interface 6.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:11                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554439]
-    33554439                        r10900 Interface 7.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:13                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554440]
-    33554440                        r10900 Interface 8.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:14                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554441]
-    33554441                        r10900 Interface 9.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:15                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554442]
-    33554442                        r10900 Interface 10.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:16                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554443]
-    33554443                        r10900 Interface 11.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:3                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554444]
-    33554444                        r10900 Interface 12.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:8                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554445]
-    33554445                        r10900 Interface 13.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:4                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554446]
-    33554446                        r10900 Interface 14.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:5                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554447]
-    33554447                        r10900 Interface 15.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:6                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
-    index: [33554448]
-    33554448                        r10900 Interface 16.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:7                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
-    ?                               ?                               ?                               0                               0                               ?                               ?                               
-
     index: [33554449]
-    33554449                        test2                           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:9                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    33554449                        r10900 Interface 11.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:3                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
     ?                               ?                               ?                               0                               0                               ?                               ?                               
 
-    index: [33554450]
-    33554450                        test2                           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:a                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    index: [33554453]
+    33554453                        r10900 Interface 13.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:4                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
     ?                               ?                               ?                               0                               0                               ?                               ?                               
 
-    index: [33554451]
-    33554451                        r10900 Interface 19.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:b                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    index: [33554454]
+    33554454                        r10900 Interface 14.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:5                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
     ?                               ?                               ?                               0                               0                               ?                               ?                               
 
-    index: [33554452]
-    33554452                        r10900 Interface 20.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:c                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    index: [33554455]
+    33554455                        r10900 Interface 15.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:6                 up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554456]
+    33554456                        r10900 Interface 16.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:7                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554465]
+    33554465                        r10900 Interface 12.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:8                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554469]
+    33554469                        test2                           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:9                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554470]
+    33554470                        test2                           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:a                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554471]
+    33554471                        r10900 Interface 19.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:b                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554472]
+    33554472                        r10900 Interface 20.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:c                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554497]
+    33554497                        r10900 Interface 1.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:d                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554501]
+    33554501                        r10900 Interface 3.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:e                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554502]
+    33554502                        r10900 Interface 4.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:f                 up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554503]
+    33554503                        r10900 Interface 5.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:10                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554504]
+    33554504                        r10900 Interface 6.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:11                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554513]
+    33554513                        r10900 Interface 2.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:12                up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554517]
+    33554517                        r10900 Interface 7.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:13                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554518]
+    33554518                        r10900 Interface 8.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:14                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554519]
+    33554519                        r10900 Interface 9.0            ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:15                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [33554520]
+    33554520                        r10900 Interface 10.0           ethernetCsmacd                  9600                            4294967295                      0:94:a1:69:59:16                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
     ?                               ?                               ?                               0                               0                               ?                               ?                               
 
     index: [67108865]
-    67108865                        LAG to Arista                   ieee8023adLag                   9600                            4294967295                      0:94:a1:69:59:24                up                              up                              ?                               ?                               ?                               ?                               ?                               ?                               ?                               
-    ?                               ?                               ?                               ?                               ?                               ?                               ?                               
+    67108865                        LAG to Arista                   ieee8023adLag                   9600                            0                               0:94:a1:69:59:24                up                              down                            ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
 
     index: [67108866]
-    67108866                        LAG to other r10900             ieee8023adLag                   9600                            4294967295                      0:94:a1:69:59:25                up                              up                              ?                               ?                               ?                               ?                               ?                               ?                               ?                               
+    67108866                        LAG to other r10900             ieee8023adLag                   9600                            4294967295                      0:94:a1:69:59:25                up                              up                              ?                               ?                               ?                               ?                               0                               0                               ?                               
+    ?                               ?                               ?                               0                               0                               ?                               ?                               
+
+    index: [67108867]
+    67108867                        test                            ieee8023adLag                   9600                            0                               0:94:a1:69:59:27                up                              unknown                         ?                               ?                               ?                               ?                               ?                               ?                               ?                               
     ?                               ?                               ?                               ?                               ?                               ?                               ?                               
-    FLD-ML-00054045$
+    prompt%
 
 Below is an example of the ifXTable on the rSeries appliance.
 
 .. code-block:: bash
 
-    FLD-ML-00054045$ snmptable -v 2c -Cl -CB -Ci -OX -Cb -Cc 16 -Cw 384  -c public 10.255.2.40 ifXTable
+    prompt% snmptable -v 2c -Cl -CB -Ci -OX -Cb -Cc 16 -Cw 384  -c public 10.255.2.40 ifXTable
     SNMP table: IF-MIB::ifXTable
 
     Name            InMulticastPkts InBroadcastPkts OutMulticastPkt OutBroadcastPkt HCInOctets      HCInUcastPkts   HCInMulticastPk HCInBroadcastPk HCOutOctets     HCOutUcastPkts  HCOutMulticastP HCOutBroadcastP LinkUpDownTrapE HighSpeed       PromiscuousMode ConnectorPresen Alias           CounterDisconti 
 
     index: [1]
-    mgmt            ?               ?               ?               ?               928786560       146850          1264798         6763048         52938269        144995          73              20575           ?               1000            ?               ?               ?               ?               
-
-    index: [33554433]
-    1.0             ?               ?               ?               ?               455173154       3309922         918021          662903          9392768         0               73381           0               ?               100000          ?               ?               ?               ?               
-
-    index: [33554434]
-    2.0             ?               ?               ?               ?               0               0               0               0               278528          0               2176            0               ?               100000          ?               ?               ?               ?               
-
-    index: [33554435]
-    3.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554436]
-    4.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554437]
-    5.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554438]
-    6.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554439]
-    7.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554440]
-    8.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554441]
-    9.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554442]
-    10.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554443]
-    11.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
-
-    index: [33554444]
-    12.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
-
-    index: [33554445]
-    13.0            ?               ?               ?               ?               110217730       0               861080          0               110218498       0               861086          0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554446]
-    14.0            ?               ?               ?               ?               110217730       0               861080          0               110218498       0               861086          0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554447]
-    15.0            ?               ?               ?               ?               110216320       0               861065          0               110217088       0               861071          0               ?               25000           ?               ?               ?               ?               
-
-    index: [33554448]
-    16.0            ?               ?               ?               ?               110216320       0               861065          0               110218498       0               861086          0               ?               25000           ?               ?               ?               ?               
+    mgmt            ?               ?               ?               ?               3767464         11071           1855            16191           6693593         19236           125             73              ?               1000            ?               ?               ?               ?               
 
     index: [33554449]
+    11.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554453]
+    13.0            ?               ?               ?               ?               260737          0               2004            0               258880          0               1990            0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554454]
+    14.0            ?               ?               ?               ?               260737          0               2004            0               258880          0               1990            0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554455]
+    15.0            ?               ?               ?               ?               260737          0               2004            0               258880          0               1990            0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554456]
+    16.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554465]
+    12.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554469]
     17.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
 
-    index: [33554450]
+    index: [33554470]
     18.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
 
-    index: [33554451]
+    index: [33554471]
     19.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
 
-    index: [33554452]
+    index: [33554472]
     20.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               10000           ?               ?               ?               ?               
 
+    index: [33554497]
+    1.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554501]
+    3.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554502]
+    4.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554503]
+    5.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554504]
+    6.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554513]
+    2.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               100000          ?               ?               ?               ?               
+
+    index: [33554517]
+    7.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554518]
+    8.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554519]
+    9.0             ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
+    index: [33554520]
+    10.0            ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               25000           ?               ?               ?               ?               
+
     index: [67108865]
-    Arista          ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               276447232       ?               ?               ?               ?               
+    Arista          ?               ?               ?               ?               0               0               0               0               0               0               0               0               ?               0               ?               ?               ?               ?               
 
     index: [67108866]
-    HA-Interconnect ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               276447232       ?               ?               ?               ?               
-    FLD-ML-00054045$
+    HA-Interconnect ?               ?               ?               ?               782211          0               6012            0               776640          0               5970            0               ?               75000           ?               ?               ?               ?               
+
+    index: [67108867]
+    really-long-LAG ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               ?               0               ?               ?               ?               ?               
+    prompt% 
 
 
 
-
-SNMP CPU Processor Stats
+CPU Processor Stats
 ---------------------------
 
 The CPU Processor Stats Table provides details on the Intel CPU processors which are running in the rSeries appliance. It displays the core and thread counts, as well as the cache size, frequency and model number.
@@ -2021,7 +2764,7 @@ Below is an example polling the F5-PLATFORM-STATS-MIB:cpuProcessorStatsTable on 
     platform        0    36864(KB)         24 3099.902(MHz)           6           48 Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz
     prompt%
 
-SNMP CPU Utilization Stats Table
+CPU Utilization Stats Table
 -------------------------------
 
 The table below shows the total CPU utilization for an rSeries appliance over 5 seconds, 1 minute, and 5 minutes averages as well as the current value.
@@ -2037,7 +2780,7 @@ The table below shows the total CPU utilization for an rSeries appliance over 5 
         cpu 1 percentage    1 percentage    1 percentage    1 percentage
     prompt% 
 
-SNMP CPU Core Stats Table
+CPU Core Stats Table
 ---------------------------
 
 The CPU Core Stats Table shows the total CPU utilization per CPU within an rSeries appliance over 5 seconds, 1 minute, and 5 minutes averages.
@@ -2101,7 +2844,7 @@ The CPU Core Stats Table shows the total CPU utilization per CPU within an rSeri
             47    cpu47  1 percentage     1 percentage     1 percentage     2 percentage
     prompt%
 
-SNMP Disk Info Table
+Disk Info Table
 ------------------
 
 The following table displays information about the disks installed on an rSeries appliance.
@@ -2118,7 +2861,7 @@ The following table displays information about the disks installed on an rSeries
     nvme1n1 INTEL SSDPE2KX010T8      Intel    VDV10184 PHLJ108203XB1P0FGN 735.00GB     nvme
     prompt%
 
-SNMP Disk Utilization Stats Table
+Disk Utilization Stats Table
 ---------------------------------
 
 The table below shows the current disk utilization and performance of the disk on an rSeries appliance.
@@ -2130,12 +2873,77 @@ The table below shows the current disk utilization and performance of the disk o
     prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:diskUtilizationStatsTable
     SNMP table: F5-PLATFORM-STATS-MIB::diskUtilizationStatsTable
 
-    diskPercentageUsed diskTotalIops  diskReadIops diskReadMerged       diskReadBytes diskReadLatencyMs  diskWriteIops diskWriteMerged      diskWriteBytes diskWriteLatencyMs
-                    ? 60654918 IOPs 28277459 IOPs       28395176 3679621374464 bytes        2851602 ms 676313185 IOPs       730172911 7019181770752 bytes        26600737 ms
-                    ? 60615247 IOPs 28145076 IOPs       28373245 3677744964608 bytes        2877859 ms 676313185 IOPs       730172911 7019181770752 bytes        26030059 ms
+    diskPercentageUsed diskTotalIops diskReadIops diskReadMerged      diskReadBytes diskReadLatencyMs diskWriteIops diskWriteMerged     diskWriteBytes diskWriteLatencyMs
+        40 percentage        0 IOPs 7808367 IOPs         430038 180736036864 bytes        1280537 ms 94675416 IOPs        73036236 899072663040 bytes         6921453 ms
+        40 percentage        0 IOPs 5505364 IOPs         374782 137111059968 bytes         984633 ms 94675420 IOPs        73036232 899072663040 bytes         6832726 ms
     prompt% 
 
-SNMP Temperature Stats Table
+
+Host Resource Storage Table
+----------------------------
+
+The table below shows the current file system utilization on an rSeries appliance.
+
+
+**hrStorageTable  OID: 1.3.6.1.2.1.25.2.3**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 hrStorageTable                   
+    SNMP table: HOST-RESOURCES-MIB::hrStorageTable
+
+    hrStorageIndex                            hrStorageType                        hrStorageDescr hrStorageAllocationUnits hrStorageSize hrStorageUsed hrStorageAllocationFailures
+            65537 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /dev               4096 Bytes      32945582             0                           ?
+            65538 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /dev/shm               4096 Bytes      32960755             0                           ?
+            65539 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /run               4096 Bytes      32960755         22996                           ?
+            65540 HOST-RESOURCES-TYPES::hrStorageFixedDisk            appliance-1 /sys/fs/cgroup               4096 Bytes      32960755             0                           ?
+            65541 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /sysroot               4096 Bytes      28761637      18427950                           ?
+            65542 HOST-RESOURCES-TYPES::hrStorageFixedDisk                     appliance-1 /boot               4096 Bytes        253422         37382                           ?
+            65543 HOST-RESOURCES-TYPES::hrStorageFixedDisk                 appliance-1 /boot/efi               4096 Bytes        261613          5260                           ?
+            65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes     117595502       5087475                           ?
+            65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58764800      17641442                           ?
+    prompt%
+
+Component Info Table
+----------------------------
+
+The table below shows the current rSeries component information for the appliance. This includes the serial numbers for the LCD, power suppliues and the platform itself. It also includes the platfrom type, and baude rate for the console.
+
+**F5-PLATFORM-STATS-MIB:componentInfoTable OID: .1.3.6.1.4.1.12276.1.2.1.8.1**
+
+Below is the component info table from the system controller layer.
+
+.. code-block:: bash
+
+    prompt% snmpwalk -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:componentInfoTable
+    F5-PLATFORM-STATS-MIB::serialNo."lcd" = STRING: sub0872g00du
+    F5-PLATFORM-STATS-MIB::serialNo."psu-1" = STRING: FZ2104Q70036
+    F5-PLATFORM-STATS-MIB::serialNo."platform" = STRING: f5-xpdn-ngmu
+    F5-PLATFORM-STATS-MIB::model."platform" = STRING: r10900
+    F5-PLATFORM-STATS-MIB::baudRate."platform" = INTEGER: 19200
+    prompt%
+
+Power Supply Unit Stats Table
+----------------------------
+
+The table below shows the current status and health of the rSeries power supply units. This MIB is added in F5OS-C 1.8.0.
+
+This MIB is supported on the VELOS system controller layer.
+
+**F5-PLATFORM-STATS-MIB:psuStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.9.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.41 F5-PLATFORM-STATS-MIB:psuStatsTable
+    SNMP table: F5-PLATFORM-STATS-MIB::psuStatsTable
+
+    psuName  psuSerialNo psuPartNo psuCurrentIn psuCurrentOut psuVoltageIn psuVoltageOut psuTemperature1 psuTemperature2 psuTemperature3 psuFan1Speed psuFan2Speed psuPowerIn psuPowerOut
+    psu-1 FZ2104Q70155    MW2100     2.546 mA     42.625 mA   204.000 mV     12.000 mV        35.0 °C        40.0 °C        43.0 °C    13856 RPM            ? 522.000 mW  504.000 mW
+    prompt% 
+
+
+
+Temperature Stats Table
 ----------------------------
 
 The table below shows the temperature stats for the system.
@@ -2151,7 +2959,7 @@ The table below shows the temperature stats for the system.
     26.7 centigrade 27.1 centigrade 26.4 centigrade 29.6 centigrade
     prompt% 
 
-SNMP Memory Stats Table
+Memory Stats Table
 ----------------------
 
 This MIB displays the memory utilization for the system.
@@ -2168,7 +2976,7 @@ This MIB displays the memory utilization for the system.
     prompt% 
 
 
-SNMP FPGA Table
+FPGA Table
 ---------------
 
 The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Service Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
@@ -2187,7 +2995,7 @@ The FPGA Stats table shows the current FPGA versions. Depending on the rSeries a
         atse_1      72.5.1
     prompt% 
 
-SNMP Firmware Table
+Firmware Table
 ----------------------
 
 This MIB provides the current firmware status and version for all firmware subsystems.
@@ -2200,26 +3008,26 @@ This MIB provides the current firmware status and version for all firmware subsy
     SNMP table: F5-PLATFORM-STATS-MIB::fwTable
 
                         fwName                         fwVersion configurable fwUpdateStatus
-                        QAT0 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT1 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT2 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT3 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT4 Lewisburg C62X Crypto/Compression        false              ?
-                        QAT5 Lewisburg C62X Crypto/Compression        false              ?
-                fw-version-bios                        2.01.134.1        false           none
-                fw-version-cpld                          02.0B.00        false           none
-                fw-version-sirr                            1.1.55        false           none
-            fw-version-lcd-ui                            1.13.3        false           none
-            fw-version-bios-me                         4.4.4.301        false           none
-            fw-version-lcd-app                     1.01.067.00.1        false           none
-            fw-version-lop-app                      2.00.306.0.1        false           none
+                          QAT0 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT1 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT2 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT3 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT4 Lewisburg C62X Crypto/Compression        false              ?
+                          QAT5 Lewisburg C62X Crypto/Compression        false              ?
+               fw-version-bios                        2.02.145.1        false           none
+               fw-version-cpld                          02.0B.00        false           none
+               fw-version-sirr                            1.1.72        false           none
+            f w-version-lcd-ui                           1.13.12        false           none
+            fw-version-bios-me                         4.4.4.603        false           none
+            fw-version-lcd-app                     1.01.069.00.1        false              ?
+            fw-version-lop-app                      2.00.357.0.1        false           none
         fw-version-drive-nvme0                          VDV10170        false           none
         fw-version-drive-nvme1                          VDV10170        false           none
-    fw-version-lcd-bootloader                     1.01.027.00.1        false           none
-    fw-version-lop-bootloader                      1.02.062.0.1        false           none
+     fw-version-lcd-bootloader                     1.01.027.00.1        false           none
+     fw-version-lop-bootloader                      1.02.062.0.1        false           none
     fw-version-drive-u.2.slot1                          VDV10184        false           none
     fw-version-drive-u.2.slot2                          VDV10184        false           none
-    prompt% 
+    prompt%
 
 SNMP Fantray Stats Table
 ----------------------
@@ -2237,11 +3045,49 @@ Query the following SNMP OID to get detailed fan speeds.
     16251 RPM   16384 RPM   16375 RPM   16242 RPM   16277 RPM   16330 RPM   16366 RPM   16224 RPM   16233 RPM    16207 RPM    16322 RPM    16286 RPM
     prompt% 
 
+Licensing Info
+--------------
 
-SNMP LLDP Configuration Table
+Query the following SNMP OID to get detailed licensing information.
+
+**F5-OS-SYSTEM-MIB:licenseActiveModuleTable  OID: 1.3.6.1.4.1.12276.1.3.3.9**
+
+The licenseActiveModuleTable will display all actively licensed modules.
+
+.. code-block:: bash
+
+    prompt% snmptable -v2c -c public -m ALL 10.255.2.40 F5-OS-SYSTEM-MIB:licenseActiveModuleTable
+    SNMP table: F5-OS-SYSTEM-MIB::licenseActiveModuleTable
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        activeModule
+    Best Bundle, r10900|M757216-4315179|Advanced Protocols|Rate Shaping|DNS Services|BIG-IP, DNS (Max)|Routing Bundle|Access Policy Manager, Base, r109XX|Advanced Web Application Firewall, r10XXX|Max Compression, r10900|Max SSL, r10900|Advanced Firewall Manager, r10XXX|DNSSEC|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|DNS Rate Fallback, Unlimited|DNS Licensed Objects, Unlimited|DNS Rate Limit, Unlimited QPS|GTM Rate Fallback, (UNLIMITED)|GTM Licensed Objects, Unlimited|GTM Rate, Unlimited|DNS RATE LIMITED, MAX|Protocol Security Manager|Carrier Grade NAT (AFM ONLY)
+    prompt% 
+
+You can also snmpwalk from the OID 1.3.6.1.4.1.12276.1.3 to get more licensing details:
+
+.. code-block:: bash
+
+    prompt% snmpwalk -ObenU -v2c -c public 10.255.2.40 1.3.6.1.4.1.12276.1.3
+    .1.3.6.1.4.1.12276.1.3.3.1.0 = STRING: "1.8.0"
+    .1.3.6.1.4.1.12276.1.3.3.2.0 = STRING: "S1463-XXXXX-XXXXX-XXXXX-XXXXXXX"
+    .1.3.6.1.4.1.12276.1.3.3.3.0 = STRING: "2024/07/23"
+    .1.3.6.1.4.1.12276.1.3.3.4.0 = STRING: "2024/06/13"
+    .1.3.6.1.4.1.12276.1.3.3.5.0 = STRING: "2024/09/19"
+    .1.3.6.1.4.1.12276.1.3.3.6.0 = STRING: "2024/08/20"
+    .1.3.6.1.4.1.12276.1.3.3.7.0 = STRING: "C128"
+    .1.3.6.1.4.1.12276.1.3.3.8.0 = STRING: "f5-xpdn-ngmu"
+    .1.3.6.1.4.1.12276.1.3.3.9.1.2.1 = STRING: "Best Bundle, r10900|M757216-4315179|Advanced Protocols|Rate Shaping|DNS Services|BIG-IP, DNS (Max)|Routing Bundle|Access Policy Manager, Base, r109XX|Advanced Web Application Firewall, r10XXX|Max Compression, r10900|Max SSL, r10900|Advanced Firewall Manager, r10XXX|DNSSEC|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|DNS Rate Fallback, Unlimited|DNS Licensed Objects, Unlimited|DNS Rate Limit, Unlimited QPS|GTM Rate Fallback, (UNLIMITED)|GTM Licensed Objects, Unlimited|GTM Rate, Unlimited|DNS RATE LIMITED, MAX|Protocol Security Manager|Carrier Grade NAT (AFM ONLY)"
+    prompt%
+
+
+
+
+LLDP Configuration Table
 -----------------------------
 
 Query the following SNMP OID to get detailed LLDP configuration table.
+
+**F5-OS-LLDP-MIB:lldpIfConfigTable  OID: 1.3.6.1.4.1.12276.1.4.1.1.3.1**
 
 .. code-block:: bash
 
@@ -2259,10 +3105,12 @@ Query the following SNMP OID to get detailed LLDP configuration table.
     prompt%
 
 
-SNMP LLDP Neighbors Table
+LLDP Neighbors Table
 -----------------------------
 
 Query the following SNMP OID to get detailed LLDP neighbors table.
+
+**F5-OS-LLDP-MIB:lldpNeighborsTable  OID: 1.3.6.1.4.1.12276.1.4.1.1.4.1**
 
 .. code-block:: bash
 
@@ -2275,6 +3123,217 @@ Query the following SNMP OID to get detailed LLDP neighbors table.
                 15.0               15.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
                 16.0               16.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
     prompt% 
+
+Tenant State Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.1.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantStateTable
+    SNMP table: F5-OS-TENANT-MIB::tenantStateTable
+
+                tenantName tenantType                                     tenantImage            tenantDeploymentFile tenantMgmtIP tenantPrefixLength tenantDagIPv6PrefixLength tenantGateway tenantCryptos tenantVcpuCoresPerNode tenantMemory tenantStorageSize tenantRunningState tenantMacDataSize tenantApplianceMode                                                                        tenantUnitKeyHash tenantFloatingAddress tenantHAState tenantNameSpace tenantPrimarySlot tenantQatVFCount     tenantImageVersion tenantStatus tenantTargetDeploymentFile tenantTargetImage tenantUpgradeStatus    tenantBaseMac    tenantMgmtMac
+                    fix-ll      bigip   BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle                               ?  10.255.2.11                 24                       128  10.255.2.252       enabled                      4     14848 MB             80 GB           deployed                 1            disabled GG6ePYN2/DuFN9wbH/Wr2CZpr4otx3O3HgeFoHiNO+QACbFlHPn3AuWNbIGBk9RdJ+P7moD5tIBndzJK+zbEsw==                     ?             ?         default                 1                6  BIG-IP 17.1.1.2 0.0.1      Running                          ?                 ?                   ? 0:94:a1:69:59:29 0:94:a1:69:59:2a
+                tenant1      bigip BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle                               ?  10.255.2.16                 24                       128  10.255.2.252       enabled                      4     14848 MB             82 GB           deployed                 1            disabled faU1hAAH7Wl24ZkHR8Qxt/0976HxCxMj8E0P0AXN0CgRfUTBkVphJwDzZAloJYYxYnHb4cyZdQ5o3NE/af5LuQ==                     ?             ?         default                 1                6 BIG-IP 17.1.1.2 0.0.10      Running                          ?                 ?                   ? 0:94:a1:69:59:2d 0:94:a1:69:59:2e
+            test-tenant      bigip   BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle                               ?  10.255.2.12                 24                       128  10.255.2.252       enabled                      4     14848 MB             82 GB           deployed                 1            disabled IHJti+ctR9YrfmTuj3F7dElBgXtFyOBFpa+7AudyYif3neHybBiP5v3tyt5AMd7WwDypOCz58US8I9NXzvgqnQ==                     ?             ?         default                 1                6  BIG-IP 17.1.1.2 0.0.1      Running                          ?                 ?                   ? 0:94:a1:69:59:2b 0:94:a1:69:59:2c
+    bigip-next-f5demo-net  bigipnext                      BIG-IP-Next-20.2.1-2.429.4 BIG-IP-Next-20.2.1-2.429.4.yaml   10.255.2.8                 24                       128  10.255.2.252       enabled                      4     14848 MB             25 GB           deployed                 1            disabled +Z9wYyH3QGXEfv6s78GaD++1GwG2ZBCrXwHcNPVCYpgMMD1w+vZfZyfiZHpd6Ng15XClm1TS86ysUxYl+w5UAQ==                     ?    standalone  default-tid-75                 ?               10                      ?     Starting                          ?                 ?          notstarted 0:94:a1:69:59:26                ?
+    prompt% 
+
+Tenant Virtual Wires Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantVirtualWiresTable  OID: 1.3.6.1.4.1.12276.1.5.1.2.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantVirtualWiresTable
+
+Tenant VLANs Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantVlansTable  OID: 1.3.6.1.4.1.12276.1.5.1.3.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantVlansTable
+    SNMP table: F5-OS-TENANT-MIB::tenantVlansTable
+
+    tenantVlan
+        3010
+        3011
+        3010
+        3011
+    prompt%
+
+Tenant Nodes Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantNodesTable  OID: 1.3.6.1.4.1.12276.1.5.1.4.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantNodesTable
+    SNMP table: F5-OS-TENANT-MIB::tenantNodesTable
+
+    tenantNode
+            1
+            1
+    prompt%
+
+Tenant CPU Allocation Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantCPUAllocationsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.5.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantCPUAllocationsStateTable
+    SNMP table: F5-OS-TENANT-MIB::tenantCPUAllocationsStateTable
+
+    tenantCPU
+            11
+            17
+            35
+            41
+            7
+            9
+            31
+            33
+    prompt%
+
+Tenant Feature Flags Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantFeatureFlagsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.6.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantFeatureFlagsStateTable
+    SNMP table: F5-OS-TENANT-MIB::tenantFeatureFlagsStateTable
+
+    tenantClusteringAsServiceFlag tenantStatsStreamCapableFlag
+                          true                         true
+                             ?                         true
+    prompt%
+
+
+Tenant Instances Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantInstancesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.7.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantInstancesStateTable
+    SNMP table: F5-OS-TENANT-MIB::tenantInstancesStateTable
+
+                                            tenantPodName tenantInstanceId tenantInstanceSlot tenantInstancePhase tenantInstanceCreationTime tenantInstanceReadyTime    tenantInstanceStatus tenantInstanceMgmtMac
+                                                fix-ll-1                1                  1             Running       2024-06-10T15:47:18Z    2024-06-10T15:47:33Z Started tenant instance      0:94:a1:69:59:2a
+                            bigip-next-f5demo-net-f5-avcl                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:08Z Started tenant instance      0:94:a1:69:59:28
+                            bigip-next-f5demo-net-f5-dssm                1                  ?             Running       2024-06-10T15:47:07Z    2024-06-10T15:47:12Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-data-store                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:46Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-appsvcs                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:09Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-cmsg-mq                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:09Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-csm-icb                1                  ?             Running       2024-06-10T15:47:07Z    2024-06-10T15:48:18Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-fsm-tmm                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:48:01Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-csm-bird                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:07Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-fcdn-sync                1                  ?             Running       2024-06-10T15:47:09Z    2024-06-10T15:47:17Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-csm-qkview                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:12Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-eesv-vault                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:56Z Started tenant instance      0:94:a1:69:59:28
+                        bigip-next-f5demo-net-f5-onboarding                1                  ?             Running       2024-06-10T15:47:07Z    2024-06-10T15:47:10Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-access-apmd                1                  ?             Running       2024-06-10T15:47:07Z    2024-06-10T15:47:08Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-toda-server                1                  ?             Running       2024-06-10T15:47:08Z    2024-06-10T15:47:09Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-toda-logpull                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:07Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-toda-observer                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:16Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-csm-api-engine                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:48:21Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-eesv-licensing                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:08Z Started tenant instance      0:94:a1:69:59:28
+                    bigip-next-f5demo-net-f5-platform-agent                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:49:06Z Started tenant instance      0:94:a1:69:59:28
+                bigip-next-f5demo-net-f5-access-renderer                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:09Z Started tenant instance      0:94:a1:69:59:28
+            bigip-next-f5demo-net-f5-toda-otel-collector                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:16Z Started tenant instance      0:94:a1:69:59:28
+            bigip-next-f5demo-net-f5-asec-ip-intelligence                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:09Z Started tenant instance      0:94:a1:69:59:28
+            bigip-next-f5demo-net-f5-asec-policy-compiler                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:08Z Started tenant instance      0:94:a1:69:59:28
+            bigip-next-f5demo-net-f5-access-session-manager                1                  ?             Running       2024-06-10T15:47:07Z    2024-06-10T15:47:08Z Started tenant instance      0:94:a1:69:59:28
+    bigip-next-f5demo-net-f5-asec-clientside-js-obfuscator                1                  ?             Running       2024-06-10T15:47:06Z    2024-06-10T15:47:08Z Started tenant instance      0:94:a1:69:59:28
+    prompt% 
+
+Tenant MAC Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantMacBlockStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.8.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantMacBlockStateTable
+    SNMP table: F5-OS-TENANT-MIB::tenantMacBlockStateTable
+
+            tenantMAC
+    00:94:a1:69:59:29
+    00:94:a1:69:59:26
+    prompt%
+
+
+Tenant Sub Modules Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantSubModulesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.9.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantSubModulesStateTable
+
+Tenant Sub Modules VLAN Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantSubModuleVlansStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.10.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantSubModuleVlansStateTable
+
+Tenant Sub Modules Hugepage Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantSubModuleHugepagesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.11.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantSubModuleHugepagesStateTable
+
+Tenant Upgrade Events Table
+-----------------------------
+
+Query the following SNMP OID to get detailed tenant status.
+
+**F5-OS-TENANT-MIB:tenantUpgradeEventsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.12.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantUpgradeEventsStateTable
+
 
 
 

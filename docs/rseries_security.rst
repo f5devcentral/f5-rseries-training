@@ -11,9 +11,9 @@ This section will focus on how to harden/secure the F5OS layer of the rSeries ap
 F5OS Platform Layer Isolation
 =============================
 
-When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs and is managed via the out-of-band management network only. It is purposely isolated so that it is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
+When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
 
-This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. 
+This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through the **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. 
 
 .. image:: images/rseries_security/image1.png
   :align: center
@@ -23,9 +23,9 @@ Allow List for F5OS Management
 
 F5OS only allows management access via a single out-of-band management interface. Access to that single management IP address may be restricted to specific IP addresses (both IPv4 and IPv6), subnets (via Prefix Length), as well as protocols - 443 (HTTPS), 80 (HTTP), 8888 (RESTCONF), 161 (SNMP), 7001 (VCONSOLE), and 22 (SSH). An administrator can add one or more Allow List entries via the CLI, webUI or API to lock down access to specific endpoints.
 
-By default, all ports except for 161 (SNMP) are enabled for access, meaning ports 80, 443, 8888, 7001, and 22 are allowed access. Port 80 is only open to allow a redirect to port 443 in case someone tries to access the webUI over port 80. The webUI itself is not accessible over port 80. Port 161 is typically viewed as un-secure and is therefore not accessible until an allow list entry is created for the endpoint trying to access F5OS using SNMP queries. Ideally SNMPv3 should be utilized to provide additional layers of security on an otherwise un-secure protocol. VCONSOLE access also must be explicitly configured before access to the tenants is possible over port 7001. 
+By default, all ports except for 161 (SNMP) are enabled for access, meaning ports 80, 443, 8888, 7001, and 22 are allowed access. Port 80 is only open to allow a redirect to port 443 in case someone tries to access the webUI over port 80. The webUI itself is not accessible over port 80. Port 161 (SNMP) is typically viewed as un-secure and is therefore not accessible until an allow list entry is created for the endpoint trying to access F5OS using SNMP queries. Ideally SNMPv3 should be utilized to provide additional layers of security on an otherwise un-secure protocol. VCONSOLE access also must be explicitly configured before access to the tenants is possible over port 7001. 
 
-To further lock down access you may add an Allow List entry including an IP address and optional prefix for each of the protocols listed above. As an example, if you wanted to restrict API and webUI access to a particular IP address and/or subnet, you can add an Allow List entry for the desired IP or subnet (using the prefix length), specify port 443 and all access from other IP endpoints will be prevented.
+To further lock down access, you may add an Allow List entry including an IP address and optional prefix for each of the protocols listed above. As an example, if you wanted to restrict API and webUI access to a particular IP address and/or subnet, you can add an Allow List entry for the desired IP or subnet (using the prefix length), specify port 443 and all access from other IP endpoints will be prevented.
 
 
 Adding Allow List Entries via CLI
@@ -106,7 +106,7 @@ Within the body of the API call, specific IP address/port, and optional prefix-l
 
 
 
-To view the allowed IPs in the API, use the following call.
+To view the current allowed IP configuration via the API, use the following API call.
 
 .. code-block:: bash
 
@@ -157,7 +157,7 @@ The output will show the previously configured allowed-ips.
 Adding Allow List Entries via webUI
 -----------------------------------
 
-You can configure the **Allow List** in the webUI under the **System Settings** section. 
+You can configure **Allow List** entries in the webUI under the **System Settings** section in older version of F5OS. In newer versions of F5OS the **Allowed IP Addresses** configuration can be found under **System Settings** -> **System Security**.
 
 .. image:: images/rseries_security/image2.png
   :align: center
@@ -353,11 +353,18 @@ You can display the current certificate, keys, and passphrases using the CLI com
 Managing Device Certificates, Keys, CSRs, and CAs via webUI
 -----------------------------------------------------------
 
-In the F5OS webUI you can manage device certificates for the management interface via the **System Settings -> Certificate Management** page. There are options to view the TLS certificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
+In the F5OS webUI you can manage device certificates for the management interface via the **System Settings -> Certificate Management** page in older versions of F5OS. In newer versions of F5OS, certificates are managed under the **Authentication & Access** -> **TLS** page. There are options to view the TLS certificates, keys, and details. You may also create self-signed certificates, create certificate signing requests (CSRs), and CA bundles.
 
 .. image:: images/rseries_security/imagecert2.png
   :align: center
   :scale: 70%
+
+In newer versions of F5OS the Certificate Management is now under the **Authentication & Access** ->  **TLS Configuration** page. 
+
+.. image:: images/rseries_security/imagecert2a.png
+  :align: center
+  :scale: 70%
+
 
 The screen below shows the options when creating a self-signed certificate. 
 
@@ -400,7 +407,7 @@ When you install an SSL certificate on the system, you also install a certificat
   :scale: 70%
 
 Managing Device Certificates, Keys, CSRs, and CAs via API
--------------------------------------
+--------------------------------------------------------
 
 You can view the current certificates, keys and passphrases via the API using the following API call.
 
@@ -453,7 +460,7 @@ In the body of the API call enter the following JSON syntax.
 
 
 Encrypt Management TLS Private Key
-=======================
+==================================
 
 Previously, F5OS allowed an admin to import a TLS certificate and key in clear text. In F5OS-A 1.4.0 an admin can now optionally enter a passphrase with the encrypted private key. This is like the BIG-IP functionality defined in the link below.
 
@@ -465,7 +472,7 @@ Appliance Mode for F5OS
 
 If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
 
-Enabling Appliance Mode via the CLI
+Enabling F5OS Appliance Mode via the CLI
 -----------------------------------
 
 Appliance mode can be enabled or disabled via the CLI using the command **system appliance-mode config** and entering either **enabled** or **disabled**. The command **show system appliance-mode** will display the status. Be sure to commit any changes. 
@@ -496,8 +503,8 @@ To disable appliance mode.
     Commit complete.
     r10900(config)#
 
-Enabling Appliance Mode via the webUI
-------------------------------------- 
+Enabling F5OS Appliance Mode via the webUI
+------------------------------------------ 
 
 Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page.
 
@@ -505,8 +512,13 @@ Appliance mode can be enabled or disabled via the webUI under the **System Setti
   :align: center
   :scale: 70%
 
+In newer F5OS releases, Appliance Mode configuration has been moved to the **System Settings** -> **System Security** page.
 
-Enabling Appliance Mode via the API
+.. image:: images/rseries_security/image4-new.png
+  :align: center
+  :scale: 70%
+
+Enabling F5OS Appliance Mode via the API
 -----------------------------------
 
 Appliance mode can be enabled or disabled via the API. To view the current status of appliance mode use the following API call.
@@ -547,29 +559,227 @@ In the body of the API call add the following:
         }
     }
 
+Appliance Mode for BIG-IP Tenants
+=================================
 
-Resource Admin User Role
+If you would like to prevent root / bash level access to the BIG-IP tenants, you can enable **Appliance Mode**. in the tenant settings. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled for BIG-IP. The admin account to the TMOS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
+
+Enabling BIG-IP Tenant Appliance Mode via the CLI
+--------------------------------------------------
+
+When creating a BIG-IP tenant via the CLI you have the option of enabling or disabling (default) appliance-mode as seen below. 
+
+.. code-block:: bash
+
+    Boston-r10900-1# config
+    Entering configuration mode terminal
+    Boston-r10900-1(config)# tenants tenant tenant2 
+    Boston-r10900-1(config-tenant-test-tenant)# config ?
+    Possible completions:
+        appliance-mode           Appliance mode can be enabled/disabled at tenant level
+        cryptos                  Enable crypto devices for the tenant.
+        dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
+        gateway                  User-specified gateway for the tenant static mgmt-ip.
+        image                    User-specified image for tenant.
+        mac-data                 
+        memory                   User-specified memory in MBs for the tenant.
+        mgmt-ip                  User-specified mgmt-ip for the tenant management access.
+        nodes                    User-specified node-number(s) in the partition to schedule the tenant.
+        prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
+        running-state            User-specified desired state for the tenant.
+        storage                  User-specified storage information
+        type                     Tenant type.
+        vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
+        virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
+        vlans                    User-specified vlan-id from vlan table for the tenant.
+    Boston-r10900-1(config-tenant-tenant2)# config ?
+    Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
+    Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
+    Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
+    Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
+    Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
+    Boston-r10900-1(config-tenant-tenant2)# config appliance-mode enabled 
+    Boston-r10900-1(config-tenant-tenant2)# config memory 14848
+  
+
+Any changes must be committed for them to be executed:
+
+.. code-block:: bash
+
+    Boston-r10900-1(config-tenant-tenant2)# commit
+    Commit complete.
+    Boston-r10900-1(config-tenant-tenant2)# 
+	
+You may alternatively put all the parameters on one line instead of using the interactive mode above:
+
+.. code-block:: bash
+
+    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed appliance-mode enabled
+    Boston-r10900-1(config-tenant-tenant2)# commit
+    Commit complete.
+    Boston-r10900-1(config-tenant-tenant2)#
+
+
+Enabling BIG-IP Tenant Appliance Mode via the webUI
+--------------------------------------------
+
+When creating a BIG-IP tenant via the webUI you have the option of enabling or disabling (default) appliance-mode as seen below. 
+
+.. image:: images/rseries_security/appliance-mode.png
+  :align: center
+  :scale: 70%
+
+Enabling BIG-IP Tenant Appliance Mode via the API
+------------------------------------------
+
+When creating a BIG-IP tenant via the API you have the option of enabling or disabling (default) appliance-mode as seen below. Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. 
+
+.. code-block:: bash
+
+  POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
+
+
+Below is the body of the API call above.
+
+.. code-block:: json
+
+
+    {
+        "tenant": [
+            {
+                "name": "{{New_Tenant1_Name}}",
+                "config": {
+                    "image": "{{Appliance_Tenant_Image}}",
+                    "nodes": [
+                        1
+                    ],
+                    "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
+                    "gateway": "{{OutofBand_DFGW}}",
+                    "prefix-length": 24,
+                    "vlans": [
+                        3010,
+                        3011,
+                        500
+                    ],
+                    "vcpu-cores-per-node": 2,
+                    "memory": 7680,
+                    "cryptos": "enabled",
+                    "running-state": "configured"
+                    "appliance-mode": "enabled"
+                }
+            }
+        ]
+    }
+
+Validating Tenant Status via API
+================================
+
+The command below will show the current state and status of the tenant. Remember it has not been changed to the **Deployed** state yet.
+
+.. code-block:: bash
+
+  GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
+
+The output of the above API call shows the state and status of the tenant.
+
+.. code-block:: json
+
+    {
+        "f5-tenants:tenants": {
+            "tenant": [
+                {
+                    "name": "tenant1",
+                    "config": {
+                        "name": "tenant1",
+                        "type": "BIG-IP",
+                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                        "nodes": [
+                            1
+                        ],
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "configured",
+                        "appliance-mode": {
+                            "enabled": false
+                        }
+                    },
+                    "state": {
+                        "name": "tenant1",
+                        "unit-key-hash": "ec+5rtpwnIt6awtkadYqXyWzJ/Oty4tRbfPICaz6OzPSw4KILtQMJZETeq/Q6pbfBh8zXQfBPTetgvPw2dW2ig==",
+                        "type": "BIG-IP",
+                        "mgmt-ip": "10.255.0.149",
+                        "prefix-length": 24,
+                        "gateway": "10.255.0.1",
+                        "mac-ndi-set": [
+                            {
+                                "ndi": "default",
+                                "mac": "00:94:a1:69:59:24"
+                            }
+                        ],
+                        "vlans": [
+                            500,
+                            3010,
+                            3011
+                        ],
+                        "cryptos": "enabled",
+                        "vcpu-cores-per-node": 2,
+                        "memory": "7680",
+                        "storage": {
+                            "size": 76
+                        },
+                        "running-state": "configured",
+                        "mac-data": {
+                            "base-mac": "00:94:a1:69:59:26",
+                            "mac-pool-size": 1
+                        },
+                        "appliance-mode": {
+                            "enabled": false
+                        },
+                        "status": "Configured"
+                    }
+                }
+            ]
+        }
+    }
+
+
+Resource Admin & Guest User Role
 ========================
 
-The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to **role resource-admin**, their access will be restricted as noted above.
+The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to role **resource-admin**, their access will be restricted as noted above.
+
+F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however users can change account passwords.
+
+
+Resource Admin & Guest User Role via CLI
+--------------------------------
+
+Below is an example of setting up a new user with the built-in resource-admin role.
 
 .. code-block:: bash
 
     r10900-2(config)# system aaa authentication users user res-admin-user config username res-admin-user role resource-admin             
-    r10900-2(config-user-res-admin-user)# config set-password password 
-    Value for 'password' (<string>): **************
-    Error: application error
     r10900-2(config-user-res-admin-user)# commit
     Commit complete.
+    r10900-2(config-user-res-admin-user)# config set-password password 
+    Value for 'password' (<string>): **************
     r10900-2(config-user-res-admin-user)# 
 
-The webUI also supports the assignment of the resource-admin role to any user.
-
-.. image:: images/rseries_security/imageres-admin.png
-  :align: center
-  :scale: 70%
-
-When logging in as the resource admin user, the aaa options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
+When logging in as the resource-admin user, the **aaa** and **aaa authentication** options in the CLI will be limited compared to a normal admin user. The CLI output below shows the full configuration options available to a typical admin user.
 
 
 .. code-block:: bash
@@ -582,6 +792,11 @@ When logging in as the resource admin user, the aaa options in the CLI will be l
     restconf-token    restconf-token lifetime.
     server-groups     
     tls               Top-level container for key/certificate settings.
+
+Below is a typical output of **system aaa authentication** for an **admin** role.
+
+.. code-block:: bash    
+    
     r10900-2(config)# system aaa authentication ?
     Possible completions:
     config   
@@ -591,7 +806,7 @@ When logging in as the resource admin user, the aaa options in the CLI will be l
     r10900-2(config)# 
 
 
-The output below shows the limited options available to the resource admin user. Note, that it is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
+The output below shows the limited **aaa** and **aaa authentication** options available to the resource-admin user. Note, that this role is unable to configure new users, edit users, change password policies, configure the primary-key, server-groups, or rest-conf token timeouts.
 
 .. code-block:: bash
 
@@ -599,32 +814,472 @@ The output below shows the limited options available to the resource admin user.
     Possible completions:
     authentication   
     tls              Top-level container for key/certificate settings.
+
+Below is a limited output of **system aaa authentication** for the **resource-admin** role.
+
+.. code-block:: bash    
+    
     r10900-2(config)# system aaa authentication ?
     Possible completions:
     users   Enclosing container list of local users.
     <cr>    
-    r10900-2(config)# 
+    r10900-2(config)#
+
+Below is an example of setting up a new user with the built-in **user** role.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)# system aaa authentication users user guest-user2 config username guest-user2 role user 
+    r10900-1-gsa(config-user-guest-user2)# commit
+    Commit complete.
+    r10900-1-gsa(config-user-guest-user2)# config set-password
+    Value for 'password' (<string>): **************
+    response Password successfully updated.
+    r10900-1-gsa(config-user-guest-user2)# 
 
 
-The same is true for the webUI, any attempt to configure the restricted items above will result in an **Access Denied** error like the one below.
+When logging in as the user with the **user** role assigned, the configuration mode will be unavailable. The **user** role will prevent the user from entering config mode.
+
+.. code-block:: bash
+
+    r10900-1-gsa# config
+    --------------^
+    syntax error: expecting 
+
+The **user** role will also prevent the user from running **file** operations from the CLI.
+
+.. code-block:: bash
+
+    r10900-1-gsa# file ?
+                ^
+    % Invalid input detected at '^' marker.
+    r10900-1-gsa# file
+
+Resource Admin & Guest User Role via webUI
+--------------------------------
+
+The webUI also supports the assignment of the **resource-admin** role to any user.
+
+.. image:: images/rseries_security/imageres-admin.png
+  :align: center
+  :scale: 70%
+
+When logging in as the resource-admin user, any attempt to configure the restricted items above will result in an **Access Denied** error like the one below.
 
 .. image:: images/rseries_security/imageaccessdenied.png
   :align: center
   :scale: 70%
 
+The webUI also supports the assignment of the **user** role to any user.
+
+.. image:: images/rseries_security/guest-user.png
+  :align: center
+  :scale: 70%  
+
+When a user logs in with the **user** role assigned, they can view configuration, but the webUI will prevent any changes from being made by blocking save functions.
+
+.. image:: images/rseries_security/guest-user-restricted.png
+  :align: center
+  :scale: 70%  
+
+
+Resource-Admin & Guest User Role via API
+----------------------------------------
+
+The API also supports the assignment of the resource-admin role to any user.
+
+To view the current user roles:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication
+
+The output will look similar to the response below. Note, the **resource-admin** role.
+
+.. code-block:: bash
+
+
+    {
+        "openconfig-system:authentication": {
+            "config": {
+                "f5-aaa-confd-restconf-token:basic": {
+                    "enabled": true
+                },
+                "f5-openconfig-aaa-clientcert:cert-auth": {
+                    "enabled": false
+                },
+                "f5-openconfig-aaa-superuser:superuser-bash-access": false
+            },
+            "state": {
+                "f5-aaa-confd-restconf-token:basic": {
+                    "enabled": true
+                },
+                "f5-openconfig-aaa-clientcert:cert-auth": {
+                    "enabled": false
+                },
+                "f5-openconfig-aaa-superuser:superuser-bash-access": false
+            },
+            "f5-aaa-confd-restconf-token:state": {
+                "basic": {
+                    "enabled": true
+                }
+            },
+            "f5-openconfig-aaa-clientcert:clientcert": {
+                "config": {
+                    "client-cert-name-field": "subjectname-cn",
+                    "OID": "UPN"
+                },
+                "state": {
+                    "client-cert-name-field": "subjectname-cn",
+                    "OID": "UPN"
+                }
+            },
+            "f5-openconfig-aaa-ldap:ldap": {
+                "bind_timelimit": 10,
+                "timelimit": 0,
+                "idle_timelimit": 0,
+                "ldap_version": 3,
+                "ssl": "off",
+                "active_directory": false,
+                "unix_attributes": true,
+                "tls_reqcert": "demand",
+                "chase-referrals": true
+            },
+            "f5-openconfig-aaa-ocsp:ocsp": {
+                "config": {
+                    "override-responder": "off",
+                    "response-max-age": -1,
+                    "response-time-skew": 300,
+                    "nonce-request": "on",
+                    "enabled": false
+                },
+                "state": {
+                    "override-responder": "off",
+                    "response-max-age": -1,
+                    "response-time-skew": 300,
+                    "nonce-request": "on",
+                    "enabled": false
+                }
+            },
+            "f5-openconfig-aaa-radius:radius": {
+                "require_message_authenticator": false
+            },
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "admin",
+                        "config": {
+                            "username": "admin",
+                            "last-change": "2021-09-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "admin",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "authorized-keys": "-",
+                            "username": "admin",
+                            "last-change": "2021-09-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "admin",
+                            "expiry-status": "enabled"
+                        }
+                    },
+                    {
+                        "username": "operator",
+                        "config": {
+                            "username": "operator",
+                            "last-change": "2024-04-09",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "operator",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "authorized-keys": "-",
+                            "username": "operator",
+                            "last-change": "2024-04-09",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "operator",
+                            "expiry-status": "enabled"
+                        }
+                    },
+                    {
+                        "username": "root",
+                        "config": {
+                            "username": "root",
+                            "last-change": "2021-11-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "root",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "username": "root",
+                            "last-change": "2021-11-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "root",
+                            "expiry-status": "enabled"
+                        }
+                    }
+                ]
+            },
+            "f5-system-aaa:roles": {
+                "role": [
+                    {
+                        "rolename": "admin",
+                        "config": {
+                            "rolename": "admin",
+                            "gid": 9000,
+                            "description": "Unrestricted read/write access."
+                        },
+                        "state": {
+                            "rolename": "admin",
+                            "gid": 9000,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Unrestricted read/write access."
+                        }
+                    },
+                    {
+                        "rolename": "operator",
+                        "config": {
+                            "rolename": "operator",
+                            "gid": 9001,
+                            "description": "Read-only access to system level data."
+                        },
+                        "state": {
+                            "rolename": "operator",
+                            "gid": 9001,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Read-only access to system level data."
+                        }
+                    },
+                    {
+                        "rolename": "resource-admin",
+                        "config": {
+                            "rolename": "resource-admin",
+                            "gid": 9003,
+                            "description": "Restricted read/write access. No access to modify authentication configuration."
+                        },
+                        "state": {
+                            "rolename": "resource-admin",
+                            "gid": 9003,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Restricted read/write access. No access to modify authentication configuration."
+                        }
+                    },
+                    {
+                        "rolename": "superuser",
+                        "config": {
+                            "rolename": "superuser",
+                            "gid": 9004,
+                            "description": "Sudo privileges and Bash access to the system (if enabled)."
+                        },
+                        "state": {
+                            "rolename": "superuser",
+                            "gid": 9004,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Sudo privileges and Bash access to the system (if enabled)."
+                        }
+                    },
+                    {
+                        "rolename": "user",
+                        "config": {
+                            "rolename": "user",
+                            "gid": 9002,
+                            "description": "Read-only access to non-sensitive system level data."
+                        },
+                        "state": {
+                            "rolename": "user",
+                            "gid": 9002,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Read-only access to non-sensitive system level data."
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+To see the current user accounts on the system.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-system-aaa:users
+
+The response will detail all the configured user accounts on the system.
+
+.. code-block:: bash
+
+
+    {
+        "f5-system-aaa:users": {
+            "user": [
+                {
+                    "username": "admin",
+                    "config": {
+                        "username": "admin",
+                        "last-change": "2021-09-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "admin",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "authorized-keys": "-",
+                        "username": "admin",
+                        "last-change": "2021-09-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "admin",
+                        "expiry-status": "enabled"
+                    }
+                },
+                {
+                    "username": "operator",
+                    "config": {
+                        "username": "operator",
+                        "last-change": "2024-04-09",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "operator",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "authorized-keys": "-",
+                        "username": "operator",
+                        "last-change": "2024-04-09",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "operator",
+                        "expiry-status": "enabled"
+                    }
+                },
+                {
+                    "username": "root",
+                    "config": {
+                        "username": "root",
+                        "last-change": "2021-11-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "root",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "username": "root",
+                        "last-change": "2021-11-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "root",
+                        "expiry-status": "enabled"
+                    }
+                }
+            ]
+        }
+    }
+
+
+To create a new user and assign it to the **resource-admin** role, use the following API call.
+
+.. code-block:: bash
+    
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+
+In the body of the API call add the username and role as seen below.
+
+.. code-block:: bash
+
+    {
+    "openconfig-system:aaa": {
+        "authentication": {
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "resource-admin-user",
+                        "config": {
+                            "role": "resource-admin"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+
+To create a new user and assign it to the **user** role, use the following API call.
+
+.. code-block:: bash
+    
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+
+In the body of the API call add the username and role as seen below.
+
+.. code-block:: bash
+
+    {
+    "openconfig-system:aaa": {
+        "authentication": {
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "guest-user",
+                        "config": {
+                            "role": "user"
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+
+
+
 Session Timeouts and Token Lifetime
 ===================================
 
-Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings, and is controlled via the **idle-timeout** option. This will logout idle sessions to the F5OS CLI whether they are logged in from the console or over SSH.
+Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings and is controlled via the **idle-timeout** option. This will logout idle sessions to the F5OS CLI whether they are logged in from the console or over SSH.
 
 In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-There is one case that is not covered by either of the above idle-timeout settings. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session. Only console connections to the F5OS CLI are covered via the idle-timeout setting. An enhancement has been filed, and in the future this case will be addressed. If this is a concern, then appliance mode could be enabled preventing root/bash access to the system.
+There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
 
-For the webUI, a token-based timeout is now configurable under the **system aaa** settings. A restconf-token config lifetime option has been added. Once a client to the webUI has a token they are allowed to refresh it up to five times. If the token lifetime is set to 1 minute, then a timeout won't occur until five times that value, or five minutes later. This is because the token refresh must fail five times before disconnecting the client.  
++-----------------------------------------------------------+
+|                Appliance-mode = Disabled                  |
++================+======================+===================+
+| deny-root-ssh  | root console access  | root ssh access   |
++----------------+----------------------+-------------------+
+| enabled        | Yes                  | No                |
++----------------+----------------------+-------------------+
+| disabled       | Yes                  | Yes               |
++----------------+----------------------+-------------------+
 
-Configuring SSH and CLI Timeouts via CLI
------------------------------------------
+
++-----------------------------------------------------------+
+|                Appliance-mode = Enabled                   |
++================+======================+===================+
+| deny-root-ssh  | root console access  | root ssh access   |
++----------------+----------------------+-------------------+
+| enabled        | No                   | No                |
++----------------+----------------------+-------------------+
+| disabled       | No                   | No                |
++----------------+----------------------+-------------------+
+
+
+For the webUI, a token-based timeout is now configurable under the **system aaa** settings. The default RESTCONF token lifetime is 15 minutes and can be configured for a maximum of 1440 minutes. RESTCONF token will be automatically renewed when the token’s lifetime is less than one-third of its original token lifetime. For example, if we set the token lifetime to two minutes, it will be renewed and a new token will be generated, when the token’s lifetime is less than one-third of its original lifetime, that is, anytime between 80 to 120 seconds. However, if a new RESTCONF request is not received within the buffer time (80 to 120 seconds), the token will expire and you will be logged out of the session. The RESTCONF token will be renewed up to five times, after that the token will not be renewed and you will need to log back in to the system.
+
+Configuring SSH and CLI Timeouts & Deny Root SSH Settings via CLI
+----------------------------------------------------------------
 
 To configure the F5OS CLI timeout via the CLI, use the command **system settings config idle-timeout <value-in-seconds>**. Be sure to issue a commit to save the changes. In the case below, a CLI session to the F5OS CLI should disconnect after 300 seconds of inactivity. This will apply to connections to the F5OS CLI over both console and SSH.
 
@@ -639,10 +1294,18 @@ To configure the SSH timeout via the CLI, use the command **system settings conf
 
 .. code-block:: bash
 
-    r10900(config)# system settings config ssh-idle-timeout 300
+    r10900(config)# system settings config sshd-idle-timeout 300
     r10900(config)# commit
     Commit complete.      
- 
+
+To configure the deny-root-ssh option use the command **system security config deny-ssh-root**.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system security config deny-root-ssh enabled
+    r5900-1-gsa(config)# commit
+    Commit complete.
+
 Both timeout settings can be viewed using the **show system settings** command.
 
 .. code-block:: bash
@@ -650,15 +1313,48 @@ Both timeout settings can be viewed using the **show system settings** command.
     r10900-1# show system settings 
     system settings state idle-timeout 300
     system settings state sshd-idle-timeout 300
+    system settings state portgroup-confirmation-warning on
     system settings dag state gtp-u teid-hash disabled
+    system settings gui advisory state disabled
     r10900-1#
+
+The deny-root-ssh setting can be seen by issuing the CLI command **show system security**.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show system security 
+    system security firewall state logging disabled
+    system security state deny-root-ssh disabled
+    system security services service httpd
+    state ssl-ciphersuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
+    system security services service sshd
+    state ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
+    state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
+    r5900-1-gsa# show system settings 
+    system settings state idle-timeout 300
+    system settings state sshd-idle-timeout 300
+    system settings state portgroup-confirmation-warning on
+    system settings dag state gtp-u teid-hash disabled
+    system settings gui advisory state disabled
+    r5900-1-gsa# 
+
+
+In addition, there is a separate setting for aom ssh access as described here:
+
+`K000138036: Configure AOM SSH access in F5OS-A <https://my.f5.com/manage/s/article/K000138036>`_
+
+.. code-block:: bash
+
+    r10900-1(config)# system aom config ssh-session-idle-timeout 300
+    r10900-1(config)# commit
+    Commit complete.
 
 
  
-Configuring SSH and CLI Timeouts via API
-----------------------------------------
+Configuring SSH and CLI Timeouts & Deny Root SSH Settings via API
+-----------------------------------------------------------------
 
-To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 300 seconds of inactivity.
+To configure the CLI or SSH timeouts via the API, use the PATCH API call below. In the case below, the CLI session should disconnect after 40 seconds of inactivity.
 
 .. code-block:: bash
 
@@ -671,7 +1367,8 @@ Below is the payload in the API call above to set the idle-timeout.
     {
         "f5-system-settings:settings": {
             "f5-system-settings:config": {
-                "f5-system-settings:idle-timeout": 300
+                "f5-system-settings:idle-timeout": 40,
+                "f5-system-settings:sshd-idle-timeout": 20"
             }
         }
     }
@@ -695,14 +1392,15 @@ You'll see output similar to the example below.
     }
 
 
-Configuring SSH and CLI Timeouts via webUI
+Configuring SSH and CLI Timeouts & Deny Root SSH Settings via webUI
 ------------------------------------------
 
-Currently only the HTTPS token lifetime is configurable in the webUI. SSH and CLI timeouts are not currently configurable via the webUI.
+The CLI timeout, and deny-root-ssh settings are both configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
 
-.. image:: images/rseries_security/imagetoken1.png
+.. image:: images/rseries_security/deny-root-ssh.png
   :align: center
   :scale: 70%
+
 
 Token Lifetime via CLI
 ----------------------
@@ -751,7 +1449,7 @@ To display the current restconf-token lifetime setting, use the command **show s
 Token Lifetime via webUI
 ------------------------
 
-You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client can refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes.
+You may configure the restconf-token lifetime via the webUI (new feature added in F5OS-A 1.4.0). The value is in minutes, and the client can refresh the token five times before it expires. As an example, if the token lifetime is set to 1 minute, an inactive webUI session will have a token expire after one minute, but it can be refreshed a maximum of five times. This will result in the webUI session timing out after 5 minutes. The HTTPS Token Lifetime is configurable under the **Authentication & Access -> Authentication Settings** page.
 
 .. image:: images/rseries_security/image6.png
   :align: center
@@ -1152,6 +1850,7 @@ Setting Password Policies
 
 You may configure the local password policy to ensure secure passwords are utilized, re-use is minimized, and to limit the amount of failures/retries. Below are some of the settings that can be set.
 
+
 - **Minimum Password Length** - For Minimum Length, specify the minimum number of characters (6 to 255) required for a valid password.
 - **Password Required Characters** - For Required Characters, specify the minimum number of Numeric, Uppercase, Lowercase, and Special characters that are required in a valid password.
 - **New/Old Password Differential** - For New/Old Password Differential, specify the number of character changes in the new password that differentiate it from the old password. The default value is 8.
@@ -1169,11 +1868,14 @@ Local Password Policies can be set in the CLI using the **system aaa password-po
 
 .. code-block:: bash
 
-    r10900-2(config)# system aaa password-policy config ?
+    r5900-1-gsa(config)# system aaa password-policy config ?
     Possible completions:
-    apply-to-root          Apply password restrictions to root accounts.
+    apply-to-root          Apply password policy to administrators when setting passwords for other user accounts.
     max-age                Number of days after which the user will have to change the password.
+    max-class-repeat       Reject passwords with this many repeating upper/lowercase letters, digits or special characters such as '!@#$%' in the password.
+    max-letter-repeat      Reject passwords with this many repeating lower-case letters in the password.
     max-login-failures     Number of unsuccessful login attempts allowed before lockout.
+    max-sequence-repeat    Reject passwords with this many repeating upper/lowercase letters or digits in the password.
     min-length             Minimum length of a new password.
     reject-username        Reject passwords that contain the username.
     required-differences   Required number of differences between the old and new passwords.
@@ -1185,7 +1887,7 @@ Local Password Policies can be set in the CLI using the **system aaa password-po
     root-lockout           Enable lockout of root users.
     root-unlock-time       Time (seconds) before the root account is automatically unlocked.
     unlock-time            Time (seconds) before a locked account is automatically unlocked.
-    r10900-2(config)# 
+    r5900-1-gsa(config)# 
 
 Setting Password Policies via webUI
 ---------------------------------
@@ -1217,9 +1919,12 @@ The JSON output will reflect the current settings.
                 "required-uppercase": 0,
                 "required-lowercase": 0,
                 "required-special": 0,
-                "required-differences": 8,
+                "max-letter-repeat": 3,
+                "max-sequence-repeat": 0,
+                "max-class-repeat": 0,
+                "required-differences": 0,
                 "reject-username": false,
-                "apply-to-root": true,
+                "apply-to-root": false,
                 "retries": 3,
                 "max-login-failures": 10,
                 "unlock-time": 60,
@@ -1360,7 +2065,7 @@ To view the current mappings use the **show system aaa authentication roles** CL
 
 
 Login Banner / Message of the Day
-===================
+================================
 
 Some environments require warning or acceptance messages to be displayed to clients connecting to the F5OS layer at initial connection time and/or upon successful login. The F5OS layer supports configurable Message of the Day (MoTD) and Login Banners that are displayed to clients connecting to the F5OS layer via both CLI and the webUI. The MoTD and Login Banner can be configured via CLI, webUI, or API. The Login Banner is displayed at initial connect time and is commonly used to notify users they are connecting to a specific resource, and that they should not connect if they are not authorized. The MoTD is displayed after successful login and may also display some information about the resource the user is connecting to.
 
@@ -1673,31 +2378,37 @@ In the body of the API call you can enable NTP authentication, add keys, and ass
 Configurable Management Ciphers
 ===============================
 
+You can configure which ciphers are used when connecting to the F5OS management interface using SSH or HTTPS.
+
+Configuring Management Ciphers via CLI
+--------------------------------------
+
 F5OS-A 1.4.0 added the ability to display and configure the ciphers used for the management interface of F5OS. The **show system security** CLI command will display the **ssl-ciphersuite** for the webUI/httpd management interface. It will also display the **ciphers** and **kexalgorithms** for the sshd service. Below is an example of the default settings. 
 
 .. code-block:: bash
 
-    r10900-1# show system security 
+    r5900-1-gsa# show system security 
+    system security firewall state logging disabled
+    system security state deny-root-ssh disabled
     system security services service httpd
     state ssl-ciphersuite ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
     system security services service sshd
     state ciphers [ aes128-cbc aes128-ctr aes128-gcm@openssh.com aes256-cbc aes256-ctr aes256-gcm@openssh.com ]
     state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
-    r10900-1#
+    r5900-1-gsa# 
 
 You can change the ciphers offered by F5OS to clients connecting to the httpd service by using the **system security services service httpd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
 
 .. code-block:: bash
 
-    r10900-1(config)# system security services service httpd config ssl-ciphersuite ?
-    Description: User specified ssl-ciphersuite.
+    r5900-1-gsa(config)# system security services service httpd config ssl-ciphersuite ?
     Possible completions:
-    <string>[ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES2
-    56-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-
-    RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDH
-    E-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-
-    RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA]
-    r10900-1(config)# 
+    ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-D
+    SS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-E
+    CDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDS
+    A-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-
+    AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
+    r5900-1-gsa(config)# 
     
 You can change the ciphers and kexalgorithms offered by F5OS to clients connecting to the sshd service by using the **system security services service sshd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
 
@@ -1748,22 +2459,203 @@ You may configure which macs F5OS will use for the sshd service by using the **s
     ssh.com hmac-sha2-256-etm@openssh.com hmac-sha2-512-etm@openssh.com hmac-md5-etm@openssh.com hmac-md5-96-etm@openssh.com hmac-ripemd160-etm@openssh.com umac-64-etm@openssh.com umac-128-etm@openssh.com ]
     appliance-1(config)#
 
+Configuring Management Ciphers via webUI
+--------------------------------------
+
+You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS. Go to the **System Settings -> System Security** page to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+
+.. image:: images/rseries_security/security-ciphers.png
+  :align: center
+  :scale: 70%  
+
+
+
+
+
+Configuring Management Ciphers via API
+--------------------------------------
+
+You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS. Use the following API call to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-security-ciphers:security
+
+In the body of the API call enter your httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+
+.. code-block:: bash
+
+    {
+        "f5-security-ciphers:security": {
+            "services": {
+                "service": [
+                    {
+                        "name": "httpd",
+                        "config": {
+                            "name": "httpd",
+                            "ssl-ciphersuite": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA"
+                        }
+                    },
+                    {
+                        "name": "sshd",
+                        "config": {
+                            "name": "sshd",
+                            "ciphers": [
+                                "aes128-cbc",
+                                "aes128-ctr",
+                                "aes128-gcm@openssh.com",
+                                "aes256-cbc",
+                                "aes256-ctr",
+                                "aes256-gcm@openssh.com"
+                            ],
+                            "kexalgorithms": [
+                                "diffie-hellman-group14-sha1",
+                                "diffie-hellman-group14-sha256",
+                                "diffie-hellman-group16-sha512",
+                                "ecdh-sha2-nistp256",
+                                "ecdh-sha2-nistp384",
+                                "ecdh-sha2-nistp521"
+                            ]
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+You can then view the current configuration by issuing the folowing API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-security-ciphers:security
+
+The output will look similar to the response below.
+
+.. code-block:: bash
+
+    {
+        "f5-security-ciphers:security": {
+            "services": {
+                "service": [
+                    {
+                        "name": "httpd",
+                        "config": {
+                            "name": "httpd",
+                            "ssl-ciphersuite": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA"
+                        },
+                        "state": {
+                            "name": "httpd",
+                            "ssl-ciphersuite": "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-SHA384:ECDHE-ECDSA-AES256-SHA384:ECDHE-RSA-AES256-SHA:ECDHE-ECDSA-AES256-SHA:DHE-DSS-AES256-GCM-SHA384:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES256-SHA256:DHE-DSS-AES256-SHA256:DHE-RSA-AES256-SHA:DHE-DSS-AES256-SHA:DHE-RSA-CAMELLIA256-SHA:DHE-DSS-CAMELLIA256-SHA:ECDH-RSA-AES256-GCM-SHA384:ECDH-ECDSA-AES256-GCM-SHA384:ECDH-RSA-AES256-SHA384:ECDH-ECDSA-AES256-SHA384:ECDH-RSA-AES256-SHA:ECDH-ECDSA-AES256-SHA:AES256-GCM-SHA384:AES256-SHA256:AES256-SHA:CAMELLIA256-SHA:PSK-AES256-CBC-SHA:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-SHA256:ECDHE-ECDSA-AES128-SHA256:ECDHE-RSA-AES128-SHA:ECDHE-ECDSA-AES128-SHA:DHE-DSS-AES128-GCM-SHA256:DHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES128-SHA256:DHE-DSS-AES128-SHA256:DHE-RSA-AES128-SHA:DHE-DSS-AES128-SHA:DHE-RSA-CAMELLIA128-SHA:DHE-DSS-CAMELLIA128-SHA:ECDH-RSA-AES128-GCM-SHA256:ECDH-ECDSA-AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA"
+                        }
+                    },
+                    {
+                        "name": "sshd",
+                        "config": {
+                            "name": "sshd",
+                            "ciphers": [
+                                "aes128-cbc",
+                                "aes128-ctr",
+                                "aes128-gcm@openssh.com",
+                                "aes256-cbc",
+                                "aes256-ctr",
+                                "aes256-gcm@openssh.com"
+                            ],
+                            "kexalgorithms": [
+                                "diffie-hellman-group14-sha1",
+                                "diffie-hellman-group14-sha256",
+                                "diffie-hellman-group16-sha512",
+                                "ecdh-sha2-nistp256",
+                                "ecdh-sha2-nistp384",
+                                "ecdh-sha2-nistp521"
+                            ]
+                        },
+                        "state": {
+                            "name": "sshd",
+                            "ciphers": [
+                                "aes128-cbc",
+                                "aes128-ctr",
+                                "aes128-gcm@openssh.com",
+                                "aes256-cbc",
+                                "aes256-ctr",
+                                "aes256-gcm@openssh.com"
+                            ],
+                            "kexalgorithms": [
+                                "diffie-hellman-group14-sha1",
+                                "diffie-hellman-group14-sha256",
+                                "diffie-hellman-group16-sha512",
+                                "ecdh-sha2-nistp256",
+                                "ecdh-sha2-nistp384",
+                                "ecdh-sha2-nistp521"
+                            ]
+                        }
+                    }
+                ]
+            },
+            "firewall": {
+                "config": {
+                    "logging": {
+                        "enabled": false
+                    }
+                },
+                "state": {
+                    "logging": {
+                        "enabled": false
+                    }
+                }
+            },
+            "config": {
+                "deny-root-ssh": {
+                    "enabled": false
+                }
+            },
+            "state": {
+                "deny-root-ssh": {
+                    "enabled": false
+                }
+            }
+        }
+    }
 
 Client Certificate Based Auth
 =============================
 
-Coming in F5OS-A 1.5.0.
+You can configure client certificate-based authentication to the F5OS management interfaces.
 
-iHealth Proxy Server
-====================
+Configuring Client Certificate Authentication via CLI
+-----------------------------------------------------
 
-F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device.
+Before you can log in to the webUI using client certificate authentication, you must have configured client certificate authentication from the CLI and imported the certificate to your browser. 
+
+https://techdocs.f5.com/en-us/f5os-a-1-8-0/f5-rseries-systems-administration-configuration/title-auth-access.html#ssh-public-key-auth-overview
 
 
-Adding a Proxy Server via CLI
-------------------------------
+Configuring Client Certificate Authentication via webUI
+-------------------------------------------------------
 
-To add a proxy server for iHealth uploads via the CLI, use the **system diagnostics proxy** command.
+Although you can enable client certificate authentication via the webUI, you must upload or create your certificate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full configraton is completed.
+
+See the section above about configuration of the certificate before moving on. If you have loaded a certificate, then you can enable client certificate authentication via the webUI as seen below.
+
+.. image:: images/rseries_security/client-cert1.png
+  :align: center
+  :scale: 70% 
+
+
+**More Details to Come**
+
+Configuring Client Certificate Authentication via API
+-----------------------------------------------------
+
+Proxy Server Configuration
+==========================
+
+F5OS supports the ability to capture detailed logs and configuration using the qkView utility. To speed up support case resolution, the qkView can be uploaded directly to F5's iHealth service, which will give F5 support personnel access to the detailed information to aid problem resolution. In some environments, F5 devices may not have the ability to access the Internet without going through a proxy. The F5OS-A 1.3.0 release added the ability to upload qkViews directly to iHealth through a proxy device and F5OS-A 1.8.0 added support for activating a license via proxy.
+
+
+Proxy Server via CLI for Licensing and Qkview Uploads to iHealth
+----------------------------------------------------------------
+
+To add a proxy server via the CLI which can be used for iHealth uploads or license activation, use the **system diagnostics proxy** command.
 
 .. code-block:: bash
 
@@ -1771,8 +2663,17 @@ To add a proxy server for iHealth uploads via the CLI, use the **system diagnost
     (<AES encrypted string>): **************
     r10900(config)# 
 
-Adding a Proxy Server via webUI
--------------------------------
+In F5OS-A 1.8.0 the system licensing command has been extended to accept proxy configuration details as seen below.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)# system licensing install registration-key F9832-03399-18781-56079-7591756 proxy-server https://myproxy.com:3128 proxy-username user1 proxy-password 
+    Value for 'proxy-password' (<AES encrypted string>): **************
+    result License installed successfully.
+    r10900-1-gsa(config)#
+
+Proxy Server via webUI for Licensing and Qkview Uploads to iHealth
+----------------------------------------------------------------
 
 To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics -> iHealth Configuration** page. 
 
@@ -1780,8 +2681,14 @@ To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics
   :align: center
   :scale: 70%  
 
-Adding a Proxy Server via API
-------------------------------
+To add a proxy server for license activation via the webUI, go to the **System Settings -> Licensing** page. 
+
+.. image:: images/rseries_security/proxy-licensing.png
+  :align: center
+  :scale: 70%  
+
+Proxy Server via API for Licensing and Qkview Uploads to iHealth
+----------------------------------------------------------------
 
 To add a proxy server for iHealth uploads via the API, use the following API call.
 
@@ -1830,6 +2737,7 @@ The API call should return output similar to what is seen below.
     }
 
 
+
 Audit Logging
 =============
 
@@ -1837,8 +2745,9 @@ F5OS can log all configuration changes and access to the F5OS layer in audit log
 
 In versions prior to F5OS-A 1.4.0, the audit.log files may only be viewed locally within the F5OS layer, the audit logs cannot be sent to a remote syslog location. F5OS-A 1.4.0 adds the ability to allow audit.log entries to be redirected to a remote syslog location, as well as changing the log format to conform to standard F5OS syslog format of all audit related events. Details on the two different implementations are below.
 
-Viewing Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
---------------------------------------------------------
+
+Configuration of Audit Logs via F5OS CLI (F5OS-A 1.4.0 and Later)
+-----------------------------------------------------------------
 
 Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default, these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
 
@@ -1868,17 +2777,46 @@ Then, you can control the level of events that will be logged to the local audit
 
 The formatting of audit logs provides the date/time in UTC, the account and ID who performed the action, the type of event, the asset affected, the type of access, and success or failure of the request. Separate log entries provide details on user access (login/login failures) information such as IP address and port and whether access was granted or not.
 
+Configuration of Audit Logs via F5OS webUI (F5OS-A 1.4.0 and Later)
+-----------------------------------------------------------------
+
+Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default, these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
+
+First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
+
+
+.. image:: images/rseries_security/audit-logging.png
+  :align: center
+  :scale: 70%  
+
+Configuration of Audit Logs via F5OS API (F5OS-A 1.4.0 and Later)
+-----------------------------------------------------------------
+
+Any information related to login/logout or configuration changes are logged in the **log/system/audit.log** location. By default, these events are not sent to a configured remote syslog location. If you would like to send informational audit level messages to a remote syslog server, then you must explicitly enable audit events.
+
+First you must configure the remote syslog destination. As part of that configuration, you will specify the IP address, port, and protocol of the remote syslog server. To send audit.log events to the remote server you must add the command **selectors selector AUTHPRIV DEBUG** as seen below.
+
+
+Viewing Audit Logs
+==================
+
+All configuration and login / logout events are recorded in the systems audit logs. Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log**.
 
 Viewing Audit Logs via F5OS CLI
 -------------------------------
 
-Most audit events go to the **log/system/audit.log** location, while a few others such as CLI login failures are logged to **log/host/audit.log** in the current F5OS releases. In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options. You may choose either the **log/system** directory or the **log/host** directory. Note the **audit.log** file. 
+In the F5OS CLI, the paths are simplified so that you don’t have to know the underlying directory structure. You can use the **file list path** command to see the files inside the **log/system/** directory; use the tab complete to see the options. You may choose either the **log/system** directory or the **log/host** directory. Note the **audit.log** file. 
 
 .. code-block:: bash
 
     appliance-1# file list path log/
     Possible completions:
     confd/  host/  system/
+    
+Below are the log files in the **/log/system** directory.
+
+.. code-block:: bash
+
     appliance-1# file list path log/system/
     Possible completions:
     audit.log                      confd.log          devel.log     devel.log.1    lcd.log           lcd.log.1           lcd.log.2.gz       
@@ -1925,7 +2863,7 @@ There are options to manipulate the output of the file. Add **| ?** to the comma
     until     End with the line that matches
     r10900# file show log/system/audit.log | 
 
-There are other file options that allow the user to tail the log file using **file tail -f** for a live tail,  or **file tail -n <number of lines>** to view a specific number of the most recent lines.
+There are other file options that allow the user to tail the log file using **file tail -f** for a live tail, or 
 
 .. code-block:: bash
 
@@ -1941,7 +2879,9 @@ There are other file options that allow the user to tail the log file using **fi
     <INFO> 7-Dec-2022::15:05:21.784 appliance-1 confd[125]: audit user: admin/13692371 CLI done
     <INFO> 7-Dec-2022::15:08:59.462 appliance-1 confd[125]: audit user: admin/13692371 CLI 'file tail -f log/system/audit.log'
 
+**file tail -n <number of lines>** to view a specific number of the most recent lines.
 
+.. code-block:: bash
 
     r10900# file tail -n 20 log/system/audit.log
     <INFO> 7-Dec-2022::14:46:50.546 appliance-1 confd[125]: audit user: admin/13672920 RESTCONF: response with http: HTTP/1.1 /restconf/ 200 duration 37668 ms
@@ -2029,7 +2969,29 @@ Within the bash shell if you are logged in as root, the path for the logging is 
     -rw-r--r--.  1 root root       4096 Oct 15  2021 .velos.log.swp
     drwxr-xr-x.  2 root root       4096 Nov 28 12:34 webui
     [root@appliance-1(r10900.f5demo.net) ~]# 
-  
+
+
+Some audit events don't make it into the main audit.log file in the /log/system directory. An example would be certain login failure events that happen at a lower layer, and are instead captured in the /log/host/audit/audit.log file.
+
+.. code-block:: bash
+
+    r10900-1-gsa# file show log/host/audit/audit.log
+    type=USER_LOGIN msg=audit(1730821588.346:269): pid=25235 uid=0 auid=1000 ses=69895 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.18.11.38 addr=172.18.11.38 terminal=/dev/pts/1 res=success'
+    type=USER_LOGOUT msg=audit(1730823436.684:270): pid=25235 uid=0 auid=1000 ses=69895 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/1 res=success'
+    type=USER_LOGIN msg=audit(1730824052.749:271): pid=8910 uid=0 auid=1000 ses=70022 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.18.11.38 addr=172.18.11.38 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730825355.788:272): pid=8910 uid=0 auid=1000 ses=70022 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730840593.268:273): pid=42201 uid=0 auid=1000 ses=70865 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730842988.585:274): pid=42201 uid=0 auid=1000 ses=70865 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730843105.828:275): pid=10063 uid=0 auid=1000 ses=70993 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730844656.179:276): pid=10063 uid=0 auid=1000 ses=70993 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730844667.844:277): pid=38080 uid=0 auid=1012 ses=71074 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1012 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730844859.612:278): pid=38080 uid=0 auid=1012 ses=71074 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1012 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730844871.745:279): pid=957 uid=0 auid=1000 ses=71084 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    type=USER_LOGOUT msg=audit(1730846789.291:280): pid=957 uid=0 auid=1000 ses=71084 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=? addr=? terminal=/dev/pts/0 res=success'
+    type=USER_LOGIN msg=audit(1730848953.986:281): pid=4018 uid=0 auid=1000 ses=71293 subj=system_u:system_r:sshd_t:s0-s0:c0.c1023 msg='op=login id=1000 exe="/usr/sbin/sshd" hostname=172.27.192.120 addr=172.27.192.120 terminal=/dev/pts/0 res=success'
+    r10900-1-gsa# 
+
+
 Viewing Logs from the webUI
 --------------------------
 
@@ -2049,6 +3011,11 @@ If you want to download the main **audit.log**, select the directory **/log/syst
 
 Viewing Audit Logs via F5OS API
 -------------------------------
+
+You cannot view audit logs fomr the API, but you may download them from the system.
+
+
+
 
 Example Audit Logging for Login, Logout, Login Failure, and Account Lockout
 ---------------------------------------------------------------------------

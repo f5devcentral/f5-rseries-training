@@ -53,6 +53,61 @@ Deploying an rSeries Tenant
 
 `Deleting a Tenant via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#deleting-a-tenant-via-the-api>`_
 
+
+Deploying an rSeries BIG-IP Next Tenant
+---------------------------------------
+
+`Loading BIG-IP Next Tenant Images from a Remote Server via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#loading-big-ip-next-tenant-images-from-a-remote-server-via-f5os-api>`_
+
+`Uploading BIG-IP Next Tenant Images from a Client Machine via the F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#uploading-big-ip-next-tenant-images-from-a-client-machine-via-the-f5os-api>`_
+
+`Creating a BIG-IP Next Tenant via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#creating-a-big-ip-next-tenant-via-f5os-api>`_
+
+`Validating BIG-IP Next Tenant Status via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#validating-big-ip-next-tenant-status-via-f5os-api>`_
+
+Securing / Hardening F5OS on rSeries
+------------------------------------
+
+
+`Adding Allow List Entries via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#adding-allow-list-entries-via-api>`_
+
+`AManaging Device Certificates, Keys, CSRs, and CAs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#managing-device-certificates-keys-csrs-and-cas-via-api>`_
+
+`Enabling Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-appliance-mode-via-the-api>`_
+
+`Enabling F5OS Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-f5os-appliance-mode-via-the-api>`_
+
+`Enabling BIG-IP Tenant Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-big-ip-appliance-mode-via-the-api>`_
+
+`Validating Tenant Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#validating-tenant-status-via-api>`_
+
+`Resource-Admin & Guest User Role via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#resource-admin-guest-user-role-via-api>`_
+
+`Configuring SSH and CLI Timeouts & Deny Root SSH Settings via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-ssh-and-cli-timeouts-deny-root-ssh-settings-via-api>`_
+
+`Token Lifetime via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#token-lifetime-via-api>`_
+
+`Disabling Basic Auth via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#disabling-basic-auth-via-the-api>`_
+
+`Setting Password Policies via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#setting-password-policies-via-api>`_
+
+`Configuring Login Banner / MoTD via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-login-banner-motd-via-api>`_
+
+`Enabling NTP Authentication via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-ntp-authentication-via-api>`_
+
+`Configuring Management Ciphers via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-management-ciphers-via-api>`_
+
+`Configuring Client Certificate Authentication via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-client-certificate-authentication-via-api>`_
+
+`Proxy Server via API for Licensing and Qkview Uploads to iHealth <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#proxy-server-via-api-for-licensing-and-qkview-uploads-to-ihealth>`_
+
+`Configuration of Audit Logs via F5OS API (F5OS-A 1.4.0 and Later) <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuration-of-audit-logs-via-f5os-api-f5os-a-1-4-0-and-later>`_
+
+`Viewing Audit Logs via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#viewing-audit-logs-via-f5os-api>`_
+
+`Downloading Audit Logs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#downloading-audit-logs-via-api>`_
+
+
 rSeries Software Upgrades
 -------------------------
 

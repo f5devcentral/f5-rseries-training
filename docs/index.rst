@@ -16,6 +16,7 @@ Planning for rSeries Guide
    initial_setup_of_rseries_platform_layer.rst
    initial_setup_of_rseries_network_layer.rst
    rseries_deploying_a_tenant.rst
+   rseries_deploying_a_bigip_next_tenant.rst
    rseries_inside_the_tenant.rst
    rseries_security.rst
    rseries_software_upgrades.rst
