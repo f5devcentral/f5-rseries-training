@@ -190,6 +190,8 @@ To import an F5OS-A image from a remote HTTPS server, use the following API exam
 
     POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
 
+In the body of the API request enter the information as seen below.
+
 .. code-block:: json
 
     {
@@ -229,6 +231,8 @@ After transferring the file, you can view the contents of the images/staging dir
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
 
+In the body of the API request enter the information as seen below.
+
 .. code-block:: json
 
     {
@@ -254,6 +258,8 @@ You can then monitor the images/import/iso directory to see when the file is rea
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/list
+
+In the body of the API request enter the information as seen below.
 
 .. code-block:: json
 
@@ -492,6 +498,8 @@ This is the Set Version API call that will initiate the upgrade:
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/set-version
+
+In the body of the API request enter the information as seen below.
 
 .. code-block:: json
 

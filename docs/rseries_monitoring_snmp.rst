@@ -2447,70 +2447,86 @@ To enable SNMP traps via the API, send the following API call.
 
 .. code-block:: bash
 
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp
 
 In the body of the API call include the following:
 
 .. code-block:: json
 
     {
-        "SNMP-NOTIFICATION-MIB:SNMP-NOTIFICATION-MIB": {
-            "snmpNotifyTable": {
-                "snmpNotifyEntry": [
-                    {
-                        "snmpNotifyName": "v2_trap",
-                        "snmpNotifyTag": "v2_trap",
-                        "snmpNotifyType": "trap",
-                        "snmpNotifyStorageType": "nonVolatile"
+        "f5-system-snmp:snmp": {
+            "targets": {
+                "target": {
+                    "name": "snmp-trap-receiver4",
+                    "config": {
+                        "name": "snmp-trap-receiver4",
+                        "user": "snmpv3-user",
+                        "ipv4": {
+                            "address": "10.255.0.144",
+                            "port": 162
+                        }
                     }
-                ]
+                }
             }
         }
     }
 
-
+To view the current SNMP trap configuration.
 
 .. code-block:: bash
 
-    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/SNMP-TARGET-MIB:SNMP-TARGET-MIB
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-snmp:snmp/targets
+
+You should see JSON output similar to what is seen below. 
 
 .. code-block:: json
 
     {
-        "SNMP-TARGET-MIB:SNMP-TARGET-MIB": {
-            "snmpTargetAddrTable": {
-                "snmpTargetAddrEntry": [
-                    {
-                        "snmpTargetAddrName": "group2",
-                        "snmpTargetAddrTDomain": "1.3.6.1.6.1.1",
-                        "snmpTargetAddrTAddress": "10.255.0.144.0.161",
-                        "snmpTargetAddrTimeout": 1500,
-                        "snmpTargetAddrRetryCount": 3,
-                        "snmpTargetAddrTagList": "v2_trap",
-                        "snmpTargetAddrParams": "group2",
-                        "snmpTargetAddrStorageType": "nonVolatile",
-                        "snmpTargetAddrEngineID": "",
-                        "snmpTargetAddrTMask": "",
-                        "snmpTargetAddrMMS": 2048,
-                        "enabled": true
+        "f5-system-snmp:targets": {
+            "target": [
+                {
+                    "name": "snmp-trap-receiver4",
+                    "config": {
+                        "name": "snmp-trap-receiver4",
+                        "user": "snmpv3-user",
+                        "ipv4": {
+                            "address": "10.255.0.144",
+                            "port": 162
+                        }
+                    },
+                    "state": {
+                        "name": "snmp-trap-receiver4",
+                        "user": "snmpv3-user",
+                        "ipv4": {
+                            "address": "10.255.0.144",
+                            "port": 162
+                        }
                     }
-                ]
-            },
-            "snmpTargetParamsTable": {
-                "snmpTargetParamsEntry": [
-                    {
-                        "snmpTargetParamsName": "group2",
-                        "snmpTargetParamsMPModel": 1,
-                        "snmpTargetParamsSecurityModel": 2,
-                        "snmpTargetParamsSecurityName": "public",
-                        "snmpTargetParamsSecurityLevel": "noAuthNoPriv",
-                        "snmpTargetParamsStorageType": "nonVolatile"
+                },
+                {
+                    "name": "ubuntu-snmp",
+                    "config": {
+                        "name": "ubuntu-snmp",
+                        "community": "public",
+                        "security-model": "v2c",
+                        "ipv4": {
+                            "address": "172.22.50.57",
+                            "port": 162
+                        }
+                    },
+                    "state": {
+                        "name": "ubuntu-snmp",
+                        "community": "public",
+                        "security-model": "v2c",
+                        "ipv4": {
+                            "address": "172.22.50.57",
+                            "port": 162
+                        }
                     }
-                ]
-            }
+                }
+            ]
         }
     }
-
 
 
 

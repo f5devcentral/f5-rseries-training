@@ -459,6 +459,8 @@ The overall appliance component status can be queried via the following API comm
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components
 
+You should see output similar to the JSON output below.
+
 .. code-block:: json
 
     {
@@ -1024,6 +1026,8 @@ The appliance LCD panel status can be queried via the following API command:
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=lcd
 
+You should see output similar to the JSON output below.
+
 .. code-block:: json
 
     {
@@ -1051,6 +1055,8 @@ The rSeries appliance may have 1 or 2 power supplies installed. Each can be quer
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=psu-1
+
+You should see output similar to the JSON output below.
 
 .. code-block:: json
 
@@ -1089,6 +1095,8 @@ You may query the status of the disks within the rSeries appliance:
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/storage
+
+You should see output similar to the JSON output below.
 
 .. code-block:: json
 
@@ -1135,7 +1143,7 @@ You can query the details about the CPUs within each rSeries device. Every CPU t
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/cpu
 
-Below is the exmaple output for CPU's:
+Below is the example output for CPU's:
 
 .. code-block:: json
 
@@ -1437,6 +1445,8 @@ You can monitor the rSeries Appliance temperature.  The output will display the 
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:temperature
 
+You should see output similar to the JSON output below.
+
 .. code-block:: json
 
     {
@@ -1457,6 +1467,8 @@ The API call below shows the total system memory:
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:memory
 
+You should see output similar to the JSON output below.
+
 .. code-block:: json
 
     {
@@ -1475,6 +1487,8 @@ rSeries supports the Trusted Protection Module (TPM) to validate certain softwar
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:tpm-integrity-status
+
+You should see output similar to the JSON output below.
 
 .. code-block:: json
 
@@ -1905,6 +1919,8 @@ This command will display the health of the underlying Kubernetes (K3S) cluster 
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-cluster:cluster
 
+The output will look similar to the JSON output below.
+
 .. code-block:: json
 
     {
@@ -2083,6 +2099,8 @@ This API call displays some of the software processes running within the F5OS pl
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-service-instances:service-instances
 
+The output will look similar to the JSON output below.
+
 .. code-block:: json
 
     {
@@ -2201,6 +2219,7 @@ F5 Services Status
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-services:services
 
+The output will look similar to the JSON output below.
 
 .. code-block:: json
 
@@ -2239,6 +2258,8 @@ This API call displays the Forwarding Database:
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-l2fdb:fdb
+
+The output will look similar to the JSON output below.
 
 .. code-block:: json
 
@@ -2354,6 +2375,8 @@ The following API call displays the service-pods running inside the F5OS layer:
 .. code-block:: bash
 
     GET https://{{Appliance1_IP}}:8888/restconf/data/f5-service-pod:service-pods
+
+The output will look similar to the JSON output below.
 
 .. code-block:: json
 
@@ -2516,6 +2539,8 @@ The following API call displays the details used to feed the overall system heal
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health
+
+The output will look similar to the JSON output below.
 
 .. code-block:: json
 

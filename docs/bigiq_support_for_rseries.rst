@@ -16,6 +16,8 @@ rSeries tenants can also be onboarded in BIG-IQ using Declarative Onboarding (DO
 
     POST https://{{BigIQ_Mgmt}}/mgmt/shared/declarative-onboarding
 
+In the body of the API call, enter the following JSON information.
+
 .. code-block:: json
 
     {
