@@ -13,7 +13,7 @@ Some additional links on the benefits of hardware offload using the ePVA in prev
 
 `K09948701: Overview of the FastL4 profile <https://my.f5.com/manage/s/article/K09948701>`_
 
-`F5 Fast L4 Acceleration and the F5 Smart Coprocessor (prioritized Fast L4 Acceleration <https://devcentral.f5.com/s/articles/F5-Fast-L4-Acceleration-and-the-F5-Smart-Coprocessor-prioritized-Fast-L4-Acceleration>`_
+`F5 Fast L4 Acceleration and the F5 Smart Coprocessor (prioritized Fast L4 Acceleration) <https://devcentral.f5.com/s/articles/F5-Fast-L4-Acceleration-and-the-F5-Smart-Coprocessor-prioritized-Fast-L4-Acceleration>`_
 
 In rSeries there are now multiple FPGAs, the **Application Traffic Services Engine** (ATSE), and the **Appliance Switch** (ASW), and the **Network Services Socket** (NSO). In addition to supporting previous functions done by the ePVA, there are also additional functions that were performed in software or 3rd party chipsets that are now handled within the FPGAs. Below is an architectural diagram of the r10000 Series appliance. 
 

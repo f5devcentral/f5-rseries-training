@@ -584,6 +584,8 @@ To copy a tenant image into F5OS over the API, use the following API call to the
 
     POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
 
+In the body of the API call, enter the following JSON information.
+
 .. code-block:: json
 
     {

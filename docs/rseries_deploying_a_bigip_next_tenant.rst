@@ -840,6 +840,8 @@ To copy a BIG-IP Next tenant image into F5OS over the API, use the following API
 
     POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
 
+In the body of the API call, enter the following JSON information.
+
 .. code-block:: json
 
     {
@@ -865,62 +867,44 @@ Below is output generated from the previous command:
 
 .. code-block:: json
 
-    {
-        "f5-tenant-images:images": {
-            "image": [
-                {
-                    "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": true,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "F5OS-A-1.0.0-11432.R5R10.iso",
-                    "in-use": false,
-                    "status": "verification-failed"
-                }
-            ]
-        }
-    }
+  {
+      "f5-tenant-images:images": {
+          "image": [
+              {
+                  "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
+                  "in-use": false,
+                  "type": "vm-image",
+                  "status": "verified",
+                  "date": "2024-10-15",
+                  "size": "1.88 GB"
+              },
+              {
+                  "name": "BIGIP-15.1.6.1-0.0.6.ALL-F5OS.qcow2.zip.bundle",
+                  "in-use": false,
+                  "type": "vm-image",
+                  "status": "verified",
+                  "date": "2024-10-15",
+                  "size": "1.99 GB"
+              },
+              {
+                  "name": "BIGIP-17.1.0.1-0.0.4.ALL-F5OS.qcow2.zip.bundle",
+                  "in-use": false,
+                  "type": "vm-image",
+                  "status": "verified",
+                  "date": "2024-10-15",
+                  "size": "2.28 GB"
+              },
+              {
+                  "name": "BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle",
+                  "in-use": false,
+                  "type": "vm-image",
+                  "status": "verified",
+                  "date": "2024-10-15",
+                  "size": "2.34 GB"
+              }
+          ]
+      }
+  }
 
 
 Uploading BIG-IP Next Tenant Images from a Client Machine via the F5OS API
@@ -937,11 +921,11 @@ In the body of the API call enter the **size**, **name**, and **file-path** as s
 
 .. code-block:: json
 
-    {
-        "size":2239554028,
-        "name": "BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle",
-        "file-path": "images/tenant/"
-    }
+  {
+      "size":1598812688,
+      "name": "BIG-IP-Next-20.1.0-2.279.0+0.0.75.tar.bundle",
+      "file-path": "images/tenant/"
+  }
 
 If you are using Postman, the API call above will generate an upload-id that will need to be captured so it can be used in the API call to upload the file. Below is an example of the code that should be added to the **Test** section of the API call so that the **upload-id** can be captured and saved to a variable called **upload-id** for subsequent API calls.
 
@@ -990,31 +974,34 @@ Below is the body of the API call above.
 .. code-block:: json
 
 
-    {
-        "tenant": [
-            {
-                "name": "{{New_Tenant1_Name}}",
-                "config": {
-                    "image": "{{Appliance_Tenant_Image}}",
-                    "nodes": [
-                        1
-                    ],
-                    "mgmt-ip": "{{Appliance1_Tenant1_IP}}",
-                    "gateway": "{{OutofBand_DFGW}}",
-                    "prefix-length": 24,
-                    "vlans": [
-                        3010,
-                        3011,
-                        500
-                    ],
-                    "vcpu-cores-per-node": 2,
-                    "memory": 7680,
-                    "cryptos": "enabled",
-                    "running-state": "configured"
-                }
-            }
-        ]
-    }
+  {
+      "tenant": [
+          {
+              "name": "tenant1",
+              "config": {
+                  "name": "tenant1",
+                  "type": "BIG-IP-Next",
+                  "image": "BIG-IP-Next-20.1.0-2.279.0+0.0.75",
+                  "deployment-file": "BIG-IP-Next-20.1.0-2.279.0+0.0.75.yaml",
+                  "nodes": [
+                      1
+                  ],
+                  "mgmt-ip": "172.22.50.34",
+                  "gateway": "{{rseries_outofband_dfgw_ip}}",
+                  "prefix-length": 26,
+                  "vlans": [
+                      {{rseries_internal_vlan_tag}},
+                      {{rseries_external_vlan_tag}},
+                      {{rseries_ha_vlan_tag}}
+                  ],
+                  "vcpu-cores-per-node": 4,
+                  "memory": 14848,
+                  "cryptos": "enabled",
+                  "running-state": "deployed"
+              }
+          }
+      ]
+  }
 
 Validating BIG-IP Next Tenant Status via F5OS API
 -------------------------------------------------
@@ -1029,77 +1016,485 @@ The output of the above API call shows the state and status of the tenant.
 
 .. code-block:: json
 
-    {
-        "f5-tenants:tenants": {
-            "tenant": [
-                {
-                    "name": "tenant1",
-                    "config": {
-                        "name": "tenant1",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                        "nodes": [
-                            1
-                        ],
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 2,
-                        "memory": "7680",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "configured",
-                        "appliance-mode": {
-                            "enabled": false
-                        }
-                    },
-                    "state": {
-                        "name": "tenant1",
-                        "unit-key-hash": "ec+5rtpwnIt6awtkadYqXyWzJ/Oty4tRbfPICaz6OzPSw4KILtQMJZETeq/Q6pbfBh8zXQfBPTetgvPw2dW2ig==",
-                        "type": "BIG-IP",
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "mac-ndi-set": [
-                            {
-                                "ndi": "default",
-                                "mac": "00:94:a1:69:59:24"
-                            }
-                        ],
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 2,
-                        "memory": "7680",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "configured",
-                        "mac-data": {
-                            "base-mac": "00:94:a1:69:59:26",
-                            "mac-pool-size": 1
-                        },
-                        "appliance-mode": {
-                            "enabled": false
-                        },
-                        "status": "Configured"
-                    }
-                }
-            ]
-        }
-    }
+  {
+      "f5-tenants:tenants": {
+          "tenant": [
+              {
+                  "name": "tenant1",
+                  "config": {
+                      "name": "tenant1",
+                      "type": "BIG-IP-Next",
+                      "image": "BIG-IP-Next-20.1.0-2.279.0+0.0.75",
+                      "deployment-file": "BIG-IP-Next-20.1.0-2.279.0+0.0.75.yaml",
+                      "nodes": [
+                          1
+                      ],
+                      "mgmt-ip": "172.22.50.34",
+                      "prefix-length": 26,
+                      "gateway": "172.22.50.62",
+                      "dag-ipv6-prefix-length": 128,
+                      "vlans": [
+                          500,
+                          501,
+                          502
+                      ],
+                      "cryptos": "enabled",
+                      "vcpu-cores-per-node": 4,
+                      "memory": "14848",
+                      "storage": {
+                          "size": 15
+                      },
+                      "running-state": "deployed",
+                      "mac-data": {
+                          "f5-tenant-l2-inline:mac-block-size": "one"
+                      },
+                      "appliance-mode": {
+                          "enabled": false
+                      }
+                  },
+                  "state": {
+                      "name": "tenant1",
+                      "unit-key-hash": "Isla/29Bac4+vAHaelGwbyhaw1B9aENGJZTMGTPYUNAWfYsaSIJ0lzvgUyEWK68XQ2qjOcLq1ZR/y1JE6R59Sg==",
+                      "type": "BIG-IP-Next",
+                      "image": "BIG-IP-Next-20.1.0-2.279.0+0.0.75",
+                      "deployment-file": "BIG-IP-Next-20.1.0-2.279.0+0.0.75.yaml",
+                      "upgrade-status": "not-started",
+                      "mgmt-ip": "172.22.50.34",
+                      "prefix-length": 26,
+                      "gateway": "172.22.50.62",
+                      "dag-ipv6-prefix-length": 128,
+                      "vlans": [
+                          500,
+                          501,
+                          502
+                      ],
+                      "cryptos": "enabled",
+                      "vcpu-cores-per-node": 4,
+                      "qat-vf-count": 7,
+                      "memory": "14848",
+                      "running-state": "deployed",
+                      "mac-data": {
+                          "base-mac": "00:94:a1:69:35:18",
+                          "mac-pool-size": 1,
+                          "f5-tenant-l2-inline:mac-block": [
+                              {
+                                  "mac": "00:94:a1:69:35:18"
+                              }
+                          ]
+                      },
+                      "appliance-mode": {
+                          "enabled": false
+                      },
+                      "cpu-allocations": {
+                          "cpu-allocation": [
+                              {
+                                  "node": 1
+                              }
+                          ]
+                      },
+                      "feature-flags": {
+                          "clustering-as-service": false,
+                          "stats-stream-capable": false
+                      },
+                      "namespace": "default-tid-21",
+                      "status": "Provisioning",
+                      "instances": {
+                          "instance": [
+                              {
+                                  "node": 1,
+                                  "pod-name": "tenant1-1",
+                                  "instance-id": 1,
+                                  "phase": "Allocating resources to tenant is in progress",
+                                  "creation-time": "",
+                                  "ready-time": "",
+                                  "status": " "
+                              }
+                          ]
+                      }
+                  },
+                  "module-provisioning": {
+                      "state": {
+                          "provisioning-status": "not-started",
+                          "provisioning-event": ""
+                      }
+                  }
+              },
+              {
+                  "name": "test1",
+                  "config": {
+                      "name": "test1",
+                      "type": "BIG-IP-Next",
+                      "image": "BIG-IP-Next-20.1.0-2.279.0+0.0.75",
+                      "deployment-file": "BIG-IP-Next-20.1.0-2.279.0+0.0.75.yaml",
+                      "nodes": [
+                          1
+                      ],
+                      "mgmt-ip": "172.22.50.35",
+                      "prefix-length": 26,
+                      "gateway": "172.22.50.62",
+                      "dag-ipv6-prefix-length": 128,
+                      "vlans": [
+                          500,
+                          501,
+                          502
+                      ],
+                      "cryptos": "enabled",
+                      "vcpu-cores-per-node": 4,
+                      "memory": "14848",
+                      "storage": {
+                          "size": 25
+                      },
+                      "running-state": "deployed",
+                      "mac-data": {
+                          "f5-tenant-l2-inline:mac-block-size": "one"
+                      },
+                      "appliance-mode": {
+                          "enabled": false
+                      }
+                  },
+                  "state": {
+                      "name": "test1",
+                      "unit-key-hash": "Gin+fgNn9C5CnqHlIIi/GoTjcSaG1b65Y/kAlM5cnM7NOFmJe3tGrZQNgz7K5NtY//y7jANrJ2xm7dxIeUr9aA==",
+                      "type": "BIG-IP-Next",
+                      "image": "BIG-IP-Next-20.1.0-2.279.0+0.0.75",
+                      "deployment-file": "BIG-IP-Next-20.1.0-2.279.0+0.0.75.yaml",
+                      "deployment-specification": "f5-asec:\n  name: f5-asec\n  enabled: true\n  replicaCount: 1\nf5-access:\n  name: f5-access\n  replicaCount: 1\n  enabled: true\n  f5-access-apmd:\n    enableReleaseConfig: true\nf5-eesv:\n  replicaCount: 1\n  enabled: true\n  f5-eesv-vault:\n    testenv: false\n    strategy: Recreate\n  name: f5-eesv\n  f5-eesv-licensing:\n    extra_cm_refs: \"- configMapRef:\\n      name: {{- include \\\"common.tenantPrefix\\\"\\\n      \\ . | indent 1 }}f5-version-file-config\\n\"\n    testenv: false\nf5-data:\n  replicaCount: 1\n  name: f5-data\n  persistence:\n    volumeMode: Filesystem\n    selector: \"- key: zone\\n  operator: In\\n  values:\\n  - {{ .Values.global.nodeSelector.zone}}\\n\"\n  enabled: true\n  testenv: false\nf5-fsm:\n  name: f5-fsm\n  testenv: false\n  replicaCount: 1\n  enabled: true\nf5-upgrade-hooks:\n  replicaCount: 1\n  name: f5-upgrade-hooks\n  nameOverride: bigip-next-velos\n  enabled: true\nf5-toda:\n  f5-toda-systemhealth:\n    testenv: false\n  name: f5-toda\n  f5-toda-logging:\n    testenv: false\n  replicaCount: 1\nglobal:\n  hostVolumePath: /var/F5/system\n  partitionId: 1\n  cp:\n    resources:\n      requests:\n        memory: 50Mi\n      limits:\n        memory: 500Mi\n  hooksVersion: 1.11.13-0.0.2\n  image:\n    repo: artifactory.f5net.com/f5-mbip-docker\n  configby: TPOB-MICRO\n  basePath: /mnt/disks\n  fips140CfgHostPath: /var/export/chassis/fips140_compliance_cfg\n  nhc_deployments:\n  - f5-csm-qkview\n  - f5-onboarding\n  - f5-asec-policy-compiler\n  - f5-asec-ip-intelligence\n  - f5-asec-clientside-js-obfuscator\n  - f5-csm-bird\n  - f5-appsvcs-templates\n  - f5-eesv-licensing\n  - f5-toda-logpull\n  - f5-toda-avrng\n  - fluentdserver\n  - f5-access-apmd\n  - f5-access-session-manager\n  - f5-access-renderer\n  - f5-debug-sshd\n  - f5-toda-observer\n  - f5-crdconversion\n  - f5-cne-controller\n  - f5-gslb-probe-agent\n  - f5-gslb\n  - f5-fqdn-resolver\n  defaultTags:\n    access: false\n    waf: true\n    dns: false\n    ltm: true\n  externalIP:\n  - 0.0.0.0\n  deployments:\n  - f5-csm-api-engine\n  - f5-csm-icb\n  - f5-fcdn-sync\n  - data-store\n  - f5-fsm-tmm\n  - f5-avcl-ha-manager\n  - f5-avcl-keepalive\n  - f5-dssm\n  - f5-cmsg-mq\n  - f5-appsvcs\n  - f5-eesv-vault\n  - f5-platform-agent\n  featureFlags:\n    clustering-as-service: true\n  external_access:\n  - f5-csm-api-engine\n  - f5-fsm-tmm\n  - fluentdserver\n  - f5-asec-ip-intelligence\n  - f5-appsvcs\n  enableReleaseConfig: true\n  nodeSelector:\n    zone: node1\n    bladeready: true\n  securityContext:\n    seLinuxOptions:\n      level: s0:c0\n  patchVersions:\n    f5_csm: 26.38.0-0.1.1\n    f5_data: 2.19.3-0.0.3\n    f5_avcl: 4.10.20-0.0.2\n  partition: default\n  dp:\n    cpuset: ''\n  runHook: true\n  platform: F5OS\n  registryPort: 4000\n  priority_groups:\n    priority_group_0: \"1024\"\n    priority_group_1: \"5803\"\n  registry: controller-ha.chassis.local\n  seLinuxOptions:\n    level: s0:c16,c10\n  setPrefix: true\n  tags:\n    name: tags\n    access: true\n    dns: false\n    ltm: true\n    replicaCount: 1\n    waf: true\n  version: 20.1.0-2.279.0+0.0.75\n  subplatform: R5R1X\n  hostdoorbellPath: /var/run/platform/tenant_doorbell_test1.sock\ntags:\n  name: tags\n  ltm: true\n  access: true\n  dns: false\n  replicaCount: 1\n  waf: true\n",
+                      "upgrade-status": "not-started",
+                      "mgmt-ip": "172.22.50.35",
+                      "prefix-length": 26,
+                      "gateway": "172.22.50.62",
+                      "dag-ipv6-prefix-length": 128,
+                      "vlans": [
+                          500,
+                          501,
+                          502
+                      ],
+                      "cryptos": "enabled",
+                      "vcpu-cores-per-node": 4,
+                      "qat-vf-count": 7,
+                      "memory": "14848",
+                      "storage": {
+                          "size": 25
+                      },
+                      "running-state": "deployed",
+                      "mac-data": {
+                          "base-mac": "00:94:a1:69:35:14",
+                          "mac-pool-size": 1,
+                          "f5-tenant-l2-inline:mac-block": [
+                              {
+                                  "mac": "00:94:a1:69:35:14"
+                              }
+                          ]
+                      },
+                      "appliance-mode": {
+                          "enabled": false
+                      },
+                      "cpu-allocations": {
+                          "cpu-allocation": [
+                              {
+                                  "node": 1,
+                                  "cpus": [
+                                      8,
+                                      11,
+                                      24,
+                                      27
+                                  ]
+                              }
+                          ]
+                      },
+                      "feature-flags": {
+                          "clustering-as-service": true,
+                          "stats-stream-capable": false
+                      },
+                      "namespace": "default-tid-20",
+                      "status": "Running",
+                      "instances": {
+                          "instance": [
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-data-store",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:59Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-access-apmd",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-access-renderer",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:20Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-access-session-manager",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:24Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-appsvcs",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-appsvcs-templates",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-asec-clientside-js-obfuscator",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:25Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-asec-ip-intelligence",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:24Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-asec-policy-compiler",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:20Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-avcl-ha-manager",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:20Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-avcl-keepalive",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-cmsg-mq",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:49Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-csm-api-engine",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:19Z",
+                                  "status": "Not ready: containers with unready status: [f5-csm-api-engine]",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-csm-bird",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:25Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-csm-icb",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:25Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-csm-qkview",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:51Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-dssm",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:49Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-eesv-licensing",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:24Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-eesv-vault",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:23Z",
+                                  "status": "Not ready: containers with unready status: [f5-eesv-vault]",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-fcdn-sync",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:25Z",
+                                  "ready-time": "2024-11-27T16:51:53Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-fsm-tmm",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:54Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-onboarding",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-platform-agent",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:19Z",
+                                  "status": "Not ready: containers with unready status: [f5-platform-agent]",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-toda-avrng",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-toda-logpull",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:23Z",
+                                  "ready-time": "2024-11-27T16:51:24Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-f5-toda-observer",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:19Z",
+                                  "ready-time": "2024-11-27T16:51:49Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              },
+                              {
+                                  "node": 1,
+                                  "pod-name": "test1-fluentdserver",
+                                  "instance-id": 1,
+                                  "phase": "Running",
+                                  "creation-time": "2024-11-27T16:51:20Z",
+                                  "ready-time": "2024-11-27T16:51:21Z",
+                                  "status": "Started tenant instance",
+                                  "mgmt-mac": "00:94:a1:69:35:15"
+                              }
+                          ]
+                      }
+                  },
+                  "module-provisioning": {
+                      "state": {
+                          "provisioning-status": "not-started",
+                          "provisioning-event": ""
+                      }
+                  }
+              }
+          ]
+      }
+  }
 
-Next a new API call will be sent to set the tenant's **running-state** to **Deployed**. Note this uses a PATCH command. 
+If you didn't set the tenant's state to deployed intially you can change it by issuing the following API call. Note this uses a PATCH command. 
 
 .. code-block:: bash
 
@@ -1113,100 +1508,6 @@ The body/payload of the API call will set the **running-state** to **Deployed**:
         "running-state": "deployed"
     }
 
-
-You may then re-check the tenant status and see how the state changes, and the additional information that is displayed:
-
-.. code-block:: bash
-
-    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-tenants:tenants
-
-Below is the output from the above API call:
-
-.. code-block:: json   
-
-    {
-        "f5-tenants:tenants": {
-            "tenant": [
-                {
-                    "name": "tenant1",
-                    "config": {
-                        "name": "tenant1",
-                        "type": "BIG-IP",
-                        "image": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                        "nodes": [
-                            1
-                        ],
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 2,
-                        "memory": "7680",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "appliance-mode": {
-                            "enabled": false
-                        }
-                    },
-                    "state": {
-                        "name": "tenant1",
-                        "unit-key-hash": "QnBzdWEYTr3oTmTgtyvQLc9m+ANYIrHlwcd6Z84qKOiYa61b3eqqbxBtaVTzWFOxn19xrXp37gz4CKC8Et2PsQ==",
-                        "type": "BIG-IP",
-                        "mgmt-ip": "10.255.0.149",
-                        "prefix-length": 24,
-                        "gateway": "10.255.0.1",
-                        "mac-ndi-set": [
-                            {
-                                "ndi": "default",
-                                "mac": "00:94:a1:69:59:24"
-                            }
-                        ],
-                        "vlans": [
-                            500,
-                            3010,
-                            3011
-                        ],
-                        "cryptos": "enabled",
-                        "vcpu-cores-per-node": 2,
-                        "memory": "7680",
-                        "storage": {
-                            "size": 76
-                        },
-                        "running-state": "deployed",
-                        "mac-data": {
-                            "base-mac": "00:94:a1:69:59:26",
-                            "mac-pool-size": 1
-                        },
-                        "appliance-mode": {
-                            "enabled": false
-                        },
-                        "status": "Running",
-                        "instances": {
-                            "instance": [
-                                {
-                                    "node": 1,
-                                    "instance-id": 1,
-                                    "phase": "Running",
-                                    "image-name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
-                                    "creation-time": "2021-12-23T15:30:07Z",
-                                    "ready-time": "2021-12-23T15:30:08Z",
-                                    "status": "Started tenant instance",
-                                    "mgmt-mac": "00:94:a1:69:59:27"
-                                }
-                            ]
-                        }
-                    }
-                }
-            ]
-        }
-    }
 
 
 Importing the BIG-IP Next Tenant into Central Manager
@@ -1344,34 +1645,8 @@ Click the **Activate License** button, then load your licensing token that you o
 
 Once the instance is successfully licensed, you can then configure the in-band networking which includes L1 Networks, VLANs, and IP addresses. 
 
-.. image:: images/rseries_deploying_a_bigip_next_tenant/networking-instance.png
+.. image:: images/rseries_deploying_a_bigip_next_tenant/networking-ip-addresses.png
   :align: center
   :scale: 70% 
-
-
-
-When you are done with this section you will need to delete your Next tenant from Central Manager.  Go to the **Instances** page, then click the checkbox next to your instance, then go to **Actions**, and select **Delete**. You'll then be asked to review what will get deleted and to confirm the deletion. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-instance-from-cm.png
-  :align: center
-  :scale: 70%  
-
-You can then monitor the deletion status. Once the instance is gone it is removed from Central Manager, but it is not removed from the VELOS partition.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/deletion-in-progress.png
-  :align: center
-  :scale: 70%  
-
-Log into your teams VELOS partition and go to the **Tenant Management**  -> **Tenant Deployments** page. Here you can confirm that your BIG-IP Next Tenant is still running. 
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/tenant-running.png
-  :align: center
-  :scale: 70%  
-
-You'll need to delete this tenant before moving onto the next section of the lab. Click the checkbox beside the Next tenant to select it, and then click the **Delete** button.
-
-.. image:: images/rseries_deploying_a_bigip_next_tenant/delete-tenant-locally.png
-  :align: center
-  :scale: 70%  
 
 
