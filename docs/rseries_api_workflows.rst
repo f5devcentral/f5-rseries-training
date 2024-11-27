@@ -71,13 +71,11 @@ Securing / Hardening F5OS on rSeries
 
 `Adding Allow List Entries via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#adding-allow-list-entries-via-api>`_
 
-`AManaging Device Certificates, Keys, CSRs, and CAs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#managing-device-certificates-keys-csrs-and-cas-via-api>`_
+`Managing Device Certificates, Keys, CSRs, and CAs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#managing-device-certificates-keys-csrs-and-cas-via-api>`_
 
-`Enabling Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-appliance-mode-via-the-api>`_
+`Enabling F5OS Appliance Mode via the API <hhttps://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-f5os-appliance-mode-via-the-api>`_
 
-`Enabling F5OS Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-f5os-appliance-mode-via-the-api>`_
-
-`Enabling BIG-IP Tenant Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-big-ip-appliance-mode-via-the-api>`_
+`Enabling BIG-IP Tenant Appliance Mode via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#enabling-big-ip-tenant-appliance-mode-via-the-api>`_
 
 `Validating Tenant Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#validating-tenant-status-via-api>`_
 

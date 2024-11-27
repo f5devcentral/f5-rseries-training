@@ -3306,52 +3306,6 @@ Query the following SNMP OID to get detailed tenant status.
     prompt%
 
 
-Tenant Sub Modules Table
------------------------------
-
-Query the following SNMP OID to get detailed tenant status.
-
-**F5-OS-TENANT-MIB:tenantSubModulesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.9.1**
-
-.. code-block:: bash
-
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantSubModulesStateTable
-
-Tenant Sub Modules VLAN Table
------------------------------
-
-Query the following SNMP OID to get detailed tenant status.
-
-**F5-OS-TENANT-MIB:tenantSubModuleVlansStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.10.1**
-
-.. code-block:: bash
-
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantSubModuleVlansStateTable
-
-Tenant Sub Modules Hugepage Table
------------------------------
-
-Query the following SNMP OID to get detailed tenant status.
-
-**F5-OS-TENANT-MIB:tenantSubModuleHugepagesStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.11.1**
-
-.. code-block:: bash
-
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantSubModuleHugepagesStateTable
-
-Tenant Upgrade Events Table
------------------------------
-
-Query the following SNMP OID to get detailed tenant status.
-
-**F5-OS-TENANT-MIB:tenantUpgradeEventsStateTable  OID: 1.3.6.1.4.1.12276.1.5.1.12.1**
-
-.. code-block:: bash
-
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantUpgradeEventsStateTable
-
-
-
 
 Troubleshooting SNMP
 ====================
