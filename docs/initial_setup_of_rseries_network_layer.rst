@@ -1108,6 +1108,8 @@ The following API command will list all the current interfaces within the applia
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-interfaces:interfaces
 
+In the body of the API call enter the following JSON information.
+
 .. code-block:: json
 
     {
@@ -2395,6 +2397,8 @@ To configure interfaces (that are not part of a LAG), use the following PATCH AP
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-interfaces:interfaces
 
+In the body of the API call, enter the following JSON information.
+
 .. code-block:: json
 
   {
@@ -2554,6 +2558,8 @@ To configure VLANs, use the following API command and JSON body. This will confi
 .. code-block:: bash
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
+
+In the bidy of the API call, enter the following JSON information.
 
 .. code-block:: json
 
@@ -2997,6 +3003,8 @@ The next step is to add physical interfaces into the LAG group. Interfaces will 
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
+In the body of the API call, enter the following JSON information.
+
 .. code-block:: json
 
     {
@@ -3056,6 +3064,8 @@ The final step is adding LACP configuration for each LAG with the LACP mode **AC
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
+In the body of the API call, enter the following JSON information.
+
 .. code-block:: json
 
     {
@@ -3090,6 +3100,8 @@ To view the final LAG configuration and status via the API, use the following AP
 .. code-block:: bash
 
 	GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-lacp:lacp
+
+Below is an example of the API response. 
 
 .. code-block:: json
 
@@ -3249,6 +3261,8 @@ You can get more granular information down to the interface level using the foll
 .. code-block:: bash
 
 	GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-interfaces:interfaces
+
+Below is an example of the API response. 
 
 .. code-block:: json
 
