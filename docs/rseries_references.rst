@@ -4,6 +4,8 @@ rSeries References
 
 `Documentation - F5OS-A and F5 rSeries <https://techdocs.f5.com/kb/en-us/products/f5os-a/manuals/related/doc-f5os-a-f5-rseries.html>`_
 
+`K000139994: F5OS operations guide for F5 VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000139994>`_
+
 `F5OS-A/F5 rSeries - API <https://clouddocs.f5.com/api/rseries-api/rseries-api-index.html>`_
 
 `F5OS-A/F5 rSeries - CLI <https://clouddocs.f5.com/api/rseries-api/rseries-cli-index.html>`_
