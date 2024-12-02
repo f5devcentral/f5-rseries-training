@@ -233,6 +233,8 @@ To copy a configuration backup file from the appliance to a remote https server 
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/export
 
+In the body of the API request enter the information as seen below.
+
 .. code-block:: json
 
     {
@@ -251,6 +253,7 @@ You can then check on the status of the export via the following API call:
 
     POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status
 
+You should see an API response as seen below.
 
 .. code-block:: json
 
