@@ -404,6 +404,8 @@ To add descriptions for both the in-band, and out-of-band management ports in th
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
 
+You should add the interface descriptions as seen in the JSON output below.
+
 .. code-block:: json
 
     {
