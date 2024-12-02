@@ -44,7 +44,7 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 100%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r12000-DS is removable and serviceable.
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r12000-DS is removable and serviceable.
 
 .. image:: images/rseries_appliances/image1f.png
   :align: center
@@ -94,7 +94,7 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 100%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 is removable and serviceable.
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 is removable and serviceable.
 
 .. image:: images/rseries_appliances/image1f.png
   :align: center
@@ -141,7 +141,7 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 100%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10920-DF is removable and serviceable.
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10920-DF is removable and serviceable.
 
 .. image:: images/rseries_appliances/image1f.png
   :align: center
@@ -189,7 +189,7 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 100%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with one power supply included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with one power supply included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image2f.png
   :align: center
@@ -237,7 +237,7 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 100%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image2f.png
   :align: center
@@ -276,11 +276,11 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 70%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image3e.png
   :align: center
-  :scale: 100%
+  :scale: 120%
 
 
 r2000 Series - r2600 / r2800
@@ -296,7 +296,7 @@ The r2000 appliance has 4 x 10Gb/1Gb copper ports as well as 4 x 25Gb/10Gb/1Gb p
 
 .. image:: images/rseries_appliances/image4a.png
   :align: center
-  :scale: 90%
+  :scale: 110%
 
 The r2000 has a single 1Gb Ethernet out-of-band management port and a serial console port, and a serial (hard wired) failover port which is not utilized or supported. A USB3.0 port is also made available for recovering/reinstalling system software. LEDs will change color to indicate different port speeds, and high-level LEDs provide Status, Alarm, and Power Supply Status. The appliance also has an LCD panel.
 
@@ -316,11 +316,11 @@ In the back of the DC power model there are 2 power supplies and DC inputs. If o
   :align: center
   :scale: 70%
 
-In the back of the HVDC (High Voltage DC) power model (future) are 2 power supplies and DC inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
+In the back of the HVDC (High Voltage DC) power model there are 2 power supplies and DC inputs. The system ships with one power supply included, and the second is optional. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image3e.png
   :align: center
-  :scale: 70%
+  :scale: 100%
 
 
 

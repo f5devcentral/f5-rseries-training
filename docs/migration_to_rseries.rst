@@ -12,4 +12,3 @@ The Journeys app is available for download at F5’s DevCentral Github site. It 
 
 https://github.com/f5devcentral/f5-journeys
 
-h
