@@ -250,7 +250,7 @@ The r4600 model has 16 CPUs (The 4000 platform does not utilize hyperthreading/v
 r2000 vCPU Sizing
 ------------------
 
-Each rSeries 2800 model has 8 CPUs (The 2000 platform does not utilize hyperthreading/vCPUs). No CPUs are dedicated to the F5OS platform layer which is different from the mid-range and high-end rSeries appliances. In the r2800 8 CPUs are available to be assigned to tenants (and only one tenant is supported). The diagram below depicts the r2800 CPU allocation: 
+Each rSeries 2800 model has 8 CPUs (The 2000 platform does not utilize hyperthreading/vCPUs). No CPUs are dedicated to the F5OS platform layer which is different from the mid-range and high-end rSeries appliances. In the r2800 8 CPUs are available to be assigned to tenants. Only one tenant is supported prior to F5OS-A 1.8.0, two tenants are supported from F5OS-A 1.8.0 and later. The diagram below depicts the r2800 CPU allocation: 
 
 .. image:: images/rseries_performance_and_sizing/image18.png
   :align: center
