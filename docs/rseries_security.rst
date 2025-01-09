@@ -436,6 +436,35 @@ In the response you will notice the certificate, key, and optional passphrase as
         }
     }
 
+If you would like to create a self-signed certificate, key, and add a passphrase via the API, you can issue the following API POST command.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-openconfig-aaa-tls:tls/create-self-signed-cert
+
+In the body of the API call enter the following JSON syntax.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-tls:key-type": "encrypted-rsa",
+        "f5-openconfig-aaa-tls:key-size": 4096,
+        "f5-openconfig-aaa-tls:days-valid": 365,
+        "f5-openconfig-aaa-tls:key-passphrase": "Pa$$W0rd!23",
+        "f5-openconfig-aaa-tls:confirm-key-passphrase": "Pa$$W0rd!23",
+        "f5-openconfig-aaa-tls:name": "r5900-1-gsa.cpt.f5net.com",
+        "f5-openconfig-aaa-tls:organization": "f5",
+        "f5-openconfig-aaa-tls:unit": "sales",
+        "f5-openconfig-aaa-tls:city": "boston",
+        "f5-openconfig-aaa-tls:region": "ma",
+        "f5-openconfig-aaa-tls:country": "us",
+        "f5-openconfig-aaa-tls:email": "jim@f5.com",
+        "f5-openconfig-aaa-tls:san": "IP:172.22.50.1",
+        "f5-openconfig-aaa-tls:version": 1,
+        "f5-openconfig-aaa-tls:store-tls": "true"
+    }
+
+
 If you would like to upload a certificate, key, and passphrase you can issue the following API PUT command.
 
 .. code-block:: bash
