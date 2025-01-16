@@ -1301,7 +1301,10 @@ If the system is using LDAP/Active Directory, then the following CLI command sho
 
 .. code-block:: bash
 
-    system aaa authentication ldap active_directory true
+    r10900-1-gsa(config)# system aaa authentication ldap active_directory true
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
 
 The admin will then need to enable the ldap-group filters for both the primary and secondary roles which in this case are admin and superuser.
 
@@ -1314,7 +1317,10 @@ Because this configuration is using named LDAP groups, you must disable the **un
 
 .. code-block:: bash
 
-    system aaa authentication ldap unix_attributes false
+    r10900-1-gsa(config)# system aaa authentication ldap unix_attributes false
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
 
 The next step would be to create a user and assign the primary and secondary roles to this user account. Below are the steps to create the superuser user account called **f5shuser1** and it is assigned to the primary role admin. You will then set the password for the admin account.
 
