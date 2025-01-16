@@ -1320,15 +1320,21 @@ The next step would be to create a user and assign the primary and secondary rol
 
 .. code-block:: bash
 
-    system aaa authentication users user f5shuser1 config username f5shuser1 role admin
-    system aaa authentication users user f5shuser1 config set-password password
+    r10900-1-gsa(config)# system aaa authentication users user f5shuser1 config username f5shuser1 role admin
+    r10900-1-gsa(config-user-f5shuser1)# exit                                                                       
+    r10900-1-gsa(config)# system aaa authentication users user f5shuser1 config set-password         
+    Value for 'password' (<string>): ********
 
 Next, you will need to assign a secondary role of superuser to the f5shuser1 account. 
 
 .. code-block:: bash
 
-    system aaa authentication roles role superuser config users f5shuser1
-    system aaa authentication config superuser-bash-access true
+    r10900-1-gsa(config)# system aaa authentication roles role superuser config users f5shuser1
+    r10900-1-gsa(config-role-superuser)# exit
+    r10900-1-gsa(config)# system aaa authentication config superuser-bash-access true
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
 
 Assigning a user to the superuser group with a secondary role is not enough to give them access the bash shell, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
 
@@ -1336,7 +1342,7 @@ Assigning a user to the superuser group with a secondary role is not enough to g
 
 
     system aaa authentication config superuser-bash-access true
-    
+
 .. code-block:: bash
 
     login to the device using f5shuser1.
