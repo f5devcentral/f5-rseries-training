@@ -1276,22 +1276,15 @@ In the body of the API call add the username and role as seen below.
 Superuser Role
 ===============
 
-F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commmands can now be exucuted from the bash shell via the f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the bash shell, but also provides an audit trail of the users interactions with the bash shell and F5OS layers. 
+F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commmands can now be exucuted from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the bash shell and F5OS layers. 
 
 RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. Each user is assigined one Primary Role (Mandatory) and one or more Secondary Roles (Optional). The **superuser** role is intended to be assgined as a secondary role, although it could be assinged as a primary role, but it would restrict access to services like the webUI. 
 
-As an example, assinging a Primary Role of **admin** and a Secondary Role of **superuser** will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
+As an example, assigning a Primary Role of **admin** and a Secondary Role of **superuser** will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
 
 
 Superuser Role via CLI using Named Groups on LDAP
 -------------------------------------------------
-
-Assigning a user to the superuser group with a secondary role is not enough to give them access the bash shell, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
-
-.. code-block:: bash
-
-
-    system aaa authentication config superuser-bash-access true
 
 
 To enable LDAP remote authentication see an example configuration below.
@@ -1304,7 +1297,7 @@ To enable LDAP remote authentication see an example configuration below.
     servers server 10.145.66.223 config address 10.145.66.223 
     ldap config auth-port 389 type ldap 
 
-If the system is using LDAP/Active Directory, then the following CLI command should eb added.
+If the system is using LDAP/Active Directory, then the following CLI command should be added.
 
 .. code-block:: bash
 
@@ -1323,6 +1316,39 @@ Because this configuration is using named LDAP groups, you must disable the **un
 
     system aaa authentication ldap unix_attributes false
 
+The next step would be to create a user and assign the primary and secondary roles to this user account. Below are the steps to create the superuser user account called **f5shuser1** and it is assigned to the primary role admin. You will then set the password for the admin account.
+
+.. code-block:: bash
+
+    system aaa authentication users user f5shuser1 config username f5shuser1 role admin
+    system aaa authentication users user f5shuser1 config set-password password
+
+Next, you will need to assign a secondary role of superuser to the f5shuser1 account. 
+
+.. code-block:: bash
+
+    system aaa authentication roles role superuser config users f5shuser1
+    system aaa authentication config superuser-bash-access true
+
+Assigning a user to the superuser group with a secondary role is not enough to give them access the bash shell, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
+
+.. code-block:: bash
+
+
+    system aaa authentication config superuser-bash-access true
+    
+.. code-block:: bash
+
+    login to the device using f5shuser1.
+    ssh f5shtest1@10.238.150.88
+    (f5shtest2@10.238.150.88) Password:
+    X11 forwarding request failed on channel 0
+    Last login: Thu Apr  4 12:45:00 2024 from 172.18.236.213
+    bash-4.2$
+
+    verify audit logs and make sure that new user loggedinto audit.log
+    execute show and configuration commands with f5shutil from bash and verify audit logs.
+    audit logs should provide the user information of current user(f5shuser1).
 
 You can view the current state of these parmeters via the following CLI show comands. 
 
@@ -1356,33 +1382,6 @@ You can view the current state of these parmeters via the following CLI show com
 
     Superuser Role via WebUI
     --------------------------------
-
-The next step would be to create a user and assign the primary and secondary roles to this user account. Below are the steps to create the superuser user account called **f5shuser1** and it is assigned to the primary role admin. You will then set the password for the admin account.
-
-.. code-block:: bash
-
-    system aaa authentication users user f5shuser1 config username f5shuser1 role admin
-    system aaa authentication users user f5shuser1 config set-password password
-
-Next, you will need to assgin a secondary role of superuser to the f5shuser1 account. 
-
-.. code-block:: bash
-
-    system aaa authentication roles role superuser config users f5shuser1
-    system aaa authentication config superuser-bash-access true
-
-.. code-block:: bash
-
-    login to the device using f5shuser1.
-    ssh f5shtest1@10.238.150.88
-    (f5shtest2@10.238.150.88) Password:
-    X11 forwarding request failed on channel 0
-    Last login: Thu Apr  4 12:45:00 2024 from 172.18.236.213
-    bash-4.2$
-    
-    verify audit logs and make sure that new user loggedinto audit.log
-    execute show and configuration commands with f5shutil from bash and verify audit logs.
-    audit logs should provide the user information of current user(f5shuser1).
 
 
 create a superuser by mapping secondary role gid as 9004 in radius server.
