@@ -1273,6 +1273,139 @@ In the body of the API call add the username and role as seen below.
 
 
 
+Superuser Role
+===============
+
+F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides Sudo privileges and Bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS. This new role provides a way for a user with "sudo" privs to be able to be remotely authenticated into the bash shell, but also provides an audit trail of the users interactions with the bash shell and F5OS layers. 
+
+RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. Each User is assgined one Priamry Role (Mandatory) and one or more Secondary Roles (Optional). The **superuser** role is intended to be assgined as a secondary role, although it could be assinged as a primary role, but it would restrict access to services like the webUI. 
+
+As an example, assinging a Primary Role of **admin** and a Secondary Role of **superuser** will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
+
+
+Superuser Role via CLI using Named Groups on LDAP
+-------------------------------------------------
+
+In order for a user assigned to the superuser group with a seondary role to access the bash shell, they must also set the following F5OS command to **true**. 
+
+.. code-block:: bash
+
+
+    system aaa authentication config superuser-bash-access true
+
+
+To enable LDAP remote authentication.
+
+.. code-block:: bash
+
+    system aaa authentication config authentication-method LDAP_ALL 
+    system aaa authentication ldap base distinguishedName=CN=ABC-ADCAdmins,OU=Groups,OU=XYZ,DC=abc123,DC=root,DC=org 
+    system aaa server-groups server-group ldap-group config name ldap-group type LDAP 
+    servers server 10.145.66.223 config address 10.145.66.223 
+    ldap config auth-port 389 type ldap 
+
+
+    system aaa authentication ldap active_directory true
+
+
+    system aaa authentication roles role admin config ldap-group <filter for remote admin group>
+    system aaa authentication roles role superuser config ldap-group <filter for remote superuser group>
+
+Because this configuration is using named LDAP groups, you must disable the unix unix_attributes via the following CLI command. You cannot mix named LDAP groups with GID based unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
+
+.. code-block:: bash
+
+    system aaa authentication ldap unix_attributes false
+
+
+.. code-block:: bash
+
+    appliance-1# show system aaa authentication
+    system aaa authentication state cert-auth disabled
+    system aaa authentication f5-aaa-token:state basic disabled
+    system aaa authentication state superuser-bash-access false
+    system aaa authentication ocsp state override-responder off
+    system aaa authentication ocsp state response-max-age -1
+    system aaa authentication ocsp state response-time-skew 300
+    system aaa authentication ocsp state nonce-request on
+    system aaa authentication ocsp state disabled
+                AUTHORIZED  LAST        TALLY  EXPIRY
+    USERNAME       KEYS        CHANGE      COUNT  DATE    ROLE
+    ----------------------------------------------------------------------
+    admin          -           2022-08-31  0      -1      admin
+    big-ip-15-1-6  -           0           0      1       tenant-console
+    big-ip-15-1-8  -           0           0      1       tenant-console
+    root           -           2022-08-31  0      -1      root
+
+                        REMOTE
+    ROLENAME        GID   GID     USERS
+    -------------------------------------
+    admin           9000  -       -
+    operator        9001  -       -
+    resource-admin  9003  -       -
+    tenant-console  9100  -       -
+    superuser       9004  -       -
+
+    Superuser Role via WebUI
+    --------------------------------
+
+
+Create a superuser.
+system aaa authentication users user f5shuser1 config username f5shuser1 role admin
+system aaa authentication users user f5shuser1 config set-password password
+system aaa authentication roles role superuser config users f5shuser1
+system aaa authentication config superuser-bash-access true
+login to the device using f5shuser1.
+ssh f5shtest1@10.238.150.88
+(f5shtest2@10.238.150.88) Password:
+X11 forwarding request failed on channel 0
+Last login: Thu Apr  4 12:45:00 2024 from 172.18.236.213
+bash-4.2$
+verify audit logs and make sure that new user loggedinto audit.log
+execute show and configuration commands with f5shutil from bash and verify audit logs.
+audit logs should provide the user information of current user(f5shuser1).
+
+
+create a superuser by mapping secondary role gid as 9004 in radius server.
+ex:
+f5shtest1 Cleartext-Password := user@123
+       F5-F5OS-GID := 9002,
+       F5-F5OS-SECONDARYGIDS := 9004,
+       F5-F5OS-HOMEDIR := "/tmp",
+       F5-F5OS-SHELL := "/bin/bash"
+Device configuration:
+> system aaa authentication config superuser-bash-access true
+> system aaa server-groups server-group radius1
+ config name radius1
+ config type RADIUS
+ servers server 10.145.66.223
+  config address 10.145.66.223
+  radius config auth-port 1812
+  radius config secret-key $8$Wnb5z74LLhkdKXxMaeoeLR8ydsL8vEJGCSH10VatUr0=
+  radius config timeout 10
+ > system aaa authentication config authentication-method [ LOCAL RADIUS_ALL ]
+login to the device using remote user: f5shtest1.
+ssh f5shtest1@10.238.150.88
+(f5shtest2@10.238.150.88) Password:
+X11 forwarding request failed on channel 0
+Last login: Thu Apr  4 12:45:00 2024 from 172.18.236.213
+bash-4.2$
+verify audit logs and make sure that new user logged into audit.log
+execute show and configuration commands with f5shutil from bash and verify audit logs.
+audit logs should provide the user information of current user(f5shtest1).
+
+Superuser Role via WebUI using Named Groups on LDAP
+----------------------------------------------------
+
+
+Enable Superuser Bash Access
+Go to Authentication Settings screen. 
+Edit the Superuser Bash Access dropdown by selecting 'Enabled' option. 
+Click on Save.
+
+
+Superuser Role via API using Named Groups on LDAP
+-------------------------------------------------
 
 Session Timeouts and Token Lifetime
 ===================================
