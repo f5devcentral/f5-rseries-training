@@ -1341,7 +1341,10 @@ Assigning a user to the superuser group with a secondary role is not enough to g
 .. code-block:: bash
 
 
-    system aaa authentication config superuser-bash-access true
+    r10900-1-gsa(config)# system aaa authentication config superuser-bash-access true
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
 
 .. code-block:: bash
 
