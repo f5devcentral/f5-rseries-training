@@ -1286,8 +1286,8 @@ The roles can be combined together to give a particular user multiple privileges
 As an example, assigning a Primary Role of **admin** to a user and then adding that same user to the  **superuser** role will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
 
 
-Superuser Role via CLI using Named Groups on LDAP
--------------------------------------------------
+Superuser Role via CLI using Named Groups on LDAP/Active Directory
+-----------------------------------------------------------------
 
 
 To enable LDAP remote authentication see an example configuration below.
@@ -1309,7 +1309,7 @@ If the LDAP server is an Active Directory server, then the following CLI command
     Commit complete.
     r10900-1-gsa(config)#
 
-The admin will then need to enable the ldap-group filters for both the primary and secondary roles which in this case are admin and superuser. In this case, named LADP grpups are being used.
+The admin will then need to enable the ldap-group filters for both the primary and supplementary groups/roles which in this case are admin and superuser. In this case, named LADP groups are being used.
 
 .. code-block:: bash
 
@@ -1336,29 +1336,6 @@ If the configuration were using LDAP Group ID's instead of named LDAP groups, th
     r10900-1-gsa(config)# commit
     Commit complete.
     r10900-1-gsa(config)#
-
-The next step would be to create a user and assign the primary and secondary roles to this user account. Below are the steps to create the superuser user account called **f5shuser1** and it is assigned to the primary role admin. You will then set the password for the admin account.
-
-.. code-block:: bash
-
-    r10900-1-gsa(config)# system aaa authentication users user f5shuser1 config username f5shuser1 role admin
-    r10900-1-gsa(config-user-f5shuser1)# exit                                                                       
-    r10900-1-gsa(config)# system aaa authentication users user f5shuser1 config set-password         
-    Value for 'password' (<string>): ********
-
-Next, you will need to assign a secondary role of superuser to the f5shuser1 account. 
-
-.. code-block:: bash
-
-    r10900-1-gsa(config)# system aaa authentication roles role superuser config users f5shuser1
-    r10900-1-gsa(config-role-superuser)# exit
-    r10900-1-gsa(config)# system aaa authentication config superuser-bash-access true
-    r10900-1-gsa(config)# commit
-    Commit complete.
-    r10900-1-gsa(config)#
-
-
-
 
 
 You can view the current state of these parmeters via the following CLI show comands. 
@@ -1395,36 +1372,8 @@ You can view the current state of these parmeters via the following CLI show com
     --------------------------------
 
 
-create a superuser by mapping secondary role gid as 9004 in radius server.
-ex:
-f5shtest1 Cleartext-Password := user@123
-       F5-F5OS-GID := 9002,
-       F5-F5OS-SECONDARYGIDS := 9004,
-       F5-F5OS-HOMEDIR := "/tmp",
-       F5-F5OS-SHELL := "/bin/bash"
-Device configuration:
-> system aaa authentication config superuser-bash-access true
-> system aaa server-groups server-group radius1
- config name radius1
- config type RADIUS
- servers server 10.145.66.223
-  config address 10.145.66.223
-  radius config auth-port 1812
-  radius config secret-key $8$Wnb5z74LLhkdKXxMaeoeLR8ydsL8vEJGCSH10VatUr0=
-  radius config timeout 10
- > system aaa authentication config authentication-method [ LOCAL RADIUS_ALL ]
-login to the device using remote user: f5shtest1.
-ssh f5shtest1@10.238.150.88
-(f5shtest2@10.238.150.88) Password:
-X11 forwarding request failed on channel 0
-Last login: Thu Apr  4 12:45:00 2024 from 172.18.236.213
-bash-4.2$
-verify audit logs and make sure that new user logged into audit.log
-execute show and configuration commands with f5shutil from bash and verify audit logs.
-audit logs should provide the user information of current user(f5shtest1).
-
-Superuser Role via WebUI using Named Groups on LDAP
-----------------------------------------------------
+Superuser Role via WebUI using Named Groups on LDAP/Active Directory
+---------------------------------------------------------------------
 
 
 Enable Superuser Bash Access
@@ -1433,8 +1382,8 @@ Edit the Superuser Bash Access dropdown by selecting 'Enabled' option.
 Click on Save.
 
 
-Superuser Role via API using Named Groups on LDAP
--------------------------------------------------
+Superuser Role via API using Named Groups on LDAP/Active Directory
+------------------------------------------------------------------
 
 Session Timeouts and Token Lifetime
 ===================================
