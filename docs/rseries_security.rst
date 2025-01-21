@@ -1316,7 +1316,7 @@ The admin will then need to enable the ldap-group filters for both the primary a
     system aaa authentication roles role admin config ldap-group <filter for remote admin group>
     system aaa authentication roles role superuser config ldap-group <filter for remote superuser group>
 
-The ldap-group mapping using group id is only necessary if the user/group records do not contain "posix/unix attributes" ('gidNumber') that identify the Linux GID of the group. If the records on the remote authentication server have Unix attributes, you can use 'system aaa authentication roles role <role> config remote-gid' to specify the remote group by GID, rather than mapoping by name.  
+The ldap-group mapping using group id is only necessary if the user/group records do not contain "posix/unix attributes" ('gidNumber') that identify the Linux GID of the group. If the records on the remote authentication server have Unix attributes, you can use 'system aaa authentication roles role <role> config remote-gid' to specify the remote group by GID, rather than mapping by name.  
 
 Because this particular configuration is using named LDAP groups, you must disable the **unix_attributes** via the following CLI command. You cannot mix named LDAP groups with GID based unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
 
@@ -1327,7 +1327,7 @@ Because this particular configuration is using named LDAP groups, you must disab
     Commit complete.
     r10900-1-gsa(config)#
 
-If the configuration were using LDAP Group ID's instead of named LDAP groups, then the above configuration would be set to true. The configuration above should be enough to remotely authenticate users who are withing one or more fo the groups specified. To finalize the superuser configuration, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
+If the configuration were using LDAP Group ID's instead of named LDAP groups, then the above configuration would be set to **true**. The configuration above should be enough to remotely authenticate users who are within one or more of the groups specified. To finalize the superuser configuration, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
 
 .. code-block:: bash
 
