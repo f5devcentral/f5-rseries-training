@@ -1276,11 +1276,14 @@ In the body of the API call add the username and role as seen below.
 Superuser Role
 ===============
 
-F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commmands can now be exucuted from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the bash shell and F5OS layers. 
+F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commmands can now be executed from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the bash shell and F5OS layers. 
 
-RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. Each user is assigined one Primary Role (Mandatory) and one or more Secondary Roles (Optional). The **superuser** role is intended to be assgined as a secondary role, although it could be assinged as a primary role, but it would restrict access to services like the webUI. 
+RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. 
 
-As an example, assigning a Primary Role of **admin** and a Secondary Role of **superuser** will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
+Users must be assigned to a single primary group/role, and can become members of further supplementary groups/roles by adding them to the users list for that group/role.
+The roles can be combined together to give a particular user multiple privileges. The **superuser** role is intended to be assgined as a supplementary role in addtion to anothe rrole like **admin**, although it could be assinged as a primary role, but it would restrict access to services like the webUI. 
+
+As an example, assigning a Primary Role of **admin** to a user and then adding that same user to the  **superuser** role will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
 
 
 Superuser Role via CLI using Named Groups on LDAP
@@ -1294,10 +1297,10 @@ To enable LDAP remote authentication see an example configuration below.
     system aaa authentication config authentication-method LDAP_ALL 
     system aaa authentication ldap base distinguishedName=CN=ABC-ADCAdmins,OU=Groups,OU=XYZ,DC=abc123,DC=root,DC=org 
     system aaa server-groups server-group ldap-group config name ldap-group type LDAP 
-    servers server 10.145.66.223 config address 10.145.66.223 
+    servers server 10.10.10.223 config address 10.10.10.223 
     ldap config auth-port 389 type ldap 
 
-If the system is using LDAP/Active Directory, then the following CLI command should be added.
+If the LDAP server is an Active Directory server, then the following CLI command should be added.
 
 .. code-block:: bash
 
@@ -1306,18 +1309,30 @@ If the system is using LDAP/Active Directory, then the following CLI command sho
     Commit complete.
     r10900-1-gsa(config)#
 
-The admin will then need to enable the ldap-group filters for both the primary and secondary roles which in this case are admin and superuser.
+The admin will then need to enable the ldap-group filters for both the primary and secondary roles which in this case are admin and superuser. In this case, named LADP grpups are being used.
 
 .. code-block:: bash
 
     system aaa authentication roles role admin config ldap-group <filter for remote admin group>
     system aaa authentication roles role superuser config ldap-group <filter for remote superuser group>
 
-Because this configuration is using named LDAP groups, you must disable the **unix_attributes** via the following CLI command. You cannot mix named LDAP groups with GID based unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
+The ldap-group mapping using group id is only necessary if the user/group records do not contain "posix/unix attributes" ('gidNumber') that identify the Linux GID of the group. If the records on the remote authentication server have Unix attributes, you can use 'system aaa authentication roles role <role> config remote-gid' to specify the remote group by GID, rather than mapoping by name.  
+
+Because this particular configuration is using named LDAP groups, you must disable the **unix_attributes** via the following CLI command. You cannot mix named LDAP groups with GID based unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
 
 .. code-block:: bash
 
     r10900-1-gsa(config)# system aaa authentication ldap unix_attributes false
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+If the configuration were using LDAP Group ID's instead of named LDAP groups, then the above configuration would be set to true. The configuration above should be enough to remotely authenticate users who are withing one or more fo the groups specified. To finalize the superuser configuration, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
+
+.. code-block:: bash
+
+
+    r10900-1-gsa(config)# system aaa authentication config superuser-bash-access true
     r10900-1-gsa(config)# commit
     Commit complete.
     r10900-1-gsa(config)#
@@ -1342,15 +1357,7 @@ Next, you will need to assign a secondary role of superuser to the f5shuser1 acc
     Commit complete.
     r10900-1-gsa(config)#
 
-Assigning a user to the superuser group with a secondary role is not enough to give them access the bash shell, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
 
-.. code-block:: bash
-
-
-    r10900-1-gsa(config)# system aaa authentication config superuser-bash-access true
-    r10900-1-gsa(config)# commit
-    Commit complete.
-    r10900-1-gsa(config)#
 
 .. code-block:: bash
 
