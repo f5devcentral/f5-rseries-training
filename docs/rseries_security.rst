@@ -1273,6 +1273,117 @@ In the body of the API call add the username and role as seen below.
 
 
 
+Superuser Role
+===============
+
+F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commmands can now be executed from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the new f5sh utility in bash shell. 
+
+RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. 
+
+Users must be assigned to a single primary group/role, and can become members of further supplementary groups/roles by adding them to the users list for that group/role.
+The roles can be combined together to give a particular user multiple privileges. The **superuser** role is intended to be assigned as a supplementary role in addition to another role like **admin**, whether the role is primary or supplementary does not matter (order does not matter), if only the superuser role was applied it would restrict access to services like the webUI, granting the admin role as a supplemental role will provide normal webUI access.
+
+As an example, assigning a Primary Role of **admin** to a user and then adding that same user to the  **superuser** role will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
+
+
+Superuser Role via CLI using Named Groups on LDAP/Active Directory
+-----------------------------------------------------------------
+
+
+To enable LDAP remote authentication see an example configuration below.
+
+.. code-block:: bash
+
+    system aaa authentication config authentication-method LDAP_ALL 
+    system aaa authentication ldap base distinguishedName=CN=ABC-ADCAdmins,OU=Groups,OU=XYZ,DC=abc123,DC=root,DC=org 
+    system aaa server-groups server-group ldap-group config name ldap-group type LDAP 
+    servers server 10.10.10.223 config address 10.10.10.223 
+    ldap config auth-port 389 type ldap 
+
+If the LDAP server is an Active Directory server, then the following CLI command should be added.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)# system aaa authentication ldap active_directory true
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+The admin will then need to enable the ldap-group filters for both the primary and supplementary groups/roles which in this case are admin and superuser. In this case, named LADP groups are being used.
+
+.. code-block:: bash
+
+    system aaa authentication roles role admin config ldap-group <filter for remote admin group>
+    system aaa authentication roles role superuser config ldap-group <filter for remote superuser group>
+
+The ldap-group mapping using the group's LDAP distinguished name is only necessary if the user/group records do not contain "posix/unix attributes" ('gidNumber') that identify the Linux GID of the group. If the records on the remote authentication server have Unix attributes, you can use 'system aaa authentication roles role <role> config remote-gid' to specify the remote group by GID, rather than mapping by name.  
+
+Because this particular configuration is using named LDAP groups, you must disable the **unix_attributes** via the following CLI command. You cannot mix named LDAP groups with GID based unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)# system aaa authentication ldap unix_attributes false
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+If the configuration were using LDAP Group ID's instead of named LDAP groups, then the above configuration would be set to **true**. The configuration above should be enough to remotely authenticate users who are within one or more of the groups specified. To finalize the superuser configuration, you must also set the following F5OS command to **true** to enable bash shell access for users assigned to the superuser group. 
+
+.. code-block:: bash
+
+
+    r10900-1-gsa(config)# system aaa authentication config superuser-bash-access true
+    r10900-1-gsa(config)# commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+
+You can view the current state of these parmeters via the following CLI show comands. 
+
+.. code-block:: bash
+
+    appliance-1# show system aaa authentication
+    system aaa authentication state cert-auth disabled
+    system aaa authentication f5-aaa-token:state basic disabled
+    system aaa authentication state superuser-bash-access true
+    system aaa authentication ocsp state override-responder off
+    system aaa authentication ocsp state response-max-age -1
+    system aaa authentication ocsp state response-time-skew 300
+    system aaa authentication ocsp state nonce-request on
+    system aaa authentication ocsp state disabled
+                AUTHORIZED  LAST        TALLY  EXPIRY
+    USERNAME       KEYS        CHANGE      COUNT  DATE    ROLE
+    ----------------------------------------------------------------------
+    admin          -           2022-08-31  0      -1      admin
+    big-ip-15-1-6  -           0           0      1       tenant-console
+    big-ip-15-1-8  -           0           0      1       tenant-console
+    root           -           2022-08-31  0      -1      root
+
+                        REMOTE
+    ROLENAME        GID   GID     USERS
+    -------------------------------------
+    admin           9000  -       -
+    operator        9001  -       -
+    resource-admin  9003  -       -
+    tenant-console  9100  -       -
+    superuser       9004  -       -
+
+    Superuser Role via WebUI
+    --------------------------------
+
+
+Superuser Role via WebUI using Named Groups on LDAP/Active Directory
+---------------------------------------------------------------------
+
+
+Enable Superuser Bash Access
+Go to Authentication Settings screen. 
+Edit the Superuser Bash Access dropdown by selecting 'Enabled' option. 
+Click on Save.
+
+
+Superuser Role via API using Named Groups on LDAP/Active Directory
+------------------------------------------------------------------
 
 Session Timeouts and Token Lifetime
 ===================================

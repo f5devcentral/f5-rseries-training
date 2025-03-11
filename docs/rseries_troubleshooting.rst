@@ -428,7 +428,6 @@ Kubernetes pods are deployed as F5OS TMOS tenants are created. BIG-IP tenants ru
 Useful Commands
 ---------------
 
-https://docs.f5net.com/pages/viewpage.action?pageId=738733466
 
 .. code-block:: bash
 
