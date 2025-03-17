@@ -188,7 +188,7 @@ To import an F5OS-A image from a remote HTTPS server, use the following API exam
 
 .. code-block:: bash
 
-    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import
 
 In the body of the API request enter the information as seen below.
 
@@ -594,7 +594,7 @@ To copy a tenant image into F5OS over the API, use the following API call to the
 
 .. code-block:: bash
 
-    POST https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import
 
 .. code-block:: json
 
