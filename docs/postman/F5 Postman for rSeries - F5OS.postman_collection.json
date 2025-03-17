@@ -2302,7 +2302,7 @@
 													"raw": "{\r\n    \"input\": [\r\n        {\r\n            \"remote-host\": \"server.acme.com\",\r\n            \"remote-file\": \"/v15.1.6.1/daily/build10.0/VM/{{rseries_appliance_tenant_image}}\",\r\n            \"local-file\": \"images/tenant/{{rseries_appliance_tenant_image}}\",\r\n            \"insecure\": \"\"\r\n        }\r\n    ]\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import",
+													"raw": "https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance1_ip}}"
@@ -2561,7 +2561,7 @@
 													"raw": "{\n\"f5-utils-file-transfer:path\": \"images/import/iso\"\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance1_ip}}:8888/api/data/openconfig-system:system/f5-system-image:image",
+													"raw": "https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance1_ip}}"
@@ -2608,7 +2608,7 @@
 													"raw": "{\r\n    \"input\": [\r\n        {\r\n            \"remote-host\": \"artifactory.acme.com\",\r\n            \"remote-file\": \"artifactory/velocity-os-generic-dev/F5OS-A/candidate-testing/1.4.0-7228.VF17.1_Candidate_2.5f649a4c/results/R5R10/images/{{rseries_appliance_iso_image}}\",\r\n            \"local-file\": \"images/staging/{{rseries_appliance_iso_image}}\",\r\n            \"insecure\": \"\"\r\n        }\r\n    ]\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/import",
+													"raw": "https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance1_ip}}"
@@ -3977,7 +3977,7 @@
 													"raw": "{\r\n    \"f5-utils-file-transfer:file-name\": \"configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}\"\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status",
+													"raw": "https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance1_ip}}"
@@ -4218,7 +4218,7 @@
 													"raw": "{\r\n    \"f5-utils-file-transfer:file-name\": \"configs/F5OS-BACKUP-APPLIANCE1{{currentdate}}\"\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance1_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status",
+													"raw": "https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance1_ip}}"
@@ -8442,7 +8442,7 @@
 													"raw": "{\r\n    \"input\": [\r\n        {\r\n            \"remote-host\": \"server.acme.com\",\r\n            \"remote-file\": \"/v15.1.6.1/daily/build10.0/VM/{{rseries_appliance_tenant_image}}\",\r\n            \"local-file\": \"images/tenant/{{rseries_appliance_tenant_image}}\",\r\n            \"insecure\": \"\"\r\n        }\r\n    ]\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance2_ip}}:8888/api/data/f5-utils-file-transfer:file/import",
+													"raw": "https://{{rseries_appliance2_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance2_ip}}"
@@ -8701,7 +8701,7 @@
 													"raw": "{\n\"f5-utils-file-transfer:path\": \"images/import/iso\"\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance2_ip}}:8888/api/data/openconfig-system:system/f5-system-image:image",
+													"raw": "https://{{rseries_appliance2_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance2_ip}}"
@@ -8748,7 +8748,7 @@
 													"raw": "{\r\n    \"input\": [\r\n        {\r\n            \"remote-host\": \"artifactory.acme.com\",\r\n            \"remote-file\": \"artifactory/velocity-os-generic-dev/F5OS-A/candidate-testing/1.4.0-7228.VF17.1_Candidate_2.5f649a4c/results/R5R10/images/{{rseries_appliance_iso_image}}\",\r\n            \"local-file\": \"images/staging/{{rseries_appliance_iso_image}}\",\r\n            \"insecure\": \"\"\r\n        }\r\n    ]\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance2_ip}}:8888/api/data/f5-utils-file-transfer:file/import",
+													"raw": "https://{{rseries_appliance2_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance2_ip}}"
@@ -10117,7 +10117,7 @@
 													"raw": "{\r\n    \"f5-utils-file-transfer:file-name\": \"configs/F5OS-BACKUP-APPLIANCE2{{currentdate}}\"\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance2_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status",
+													"raw": "https://{{rseries_appliance2_ip}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance2_ip}}"
@@ -10358,7 +10358,7 @@
 													"raw": "{\r\n    \"f5-utils-file-transfer:file-name\": \"configs/F5OS-BACKUP-APPLIANCE2{{currentdate}}\"\r\n}"
 												},
 												"url": {
-													"raw": "https://{{rseries_appliance2_ip}}:8888/api/data/f5-utils-file-transfer:file/transfer-status",
+													"raw": "https://{{rseries_appliance2_ip}}:8888/restconf/data/f5-utils-file-transfer:file/transfer-status",
 													"protocol": "https",
 													"host": [
 														"{{rseries_appliance2_ip}}"
