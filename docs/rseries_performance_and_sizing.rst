@@ -19,31 +19,31 @@ In rSeries there are now multiple FPGAs, the **Application Traffic Services Engi
 
 .. image:: images/rseries_performance_and_sizing/image1.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 The r12000-DS platform is very similar to the r10000 platform except that is has extra processing for SSL/TLS as seen in the diagram below.
 
 .. image:: images/rseries_performance_and_sizing/image1r12000.png
   :align: center
-  :scale: 60%
+  :scale: 50%
 
 The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has fewer FPGA's, CPUs, and fewer physical ports.
 
 .. image:: images/rseries_performance_and_sizing/image2.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 Both the r4000 and r2000 appliances have a slightly different hardware architecture than the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utilize FPGAs for hardware offload, and instead perform these functions in software and leverage SR-IOV. This means that CPUs do not need to be dedicated to the F5OS layer, leaving more CPU for tenants. These platforms also run a different class of Intel processing, and do not utilize hyperthreading like the higher end platforms do. These appliances are positioned for smaller scale environments, and they do not support 40Gb or 100Gb interfaces. Instead, they support 1Gb, 10Gb, and 25Gb interfaces. Below is the architecture of the r4000 appliance.
 
 .. image:: images/rseries_performance_and_sizing/image3.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 The r2000 appliance has a similar architecture to the r4000, but it has less memory and fewer CPU cores.
 
 .. image:: images/rseries_performance_and_sizing/image4.png
   :align: center
-  :scale: 40%  
+  :scale: 50%  
 
 When comparing rSeries to the previous generation iSeries appliances, it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x more performance than the previous generation iSeries appliances.
 
@@ -51,7 +51,7 @@ Looking at comparisons of iSeries i10800 versus the r10000 or the iSeries i5800 
 
 .. image:: images/rseries_performance_and_sizing/image5.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 The performance numbers for rSeries already include any overhead for multitenancy as the platform is multitenant by default. There is nothing to switch on to enable multitenancy. VIPRION or iSeries on the other hand has the option of running multitenancy by enabling vCMP. Published data sheet numbers for VIPRION or iSeries are for bare-metal mode, where no virtualization (vCMP) is enabled. Enabling vCMP on VIPRION or iSeries has overhead and will reduce the overall performance of a blade or appliance as the hypervisor takes up CPU and memory resources.
 
