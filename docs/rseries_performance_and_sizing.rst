@@ -25,7 +25,7 @@ The r12000-DS platform is very similar to the r10000 platform except that is has
 
 .. image:: images/rseries_performance_and_sizing/image1r12000.png
   :align: center
-  :scale: 40%
+  :scale: 30%
 
 The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has fewer FPGA's, CPUs, and fewer physical ports.
 
@@ -345,7 +345,7 @@ When migrating from an i4600 to an r4600 you can see that the per vCPU/CPU perfo
 Memory Sizing
 =============
 
-In general migrating from an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, or the same amount of memory (when comparing the 11600/11800).
+In general migrating from an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, or the same amount of memory (when comparing the 11600/11800). Moving from an i11x00 to an r12x00 will see a 2x increase in memory but less memory per vCPU.
 
 .. image:: images/rseries_performance_and_sizing/low-end-memory.png
   :align: center
