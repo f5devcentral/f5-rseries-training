@@ -19,31 +19,31 @@ In rSeries there are now multiple FPGAs, the **Application Traffic Services Engi
 
 .. image:: images/rseries_performance_and_sizing/image1.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 The r12000-DS platform is very similar to the r10000 platform except that is has extra processing for SSL/TLS as seen in the diagram below.
 
 .. image:: images/rseries_performance_and_sizing/image1r12000.png
   :align: center
-  :scale: 60%
+  :scale: 30%
 
 The r5000 appliance has a similar architecture but since it hits a different price/performance point than the r10000 it has fewer FPGA's, CPUs, and fewer physical ports.
 
 .. image:: images/rseries_performance_and_sizing/image2.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 Both the r4000 and r2000 appliances have a slightly different hardware architecture than the r5000 and r10000 appliances. They still run F5OS-A software, but they do not utilize FPGAs for hardware offload, and instead perform these functions in software and leverage SR-IOV. This means that CPUs do not need to be dedicated to the F5OS layer, leaving more CPU for tenants. These platforms also run a different class of Intel processing, and do not utilize hyperthreading like the higher end platforms do. These appliances are positioned for smaller scale environments, and they do not support 40Gb or 100Gb interfaces. Instead, they support 1Gb, 10Gb, and 25Gb interfaces. Below is the architecture of the r4000 appliance.
 
 .. image:: images/rseries_performance_and_sizing/image3.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 The r2000 appliance has a similar architecture to the r4000, but it has less memory and fewer CPU cores.
 
 .. image:: images/rseries_performance_and_sizing/image4.png
   :align: center
-  :scale: 40%  
+  :scale: 50%  
 
 When comparing rSeries to the previous generation iSeries appliances, it is important to note that rSeries provides more options for network connectivity including 25GB and 100Gb Ethernet support. rSeries appliances are generally providing up to 2x more performance than the previous generation iSeries appliances.
 
@@ -51,7 +51,7 @@ Looking at comparisons of iSeries i10800 versus the r10000 or the iSeries i5800 
 
 .. image:: images/rseries_performance_and_sizing/image5.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 The performance numbers for rSeries already include any overhead for multitenancy as the platform is multitenant by default. There is nothing to switch on to enable multitenancy. VIPRION or iSeries on the other hand has the option of running multitenancy by enabling vCMP. Published data sheet numbers for VIPRION or iSeries are for bare-metal mode, where no virtualization (vCMP) is enabled. Enabling vCMP on VIPRION or iSeries has overhead and will reduce the overall performance of a blade or appliance as the hypervisor takes up CPU and memory resources.
 
@@ -113,9 +113,13 @@ When sizing, removing the 12 or 6 (depending on platform) dedicated vCPUs for F5
 
 The graphs below compare the older model high-end iSeries platforms to the newer mode high-end rSeries models. Note that these comparisons remove the 12 vCPUs used for the F5OS platform layer and data mover. Instead of showing 24 physical cores and 48 vCPUs, the r10000 is sized using 18 physical cores and 36 vCPUs listed as (minus platform layer CPU).
 
-.. image:: images/rseries_performance_and_sizing/image12a.png
+.. image:: images/rseries_performance_and_sizing/cpu-high-end-1.png
   :align: center
-  :scale: 70%
+  :scale: 90%
+
+.. image:: images/rseries_performance_and_sizing/cpu-high-end-2.png
+  :align: center
+  :scale: 90%
 
 To compare performance of iSeries vs. rSeries you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get a more even comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the number of vCPUs in the system and consider the speed/performance of the vCPU to come up with a sizing metric. Because rSeries dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing exercise calculations so that sizing numbers don’t get skewed. As an example, take the overall r10900 performance metrics then divide by the total vCPUs in the system (48) minus the 12 vCPUs for the platform layer. By not including the vCPUs dedicated to F5OS, you’ll get a much more accurate assessment of what an individual vCPU can forward? You also must consider that rSeries has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing.
 
@@ -184,9 +188,13 @@ When sizing, removing the 12 or 6 (depending on platform) dedicated vCPUs for F5
 
 The graphs below compare the older model mid-range iSeries platforms vs. the newer mode mid-range rSeries models. Note that these comparisons remove the 6 vCPUs used for the F5OS platform layer and the data mover. Instead of showing 16 physical cores and 32 vCPUs, the r5000 is sized using 13 physical cores and 26 vCPUs listed as (minus platform Layer CPU).
 
-.. image:: images/rseries_performance_and_sizing/image15a.png
+.. image:: images/rseries_performance_and_sizing/cpu-sizing-mid-1.png
   :align: center
   :scale: 90%
+
+.. image:: images/rseries_performance_and_sizing/cpu-sizing-mid-2.png
+  :align: center
+  :scale: 90%  
 
 To compare performance of iSeries vs. rSeries you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get a more even comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the number of vCPUs in the system and consider the speed/performance of the vCPU to come up with a sizing metric. Because rSeries dedicates some of its processing to the F5OS platform layer, we remove them from the overall sizing exercise calculations so that sizing numbers don’t get skewed. As an example, take the overall r5900 performance metrics then divide by the total vCPUs in the system (32) minus the 6 vCPUs for the platform layer. By not including the vCPUs that are dedicated to F5OS, you’ll get a much more accurate assessment of what  the remaining individual vCPUs can forward. You also must consider that rSeries has more modern processors which are more efficient and can boost to higher rates than previous generation processors so looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing.
 
@@ -271,9 +279,14 @@ Comparing the performance of a single vCPU can be important for control plane si
 
 Below is a comparison on the CPUs on the i2600, i2800, i4600 and i4800 compared to the new rSeries r2600, r2800, r4600 and r4800. The graphs below compare the older model low-end iSeries platforms vs. the newer model low-end rSeries models. All the sizing will focus on the per vCPU numbers, and as outlined above for rSeries r2000/r4000, each physical CPU core is being treated as one hyperthread or vCPU even though it is a full CPU core. This will allow for more equal comparisons to the iSeries i2000/i4000 platforms, which have 2 hyperthreads or VCPUs per CPU core. 
 
-.. image:: images/rseries_performance_and_sizing/image19a.png
+.. image:: images/rseries_performance_and_sizing/low-end-cpu-1.png
   :align: center
-  :scale: 70%
+  :scale: 90%
+
+.. image:: images/rseries_performance_and_sizing/low-end-cpu-2.png
+  :align: center
+  :scale: 90%
+
 
 Based on the vCPU chart above the i2600 and r2600 are treated as though they have the same number of vCPUs (4). The i2800 has half the number of vCPUs (4) as the r2800 (8). The i4600 and r4600 are treated as though they have the same number of vCPUs (8). The i2800 has half the number of vCPUs (8) as the r2800 (16).
 
@@ -305,7 +318,7 @@ To see how this translates into real performance, we'll repeat the same exercise
 
 .. image:: images/rseries_performance_and_sizing/image19e.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 Because each appliance has a different number of CPUs, a common sizing exercise is to look at the per vCPU performance by using the formulas above to come up with a per vCPU metric. In the graph below it is done for Layer7 RPS (Inf-Inf), but you could use the same math for any metric. Note: the graph below is not derived from a per vCPU test, it is taking a published appliance metric and dividing it by the number of vCPUs (or CPUs in the case of the r2000/r4000) to come up with a per vCPU metric. For some rSeries models (rx600) some CPUs are disabled so they are not included in the equation. As you will note below, migrating from an i4600 to an r4600 will have better per vCPU performance. When going from an i4800 to an r4800 the per vCPU metrics are lower on rSeries. This is due to a combination of the type of processors being used on the rSeries appliances, as well as the CPU Ghz being throttled on the ix600 iSeries models. The i4600 has a throttled CPU running at 1.2Ghz, while the r4600 is only throttled .1Ghz and runs at 2.1 Ghz, so the per vCPU performance is better when migrating from i4600 to r 4600.
 
@@ -313,7 +326,7 @@ This is not the case with the migration from i4800 to r4800. The per vCPU perfor
 
 .. image:: images/rseries_performance_and_sizing/image19f.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 In the cases where there are gaps/decreases when migrating to the rSeries as the number of vCPUs in a tenant grows, the gap will widen as seen in the chart below. This will require more focus on tenant sizing when moving to rSeries for these specific scenarios. As an example, if you wanted to migrate an i4800 appliance into a tenant on an rSeries 4800 appliance, you may assume that since the i4800 has 8 vCPUs that you can just migrate it into an 8 vCPU tenant. While this may be possible depending on how utilized the i4800 is, it is better to be conservative in sizing an allocate more vCPU's on the r4800 to bring the performance in line with what an i4800 can support for performance. In the example below to match the i4800 data sheet performance of 1.1M Layer7 RPS, you would need to allocate and additional 2 vCPUs (CPUs on the r4000) to that tenant. The good news is that the r4800 supports up to 16 vCPUs for tenants so more vCPUs can be allocated if needed, but the supported tenant sizes are 4, 8, 12, and 16. This means that you would have to go to the next supported vCPU allocation for a tenant which is 12. The numbers below are an extrapolation and not based on real world environments, so results may vary.
 
@@ -332,13 +345,19 @@ When migrating from an i4600 to an r4600 you can see that the per vCPU/CPU perfo
 Memory Sizing
 =============
 
-In general migrating from an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, or the same amount of memory (when comparing the 11600/11800).
+In general migrating from an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, or the same amount of memory (when comparing the 11600/11800). Moving from an i11x00 to an r12x00 will see a 2x increase in memory but less memory per vCPU.
 
-.. image:: images/rseries_performance_and_sizing/image34.png
-  :width: 45%
+.. image:: images/rseries_performance_and_sizing/low-end-memory.png
+  :align: center
+  :width: 90%
 
-.. image:: images/rseries_performance_and_sizing/image35.png
-  :width: 45%
+.. image:: images/rseries_performance_and_sizing/mid-range-memory.png
+  :align: center  
+  :width: 90%
+
+.. image:: images/rseries_performance_and_sizing/high-end-memory.png
+  :align: center  
+  :width: 90%
 
 Breaking down memory to get per vCPU numbers will help when dealing with current vCMP guest configurations where memory is allocated based on the number of vCPUs assigned to the guest. Because rSeries has a different architecture than iSeries there is a formula for calculating how much memory a vCPU will receive. The chart below shows the default RAM per vCPU allocation with 1vCPU tenant for the r5000 series and above. 
 
@@ -350,7 +369,7 @@ For the r2000 / r4000 appliances the formula is different.
 
 With rSeries the amount of RAM per vCPU will change slightly as more vCPUs are added to the tenant. Below are the default values for total RAM, and RAM per vCPU for the rSeries tenants (r5000 and above). These are **Recommended** values, but rSeries provides **Advanced** options where memory per tenant can be customized to allocate more memory without having to allocate mor vCPU. See the Multitenancy section for more details on memory customization.
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can overprovision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs; this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for tenancy.
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs; this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for tenancy.
 
 +------------------------+--------------------+--------------------------+-------------------+-----------------+
 | **Tenant Size**        | **Physical Cores** | **Logical Cores (vCPU)** | **Min Bytes RAM** | **RAM/vCPU**    |

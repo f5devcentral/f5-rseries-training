@@ -13,7 +13,7 @@ F5OS Platform Layer Isolation
 
 When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
 
-This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through the **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. 
+This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through the **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. Tenants are prevented from talking to each other over the internal management VLAN using MACVLAN interfaces which encapsulate tenant traffic, restricting traffic visibility between different tenants on the same rSeries appliance.
 
 .. image:: images/rseries_security/image1.png
   :align: center
