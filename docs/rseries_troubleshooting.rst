@@ -5,7 +5,7 @@ rSeries Troubleshooting
 Storage / Disk
 ==============
 
-Some rSeries appliances have a single SSD disk, while other models have dual SSD disks that are RAID-1 mirrored. The r2600,r2800,r4600,r4800,r5600,r5800,r5900 models all contain a single SSD, while the r10600,r10800,r10900 contain 2 SSD's that are RAID-1 mirrored. 
+Some rSeries appliances have a single SSD disk, while other models have dual SSD disks that are RAID-1 mirrored. The r2600,r2800,r4600,r4800,r5600,r5800,r5900,r5920-DF models all contain a single SSD, while the r10600,r10800,r10900 contain 2 SSD's that are RAID-1 mirrored. 
 
 Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size.
 
