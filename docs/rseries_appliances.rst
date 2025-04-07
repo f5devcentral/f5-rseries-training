@@ -39,7 +39,7 @@ In the back of the AC power model are 2 power supplies and AC inputs. The system
 
 rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
 
-`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>'_
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
 
 For customers that have C13 style rack power distribution, you may want to consider ordering a special C14 to C15 style power plug as the standard power plugs shipped with the r12000 units will not work with C13 style outlets. The SKU for the C14 to C15 style power plug is **F5-UPG-CBL-C15TOC14**.
 
