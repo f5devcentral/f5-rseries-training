@@ -1706,6 +1706,31 @@ To view the AOM configuration via CLI enter the command **show running-config sy
     system aom config ipv4 address 172.22.50.35
     r5900-1-gsa# 
 
+Once the AOM SSH access is setup, you can access the AOM diagnostic menu remotely.
+
+.. code-block:: bash
+
+    prompt% ssh -l ssh-aom-user 172.22.50.35
+    ssh-aom-user@172.22.50.35's password: 
+    This is the AOM SSH Menu for r5900-13 failed login attempts since last successful login
+    Last successful login by ssh-aom-user was 4/17/25 16:04:17 from 172.18.105.18:58972
+
+
+    Press Enter to deactivate another concurrent session...
+
+    AOM Command Menu:
+    A --- Reset AOM
+    B --- Set baud rate
+    I --- Display platform information
+    P --- Power on/off host subsystem
+    R --- Reset host subsystem
+    S --- Configure SSH server
+    U --- Front panel USB port
+    Q --- Quit menu and return to console
+
+    Enter Command:
+
+
 To remove the AOM configuration, first enter the command **no system aom config**, then enter the command **system aom clear-data**.
 
 .. code-block:: bash
@@ -1810,6 +1835,21 @@ In the body of the API call, there will be details of the current AOM setup.
         }
     }
 
+If you need to delete thwe AOM configuration via API, use the following API call.
+
+.. code-block:: bash
+
+   POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom/f5-system-aom:clear-data
+
+In the body of the API reponse, there will be a confirmation that all AOM customer data has been cleared.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:output": {
+            "response": "AOM customer data cleared."
+        }
+    }
 
 
 TCPDUMP
