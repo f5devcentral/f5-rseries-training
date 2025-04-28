@@ -1655,7 +1655,7 @@ rSeries systems support Always on Management (AOM) for low level diagnostics. De
 
 `K000148736: Overview of the AOM subsystem in F5OS <https://my.f5.com/manage/s/article/K000148736>`_
 
-By default, AOM is enabled on the rSeries console port, and can optionally be accessed over SSH via the out-of-band management port if desired. You will need to assign a  dedicated IP address to the AOM subsystem, which is different than the F5OS management IP address. You will specify an IP address, prefix, and gateway as well as a username and password for AOM access. Addtionally, there is a separate AOM SSH timeout setting and login banner that may also be configured. 
+By default, AOM is enabled on the rSeries console port, and can optionally be accessed over SSH via the out-of-band management port if desired. You will need to assign a  dedicated IP address to the AOM subsystem (for access over SSH), which is different than the F5OS management IP address. You will specify an IP address, prefix, and gateway as well as a username and password for AOM access. Addtionally, there is a separate AOM SSH timeout setting and login banner that may also be configured. 
 
 
 Enabling AOM Access for SSH via CLI
@@ -1731,12 +1731,9 @@ Once the AOM SSH access is setup, you can access the AOM diagnostic menu remotel
     Enter Command:
 
 
-To remove the AOM configuration, first enter the command **no system aom config**, then enter the command **system aom clear-data**.
+To remove the AOM configuration, enter the command **system aom clear-data**.
 
 .. code-block:: bash
-
-    r5900-1-gsa(config)# no system aom config 
-    Warning: Some elements could not be removed due to NACM rules prohibiting access.
 
     r5900-1-gsa(config)# system aom clear-data 
     Do you really want to clear all customer data from the AOM? This includes SSH and network configuration data. [no,yes] yes
@@ -1835,7 +1832,7 @@ In the body of the API call, there will be details of the current AOM setup.
         }
     }
 
-If you need to delete thwe AOM configuration via API, use the following API call.
+If you need to delete the AOM configuration via API, use the following API call.
 
 .. code-block:: bash
 
