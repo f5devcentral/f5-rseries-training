@@ -50,12 +50,6 @@ The r10000, r10920-DF, and r12000 units have a special **C15** style connector o
   :scale: 100%
 
 
-
-
-
-
-
-
 In the back of the DC power model there are 2 power supplies and DC inputs. If ordered with the F5-OPT-DC-R10XXX Dual DC power option, the system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r12000-DS is removable and serviceable.
 
 .. image:: images/rseries_appliances/image1e.png
@@ -106,6 +100,18 @@ In the back of the AC power model are 2 power supplies and AC inputs. The system
   :align: center
   :scale: 100%
 
+rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
+
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
+
+For customers that have C13 style rack power distribution, you may want to consider ordering a special C14 to C15 style power plug as the standard power plugs shipped with the r10000 units will not work with C13 style outlets. The SKU for the C14 to C15 style power plug is **F5-UPG-CBL-C15TOC14**.
+
+The r10000, r10920-DF, and r12000 units have a special **C15** style connector on its power supplies. You can confirm this is a C15 connector by observing the notch in the plug. 
+
+.. image:: images/rseries_appliances/c13c15.png
+  :align: center
+  :scale: 100%
+
 In the back of the DC power model there are 2 power supplies and DC inputs. If ordered with the F5-OPT-DC-R10XXX DC power option, the system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10000 is removable and serviceable.
 
 .. image:: images/rseries_appliances/image1e.png
@@ -150,6 +156,18 @@ The r10920-DF appliance has a single 1Gb Ethernet out-of-band management port, a
 In the back of the AC power model are 2 power supplies and AC inputs. The system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. The fan tray on the r10920-DF is removable and serviceable.
 
 .. image:: images/rseries_appliances/image1d.png
+  :align: center
+  :scale: 100%
+
+rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
+
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
+
+For customers that have C13 style rack power distribution, you may want to consider ordering a special C14 to C15 style power plug as the standard power plugs shipped with the r10920-DF units will not work with C13 style outlets. The SKU for the C14 to C15 style power plug is **F5-UPG-CBL-C15TOC14**.
+
+The r10000, r10920-DF, and r12000 units have a special **C15** style connector on its power supplies. You can confirm this is a C15 connector by observing the notch in the plug. 
+
+.. image:: images/rseries_appliances/c13c15.png
   :align: center
   :scale: 100%
 
@@ -201,6 +219,18 @@ In the back of the AC power model are 2 power supplies and AC inputs. The system
   :align: center
   :scale: 100%
 
+rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
+
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
+
+For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**.
+
+The r5000, r5920-DF, r4000, and r2000 units have a special **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+
+.. image:: images/rseries_appliances/c13c15.png
+  :align: center
+  :scale: 100%
+
 In the back of the DC power model there are 2 power supplies and DC inputs. If ordered with the F5-OPT-DC-R5XXX DC power option, the system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image2e.png
@@ -249,6 +279,18 @@ In the back of the AC power model are 2 power supplies and AC inputs. The system
   :align: center
   :scale: 100%
 
+rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
+
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
+
+For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**.
+
+The r5000, r5920-DF, r4000, and r2000 units have a special **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+
+.. image:: images/rseries_appliances/c13c15.png
+  :align: center
+  :scale: 100%
+
 In the back of the DC power model there are 2 power supplies and DC inputs. If ordered with the F5-OPT-DC-R5XXX DC power option, the system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image2e.png
@@ -287,6 +329,18 @@ In the back of the AC power model are 2 power supplies and AC inputs. The system
 .. image:: images/rseries_appliances/image3c.png
   :align: center
   :scale: 120%
+
+rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
+
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
+
+For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**.
+
+The r5000, r5920-DF, r4000, and r2000 units have a special **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+
+.. image:: images/rseries_appliances/c13c15.png
+  :align: center
+  :scale: 100%
 
 In the back of the DC power model there are 2 power supplies and DC inputs. If ordered with the F5-OPT-DC-R4XXX DC power option, the system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
@@ -328,6 +382,18 @@ In the back of the AC power model are 2 power supplies and AC inputs. The system
   :align: center
   :scale: 120%
 
+rSeries systems ship from the factory with a specific power cord type based on the country it is being delivered to as outlined in this article.
+
+`K13435: BIG-IP power cable options and requirements <https://support.f5.com/csp/article/K13435>`_
+
+For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**.
+
+The r5000, r5920-DF, r4000, and r2000 units have a special **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+
+.. image:: images/rseries_appliances/c13c15.png
+  :align: center
+  :scale: 100%
+  
 In the back of the DC power model there are 2 power supplies and DC inputs. If ordered with the F5-OPT-DC-R2XXX DC power option, the system ships with both power supplies included. The back of the system also has a **Chassis Ground Terminal** which can be used when performing maintenance. 
 
 .. image:: images/rseries_appliances/image3d.png
