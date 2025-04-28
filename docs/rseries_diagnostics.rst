@@ -1648,6 +1648,102 @@ Details on F5OS-A SNMP logging can be found here:
 
 `F5OS-A SNMP Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#troubleshooting-snmp>`_
 
+Always On Management (AOM)
+==========================
+
+rSeries systems support Always on Management (AOM) for low level diagnostics. Detailed AOM documentation is provided in the following solution article:
+
+`K000148736: Overview of the AOM subsystem in F5OS <https://my.f5.com/manage/s/article/K000148736>`_
+
+By default, AOM is enabled on the rSeries console port, and can optionally be accessed over SSH via the out-of-band management port if desired. You will need to assign a  dedicated IP address to the AOM subsystem, which is different than the F5OS management IP address. You will specify an IP address, prefix, and gateway as well as a username and password for AOM access. Addtionally, there is a separate AOM SSH timeout setting and login banner that may also be configured. 
+
+
+Enabling AOM Access for SSH via CLI
+-----------------------------------
+
+To enable AOM access over SSH via the CLI us the following commands. 
+
+
+.. code-block:: bash
+
+
+    r5900-1-gsa(config)# system aom config ipv4 address 172.22.50.35 
+    r5900-1-gsa(config)# system aom config ipv4 gateway 172.22.50.62
+    r5900-1-gsa(config)# system aom config ipv4 prefix-length 26
+    r5900-1-gsa(config)# commit
+    Commit complete.
+    r5900-1-gsa(config)#
+
+    r5900-1-gsa(config)# system aom set-ssh-user-info username aom-ssh-user password 
+    Value for 'password' (<string, min: 8 chars, max: 16 chars>): **************
+    response AOM SSH username and password set successfully.
+    r5900-1-gsa(config)#
+
+
+Enabling AOM Access for SSH via API
+-----------------------------------
+
+To enable AOM access over SSH 
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:aom": {
+            "f5-system-aom:config": {
+                "f5-system-aom:ssh-session-idle-timeout": 180,
+                "f5-system-aom:ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "f5-system-aom:ipv4": {
+                    "f5-system-aom:gateway": "172.22.50.62",
+                    "f5-system-aom:prefix-length": 26,
+                    "f5-system-aom:dhcp-enabled": "false",
+                    "f5-system-aom:address": "172.22.50.35"
+                }
+            }
+        }
+    }
+
+
+To view the current AOM setting via API, issue the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom
+
+
+In the body of the API call, there will be details of the current AOM setup.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:aom": {
+            "state": {
+                "ssh-username": "ssh-aom-user",
+                "ssh-session-idle-timeout": 180,
+                "ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "ipv4": {
+                    "gateway": "172.22.50.62",
+                    "prefix-length": 26,
+                    "dhcp-enabled": false,
+                    "address": "172.22.50.35"
+                }
+            },
+            "config": {
+                "ssh-session-idle-timeout": 180,
+                "ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "ipv4": {
+                    "gateway": "172.22.50.62",
+                    "prefix-length": 26,
+                    "dhcp-enabled": false,
+                    "address": "172.22.50.35"
+                }
+            }
+        }
+    }
+
 
 
 TCPDUMP

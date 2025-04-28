@@ -288,7 +288,7 @@ Below is a comparison on the CPUs on the i2600, i2800, i4600 and i4800 compared 
   :scale: 90%
 
 
-Based on the vCPU chart above the i2600 and r2600 are treated as though they have the same number of vCPUs (4). The i2800 has half the number of vCPUs (4) as the r2800 (8). The i4600 and r4600 are treated as though they have the same number of vCPUs (8). The i2800 has half the number of vCPUs (8) as the r2800 (16).
+Based on the vCPU chart above the i2600 and r2600 are treated as though they have the same number of vCPUs (4). The i2800 has half the number of vCPUs (4) as the r2800 (8). The i4600 and r4600 are treated as though they have the same number of vCPUs (16). The i4600 has a lower number of vCPUs (12) as the r4800 (16).
 
 To compare performance of iSeries vs. rSeries, you can first look at overall CPU capacity of the system, and then break that down to per vCPU performance to get a more realistic comparison. In a typical sizing exercise, it is normal to look at the overall number of vCPUs / the total number of vCPUs in the system and consider the speed/performance of the vCPU to come up with a sizing metric.  You also must consider that rSeries has more modern processors which are more efficient and may boost to higher rates than previous generation processors, so looking at aggregate processor speed (total Ghz) as the only means of sizing may not be sufficient to get accurate sizing.
 
