@@ -1648,6 +1648,205 @@ Details on F5OS-A SNMP logging can be found here:
 
 `F5OS-A SNMP Logging <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_monitoring_snmp.html#troubleshooting-snmp>`_
 
+Always On Management (AOM)
+==========================
+
+rSeries systems support Always on Management (AOM) for low level diagnostics. Detailed AOM documentation is provided in the following solution article:
+
+`K000148736: Overview of the AOM subsystem in F5OS <https://my.f5.com/manage/s/article/K000148736>`_
+
+By default, AOM is enabled on the rSeries console port, and can optionally be accessed over SSH via the out-of-band management port if desired. You will need to assign a  dedicated IP address to the AOM subsystem (for access over SSH), which is different than the F5OS management IP address. You will specify an IP address, prefix, and gateway as well as a username and password for AOM access. Addtionally, there is a separate AOM SSH timeout setting and login banner that may also be configured. 
+
+
+Enabling AOM Access for SSH via CLI
+-----------------------------------
+
+To enable AOM access over SSH via the CLI use the following commands. 
+
+
+.. code-block:: bash
+
+
+    r5900-1-gsa(config)# system aom config ipv4 address 172.22.50.35 
+    r5900-1-gsa(config)# system aom config ipv4 gateway 172.22.50.62
+    r5900-1-gsa(config)# system aom config ipv4 prefix-length 26
+    r5900-1-gsa(config)# commit
+    Commit complete.
+    r5900-1-gsa(config)#
+
+You can then set the AOM username and password:
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system aom set-ssh-user-info username aom-ssh-user password 
+    Value for 'password' (<string, min: 8 chars, max: 16 chars>): **************
+    response AOM SSH username and password set successfully.
+    r5900-1-gsa(config)#
+
+Finally, you can set the AOM ssh timeout, AOM login banner.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system aom config ssh-session-idle-timeout 180
+    r5900-1-gsa(config)# system aom config ssh-session-banner "This is the AOM port"
+    r5900-1-gsa(config)# commit
+    Commit complete.
+    r5900-1-gsa(config)#    
+
+To view the AOM configuration via CLI enter the command **show running-config system aom**.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show running-config system aom
+    system aom config ssh-session-idle-timeout 180
+    system aom config ssh-session-banner "This is the AOM port"
+    system aom config ipv4 gateway 172.22.50.62
+    system aom config ipv4 prefix-length 26
+    system aom config ipv4 dhcp-enabled false
+    system aom config ipv4 address 172.22.50.35
+    r5900-1-gsa# 
+
+Once the AOM SSH access is setup, you can access the AOM diagnostic menu remotely.
+
+.. code-block:: bash
+
+    prompt% ssh -l ssh-aom-user 172.22.50.35
+    ssh-aom-user@172.22.50.35's password: 
+    This is the AOM SSH Menu for r5900-13 failed login attempts since last successful login
+    Last successful login by ssh-aom-user was 4/17/25 16:04:17 from 172.18.105.18:58972
+
+
+    Press Enter to deactivate another concurrent session...
+
+    AOM Command Menu:
+    A --- Reset AOM
+    B --- Set baud rate
+    I --- Display platform information
+    P --- Power on/off host subsystem
+    R --- Reset host subsystem
+    S --- Configure SSH server
+    U --- Front panel USB port
+    Q --- Quit menu and return to console
+
+    Enter Command:
+
+
+To remove the AOM configuration, enter the command **system aom clear-data**.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system aom clear-data 
+    Do you really want to clear all customer data from the AOM? This includes SSH and network configuration data. [no,yes] yes
+    response AOM customer data cleared.
+    r5900-1-gsa(config)#
+
+
+Enabling AOM Access for SSH via API
+-----------------------------------
+
+To enable AOM access over SSH via the API, use the following PATCH API call.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom
+
+In the body of the API call, enter the following JSON data:
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:aom": {
+            "f5-system-aom:config": {
+                "f5-system-aom:ssh-session-idle-timeout": 180,
+                "f5-system-aom:ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "f5-system-aom:ipv4": {
+                    "f5-system-aom:gateway": "172.22.50.62",
+                    "f5-system-aom:prefix-length": 26,
+                    "f5-system-aom:dhcp-enabled": "false",
+                    "f5-system-aom:address": "172.22.50.35"
+                }
+            }
+        }
+    }
+
+To set the AOM username and password, use the following API POST call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom/f5-system-aom:set-ssh-user-info
+
+In the body of the API call, enter the following JSON information. 
+
+.. code-block:: json
+
+    {
+            "f5-system-aom:username": "ssh-aom-user",
+            "f5-system-aom:password": "{{rseries_appliance_password}}"
+    }
+
+You should receive the following response indicating the username and password have been set successfully.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:output": {
+            "response": "AOM SSH username and password set successfully."
+        }
+    }
+
+
+To view the current AOM settings via API, issue the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom
+
+
+In the body of the API call, there will be details of the current AOM setup.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:aom": {
+            "state": {
+                "ssh-username": "ssh-aom-user",
+                "ssh-session-idle-timeout": 180,
+                "ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "ipv4": {
+                    "gateway": "172.22.50.62",
+                    "prefix-length": 26,
+                    "dhcp-enabled": false,
+                    "address": "172.22.50.35"
+                }
+            },
+            "config": {
+                "ssh-session-idle-timeout": 180,
+                "ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "ipv4": {
+                    "gateway": "172.22.50.62",
+                    "prefix-length": 26,
+                    "dhcp-enabled": false,
+                    "address": "172.22.50.35"
+                }
+            }
+        }
+    }
+
+If you need to delete the AOM configuration via API, use the following API call.
+
+.. code-block:: bash
+
+   POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom/f5-system-aom:clear-data
+
+In the body of the API reponse, there will be a confirmation that all AOM customer data has been cleared.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:output": {
+            "response": "AOM customer data cleared."
+        }
+    }
 
 
 TCPDUMP

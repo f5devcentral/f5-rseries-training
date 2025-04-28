@@ -152,6 +152,8 @@ Diagnostics
 
 `Changing the Software Component Log Levels via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#changing-the-software-componenet-log-levels-via-api>`_
 
+`Enabling AOM Access for SSH via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#enabling-aom-access-for-ssh-via-api>`_
+
 `TCPDUMP Download to Client via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#tcpdump-download-to-client-via-api>`_
 
 Monitoring rSeries Health & Alert Status
