@@ -1661,7 +1661,7 @@ By default, AOM is enabled on the rSeries console port, and can optionally be ac
 Enabling AOM Access for SSH via CLI
 -----------------------------------
 
-To enable AOM access over SSH via the CLI us the following commands. 
+To enable AOM access over SSH via the CLI use the following commands. 
 
 
 .. code-block:: bash
@@ -1674,20 +1674,61 @@ To enable AOM access over SSH via the CLI us the following commands.
     Commit complete.
     r5900-1-gsa(config)#
 
+You can then set the AOM username and password:
+
+.. code-block:: bash
+
     r5900-1-gsa(config)# system aom set-ssh-user-info username aom-ssh-user password 
     Value for 'password' (<string, min: 8 chars, max: 16 chars>): **************
     response AOM SSH username and password set successfully.
+    r5900-1-gsa(config)#
+
+Finally, you can set the AOM ssh timeout, AOM login banner.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system aom config ssh-session-idle-timeout 180
+    r5900-1-gsa(config)# system aom config ssh-session-banner "This is the AOM port"
+    r5900-1-gsa(config)# commit
+    Commit complete.
+    r5900-1-gsa(config)#    
+
+To view the AOM configuration via CLI enter the command **show running-config system aom**.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show running-config system aom
+    system aom config ssh-session-idle-timeout 180
+    system aom config ssh-session-banner "This is the AOM port"
+    system aom config ipv4 gateway 172.22.50.62
+    system aom config ipv4 prefix-length 26
+    system aom config ipv4 dhcp-enabled false
+    system aom config ipv4 address 172.22.50.35
+    r5900-1-gsa# 
+
+To remove the AOM configuration, first enter the command **no system aom config**, then enter the command **system aom clear-data**.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# no system aom config 
+    Warning: Some elements could not be removed due to NACM rules prohibiting access.
+
+    r5900-1-gsa(config)# system aom clear-data 
+    Do you really want to clear all customer data from the AOM? This includes SSH and network configuration data. [no,yes] yes
+    response AOM customer data cleared.
     r5900-1-gsa(config)#
 
 
 Enabling AOM Access for SSH via API
 -----------------------------------
 
-To enable AOM access over SSH 
+To enable AOM access over SSH via the API, use the following PATCH API call.
 
 .. code-block:: bash
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom
+
+In the body of the API call, enter the following JSON data:
 
 .. code-block:: json
 
@@ -1706,8 +1747,33 @@ To enable AOM access over SSH
         }
     }
 
+To set the AOM username and password, use the following API POST call.
 
-To view the current AOM setting via API, issue the following API call.
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom/f5-system-aom:set-ssh-user-info
+
+In the body of the API call, enter the following JSON information. 
+
+.. code-block:: json
+
+    {
+            "f5-system-aom:username": "ssh-aom-user",
+            "f5-system-aom:password": "{{rseries_appliance_password}}"
+    }
+
+You should receive the following response indicating the username and password have been set successfully.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:output": {
+            "response": "AOM SSH username and password set successfully."
+        }
+    }
+
+
+To view the current AOM settings via API, issue the following API call.
 
 .. code-block:: bash
 
