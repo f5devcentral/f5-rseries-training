@@ -2950,6 +2950,19 @@ The table below shows the current status and health of the rSeries power supply 
 
 `K36588206: AC power supply units for iSeries and rSeries platform models should not be interchanged <https://my.f5.com/manage/s/article/K36588206>`_
 
+**F5-PLATFORM-STATS-MIB:psuStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.9.1**
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.41 F5-PLATFORM-STATS-MIB:psuStatsTable
+    SNMP table: F5-PLATFORM-STATS-MIB::psuStatsTable
+
+    psuName  psuSerialNo psuPartNo psuCurrentIn psuCurrentOut psuVoltageIn psuVoltageOut psuTemperature1 psuTemperature2 psuTemperature3 psuFan1Speed psuFan2Speed psuPowerIn psuPowerOut
+    psu-1 FZ2104Q70155    MW2100     2.546 mA     42.625 mA   204.000 mV     12.000 mV        35.0 °C        40.0 °C        43.0 °C    13856 RPM            ? 522.000 mW  504.000 mW
+    prompt% 
+
+
+
 r5000 Series (r5600,r5800,r5900,r5920-DF) 650W AC Power Supply Values
 
 +--------------+-------------------+-------------------------------------------------+-----------------------------------------------------------------------------------------+
@@ -3089,17 +3102,6 @@ r10000/r12000 Series (r10600,r10800,r10900,r10920-DF,r12600-DS,r12800-DS,r12900-
 +--------------+-------------------+-------------------------------------------------+-----------------------------------------------------------------------------------------+
 
 .. Note:: There is a known issue with the Watt, Amp, and Volt values being displayed in milli (mW, mV, Ma which is incorrect. This issue is tracked as ID 1933793.
-
-**F5-PLATFORM-STATS-MIB:psuStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.9.1**
-
-.. code-block:: bash
-
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.41 F5-PLATFORM-STATS-MIB:psuStatsTable
-    SNMP table: F5-PLATFORM-STATS-MIB::psuStatsTable
-
-    psuName  psuSerialNo psuPartNo psuCurrentIn psuCurrentOut psuVoltageIn psuVoltageOut psuTemperature1 psuTemperature2 psuTemperature3 psuFan1Speed psuFan2Speed psuPowerIn psuPowerOut
-    psu-1 FZ2104Q70155    MW2100     2.546 mA     42.625 mA   204.000 mV     12.000 mV        35.0 °C        40.0 °C        43.0 °C    13856 RPM            ? 522.000 mW  504.000 mW
-    prompt% 
 
 
 
