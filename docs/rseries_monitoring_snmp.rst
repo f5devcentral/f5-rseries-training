@@ -2944,9 +2944,36 @@ Below is the component info table from the system controller layer.
 Power Supply Unit Stats Table
 ----------------------------
 
-The table below shows the current status and health of the rSeries power supply units. This MIB is added in F5OS-C 1.8.0.
+The table below shows the current status and health of the rSeries power supply units. This MIB is added in F5OS-A 1.8.0. Note, that the number of power supplies reported may be one or two depending on how many are installed in your rSeries system. Also note that different rSeries platforms use different power supplies as outlined in the following solution articles:
 
-This MIB is supported on the VELOS system controller layer.
+`K96511422: F5 iSeries and rSeries power supplies <https://my.f5.com/manage/s/article/K96511422>`_
+`K36588206: AC power supply units for iSeries and rSeries platform models should not be interchanged <https://my.f5.com/manage/s/article/K36588206>`_
+
+r5000 Series (r5600,r5800,r5900,r5920-DF) AC Power Supply Values
+
++-------------------+-------------------------------------------------+
+| psuCurrentIn      | Informational displayed in Amps, No Limits      |                              
++-------------------+-------------------------------------------------+
+| psuCurrentOut     | Informational displayed in Amps, No Limits      |     
++-------------------+-------------------------------------------------+
+| psuVoltageIn      | Informational displayed in Volts, No Limits     |     
++-------------------+-------------------------------------------------+
+| psuVoltageOut     | Lower Limit = 11v, Upper Limit = 14v            |  
++-------------------+-------------------------------------------------+
+| psuTemperature1   | Lower Limit = 0C, Upper Limit = 60C             |  
++-------------------+-------------------------------------------------+
+| psuTemperature2   | Lower Limit = 0C, Upper Limit = 60C             | 
++-------------------+-------------------------------------------------+
+| psuTemperature3   | Lower Limit = 0C, Upper Limit = 60C             |    
++-------------------+-------------------------------------------------+
+| psuFan1Speed      | Critical = 0, Non Zero = Normal Operating Range |
++-------------------+-------------------------------------------------+
+| psuPowerIn        | Informational displayed in Watts, No Limits     |  
++-------------------+-------------------------------------------------+
+| psuPowerOut       | Informational displayed in Watts, No Limits     |   
++-------------------+-------------------------------------------------+
+
+.. Note:: There is a known issue with the Watt, Amp, and Volt values being displayed in milli (mW, mV, Ma which is incorrect. This issue is tracked as ID 1933793.
 
 **F5-PLATFORM-STATS-MIB:psuStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.9.1**
 
@@ -2964,7 +2991,7 @@ This MIB is supported on the VELOS system controller layer.
 Temperature Stats Table
 ----------------------------
 
-The table below shows the temperature stats for the system.
+The table below shows the temperature stats for the entire rSeries system. For monitoring purposes, the Lower Limit = 0, Alert >= 42, Emergency >= 60
 
 **F5-PLATFORM-STATS-MIB:temperatureStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.3.1**
 
