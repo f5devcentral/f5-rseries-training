@@ -3515,18 +3515,74 @@ All OIDs below are prexied with: .1.3.6.1.4.1.12276.1.2.1.6.1.1
 SNMP Fantray Stats Table
 ----------------------
 
-Query the following SNMP OID to get detailed fan speeds.
+Query the following SNMP OID to get detailed information on the rSeries fan speeds. Note, that there are different numbers of fans installed for the various rSeries platforms.
 
 **F5-PLATFORM-STATS-MIB:fantrayStatsTable  OID: .1.3.6.1.4.1.12276.1.2.1.7.1**
 
+Below is the fantrayStatsTable for an r4000 series platform. This output should be similar for all r2000/r4000 appliances. These appliances have 4 individual fans as seen in the output below.
+
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:fantrayStatsTable                       
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.5 F5-PLATFORM-STATS-MIB:fantrayStatsTable 
     SNMP table: F5-PLATFORM-STATS-MIB::fantrayStatsTable
 
-    fan-1-speed fan-2-speed fan-3-speed fan-4-speed fan-5-speed fan-6-speed fan-7-speed fan-8-speed fan-9-speed fan-10-speed fan-11-speed fan-12-speed
-    16251 RPM   16384 RPM   16375 RPM   16242 RPM   16277 RPM   16330 RPM   16366 RPM   16224 RPM   16233 RPM    16207 RPM    16322 RPM    16286 RPM
+    fan-1-speed fan-2-speed fan-3-speed fan-4-speed fan-5-speed fan-6-speed fan-7-speed fan-8-speed fan-9-speed fan-10-speed fan-11-speed fan-12-speed fantray-temperature inlet-fan-1-speed inlet-fan-2-speed inlet-fan-3-speed exhaust-fan-1-speed exhaust-fan-2-speed exhaust-fan-3-speed
+        9700 RPM    9800 RPM    9800 RPM    9900 RPM           ?           ?           ?           ?           ?            ?            ?            ?                   ?                 ?                 ?                 ?                   ?                   ?                   ?
     prompt% 
+
+Below is the fantrayStatsTable for an r5000 series platform. This output should be similar for all r5000 appliances. These appliances have 8 individual fans as seen in the output below.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-PLATFORM-STATS-MIB:fantrayStatsTable 
+    SNMP table: F5-PLATFORM-STATS-MIB::fantrayStatsTable
+
+    fan-1-speed fan-2-speed fan-3-speed fan-4-speed fan-5-speed fan-6-speed fan-7-speed fan-8-speed fan-9-speed fan-10-speed fan-11-speed fan-12-speed fantray-temperature inlet-fan-1-speed inlet-fan-2-speed inlet-fan-3-speed exhaust-fan-1-speed exhaust-fan-2-speed exhaust-fan-3-speed
+    16313 RPM   16304 RPM   16304 RPM   16233 RPM   16198 RPM   16366 RPM   16375 RPM   16251 RPM           ?            ?            ?            ?                   ?                 ?                 ?                 ?                   ?                   ?                   ?
+    prompt %
+
+
+Below is the fantrayStatsTable for an r10000 series platform. This output should be similar for all r10000/r12000 appliances. These appliances have 12 individual fans as seen in the output below.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.3 F5-PLATFORM-STATS-MIB:fantrayStatsTable 
+    SNMP table: F5-PLATFORM-STATS-MIB::fantrayStatsTable
+
+    fan-1-speed fan-2-speed fan-3-speed fan-4-speed fan-5-speed fan-6-speed fan-7-speed fan-8-speed fan-9-speed fan-10-speed fan-11-speed fan-12-speed fantray-temperature inlet-fan-1-speed inlet-fan-2-speed inlet-fan-3-speed exhaust-fan-1-speed exhaust-fan-2-speed exhaust-fan-3-speed
+    16207 RPM   16137 RPM   16260 RPM   16120 RPM   16216 RPM   16181 RPM   16172 RPM   16094 RPM   16155 RPM    16146 RPM    16304 RPM    16322 RPM                   ?                 ?                 ?                 ?                   ?                   ?                   ?
+    prompt% 
+
+To poll the individual fan-speeds, use the following SNMP OIDs. Note to only poll for the number of fans that are installed in the specific rSeries appliance you are using as noted above. 
+
++---------------+--------------------------------------------------------------------+
+| Value         | SNMP OID                                                           |
++===============+====================================================================+
+| fan-1-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.1.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+  
+| fan-2-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.2.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+  
+| fan-3-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.3.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+   
+| fan-4-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.4.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+  
+| fan-5-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.5.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+  
+| fan-6-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.6.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+  
+| fan-7-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.7.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+   
+| fan-8-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.8.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+ 
+| fan-9-speed   | .1.3.6.1.4.1.12276.1.2.1.7.1.1.9.8.112.108.97.116.102.111.114.109  |
++---------------+--------------------------------------------------------------------+  
+| fan-10-speed  | .1.3.6.1.4.1.12276.1.2.1.7.1.1.10.8.112.108.97.116.102.111.114.109 |
++---------------+--------------------------------------------------------------------+  
+| fan-11-speed  | .1.3.6.1.4.1.12276.1.2.1.7.1.1.11.8.112.108.97.116.102.111.114.109 |
++---------------+--------------------------------------------------------------------+   
+| fan-12-speed  | .1.3.6.1.4.1.12276.1.2.1.7.1.1.12.8.112.108.97.116.102.111.114.109 |
++---------------+--------------------------------------------------------------------+ 
 
 Licensing Info
 --------------
