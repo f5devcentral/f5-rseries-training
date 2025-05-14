@@ -3121,10 +3121,23 @@ The table below shows the temperature stats for the entire rSeries system. For m
     26.7 centigrade 27.1 centigrade 26.4 centigrade 29.6 centigrade
     prompt% 
 
+
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+
+| Value             | Details                                         | SNMP OID                                                           |
++===================+=================================================+====================================================================+
+| tempCurrent       | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.3.1.1.2.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| tempAverage       | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.3.1.1.3.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| tempMinimum       | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.3.1.1.4.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| tempMaximum       | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.3.1.1.5.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+
 Memory Stats Table
 ----------------------
 
-This MIB displays the memory utilization for the system.
+This MIB displays the memory utilization for the rSeries system.
 
 **F5-PLATFORM-STATS-MIB:memoryStatsTable OID:.1.3.6.1.4.1.12276.1.2.1.4.1**
 
@@ -3137,6 +3150,179 @@ This MIB displays the memory utilization for the system.
     17778171904 bytes 13109547008 bytes     93 percentage 26845536256 bytes 8436613120 bytes
     prompt% 
 
+Portions of the output of the SNMP table / OIDs are the same info as displayed in the **show components component platform state memory** command (below). 
+
+.. code-block:: bash
+
+    r10900-1-gsa# show components component platform state memory
+    state memory total    270014439424
+    state memory available 16869740544
+    state memory free     2729295872
+    state memory used-percent 93
+    state memory platform-total 26845470720
+    state memory platform-used 9782566912
+    state memory platform-used-percent 36
+    r10900-1-gsa#
+
+
+
+Memory inside the rSeries appliances is divided into two main areas (F5OS Platform layer & Tenants). A small portion of memory is dedicated to the F5OS platform layer and it will vary by platform type, and whatever is left over is available for use by tenants. 
+
+**memory platform-total**
+
+This represents the memory available to the F5OS platform layer which will vary based on the type of rSeries system in use. As an example, for the r12000 systems 42GB of memory is allocated to the F5OS platform layer, for the r10000 systems 25GB is allocated, for the r5000 systems 15GB is allocated, 14GB for the r4000 systems, and 6.9GB for the r2000 platforms. This is noted in the **Memory use by F5OS** column in the table below. The below values are rounded and not raw values, exact memory values seen in the system will vary slightly as the are presented as raw values. 
+
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Minimum RAM used (Max vCPU)**    |  **Extra RAM Available for Tenants**  |  Max vCPUs  |
++=======================+=======================+=========================+==================================+====================================+=======================================+=============+
+| r12900-DS Series      | 512GB RAM             | 42GB                    | 470GB                            | 211GB                              | 259GB                                 | 60          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r12800-DS Series      | 512GB RAM             | 42GB                    | 470GB                            | 183GB                              | 287GB                                 | 52          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r12600-DS Series      | 512GB RAM             | 42GB                    | 470GB                            | 155GB                              | 315GB                                 | 44          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r10900 Series         | 256GB RAM             | 25GB                    | 231GB                            | 127GB                              | 104GB                                 | 36          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r10800 Series         | 256GB RAM             | 25GB                    | 231GB                            | 99GB                               | 132GB                                 | 28          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r10600 Series         | 256GB RAM             | 25GB                    | 231GB                            | 85GB                               | 146GB                                 | 24          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r5900 Series          | 128GB RAM             | 15GB                    | 113GB                            | 92GB                               | 21GB                                  | 26          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r5800 Series          | 128GB RAM             | 15GB                    | 113GB                            | 57GB                               | 56GB                                  | 18          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r5600 Series          | 128GB RAM             | 15GB                    | 113GB                            | 43GB                               | 70GB                                  | 12          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r4800 Series          | 64GB RAM              | 14GB                    | 50GB                             | 48GB                               | 1GB                                   | 16          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r4600 Series          | 64GB RAM              | 14GB                    | 50GB                             | 36GB                               | 13GB                                  | 12          |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r2800 Series          | 32GB RAM              | 6.9GB                   | 25GB                             | 24GB                               | 1GB                                   | 8           |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+| r2600 Series          | 32GB RAM              | 6.9GB                   | 25GB                             | 12GB                               | 12GB                                  | 4           |
++-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
+
+**memory platform-used**
+
+This represents the amount of F5OS platform memory that is in use. It is not uncommon for this utilization to be high, as F5OS will pre-allocate much of its memory. As an example, in the CLI output below from an r5900 the platform total is reprsented in raw Bytes **16107667456** or 15 GB. A little over half of that memory is in use by F5OS. 
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform state memory
+    state memory total    134735167488
+    state memory available 8345739264
+    state memory free     1267056640
+    state memory used-percent 93
+    state memory platform-total 16107667456
+    state memory platform-used 8910950400
+    state memory platform-used-percent 55
+    r5900-1-gsa#
+
+
+**memory platform-used-percent**
+
+This represents the amount of F5OS platform memory that is in use as a percentage of what is allocated to F5OS. It is not uncommon for this utilization percentage to be high, as F5OS will pre-allocate much of its memory.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform state memory
+    state memory total    134735167488
+    state memory available 8345739264
+    state memory free     1267056640
+    state memory used-percent 93
+    state memory platform-total 16107667456
+    state memory platform-used 8910950400
+    state memory platform-used-percent 55
+    r5900-1-gsa#
+
+**memory total**
+
+This value represents the total amount of memory installed in the rSeries system. The amount of memory installed will vary by rSeries appliance type. Below is an example of an r5900 showing **134735167488** raw bytes for **memory total**. Converting that value to MBytes equals **128 GBytes**.
+
+1 Gigabyte = 1,048,576,000 bytes in binary. 
+
+memory total **134735167488** / **1,048,576,000** = **128.4GB**
+memory available **8345739264** / **1,048,576,000** = **7.9GB**
+memory free **1267056640** / **1,048,576,000** = **1.2GB**
+memory platform-total **16107667456** / **1,048,576,000** = **15.3GB**
+memory platform-used **8910950400** / **1,048,576,000** = **8.4**
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform state memory
+    state memory total    134735167488
+    state memory available 8345739264
+    state memory free     1267056640
+    state memory used-percent 93
+    state memory platform-total 16107667456
+    state memory platform-used 8910950400
+    state memory platform-used-percent 55
+    r5900-1-gsa#
+
+**memory available**
+
+**memory free**
+
+**memory used-percent**
+
+
+
+There are tables here explaining the memory breakdown per system, i.e. how much F5OS uses vs. what’s left over for tenants:
+
+
+
+ 
+https://clouddocs.f5.com/training/community/rseries-training/html/rseries_multitenancy.html#   All of the platform memory info is extracted from the Linux /proc/meminfo file. The CLI provides some helpful information, on what each field is:
+
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform state memory ?
+    Possible completions:
+    available               Memory available for starting new applications without swapping, in bytes.
+    displaylevel            Depth to show
+    free                    Memory unused by the system, in bytes.
+    full                    
+    platform-total          Total usable memory for F5OS platform services, in bytes (excludes memory allocated for hugepages).
+    platform-used           Memory used by F5OS platform services, in bytes (excludes memory allocated for hugepages).
+    platform-used-percent   Memory used by F5OS platform layer, as a percentage of total installed memory.
+    total                   The total system physical memory as reported by Linux, in bytes.
+    used-percent            Memory used by the system, as a percentage of total installed memory.
+    |                       Output modifiers
+    <cr>                    
+    r5900-1-gsa#        
+ 
+Here is the CLI command to display the same value as the SNMP MIBs
+ 
+r10900-1# show components component platform state memory
+state memory available 17457070080 ß---- ~ 17GB of memory is available
+state memory free 14714671104   ß-- ~ 14GB of memory is unused by the system.
+state memory used-percent 94 < ---- 94% of total system memory is in use.
+state memory platform-total 26844618752 ß---This would be the memory used by the F5OS platform layer (on the r10900 this is ~25GB as noted in tables referenced in the link above).
+state memory platform-used 8562757632 ß---Out of 25GB allocated to F5OS platform layer ~ 8GB is currently in use
+r10900-1#
+ 
+Some details about that file can be found here: https://github.com/torvalds/linux/blob/master/Documentation/filesystems/proc.rst 
+ 
+available:
+/proc/meminfo --> MemAvailable
+An estimate of how much memory is available for starting new applications, without swapping. Calculated from MemFree, SReclaimable, the size of the file LRU lists, and the low watermarks in each zone. The estimate takes into account that the system needs some page cache to function well, and that not all reclaimable slab will be reclaimable, due to items being in use. The impact of those factors will vary from system to system.
+  
+
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+
+| Value             | Details                                         | SNMP OID                                                           |
++===================+=================================================+====================================================================+
+| memAvailable      | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.2.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| memFree           | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.3.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| memPercentageUsed | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.4.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| memPlatformTotal  | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.5.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+| memPlatformUsed   |                                                 | .1.3.6.1.4.1.12276.1.2.1.4.1.1.6.8.112.108.97.116.102.111.114.109  |
++-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
+
 
 FPGA Table
 ---------------
@@ -3144,6 +3330,8 @@ FPGA Table
 The FPGA Stats table shows the current FPGA versions. Depending on the rSeries appliance model there may be one or more FPGAs installed. The r2000/r4000 models have no FPGAs. The r5000 models have one Application Traffic Service Engine (ATSE) and one Appliance SWitch (ASW) FPGA. The r10000 and r12000 models have 2 ATSE FPGAs, one ASW FPGA, and an additional FPGA called the Network SOcket (NSO). The output below is from an r10900.
 
 **F5-PLATFORM-STATS-MIB:fpgaTable OID: .1.3.6.1.4.1.12276.1.2.1.5.1**
+
+Below is an example from an r10000 series platfrom with two ATSE FPGAs and one ASW FGPA, and one NSO FPGA:
 
 .. code-block:: bash
 
@@ -3157,39 +3345,172 @@ The FPGA Stats table shows the current FPGA versions. Depending on the rSeries a
         atse_1      72.5.1
     prompt% 
 
-Firmware Table
-----------------------
-
-This MIB provides the current firmware status and version for all firmware subsystems.
-
-**F5-PLATFORM-STATS-MIB:fwTable OID: 1.3.6.1.4.1.12276.1.2.1.6.1**
+Below is an example from an r5000 series platfrom with one ATSE FPGA and one ASW FPGA:
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:fwTable
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-PLATFORM-STATS-MIB:fpgaTable
+    SNMP table: F5-PLATFORM-STATS-MIB::fpgaTable
+
+    fpgaIndex fpgaVersion
+        asw_0      71.5.1
+        atse_0      72.5.5
+    prompt% 
+
+Lastly, the r2000/r4000 platfroms have no FPGA's and therefor will not provide a response:
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.5 F5-PLATFORM-STATS-MIB:fpgaTable
+    F5-PLATFORM-STATS-MIB::fpgaTable: No entries
+    prompt%
+
+Example of r10000/r12000 OIDs.
+
++------------+----------------------+-------------------------------------------------------------------------------------------+
+| Value      | Details              | SNMP OID                                                                                  |
++============+======================+===========================================================================================+
+| asw_0      | FPGA Index asw_0     | .1.3.6.1.4.1.12276.1.2.1.5.1.1.1.8.112.108.97.116.102.111.114.109.5.97.115.119.95.48      |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| nso_0      | FPGA Index nso_0     | .1.3.6.1.4.1.12276.1.2.1.5.1.1.1.8.112.108.97.116.102.111.114.109.5.110.115.111.95.48     |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| atse_0     | FPGA Index atse_0    | .1.3.6.1.4.1.12276.1.2.1.5.1.1.1.8.112.108.97.116.102.111.114.109.6.97.116.115.101.95.48  |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| atse_1     | FPGA Version atse_1  | .1.3.6.1.4.1.12276.1.2.1.5.1.1.1.8.112.108.97.116.102.111.114.109.6.97.116.115.101.95.49  |
++------------+----------------------+-------------------------------------------------------------------------------------------+
+| asw_0      | FPGA Version asw_0   | .1.3.6.1.4.1.12276.1.2.1.5.1.1.2.8.112.108.97.116.102.111.114.109.5.97.115.119.95.48      |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| nso_0      | FPGA Version nso_0   | .1.3.6.1.4.1.12276.1.2.1.5.1.1.2.8.112.108.97.116.102.111.114.109.5.110.115.111.95.48     |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| atse_0     | FPGA Version atse_0  | .1.3.6.1.4.1.12276.1.2.1.5.1.1.2.8.112.108.97.116.102.111.114.109.6.97.116.115.101.95.48  |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| atse_1     | FPGA Version atse_1  | .1.3.6.1.4.1.12276.1.2.1.5.1.1.2.8.112.108.97.116.102.111.114.109.6.97.116.115.101.95.49  |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+
+Example of r5000 OIDs.
+
++------------+----------------------+-------------------------------------------------------------------------------------------+
+| Value      | Details              | SNMP OID                                                                                  |
++============+======================+===========================================================================================+
+| asw_0      | FPGA Index asw_0     | .1.3.6.1.4.1.12276.1.2.1.5.1.1.1.8.112.108.97.116.102.111.114.109.5.97.115.119.95.48      |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| atse_0     | FPGA Index atse_0    | .1.3.6.1.4.1.12276.1.2.1.5.1.1.1.8.112.108.97.116.102.111.114.109.6.97.116.115.101.95.48  |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+| asw_0      | FPGA Version asw_0   | .1.3.6.1.4.1.12276.1.2.1.5.1.1.2.8.112.108.97.116.102.111.114.109.5.97.115.119.95.48      |
++------------+----------------------+-------------------------------------------------------------------------------------------+   
+| atse_0     | FPGA Version atse_0  | .1.3.6.1.4.1.12276.1.2.1.5.1.1.2.8.112.108.97.116.102.111.114.109.6.97.116.115.101.95.48  |
++------------+----------------------+-------------------------------------------------------------------------------------------+  
+
+
+Firmware Table
+----------------------
+
+This MIB provides the current firmware status and version for all firmware subsystems inside the rSeries appliance.
+
+**F5-PLATFORM-STATS-MIB:fwTable OID: 1.3.6.1.4.1.12276.1.2.1.6.1**
+
+Below is an example SNMP table output from an r5000 system.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-PLATFORM-STATS-MIB:fwTable
     SNMP table: F5-PLATFORM-STATS-MIB::fwTable
 
                         fwName                         fwVersion configurable fwUpdateStatus
-                          QAT0 Lewisburg C62X Crypto/Compression        false              ?
-                          QAT1 Lewisburg C62X Crypto/Compression        false              ?
-                          QAT2 Lewisburg C62X Crypto/Compression        false              ?
-                          QAT3 Lewisburg C62X Crypto/Compression        false              ?
-                          QAT4 Lewisburg C62X Crypto/Compression        false              ?
-                          QAT5 Lewisburg C62X Crypto/Compression        false              ?
-               fw-version-bios                        2.02.145.1        false           none
-               fw-version-cpld                          02.0B.00        false           none
-               fw-version-sirr                            1.1.72        false           none
-            f w-version-lcd-ui                           1.13.12        false           none
+                        QAT0 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT1 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT2 Lewisburg C62X Crypto/Compression        false              ?
+                fw-version-bios                        2.02.145.1        false           none
+                fw-version-cpld                          02.0B.00        false           none
+                fw-version-sirr                            1.1.72        false           none
+            fw-version-lcd-ui                           1.13.12        false           none
             fw-version-bios-me                         4.4.4.603        false           none
-            fw-version-lcd-app                     1.01.069.00.1        false              ?
+            fw-version-lcd-app                     1.01.069.00.1        false           none
             fw-version-lop-app                      2.00.357.0.1        false           none
+        fw-version-drive-nvme0                          EDA7602Q        false           none
+    fw-version-lcd-bootloader                     1.01.027.00.1        false           none
+    fw-version-lop-bootloader                      1.02.062.0.1        false           none
+    fw-version-drive-m.2.slot1                                 ?        false           none
+    prompt% 
+
+
+Below is an example SNMP table output from an r10000 system:
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.3 F5-PLATFORM-STATS-MIB:fwTable
+    SNMP table: F5-PLATFORM-STATS-MIB::fwTable
+
+                        fwName                         fwVersion configurable fwUpdateStatus
+                        QAT0 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT1 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT2 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT3 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT4 Lewisburg C62X Crypto/Compression        false              ?
+                        QAT5 Lewisburg C62X Crypto/Compression        false              ?
+                fw-version-bios                                 ?        false           none
+                fw-version-cpld                          02.0B.00        false           none
+                fw-version-sirr                            1.1.88        false           none
+            fw-version-lcd-ui                           1.13.12        false           none
+            fw-version-bios-me                         4.4.4.702        false           none
+            fw-version-lcd-app                     1.01.069.00.1        false           none
+            fw-version-lop-app                      2.00.363.0.1        false           none
         fw-version-drive-nvme0                          VDV10170        false           none
         fw-version-drive-nvme1                          VDV10170        false           none
-     fw-version-lcd-bootloader                     1.01.027.00.1        false           none
-     fw-version-lop-bootloader                      1.02.062.0.1        false           none
+    fw-version-lcd-bootloader                     1.01.027.00.1        false           none
+    fw-version-lop-bootloader                      1.02.062.0.1        false           none
     fw-version-drive-u.2.slot1                          VDV10184        false           none
     fw-version-drive-u.2.slot2                          VDV10184        false           none
     prompt%
+
+
+
+All OIDs below are prexied with: .1.3.6.1.4.1.12276.1.2.1.6.1.1
+
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+|  Firmware Name               | Firmware Name OID                                                                                                                      | Firmware Version OID                                                                                                                      | Configurable OID                                                                                                                          | Firmware Update Status OID                                                                                                                 |
++==============================+========================================================================================================================================+===========================================================================================================================================+===========================================================================================================================================+============================================================================================================================================+
+| QAT0                         | .1.8.112.108.97.116.102.111.114.109.4.81.65.84.48                                                                                      | ...2.8.112.108.97.116.102.111.114.109.4.81.65.84.48                                                                                       | ...3.8.112.108.97.116.102.111.114.109.4.81.65.84.48                                                                                       | N/A                                                                                                                                        |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| QAT1                         | .1.8.112.108.97.116.102.111.114.109.4.81.65.84.49                                                                                      | ...2.8.112.108.97.116.102.111.114.109.4.81.65.84.49                                                                                       | ...3.8.112.108.97.116.102.111.114.109.4.81.65.84.49                                                                                       | N/A                                                                                                                                        |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| QAT2                         | .1.8.112.108.97.116.102.111.114.109.4.81.65.84.50                                                                                      | ...2.8.112.108.97.116.102.111.114.109.4.81.65.84.50                                                                                       | ...3.8.112.108.97.116.102.111.114.109.4.81.65.84.50                                                                                       | N/A                                                                                                                                        |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| QAT3                         | .1.8.112.108.97.116.102.111.114.109.4.81.65.84.51                                                                                      | ...2.8.112.108.97.116.102.111.114.109.4.81.65.84.51                                                                                       | ...3.8.112.108.97.116.102.111.114.109.4.81.65.84.51                                                                                       | N/A                                                                                                                                        |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| QAT4                         | .1.8.112.108.97.116.102.111.114.109.4.81.65.84.52                                                                                      | ...2.8.112.108.97.116.102.111.114.109.4.81.65.84.52                                                                                       | ...3.8.112.108.97.116.102.111.114.109.4.81.65.84.52                                                                                       | N/A                                                                                                                                        |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| QAT5                         | 1.8.112.108.97.116.102.111.114.109.4.81.65.84.53                                                                                       | ...2.8.112.108.97.116.102.111.114.109.4.81.65.84.53                                                                                       | ...3.8.112.108.97.116.102.111.114.109.4.81.65.84.53                                                                                       | N/A                                                                                                                                        |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-bios              | .1.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115                                        | N/A                                                                                                                                       | ...3.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115                                         | ...4.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115                                          |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-cpld              | .1.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.99.112.108.100                                        | ...2.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.99.112.108.100                                         | ...3.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.99.112.108.100                                         | ...4.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.99.112.108.100                                          |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-sirr              | 1.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.115.105.114.114                                        | ...2.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.115.105.114.114                                        | ...3.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.115.105.114.114                                        | ...4.8.112.108.97.116.102.111.114.109.15.102.119.45.118.101.114.115.105.111.110.45.115.105.114.114                                         |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-lcd-ui            | 1.8.112.108.97.116.102.111.114.109.17.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.117.105                                  | ...2.8.112.108.97.116.102.111.114.109.17.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.117.105                                  | ...3.8.112.108.97.116.102.111.114.109.17.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.117.105                                  | ...4.8.112.108.97.116.102.111.114.109.17.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.117.105                                   |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-bios-me           | 1.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115.45.109.101                              | ...2.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115.45.109.101                              | ...3.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115.45.109.101                              | ...4.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.98.105.111.115.45.109.101                               |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-lcd-app           | 1.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.97.112.112                               | ...2.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.97.112.112                               | ...3.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.97.112.112                               | ...4.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.97.112.112                                |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-lop-app           | 1.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.97.112.112                              | ...2.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.97.112.112                              | ...3.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.97.112.112                              | ...4.8.112.108.97.116.102.111.114.109.18.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.97.112.112                               |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-drive-nvme0       | 1.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.48              | ...2.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.48              | ...3.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.48              | ...4.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.48               |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-drive-nvme1       | 1.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.49              | ...2.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.49              | ...3.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.49              | ...4.8.112.108.97.116.102.111.114.109.22.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.110.118.109.101.49               |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-lcd-bootloader    | 1.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.98.111.111.116.108.111.97.100.101.114    | ...2.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.98.111.111.116.108.111.97.100.101.114    | ...3.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.98.111.111.116.108.111.97.100.101.114    | ...4.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.99.100.45.98.111.111.116.108.111.97.100.101.114     |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-lop-bootloader    | 1.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.98.111.111.116.108.111.97.100.101.114   | ...2.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.98.111.111.116.108.111.97.100.101.114   | ...3.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.98.111.111.116.108.111.97.100.101.114   | ...4.8.112.108.97.116.102.111.114.109.25.102.119.45.118.101.114.115.105.111.110.45.108.111.112.45.98.111.111.116.108.111.97.100.101.114    |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-drive-u.2.slot1   | 1.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.49 | ...2.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.49 | ...3.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.49 | ...4.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.49  |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+| fw-version-drive-u.2.slot2   | 1.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.50 | ...2.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.50 | ...3.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.50 | .. .4.8.112.108.97.116.102.111.114.109.26.102.119.45.118.101.114.115.105.111.110.45.100.114.105.118.101.45.117.46.50.46.115.108.111.116.50 |
++------------------------------+----------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
+
+
+
 
 SNMP Fantray Stats Table
 ----------------------
