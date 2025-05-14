@@ -2947,6 +2947,7 @@ Power Supply Unit Stats Table
 The table below shows the current status and health of the rSeries power supply units. This MIB is added in F5OS-A 1.8.0. Note, that the number of power supplies reported may be one or two depending on how many are installed in your rSeries system. Also note that different rSeries platforms use different power supplies as outlined in the following solution articles:
 
 `K96511422: F5 iSeries and rSeries power supplies <https://my.f5.com/manage/s/article/K96511422>`_
+
 `K36588206: AC power supply units for iSeries and rSeries platform models should not be interchanged <https://my.f5.com/manage/s/article/K36588206>`_
 
 r5000 Series (r5600,r5800,r5900,r5920-DF) AC Power Supply Values
