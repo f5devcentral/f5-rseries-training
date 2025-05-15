@@ -3324,6 +3324,7 @@ The table below shows the current file system utilization on an rSeries applianc
 
 **hrStorageTable  OID: 1.3.6.1.2.1.25.2.3**
 
+Below is an example of an r5900 rSeries appliance.
 
 .. code-block:: bash
 
@@ -3342,6 +3343,8 @@ The table below shows the current file system utilization on an rSeries applianc
             65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58711042      10146201                           ?
     prompt% 
 
+Below is an example of an r10900 rSeries appliance.
+
 .. code-block:: bash
 
     prompt% snmptable -v 2c  -c public -m ALL 172.22.50.3 hrStorageTable
@@ -3358,6 +3361,8 @@ The table below shows the current file system utilization on an rSeries applianc
             65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes     117595502      14111737                           ?
             65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58764800      13576276                           ?
     prompt%
+
+Below is an example of an r4800 rSeries appliance.
 
 .. code-block:: bash
 
@@ -3379,80 +3384,133 @@ The table below shows the current file system utilization on an rSeries applianc
 
 The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-disks/**. Monitoring usage of this mount can provide visibility into how much space is available for all tenants.
 
+.. code-block:: bash
 
 
-[root@appliance-1(r10900-1-gsa.cpt.f5net.com):Active] ~ # df -h
-Filesystem                                  Size  Used Avail Use% Mounted on
-devtmpfs                                    126G     0  126G   0% /dev
-tmpfs                                       126G     0  126G   0% /dev/shm
-tmpfs                                       126G   72M  126G   1% /run
-tmpfs                                       126G     0  126G   0% /sys/fs/cgroup
-/dev/mapper/velocity-root                   110G   68G   37G  66% /sysroot
-/dev/md121                                  990M  146M  777M  16% /boot
-/dev/md122                                 1022M   21M 1002M   3% /boot/efi
-/dev/mapper/partition_tenant-root           449G   54G  372G  13% /var/F5/system/cbip-disks
-/dev/mapper/partition_image-export_chassis  225G   52G  161G  25% /var/export/chassis
+    [root@appliance-1(r10900-1-gsa.cpt.f5net.com):Active] ~ # df -h
+    Filesystem                                  Size  Used Avail Use% Mounted on
+    devtmpfs                                    126G     0  126G   0% /dev
+    tmpfs                                       126G     0  126G   0% /dev/shm
+    tmpfs                                       126G   72M  126G   1% /run
+    tmpfs                                       126G     0  126G   0% /sys/fs/cgroup
+    /dev/mapper/velocity-root                   110G   68G   37G  66% /sysroot
+    /dev/md121                                  990M  146M  777M  16% /boot
+    /dev/md122                                 1022M   21M 1002M   3% /boot/efi
+    /dev/mapper/partition_tenant-root           449G   54G  372G  13% /var/F5/system/cbip-disks
+    /dev/mapper/partition_image-export_chassis  225G   52G  161G  25% /var/export/chassis
 
 Host Resource Storage Table SNMP OIDs
                                
 .1.3.6.1.2.1.25.2.3.1.1. **65537** = hrStorageIndex (/dev )
-.1.3.6.1.2.1.25.2.3.1.1. **65538** = hrStorageIndex (/dev/shm)  
+
+.1.3.6.1.2.1.25.2.3.1.1. **65538** = hrStorageIndex (/dev/shm) 
+
 .1.3.6.1.2.1.25.2.3.1.1. **55399** = hrStorageIndex (/run ) 
-.1.3.6.1.2.1.25.2.3.1.1. **65540** = hrStorageIndex (/sys/fs/cgroup)  
+
+.1.3.6.1.2.1.25.2.3.1.1. **65540** = hrStorageIndex (/sys/fs/cgroup) 
+
 .1.3.6.1.2.1.25.2.3.1.1. **65541** = hrStorageIndex (/sysroot) 
-.1.3.6.1.2.1.25.2.3.1.1. **65542** = hrStorageIndex (/boot)  
+
+.1.3.6.1.2.1.25.2.3.1.1. **65542** = hrStorageIndex (/boot) 
+
 .1.3.6.1.2.1.25.2.3.1.1. **65543** = hrStorageIndex (/boot/efi) 
-.1.3.6.1.2.1.25.2.3.1.1. **65544** = hrStorageIndex (/var/F5/system/cbip-disks)  
+
+.1.3.6.1.2.1.25.2.3.1.1. **65544** = hrStorageIndex (/var/F5/system/cbip-disks) 
+
 .1.3.6.1.2.1.25.2.3.1.1. **65545** = hrStorageIndex (/var/export/chassis) 
 
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65537 = hrStorageType (/dev )
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65538 = hrStorageType (/dev/shm) 
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65539 = hrStorageType (/run )
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65540 = hrStorageType (/sys/fs/cgroup) 
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65541 = hrStorageType (/sysroot) 
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65542 = hrStorageType (/boot) 
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65543 = hrStorageType (/boot/efi)
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65544 = hrStorageType (/var/F5/system/cbip-disks) 
+
 .1.3.6.1.2.1.25.2.3.1. **2** .65545 = hrStorageType (/var/export/chassis) 
 
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65537 = hrStorageDescr (/dev )
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65538 = hrStorageDescr (/dev/shm)
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65539 = hrStorageDescr (/run )
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65540 = hrStorageDescr (/sys/fs/cgroup)
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65541 = hrStorageDescr (/sysroot)
-.1.3.6.1.2.1.25.2.3.1. **3** .65542 = hrStorageDescr (/boot) 
+
+.1.3.6.1.2.1.25.2.3.1. **3** .65542 = hrStorageDescr (/boot)
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65543 = hrStorageDescr (/boot/efi)
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65544 = hrStorageDescr (/var/F5/system/cbip-disks)
+
 .1.3.6.1.2.1.25.2.3.1. **3** .65545 = hrStorageDescr (/var/export/chassis)
 
 .1.3.6.1.2.1.25.2.3.1. **4** .65537 = hrStorageAllocationUnits (/dev )
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65538 = hrStorageAllocationUnits (/dev/shm)
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65539 = hrStorageAllocationUnits (/run )
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65540 = hrStorageAllocationUnits (/sys/fs/cgroup)
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65541 = hrStorageAllocationUnits (/sysroot)
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65542 = hrStorageAllocationUnits (/boot) 
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65543 = hrStorageAllocationUnits (/boot/efi)
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65544 = hrStorageAllocationUnits (/var/F5/system/cbip-disks)
+
 .1.3.6.1.2.1.25.2.3.1. **4** .65545 = hrStorageAllocationUnits (/var/export/chassis)
 
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65537 = hrStorageSize (/dev )
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65538 = hrStorageSize (/dev/shm)
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65539 = hrStorageSize (/run )
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65540 = hrStorageSize (/sys/fs/cgroup)
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65541 = hrStorageSize (/sysroot)
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65542 = hrStorageSize (/boot) 
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65543 = hrStorageSize (/boot/efi)
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65544 = hrStorageSize (/var/F5/system/cbip-disks)
+
 .1.3.6.1.2.1.25.2.3.1. **5** .65545 = hrStorageSize (/var/export/chassis)
 
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65537 = hrStorageUsed (/dev )
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65538 = hrStorageUsed (/dev/shm)
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65539 = hrStorageUsed (/run )
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65540 = hrStorageUsed (/sys/fs/cgroup)
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65541 = hrStorageUsed (/sysroot)
-.1.3.6.1.2.1.25.2.3.1. **6** .65542 = hrStorageUsed (/boot) 
+
+.1.3.6.1.2.1.25.2.3.1. **6** .65542 = hrStorageUsed (/boot)
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65543 = hrStorageUsed (/boot/efi)
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65544 = hrStorageUsed (/var/F5/system/cbip-disks)
+
 .1.3.6.1.2.1.25.2.3.1. **6** .65545 = hrStorageUsed (/var/export/chassis)
 
 
