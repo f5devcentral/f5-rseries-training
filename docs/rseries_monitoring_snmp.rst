@@ -3113,9 +3113,11 @@ As an example for cpu0 to poll for the various time intervals:
 Disk Info Table
 ------------------
 
-The following table displays information about the disks installed on an rSeries appliance.
+The following table displays information about the disks installed on an rSeries appliance. Depending on the rSeries model you may see a single disk, or dual disk. 
 
 **F5-PLATFORM-STATS-MIB:diskInfoTable OID: .1.3.6.1.4.1.12276.1.2.1.2.1**
+
+Below is an example from an r10900 which has dual SSD disks.
 
 .. code-block:: bash
 
@@ -3126,6 +3128,60 @@ The following table displays information about the disks installed on an rSeries
     nvme0n1 INTEL SSDPE2KX010T8      Intel    VDV10184 PHLJ1082028K1P0FGN 735.00GB     nvme
     nvme1n1 INTEL SSDPE2KX010T8      Intel    VDV10184 PHLJ108203XB1P0FGN 735.00GB     nvme
     prompt%
+
+
+Below is an example from an r5900 which has a single SSD disk.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-PLATFORM-STATS-MIB:diskInfoTable
+    SNMP table: F5-PLATFORM-STATS-MIB::diskInfoTable
+
+    diskName                  diskModel diskVendor diskVersion   diskSerialNo diskSize diskType
+    nvme0n1 SAMSUNG MZ1LB960HAJQ-00007    Samsung    EDA7602Q S435NA0NA05748 683.00GB     nvme
+    prompt% 
+
+Below is an example from an r4800 which has a single SSD disk.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.5 F5-PLATFORM-STATS-MIB:diskInfoTable
+    SNMP table: F5-PLATFORM-STATS-MIB::diskInfoTable
+
+    diskName        diskModel    diskVendor diskVersion diskSerialNo diskSize diskType
+    nvme0n1 SRMP8480GF1S1B71 SMART Modular      FW1354  SPG214106FA 447.00GB     nvme
+    prompt%
+
+Disk Info SNMP SNMP OIDs
+
+For systems with one SSD disk:
+
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **2** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskname
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **3** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskModel
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **4** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskVendor
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **5** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskVersion
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **6** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskSerialNo
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **7** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskSize
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **8** .8.112.108.97.116.102.111.114.109.7.110.118.109.101.48.110.49 = diskType
+
+
+For systems with two SSD disks:
+
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **2** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskname
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **2** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskname
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **3** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskModel
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **3** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskModel
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **4** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskVendor
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **4** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskVendor
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **5** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskVersion
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **5** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskVersion
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **6** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskSerialNo
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **6** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskSerialNo
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **7** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskSize
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **7** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskSize
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **8** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **48** .110.49 = diskType
+.1.3.6.1.4.1.12276.1.2.1.2.1.1. **8** .8.112.108.97.116.102.111.114.109.7.110.118.109.101. **49** .110.49 = diskType
+
 
 Disk Utilization Stats Table
 ---------------------------------
