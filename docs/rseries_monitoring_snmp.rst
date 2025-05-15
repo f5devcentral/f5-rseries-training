@@ -2836,7 +2836,7 @@ SNMP Processor Stats SNMP OIDs
 CPU Utilization Stats Table
 -------------------------------
 
-The table below shows the total CPU utilization for an rSeries appliance over 5 seconds, 1 minute, and 5 minutes averages as well as the current value.
+The table below shows the total aggregate CPU utilization for an rSeries appliance over 5 seconds, 1 minute, and 5 minutes averages as well as the current value.
 
 **F5-PLATFORM-STATS-MIB:cpuUtilizationStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.1.2**
 
@@ -2848,6 +2848,21 @@ The table below shows the total CPU utilization for an rSeries appliance over 5 
     cpuCore   cpuCurrent cpuTotal5secAvg cpuTotal1minAvg cpuTotal5minAvg
         cpu 1 percentage    1 percentage    1 percentage    1 percentage
     prompt% 
+
+**CPU Utilization Stats SNMP OIDs**
+
++------------------+--------------------------------------------------------------------+
+| cpuCore          | .1.3.6.1.4.1.12276.1.2.1.1.2.1.1.8.112.108.97.116.102.111.114.109  |
++------------------+--------------------------------------------------------------------+
+| cpuCurrent       | .1.3.6.1.4.1.12276.1.2.1.1.2.1.2.8.112.108.97.116.102.111.114.109  |
++------------------+--------------------------------------------------------------------+
+| cpuTotal5secAvg  | .1.3.6.1.4.1.12276.1.2.1.1.2.1.3.8.112.108.97.116.102.111.114.109  |
++------------------+--------------------------------------------------------------------+
+| cpuTotal1minAvg  | .1.3.6.1.4.1.12276.1.2.1.1.2.1.4.8.112.108.97.116.102.111.114.109  |
++------------------+--------------------------------------------------------------------+
+| cpuTotal5minAvg  | .1.3.6.1.4.1.12276.1.2.1.1.2.1.5.8.112.108.97.116.102.111.114.109  |
++------------------+--------------------------------------------------------------------+
+
 
 CPU Core Stats Table
 ---------------------------
@@ -2987,7 +3002,7 @@ Below is sample output from an r4800 which has 16 CPUs.
  Different rSeries systems have different numbers of CPU cores. Generally, CPUs will start with cpu0 and increment sequentially up to the maximum number of CPUs supported on the platform. The expcetion to this is on some of the Pay-as-you-Grow (PAYG) variants where some CPU's are disabled. The disabled CPUs can be any cpu core, so pay close atrention to snmp table output to see which CPUs are disabled in your system.  
 
 
-SNMP OIDs for **coreCurrent** utilization.
+**CPU coreCurrent Utilization SNMP OIDs**
 
 Below is an example of the SNMP OIDs for **coreCurrent** cpu utilization on an r10900 rSeries appliance which has 48 vCPUs. The lower PAYG variants of the r10000 family (r10600/r10800) will disable some CPU's, so the cpu index may not be sequential. As an example the r10600 disables 12 vCPUs, cpu18-23 and cpu42-47 will be disabled, and are not reported in the SNMP output. The r10800 disables 8 vCPUs, cpu20-23 and cpu44-47 will be disabled, and are not reported in the SNMP output. This example is for the r10000 rSeries platforms, but the other rSeries models that disable CPUs via PAYG licensing will have similar non-sequential CPUs that will be disabled. 
 
@@ -3152,7 +3167,7 @@ Below is an example from an r4800 which has a single SSD disk.
     nvme0n1 SRMP8480GF1S1B71 SMART Modular      FW1354  SPG214106FA 447.00GB     nvme
     prompt%
 
-Disk Info SNMP SNMP OIDs
+**Disk Info SNMP SNMP OIDs**
 
 For systems with one SSD disk:
 
@@ -3244,7 +3259,7 @@ Below is an example from an r4800 appliance with a single SSD disk.
                     ?        0 IOPs  199123 IOPs         232555 4740655104 bytes         283257 ms 681016527 IOPs       535344878 6170457743872 bytes       124158717 ms
     prompt% 
 
-Disk Info SNMP SNMP OIDs
+**Disk Info SNMP SNMP OIDs**
 
 For systems with one SSD disk:
 
@@ -3382,24 +3397,7 @@ Below is an example of an r4800 rSeries appliance.
     prompt%
 
 
-The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-disks/**. Monitoring usage of this mount can provide visibility into how much space is available for all tenants.
-
-.. code-block:: bash
-
-
-    [root@appliance-1(r10900-1-gsa.cpt.f5net.com):Active] ~ # df -h
-    Filesystem                                  Size  Used Avail Use% Mounted on
-    devtmpfs                                    126G     0  126G   0% /dev
-    tmpfs                                       126G     0  126G   0% /dev/shm
-    tmpfs                                       126G   72M  126G   1% /run
-    tmpfs                                       126G     0  126G   0% /sys/fs/cgroup
-    /dev/mapper/velocity-root                   110G   68G   37G  66% /sysroot
-    /dev/md121                                  990M  146M  777M  16% /boot
-    /dev/md122                                 1022M   21M 1002M   3% /boot/efi
-    /dev/mapper/partition_tenant-root           449G   54G  372G  13% /var/F5/system/cbip-disks
-    /dev/mapper/partition_image-export_chassis  225G   52G  161G  25% /var/export/chassis
-
-Host Resource Storage Table SNMP OIDs
+**Host Resource Storage Table SNMP OIDs**
                                
 .1.3.6.1.2.1.25.2.3.1.1. **65537** = hrStorageIndex (/dev )
 
@@ -3514,16 +3512,31 @@ Host Resource Storage Table SNMP OIDs
 .1.3.6.1.2.1.25.2.3.1. **6** .65545 = hrStorageUsed (/var/export/chassis)
 
 
+The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-disks/**. Monitoring usage of this mount can provide visibility into how much space is available for all tenants.
 
+.. code-block:: bash
+
+
+    [root@appliance-1(r10900-1-gsa.cpt.f5net.com):Active] ~ # df -h
+    Filesystem                                  Size  Used Avail Use% Mounted on
+    devtmpfs                                    126G     0  126G   0% /dev
+    tmpfs                                       126G     0  126G   0% /dev/shm
+    tmpfs                                       126G   72M  126G   1% /run
+    tmpfs                                       126G     0  126G   0% /sys/fs/cgroup
+    /dev/mapper/velocity-root                   110G   68G   37G  66% /sysroot
+    /dev/md121                                  990M  146M  777M  16% /boot
+    /dev/md122                                 1022M   21M 1002M   3% /boot/efi
+    /dev/mapper/partition_tenant-root           449G   54G  372G  13% /var/F5/system/cbip-disks
+    /dev/mapper/partition_image-export_chassis  225G   52G  161G  25% /var/export/chassis
 
 Component Info Table
 ----------------------------
 
-The table below shows the current rSeries component information for the appliance. This includes the serial numbers for the LCD, power suppliues and the platform itself. It also includes the platfrom type, and baude rate for the console.
+The table below shows the current rSeries component information for the appliance. This includes the serial numbers for the LCD, power supplies and the platform itself. It also includes the platfrom type, and baude rate for the serial console.
 
 **F5-PLATFORM-STATS-MIB:componentInfoTable OID: .1.3.6.1.4.1.12276.1.2.1.8.1**
 
-Below is the component info table from the system controller layer.
+Below is the component info table for an r10900 rSeries appliance.
 
 .. code-block:: bash
 
@@ -3534,6 +3547,35 @@ Below is the component info table from the system controller layer.
     F5-PLATFORM-STATS-MIB::model."platform" = STRING: r10900
     F5-PLATFORM-STATS-MIB::baudRate."platform" = INTEGER: 19200
     prompt%
+
+Below is the component info table for an r5900 rSeries appliance.
+
+.. code-block:: bash
+
+    prompt% snmpwalk -v 2c  -c public -m ALL 172.22.50.1 F5-PLATFORM-STATS-MIB:componentInfoTable
+    F5-PLATFORM-STATS-MIB::serialNo."lcd" = STRING: sub0872g00d5
+    F5-PLATFORM-STATS-MIB::serialNo."psu-1" = STRING: S92031RC1991
+    F5-PLATFORM-STATS-MIB::serialNo."platform" = STRING: f5-vdvh-bfwi
+    F5-PLATFORM-STATS-MIB::model."platform" = STRING: r5900
+    F5-PLATFORM-STATS-MIB::baudRate."platform" = INTEGER: 19200
+    prompt%
+
+**Component Info Table SNMP OIDS**
+
++-------------------------+--------------------------------------------------------------------+
+| LCD Serial Number       | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.3.108.99.100                      |
++-------------------------+--------------------------------------------------------------------+
+| psu-1 Serial Number     | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.5.112.115.117.45.49               |
++-------------------------+--------------------------------------------------------------------+
+| psu-2 Serial Number     | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.5.112.115.117.45.50               |
++-------------------------+--------------------------------------------------------------------+
+| Platfrom Serial Number  | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.8.112.108.97.116.102.111.114.109  |
++-------------------------+--------------------------------------------------------------------+
+| Platform Type           | .1.3.6.1.4.1.12276.1.2.1.8.1.1.2.8.112.108.97.116.102.111.114.109  |
++-------------------------+--------------------------------------------------------------------+
+| Console Baud Rate       | .1.3.6.1.4.1.12276.1.2.1.8.1.1.3.8.112.108.97.116.102.111.114.109  |
++-------------------------+--------------------------------------------------------------------+
+
 
 Power Supply Unit Stats Table
 ----------------------------
@@ -3705,6 +3747,7 @@ Temperature Stats Table
 The table below shows the temperature stats for the entire rSeries system. For monitoring purposes, the Lower Limit = 0, Alert >= 42, Emergency >= 60
 
 **F5-PLATFORM-STATS-MIB:temperatureStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.3.1**
+
 
 .. code-block:: bash
 
