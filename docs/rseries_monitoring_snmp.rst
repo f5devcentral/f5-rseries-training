@@ -3319,27 +3319,144 @@ For systems with two SSD disks:
 Host Resource Storage Table
 ----------------------------
 
-The table below shows the current file system utilization on an rSeries appliance.
+The table below shows the current file system utilization on an rSeries appliance. You can view the **hrStorageSize** to understand the total amount of space available to various volumes, and then the **hrStorageUsed** will indicate how much of that space is currently used.  
 
 
 **hrStorageTable  OID: 1.3.6.1.2.1.25.2.3**
 
+
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 hrStorageTable                   
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 hrStorageTable
     SNMP table: HOST-RESOURCES-MIB::hrStorageTable
 
     hrStorageIndex                            hrStorageType                        hrStorageDescr hrStorageAllocationUnits hrStorageSize hrStorageUsed hrStorageAllocationFailures
-            65537 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /dev               4096 Bytes      32945582             0                           ?
-            65538 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /dev/shm               4096 Bytes      32960755             0                           ?
-            65539 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /run               4096 Bytes      32960755         22996                           ?
-            65540 HOST-RESOURCES-TYPES::hrStorageFixedDisk            appliance-1 /sys/fs/cgroup               4096 Bytes      32960755             0                           ?
-            65541 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /sysroot               4096 Bytes      28761637      18427950                           ?
-            65542 HOST-RESOURCES-TYPES::hrStorageFixedDisk                     appliance-1 /boot               4096 Bytes        253422         37382                           ?
+            65537 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /dev               4096 Bytes      16431991             0                           ?
+            65538 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /dev/shm               4096 Bytes      16447164             0                           ?
+            65539 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /run               4096 Bytes      16447164         26872                           ?
+            65540 HOST-RESOURCES-TYPES::hrStorageFixedDisk            appliance-1 /sys/fs/cgroup               4096 Bytes      16447164             0                           ?
+            65541 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /sysroot               4096 Bytes      28684841      12512193                           ?
+            65542 HOST-RESOURCES-TYPES::hrStorageFixedDisk                     appliance-1 /boot               4096 Bytes        249830         37088                           ?
+            65543 HOST-RESOURCES-TYPES::hrStorageFixedDisk                 appliance-1 /boot/efi               4096 Bytes        261629          5260                           ?
+            65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes     117455222       2577123                           ?
+            65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58711042      10146201                           ?
+    prompt% 
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.3 hrStorageTable
+    SNMP table: HOST-RESOURCES-MIB::hrStorageTable
+
+    hrStorageIndex                            hrStorageType                        hrStorageDescr hrStorageAllocationUnits hrStorageSize hrStorageUsed hrStorageAllocationFailures
+            65537 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /dev               4096 Bytes      32945573             0                           ?
+            65538 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /dev/shm               4096 Bytes      32960747             0                           ?
+            65539 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /run               4096 Bytes      32960747         18234                           ?
+            65540 HOST-RESOURCES-TYPES::hrStorageFixedDisk            appliance-1 /sys/fs/cgroup               4096 Bytes      32960747             0                           ?
+            65541 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /sysroot               4096 Bytes      28761637      17749753                           ?
+            65542 HOST-RESOURCES-TYPES::hrStorageFixedDisk                     appliance-1 /boot               4096 Bytes        253422         37362                           ?
             65543 HOST-RESOURCES-TYPES::hrStorageFixedDisk                 appliance-1 /boot/efi               4096 Bytes        261613          5260                           ?
-            65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes     117595502       5087475                           ?
-            65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58764800      17641442                           ?
+            65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes     117595502      14111737                           ?
+            65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      58764800      13576276                           ?
     prompt%
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.5 hrStorageTable
+    SNMP table: HOST-RESOURCES-MIB::hrStorageTable
+
+    hrStorageIndex                            hrStorageType                        hrStorageDescr hrStorageAllocationUnits hrStorageSize hrStorageUsed hrStorageAllocationFailures
+            65537 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /dev               4096 Bytes       8175269             0                           ?
+            65538 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /dev/shm               4096 Bytes       8190443             0                           ?
+            65539 HOST-RESOURCES-TYPES::hrStorageFixedDisk                      appliance-1 /run               4096 Bytes       8190443         13880                           ?
+            65540 HOST-RESOURCES-TYPES::hrStorageFixedDisk            appliance-1 /sys/fs/cgroup               4096 Bytes       8190443             0                           ?
+            65541 HOST-RESOURCES-TYPES::hrStorageFixedDisk                  appliance-1 /sysroot               4096 Bytes      24857894      16363955                           ?
+            65542 HOST-RESOURCES-TYPES::hrStorageFixedDisk                     appliance-1 /boot               4096 Bytes        249830         36990                           ?
+            65543 HOST-RESOURCES-TYPES::hrStorageFixedDisk                 appliance-1 /boot/efi               4096 Bytes        261629          1164                           ?
+            65544 HOST-RESOURCES-TYPES::hrStorageFixedDisk appliance-1 /var/F5/system/cbip-disks               4096 Bytes      76858096       3308595                           ?
+            65545 HOST-RESOURCES-TYPES::hrStorageFixedDisk       appliance-1 /var/export/chassis               4096 Bytes      25596664       7078601                           ?
+    prompt%
+
+
+The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-disks/**. Monitoring usage of this mount can provide visibility into how much space is available for all tenants.
+
+
+
+[root@appliance-1(r10900-1-gsa.cpt.f5net.com):Active] ~ # df -h
+Filesystem                                  Size  Used Avail Use% Mounted on
+devtmpfs                                    126G     0  126G   0% /dev
+tmpfs                                       126G     0  126G   0% /dev/shm
+tmpfs                                       126G   72M  126G   1% /run
+tmpfs                                       126G     0  126G   0% /sys/fs/cgroup
+/dev/mapper/velocity-root                   110G   68G   37G  66% /sysroot
+/dev/md121                                  990M  146M  777M  16% /boot
+/dev/md122                                 1022M   21M 1002M   3% /boot/efi
+/dev/mapper/partition_tenant-root           449G   54G  372G  13% /var/F5/system/cbip-disks
+/dev/mapper/partition_image-export_chassis  225G   52G  161G  25% /var/export/chassis
+
+Host Resource Storage Table SNMP OIDs
+                               
+.1.3.6.1.2.1.25.2.3.1.1. **65537** = hrStorageIndex (/dev )
+.1.3.6.1.2.1.25.2.3.1.1. **65538** = hrStorageIndex (/dev/shm)  
+.1.3.6.1.2.1.25.2.3.1.1. **55399** = hrStorageIndex (/run ) 
+.1.3.6.1.2.1.25.2.3.1.1. **65540** = hrStorageIndex (/sys/fs/cgroup)  
+.1.3.6.1.2.1.25.2.3.1.1. **65541** = hrStorageIndex (/sysroot) 
+.1.3.6.1.2.1.25.2.3.1.1. **65542** = hrStorageIndex (/boot)  
+.1.3.6.1.2.1.25.2.3.1.1. **65543** = hrStorageIndex (/boot/efi) 
+.1.3.6.1.2.1.25.2.3.1.1. **65544** = hrStorageIndex (/var/F5/system/cbip-disks)  
+.1.3.6.1.2.1.25.2.3.1.1. **65545** = hrStorageIndex (/var/export/chassis) 
+
+.1.3.6.1.2.1.25.2.3.1. **2** .65537 = hrStorageType (/dev )
+.1.3.6.1.2.1.25.2.3.1. **2** .65538 = hrStorageType (/dev/shm) 
+.1.3.6.1.2.1.25.2.3.1. **2** .65539 = hrStorageType (/run )
+.1.3.6.1.2.1.25.2.3.1. **2** .65540 = hrStorageType (/sys/fs/cgroup) 
+.1.3.6.1.2.1.25.2.3.1. **2** .65541 = hrStorageType (/sysroot) 
+.1.3.6.1.2.1.25.2.3.1. **2** .65542 = hrStorageType (/boot) 
+.1.3.6.1.2.1.25.2.3.1. **2** .65543 = hrStorageType (/boot/efi)
+.1.3.6.1.2.1.25.2.3.1. **2** .65544 = hrStorageType (/var/F5/system/cbip-disks) 
+.1.3.6.1.2.1.25.2.3.1. **2** .65545 = hrStorageType (/var/export/chassis) 
+
+.1.3.6.1.2.1.25.2.3.1. **3** .65537 = hrStorageDescr (/dev )
+.1.3.6.1.2.1.25.2.3.1. **3** .65538 = hrStorageDescr (/dev/shm)
+.1.3.6.1.2.1.25.2.3.1. **3** .65539 = hrStorageDescr (/run )
+.1.3.6.1.2.1.25.2.3.1. **3** .65540 = hrStorageDescr (/sys/fs/cgroup)
+.1.3.6.1.2.1.25.2.3.1. **3** .65541 = hrStorageDescr (/sysroot)
+.1.3.6.1.2.1.25.2.3.1. **3** .65542 = hrStorageDescr (/boot) 
+.1.3.6.1.2.1.25.2.3.1. **3** .65543 = hrStorageDescr (/boot/efi)
+.1.3.6.1.2.1.25.2.3.1. **3** .65544 = hrStorageDescr (/var/F5/system/cbip-disks)
+.1.3.6.1.2.1.25.2.3.1. **3** .65545 = hrStorageDescr (/var/export/chassis)
+
+.1.3.6.1.2.1.25.2.3.1. **4** .65537 = hrStorageAllocationUnits (/dev )
+.1.3.6.1.2.1.25.2.3.1. **4** .65538 = hrStorageAllocationUnits (/dev/shm)
+.1.3.6.1.2.1.25.2.3.1. **4** .65539 = hrStorageAllocationUnits (/run )
+.1.3.6.1.2.1.25.2.3.1. **4** .65540 = hrStorageAllocationUnits (/sys/fs/cgroup)
+.1.3.6.1.2.1.25.2.3.1. **4** .65541 = hrStorageAllocationUnits (/sysroot)
+.1.3.6.1.2.1.25.2.3.1. **4** .65542 = hrStorageAllocationUnits (/boot) 
+.1.3.6.1.2.1.25.2.3.1. **4** .65543 = hrStorageAllocationUnits (/boot/efi)
+.1.3.6.1.2.1.25.2.3.1. **4** .65544 = hrStorageAllocationUnits (/var/F5/system/cbip-disks)
+.1.3.6.1.2.1.25.2.3.1. **4** .65545 = hrStorageAllocationUnits (/var/export/chassis)
+
+.1.3.6.1.2.1.25.2.3.1. **5** .65537 = hrStorageSize (/dev )
+.1.3.6.1.2.1.25.2.3.1. **5** .65538 = hrStorageSize (/dev/shm)
+.1.3.6.1.2.1.25.2.3.1. **5** .65539 = hrStorageSize (/run )
+.1.3.6.1.2.1.25.2.3.1. **5** .65540 = hrStorageSize (/sys/fs/cgroup)
+.1.3.6.1.2.1.25.2.3.1. **5** .65541 = hrStorageSize (/sysroot)
+.1.3.6.1.2.1.25.2.3.1. **5** .65542 = hrStorageSize (/boot) 
+.1.3.6.1.2.1.25.2.3.1. **5** .65543 = hrStorageSize (/boot/efi)
+.1.3.6.1.2.1.25.2.3.1. **5** .65544 = hrStorageSize (/var/F5/system/cbip-disks)
+.1.3.6.1.2.1.25.2.3.1. **5** .65545 = hrStorageSize (/var/export/chassis)
+
+.1.3.6.1.2.1.25.2.3.1. **6** .65537 = hrStorageUsed (/dev )
+.1.3.6.1.2.1.25.2.3.1. **6** .65538 = hrStorageUsed (/dev/shm)
+.1.3.6.1.2.1.25.2.3.1. **6** .65539 = hrStorageUsed (/run )
+.1.3.6.1.2.1.25.2.3.1. **6** .65540 = hrStorageUsed (/sys/fs/cgroup)
+.1.3.6.1.2.1.25.2.3.1. **6** .65541 = hrStorageUsed (/sysroot)
+.1.3.6.1.2.1.25.2.3.1. **6** .65542 = hrStorageUsed (/boot) 
+.1.3.6.1.2.1.25.2.3.1. **6** .65543 = hrStorageUsed (/boot/efi)
+.1.3.6.1.2.1.25.2.3.1. **6** .65544 = hrStorageUsed (/var/F5/system/cbip-disks)
+.1.3.6.1.2.1.25.2.3.1. **6** .65545 = hrStorageUsed (/var/export/chassis)
+
+
+
 
 Component Info Table
 ----------------------------
