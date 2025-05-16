@@ -9,7 +9,10 @@ Below are the latest SNMP MIBs as of the F5OS-A 1.8.0 release.
 
 As of F5OS-A 1.8.0, the following NetSNMP MIBs are available. 
 
-.. Note:: This does not mean that the below NetSNMP MIBs are implemented completely, for some MIBs there are specific fields/OIDs that are implemented. 
+.. Note:: This does not mean that the below NetSNMP MIBs are implemented completely, for some MIBs there are a subset of objects/OIDs that are implemented. See the link below for more detail on which MIB objects are supported.
+
+`K000151374: Available object for NetSNMP MIBs within F5OS-A 1.8.0 release <https://my.f5.com/manage/s/article/K000151374>`_
+
 
 - TRANSPORT-ADDRESS-MIB
 - SNMP-VIEW-BASED-ACM-MIB
