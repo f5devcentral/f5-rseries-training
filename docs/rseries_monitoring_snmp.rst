@@ -3747,20 +3747,47 @@ r10000/r12000 Series (r10600,r10800,r10900,r10920-DF,r12600-DS,r12800-DS,r12900-
 Temperature Stats Table
 ----------------------------
 
-The table below shows the temperature stats for the entire rSeries system. For monitoring purposes, the Lower Limit = 0, Alert >= 42, Emergency >= 60
+The tables below show the temperature stats for the entire rSeries appliance. For monitoring purposes, the Lower Limit = 0, Alert >= 42, Emergency >= 60
 
 **F5-PLATFORM-STATS-MIB:temperatureStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.3.1**
 
+Below is example output from an r5900 rSeries appliance.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:temperatureStatsTable
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-PLATFORM-STATS-MIB:temperatureStatsTable
     SNMP table: F5-PLATFORM-STATS-MIB::temperatureStatsTable
 
         tempCurrent     tempAverage     tempMinimum     tempMaximum
-    26.7 centigrade 27.1 centigrade 26.4 centigrade 29.6 centigrade
+    25.3 centigrade 25.5 centigrade 25.2 centigrade 25.9 centigrade
+    prompt%
+
+Below is example output from an r10900 rSeries appliance.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.3 F5-PLATFORM-STATS-MIB:temperatureStatsTable
+    SNMP table: F5-PLATFORM-STATS-MIB::temperatureStatsTable
+
+        tempCurrent     tempAverage     tempMinimum     tempMaximum
+    26.5 centigrade 26.7 centigrade 26.4 centigrade 27.2 centigrade
+    prompt%
+
+Below is example output from an r4800 rSeries appliance.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.5 F5-PLATFORM-STATS-MIB:temperatureStatsTable
+    SNMP table: F5-PLATFORM-STATS-MIB::temperatureStatsTable
+
+        tempCurrent     tempAverage     tempMinimum     tempMaximum
+    25.0 centigrade 25.0 centigrade 25.0 centigrade 26.0 centigrade
     prompt% 
 
+
+
+
+**Temperature Stats Table SNMP OIDs**
 
 +-------------------+-------------------------------------------------+--------------------------------------------------------------------+
 | Value             | Details                                         | SNMP OID                                                           |
