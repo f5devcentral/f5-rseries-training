@@ -3740,7 +3740,7 @@ r10000/r12000 Series (r10600,r10800,r10900,r10920-DF,r12600-DS,r12800-DS,r12900-
 | psu-2        | psuPowerOut       | Informational displayed in Watts, No Limits     | .1.3.6.1.4.1.12276.1.2.1.9.1.1.14.8.112.108.97.116.102.111.114.109.5.112.115.117.45.50  |
 +--------------+-------------------+-------------------------------------------------+-----------------------------------------------------------------------------------------+
 
-.. Note:: There is a known issue with the Watt, Amp, and Volt values being displayed in milli (mW, mV, Ma which is incorrect. This issue is tracked as ID 1933793.
+.. Note:: There is a known issue with the Watt, Amp, and Volt values being displayed in milli (mW, mV, Ma) which is incorrect. This issue is tracked as ID 1933793.
 
 
 
@@ -3783,8 +3783,6 @@ Below is example output from an r4800 rSeries appliance.
         tempCurrent     tempAverage     tempMinimum     tempMaximum
     25.0 centigrade 25.0 centigrade 25.0 centigrade 26.0 centigrade
     prompt% 
-
-
 
 
 **Temperature Stats Table SNMP OIDs**
