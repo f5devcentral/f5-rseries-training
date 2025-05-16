@@ -3111,11 +3111,11 @@ Below is an example of the SNMP OIDs for **coreCurrent** cpu utilization on an r
 
 To monitor **CoreTotal5SecAvg** use the same OIDs as above, but change the prefix from:
 
-    .1.3.6.1.4.1.12276.1.2.1.1.3.1. **3** ......
+.1.3.6.1.4.1.12276.1.2.1.1.3.1. **3** ......
 
 to 
 
-    .1.3.6.1.4.1.12276.1.2.1.1.3.1. **4** ......
+.1.3.6.1.4.1.12276.1.2.1.1.3.1. **4** ......
 
 As an example for cpu0 to poll for the various time intervals: 
 
