@@ -4283,7 +4283,27 @@ You can also snmpwalk from the OID 1.3.6.1.4.1.12276.1.3 to get more licensing d
     .1.3.6.1.4.1.12276.1.3.3.9.1.2.1 = STRING: "Best Bundle, r10900|M757216-4315179|Advanced Protocols|Rate Shaping|DNS Services|BIG-IP, DNS (Max)|Routing Bundle|Access Policy Manager, Base, r109XX|Advanced Web Application Firewall, r10XXX|Max Compression, r10900|Max SSL, r10900|Advanced Firewall Manager, r10XXX|DNSSEC|Anti-Virus Checks|Base Endpoint Security Checks|Firewall Checks|Machine Certificate Checks|Network Access|Protected Workspace|Secure Virtual Keyboard|APM, Web Application|App Tunnel|Remote Desktop|DNS Rate Fallback, Unlimited|DNS Licensed Objects, Unlimited|DNS Rate Limit, Unlimited QPS|GTM Rate Fallback, (UNLIMITED)|GTM Licensed Objects, Unlimited|GTM Rate, Unlimited|DNS RATE LIMITED, MAX|Protocol Security Manager|Carrier Grade NAT (AFM ONLY)"
     prompt%
 
+**Licensing Info SNMP OIDs**
 
++---------------------+-------------------------------------+                         
+| Licensed Version    | .1.3.6.1.4.1.12276.1.3.3.1.0        |
++---------------------+-------------------------------------+
+| Registration Key    | .1.3.6.1.4.1.12276.1.3.3.2.0        |
++---------------------+-------------------------------------+
+| Licensed date       | .1.3.6.1.4.1.12276.1.3.3.3.0        |
++---------------------+-------------------------------------+
+| License start       | .1.3.6.1.4.1.12276.1.3.3.4.0        |
++---------------------+-------------------------------------+
+| License end         | .1.3.6.1.4.1.12276.1.3.3.5.0        |
++---------------------+-------------------------------------+
+| Service check date  | .1.3.6.1.4.1.12276.1.3.3.6.0        |
++---------------------+-------------------------------------+
+| Platform ID         | .1.3.6.1.4.1.12276.1.3.3.7.0        |
++---------------------+-------------------------------------+
+| Appliance SN        | .1.3.6.1.4.1.12276.1.3.3.8.0        |
++---------------------+-------------------------------------+
+| License             | .1.3.6.1.4.1.12276.1.3.3.9.1.2.1    |
++---------------------+-------------------------------------+
 
 
 LLDP Configuration Table
