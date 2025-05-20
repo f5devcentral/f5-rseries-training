@@ -4474,6 +4474,165 @@ Query the following SNMP OID to get detailed LLDP neighbors table.
                 16.0               16.0          f5-wjex-ngkt Jim McCarron's r10900-2  r10900-2.f5demo.net Jim McCarron's r10900-2            1310740                   ::                0                 1                    ?                   0                            1                    1               0               0                     1                     0            9600                     r10900
     prompt% 
 
+
+
+    j.mccarron@J0MW6JR9CV ~ %  snmptable -v 2c  -c public -m ALL 172.22.50.3 F5-OS-LLDP-MIB:lldpNeighborsTable
+SNMP table: F5-OS-LLDP-MIB::lldpNeighborsTable
+
+ lldpLocalInterface lldpNeighborPortId lldpNeighborChassisId  lldpNeighborPortDesc   lldpNeighborSysName                                                            lldpNeighborSysDesc lldpNeighborSysCap lldpNeighborMgmtAddr lldpNeighborPvid lldpNeighborPpvid lldpNeighborVlanName lldpNeighborVlanTag lldpNeighborProtocolIdentity lldpNeighborAutoNego lldpNeighborPmd lldpNeighborMau lldpNeighborAggStatus lldpNeighborAggPortid lldpNeighborMfs lldpNeighborF5ProductModel
+                1.0     Ethernet3/23/1     c4:ca:2b:80:fa:75 mccarron-r10000-1:1.0 a7808-1.cpt.f5net.com  Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH            1310740         172.22.56.13                1                 0                    ?                  48                            0                    0               0               0                     3                   114           10240                          ?
+                2.0     Ethernet3/24/1     c4:ca:2b:80:fa:75 mccarron-r10000-1:2.0 a7808-1.cpt.f5net.com  Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH            1310740         172.22.56.13                1                 0                    ?                  48                            0                    0               0               0                     1                     0           10240                          ?
+               13.0         Ethernet51     98:5d:82:ba:c4:7b                     ?    sw23.gtp.f5net.com Arista Networks EOS version 4.28.5M running on an Arista Networks DCS-7010T-48            1310724         172.22.48.23              500                 0                    ?                  48                            0                    0               0               0                     1                     0            9416                          ?
+j.mccarron@J0MW6JR9CV ~ %  
+
+
+
+snmpwalk -v 2c  -c public -m ALL 172.22.50.3 F5-OS-LLDP-MIB:lldpNeighborsTable
+F5-OS-LLDP-MIB::lldpLocalInterface."1.0"."Ethernet3/23/1" = STRING: 1.0
+F5-OS-LLDP-MIB::lldpLocalInterface."2.0"."Ethernet3/24/1" = STRING: 2.0
+F5-OS-LLDP-MIB::lldpLocalInterface."13.0"."Ethernet51" = STRING: 13.0
+F5-OS-LLDP-MIB::lldpNeighborPortId."1.0"."Ethernet3/23/1" = STRING: Ethernet3/23/1
+F5-OS-LLDP-MIB::lldpNeighborPortId."2.0"."Ethernet3/24/1" = STRING: Ethernet3/24/1
+F5-OS-LLDP-MIB::lldpNeighborPortId."13.0"."Ethernet51" = STRING: Ethernet51
+F5-OS-LLDP-MIB::lldpNeighborChassisId."1.0"."Ethernet3/23/1" = STRING: c4:ca:2b:80:fa:75
+F5-OS-LLDP-MIB::lldpNeighborChassisId."2.0"."Ethernet3/24/1" = STRING: c4:ca:2b:80:fa:75
+F5-OS-LLDP-MIB::lldpNeighborChassisId."13.0"."Ethernet51" = STRING: 98:5d:82:ba:c4:7b
+F5-OS-LLDP-MIB::lldpNeighborPortDesc."1.0"."Ethernet3/23/1" = STRING: mccarron-r10000-1:1.0
+F5-OS-LLDP-MIB::lldpNeighborPortDesc."2.0"."Ethernet3/24/1" = STRING: mccarron-r10000-1:2.0
+F5-OS-LLDP-MIB::lldpNeighborSysName."1.0"."Ethernet3/23/1" = STRING: a7808-1.cpt.f5net.com
+F5-OS-LLDP-MIB::lldpNeighborSysName."2.0"."Ethernet3/24/1" = STRING: a7808-1.cpt.f5net.com
+F5-OS-LLDP-MIB::lldpNeighborSysName."13.0"."Ethernet51" = STRING: sw23.gtp.f5net.com
+F5-OS-LLDP-MIB::lldpNeighborSysDesc."1.0"."Ethernet3/23/1" = STRING: Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH
+F5-OS-LLDP-MIB::lldpNeighborSysDesc."2.0"."Ethernet3/24/1" = STRING: Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH
+F5-OS-LLDP-MIB::lldpNeighborSysDesc."13.0"."Ethernet51" = STRING: Arista Networks EOS version 4.28.5M running on an Arista Networks DCS-7010T-48
+F5-OS-LLDP-MIB::lldpNeighborSysCap."1.0"."Ethernet3/23/1" = Gauge32: 1310740
+F5-OS-LLDP-MIB::lldpNeighborSysCap."2.0"."Ethernet3/24/1" = Gauge32: 1310740
+F5-OS-LLDP-MIB::lldpNeighborSysCap."13.0"."Ethernet51" = Gauge32: 1310724
+F5-OS-LLDP-MIB::lldpNeighborMgmtAddr."1.0"."Ethernet3/23/1" = STRING: 172.22.56.13
+F5-OS-LLDP-MIB::lldpNeighborMgmtAddr."2.0"."Ethernet3/24/1" = STRING: 172.22.56.13
+F5-OS-LLDP-MIB::lldpNeighborMgmtAddr."13.0"."Ethernet51" = STRING: 172.22.48.23
+F5-OS-LLDP-MIB::lldpNeighborPvid."1.0"."Ethernet3/23/1" = INTEGER: 1
+F5-OS-LLDP-MIB::lldpNeighborPvid."2.0"."Ethernet3/24/1" = INTEGER: 1
+F5-OS-LLDP-MIB::lldpNeighborPvid."13.0"."Ethernet51" = INTEGER: 500
+F5-OS-LLDP-MIB::lldpNeighborPpvid."1.0"."Ethernet3/23/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborPpvid."2.0"."Ethernet3/24/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborPpvid."13.0"."Ethernet51" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborVlanTag."1.0"."Ethernet3/23/1" = INTEGER: 48
+F5-OS-LLDP-MIB::lldpNeighborVlanTag."2.0"."Ethernet3/24/1" = INTEGER: 48
+F5-OS-LLDP-MIB::lldpNeighborVlanTag."13.0"."Ethernet51" = INTEGER: 48
+F5-OS-LLDP-MIB::lldpNeighborProtocolIdentity."1.0"."Ethernet3/23/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborProtocolIdentity."2.0"."Ethernet3/24/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborProtocolIdentity."13.0"."Ethernet51" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborAutoNego."1.0"."Ethernet3/23/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborAutoNego."2.0"."Ethernet3/24/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborAutoNego."13.0"."Ethernet51" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborPmd."1.0"."Ethernet3/23/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborPmd."2.0"."Ethernet3/24/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborPmd."13.0"."Ethernet51" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborMau."1.0"."Ethernet3/23/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborMau."2.0"."Ethernet3/24/1" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborMau."13.0"."Ethernet51" = INTEGER: 0
+F5-OS-LLDP-MIB::lldpNeighborAggStatus."1.0"."Ethernet3/23/1" = INTEGER: 3
+F5-OS-LLDP-MIB::lldpNeighborAggStatus."2.0"."Ethernet3/24/1" = INTEGER: 1
+F5-OS-LLDP-MIB::lldpNeighborAggStatus."13.0"."Ethernet51" = INTEGER: 1
+F5-OS-LLDP-MIB::lldpNeighborAggPortid."1.0"."Ethernet3/23/1" = Gauge32: 114
+F5-OS-LLDP-MIB::lldpNeighborAggPortid."2.0"."Ethernet3/24/1" = Gauge32: 0
+F5-OS-LLDP-MIB::lldpNeighborAggPortid."13.0"."Ethernet51" = Gauge32: 0
+F5-OS-LLDP-MIB::lldpNeighborMfs."1.0"."Ethernet3/23/1" = INTEGER: 10240
+F5-OS-LLDP-MIB::lldpNeighborMfs."2.0"."Ethernet3/24/1" = INTEGER: 10240
+F5-OS-LLDP-MIB::lldpNeighborMfs."13.0"."Ethernet51" = INTEGER: 9416
+
+j.mccarron@J0MW6JR9CV ~ %  snmpwalk -ObenU -v 2c  -c public -m ALL 172.22.50.3 F5-OS-LLDP-MIB:lldpNeighborsTable
+
+lldpLocalInterface
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.1.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: 1.0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.1.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: 2.0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.1.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = STRING: 13.0
+
+lldpNeighborPortId
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.2.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: Ethernet3/23/1
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.2.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: Ethernet3/24/1
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.2.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = STRING: Ethernet51
+
+lldpNeighborChassisId
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.3.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: c4:ca:2b:80:fa:75
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.3.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: c4:ca:2b:80:fa:75
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.3.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = STRING: 98:5d:82:ba:c4:7b
+
+lldpNeighborPortDesc
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.4.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: mccarron-r10000-1:1.0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.4.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: mccarron-r10000-1:2.0
+
+lldpNeighborSysName
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.5.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: a7808-1.cpt.f5net.com
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.5.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: a7808-1.cpt.f5net.com
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.5.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = STRING: sw23.gtp.f5net.com
+
+lldpNeighborSysDesc
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.6.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.6.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.6.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = STRING: Arista Networks EOS version 4.28.5M running on an Arista Networks DCS-7010T-48
+
+lldpNeighborSysCap
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.7.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = Gauge32: 1310740
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.7.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = Gauge32: 1310740
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.7.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = Gauge32: 1310724
+
+lldpNeighborMgmtAddr
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.8.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: 172.22.56.13
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.8.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = STRING: 172.22.56.13
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.8.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = STRING: 172.22.48.23
+
+lldpNeighborPvid
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.9.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 1
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.9.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 1
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.9.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 500
+
+lldpNeighborPpvid
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.10.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.10.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.10.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 0
+
+lldpNeighborVlanName
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.12.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 48
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.12.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 48
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.12.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 48
+
+lldpNeighborVlanTag
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.13.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.13.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.13.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 0
+
+lldpNeighborProtocolIdentity
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.14.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.14.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.14.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 0
+
+lldpNeighborAutoNego
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.15.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.15.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.15.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 0
+
+lldpNeighborPmd
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.16.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.16.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.16.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 0
+
+lldpNeighborMau
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.17.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 3
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.17.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 1
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.17.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 1
+
+lldpNeighborAggStatus
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.18.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = Gauge32: 114
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.18.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = Gauge32: 0
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.18.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = Gauge32: 0
+
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.19.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 10240
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.19.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 10240
+.1.3.6.1.4.1.12276.1.4.1.1.4.1.1.19.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 9416
+j.mccarron@J0MW6JR9CV ~ % 
+
 Tenant State Table
 -----------------------------
 
