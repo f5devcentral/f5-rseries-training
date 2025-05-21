@@ -4542,7 +4542,11 @@ F5-OS-LLDP-MIB::lldpNeighborMfs."1.0"."Ethernet3/23/1" = INTEGER: 10240
 F5-OS-LLDP-MIB::lldpNeighborMfs."2.0"."Ethernet3/24/1" = INTEGER: 10240
 F5-OS-LLDP-MIB::lldpNeighborMfs."13.0"."Ethernet51" = INTEGER: 9416
 
-j.mccarron@J0MW6JR9CV ~ %  snmpwalk -ObenU -v 2c  -c public -m ALL 172.22.50.3 F5-OS-LLDP-MIB:lldpNeighborsTable
+**LLDP Neighbors Table SNMP OIDs**
+
+Below are some example SNMP OIDs to poll in the rSeries system for the individual LLDP Neighbors table items.
+
+
 
 lldpLocalInterface
 .1.3.6.1.4.1.12276.1.4.1.1.4.1.1.1.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = STRING: 1.0
@@ -4631,7 +4635,7 @@ lldpNeighborAggStatus
 .1.3.6.1.4.1.12276.1.4.1.1.4.1.1.19.3.49.46.48.14.69.116.104.101.114.110.101.116.51.47.50.51.47.49 = INTEGER: 10240
 .1.3.6.1.4.1.12276.1.4.1.1.4.1.1.19.3.50.46.48.14.69.116.104.101.114.110.101.116.51.47.50.52.47.49 = INTEGER: 10240
 .1.3.6.1.4.1.12276.1.4.1.1.4.1.1.19.4.49.51.46.48.10.69.116.104.101.114.110.101.116.53.49 = INTEGER: 9416
-j.mccarron@J0MW6JR9CV ~ % 
+
 
 Tenant State Table
 -----------------------------
@@ -4642,15 +4646,151 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantStateTable
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantStateTable
     SNMP table: F5-OS-TENANT-MIB::tenantStateTable
 
-                tenantName tenantType                                     tenantImage            tenantDeploymentFile tenantMgmtIP tenantPrefixLength tenantDagIPv6PrefixLength tenantGateway tenantCryptos tenantVcpuCoresPerNode tenantMemory tenantStorageSize tenantRunningState tenantMacDataSize tenantApplianceMode                                                                        tenantUnitKeyHash tenantFloatingAddress tenantHAState tenantNameSpace tenantPrimarySlot tenantQatVFCount     tenantImageVersion tenantStatus tenantTargetDeploymentFile tenantTargetImage tenantUpgradeStatus    tenantBaseMac    tenantMgmtMac
-                    fix-ll      bigip   BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle                               ?  10.255.2.11                 24                       128  10.255.2.252       enabled                      4     14848 MB             80 GB           deployed                 1            disabled GG6ePYN2/DuFN9wbH/Wr2CZpr4otx3O3HgeFoHiNO+QACbFlHPn3AuWNbIGBk9RdJ+P7moD5tIBndzJK+zbEsw==                     ?             ?         default                 1                6  BIG-IP 17.1.1.2 0.0.1      Running                          ?                 ?                   ? 0:94:a1:69:59:29 0:94:a1:69:59:2a
-                tenant1      bigip BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle                               ?  10.255.2.16                 24                       128  10.255.2.252       enabled                      4     14848 MB             82 GB           deployed                 1            disabled faU1hAAH7Wl24ZkHR8Qxt/0976HxCxMj8E0P0AXN0CgRfUTBkVphJwDzZAloJYYxYnHb4cyZdQ5o3NE/af5LuQ==                     ?             ?         default                 1                6 BIG-IP 17.1.1.2 0.0.10      Running                          ?                 ?                   ? 0:94:a1:69:59:2d 0:94:a1:69:59:2e
-            test-tenant      bigip   BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle                               ?  10.255.2.12                 24                       128  10.255.2.252       enabled                      4     14848 MB             82 GB           deployed                 1            disabled IHJti+ctR9YrfmTuj3F7dElBgXtFyOBFpa+7AudyYif3neHybBiP5v3tyt5AMd7WwDypOCz58US8I9NXzvgqnQ==                     ?             ?         default                 1                6  BIG-IP 17.1.1.2 0.0.1      Running                          ?                 ?                   ? 0:94:a1:69:59:2b 0:94:a1:69:59:2c
-    bigip-next-f5demo-net  bigipnext                      BIG-IP-Next-20.2.1-2.429.4 BIG-IP-Next-20.2.1-2.429.4.yaml   10.255.2.8                 24                       128  10.255.2.252       enabled                      4     14848 MB             25 GB           deployed                 1            disabled +Z9wYyH3QGXEfv6s78GaD++1GwG2ZBCrXwHcNPVCYpgMMD1w+vZfZyfiZHpd6Ng15XClm1TS86ysUxYl+w5UAQ==                     ?    standalone  default-tid-75                 ?               10                      ?     Starting                          ?                 ?          notstarted 0:94:a1:69:59:26                ?
+    tenantName tenantType                                     tenantImage tenantDeploymentFile tenantMgmtIP tenantPrefixLength tenantDagIPv6PrefixLength tenantGateway tenantCryptos tenantVcpuCoresPerNode tenantMemory tenantStorageSize tenantRunningState tenantMacDataSize tenantApplianceMode                                                                        tenantUnitKeyHash tenantFloatingAddress tenantHAState tenantNameSpace tenantPrimarySlot tenantQatVFCount     tenantImageVersion tenantStatus tenantTargetDeploymentFile tenantTargetImage tenantUpgradeStatus    tenantBaseMac    tenantMgmtMac
+        big-ip      bigip BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle                    ? 172.22.50.24                 26                       128  172.22.60.62       enabled                     10     36352 MB             82 GB           deployed                 1            disabled ldCb3qyXb0s71zpJ5mQHVHafPksHT8FB5Qgox1eokXwGpqcRaz/CNvcg67cFfNDAbG9MfmvJzaRoOPMGxX0HNg==                     ?             ?         default                 1               15 BIG-IP 17.1.1.2 0.0.10      Running                          ?                 ?                   ? 0:94:a1:69:35:14 0:94:a1:69:35:15
+        big-ip2      bigip BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle                    ? 172.22.50.30                 26                       128  172.22.50.62       enabled                      4     14848 MB             82 GB           deployed                 1            disabled VfkI7Nhog2NbPPoeL9RyyCR9HCrBy1thJ59lRid0VR+JfY1jkQB4W9ders9TWR/nlNIp6oC0ZPfUVD71fTm9Qg==                     ?             ?         default                 ?                6                      ?     Starting                          ?                 ?                   ? 0:94:a1:69:35:18                ?
+        big-ip3      bigip BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle                    ? 172.22.50.31                 26                         ?  172.22.50.62       enabled                     10     36352 MB             82 GB         configured                 1            disabled SS9+v1Vu39hti1+sK3FLirfh/toqO7huSpTpuNDZ3UZI+jRS7hFWBePkNLSqjeIp/qcAhlQUpO4cDlQFpydl9w==                     ?             ?         default                 ?               15                      ?            ?                          ?                 ?                   ? 0:94:a1:69:35:1a                ?
     prompt% 
+
+j.mccarron@J0MW6JR9CV ~ %  snmpwalk -ObenU -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantStateTable
+
+
++---------------------------+----------------------------------------------------------------------------
+| tenantName                | .1.3.6.1.4.1.12276.1.5.1.1.1.1.1.6.98.105.103.45.105.112 = STRING: big-ip
+| tenantName                | .1.3.6.1.4.1.12276.1.5.1.1.1.1.1.7.98.105.103.45.105.112.50 = STRING: big-ip2
+| tenantName                | .1.3.6.1.4.1.12276.1.5.1.1.1.1.1.7.98.105.103.45.105.112.51 = STRING: big-ip3
+| tenantType                | .1.3.6.1.4.1.12276.1.5.1.1.1.1.2.6.98.105.103.45.105.112 = INTEGER: 0
+| tenantType                | .1.3.6.1.4.1.12276.1.5.1.1.1.1.2.7.98.105.103.45.105.112.50 = INTEGER: 0
+| tenantType                | .1.3.6.1.4.1.12276.1.5.1.1.1.1.2.7.98.105.103.45.105.112.51 = INTEGER: 0
+| tenantImage               | .1.3.6.1.4.1.12276.1.5.1.1.1.1.3.6.98.105.103.45.105.112 = STRING: BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+| tenantImage               | .1.3.6.1.4.1.12276.1.5.1.1.1.1.3.7.98.105.103.45.105.112.50 = STRING: BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+| tenantImage               | .1.3.6.1.4.1.12276.1.5.1.1.1.1.3.7.98.105.103.45.105.112.51 = STRING: BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+| tenantMgmtIP              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.5.6.98.105.103.45.105.112 = IpAddress: 172.22.50.24
+| tenantMgmtIP              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.5.7.98.105.103.45.105.112.50 = IpAddress: 172.22.50.30
+| tenantMgmtIP              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.5.7.98.105.103.45.105.112.51 = IpAddress: 172.22.50.31
+| tenantPrefixLength        | .1.3.6.1.4.1.12276.1.5.1.1.1.1.6.6.98.105.103.45.105.112 = INTEGER: 26
+| tenantPrefixLength        | .1.3.6.1.4.1.12276.1.5.1.1.1.1.6.7.98.105.103.45.105.112.50 = INTEGER: 26
+| tenantPrefixLength        |.1.3.6.1.4.1.12276.1.5.1.1.1.1.6.7.98.105.103.45.105.112.51 = INTEGER: 26
+| tenantDagIPv6PrefixLength |.1.3.6.1.4.1.12276.1.5.1.1.1.1.7.6.98.105.103.45.105.112 = INTEGER: 128
+| tenantDagIPv6PrefixLength | .1.3.6.1.4.1.12276.1.5.1.1.1.1.7.7.98.105.103.45.105.112.50 = INTEGER: 128
+| tenantDagIPv6PrefixLength | .1.3.6.1.4.1.12276.1.5.1.1.1.1.7.7.98.105.103.45.105.112.51 = INTEGER: 128
+| tenantGateway             |.1.3.6.1.4.1.12276.1.5.1.1.1.1.8.6.98.105.103.45.105.112 = IpAddress: 172.22.60.62
+| tenantGateway             | .1.3.6.1.4.1.12276.1.5.1.1.1.1.8.7.98.105.103.45.105.112.50 = IpAddress: 172.22.50.62
+| tenantGateway             | .1.3.6.1.4.1.12276.1.5.1.1.1.1.8.7.98.105.103.45.105.112.51 = IpAddress: 172.22.50.62
+| tenantCryptos             |.1.3.6.1.4.1.12276.1.5.1.1.1.1.9.6.98.105.103.45.105.112 = INTEGER: 1
+| tenantCryptos             | 1.3.6.1.4.1.12276.1.5.1.1.1.1.9.7.98.105.103.45.105.112.50 = INTEGER: 1
+| tenantCryptos             | .1.3.6.1.4.1.12276.1.5.1.1.1.1.9.7.98.105.103.45.105.112.51 = INTEGER: 1
+| tenantVcpuCoresPerNode    | .1.3.6.1.4.1.12276.1.5.1.1.1.1.10.6.98.105.103.45.105.112 = Counter32: 10
+| tenantVcpuCoresPerNode    |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.10.7.98.105.103.45.105.112.50      | = Counter32: 4
+| tenantVcpuCoresPerNode    |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.10.7.98.105.103.45.105.112.51      | = Counter32: 10
+| tenantMemory              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.11.6.98.105.103.45.105.112          | = Counter32: 36352
+| tenantMemory              |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.11.7.98.105.103.45.105.112.50      | = Counter32: 14848
+| tenantMemory              |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.11.7.98.105.103.45.105.112.51      | = Counter32: 36352
+| tenantStorageSize         | .1.3.6.1.4.1.12276.1.5.1.1.1.1.12.6.98.105.103.45.105.112          | = Counter32: 82
+| tenantStorageSize         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.12.7.98.105.103.45.105.112.50      | = Counter32: 82
+| tenantStorageSize         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.12.7.98.105.103.45.105.112.51      | = Counter32: 82
+| tenantRunningState        | .1.3.6.1.4.1.12276.1.5.1.1.1.1.13.6.98.105.103.45.105.112          | = INTEGER: 2
+| tenantRunningState        |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.13.7.98.105.103.45.105.112.50      | = INTEGER: 2
+| tenantRunningState        |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.13.7.98.105.103.45.105.112.51      | = INTEGER: 0
+| tenantMacDataSize         | .1.3.6.1.4.1.12276.1.5.1.1.1.1.14.6.98.105.103.45.105.112          | = Counter32: 1
+| tenantMacDataSize         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.14.7.98.105.103.45.105.112.50      | = Counter32: 1
+| tenantMacDataSize         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.14.7.98.105.103.45.105.112.51      | = Counter32: 1
+| tenantApplianceMode       | .1.3.6.1.4.1.12276.1.5.1.1.1.1.15.6.98.105.103.45.105.112          | = INTEGER: 0
+| tenantApplianceMode       | .1.3.6.1.4.1.12276.1.5.1.1.1.1.15.7.98.105.103.45.105.112.50       | = INTEGER: 0
+| tenantApplianceMode       | .1.3.6.1.4.1.12276.1.5.1.1.1.1.15.7.98.105.103.45.105.112.51       | = INTEGER: 0
+| tenantUnitKeyHash         | .1.3.6.1.4.1.12276.1.5.1.1.1.1.16.6.98.105.103.45.105.112          | = STRING: ldCb3qyXb0s71zpJ5mQHVHafPksHT8FB5Qgox1eokXwGpqcRaz/CNvcg67cFfNDAbG9MfmvJzaRoOPMGxX0HNg==
+| tenantUnitKeyHash         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.16.7.98.105.103.45.105.112.50      | = STRING: VfkI7Nhog2NbPPoeL9RyyCR9HCrBy1thJ59lRid0VR+JfY1jkQB4W9ders9TWR/nlNIp6oC0ZPfUVD71fTm9Qg==
+| tenantUnitKeyHash         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.16.7.98.105.103.45.105.112.51      | = STRING: SS9+v1Vu39hti1+sK3FLirfh/toqO7huSpTpuNDZ3UZI+jRS7hFWBePkNLSqjeIp/qcAhlQUpO4cDlQFpydl9w==
+| tenantNameSpace           | .1.3.6.1.4.1.12276.1.5.1.1.1.1.19.6.98.105.103.45.105.112          | = STRING: default
+| tenantNameSpace           | .1.3.6.1.4.1.12276.1.5.1.1.1.1.19.7.98.105.103.45.105.112.50       | = STRING: default
+| tenantNameSpace           | .1.3.6.1.4.1.12276.1.5.1.1.1.1.19.7.98.105.103.45.105.112.51       | = STRING: default
+| tenantPrimarySlot         | .1.3.6.1.4.1.12276.1.5.1.1.1.1.20.6.98.105.103.45.105.112          | = INTEGER: 1
+| tenantPrimarySlot         |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.20.7.98.105.103.45.105.112.50      | = INTEGER: 1
+| tenantQatVFCount          |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.21.6.98.105.103.45.105.112         | = INTEGER: 15
+| tenantQatVFCount          | .1.3.6.1.4.1.12276.1.5.1.1.1.1.21.7.98.105.103.45.105.112.50       | = INTEGER: 6
+| tenantQatVFCount          | .1.3.6.1.4.1.12276.1.5.1.1.1.1.21.7.98.105.103.45.105.112.51       | = INTEGER: 15
+| tenantNameSpace           | .1.3.6.1.4.1.12276.1.5.1.1.1.1.22.6.98.105.103.45.105.112          | = STRING: BIG-IP 17.1.1.2 0.0.10
+| tenantImageVersion        | .1.3.6.1.4.1.12276.1.5.1.1.1.1.22.7.98.105.103.45.105.112.50       | = STRING: BIG-IP 17.1.1.2 0.0.10
+| tenantStatus              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.23.6.98.105.103.45.105.112          | = STRING: Running
+| tenantStatus              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.23.7.98.105.103.45.105.112.50       | = STRING: Running
+| tenantStatus              | .1.3.6.1.4.1.12276.1.5.1.1.1.1.23.7.98.105.103.45.105.112.51       | = STRING: Configured
+| tenantBaseMac             | .1.3.6.1.4.1.12276.1.5.1.1.1.1.27.6.98.105.103.45.105.112          | = STRING: 0:94:a1:69:35:14
+| tenantBaseMac             |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.27.7.98.105.103.45.105.112.50      | = STRING: 0:94:a1:69:35:18
+| tenantBaseMac             |  .1.3.6.1.4.1.12276.1.5.1.1.1.1.27.7.98.105.103.45.105.112.51      | = STRING: 0:94:a1:69:35:1a
+| tenantMgmtMac             | .1.3.6.1.4.1.12276.1.5.1.1.1.1.28.6.98.105.103.45.105.112          | = STRING: 0:94:a1:69:35:15
+| tenantMgmtMac             | .1.3.6.1.4.1.12276.1.5.1.1.1.1.28.7.98.105.103.45.105.112.50       | = STRING: 0:94:a1:69:35:19
+
+
+
+j.mccarron@J0MW6JR9CV ~ %  snmpwalk -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantStateTable 
+F5-OS-TENANT-MIB::tenantName."big-ip" = STRING: big-ip
+F5-OS-TENANT-MIB::tenantName."big-ip2" = STRING: big-ip2
+F5-OS-TENANT-MIB::tenantName."big-ip3" = STRING: big-ip3
+F5-OS-TENANT-MIB::tenantType."big-ip" = INTEGER: bigip(0)
+F5-OS-TENANT-MIB::tenantType."big-ip2" = INTEGER: bigip(0)
+F5-OS-TENANT-MIB::tenantType."big-ip3" = INTEGER: bigip(0)
+F5-OS-TENANT-MIB::tenantImage."big-ip" = STRING: BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+F5-OS-TENANT-MIB::tenantImage."big-ip2" = STRING: BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+F5-OS-TENANT-MIB::tenantImage."big-ip3" = STRING: BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+F5-OS-TENANT-MIB::tenantMgmtIP."big-ip" = IpAddress: 172.22.50.24
+F5-OS-TENANT-MIB::tenantMgmtIP."big-ip2" = IpAddress: 172.22.50.30
+F5-OS-TENANT-MIB::tenantMgmtIP."big-ip3" = IpAddress: 172.22.50.31
+F5-OS-TENANT-MIB::tenantPrefixLength."big-ip" = INTEGER: 26
+F5-OS-TENANT-MIB::tenantPrefixLength."big-ip2" = INTEGER: 26
+F5-OS-TENANT-MIB::tenantPrefixLength."big-ip3" = INTEGER: 26
+F5-OS-TENANT-MIB::tenantDagIPv6PrefixLength."big-ip" = INTEGER: 128
+F5-OS-TENANT-MIB::tenantDagIPv6PrefixLength."big-ip2" = INTEGER: 128
+F5-OS-TENANT-MIB::tenantDagIPv6PrefixLength."big-ip3" = INTEGER: 128
+F5-OS-TENANT-MIB::tenantGateway."big-ip" = IpAddress: 172.22.60.62
+F5-OS-TENANT-MIB::tenantGateway."big-ip2" = IpAddress: 172.22.50.62
+F5-OS-TENANT-MIB::tenantGateway."big-ip3" = IpAddress: 172.22.50.62
+F5-OS-TENANT-MIB::tenantCryptos."big-ip" = INTEGER: enabled(1)
+F5-OS-TENANT-MIB::tenantCryptos."big-ip2" = INTEGER: enabled(1)
+F5-OS-TENANT-MIB::tenantCryptos."big-ip3" = INTEGER: enabled(1)
+F5-OS-TENANT-MIB::tenantVcpuCoresPerNode."big-ip" = Counter32: 10
+F5-OS-TENANT-MIB::tenantVcpuCoresPerNode."big-ip2" = Counter32: 4
+F5-OS-TENANT-MIB::tenantVcpuCoresPerNode."big-ip3" = Counter32: 10
+F5-OS-TENANT-MIB::tenantMemory."big-ip" = Counter32: 36352 MB
+F5-OS-TENANT-MIB::tenantMemory."big-ip2" = Counter32: 14848 MB
+F5-OS-TENANT-MIB::tenantMemory."big-ip3" = Counter32: 36352 MB
+F5-OS-TENANT-MIB::tenantStorageSize."big-ip" = Counter32: 82 GB
+F5-OS-TENANT-MIB::tenantStorageSize."big-ip2" = Counter32: 82 GB
+F5-OS-TENANT-MIB::tenantStorageSize."big-ip3" = Counter32: 82 GB
+F5-OS-TENANT-MIB::tenantRunningState."big-ip" = INTEGER: deployed(2)
+F5-OS-TENANT-MIB::tenantRunningState."big-ip2" = INTEGER: deployed(2)
+F5-OS-TENANT-MIB::tenantRunningState."big-ip3" = INTEGER: configured(0)
+F5-OS-TENANT-MIB::tenantMacDataSize."big-ip" = Counter32: 1
+F5-OS-TENANT-MIB::tenantMacDataSize."big-ip2" = Counter32: 1
+F5-OS-TENANT-MIB::tenantMacDataSize."big-ip3" = Counter32: 1
+F5-OS-TENANT-MIB::tenantApplianceMode."big-ip" = INTEGER: disabled(0)
+F5-OS-TENANT-MIB::tenantApplianceMode."big-ip2" = INTEGER: disabled(0)
+F5-OS-TENANT-MIB::tenantApplianceMode."big-ip3" = INTEGER: disabled(0)
+F5-OS-TENANT-MIB::tenantUnitKeyHash."big-ip" = STRING: ldCb3qyXb0s71zpJ5mQHVHafPksHT8FB5Qgox1eokXwGpqcRaz/CNvcg67cFfNDAbG9MfmvJzaRoOPMGxX0HNg==
+F5-OS-TENANT-MIB::tenantUnitKeyHash."big-ip2" = STRING: VfkI7Nhog2NbPPoeL9RyyCR9HCrBy1thJ59lRid0VR+JfY1jkQB4W9ders9TWR/nlNIp6oC0ZPfUVD71fTm9Qg==
+F5-OS-TENANT-MIB::tenantUnitKeyHash."big-ip3" = STRING: SS9+v1Vu39hti1+sK3FLirfh/toqO7huSpTpuNDZ3UZI+jRS7hFWBePkNLSqjeIp/qcAhlQUpO4cDlQFpydl9w==
+F5-OS-TENANT-MIB::tenantNameSpace."big-ip" = STRING: default
+F5-OS-TENANT-MIB::tenantNameSpace."big-ip2" = STRING: default
+F5-OS-TENANT-MIB::tenantNameSpace."big-ip3" = STRING: default
+F5-OS-TENANT-MIB::tenantPrimarySlot."big-ip" = INTEGER: 1
+F5-OS-TENANT-MIB::tenantPrimarySlot."big-ip2" = INTEGER: 1
+F5-OS-TENANT-MIB::tenantQatVFCount."big-ip" = INTEGER: 15
+F5-OS-TENANT-MIB::tenantQatVFCount."big-ip2" = INTEGER: 6
+F5-OS-TENANT-MIB::tenantQatVFCount."big-ip3" = INTEGER: 15
+F5-OS-TENANT-MIB::tenantImageVersion."big-ip" = STRING: BIG-IP 17.1.1.2 0.0.10
+F5-OS-TENANT-MIB::tenantImageVersion."big-ip2" = STRING: BIG-IP 17.1.1.2 0.0.10
+F5-OS-TENANT-MIB::tenantStatus."big-ip" = STRING: Running
+F5-OS-TENANT-MIB::tenantStatus."big-ip2" = STRING: Running
+F5-OS-TENANT-MIB::tenantStatus."big-ip3" = STRING: Configured
+F5-OS-TENANT-MIB::tenantBaseMac."big-ip" = STRING: 0:94:a1:69:35:14
+F5-OS-TENANT-MIB::tenantBaseMac."big-ip2" = STRING: 0:94:a1:69:35:18
+F5-OS-TENANT-MIB::tenantBaseMac."big-ip3" = STRING: 0:94:a1:69:35:1a
+F5-OS-TENANT-MIB::tenantMgmtMac."big-ip" = STRING: 0:94:a1:69:35:15
+F5-OS-TENANT-MIB::tenantMgmtMac."big-ip2" = STRING: 0:94:a1:69:35:19
+j.mccarron@J0MW6JR9CV ~ % 
+
 
 Tenant Virtual Wires Table
 -----------------------------
