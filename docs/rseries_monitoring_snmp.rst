@@ -4476,14 +4476,14 @@ Query the following SNMP OID to get detailed LLDP neighbors table.
 
 
 
-    j.mccarron@J0MW6JR9CV ~ %  snmptable -v 2c  -c public -m ALL 172.22.50.3 F5-OS-LLDP-MIB:lldpNeighborsTable
-SNMP table: F5-OS-LLDP-MIB::lldpNeighborsTable
+    prompt%  snmptable -v 2c  -c public -m ALL 172.22.50.3 F5-OS-LLDP-MIB:lldpNeighborsTable
+    SNMP table: F5-OS-LLDP-MIB::lldpNeighborsTable
 
- lldpLocalInterface lldpNeighborPortId lldpNeighborChassisId  lldpNeighborPortDesc   lldpNeighborSysName                                                            lldpNeighborSysDesc lldpNeighborSysCap lldpNeighborMgmtAddr lldpNeighborPvid lldpNeighborPpvid lldpNeighborVlanName lldpNeighborVlanTag lldpNeighborProtocolIdentity lldpNeighborAutoNego lldpNeighborPmd lldpNeighborMau lldpNeighborAggStatus lldpNeighborAggPortid lldpNeighborMfs lldpNeighborF5ProductModel
-                1.0     Ethernet3/23/1     c4:ca:2b:80:fa:75 mccarron-r10000-1:1.0 a7808-1.cpt.f5net.com  Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH            1310740         172.22.56.13                1                 0                    ?                  48                            0                    0               0               0                     3                   114           10240                          ?
-                2.0     Ethernet3/24/1     c4:ca:2b:80:fa:75 mccarron-r10000-1:2.0 a7808-1.cpt.f5net.com  Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH            1310740         172.22.56.13                1                 0                    ?                  48                            0                    0               0               0                     1                     0           10240                          ?
-               13.0         Ethernet51     98:5d:82:ba:c4:7b                     ?    sw23.gtp.f5net.com Arista Networks EOS version 4.28.5M running on an Arista Networks DCS-7010T-48            1310724         172.22.48.23              500                 0                    ?                  48                            0                    0               0               0                     1                     0            9416                          ?
-j.mccarron@J0MW6JR9CV ~ %  
+    lldpLocalInterface lldpNeighborPortId lldpNeighborChassisId  lldpNeighborPortDesc   lldpNeighborSysName                                                            lldpNeighborSysDesc lldpNeighborSysCap lldpNeighborMgmtAddr lldpNeighborPvid lldpNeighborPpvid lldpNeighborVlanName lldpNeighborVlanTag lldpNeighborProtocolIdentity lldpNeighborAutoNego lldpNeighborPmd lldpNeighborMau lldpNeighborAggStatus lldpNeighborAggPortid lldpNeighborMfs lldpNeighborF5ProductModel
+                    1.0     Ethernet3/23/1     c4:ca:2b:80:fa:75 mccarron-r10000-1:1.0 a7808-1.cpt.f5net.com  Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH            1310740         172.22.56.13                1                 0                    ?                  48                            0                    0               0               0                     3                   114           10240                          ?
+                    2.0     Ethernet3/24/1     c4:ca:2b:80:fa:75 mccarron-r10000-1:2.0 a7808-1.cpt.f5net.com  Arista Networks EOS version 4.30.4M running on an Arista Networks DCS-7808-CH            1310740         172.22.56.13                1                 0                    ?                  48                            0                    0               0               0                     1                     0           10240                          ?
+                13.0         Ethernet51     98:5d:82:ba:c4:7b                     ?    sw23.gtp.f5net.com Arista Networks EOS version 4.28.5M running on an Arista Networks DCS-7010T-48            1310724         172.22.48.23              500                 0                    ?                  48                            0                    0               0               0                     1                     0            9416                          ?
+    prompt%  
 
 
 
@@ -4798,12 +4798,12 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantVirtualWiresTable
+    prompt% snmptable -v 2c  -c public -m ALL -Ci 172.22.50.1 F5-OS-TENANT-MIB:tenantVirtualWiresTable
     SNMP table: F5-OS-TENANT-MIB::tenantVirtualWiresTable
 
-    tenantVirtualWire
-            vwire-1
-    prompt%
+                index tenantVirtualWire
+    "big-ip3"."vwire-1"           vwire-1
+    prompt% 
 
     prompt% snmpwalk -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantVirtualWiresTable
     F5-OS-TENANT-MIB::tenantVirtualWire."big-ip3"."vwire-1" = STRING: vwire-1
@@ -4825,20 +4825,20 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantVlansTable
+    prompt% snmptable -v 2c  -c public -m ALL -Ci 172.22.50.1 F5-OS-TENANT-MIB:tenantVlansTable
     SNMP table: F5-OS-TENANT-MIB::tenantVlansTable
 
-    tenantVlan
-            500
-            501
-            502
-            500
-            501
-            502
-            500
-            501
-            502
-    prompt% 
+            index tenantVlan
+    "big-ip".500        500
+    "big-ip".501        501
+    "big-ip".502        502
+    "big-ip2".500        500
+    "big-ip2".501        501
+    "big-ip2".502        502
+    "big-ip3".500        500
+    "big-ip3".501        501
+    "big-ip3".502        502
+    prompt%
 
 
 .. code-block:: bash
@@ -4879,13 +4879,13 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantNodesTable
+    prompt% snmptable -v 2c  -c public -m ALL -Ci 172.22.50.1 F5-OS-TENANT-MIB:tenantNodesTable
     SNMP table: F5-OS-TENANT-MIB::tenantNodesTable
 
-    tenantNode
-            1
-            1
-            1
+        index tenantNode
+    "big-ip".1          1
+    "big-ip2".1          1
+    "big-ip3".1          1
     prompt% 
 
 .. code-block:: bash
@@ -4914,24 +4914,24 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantCPUAllocationsStateTable
+    prompt % snmptable -v 2c  -c public -m ALL -Ci 172.22.50.1 F5-OS-TENANT-MIB:tenantCPUAllocationsStateTable
     SNMP table: F5-OS-TENANT-MIB::tenantCPUAllocationsStateTable
 
-    tenantCPU
-            6
-            8
-            11
-            14
-            15
-            22
-            24
-            27
-            30
-            31
-            10
-            13
-            26
-            29
+            index tenantCPU
+    "big-ip".1.6         6
+    "big-ip".1.8         8
+    "big-ip".1.11        11
+    "big-ip".1.14        14
+    "big-ip".1.15        15
+    "big-ip".1.22        22
+    "big-ip".1.24        24
+    "big-ip".1.27        27
+    "big-ip".1.30        30
+    "big-ip".1.31        31
+    "big-ip2".1.10        10
+    "big-ip2".1.13        13
+    "big-ip2".1.26        26
+    "big-ip2".1.29        29
     prompt%
 
 .. code-block:: bash
@@ -4981,13 +4981,14 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 10.255.2.40 F5-OS-TENANT-MIB:tenantFeatureFlagsStateTable
+    prompt% snmptable -v 2c  -c public -m ALL -Ci 172.22.50.1 F5-OS-TENANT-MIB:tenantFeatureFlagsStateTable
     SNMP table: F5-OS-TENANT-MIB::tenantFeatureFlagsStateTable
 
-    tenantClusteringAsServiceFlag tenantStatsStreamCapableFlag
-                          true                         true
-                             ?                         true
-    prompt%
+        index tenantClusteringAsServiceFlag tenantStatsStreamCapableFlag
+    "big-ip"                             ?                         true
+    "big-ip2"                             ?                         true
+    "big-ip3"                             ?                        false
+    prompt% 
 
 
 Tenant Instances Table
@@ -5060,14 +5061,14 @@ Query the following SNMP OID to get detailed tenant status.
 
 .. code-block:: bash
 
-    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantMacBlockStateTable       
+    prompt% snmptable -v 2c  -c public -m ALL -Ci 172.22.50.1 F5-OS-TENANT-MIB:tenantMacBlockStateTable 
     SNMP table: F5-OS-TENANT-MIB::tenantMacBlockStateTable
 
-            tenantMAC
-    00:94:a1:69:35:14
-    00:94:a1:69:35:18
-    00:94:a1:69:35:1a
-    prompt%
+                            index         tenantMAC
+    "big-ip"."00:94:a1:69:35:14" 00:94:a1:69:35:14
+    "big-ip2"."00:94:a1:69:35:18" 00:94:a1:69:35:18
+    "big-ip3"."00:94:a1:69:35:1a" 00:94:a1:69:35:1a
+    prompt% 
 
 .. code-block:: bash
 
