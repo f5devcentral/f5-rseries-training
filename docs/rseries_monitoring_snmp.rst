@@ -1022,6 +1022,142 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 SNMP Trap Details
 =================
 
+Inside of F5OS there are different categories of diagnostic information that the system captures: **System Alerts** and **System Events**.
+
+**System Alerts**
+
+A system alert is typically associated with some sort of fault in the system and it will have two states: An **alarm** condition indicating that some threshold has been crossed or some failure has occurred, and then a corresponding **clear** condition that indicates the fault has cleared or the threshold condition has gone back to an acceptable level. System alerts are high-level categories: psu-fault, drive-fault, thermal-fault etc... This is what traditional SNMP systems use to monitor SNMP traps, so that someone can be alerted when there is a failure condition or a threshold that has been crossed. 
+
+When translated into SNMP traps the states are: ASSERT,CLEAR.
+
+If a system is healthy and there are no active alarms, then the output of **show system alarms** will report **No entries found**.
+
+.. code-block:: bash
+
+    r4800-2-gsa# show system alarms 
+    % No entries found.
+    r4800-2-gsa#
+
+If the system has active alarms, then the details will be displayed in the **show system alarms** output. If the fault is corrected, then the alarm will be removed from the output. 
+
+.. code-block:: bash
+
+    r10900-1-gsa# show system alarms 
+    ID      RESOURCE      SEVERITY  TEXT                                       TIME CREATED                       
+    --------------------------------------------------------------------------------------------------------------
+    262401  Portgroup 12  WARNING   Lanes: 1,2,3,4 Receiver power low warning  2024-08-14 23:35:28.453636868 UTC  
+    262401  Portgroup 14  WARNING   Lanes: 1 Receiver power low warning        2024-08-14 23:35:28.494375773 UTC  
+    262402  Portgroup 14  WARNING   Lanes: 1 Transmitter bias low warning      2024-09-27 13:19:55.728880195 UTC  
+    262400  Portgroup 14  ERROR     Lanes: 1 Transmitter power low alarm       2024-09-27 13:19:55.728742803 UTC  
+    66305   psu-2         CRITICAL  PSU fault detected                         2025-05-29 16:59:41.946105595 UTC  
+
+    r10900-1-gsa#
+
+**System Events**
+
+A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm on clear condition. A system event could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an Optic. Many times a system event will provide more detailed lower-level information that coresponds to an alarm of clear condition. 
+
+
+
+.. code-block:: bash
+
+    r10900-2-gsa# show system events | include psu
+    66305 psu-2 psu-fault EVENT NA "Deasserted: PSU 2 input over-power warning" "2024-09-30 22:14:50.630416639 UTC" 
+    66305 psu-2 psu-fault EVENT NA "Deasserted: PSU 2 input over-current warning" "2024-09-30 22:14:51.160416708 UTC" 
+    66305 psu-2 psu-fault EVENT NA "Deasserted: PSU 2 input over-current fault" "2024-09-30 22:14:51.685095670 UTC" 
+    66305 psu-2 psu-fault EVENT NA "Deasserted: PSU 2 unit off for low input voltage" "2024-09-30 22:14:52.216633391 UTC" 
+    66305 psu-1 psu-fault EVENT NA "Asserted: PSU 1 present" "2024-09-30 22:14:53.792270470 UTC"   
+    66305 psu-controller psu-fault EVENT NA "Deasserted: PSU mismatch" "2024-09-30 22:14:54.337132053 UTC" 
+    66305 psu-2 psu-fault EVENT NA "Asserted: PSU 2 input OK" "2024-09-30 22:14:54.903037510 UTC"  
+    66305 psu-2 psu-fault EVENT NA "Asserted: PSU 2 output OK" "2024-09-30 22:14:55.421046115 UTC" 
+    66305 psu-2 psu-fault EVENT NA "Deasserted: PSU 2 unsupported" "2024-09-30 22:14:55.950652039 UTC" 
+    66305 psu-1 psu-fault EVENT NA "Asserted: PSU 1 input OK" "2024-09-30 22:14:56.571673865 UTC"  
+    66305 psu-1 psu-fault EVENT NA "Deasserted: PSU 1 unsupported" "2024-09-30 22:14:57.098983897 UTC" 
+    66305 psu-2 psu-fault EVENT NA "Asserted: PSU 2 present" "2024-09-30 22:14:57.144088560 UTC"   
+    66305 psu-1 psu-fault ASSERT CRITICAL "PSU fault detected" "2024-09-30 22:14:57.175299808 UTC" 
+    66305 psu-1 psu-fault EVENT NA "Asserted: PSU 1 output OK" "2024-09-30 22:14:57.175304440 UTC" 
+ 
+.. code-block:: bash
+
+    r10900-2-gsa# show system events | include Portgroup 
+    262401 Portgroup 2 rxPwr ASSERT ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-16 06:31:57.893624774 UTC" 
+    262401 Portgroup 2 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-16 06:32:27.893666605 UTC" 
+    262401 Portgroup 1 rxPwr ASSERT ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-17 21:00:57.863227048 UTC" 
+    262401 Portgroup 2 rxPwr ASSERT WARNING "Lanes: 1,2,3,4 Receiver power low warning" "2024-06-17 21:00:57.893687325 UTC" 
+    262401 Portgroup 1 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-18 13:00:57.863284941 UTC" 
+    262401 Portgroup 2 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-18 13:00:57.893710735 UTC" 
+    262401 Portgroup 2 rxPwr ASSERT ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-21 01:06:27.893955002 UTC" 
+    262401 Portgroup 2 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-21 01:06:57.893506508 UTC" 
+    262401 Portgroup 2 rxPwr ASSERT WARNING "Lanes: 1,2,3,4 Receiver power low warning" "2024-06-21 20:17:27.893594602 UTC" 
+    262401 Portgroup 2 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-21 20:17:57.893687839 UTC" 
+    262401 Portgroup 2 rxPwr ASSERT ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-30 17:13:50.315994230 UTC" 
+    262401 Portgroup 2 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-30 17:14:20.106497472 UTC" 
+
+.. code-block:: bash
+
+    r10900-2-gsa# show system events | include thermal  
+    65546 appliance thermal-fault EVENT NA "ATSE2_0 at +39.1 degC" "2024-06-14 15:02:02.852896207 UTC" 
+    65546 appliance thermal-fault EVENT NA "ASW_3 at +34.5 degC" "2024-06-14 15:02:02.854349640 UTC" 
+    65546 appliance thermal-fault EVENT NA "NSE_6 at +32.3 degC" "2024-06-14 15:02:02.855751167 UTC" 
+    65546 appliance thermal-fault EVENT NA "CPU at +53.0 degC" "2024-06-14 15:02:02.857040180 UTC" 
+    65546 appliance thermal-fault EVENT NA "ASW_1 at +33.9 degC" "2024-06-14 15:02:02.858380610 UTC" 
+    65546 appliance thermal-fault EVENT NA "NSE_4 at +32.8 degC" "2024-06-14 15:02:02.859641796 UTC" 
+    65546 appliance thermal-fault EVENT NA "ASW_0 at +34.0 degC" "2024-06-14 15:02:02.860927679 UTC" 
+    65546 appliance thermal-fault EVENT NA "NSE_3 at +31.8 degC" "2024-06-14 15:02:02.862157794 UTC" 
+    65546 appliance thermal-fault EVENT NA "ASW_6 at +33.7 degC" "2024-06-14 15:02:03.771468909 UTC" 
+    65546 appliance thermal-fault EVENT NA "NSE_1 at +31.3 degC" "2024-06-14 15:02:03.775933897 UTC" 
+
+
+
+When system events are translated into SNMP traps the state is: alertEffect=2.
+
+
+
+<INFO> 10-Jun-2024::11:38:18.903 r10900-1 confd[139]: snmp snmpv2-trap reqid=56610222 10.255.80.251:162 (TimeTicks sysUpTime=26599011)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:38:18.899352602 UTC)(OCTET STRING alertDescription=System reboot is triggered for software version change)
+<INFO> 10-Jun-2024::11:38:18.903 r10900-1 confd[139]: snmp snmpv2-trap reqid=56610222 10.255.0.144:161 (TimeTicks sysUpTime=26599011)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:38:18.899352602 UTC)(OCTET STRING alertDescription=System reboot is triggered for software version change)
+<INFO> 10-Jun-2024::11:42:31.054 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716379 10.255.80.251:162 (TimeTicks sysUpTime=437)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
+<INFO> 10-Jun-2024::11:42:31.055 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716379 10.255.0.144:161 (TimeTicks sysUpTime=437)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
+<INFO> 10-Jun-2024::11:42:33.105 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716380 10.255.80.251:162 (TimeTicks sysUpTime=643)(OBJECT IDENTIFIER snmpTrapOID=firmware-update-status)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:32.847535692 UTC)(OCTET STRING alertDescription=Firmware update is running for atse 0)
+<INFO> 10-Jun-2024::11:42:33.105 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716380 10.255.0.144:161 (TimeTicks sysUpTime=643)(OBJECT IDENTIFIER snmpTrapOID=firmware-update-status)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:32.847535692 UTC)(OCTET STRING alertDescription=Firmware update is running for atse 0)
+<INFO> 10-Jun-2024::11:42:36.052 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716381 10.255.80.251:162 (TimeTicks sysUpTime=938)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:35.999123796 UTC)(OCTET STRING alertDescription=Deasserted: CPU machine check error)
+<INFO> 10-Jun-2024::11:42:36.053 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716381 10.255.0.144:161 (TimeTicks sysUpTime=938)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:35.999123796 UTC)(OCTET STRING alertDescription=Deasserted: CPU machine check error)
+<INFO> 10-Jun-2024::11:42:36.153 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716382 10.255.80.251:162 (TimeTicks sysUpTime=948)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.010357145 UTC)(OCTET STRING alertDescription=BWE1 at +37.8 degC)
+<INFO> 10-Jun-2024::11:42:36.153 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716382 10.255.0.144:161 (TimeTicks sysUpTime=948)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.010357145 UTC)(OCTET STRING alertDescription=BWE1 at +37.8 degC)
+<INFO> 10-Jun-2024::11:42:36.253 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716383 10.255.80.251:162 (TimeTicks sysUpTime=958)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.015571515 UTC)(OCTET STRING alertDescription=BWE2 at +40.1 degC)
+<INFO> 10-Jun-2024::11:42:36.254 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716383 10.255.0.144:161 (TimeTicks sysUpTime=958)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.015571515 UTC)(OCTET STRING alertDescription=BWE2 at +40.1 degC)
+<INFO> 10-Jun-2024::11:42:36.354 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716384 10.255.80.251:162 (TimeTicks sysUpTime=968)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.020804024 UTC)(OCTET STRING alertDescription=ASW_1 at +30.8 degC)
+
+They key to understanding F5OS SNMP traps, is that there are different types of traps that are sent. 
+
+
+two types of alerts analog and binary
+
+threshold based which may have different levels or states (thermal, fan speed)
+
+Binary deasserted or asserted 0 or 1. Some are informational and some are critical.
+
+AOM manages all this, there are messages with all of this defined by AOM. PEL Asserted/Deasserted not bnegative or positive, it is just if the state is zero or one. 
+
+Whem things are powercycled it rediscovers state, and we get a flood of binary alerts. 
+
+diag agent manages how things get communicated to customers. Send to confd and SNMP API.
+
+It pre-pends state to message generated by LOP. "Asserted" " Deasserted" adds to confusion. 
+
+Stae is not positive or negative
+
+deasserted PSU mismatch, means all the PSU's mismatch.... wording is not intuitive. 
+
+We use the word fault a lot, even wehn things aren't negative, and they may be just status.
+
+may thermal sensors and any one of those can cause to enter alarm state. Typically see alarm to trigger event and then an event message with more specifics. Alarms are high level/generic/
+
+We have mixed informational with events, customers
+
+show system events vs. show system alarms.
+
+Alarms (Alerts) - Events
+
 This section provides examples of SNMP traps and their associated log messages, and what troubleshooting steps are recommended. Traps will be sent with either an **assert** when an alarm occurs, a **clear** when the alarm is cleared, or an **event** which is providing an update to a raised or cleared alarm event.
 
 - assert(1) is reported in alertEffect when alarm is raised.
@@ -1922,6 +2058,11 @@ Notification indicating unusable hugepage memory.
 
 .. code-block:: bash
 
+    r5900-2-gsa# file show log/system/snmp.log | include memory
+    <INFO> 18-Dec-2024::15:46:15.313 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721992 172.22.50.57:162 (TimeTicks sysUpTime=554657616)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-12-18 20:46:15.306524334 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
+    <INFO> 18-Dec-2024::15:51:01.892 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721993 172.22.50.57:162 (TimeTicks sysUpTime=554686274)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-12-18 20:51:01.887434900 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
+    <INFO> 20-Dec-2024::10:42:48.632 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207722014 172.22.50.57:162 (TimeTicks sysUpTime=570116948)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-12-20 15:42:48.625427838 UTC)(OCTET STRING alertDescription=1382 MB unusable memory detected, reboot to reclaim.)
+    r5900-2-gsa#
 
 Firmware Update Status Traps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
