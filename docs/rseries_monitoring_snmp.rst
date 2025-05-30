@@ -1057,7 +1057,7 @@ If the system has active alarms, then the details will be displayed in the **sho
 
 A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm on clear condition. A system event could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an Optic. Many times a system event will provide more detailed lower-level information that coresponds to an alarm of clear condition. 
 
-
+Below are some examples of PSU related events.
 
 .. code-block:: bash
 
@@ -1077,6 +1077,8 @@ A system event is an informational message which doesn't have an alarm or clear 
     66305 psu-1 psu-fault ASSERT CRITICAL "PSU fault detected" "2024-09-30 22:14:57.175299808 UTC" 
     66305 psu-1 psu-fault EVENT NA "Asserted: PSU 1 output OK" "2024-09-30 22:14:57.175304440 UTC" 
  
+Below are some examples of Portgroup related events.
+
 .. code-block:: bash
 
     r10900-2-gsa# show system events | include Portgroup 
@@ -1093,6 +1095,8 @@ A system event is an informational message which doesn't have an alarm or clear 
     262401 Portgroup 2 rxPwr ASSERT ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-30 17:13:50.315994230 UTC" 
     262401 Portgroup 2 rxPwr CLEAR ERROR "Lanes: 1,2,3,4 Receiver power low alarm" "2024-06-30 17:14:20.106497472 UTC" 
 
+Below are some examples of thermal related events. 
+
 .. code-block:: bash
 
     r10900-2-gsa# show system events | include thermal  
@@ -1106,7 +1110,6 @@ A system event is an informational message which doesn't have an alarm or clear 
     65546 appliance thermal-fault EVENT NA "NSE_3 at +31.8 degC" "2024-06-14 15:02:02.862157794 UTC" 
     65546 appliance thermal-fault EVENT NA "ASW_6 at +33.7 degC" "2024-06-14 15:02:03.771468909 UTC" 
     65546 appliance thermal-fault EVENT NA "NSE_1 at +31.3 degC" "2024-06-14 15:02:03.775933897 UTC" 
-
 
 
 When system events are translated into SNMP traps the state is: alertEffect=2.
@@ -1136,7 +1139,7 @@ threshold based which may have different levels or states (thermal, fan speed)
 
 Binary deasserted or asserted 0 or 1. Some are informational and some are critical.
 
-AOM manages all this, there are messages with all of this defined by AOM. PEL Asserted/Deasserted not bnegative or positive, it is just if the state is zero or one. 
+AOM manages all this, there are messages with all of this defined by AOM. PEL Asserted/Deasserted not negative or positive, it is just if the state is zero or one. 
 
 Whem things are powercycled it rediscovers state, and we get a flood of binary alerts. 
 
