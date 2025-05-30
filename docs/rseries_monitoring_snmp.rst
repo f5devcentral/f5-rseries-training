@@ -1022,13 +1022,11 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 SNMP Trap Details
 =================
 
-Inside of F5OS there are different categories of diagnostic information that the system captures: **System Alerts** and **System Events**.
+Inside of F5OS there are different categories of diagnostic information that the system captures: **System Alerts** and **System Events**. Both System Alerts and System Events can trigger SNMP traps. This section will provide background on the differences between the two types, and make recommendations of how to monitor and interpret the different types of SNMP traps. Before getting into the SNMP Trap implementation, it is important to understand how F5OS categorizes the different types of messages. 
 
 **System Alerts**
 
-A system alert is typically associated with some sort of fault in the system and it will have two states: An **alarm** condition indicating that some threshold has been crossed or some failure has occurred, and then a corresponding **clear** condition that indicates the fault has cleared or the threshold condition has gone back to an acceptable level. System alerts are high-level categories: psu-fault, drive-fault, thermal-fault etc... This is what traditional SNMP systems use to monitor SNMP traps, so that someone can be alerted when there is a failure condition or a threshold that has been crossed. 
-
-When translated into SNMP traps the states are: ASSERT,CLEAR.
+A system alert is typically associated with some sort of fault in the system and it will have two states: An **alarm** condition indicating that some threshold has been crossed or some failure has occurred, and then a corresponding **clear** condition that indicates the fault has cleared or the threshold condition has gone back to an acceptable level. System alerts are high-level categories like: psu-fault, drive-fault, thermal-fault etc... These type of messages are what traditional SNMP systems monitor in order to alert someone when there is a failure condition or a threshold that has been crossed requiring attention. 
 
 If a system is healthy and there are no active alarms, then the output of **show system alarms** will report **No entries found**.
 
@@ -1038,7 +1036,7 @@ If a system is healthy and there are no active alarms, then the output of **show
     % No entries found.
     r4800-2-gsa#
 
-If the system has active alarms, then the details will be displayed in the **show system alarms** output. If the fault is corrected, then the alarm will be removed from the output. 
+If the system has active alarms, then the details will be displayed in the **show system alarms** output. If the fault is cleared, then the alarm will be removed from the output. 
 
 .. code-block:: bash
 
@@ -1053,9 +1051,12 @@ If the system has active alarms, then the details will be displayed in the **sho
 
     r10900-1-gsa#
 
+
+When translated into SNMP traps the states for these types os messsages are: ASSERT,CLEAR.
+
 **System Events**
 
-A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm on clear condition. A system event could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an Optic. Many times a system event will provide more detailed lower-level information that coresponds to an alarm of clear condition. 
+A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm on clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addtional to may more low-level details. Many times a system event will provide more detailed lower-level information that coresponds to an alarm or clear condition. As an example a PSU-Fault alarm, may have corresponding events messages that provide more details as to whay the PSU is in a fault alarm condition. 
 
 Below are some examples of PSU related events.
 
@@ -1167,7 +1168,9 @@ This section provides examples of SNMP traps and their associated log messages, 
 - clear(0) is reported in alertEffect when alarm is cleared.
 - event(2) is updated in alertEffect when event notification is reported.
 
-From an SNMP trap monitoring/fault perspective it is recommended to focus on traps that have either an **alertEffect=1** indicating that an alert is being raised, or an **alertEffect=0** indicating that an alert is being cleared. All other traps with **alertEffect=2** are providing additional detail that may be useful and may also corelate to raise or clear events, but from a fault monitoring perspective may be ignored.
+From an SNMP trap monitoring/fault perspective it is recommended to focus on traps that have either an **alertEffect=1** indicating that an alert is being raised, or an **alertEffect=0** indicating that an alert is being cleared. These SNMP Traps should correspond to output in the **show system alarms** output when there is an active alarm. 
+
+All other traps with **alertEffect=2** are providing additional detail that may be useful and may also corelate to raise or clear events, but from a fault monitoring perspective may be ignored.
 
 Currently, when an rSeries device has powered removed the AOM module will discard any state it has and when powered back on it may send many informational SNMP traps indicating the current status of certain sensors. These will all be sent with **alertEffect=2**, which can be ignored from an SNMP fault perspective. 
 
