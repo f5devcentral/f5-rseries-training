@@ -2502,22 +2502,24 @@ The transmit power threshold for a specific transceiver has reached a theshold i
 
 The receive power threshold for a specific transceiver has reached a theshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
+Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low warning on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating an warning clear condition.
+
+.. code-block:: bash
+
+    <INFO> 21-Jun-2024::16:17:27.898 r10900-1 confd[142]: snmp snmpv2-trap reqid=36800019 10.255.0.144:161 (TimeTicks sysUpTime=60958582)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-06-21 20:17:27.893594602 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
+
+
+    <INFO> 31-Jul-2024::09:11:20.182 r10900-1 confd[155]: snmp snmpv2-trap reqid=1965264689 10.255.80.251:162 (TimeTicks sysUpTime=311262596)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-07-31 13:11:20.106635916 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
+
+Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low alarm on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include rx
-    <INFO> 12-Apr-2024::12:54:13.079 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.80.251:162 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
     <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
+    
     <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.0.144:161 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    <INFO> 24-Apr-2024::16:20:42.534 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584533 10.255.80.251:162 (TimeTicks sysUpTime=130543073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-24 20:20:42.526603044 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    <INFO> 24-Apr-2024::16:20:42.534 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584533 10.255.0.144:161 (TimeTicks sysUpTime=130543073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-24 20:20:42.526603044 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    <INFO> 24-Apr-2024::16:21:13.162 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584534 10.255.80.251:162 (TimeTicks sysUpTime=130546136)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-24 20:21:13.155888950 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    <INFO> 24-Apr-2024::16:21:13.162 r10900-1 confd[137]: snmp snmpv2-trap reqid=789584534 10.255.0.144:161 (TimeTicks sysUpTime=130546136)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-24 20:21:13.155888950 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    <INFO> 30-Apr-2024::10:32:45.501 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170483 10.255.80.251:162 (TimeTicks sysUpTime=16401)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-30 14:32:45.496108844 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-    <INFO> 30-Apr-2024::10:32:45.501 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170483 10.255.0.144:161 (TimeTicks sysUpTime=16401)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-30 14:32:45.496108844 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-    <INFO> 30-Apr-2024::10:33:15.499 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170486 10.255.80.251:162 (TimeTicks sysUpTime=19400)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-30 14:33:15.495468312 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-    <INFO> 30-Apr-2024::10:33:15.499 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170486 10.255.0.144:161 (TimeTicks sysUpTime=19400)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 16)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-30 14:33:15.495468312 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-    <INFO> 3-May-2024::15:52:15.461 r10900-1 confd[152]: snmp snmpv2-trap reqid=1018170861 10.255.80.251:162 (TimeTicks sysUpTime=27853397)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:15.455181379 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    
 
 
 **txBias                  .1.3.6.1.4.1.12276.1.1.1.262402**
