@@ -1586,7 +1586,7 @@ Below is an example of an **aom-fault** being raised and then cleared.
 +------------------+------------------------------------------------------------------------------------+
 
 
-The system will monitor the storage utilization of the rSeries disks and warn if the disk capacity gets too high. The rate is measured once an hour on rSeries appliances. There are 3 levels of events that can occur as seen below:
+The system will monitor the storage utilization of the rSeries disks and warn if the disk capacity gets too high. This is measured hourly. There are 3 levels of events that can occur as seen below:
 
 - drive-capacity:critical-limit - Drive Usage exceeded 97%
 - drive-capacity:failure-limit  - Drive Usage exceeded 90%
