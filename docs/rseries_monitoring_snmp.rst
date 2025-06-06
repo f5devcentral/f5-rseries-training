@@ -1644,6 +1644,7 @@ Below are example SNMP traps for a drive-capacity-fault.
 | CLEAR            | Power fault detected in hardware                                                   |
 +------------------+------------------------------------------------------------------------------------+
 
+In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, menaning there is no alarm associated with these events.
 
 .. code-block:: bash
 
@@ -1670,6 +1671,8 @@ Below are example SNMP traps for a drive-capacity-fault.
 +------------------+------------------------------------------------------------------------------------+
 | CLEAR            | Thermal fault detected in hardware                                                 |
 +------------------+------------------------------------------------------------------------------------+
+
+In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, menaning there is no alarm associated with these events.
 
 .. code-block:: bash
 
@@ -1743,6 +1746,8 @@ Below are example SNMP traps for a drive-capacity-fault.
 | CLEAR            | Sensor fault detected in hardware                                 |
 +------------------+-------------------------------------------------------------------+
 
+A sensor fault can apply to an rSeries or a VELOS device. The example below shows SNMP traps of sensor failures from a VELOS system controller, however rSeries would follow a similar format. 
+
 .. code-block:: bash
 
     syscon-1-active# file show log/confd/snmp.log | include sensor-fault        
@@ -1774,22 +1779,24 @@ Below are example SNMP traps for a drive-capacity-fault.
 |                  | Example: blade1 removed                                   |
 +------------------+-----------------------------------------------------------+
 
+Below is from the show systems event output. Need trap.
+
 .. code-block:: bash
 
-    syscon-1-active# file show log/confd/snmp.log | include module-present
-    <INFO> 31-Aug-2023::17:29:41.592 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087723 10.255.0.139:162 (TimeTicks sysUpTime=10937)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.554609619 UTC)(OCTET STRING alertDescription=Blade6 removed)
-    <INFO> 31-Aug-2023::17:29:41.593 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087723 10.255.0.144:162 (TimeTicks sysUpTime=10937)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.554609619 UTC)(OCTET STRING alertDescription=Blade6 removed)
-    <INFO> 31-Aug-2023::17:29:41.604 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087731 10.255.0.139:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.596222405 UTC)(OCTET STRING alertDescription=Blade4 removed)
-    <INFO> 31-Aug-2023::17:29:41.605 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087731 10.255.0.144:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.596222405 UTC)(OCTET STRING alertDescription=Blade4 removed)
-    <INFO> 31-Aug-2023::17:29:41.607 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087733 10.255.0.139:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.618843267 UTC)(OCTET STRING alertDescription=Blade5 removed)
-    <INFO> 31-Aug-2023::17:29:41.608 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087733 10.255.0.144:162 (TimeTicks sysUpTime=10938)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:16.618843267 UTC)(OCTET STRING alertDescription=Blade5 removed)
-    <INFO> 31-Aug-2023::17:29:41.611 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087735 10.255.0.139:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.006214637 UTC)(OCTET STRING alertDescription=Vpc1 present)
-    <INFO> 31-Aug-2023::17:29:41.612 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087735 10.255.0.144:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.006214637 UTC)(OCTET STRING alertDescription=Vpc1 present)
-    <INFO> 31-Aug-2023::17:29:41.614 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087737 10.255.0.139:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.018550834 UTC)(OCTET STRING alertDescription=Vpc2 present)
-    <INFO> 31-Aug-2023::17:29:41.615 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087737 10.255.0.144:162 (TimeTicks sysUpTime=10939)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.018550834 UTC)(OCTET STRING alertDescription=Vpc2 present)
-    <INFO> 31-Aug-2023::17:29:41.627 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087745 10.255.0.139:162 (TimeTicks sysUpTime=10940)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.040748272 UTC)(OCTET STRING alertDescription=Blade1 present)
-    <INFO> 31-Aug-2023::17:29:41.628 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087745 10.255.0.144:162 (TimeTicks sysUpTime=10940)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.040748272 UTC)(OCTET STRING alertDescription=Blade1 present)
-    <INFO> 31-Aug-2023::17:29:41.630 controller-1 confd[604]: snmp snmpv2-trap reqid=1410087747 10.255.0.139:162 (TimeTicks sysUpTime=10941)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-08-31 21:29:17.051477248 UTC)(OCTET STRING alertDescription=Blade2 present)
+    r4800-2-gsa# show system events | include "module-present"
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-02-24 19:36:05.641160832 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-03-01 01:24:32.779837153 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-04-02 17:08:48.625767757 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-04-29 17:04:13.207281448 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-05-11 16:43:39.871804557 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-05-15 14:42:42.124339690 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-05-16 13:12:35.925767693 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-05-17 17:41:48.991816900 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-06-18 03:38:12.701295067 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-07-11 06:29:49.170247800 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-07-11 06:40:35.714435930 UTC"                                                                                              
+    66304 appliance module-present EVENT NA "LCD Module present" "2022-07-11 06:40:35.715118974 UTC"                                                                                            
+    66304 appliance module-present EVENT NA "Fan tray present" "2022-09-01 17:50:53.430418938 UTC"               
 
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
@@ -1840,6 +1847,9 @@ Below are example SNMP traps for a drive-capacity-fault.
 
 This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not if an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
+In the example below, the SNMP traps are informational in nature because they all contain **alertEffect=2** even though they fall under the **psu-fault** trap. In this case, the term psu-fault may be misleading because not all traps generated by this trap are fault and/or clear events. In the example below, you can see traps indicating power supplies are present, power inputs are OK, along with the term **Asserted**. It is asserting a postive status, therfore there is no porblem. In other cases, there is a Deasserted messaged along with a negative status like PSU unsupported, or an input voltage over or under status. Again, this means that there is no problem currently. These messages are likely from when AOM was intialized when power was applied to the system or when power was re-cycled. AOM will need to re-learn status when power is recycled, so it will report the current status of the power supplies and their subsystems.
+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include psu-fault
@@ -1859,16 +1869,53 @@ This set of SNMP traps will relate to the health of the power supplies in the rS
     <INFO> 10-Jul-2023::13:43:27.554 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423964 10.255.0.144:161 (TimeTicks sysUpTime=15336)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.295486581 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
     <INFO> 10-Jul-2023::13:43:28.708 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423977 10.255.0.144:161 (TimeTicks sysUpTime=15451)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:23.951104145 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 input OK)
 
-    <INFO> 28-Aug-2024::08:48:35.127 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993906 10.255.80.251:162 (TimeTicks sysUpTime=39653639)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:48:35.123688343 UTC)(OCTET STRING alertDescription=PSU fault detected)
-    <INFO> 28-Aug-2024::08:48:35.177 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993907 10.255.80.251:162 (TimeTicks sysUpTime=39653644)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:48:35.123694857 UTC)(OCTET STRING alertDescription=Asserted: PSU 2 output OK)
-    <INFO> 28-Aug-2024::08:48:37.245 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993908 10.255.80.251:162 (TimeTicks sysUpTime=39653851)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2024-08-28 12:48:37.241897832 UTC)(OCTET STRING alertDescription=PSU fault detected)
-    <INFO> 28-Aug-2024::08:48:37.295 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993909 10.255.80.251:162 (TimeTicks sysUpTime=39653856)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:48:37.241905067 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 output OK)
-    <INFO> 28-Aug-2024::08:54:32.199 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993910 10.255.80.251:162 (TimeTicks sysUpTime=39689346)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:54:32.195728364 UTC)(OCTET STRING alertDescription=PSU fault detected)
-    <INFO> 28-Aug-2024::08:54:32.249 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993911 10.255.80.251:162 (TimeTicks sysUpTime=39689351)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:54:32.195735630 UTC)(OCTET STRING alertDescription=Asserted: PSU 2 output OK)
-    <INFO> 28-Aug-2024::08:54:34.198 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993912 10.255.80.251:162 (TimeTicks sysUpTime=39689546)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2024-08-28 12:54:34.194929367 UTC)(OCTET STRING alertDescription=PSU fault detected)
-    <INFO> 28-Aug-2024::08:54:34.248 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993913 10.255.80.251:162 (TimeTicks sysUpTime=39689551)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 12:54:34.194936734 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 output OK)
-    <INFO> 28-Aug-2024::09:00:02.203 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993914 10.255.80.251:162 (TimeTicks sysUpTime=39722346)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 13:00:02.200380119 UTC)(OCTET STRING alertDescription=PSU voltage out value < lower limit, value=9.39)
-    r10900-1-gsa# 
+In the example below, you can see a power supply fail and then recover. 
+
+
+.. code-block:: bash
+
+    r10900-2-gsa# file show log/system/snmp.log | include psu-fault | include 12-May
+
+    An alarm is raised indicated by alertEffect=1 for psu-1 indicating an PSU fault detected
+
+    <INFO> 12-May-2025::13:32:04.602 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428654 172.22.50.57:162 (TimeTicks sysUpTime=398476219)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2025-05-12 17:32:04.598781962 UTC)(OCTET STRING alertDescription=PSU fault detected)
+
+    An alarm is raised indicated by alertEffect=1 for psu-1 indicating an PSU fault detected
+
+    <INFO> 12-May-2025::13:32:04.602 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428654 10.255.0.144:161 (TimeTicks sysUpTime=398476219)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2025-05-12 17:32:04.598781962 UTC)(OCTET STRING alertDescription=PSU fault detected)
+
+    An informational event is sent indicated by alertEffect=2 for psu-1 indicating an PSU fault detected. The PSU Input OK has Deasserted meaning it is not healthy.
+
+    <INFO> 12-May-2025::13:32:04.652 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428655 172.22.50.57:162 (TimeTicks sysUpTime=398476224)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:04.598790272 UTC)(OCTET STRING alertDescription=Deasserted: PSU 1 input OK)
+    
+    An informational event is sent indicated by alertEffect=2 for psu-1 indicating an PSU fault detected. The PSU Input OK has Deasserted meaning it is not healthy.
+
+    <INFO> 12-May-2025::13:32:04.652 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428655 10.255.0.144:161 (TimeTicks sysUpTime=398476224)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:04.598790272 UTC)(OCTET STRING alertDescription=Deasserted: PSU 1 input OK)
+
+    An informational event is sent indicated by alertEffect=2 for psu-1 indicating an PSU fault detected. The PSU Input OK has Deasserted meaning it is not healthy.
+
+    <INFO> 12-May-2025::13:32:05.285 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428656 172.22.50.57:162 (TimeTicks sysUpTime=398476287)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:05.283135408 UTC)(OCTET STRING alertDescription=Deasserted: PSU 1 output OK)
+
+    An informational event is sent indicated by alertEffect=2 for psu-1 indicating an PSU fault detected. The PSU Input OK has Deasserted meaning it is not healthy.
+
+    <INFO> 12-May-2025::13:32:05.285 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428656 10.255.0.144:161 (TimeTicks sysUpTime=398476287)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:05.283135408 UTC)(OCTET STRING alertDescription=Deasserted: PSU 1 output OK)
+
+    An informational event is sent indicated by alertEffect=2 for psu-1 indicating an PSU fault detected. The PSU 1 unit off for low input voltage has Asserted meaning it is not healthy.
+
+    <INFO> 12-May-2025::13:32:05.335 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428657 172.22.50.57:162 (TimeTicks sysUpTime=398476292)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:05.290235988 UTC)(OCTET STRING alertDescription=Asserted: PSU 1 unit off for low input voltage)
+
+    An informational event is sent indicated by alertEffect=2 for psu-1 indicating an PSU fault detected. The PSU 1 unit off for low input voltage has Asserted meaning it is not healthy.
+
+    <INFO> 12-May-2025::13:32:05.335 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428657 10.255.0.144:161 (TimeTicks sysUpTime=398476292)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:05.290235988 UTC)(OCTET STRING alertDescription=Asserted: PSU 1 unit off for low input voltage)
+
+    An alarm is cleared indicated by alertEffect=0 for psu-1 indicating an PSU fault detected
+
+    <INFO> 12-May-2025::13:32:07.282 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428658 172.22.50.57:162 (TimeTicks sysUpTime=398476487)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:07.279138608 UTC)(OCTET STRING alertDescription=PSU fault detected)
+
+    An alarm is cleared indicated by alertEffect=0 for psu-1 indicating an PSU fault detected
+    
+    <INFO> 12-May-2025::13:32:07.282 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428658 10.255.0.144:161 (TimeTicks sysUpTime=398476487)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:07.279138608 UTC)(OCTET STRING alertDescription=PSU fault detected)
+
 
 
 **lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306**
