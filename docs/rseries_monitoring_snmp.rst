@@ -1051,7 +1051,30 @@ When translated into SNMP traps the states for these types os messsages are: ASS
 
 **System Events**
 
-A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm or clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addtion to many more low-level details. Many times a system event will provide more detailed lower-level information that coresponds to an alarm or clear condition. As an example a PSU-Fault alarm, may have corresponding events messages that provide more details as to whay the PSU is in a fault alarm condition. 
+A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm or clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addtion to many more low-level details. Many times a system event will provide more detailed lower-level information that coresponds to an alarm or clear condition. As an example a PSU-Fault alarm, may have corresponding events messages that provide more details as to whay the PSU is in a fault alarm condition.
+
+Often times, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: PSU mismatch** message, means all the PSU's **are not** mismatched because the value is zero or Deasserted. The wording may not be not intuitive, and F5 is looking into making improvements to make the wording more clear. The example below shows the **show system events** for the message described above.
+
+.. code-block:: bash
+
+    r10900-2-gsa# show system events | include "PSU mismatch"
+    66305 psu-controller psu-fault EVENT NA "Deasserted: PSU mismatch" "2024-09-30 22:14:54.337132053 UTC" 
+    66305 psu-controller psu-fault EVENT NA "Deasserted: PSU mismatch" "2025-02-01 05:02:07.587428459 UTC" 
+    r10900-2-gsa#
+
+This in turn can generate an SNMP trap which is informational in nature (alertEffect=2), so this should not be viewed as an alert/clear message. It is simply indicating status of the **PSU mismatch** state.
+
+
+.. code-block:: bash
+
+    r10900-2-gsa# file show log/system/snmp.log | include "PSU mismatch"
+    <INFO> 30-Sep-2024::18:14:56.084 appliance-1 confd[142]: snmp snmpv2-trap reqid=160264620 10.255.80.251:162 (TimeTicks sysUpTime=3296)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-09-30 22:14:54.337132053 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
+    <INFO> 30-Sep-2024::18:14:56.084 appliance-1 confd[142]: snmp snmpv2-trap reqid=160264620 10.255.0.144:161 (TimeTicks sysUpTime=3296)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-09-30 22:14:54.337132053 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
+    <INFO> 1-Feb-2025::00:02:11.282 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1615746712 172.22.50.57:162 (TimeTicks sysUpTime=4153)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-02-01 05:02:07.587428459 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
+    <INFO> 1-Feb-2025::00:02:11.282 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1615746712 10.255.0.144:161 (TimeTicks sysUpTime=4153)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-02-01 05:02:07.587428459 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
+    r10900-2-gsa# 
+
+Normally, an SNMP trap will be sent only when a critical status is encountered or cleared, or some threshold is being crossed. F5OS however, also sends informational traps that are merely EVENTS. The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now those EVENT messages can be safely ignored. 
 
 The **show systems events** output will also display past and current **ASSERT** and **CLEAR** System Alerts.
 
@@ -1113,25 +1136,7 @@ Below are some examples of thermal related events.
 When system events are translated into SNMP traps the state is: alertEffect=2.
 
 
-
-<INFO> 10-Jun-2024::11:38:18.903 r10900-1 confd[139]: snmp snmpv2-trap reqid=56610222 10.255.80.251:162 (TimeTicks sysUpTime=26599011)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:38:18.899352602 UTC)(OCTET STRING alertDescription=System reboot is triggered for software version change)
-<INFO> 10-Jun-2024::11:38:18.903 r10900-1 confd[139]: snmp snmpv2-trap reqid=56610222 10.255.0.144:161 (TimeTicks sysUpTime=26599011)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:38:18.899352602 UTC)(OCTET STRING alertDescription=System reboot is triggered for software version change)
-<INFO> 10-Jun-2024::11:42:31.054 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716379 10.255.80.251:162 (TimeTicks sysUpTime=437)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
-<INFO> 10-Jun-2024::11:42:31.055 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716379 10.255.0.144:161 (TimeTicks sysUpTime=437)(OBJECT IDENTIFIER snmpTrapOID=coldStart)
-<INFO> 10-Jun-2024::11:42:33.105 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716380 10.255.80.251:162 (TimeTicks sysUpTime=643)(OBJECT IDENTIFIER snmpTrapOID=firmware-update-status)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:32.847535692 UTC)(OCTET STRING alertDescription=Firmware update is running for atse 0)
-<INFO> 10-Jun-2024::11:42:33.105 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716380 10.255.0.144:161 (TimeTicks sysUpTime=643)(OBJECT IDENTIFIER snmpTrapOID=firmware-update-status)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:32.847535692 UTC)(OCTET STRING alertDescription=Firmware update is running for atse 0)
-<INFO> 10-Jun-2024::11:42:36.052 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716381 10.255.80.251:162 (TimeTicks sysUpTime=938)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:35.999123796 UTC)(OCTET STRING alertDescription=Deasserted: CPU machine check error)
-<INFO> 10-Jun-2024::11:42:36.053 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716381 10.255.0.144:161 (TimeTicks sysUpTime=938)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:35.999123796 UTC)(OCTET STRING alertDescription=Deasserted: CPU machine check error)
-<INFO> 10-Jun-2024::11:42:36.153 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716382 10.255.80.251:162 (TimeTicks sysUpTime=948)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.010357145 UTC)(OCTET STRING alertDescription=BWE1 at +37.8 degC)
-<INFO> 10-Jun-2024::11:42:36.153 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716382 10.255.0.144:161 (TimeTicks sysUpTime=948)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.010357145 UTC)(OCTET STRING alertDescription=BWE1 at +37.8 degC)
-<INFO> 10-Jun-2024::11:42:36.253 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716383 10.255.80.251:162 (TimeTicks sysUpTime=958)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.015571515 UTC)(OCTET STRING alertDescription=BWE2 at +40.1 degC)
-<INFO> 10-Jun-2024::11:42:36.254 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716383 10.255.0.144:161 (TimeTicks sysUpTime=958)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.015571515 UTC)(OCTET STRING alertDescription=BWE2 at +40.1 degC)
-<INFO> 10-Jun-2024::11:42:36.354 r10900-1 confd[157]: snmp snmpv2-trap reqid=469716384 10.255.80.251:162 (TimeTicks sysUpTime=968)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-10 15:42:36.020804024 UTC)(OCTET STRING alertDescription=ASW_1 at +30.8 degC)
-
-They key to understanding F5OS SNMP traps, is that there are different types of traps that are sent. 
-
-
-two types of alerts analog and binary
+They key to understanding F5OS SNMP traps, is that there are different types of traps that are sent. There are two types of SNMP traps that are sent; analog and binary. 
 
 threshold based which may have different levels or states (thermal, fan speed)
 
@@ -1145,9 +1150,9 @@ diag agent manages how things get communicated to customers. Send to confd and S
 
 It pre-pends state to message generated by LOP. "Asserted" " Deasserted" adds to confusion. 
 
-Stae is not positive or negative
+State is not positive or negative
 
-deasserted PSU mismatch, means all the PSU's mismatch.... wording is not intuitive. 
+deasserted PSU mismatch, means all the PSU's match.... wording is not intuitive. 
 
 We use the word fault a lot, even wehn things aren't negative, and they may be just status.
 
