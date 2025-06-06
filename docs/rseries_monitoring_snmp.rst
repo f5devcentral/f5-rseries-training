@@ -1049,8 +1049,8 @@ If the system has active alarms, then the details will be displayed in the **sho
 
 When translated into SNMP traps the states for these types of messsages are:
 
-- assert(1) or alertEffect=1 is reported in alertEffect when alarm is raised. 
-- clear(0) or alertEffect=0 reported in alertEffect when alarm is cleared. 
+- assert(1) or **alertEffect=1** is reported in alertEffect when alarm is raised. 
+- clear(0) or **alertEffect=0** reported in alertEffect when alarm is cleared. 
 
 
 
