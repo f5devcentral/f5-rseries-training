@@ -1138,6 +1138,7 @@ Below are some examples of thermal related events.
 
 
 Alarms (Alerts) - Events
+------------------------
 
 This section provides examples of SNMP traps and their associated log messages, and what troubleshooting steps are recommended. Traps will be sent with either an **assert** when an alarm occurs, a **clear** when the alarm is cleared, or an **event** which is providing an update to a raised or cleared alarm event.
 
@@ -1145,9 +1146,9 @@ This section provides examples of SNMP traps and their associated log messages, 
 - clear(0) is reported in alertEffect when alarm is cleared.
 - event(2) is updated in alertEffect when event notification is reported.
 
-From an SNMP trap monitoring/fault perspective it is recommended to focus on traps that have either an **alertEffect=1** indicating that an alert is being raised, or an **alertEffect=0** indicating that an alert is being cleared. These SNMP Traps should correspond to output in the **show system alarms** output when there is an active alarm. 
+From an SNMP trap monitoring/fault perspective it is recommended to focus on traps that have either an **alertEffect=1** indicating that an alert is being raised, or an **alertEffect=0** indicating that an alert is being cleared. These SNMP traps should correspond to output in the **show system alarms** output when there is an active alarm. 
 
-All other traps with **alertEffect=2** are providing additional detail that may be useful and may also corelate to raise or clear events, but from a fault monitoring perspective may be ignored.
+All other traps with **alertEffect=2** are providing additional detail that may be useful and may also corelate to an assert or clear alarm, but from a fault monitoring perspective may be ignored.
 
 Currently, when an rSeries device has powered removed the AOM module will discard any state it has and when powered back on it may send many informational SNMP traps indicating the current status of certain sensors. These will all be sent with **alertEffect=2**, which can be ignored from an SNMP fault perspective. 
 
@@ -1209,7 +1210,7 @@ Generic SNMP Traps
 **coldStart         	1.3.6.1.6.3.1.1.5.1**  
 
 
-A coldStart trap signifies that the SNMP entity,supporting a notification originator application, is reinitializing itself and that its configuration may have been altered.
+A coldStart trap signifies that the SNMP entity, supporting a notification originator application, is reinitializing itself and that its configuration may have been altered.
 
 .. code-block:: bash
 
@@ -1283,7 +1284,9 @@ Device Fault Traps
 | CLEAR            | Hardware device fault detected                                        |
 +------------------+-----------------------------------------------------------------------+
 
-This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap is somewhat misleading (F5 is considering re-labeling this to remove the word fault) because not all of the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
+This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading (F5 is considering re-labeling this to remove the word fault) because not all of the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
+
+The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide addtional information alongaside an or **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
 
 As an example, many of the messages are noted by **(INTEGER alertEffect=2)** and are informational only and do not require any action. In the example below, some of the informational messages are indicating the current fan speed. 
 
@@ -1301,7 +1304,9 @@ As an example, many of the messages are noted by **(INTEGER alertEffect=2)** and
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.145:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.144:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
 
-Other messages are binary messages indicating the state of some hardware component, the AOM system may provide status of some hardware components on power up. The **Deasserted: CPU HW correctable error** is indicating that there is not an issue with te CPU HW correctable error. This is un-intuitive because this is issued as a hardware-device-fault trap.
+Other messages are binary messages indicating the state of some hardware component, the AOM system may provide status of some hardware components on power up or re-cycle. The **Deasserted: CPU HW correctable error** is indicating that there is **not** an issue with the CPU HW correctable error. This is un-intuitive because this is issued as a hardware-device-fault trap.
+
+Often times, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: CPU HW correctable error** message, means that there **are not** CPU HW correctable errors because the value is zero or Deasserted. The wording may not be not intuitive, and F5 is looking into making improvements to make the wording more clear. The example below shows the **show system events** for the message described above.
 
 .. code-block:: bash
 
