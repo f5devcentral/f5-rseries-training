@@ -925,7 +925,7 @@ SNMP Trap receivers may be added and a community or a user is added depending on
 SNMP Trap Support in F5OS-A
 ===========================
 
-You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0. NOTE: the file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). You only need to rely on one file if you are using both platforms. Some traps may be specific to one platform or the other. 
+You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0. NOTE: the current file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). Some traps may be specific to one platform or the other. In the future the VELOS specific traps will be removed from the appliance MIB file. This section will only document MIB files relevant to the rSeries appliances. 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. They are also logged in the snmp.log file. Once a clear SNMP Trap is sent, it should clear the event from the **show events** output.
 
@@ -956,9 +956,9 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | drive-thermal-throttle     | .1.3.6.1.4.1.12276.1.1.1.65547   |
 +----------------------------+----------------------------------+
-| blade-thermal-fault        | .1.3.6.1.4.1.12276.1.1.1.65548   |
+| blade-thermal-fault *      | .1.3.6.1.4.1.12276.1.1.1.65548   |
 +----------------------------+----------------------------------+
-| blade-hardware-fault       | .1.3.6.1.4.1.12276.1.1.1.65549   |
+| blade-hardware-fault *     | .1.3.6.1.4.1.12276.1.1.1.65549   |
 +----------------------------+----------------------------------+
 | firmware-update-status     | .1.3.6.1.4.1.12276.1.1.1.65550   |
 +----------------------------+----------------------------------+
@@ -968,7 +968,7 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | datapath-fault             | .1.3.6.1.4.1.12276.1.1.1.65578   |
 +----------------------------+----------------------------------+
-| boot-time-integrity-status | .1.3.6.1.4.1.12276.1.1.1.65579   |
+| boot-time-integrity-status*| .1.3.6.1.4.1.12276.1.1.1.65579   |
 +----------------------------+----------------------------------+
 | module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
 +----------------------------+----------------------------------+
@@ -992,7 +992,7 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | raid-event                 | .1.3.6.1.4.1.12276.1.1.1.393216  |
 +----------------------------+----------------------------------+
-| backplane                  | .1.3.6.1.4.1.12276.1.1.1.262144  |
+| backplane *                | .1.3.6.1.4.1.12276.1.1.1.262144  |
 +----------------------------+----------------------------------+
 | txPwr                      | .1.3.6.1.4.1.12276.1.1.1.262400  |
 +----------------------------+----------------------------------+
@@ -1727,156 +1727,18 @@ Below are example SNMP traps for a drive-capacity-fault.
 | CLEAR            | Drive has entered a thermal throttle condition                                     |
 +------------------+------------------------------------------------------------------------------------+
 
+
+65547(.*) drive-thermal-throttle(.*) ASSERT(.*)Drive has entered a thermal throttle condition
+
+
+
+65547(.*) drive-thermal-throttle(.*) Drive’s thermal throttling is more than (.*) percent
+
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include drive-thermal-throttle
 
-**blade-thermal-fault            .1.3.6.1.4.1.12276.1.1.1.65548**
-
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Thermal fault detected in blade                                                    |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Drive Temperature has exceeded threshold                                           |
-|                  |                                                                                    |
-|                  | Drive Sensor Temperature is outside operating range                                |
-|                  |                                                                                    |
-|                  | Drive Temperature is as expected                                                   |
-|                  |                                                                                    |
-|                  | Drive Sensor Temperature is within normal range                                    |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Thermal fault detected in blade                                                    |
-+------------------+------------------------------------------------------------------------------------+
-
-This SNMP Trap is for the VELOS system, and it monitors various temperature sensors on each VELOS blade. The sensors monitor CPU, FGPA, and memory temperatures and will warn if the temperature goes beyond recommended guidelines. If a thermal fault occurs you can verify if it has cleared due to a temporary condition. You can also check the system fans to ensure they are operating properly in the VELOS system via the command **show components component fantray-1**. You can also check the environment in which the VELOS system is running to ensure the data center is not operating at too high temperature.
-
-.. code-block:: bash
-
-    syscon-2-active# show components component fantray-1 
-    components component fantray-1
-    state firmware-version 1.02.798.0.1
-    state software-version 2.00.960.0.1
-    state serial-no  sub0772g006w
-    state part-no    "SUB-0772-05 REV B"
-    state empty      false
-    properties fantray-state fantray-temperature 23.0
-    properties fantray-state inlet-fan-1-speed 6768
-    properties fantray-state inlet-fan-2-speed 6699
-    properties fantray-state inlet-fan-3-speed 6743
-    properties fantray-state exhaust-fan-1-speed 6715
-    properties fantray-state exhaust-fan-2-speed 6744
-    properties fantray-state exhaust-fan-3-speed 6793
-    syscon-2-active#
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include blade-thermal-fault
-
-**blade-hardware-fault           .1.3.6.1.4.1.12276.1.1.1.65549**
-
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Hardware fault detected in blade                                                   |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >> : << ras error>>                                       |
-|                  |                                                                                    |
-|                  | Ras errors list is:                                                                |
-|                  |                                                                                    |
-|                  | RAS AER correctable advisory non-fatal error                                       |
-|                  |                                                                                    |
-|                  | RAS AER correctable BAD DLLP error                                                 |
-|                  |                                                                                    |
-|                  | RAS AER correctable BAD TLP error                                                  |
-|                  |                                                                                    |
-|                  | RAS AER correctable Receiver error                                                 |
-|                  |                                                                                    |
-|                  | RAS AER correctable RELAY_NUM rollover error                                       |
-|                  |                                                                                    |
-|                  | RAS AER correctable replay timer timeout error                                     |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable completer abort error                                        |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable completion timeout error                                     |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable data link protocol error                                     |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable ECRC error                                                   |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable flow control protocol error                                  |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable malformed TLP error                                          |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable Poisoned TLP Error                                           |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable receiver overflow error                                      |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable unexpected completion error                                  |
-|                  |                                                                                    |
-|                  | RAS AER uncorrectable unsupported request error                                    |
-|                  |                                                                                    |
-|                  | RAS AER unknown error                                                              |
-|                  |                                                                                    |
-|                  | RAS Extlog invalid address error                                                   |
-|                  |                                                                                    |
-|                  | RAS Extlog master abort error                                                      |
-|                  |                                                                                    |
-|                  | RAS Extlog memory sparing error                                                    |
-|                  |                                                                                    |
-|                  | RAS Extlog mirror broken error                                                     |
-|                  |                                                                                    |
-|                  | RAS Extlog multi-bit ECC error                                                     |
-|                  |                                                                                    |
-|                  | RAS Extlog multi-symbol chipkill ECC error                                         |
-|                  |                                                                                    |
-|                  | RAS Extlog no error                                                                |
-|                  |                                                                                    |
-|                  | RAS Extlog Parity error                                                            |
-|                  |                                                                                    |
-|                  | RAS Extlog physical memory map-out error                                           |
-|                  |                                                                                    |
-|                  | RAS Extlog scrub corrected error                                                   |
-|                  |                                                                                    |
-|                  | RAS Extlog scrub uncorrected error                                                 |
-|                  |                                                                                    |
-|                  | RAS Extlog single-bit ECC error                                                    |
-|                  |                                                                                    |
-|                  | RAS Extlog single-symbol chipkill ECC error                                        |
-|                  |                                                                                    |
-|                  | RAS Extlog target abort error                                                      |
-|                  |                                                                                    |
-|                  | RAS Extlog Unknown error                                                           |
-|                  |                                                                                    |
-|                  | RAS Extlog unknown type error                                                      |
-|                  |                                                                                    |
-|                  | RAS Extlog watchdog timeout error                                                  |
-|                  |                                                                                    |
-|                  | RAS MCE processor temperature throttling disabled error                            |
-|                  |                                                                                    |
-|                  | RAS MCE address/command error                                                      |
-|                  |                                                                                    |
-|                  | RAS MCE generic undefined request error                                            |
-|                  |                                                                                    |
-|                  | RAS MCE memory read error                                                          |
-|                  |                                                                                    |
-|                  | RAS MCE memory scrubbing error                                                     |
-|                  |                                                                                    |
-|                  | RAS MCE memory write error                                                         |
-|                  |                                                                                    |
-|                  | RAS MCE unknown error                                                              |
-|                  |                                                                                    |
-|                  | RAS memory controller fatal event                                                  |
-|                  |                                                                                    |
-|                  | RAS memory controller uncorrected event                                            |
-|                  |                                                                                    |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Hardware fault detected in blade                                                   |
-+------------------+------------------------------------------------------------------------------------+
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include blade-hardware-fault
 
 **sensor-fault                   .1.3.6.1.4.1.12276.1.1.1.65577**
 
@@ -2265,23 +2127,8 @@ Fault detected in FIPS module.
 
     r10900-1# file show log/system/snmp.log | include fipsError
 
-
-**boot-time-integrity-status                      .1.3.6.1.4.1.12276.1.1.1.65579**
-
-Boot time integrity failure detected.
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include boot-time-integrity-status
-
-
-
 System Event Traps
 ^^^^^^^^^^^^^^^^^^
-
-
-
-
 
 **core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680**
 
@@ -2390,17 +2237,6 @@ SNMP traps for **raid-event** are only applicable to rSeries systems that suppor
     <INFO> 10-Nov-2023::15:05:09.636 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680985 10.255.0.144:161 (TimeTicks sysUpTime=261782627)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.437237512 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
     <INFO> 10-Nov-2023::15:07:15.992 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680986 10.255.0.144:161 (TimeTicks sysUpTime=261795263)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:07:15.972123613 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
 
-**backplane                      .1.3.6.1.4.1.12276.1.1.1.262144**
-
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include backplane
 
 Interface / Optic Related Traps
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
