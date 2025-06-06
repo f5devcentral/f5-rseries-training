@@ -925,7 +925,10 @@ SNMP Trap receivers may be added and a community or a user is added depending on
 SNMP Trap Support in F5OS-A
 ===========================
 
-You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0. NOTE: the current file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). Some traps may be specific to one platform or the other. In the future the VELOS specific traps will be removed from the appliance MIB file. This section will only document MIB files relevant to the rSeries appliances. 
+You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0.
+
+
+.. NOTE:: The current **F5OS-APPLIANCE-ALERT-NOTIF-MIB** file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). Some traps may be specific to one platform or the other. In the future the VELOS specific traps will be removed from the appliance MIB file. This section will only document MIB files relevant to the rSeries appliances. 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. They are also logged in the snmp.log file. Once a clear SNMP Trap is sent, it should clear the event from the **show events** output.
 
