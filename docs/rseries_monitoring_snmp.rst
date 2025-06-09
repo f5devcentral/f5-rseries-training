@@ -1080,6 +1080,8 @@ This in turn can generate an SNMP trap which is informational in nature (alertEf
 
 Normally, an SNMP trap will be sent only when a critical status is encountered or cleared, or some threshold is being crossed. F5OS however, also sends informational traps that are merely EVENTS. The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide addtional information alongaside an or **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
 
+There may be cases where an alertEffect=2 message might signal something needs more attention. Some examples would be **firmware-update-status** that would let you know that the system is unavailable while a firmware upgrade occurs. 
+
 The **show systems events** output will also display past and current **ASSERT** and **CLEAR** System Alerts.
 
 Below are some examples of PSU related events.
