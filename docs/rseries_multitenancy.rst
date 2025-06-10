@@ -263,9 +263,9 @@ In the high-end (r10000) and mid-range (r5000) rSeries appliances, each Intel CP
 
 Each r2000 appliance has 8 CPU cores (not vCPUs), unlike the high-end (r10000) and mid-range (r5000) rSeries appliances there are no CPUs dedicated to the F5OS platform layer. Since there are no FPGAs that require dedicated CPUs to interface with, the F5OS platform layer processes can be spread across all the available CPUs. This allows for more CPUs to be used for tenancy.
 
-This leaves all 8 CPU cores left over for use by a single tenant on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant. Below are examples of the total number of CPU cores supported for each r2000 platform.
+This leaves all 8 CPU cores left over for use by tenants on the r2800, and 4 CPU cores for the r2600. You can dedicate all CPU cores to one large tenant, or you can allocate smaller numbers of CPU cores per tenant. Below are examples of the total number of CPU cores supported for each r2000 platform.
 
-The r2800 has 8 CPU cores total, there are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by the single tenant:
+The r2800 has 8 CPU cores total, there are zero CPU cores reserved for F5OS, and 8 CPU cores left over for use by tenants:
 
 
 .. image:: images/rseries_multitenancy/image11.png
