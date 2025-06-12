@@ -3,7 +3,7 @@ rSeries F5OS-A SNMP Monitoring and Alerting
 ===========================================
 
 
-Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can continue to query the tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower-level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supported SNMP v1 and v2c versions initially, with SNMPv3 support added in F5OS-A 1.2.0.
+Within rSeries tenants, SNMP support remains unchanged from existing BIG-IPs when compared to a vCMP guest. SNMP monitoring and SNMP traps are supported in a similar manner as they are within a vCMP guest. You can continue to query an F5OS tenant via SNMP and receive SNMP traps. The F5OS-A platform layer handles the lower-level networking, and F5OS SNMP MIBs and traps are supported at this layer. The F5OS-A platform layer supports SNMP v1 and v2c, with SNMPv3 support added in F5OS-A 1.2.0.
 
 Below are the latest SNMP MIBs as of the F5OS-A 1.8.0 release.
 
@@ -68,18 +68,18 @@ From the CLI, use the **file export** command to transfer the MIB files to a rem
 
 .. code-block:: bash
 
-    r10900-1# file list path mibs/
+    r5900-1-gsa# file list path mibs/
     entries {
         name mibs_f5os_appliance.tar.gz
-        date Thu Nov 30 20:52:26 UTC 2023
-        size 9.3KB
+        date Wed Jun 11 15:08:39 UTC 2025
+        size 17KB
     }
     entries {
         name mibs_netsnmp.tar.gz
-        date Thu Nov 30 20:52:26 UTC 2023
+        date Wed Jun 11 15:08:39 UTC 2025
         size 110KB
     }
-    r10900-1# 
+    r5900-1-gsa#
 
 To upload each of the files to a remote HTTPS server use the following command. You can also upload using SCP or SFTP by using the proper protocol option.
 
@@ -928,7 +928,7 @@ SNMP Trap Support in F5OS-A
 You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-ALERT-NOTIF-MIB** provides details about supported rSeries appliance SNMP traps. Below is the current full list of traps supported as of F5OS-A 1.8.0.
 
 
-.. NOTE:: The current **F5OS-APPLIANCE-ALERT-NOTIF-MIB** file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). Some traps may be specific to one platform or the other. In the future the VELOS specific traps will be removed from the appliance MIB file. This section will only document MIB files relevant to the rSeries appliances. 
+.. NOTE:: The current **F5OS-APPLIANCE-ALERT-NOTIF-MIB** file will contain alerts for both F5OS-A (rSeries appliances) and F5OS-C (VELOS chassis). Some traps may be specific to one platform or the other. In the future the VELOS specific traps will be removed from the appliance MIB file. This section will only document MIB files relevant to the rSeries appliances only. 
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. They are also logged in the snmp.log file. Once a clear SNMP Trap is sent, it should clear the event from the **show events** output.
 
@@ -2919,7 +2919,7 @@ Note, that the output below is from an r5900 appliance which has 16 CPU cores wh
     platform        0    24576(KB)         16 2899.951(MHz)           6           32 Intel(R) Xeon(R) Silver 4314 CPU @ 2.40GHz
     prompt %
 
-The output below is from an r10900.
+The output below is from an r10600. The r10600 has 48 vCPUs total, 12 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 24 vCPUs left over for use by tenants.Disabled CPU's will not show up in the SNMP output.
 
 .. code-block:: bash
 
@@ -2929,6 +2929,18 @@ The output below is from an r10900.
         index cpuIndex cpuCacheSize cpuCoreCnt       cpuFreq cpuStepping cpuThreadCnt                              cpuModelName
     platform        0    36864(KB)         18 3095.068(MHz)           6           36 Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz
     prompt %
+
+The output below is from an r10800. The r10800 has 48 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 28 vCPUs left over for use by tenants. Disabled CPU's will not show up in the SNMP output.
+
+.. code-block:: bash
+
+    prompt% snmptable -v 2c  -c public -m ALL 172.22.50.4 F5-PLATFORM-STATS-MIB:cpuProcessorStatsTable
+    SNMP table: F5-PLATFORM-STATS-MIB::cpuProcessorStatsTable
+
+        index cpuIndex cpuCacheSize cpuCoreCnt       cpuFreq cpuStepping cpuThreadCnt                              cpuModelName
+    platform        0    36864(KB)         20 3300.000(MHz)           6           40 Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz
+    prompt% 
+
 
 The output below is from an r4800.
 
@@ -3130,7 +3142,7 @@ Below is sample output from an r4800 which has 16 CPUs.
             15    cpu15 13 percentage    14 percentage    18 percentage    17 percentage
     prompt% 
 
- Different rSeries systems have different numbers of CPU cores. Generally, CPUs will start with cpu0 and increment sequentially up to the maximum number of CPUs supported on the platform. The expcetion to this is on some of the Pay-as-you-Grow (PAYG) variants where some CPU's are disabled. The disabled CPUs can be any cpu core, so pay close atrention to snmp table output to see which CPUs are disabled in your system.  
+Different rSeries systems have different numbers of CPU cores. Generally, CPUs will start with cpu0 and increment sequentially up to the maximum number of CPUs supported on the platform. The expcetion to this is on some of the Pay-as-you-Grow (PAYG) variants where some CPU's are disabled. The disabled CPUs can be any cpu core, so pay close attention to SNMP table output to see which CPUs are disabled in your system.  
 
 
 **CPU coreCurrent Utilization SNMP OIDs**
@@ -3325,6 +3337,18 @@ As an example for cpu0 to poll for the various time intervals:
 .1.3.6.1.4.1.12276.1.2.1.1.3.1. **5** .8.112.108.97.116.102.111.114.109.0  = cpu0 **CoreTotal1MinAvg**
 
 .1.3.6.1.4.1.12276.1.2.1.1.3.1. **6** .8.112.108.97.116.102.111.114.109.0  = cpu0 **CoreTotal5MinAvg** 
+
+The above OIDs are to monitor cpu0. If you want to monitor cpu1 then change the last digisdt from 0 to 1 on the above OIDs:
+
+As an example for cpu1 to poll for the various time intervals: 
+
+.1.3.6.1.4.1.12276.1.2.1.1.3.1. **3** .8.112.108.97.116.102.111.114.109. **1** = cpu1 **CoreCurrent** 
+
+.1.3.6.1.4.1.12276.1.2.1.1.3.1. **4** .8.112.108.97.116.102.111.114.109. **1** = cpu1 **CoreTotal5SecAvg** 
+
+.1.3.6.1.4.1.12276.1.2.1.1.3.1. **5** .8.112.108.97.116.102.111.114.109. **1** = cpu1 **CoreTotal1MinAvg**
+
+.1.3.6.1.4.1.12276.1.2.1.1.3.1. **6** .8.112.108.97.116.102.111.114.109. **1** = cpu1 **CoreTotal5MinAvg** 
 
 
 Disk Info Table

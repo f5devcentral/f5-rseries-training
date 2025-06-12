@@ -1475,7 +1475,9 @@ For SSH sessions:
     - The ssh session will be terminated. It will not drop to the bash shell
 
 
-There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
+There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS Confd CLI are covered via the idle-timeout setting in previous releases. 
+
+In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
 
 +-----------------------------------------------------------+
 |                Appliance-mode = Disabled                  |
