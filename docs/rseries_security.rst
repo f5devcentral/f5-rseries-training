@@ -1418,6 +1418,7 @@ Below are the conclusions from the first test that explain the interaction betwe
 
 
 For Console connections:
+
 - When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
 - When logging in as admin to the console, the idle-timeout controls the timeout from confd CLI (30 seconds)
 - When logging in as root to the console and then performing an "su admin" to access confd.
@@ -1426,6 +1427,7 @@ For Console connections:
     - The sshd-idle-timeout will control how long before the bash session times out. ( 60 seconds)
 
 For SSH sessions:
+
 - When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
 - When logging in as admin over SSH, the idle-timeout controls the timeout from confd CLI (30 seconds)
 - When logging in as root to the console and then performing an "su admin" to access confd.
@@ -1456,6 +1458,7 @@ Below are the observered results and conclusions from the second test.
 Below are the conclusions from the second test that explain the interaction betweeen the two idle timeout settings:
 
 For Console connections:
+
 - When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
 - When logging in as admin to the console, the idle-timeout controls the timeout from confd CLI (60 seconds)
 - When logging in as root to the console and then performing an "su admin" to access confd CLI.
@@ -1464,6 +1467,7 @@ For Console connections:
     - The sshd-idle-timeout will control how long before the bash session times out. ( 30 seconds)
 
 For SSH sessions:
+
 - When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
 - When logging in as admin over SSH, the lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from confd CLI (30 seconds)
 - When logging in as root to the console and then performing an "su admin" to access confd.
