@@ -3338,7 +3338,7 @@ As an example for cpu0 to poll for the various time intervals:
 
 .1.3.6.1.4.1.12276.1.2.1.1.3.1. **6** .8.112.108.97.116.102.111.114.109.0  = cpu0 **CoreTotal5MinAvg** 
 
-The above OIDs are to monitor cpu0. If you want to monitor cpu1 then change the last digisdt from 0 to 1 on the above OIDs:
+If you want to monitor cpu1 then change the last digit from 0 to 1 on the above OIDs:
 
 As an example for cpu1 to poll for the various time intervals: 
 
@@ -3451,6 +3451,11 @@ The table below shows the current disk utilization and performance of the disk o
 **F5-PLATFORM-STATS-MIB:diskUtilizationStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.2.2**
 
 Below is an example from an r5900 appliance with a single SSD disk.
+
+.. Note:: There is a known issue with the diskPercentageUse OID not reporting a correct value. This is fixed in F5OS-A 1.8.2 and later releases.
+
+`Bug ID 1321429: F5-PLATFORM-STATS-MIB::diskPercentageUsed not available <https://cdn.f5.com/product/bugtracker/ID1321429.html>`_
+
 
 
 .. code-block:: bash
