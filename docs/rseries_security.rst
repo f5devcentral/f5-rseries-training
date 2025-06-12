@@ -1414,24 +1414,24 @@ Below are the observered results and conclusions from the first test.
 - Timeout observered on admin ssh access to F5OS confd CLI = 30 seconds 
 - Timeout observered on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds logged out of bash.
 
-Below are the conclusinons from the first test that explain the interaction betweeen the two idle timeout settings:
+Below are the conclusions from the first test that explain the interaction betweeen the two idle timeout settings:
 
 
-	• For Console connections:
-        - When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
-        - When logging in as admin to the console, the idle-timeout controls the timeout from confd CLI (30 seconds)
-        - When logging in as root to the console and then performing an "su admin" to access confd.
-            - The idle-timeout controls how long the confd CLI session will be timed-out. (30 seconds)
-            - The session will timeout and return to the bash shell.
-            - The sshd-idle-timeout will control how long before the bash session times out. ( 60 seconds)
+For Console connections:
+- When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
+- When logging in as admin to the console, the idle-timeout controls the timeout from confd CLI (30 seconds)
+- When logging in as root to the console and then performing an "su admin" to access confd.
+    - The idle-timeout controls how long the confd CLI session will be timed-out. (30 seconds)
+    - The session will timeout and return to the bash shell.
+    - The sshd-idle-timeout will control how long before the bash session times out. ( 60 seconds)
 
-	• For SSH sessions:
-        - When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
-        - When logging in as admin over SSH, the idle-timeout controls the timeout from confd CLI (30 seconds)
-        - When logging in as root to the console and then performing an "su admin" to access confd.
-            - The idle-timeout controls how long the confd CLI session will be timed-out. (30 seconds)
-            - The session will timeout and return to the bash shell.
-            - The sshd-idle-timeout will control how long before the bash session times out. ( 60 seconds)
+For SSH sessions:
+- When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
+- When logging in as admin over SSH, the idle-timeout controls the timeout from confd CLI (30 seconds)
+- When logging in as root to the console and then performing an "su admin" to access confd.
+    - The idle-timeout controls how long the confd CLI session will be timed-out. (30 seconds)
+    - The session will timeout and return to the bash shell.
+    - The sshd-idle-timeout will control how long before the bash session times out. ( 60 seconds)
 
 
 In the second test, the idle-timeout is set for 60 seconds and the sshd-idle-timeout is set for 30 seconds. 
@@ -1453,22 +1453,22 @@ Below are the observered results and conclusions from the second test.
 - Timeout observered on admin ssh access to F5OS confd CLI = 30 seconds
 - Timeout observered on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and ssh session terminated. No drop to bash shell. 
 
-Below are the conclusinons from the second test that explain the interaction betweeen the two idle timeout settings:
+Below are the conclusions from the second test that explain the interaction betweeen the two idle timeout settings:
 
-	• For Console connections:
-        - When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
-        - When logging in as admin to the console, the idle-timeout controls the timeout from confd CLI (60 seconds)
-        - When logging in as root to the console and then performing an "su admin" to access confd CLI.
-            - The idle-timeout controls how long the confd CLI session will be timed-out. (60 seconds)
-            - The session will timeout and return to the bash shell.
-            - The sshd-idle-timeout will control how long before the bash session times out. ( 30 seconds)
+For Console connections:
+- When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
+- When logging in as admin to the console, the idle-timeout controls the timeout from confd CLI (60 seconds)
+- When logging in as root to the console and then performing an "su admin" to access confd CLI.
+    - The idle-timeout controls how long the confd CLI session will be timed-out. (60 seconds)
+    - The session will timeout and return to the bash shell.
+    - The sshd-idle-timeout will control how long before the bash session times out. ( 30 seconds)
 
-	• For SSH sessions:
-        - When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
-        - When logging in as admin over SSH, the lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from confd CLI (30 seconds)
-        - When logging in as root to the console and then performing an "su admin" to access confd.
-            - The lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from confd CLI (30 seconds)
-            - The ssh session will be terminated. It will not drop to the bash shell.
+For SSH sessions:
+- When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
+- When logging in as admin over SSH, the lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from confd CLI (30 seconds)
+- When logging in as root to the console and then performing an "su admin" to access confd.
+    - The lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from confd CLI (30 seconds)
+    - The ssh session will be terminated. It will not drop to the bash shell.
 
 
 There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
