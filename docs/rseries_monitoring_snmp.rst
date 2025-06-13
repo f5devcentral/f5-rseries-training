@@ -1047,7 +1047,7 @@ If the system has active alarms, then the details will be displayed in the **sho
     r10900-1-gsa#
 
 
-When translated into SNMP traps the states for these types of messsages are:
+When translated into SNMP traps the states for these types of messages are:
 
 - assert(1) or **alertEffect=1** is reported in alertEffect when alarm is raised. 
 - clear(0) or **alertEffect=0** reported in alertEffect when alarm is cleared. 
@@ -1055,9 +1055,9 @@ When translated into SNMP traps the states for these types of messsages are:
 
 **System Events**
 
-A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm or clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addtion to many more low-level details. Many times a system event will provide more detailed lower-level information that coresponds to an alarm or clear condition. As an example a PSU-Fault alarm, may have corresponding events messages that provide more details as to whay the PSU is in a fault alarm condition.
+A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm or clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addition to many more low-level details. Many times, a system event will provide more detailed lower-level information that corresponds to an alarm or clear condition. As an example a PSU-Fault alarm, may have corresponding events messages that provide more details as to whay the PSU is in a fault alarm condition.
 
-Often times, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: PSU mismatch** message, means all the PSU's **are not** mismatched because the value is zero or Deasserted. The wording may not be not intuitive, and F5 is looking into making improvements to make the wording more clear. The example below shows the **show system events** for the message described above.
+Often times, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: PSU mismatch** message, means all the PSU's **are not** mismatched because the value is zero or Deasserted. The wording may not be intuitive, and F5 is looking into making improvements to make the wording clearer. The example below shows the **show system events** for the message described above.
 
 .. code-block:: bash
 
@@ -1078,7 +1078,7 @@ This in turn can generate an SNMP trap which is informational in nature (alertEf
     <INFO> 1-Feb-2025::00:02:11.282 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1615746712 10.255.0.144:161 (TimeTicks sysUpTime=4153)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-02-01 05:02:07.587428459 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
     r10900-2-gsa# 
 
-Normally, an SNMP trap will be sent only when a critical status is encountered or cleared, or some threshold is being crossed. F5OS however, also sends informational traps that are merely EVENTS. The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now many of those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide addtional information along side an **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
+Normally, an SNMP trap will be sent only when a critical status is encountered or cleared, or some threshold is being crossed. F5OS however, also sends informational traps that are merely EVENTS. The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now, many of those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide additional information alongside an **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
 
 There may be cases where an alertEffect=2 message might signal something needs more attention. Some examples would be **firmware-update-status** that would let you know that the system is unavailable while a firmware upgrade occurs. Another example would be a **core-dump** SNMP trap that is logged as an **alertEffect=2**.
 
@@ -1233,7 +1233,7 @@ A linkDown trap signifies that the SNMP entity, acting in an agent role, has det
 
 **interface down     1.3.6.1.4.1.12276.1.1.1.263169**
 
-Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps add a human readable interface name as seen below.
 
 .. code-block:: bash
 
@@ -1252,7 +1252,7 @@ A linkUp trap signifies that the SNMP entity, acting in an agent role, has detec
 
 **interface up     1.3.6.1.4.1.12276.1.1.1.263168**
 
-Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps adds a human readable interface name as seen below.
+Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that will trigger in parallel with the generic linkup/down traps. The enterprise linkup/down traps add a human readable interface name as seen below.
 
 
 .. code-block:: bash
@@ -1286,9 +1286,9 @@ Device Fault Traps
 | CLEAR            | Hardware device fault detected                                        |
 +------------------+-----------------------------------------------------------------------+
 
-This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading (F5 is considering re-labeling this to remove the word fault) because not all of the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
+This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading (F5 is considering re-labeling this to remove the word fault) because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
 
-The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide addtional information alongaside an or **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
+The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now, those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide additional information alongside an **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
 
 As an example, many of the messages are noted by **(INTEGER alertEffect=2)** and are informational only and do not require any action. In the example below, some of the informational messages are indicating the current fan speed. 
 
@@ -1308,7 +1308,7 @@ As an example, many of the messages are noted by **(INTEGER alertEffect=2)** and
 
 Other messages are binary messages indicating the state of some hardware component, the AOM system may provide status of some hardware components on power up or re-cycle. The **Deasserted: CPU HW correctable error** is indicating that there is **not** an issue with the CPU HW correctable error. This is un-intuitive because this is issued as a hardware-device-fault trap.
 
-Often times, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: CPU HW correctable error** message, means that there **are not** CPU HW correctable errors because the value is zero or Deasserted. The wording may not be not intuitive, and F5 is looking into making improvements to make the wording more clear. The example below shows the **show system events** for the message described above.
+Often, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: CPU HW correctable error** message, means that there **are not** CPU HW correctable errors because the value is zero or Deasserted. The wording may not be not intuitive, and F5 is looking into making improvements to make the wording clearer. The example below shows the **show system events** for the message described above.
 
 .. code-block:: bash
 
@@ -1550,7 +1550,7 @@ Below is an example of an **aom-fault** being raised and then cleared.
 
     <INFO> 8-Apr-2023::06:00:00.860 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337679 10.255.0.143:162 (TimeTicks sysUpTime=58709788)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-08 10:00:00.853229431 UTC)(OCTET STRING alertDescription=Fault detected in the AOM)
     
-    Informational message noted by alertEffect=2 that provides more information on why the AOM Fault occured:
+    Informational message noted by alertEffect=2 that provides more information on why the AOM Fault occurred:
 
     <INFO> 8-Apr-2023::06:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337680 10.255.0.143:162 (TimeTicks sysUpTime=58709793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 10:00:00.853246182 UTC)(OCTET STRING alertDescription=Bmc Health Self test failed: Device-specific 'internal' failure.)
    
@@ -1646,7 +1646,7 @@ Below are example SNMP traps for a drive-capacity-fault.
 | CLEAR            | Power fault detected in hardware                                                   |
 +------------------+------------------------------------------------------------------------------------+
 
-In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, menaning there is no alarm associated with these events.
+In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, meaning there is no alarm associated with these events.
 
 .. code-block:: bash
 
@@ -1674,7 +1674,7 @@ In the example below, note the messages are all informational **alertEffect=2** 
 | CLEAR            | Thermal fault detected in hardware                                                 |
 +------------------+------------------------------------------------------------------------------------+
 
-In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, menaning there is no alarm associated with these events.
+In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, meaning there is no alarm associated with these events.
 
 .. code-block:: bash
 
@@ -1849,7 +1849,7 @@ Below is from the show systems event output. Need trap.
 
 This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not if an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
-In the example below, the SNMP traps are informational in nature because they all contain **alertEffect=2** even though they fall under the **psu-fault** trap. In this case, the term psu-fault may be misleading because not all traps generated by this trap are fault and/or clear events. In the example below, you can see traps indicating power supplies are present, power inputs are OK, along with the term **Asserted**. It is asserting a postive status, therfore there is no problem. In other cases, there is a Deasserted message along with a negative status like PSU unsupported, or an input voltage over or under status. Again, this means that there is no problem currently. These messages are likely from when AOM was intialized when power was applied to the system or when power was re-cycled. AOM will need to re-learn status when power is recycled, so it will report the current status of the power supplies and their subsystems.
+In the example below, the SNMP traps are informational in nature because they all contain **alertEffect=2** even though they fall under the **psu-fault** trap. In this case, the term psu-fault may be misleading because not all traps generated by this trap are fault and/or clear events. In the example below, you can see traps indicating power supplies are present, power inputs are OK, along with the term **Asserted**. It is asserting a positive status, therefore there is no problem. In other cases, there is a Deasserted message along with a negative status like PSU unsupported, or an input voltage over or under status. Again, this means that there is no problem currently. These messages are likely from when AOM was initialized when power was applied to the system or when power was re-cycled. AOM will need to re-learn status when power is recycled, so it will report the status of the power supplies and their subsystems.
 
 
 .. code-block:: bash
@@ -2259,7 +2259,7 @@ The system will send a trap anytime there is a failed login to one of the F5OS u
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
-SNMP traps for **raid-event** are only applicable to rSeries systems that support dual RAID mirrored disks. The r5000, r4000, and r2000 sytems only have a single disk, and no RAID mirroring, therefore these traps do not apply to those systems. The r10000, and r12000 systems have dual RAID mirrored disks, and these traps should only apply to these systems.
+SNMP traps for **raid-event** are only applicable to rSeries systems that support dual RAID mirrored disks. The r5000, r4000, and r2000 systems only have a single disk, and no RAID mirroring, therefore these traps do not apply to those systems. The r10000, and r12000 systems have dual RAID mirrored disks, and these traps should only apply to these systems.
 
 
 
@@ -2358,7 +2358,7 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
-The transmit power threshold for a specific transceiver has reached a theshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+The transmit power threshold for a specific transceiver has reached a threshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 
 .. code-block:: bash
@@ -2376,9 +2376,9 @@ The transmit power threshold for a specific transceiver has reached a theshold i
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
-The receive power threshold for a specific transceiver has reached a theshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+The receive power threshold for a specific transceiver has reached a threshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low warning on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating an warning clear condition.
+Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low warning on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
 
 .. code-block:: bash
 
@@ -2406,7 +2406,7 @@ Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low alarm o
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
-The transmit bias threshold for a specific transceiver has reached a theshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+The transmit bias threshold for a specific transceiver has reached a threshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 
 .. code-block:: bash
@@ -2423,7 +2423,7 @@ The transmit bias threshold for a specific transceiver has reached a theshold in
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
-The ddm temperature threshold for a specific transceiver has reached a theshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
+The ddm temperature threshold for a specific transceiver has reached a threshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 .. code-block:: bash
 
@@ -2436,7 +2436,7 @@ The ddm temperature threshold for a specific transceiver has reached a theshold 
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reach a theshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+The ddm vcc (Voltage) threshold for a specific transceiver has reach a threshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
 
 .. code-block:: bash
 
@@ -2919,7 +2919,7 @@ Note, that the output below is from an r5900 appliance which has 16 CPU cores wh
     platform        0    24576(KB)         16 2899.951(MHz)           6           32 Intel(R) Xeon(R) Silver 4314 CPU @ 2.40GHz
     prompt %
 
-The output below is from an r10600. The r10600 has 48 vCPUs total, 12 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 24 vCPUs left over for use by tenants.Disabled CPU's will not show up in the SNMP output.
+The output below is from an r10600. The r10600 has 48 vCPUs total, 12 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 24 vCPUs left over for use by tenants. Disabled CPU's will not show up in the SNMP output.
 
 .. code-block:: bash
 
@@ -3142,12 +3142,12 @@ Below is sample output from an r4800 which has 16 CPUs.
             15    cpu15 13 percentage    14 percentage    18 percentage    17 percentage
     prompt% 
 
-Different rSeries systems have different numbers of CPU cores. Generally, CPUs will start with cpu0 and increment sequentially up to the maximum number of CPUs supported on the platform. The expcetion to this is on some of the Pay-as-you-Grow (PAYG) variants where some CPU's are disabled. The disabled CPUs can be any cpu core, so pay close attention to SNMP table output to see which CPUs are disabled in your system.  
+Different rSeries systems have different numbers of CPU cores. Generally, CPUs will start with cpu0 and increment sequentially up to the maximum number of CPUs supported on the platform. The exception to this is on some of the Pay-as-you-Grow (PAYG) variants where some CPUs are disabled. The disabled CPUs can be any CPU core, so pay close attention to SNMP table output to see which CPUs are disabled in your system.  
 
 
 **CPU coreCurrent Utilization SNMP OIDs**
 
-Below is an example of the SNMP OIDs for **coreCurrent** cpu utilization on an r5900 rSeries appliance which has 32 vCPUs. The lower PAYG variants of the r5000 family (r5600/r5800) will disable some CPU's, so the cpu index may not be sequential. As an example the r5600 disables 14 vCPUs, cpu9-15 and cpu25-31 will be disabled, and are not reported in the SNMP output. The r5800 disables 8 vCPUs, cpu12-15 and cpu28-31 will be disabled, and are not reported in the SNMP output. This example is for the r5000 rSeries platforms, but the other rSeries models that disable CPUs via PAYG licensing will have similar non-sequential CPUs that will be disabled. 
+Below is an example of the SNMP OIDs for **coreCurrent** cpu utilization on an r5900 rSeries appliance which has 32 vCPUs. The lower PAYG variants of the r5000 family (r5600/r5800) will disable some CPUs, so the cpu index may not be sequential. As an example, the r5600 disables 14 vCPUs, cpu9-15 and cpu25-31 will be disabled and are not reported in the SNMP output. The r5800 disables 8 vCPUs, cpu12-15 and cpu28-31 will be disabled and are not reported in the SNMP output. This example is for the r5000 rSeries platforms, but the other rSeries models that disable CPUs via PAYG licensing will have similar non-sequential CPUs that will be disabled. 
 
 +--------+-----------------------------------------------------------------------+----------------------------------------+
 | CPU #  | SNMP OID                                                              | Disabled Platform                      |
@@ -3218,7 +3218,7 @@ Below is an example of the SNMP OIDs for **coreCurrent** cpu utilization on an r
 +--------+-----------------------------------------------------------------------+----------------------------------------+
 
 
-Below is an example of the SNMP OIDs for **coreCurrent** cpu utilization on an r10900 rSeries appliance which has 48 vCPUs. The lower PAYG variants of the r10000 family (r10600/r10800) will disable some CPU's, so the cpu index may not be sequential. As an example the r10600 disables 12 vCPUs, cpu18-23 and cpu42-47 will be disabled, and are not reported in the SNMP output. The r10800 disables 8 vCPUs, cpu20-23 and cpu44-47 will be disabled, and are not reported in the SNMP output. This example is for the r10000 rSeries platforms, but the other rSeries models that disable CPUs via PAYG licensing will have similar non-sequential CPUs that will be disabled. 
+Below is an example of the SNMP OIDs for **coreCurrent** CPU utilization on an r10900 rSeries appliance which has 48 vCPUs. The lower PAYG variants of the r10000 family (r10600/r10800) will disable some CPU's, so the CPU index may not be sequential. As an example, the r10600 disables 12 vCPUs, cpu18-23 and cpu42-47 will be disabled and are not reported in the SNMP output. The r10800 disables 8 vCPUs, cpu20-23 and cpu44-47 will be disabled and are not reported in the SNMP output. This example is for the r10000 rSeries platforms, but the other rSeries models that disable CPUs via PAYG licensing will have similar non-sequential CPUs that will be disabled. 
 
 +--------+-----------------------------------------------------------------------+----------------------------------------+
 | CPU #  | SNMP OID                                                              | Disabled Platform                      |
@@ -3328,7 +3328,7 @@ to
 
 .1.3.6.1.4.1.12276.1.2.1.1.3.1. **4** ......
 
-As an example for cpu0 to poll for the various time intervals: 
+As an example, for cpu0 to poll for the various time intervals: 
 
 .1.3.6.1.4.1.12276.1.2.1.1.3.1. **3** .8.112.108.97.116.102.111.114.109.0  = cpu0 **CoreCurrent** 
 
@@ -4245,7 +4245,7 @@ Below is an example from an r5000 series platform with one ATSE FPGA and one ASW
         atse_0      72.5.5
     prompt% 
 
-Lastly, the r2000/r4000 platfroms have no FPGA's and therefore will not provide a response:
+Lastly, the r2000/r4000 platforms have no FPGA's and therefore will not provide a response:
 
 .. code-block:: bash
 
