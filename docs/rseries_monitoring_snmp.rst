@@ -4071,8 +4071,11 @@ This value represents the total amount of memory installed in the rSeries system
 - memory total **134735167488** / **1,048,576,000** = **128.4GB**
 - memory available **8345739264** / **1,048,576,000** = **7.9GB**
 - memory free **1267056640** / **1,048,576,000** = **1.2GB**
+- memory used-percent ( ( **134735167488** - **8345739264** ) / **134735167488** ) x **100** = 93%
 - platform-total **16107667456** / **1,048,576,000** = **15.3GB**
 - memory platform-used **8910950400** / **1,048,576,000** = **8.4**
+- memory platform-used-percent
+
 
 .. code-block:: bash
 
@@ -4096,8 +4099,28 @@ This value represents the total amount of memory unused by the system, in bytes.
 
 **memory used-percent**
 
-This value represents the percentage of memory that is in-use by the system, in bytes. Memory used by the system, as a percentage of total installed memory.
+This is described in the following solution article, but also added below for clarity:
 
+`K000138000: Calculating memory usage percentage on F5OS <https://my.f5.com/manage/s/article/K000138000>`_
+
+This value represents the percentage of memory that is in-use by the system, in bytes. Memory used by the system, as a percentage of total installed memory. The used-percent value is calculated from the whole physical memory (memory allocated to the Host system + memory allocated to tenants). Memory allocated to tenants is technically used (even where there are not tenants deployed). The exact values can the checked under /proc/meminfo:
+
+
+.. code-block:: bash
+
+    [root@appliance-1(r5900-1-gsa.cpt.f5net.com):Active] ~ # cat /proc/meminfo
+    MemTotal:       131577304 kB
+    MemFree:         3315716 kB
+    MemAvailable:    8209104 kB
+
+    [...]
+
+
+From the above values:
+
+used-percent = ( ( MemTotal - MemAvailable ) / MemTotal ) * 100
+
+( ( **134735167488** - **8345739264** ) / **134735167488** ) x **100** = 93%
 
 **memory platform-total**
 
