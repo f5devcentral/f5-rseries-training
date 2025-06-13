@@ -1276,7 +1276,7 @@ In the body of the API call add the username and role as seen below.
 Superuser Role
 ===============
 
-F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commmands can now be executed from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the new f5sh utility in bash shell. 
+F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commands can now be executed from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the new f5sh utility in bash shell. 
 
 RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. 
 
@@ -1338,7 +1338,7 @@ If the configuration were using LDAP Group ID's instead of named LDAP groups, th
     r10900-1-gsa(config)#
 
 
-You can view the current state of these parmeters via the following CLI show comands. 
+You can view the current state of these parameters via the following CLI show commands. 
 
 .. code-block:: bash
 
@@ -1390,9 +1390,94 @@ Session Timeouts and Token Lifetime
 
 Idle timeouts were configurable in previous releases, but the configuration only applied to the current session and was not persistent. F5OS-A 1.3.0 added the ability to configure persistent idle timeouts for F5OS for both the CLI and webUI. The F5OS CLI timeout is configured under system settings and is controlled via the **idle-timeout** option. This will logout idle sessions to the F5OS CLI whether they are logged in from the console or over SSH.
 
-In F5OS-A 1.4.0, a new **sshd-idle-timeout** option has been added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
+In F5OS-A 1.4.0, a new **sshd-idle-timeout** option was added that will control idle-timeouts for both root sessions to the bash shell over SSH, as well as F5OS CLI sessions over SSH. When the idle-timeout and sshd-idle-timeout are both configured, the shorter interval should take precedence when connecting directly to the confd CLI as admin or another confd user. As an example, if the idle-timeout is configured for three minutes, but the sshd-idle-timeout is set to 2 minutes, then an idle connection that is connected over SSH will disconnect in two minutes, which is the shorter of the two configured options. An idle connection to the F5OS CLI over the console will disconnect in three minutes, because the sshd-idle-timeout doesn't apply to console sessions. 
 
-There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS CLI are covered via the idle-timeout setting. In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
+For SSH sessions connecting using root or super-user access direct to the bash shell, then the idle-timeout does not apply, as that only applies to sessions to the F5OS confd CLI. If a root or super-user connects directly to the bash shell then only the ssh-idle-timeout applies. If that user then issues an su admin command to access the confd CLI or uses f5sh commands from the bash shell, then the idle-timeout setting will apply for the confd CLI session, the user will then be timed out of confd back to the bash shell, and then the sshd-idle-timeout setting would dictate how long before the bash sessions times out.
+
+To demonstrate the interaction between the **idle-timeout** and the **sshd-idle-timeout**, testing was done on F5OS-A 1.8.0 with different logins (root and admin) using both console and ssh access. In the first test, the idle-timeout is set for 30 seconds and the sshd-idle-timeout is set for 60 seconds. 
+
+.. code-block:: bash
+
+    r5900-2-gsa(config)# system settings config idle-timeout 30
+    r5900-2-gsa(config)# system settings config sshd-idle-timeout 60 
+    r5900-2-gsa(config)# commit
+    Commit complete.
+    r5900-2-gsa(config)#
+
+Below are the observed results and conclusions from the first test.
+
+
+- Timeout observed on Console port for root account logged into bash = 60 seconds
+- Timeout observed on Console port for admin account logged into F5OS Confd CLI = 30 seconds
+- Timeout observed on Console port for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds logged out of bash
+- Timeout observed on root ssh access to bash = 60 seconds
+- Timeout observed on admin ssh access to F5OS confd CLI = 30 seconds 
+- Timeout observed on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds logged out of bash
+
+Below are the conclusions from the first test that explain the interaction between the two idle timeout settings:
+
+
+For Console connections:
+
+- When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
+- When logging in as admin to the console, the idle-timeout controls the timeout from F5OS Confd CLI (30 seconds)
+- When logging in as root to the console and then performing an su admin to access F5OS Confd CLI
+    - The idle-timeout controls how long the F5OS Confd CLI session will be timed-out (30 seconds)
+    - The session will timeout and return to the bash shell
+    - The sshd-idle-timeout will control how long before the bash session times out ( 60 seconds)
+
+For SSH sessions:
+
+- When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 60 seconds)
+- When logging in as admin over SSH, the idle-timeout controls the timeout from F5OS Confd CLI (30 seconds)
+- When logging in as root to the console and then performing an su admin to access F5OS Confd CLI
+    - The idle-timeout controls how long the F5OS Confd CLI session will be timed-out (30 seconds)
+    - The session will timeout and return to the bash shell
+    - The sshd-idle-timeout will control how long before the bash session times out ( 60 seconds)
+
+
+In the second test, the idle-timeout is set for 60 seconds and the sshd-idle-timeout is set for 30 seconds. 
+
+.. code-block:: bash
+
+    r5900-2-gsa(config)# system settings config idle-timeout 60 
+    r5900-2-gsa(config)# system settings config sshd-idle-timeout 30 
+    r5900-2-gsa(config)# commit
+    Commit complete.
+    r5900-2-gsa(config)#
+
+Below are the observed results and conclusions from the second test.
+
+- Timeout observed on Console port for root account logged into bash = 30 seconds
+- Timeout observed on Console port for admin account logged into F5OS Confd CLI = 60
+- Timeout observed on Console port for root account logged into bash, then issue su admin to F5OS Confd CLI = 60 seconds logged out of F5OS confd CLI and dropped to bash, then 30 seconds logged out of bash.
+- Timeout observed on root ssh access to bash = 30 seconds
+- Timeout observed on admin ssh access to F5OS confd CLI = 30 seconds
+- Timeout observed on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and ssh session terminated. No drop to bash shell
+
+Below are the conclusions from the second test that explain the interaction between the two idle timeout settings:
+
+For Console connections:
+
+- When logging in as root to the console, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
+- When logging in as admin to the console, the idle-timeout controls the timeout from F5OS Confd CLI (60 seconds)
+- When logging in as root to the console and then performing an su admin to access F5OS Confd CLI
+    - The idle-timeout controls how long the F5OS Confd CLI session will be timed-out (60 seconds)
+    - The session will timeout and return to the bash shell
+    - The sshd-idle-timeout will control how long before the bash session times out ( 30 seconds)
+
+For SSH sessions:
+
+- When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
+- When logging in as admin over SSH, the lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from F5OS Confd CLI (30 seconds)
+- When logging in as root to the console and then performing an su admin to access confd
+    - The lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from F5OS Confd CLI (30 seconds)
+    - The ssh session will be terminated. It will not drop to the bash shell
+
+
+There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS Confd CLI are covered via the idle-timeout setting in previous releases. 
+
+In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
 
 +-----------------------------------------------------------+
 |                Appliance-mode = Disabled                  |
@@ -1535,7 +1620,7 @@ You'll see output similar to the example below.
 Configuring SSH and CLI Timeouts & Deny Root SSH Settings via webUI
 ------------------------------------------
 
-The CLI timeout, and deny-root-ssh settings are both configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
+The CLI timeout and deny-root-ssh settings are both configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
 
 .. image:: images/rseries_security/deny-root-ssh.png
   :align: center
@@ -1687,7 +1772,7 @@ The default setting for basic auth is enabled, and the current state can be seen
 
     r10900# 
 
-You may disable basic authentication by issuing the cli command **system aaa authentication config basic disabled**, and then committing the change.
+You may disable basic authentication by issuing the cli command **system aaa authentication config basic disabled** and then committing the change.
 
 .. code-block:: bash
 
@@ -2172,7 +2257,7 @@ The **gidNumber** attribute needs to either be on the user or on a group the use
 
 Currently the role numbers (9000, 9001, 9003, 9100) are fixed and hard-coded. The current implementation relies on AD “unix attributes” being installed into the directory. AD groups are not currently queried. The role IDs are fixed. As noted above, the IDs are configurable in F5OS-A 1.4.0, but this is still based on numeric GIDs not group names. 
 
-Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, It is up to the underlying Confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.4.0 can be found below.
+Roles are mutually exclusive. While it is theoretically possible to assign a user to multiple role groups, it is up to the underlying Confd to resolve how the roles present to it are assigned, and it doesn’t always choose the most logical answer. For that reason, you should consider them mutually exclusive and put the user in the role with the least access necessary to do their work. More details, on configuration of F5OS-A 1.4.0 can be found below.
 
 `LDAP/AD configuration overview <https://techdocs.f5.com/en-us/f5os-a-1-8-0/f5-rseries-systems-administration-configuration/title-auth-access.html#ldap-config-overview>`_
 
@@ -2188,7 +2273,7 @@ F5OS-A 1.4.0 has added the ability to customize the Group ID mapping to the remo
     Commit complete.
     r10900-1(config-role-admin)# 
 
-To view the current mappings use the **show system aaa authentication roles** CLI command.
+To view the current mappings, use the **show system aaa authentication roles** CLI command.
 
 .. code-block:: bash
 
@@ -2602,7 +2687,7 @@ You may configure which macs F5OS will use for the sshd service by using the **s
 Configuring Management Ciphers via webUI
 --------------------------------------
 
-You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS. Go to the **System Settings -> System Security** page to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+You can configure which ciphers are used when connecting to the F5OS management interface using SSH or HTTPS. Go to the **System Settings -> System Security** page to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
 
 .. image:: images/rseries_security/security-ciphers.png
   :align: center
@@ -2615,7 +2700,7 @@ You can configure which ciphers are used when connecting to the F5OS managment i
 Configuring Management Ciphers via API
 --------------------------------------
 
-You can configure which ciphers are used when connecting to the F5OS managment interface using SSH or HTTPS. Use the following API call to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+You can configure which ciphers are used when connecting to the F5OS managament interface using SSH or HTTPS. Use the following API call to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
 
 .. code-block:: bash
 
@@ -2663,7 +2748,7 @@ In the body of the API call enter your httpd and sshd ciphers suites, sshd KEX a
         }
     }
 
-You can then view the current configuration by issuing the folowing API call.
+You can then view the current configuration by issuing the following API call.
 
 .. code-block:: bash
 
@@ -2772,7 +2857,7 @@ https://techdocs.f5.com/en-us/f5os-a-1-8-0/f5-rseries-systems-administration-con
 Configuring Client Certificate Authentication via webUI
 -------------------------------------------------------
 
-Although you can enable client certificate authentication via the webUI, you must upload or create your certificate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full configraton is completed.
+Although you can enable client certificate authentication via the webUI, you must upload or create your certificate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full configuraton is completed.
 
 See the section above about configuration of the certificate before moving on. If you have loaded a certificate, then you can enable client certificate authentication via the webUI as seen below.
 
@@ -3111,7 +3196,7 @@ Within the bash shell if you are logged in as root, the path for the logging is 
     [root@appliance-1(r10900.f5demo.net) ~]# 
 
 
-Some audit events don't make it into the main audit.log file in the /log/system directory. An example would be certain login failure events that happen at a lower layer, and are instead captured in the /log/host/audit/audit.log file.
+Some audit events don't make it into the main audit.log file in the /log/system directory. An example would be certain login failure events that happen at a lower layer and are instead captured in the /log/host/audit/audit.log file.
 
 .. code-block:: bash
 
@@ -3135,7 +3220,7 @@ Some audit events don't make it into the main audit.log file in the /log/system 
 Viewing Logs from the webUI
 --------------------------
 
-In the current F5OS releases, you cannot view the F5OS audit.log file directly from the webUI, although you can download it from the webUI. To view the audit.log, you can use the CLI or API, or download the files and then view. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server, or **Download** the files directly to your client machine through the browser.
+In the current F5OS releases, you cannot view the F5OS audit.log file directly from the webUI, although you can download it from the webUI. To view the audit.log, you can use the CLI or API or download the files and then view. To download log files from the webUI, go to the **System Settings -> File Utilities** page. Here there are various logs directories you can download files from. You have the option to **Export** files to a remote HTTPS server or **Download** the files directly to your client machine through the browser.
 
 .. image:: images/rseries_security/image10.png
   :align: center
@@ -3152,7 +3237,7 @@ If you want to download the main **audit.log**, select the directory **/log/syst
 Viewing Audit Logs via F5OS API
 -------------------------------
 
-You cannot view audit logs fomr the API, but you may download them from the system.
+You cannot view audit logs from the API, but you may download them from the system.
 
 
 
