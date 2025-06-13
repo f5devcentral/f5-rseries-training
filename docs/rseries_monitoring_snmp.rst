@@ -3771,13 +3771,14 @@ Below is the component info table for an r10900 rSeries appliance.
 
 .. code-block:: bash
 
-    prompt% snmpwalk -v 2c  -c public -m ALL 10.255.2.40 F5-PLATFORM-STATS-MIB:componentInfoTable
-    F5-PLATFORM-STATS-MIB::serialNo."lcd" = STRING: sub0872g00du
-    F5-PLATFORM-STATS-MIB::serialNo."psu-1" = STRING: FZ2104Q70036
-    F5-PLATFORM-STATS-MIB::serialNo."platform" = STRING: f5-xpdn-ngmu
-    F5-PLATFORM-STATS-MIB::model."platform" = STRING: r10900
+    prompt % snmpwalk -v 2c  -c public -m ALL 172.22.50.3 F5-PLATFORM-STATS-MIB:componentInfoTable
+    F5-PLATFORM-STATS-MIB::serialNo."lcd" = STRING: sub0872g00bt
+    F5-PLATFORM-STATS-MIB::serialNo."psu-1" = STRING: FZ2104Q70155
+    F5-PLATFORM-STATS-MIB::serialNo."psu-2" = STRING: FZ2104Q70065
+    F5-PLATFORM-STATS-MIB::serialNo."platform" = STRING: f5-wjex-ngkt
+    F5-PLATFORM-STATS-MIB::model."platform" = STRING: r10600
     F5-PLATFORM-STATS-MIB::baudRate."platform" = INTEGER: 19200
-    prompt%
+    prompt % 
 
 Below is the component info table for an r5900 rSeries appliance.
 
@@ -4097,7 +4098,7 @@ This represents the memory available to the F5OS platform layer which will vary 
 
 **memory platform-used**
 
-This represents the amount of F5OS platform memory that is in use. It is not uncommon for this utilization to be high, as F5OS will pre-allocate much of its memory. As an example, in the CLI output below from an r5900 the platform total is reprsented in raw Bytes **16107667456** or 15 GB. A little over half of that memory is in use by F5OS. 
+This represents the amount of F5OS platform memory that is in use. It is not uncommon for this utilization to be high, as F5OS will pre-allocate much of its memory. As an example, in the CLI output below from an r5900 the **platform-total** is represented in raw Bytes as **16107667456** or ~15 GB. A little over half of that memory **platform-used 8910950400** is in use by F5OS.
 
 .. code-block:: bash
 
@@ -4114,7 +4115,7 @@ This represents the amount of F5OS platform memory that is in use. It is not unc
 
 **memory platform-used-percent**
 
-This represents the amount of F5OS platform memory that is in use as a percentage of what is allocated to F5OS. It is not uncommon for this utilization percentage to be high, as F5OS will pre-allocate much of its memory.
+This represents the amount of F5OS platform memory that is in use as a percentage of what is allocated to F5OS. It is not uncommon for this utilization percentage to be high, as F5OS will pre-allocate much of its memory. In this case **platform-used-percent 55**.
 
 .. code-block:: bash
 
@@ -4134,11 +4135,11 @@ This value represents the total amount of memory installed in the rSeries system
 
 1 Gigabyte = 1,048,576,000 bytes in binary. 
 
-memory total **134735167488** / **1,048,576,000** = **128.4GB**
-memory available **8345739264** / **1,048,576,000** = **7.9GB**
-memory free **1267056640** / **1,048,576,000** = **1.2GB**
-memory platform-total **16107667456** / **1,048,576,000** = **15.3GB**
-memory platform-used **8910950400** / **1,048,576,000** = **8.4**
+- memory total **134735167488** / **1,048,576,000** = **128.4GB**
+- memory available **8345739264** / **1,048,576,000** = **7.9GB**
+- memory free **1267056640** / **1,048,576,000** = **1.2GB**
+- platform-total **16107667456** / **1,048,576,000** = **15.3GB**
+- memory platform-used **8910950400** / **1,048,576,000** = **8.4**
 
 .. code-block:: bash
 
@@ -4178,14 +4179,16 @@ memory platform-used **8910950400** / **1,048,576,000** = **8.4**
     r5900-1-gsa#        
  
 Here is the CLI command to display the same value as the SNMP MIBs
- 
-r10900-1# show components component platform state memory
-state memory available 17457070080 ß---- ~ 17GB of memory is available
-state memory free 14714671104   ß-- ~ 14GB of memory is unused by the system.
-state memory used-percent 94 < ---- 94% of total system memory is in use.
-state memory platform-total 26844618752 ß---This would be the memory used by the F5OS platform layer (on the r10900 this is ~25GB as noted in tables referenced in the link above).
-state memory platform-used 8562757632 ß---Out of 25GB allocated to F5OS platform layer ~ 8GB is currently in use
-r10900-1#
+
+.. code-block:: bash
+
+    r10900-1# show components component platform state memory
+    state memory available 17457070080 ß---- ~ 17GB of memory is available
+    state memory free 14714671104   ß-- ~ 14GB of memory is unused by the system.
+    state memory used-percent 94 < ---- 94% of total system memory is in use.
+    state memory platform-total 26844618752 ß---This would be the memory used by the F5OS platform layer (on the r10900 this is ~25GB as noted in tables referenced above).
+    state memory platform-used 8562757632 ß---Out of 25GB allocated to F5OS platform layer ~ 8GB is currently in use
+    r10900-1#
  
 Some details about that file can be found here: https://github.com/torvalds/linux/blob/master/Documentation/filesystems/proc.rst 
  
