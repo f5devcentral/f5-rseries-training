@@ -4064,7 +4064,7 @@ Memory inside the rSeries appliances is divided into two main areas (F5OS Platfo
 
 **memory total**
 
-This value represents the total amount of memory installed in the rSeries system. The amount of memory installed will vary by rSeries appliance type. Below is an example of an r5900 showing **134735167488** raw bytes for **memory total**. Converting that value to MBytes equals **128 GBytes**.
+This value represents the total amount of memory installed in the rSeries system as reported by Linux, in bytes. The amount of memory installed will vary by rSeries appliance type. Below is an example of an r5900 showing **134735167488** raw bytes for **memory total**. Converting that value to MBytes equals **128 GBytes**.
 
 1 Gigabyte = 1,048,576,000 bytes in binary. 
 
@@ -4127,7 +4127,7 @@ used-percent = ( ( MemTotal - MemAvailable ) / MemTotal ) * 100
 
 **memory platform-total**
 
-This represents the memory available to the F5OS platform layer which will vary based on the type of rSeries system in use. As an example, for the r12000 systems 42GB of memory is allocated to the F5OS platform layer, for the r10000 systems 25GB is allocated, for the r5000 systems 15GB is allocated, 14GB for the r4000 systems, and 6.9GB for the r2000 platforms. This is noted in the **Memory use by F5OS** column in the table below. The below values are rounded and not raw values, exact memory values seen in the system will vary slightly as the are presented as raw values. 
+Total usable memory for F5OS platform services, in bytes (excludes memory allocated for hugepages). This represents the memory available to the F5OS platform layer which will vary based on the type of rSeries system in use. As an example, for the r12000 systems 42GB of memory is allocated to the F5OS platform layer, for the r10000 systems 25GB is allocated, for the r5000 systems 15GB is allocated, 14GB for the r4000 systems, and 6.9GB for the r2000 platforms. This is noted in the **Memory use by F5OS** column in the table below. The below values are rounded and not raw values, exact memory values seen in the system will vary slightly as the are presented as raw values. 
 
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 | **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Minimum RAM used (Max vCPU)**    |  **Extra RAM Available for Tenants**  |  Max vCPUs  |
@@ -4161,7 +4161,7 @@ This represents the memory available to the F5OS platform layer which will vary 
 
 **memory platform-used**
 
-This represents the amount of F5OS platform memory that is in use. It is not uncommon for this utilization to be high, as F5OS will pre-allocate much of its memory. As an example, in the CLI output below from an r5900 the **platform-total** is represented in raw Bytes as **16107667456** or ~15 GB. A little over half of that memory **platform-used 8910950400** is in use by F5OS.
+Memory used by F5OS platform services, in bytes (excludes memory allocated for hugepages). It is not uncommon for this utilization to be high, as F5OS will pre-allocate much of its memory. As an example, in the CLI output below from an r5900 the **platform-total** is represented in raw Bytes as **16107667456** or ~15 GB. A little over half of that memory **platform-used 8910950400** is in use by F5OS.
 
 .. code-block:: bash
 
@@ -4178,7 +4178,7 @@ This represents the amount of F5OS platform memory that is in use. It is not unc
 
 **memory platform-used-percent**
 
-This represents the amount of F5OS platform memory that is in use as a percentage of what is allocated to F5OS. It is not uncommon for this utilization percentage to be high, as F5OS will pre-allocate much of its memory. In this case **platform-used-percent 55**.
+Memory used by F5OS platform layer, as a percentage of total installed memory. It is not uncommon for this utilization percentage to be high, as F5OS will pre-allocate much of its memory. In this case **platform-used-percent 55**.
 
 .. code-block:: bash
 
@@ -4199,55 +4199,19 @@ memory platform-used-percent = ( ( platform-total - platform-used ) / platform-t
 **100** - **44.6** (platform free) = **~55%** (platform-used-percent) 
 
 
-.. code-block:: bash
-
-    r5900-1-gsa# show components component platform state memory ?
-    Possible completions:
-    available               Memory available for starting new applications without swapping, in bytes.
-    displaylevel            Depth to show
-    free                    Memory unused by the system, in bytes.
-    full                    
-    platform-total          Total usable memory for F5OS platform services, in bytes (excludes memory allocated for hugepages).
-    platform-used           Memory used by F5OS platform services, in bytes (excludes memory allocated for hugepages).
-    platform-used-percent   Memory used by F5OS platform layer, as a percentage of total installed memory.
-    total                   The total system physical memory as reported by Linux, in bytes.
-    used-percent            Memory used by the system, as a percentage of total installed memory.
-    |                       Output modifiers
-    <cr>                    
-    r5900-1-gsa#        
- 
-Here is the CLI command to display the same value as the SNMP MIBs
-
-.. code-block:: bash
-
-    r10900-1# show components component platform state memory
-    state memory available 17457070080 ß---- ~ 17GB of memory is available
-    state memory free 14714671104   ß-- ~ 14GB of memory is unused by the system.
-    state memory used-percent 94 < ---- 94% of total system memory is in use.
-    state memory platform-total 26844618752 ß---This would be the memory used by the F5OS platform layer (on the r10900 this is ~25GB as noted in tables referenced above).
-    state memory platform-used 8562757632 ß---Out of 25GB allocated to F5OS platform layer ~ 8GB is currently in use
-    r10900-1#
- 
-Some details about that file can be found here: https://github.com/torvalds/linux/blob/master/Documentation/filesystems/proc.rst 
- 
-available:
-/proc/meminfo --> MemAvailable
-An estimate of how much memory is available for starting new applications, without swapping. Calculated from MemFree, SReclaimable, the size of the file LRU lists, and the low watermarks in each zone. The estimate takes into account that the system needs some page cache to function well, and that not all reclaimable slab will be reclaimable, due to items being in use. The impact of those factors will vary from system to system.
-  
-
-+-------------------+-------------------------------------------------+--------------------------------------------------------------------+
-| Value             | Details                                         | SNMP OID                                                           |
-+===================+=================================================+====================================================================+
-| memAvailable      | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.2.8.112.108.97.116.102.111.114.109  |
-+-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
-| memFree           | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.3.8.112.108.97.116.102.111.114.109  |
-+-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
-| memPercentageUsed | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.4.8.112.108.97.116.102.111.114.109  |
-+-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
-| memPlatformTotal  | Lower Limit = 0, Alert >= 42, Emergency >= 60   | .1.3.6.1.4.1.12276.1.2.1.4.1.1.5.8.112.108.97.116.102.111.114.109  |
-+-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
-| memPlatformUsed   |                                                 | .1.3.6.1.4.1.12276.1.2.1.4.1.1.6.8.112.108.97.116.102.111.114.109  |
-+-------------------+-------------------------------------------------+--------------------------------------------------------------------+  
++-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+
+| Value             | Details                                                        | SNMP OID                                                           |
++===================+================================================================+====================================================================+
+| memAvailable      | Informational, No Limits                                       | .1.3.6.1.4.1.12276.1.2.1.4.1.1.2.8.112.108.97.116.102.111.114.109  |
++-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+  
+| memFree           | > 512MB (need to verify), further investigation may be needed. | .1.3.6.1.4.1.12276.1.2.1.4.1.1.3.8.112.108.97.116.102.111.114.109  |
++-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+  
+| memPercentageUsed | Informational, No Limits                                       | .1.3.6.1.4.1.12276.1.2.1.4.1.1.4.8.112.108.97.116.102.111.114.109  |
++-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+  
+| memPlatformTotal  | Informational, No Limits                                       | .1.3.6.1.4.1.12276.1.2.1.4.1.1.5.8.112.108.97.116.102.111.114.109  |
++-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+  
+| memPlatformUsed   | Informational, No Limits                                       | .1.3.6.1.4.1.12276.1.2.1.4.1.1.6.8.112.108.97.116.102.111.114.109  |
++-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+  
 
 
 FPGA Table
