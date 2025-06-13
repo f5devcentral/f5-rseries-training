@@ -4074,7 +4074,7 @@ This value represents the total amount of memory installed in the rSeries system
 - memory used-percent ( ( **134735167488** - **8345739264** ) / **134735167488** ) x **100** = **93%**
 - platform-total **16107667456** / **1,048,576,000** = **15.3GB**
 - memory platform-used **8910950400** / **1,048,576,000** = **8.4**
-- memory platform-used-percent **55**
+- memory platform-used-percent ( **8910950400** / **16107667456** ) x **100** = **55%**
 
 
 .. code-block:: bash
@@ -4192,11 +4192,9 @@ Memory used by F5OS platform layer, as a percentage of total installed memory. I
     state memory platform-used-percent 55
     r5900-1-gsa#
 
-memory platform-used-percent = ( ( platform-total - platform-used ) / platform-total ) * 100 
+memory platform-used-percent = ( platform-used / platform-total ) * 100 
 
-( ( **16107667456** - **8910950400** ) / **16107667456** ) x **100** = 44.6 - This is the platform free memory.
-
-**100** - **44.6** (platform free) = **~55%** (platform-used-percent) 
+( **8910950400** / **16107667456** ) x **100** = **55%** 
 
 
 +-------------------+----------------------------------------------------------------+--------------------------------------------------------------------+
