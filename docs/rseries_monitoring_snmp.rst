@@ -4062,6 +4062,43 @@ Portions of the output of the SNMP table / OIDs are the same info as displayed i
 
 Memory inside the rSeries appliances is divided into two main areas (F5OS Platform layer & Tenants). A small portion of memory is dedicated to the F5OS platform layer and it will vary by platform type, and whatever is left over is available for use by tenants. 
 
+**memory total**
+
+This value represents the total amount of memory installed in the rSeries system. The amount of memory installed will vary by rSeries appliance type. Below is an example of an r5900 showing **134735167488** raw bytes for **memory total**. Converting that value to MBytes equals **128 GBytes**.
+
+1 Gigabyte = 1,048,576,000 bytes in binary. 
+
+- memory total **134735167488** / **1,048,576,000** = **128.4GB**
+- memory available **8345739264** / **1,048,576,000** = **7.9GB**
+- memory free **1267056640** / **1,048,576,000** = **1.2GB**
+- platform-total **16107667456** / **1,048,576,000** = **15.3GB**
+- memory platform-used **8910950400** / **1,048,576,000** = **8.4**
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform state memory
+    state memory total    134735167488
+    state memory available 8345739264
+    state memory free     1267056640
+    state memory used-percent 93
+    state memory platform-total 16107667456
+    state memory platform-used 8910950400
+    state memory platform-used-percent 55
+    r5900-1-gsa#
+
+**memory available**
+
+This value represents the total amount of memory available for starting new applications without swapping, in bytes.
+
+**memory free**
+
+This value represents the total amount of memory unused by the system, in bytes.
+
+**memory used-percent**
+
+This value represents the percentage of memory that is in-use by the system, in bytes. Memory used by the system, as a percentage of total installed memory.
+
+
 **memory platform-total**
 
 This represents the memory available to the F5OS platform layer which will vary based on the type of rSeries system in use. As an example, for the r12000 systems 42GB of memory is allocated to the F5OS platform layer, for the r10000 systems 25GB is allocated, for the r5000 systems 15GB is allocated, 14GB for the r4000 systems, and 6.9GB for the r2000 platforms. This is noted in the **Memory use by F5OS** column in the table below. The below values are rounded and not raw values, exact memory values seen in the system will vary slightly as the are presented as raw values. 
@@ -4128,36 +4165,6 @@ This represents the amount of F5OS platform memory that is in use as a percentag
     state memory platform-used 8910950400
     state memory platform-used-percent 55
     r5900-1-gsa#
-
-**memory total**
-
-This value represents the total amount of memory installed in the rSeries system. The amount of memory installed will vary by rSeries appliance type. Below is an example of an r5900 showing **134735167488** raw bytes for **memory total**. Converting that value to MBytes equals **128 GBytes**.
-
-1 Gigabyte = 1,048,576,000 bytes in binary. 
-
-- memory total **134735167488** / **1,048,576,000** = **128.4GB**
-- memory available **8345739264** / **1,048,576,000** = **7.9GB**
-- memory free **1267056640** / **1,048,576,000** = **1.2GB**
-- platform-total **16107667456** / **1,048,576,000** = **15.3GB**
-- memory platform-used **8910950400** / **1,048,576,000** = **8.4**
-
-.. code-block:: bash
-
-    r5900-1-gsa# show components component platform state memory
-    state memory total    134735167488
-    state memory available 8345739264
-    state memory free     1267056640
-    state memory used-percent 93
-    state memory platform-total 16107667456
-    state memory platform-used 8910950400
-    state memory platform-used-percent 55
-    r5900-1-gsa#
-
-**memory available**
-
-**memory free**
-
-**memory used-percent**
 
 
 
