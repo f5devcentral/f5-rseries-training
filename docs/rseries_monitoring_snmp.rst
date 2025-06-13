@@ -4984,10 +4984,17 @@ Query the following SNMP OID to get detailed tenant status.
     "big-ip3"."vwire-1"           vwire-1
     prompt% 
 
+An snmpwalk with the -c value will display the index along with the values.
+
+.. code-block:: bash
+
     prompt% snmpwalk -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantVirtualWiresTable
     F5-OS-TENANT-MIB::tenantVirtualWire."big-ip3"."vwire-1" = STRING: vwire-1
     prompt% 
 
+Below are the SNMP OIDs for the F5-OS-TENANT-MIB:tenantVirtualWiresTable.
+
+.. code-block:: bash
 
     prompt%  snmpwalk -ObenU -v 2c  -c public -m ALL 172.22.50.1 F5-OS-TENANT-MIB:tenantVirtualWiresTable
     .1.3.6.1.4.1.12276.1.5.1.2.1.1.2.7.98.105.103.45.105.112.51.7.118.119.105.114.101.45.49 = STRING: vwire-1
