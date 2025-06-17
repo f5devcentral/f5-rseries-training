@@ -345,15 +345,20 @@ When migrating from an i4600 to an r4600 you can see that the per vCPU/CPU perfo
 Memory Sizing
 =============
 
-In general migrating from an iSeries to the equivalent rSeries model in the mid-range will mean either 1.3x or 2.6x more memory. For the high-end it will either be 2.x more memory, or the same amount of memory (when comparing the 11600/11800). Moving from an i11x00 to an r12x00 will see a 2x increase in memory but less memory per vCPU.
+In general, migrating from an iSeries to the equivalent rSeries model in the low-end (2k/4k) will see a doubling of platform memory. For the low-end appliances (2k/4k) the platform memory will double when moving from an iSeries 2k (16GB) to an rSeries 2k (32GB) platform, or when moving from an iSeries 4k (32GB) to an rSeries 4k (64GB) platform. Because the newer rSeries platforms also have more vCPUs it may see a decrease in per vCPU memory in some cases. You'll notice in the per vCPU graphs below the rSeries x600 models will have more per vCPU memory than the x800 models because some vCPU's are disabled on the x600 platforms. 
 
 .. image:: images/rseries_performance_and_sizing/low-end-memory.png
   :align: center
   :width: 90%
 
+In general, migrating from an iSeries to the equivalent rSeries model in the mid-range (5k/7k) will see a significant increase of platform memory. For the mid-range appliances (5k/7k) the platform memory will increase from an iSeries 5k (48GB) to an rSeries 5k (128GB) platform, or when moving from an iSeries 7k (96GB) to an rSeries 5k (128GB) platform. Because the newer rSeries platforms also have more vCPUs it may see a decrease in per vCPU memory in some cases. You'll notice in the per vCPU graphs below the rSeries x600 or x800 models will have more per vCPU memory than the x900 models because some vCPU's are disabled on the x600 and x800 platforms. 
+
+
 .. image:: images/rseries_performance_and_sizing/mid-range-memory.png
   :align: center  
   :width: 90%
+
+In general, migrating from an iSeries to the equivalent rSeries model in the high-end/ulta high-end (10k/11k/12k/15k) will see significant increases in platform memory, depending on which platform is chosen. Because the newer rSeries platforms also have more vCPUs it may see a decrease in per vCPU memory in some cases. You'll notice in the per vCPU graphs below the rSeries x600 or x800 models will have more per vCPU memory than the x900 models because some vCPU's are disabled on the x600 and x800 platforms. 
 
 .. image:: images/rseries_performance_and_sizing/high-end-memory.png
   :align: center  
