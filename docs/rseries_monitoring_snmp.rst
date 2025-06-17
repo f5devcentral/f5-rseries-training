@@ -1286,7 +1286,7 @@ Device Fault Traps
 | CLEAR            | Hardware device fault detected                                        |
 +------------------+-----------------------------------------------------------------------+
 
-This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading (F5 is considering re-labeling this to remove the word fault) because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
+This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
 
 The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now, those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide additional information alongside an **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
 
@@ -1305,6 +1305,9 @@ As an example, many of the messages are noted by **(INTEGER alertEffect=2)** and
     <INFO> 11-Jul-2022::06:29:19.643 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440675 10.255.0.144:161 (TimeTicks sysUpTime=8536)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-5)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.022807820 UTC)(OCTET STRING alertDescription=fan 5 at 26905 RPM)
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.145:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.144:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
+
+If there are multiple hardware issues, multiple events will be raised but ASSERT will not be raised again if one has already been raised but not cleared. Our system will only clear “hardware-device-fault” alarm only when all the issues were resolved.
+
 
 Other messages are binary messages indicating the state of some hardware component, the AOM system may provide status of some hardware components on power up or re-cycle. The **Deasserted: CPU HW correctable error** is indicating that there is **not** an issue with the CPU HW correctable error. This is un-intuitive because this is issued as a hardware-device-fault trap.
 
