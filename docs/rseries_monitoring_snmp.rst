@@ -1368,7 +1368,7 @@ In the example below, a hardware-device-fault is triggered by two issues:
 
     <INFO> 19-Jun-2025::11:37:12.290 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254518 10.10.10.10:5000 (TimeTicks sysUpTime=43626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:12.284934061 UTC)(OCTET STRING alertDescription=Asserted: CPU non-fatal error)
 
-If the **CPU fatal error** is resolved but the system still has a **non-fatal error** active it will clear the fatal alarm, and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap with **Critical** severity (**alertSeverity=8**) and then issues an SNMP fault trap with **Error** severity (**alertSeverity=3**). It also shows "deasserted" event for "cpu fatal error".
+If the **CPU fatal error** is resolved but the system still has a **non-fatal error** still active it will clear the fatal alarm, and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap with **Critical** severity (**alertSeverity=8**) and then issues an SNMP fault trap with **Error** severity (**alertSeverity=3**). It will also issue an informational event **alertEffect=2** deasserting the event for **CPU fatal error**.
 
 .. code-block:: bash
 
