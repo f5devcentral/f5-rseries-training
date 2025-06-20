@@ -1313,7 +1313,7 @@ Below a **hardware-device-fault** SNMP trap alarm has been raised for two separa
 1. CPU machine check error 
 2. CPU internal error
 
-Both of these alarms have the same severity **Emergency** noted by **alertSeverity=0** in the hardware-device-fault alarm being raised. The AlertSeverity levels below only apply to Assert (alertEffect=1)or Clear (alertEffect=0) messages. Events messages (alertEffect=2) will always show Info severity (alertSeverity=8) as they are only used for informative purposes. 
+Both of these alarms have the same severity **Emergency** noted by **alertSeverity=0** in the hardware-device-fault alarm being raised. The AlertSeverity levels below only apply to Alarm (**alertEffect=1**) or Clear (**alertEffect=0**) messages. Event messages (**alertEffect=2**) will always show Info severity (**alertSeverity=8**) as they are only used for informative purposes. 
 
 
 - AlertSeverity_ALERT_SEVER_EMERGENCY AlertSeverity = 0 // system is unusable
