@@ -1376,7 +1376,7 @@ In the example below, a hardware-device-fault is triggered by two issues:
 1. CPU fatal error, which has a critical severity (alertSeverity=2) and 
 2. CPU non-fatal error which has an error severity (alertSeverity=3).
 
-Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **alertEffect=1** will be raised with that severity **alertSeverity=2**. There will be follow on event traps **alertEffect=2** providing the detials of both errors.
+Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **alertEffect=1** will be raised with severity **alertSeverity=2**. There will be follow on event traps **alertEffect=2** providing the detials of both errors.
 
 .. code-block:: bash
 
@@ -1392,7 +1392,7 @@ Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **
 
     <INFO> 19-Jun-2025::11:37:12.290 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254518 10.10.10.10:5000 (TimeTicks sysUpTime=43626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:12.284934061 UTC)(OCTET STRING alertDescription=Asserted: CPU non-fatal error)
 
-If the **CPU fatal error** is resolved but the system still has a **non-fatal error** still active it will clear the fatal alarm, and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap with **Critical** severity (**alertSeverity=8**) and then issues an SNMP fault trap with **Error** severity (**alertSeverity=3**). The system will also issue an informational event **alertEffect=2** deasserting the event for **CPU fatal error**.
+If the **CPU fatal error** is resolved but the system still has a **non-fatal error** still active it will clear the fatal alarm, and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap **alertEffect=0** and then issues a new SNMP fault trap **alertEffect=1** with **Error** severity (**alertSeverity=3**). The system will also issue an informational event **alertEffect=2** deasserting the event for **CPU fatal error**.
 
 .. code-block:: bash
 
@@ -1408,7 +1408,7 @@ If the **CPU fatal error** is resolved but the system still has a **non-fatal er
 
     <INFO> 19-Jun-2025::11:37:39.936 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254521 10.10.10.10:5000 (TimeTicks sysUpTime=46390)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:39.824900797 UTC)(OCTET STRING alertDescription=Deasserted: CPU fatal error)
 
-When the remaining **non-fatal error** gets cleared, the system will clear the  **hardware-device-fault**.
+When the remaining **non-fatal error** gets cleared, the system will clear the **hardware-device-fault** noted by **alertEffect=0**. An addtional infromational **Deasserted: CPU non-fatal error** message will be sent.
 
 .. code-block:: bash
 
