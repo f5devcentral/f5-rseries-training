@@ -1317,7 +1317,7 @@ Both of these alarms have the same severity **Emergency** noted by **alertSeveri
 
 +-----------+--------------------+-----------------------------------+
 | Severity  | Severity Level     | Details                           |
-+-----------+--------------------+-----------------------------------+
++===========+====================+===================================+
 | EMERGENCY | alertSeverity = 0  | System is unusable                |
 +-----------+--------------------+-----------------------------------+
 | ALERT     | alertSeverity = 1  | Action must be taken immediately  |
@@ -1335,7 +1335,7 @@ Both of these alarms have the same severity **Emergency** noted by **alertSeveri
 | DEBUG     | alertSeverity = 7  | Debug-level messages              |
 +-----------+--------------------+-----------------------------------+
 
-In this case, instead of raising the **hardware-device-fault** SNMP trap twice (once for each event), it is raised only one time but becuase of two separate concurrent sub events.
+In this case, instead of raising the **hardware-device-fault** SNMP trap twice (once for each event), it is raised only one time but becuase of two separate concurrent sub events. Take note of the **alertSeverity=0** in the SNMP alarm indicating an **Emergency** status.
 
 .. code-block:: bash
 
