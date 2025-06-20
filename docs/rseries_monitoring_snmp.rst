@@ -1347,11 +1347,11 @@ The hardware-device-fault alarm will only be cleared when both the issues are re
 
     <INFO> 19-Jun-2025::11:46:00.786 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254533 10.10.10.10:5000 (TimeTicks sysUpTime=96475)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:46:00.729332433 UTC)(OCTET STRING alertDescription=Deasserted: CPU internal error)
 
-When multiple issues within the hardware-device-fault category raise an alarm, the diag-agent will compare the severities and it will show the alarm with highest severity.
+When multiple concurrent issues within the hardware-device-fault category raise an alarm, the diag-agent will compare the severities of the alarms and it will show the one with the highest severity.
  
 In the example below, a hardware-device-fault is triggered by two issues:
 
-1. CPU fatal error, which is has a critical severity and 
+1. CPU fatal error, which has a critical severity and 
 2. CPU non-fatal error which has an error severity.
 
 .. code-block:: bash
@@ -1368,15 +1368,15 @@ In the example below, a hardware-device-fault is triggered by two issues:
 
     <INFO> 19-Jun-2025::11:37:12.290 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254518 10.10.10.10:5000 (TimeTicks sysUpTime=43626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:12.284934061 UTC)(OCTET STRING alertDescription=Asserted: CPU non-fatal error)
 
-If the **CPU fatal error** is resolved but the system still has a **non-fatal error** active. In this case, the  system sends a "CLEAR" with "Critical" severity and "ASSERTS" with "Error" severity. It also shows "deasserted" event for "cpu fatal error".
+If the **CPU fatal error** is resolved but the system still has a **non-fatal error** active it will clear the fatal alarm, and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap with **Critical** severity (**alertSeverity=8**) and then issues an SNMP fault trap with **Error** severity (**alertSeverity=3**). It also shows "deasserted" event for "cpu fatal error".
 
 .. code-block:: bash
 
-    Hardware device fault detected alarm cleared (alertEffect=0).
+    Hardware device fault detected alarm cleared (alertEffect=0) with (alertSeverity=8).
 
     <INFO> 19-Jun-2025::11:37:39.830 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254519 10.10.10.10:5000 (TimeTicks sysUpTime=46380)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:39.824875172 UTC)(OCTET STRING alertDescription=Hardware device fault detected)
 
-    Hardware device fault detected alarm raised (alertEffect=1).
+    Hardware device fault detected alarm raised (alertEffect=1) with (alertSeverity=3).
 
     <INFO> 19-Jun-2025::11:37:39.886 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254520 10.10.10.10:5000 (TimeTicks sysUpTime=46385)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-06-19 11:37:39.824883495 UTC)(OCTET STRING alertDescription=Hardware device fault detected)
 
