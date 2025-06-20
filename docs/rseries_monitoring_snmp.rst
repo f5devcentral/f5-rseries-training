@@ -1335,7 +1335,7 @@ Both of these alarms have the same severity **Emergency** noted by **alertSeveri
 | DEBUG     | alertSeverity = 7  | Debug-level messages              |
 +-----------+--------------------+-----------------------------------+
 
-In this case, instead of raising the **hardware-device-fault** SNMP trap twice (once for each event), it is raised only one time but becuase of two separate concurrent sub events. Take note of the **alertSeverity=0** in the SNMP alarm indicating an **Emergency** status.
+In this case, instead of raising the **hardware-device-fault** SNMP trap twice (once for each event), it is raised only one time becuase of two separate concurrent sub events. Take note of the **alertSeverity=0** in the SNMP alarm indicating an **Emergency** status.
 
 .. code-block:: bash
 
@@ -1351,7 +1351,7 @@ In this case, instead of raising the **hardware-device-fault** SNMP trap twice (
 
     <INFO> 19-Jun-2025::11:45:26.772 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254530 10.10.10.10:5000 (TimeTicks sysUpTime=93074)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:45:26.769129229 UTC)(OCTET STRING alertDescription=Asserted: CPU machine check error)
 
-The hardware-device-fault alarm will only be cleared when both the issues are resolved.
+The hardware-device-fault alarm will only be cleared when both the issues are resolved. Below is an example of the clear traps in this case.
 
 .. Note:: The messages may arrive out of order as seen below.
 
@@ -1369,12 +1369,14 @@ The hardware-device-fault alarm will only be cleared when both the issues are re
 
     <INFO> 19-Jun-2025::11:46:00.786 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254533 10.10.10.10:5000 (TimeTicks sysUpTime=96475)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:46:00.729332433 UTC)(OCTET STRING alertDescription=Deasserted: CPU internal error)
 
-When multiple concurrent issues within the hardware-device-fault category raise an alarm, the diag-agent will compare the severities of the alarms and it will show the one with the highest severity.
+When multiple concurrent issues within the hardware-device-fault category raise an alarm, the diag-agent will compare the severities of the alarms and it will only raise an alarm for the one with the highest severity (Lowest number alertEffect).
  
 In the example below, a hardware-device-fault is triggered by two issues:
 
-1. CPU fatal error, which has a critical severity and 
-2. CPU non-fatal error which has an error severity.
+1. CPU fatal error, which has a critical severity (alertSeverity=2) and 
+2. CPU non-fatal error which has an error severity (alertSeverity=3).
+
+Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **alertEffect=1** will be raised with that severity **alertSeverity=2**. There will be follow on event traps **alertEffect=2** providing the detials of both errors.
 
 .. code-block:: bash
 
