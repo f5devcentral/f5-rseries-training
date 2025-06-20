@@ -1408,7 +1408,7 @@ If the **CPU fatal error** is resolved but the system still has a **non-fatal er
 
     <INFO> 19-Jun-2025::11:37:39.936 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254521 10.10.10.10:5000 (TimeTicks sysUpTime=46390)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:39.824900797 UTC)(OCTET STRING alertDescription=Deasserted: CPU fatal error)
 
-When the remaining **non-fatal error** gets cleared, the system will clear the **hardware-device-fault** noted by **alertEffect=0**. An addtional infromational **Deasserted: CPU non-fatal error** message will be sent.
+When the remaining **non-fatal error** gets cleared, the system will clear the **hardware-device-fault** noted by **alertEffect=0**. An additional informational **Deasserted: CPU non-fatal error** message will be sent.
 
 .. code-block:: bash
 
