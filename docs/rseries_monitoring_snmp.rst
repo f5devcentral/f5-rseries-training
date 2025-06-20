@@ -1313,7 +1313,7 @@ Below a **hardware-device-fault** SNMP trap alarm has been raised for two separa
 1. CPU machine check error 
 2. CPU internal error
 
-Both of these alarms have the same severity **Emergency**. In this case, instead of raising the **hardware-device- fault** SNMP trap twice (once for each event), it is raised only one time but becuase of two separate concurrent sub events.
+Both of these alarms have the same severity **Emergency** (alertSeverity=8). In this case, instead of raising the **hardware-device- fault** SNMP trap twice (once for each event), it is raised only one time but becuase of two separate concurrent sub events.
 
 .. code-block:: bash
 
