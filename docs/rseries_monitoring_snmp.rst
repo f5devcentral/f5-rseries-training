@@ -1286,7 +1286,7 @@ Device Fault Traps
 | CLEAR            | Hardware device fault detected                                        |
 +------------------+-----------------------------------------------------------------------+
 
-This set of taps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
+This set of traps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
 
 The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now, those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide additional information alongside an **alertEffect=0** (clear) or an or **alertEffect=1** (alarm) SNMP trap. 
 
@@ -1308,12 +1308,12 @@ As an example, many of the messages are noted by **(INTEGER alertEffect=2)** and
 
 If there are multiple concurrent hardware issues, multiple events will be raised but the **Hardware device fault detected** alarm **alertEffect=1** will not be raised for each individual fault. If **Hardware device fault detected** alarm **alertEffect=1** has already been raised but not cleared, a second alarm will not be raised when a second hardware-device-fault event triggers. The system will only clear **hardware-device-fault** alarm when all concurrent issues are resolved.
 
-Below a **hardware-device-fault** SNMP trap alarm is raised for two separate issues:
+Below a **hardware-device-fault** SNMP trap alarm has been raised for two separate issues:
 
 1. CPU machine check error 
 2. CPU internal error
 
-Both of these alarms have the same severity **Emergency**. In this case, instead of raising the **hardware-device- fault** SNMP trap twice, it is raised only one time but with two separate events.
+Both of these alarms have the same severity **Emergency**. In this case, instead of raising the **hardware-device- fault** SNMP trap twice (once for each event), it is raised only one time but becuase of two separate concurrent sub events.
 
 .. code-block:: bash
 
@@ -1330,6 +1330,8 @@ Both of these alarms have the same severity **Emergency**. In this case, instead
     <INFO> 19-Jun-2025::11:45:26.772 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254530 10.10.10.10:5000 (TimeTicks sysUpTime=93074)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:45:26.769129229 UTC)(OCTET STRING alertDescription=Asserted: CPU machine check error)
 
 The hardware-device-fault alarm will only be cleared when both the issues are resolved.
+
+.. Note:: The messages may arrive out of order as seen below.
 
 .. code-block:: bash
 
