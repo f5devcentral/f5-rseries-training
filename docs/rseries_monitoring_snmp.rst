@@ -2556,6 +2556,47 @@ The ddm vcc (Voltage) threshold for a specific transceiver has reach a threshold
 .. code-block:: bash
 
 
+**speed                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
+The **speed** SNMP trap indicates that a port speed change event has occured on one of the in-band network interfaces. It will be sent with an **alertEffect=2** indicating that this is an informational event and not an alarm. 
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| EVENT            | Port speed change event                                                                  |
++------------------+------------------------------------------------------------------------------------------+
+
+.. code-block:: bash
+
+    r4800-1-gsa#  file show log/system/snmp.log | include trap | include speed
+    <INFO> 18-Oct-2024::15:05:22.988 r4800-1-gsa confd[171]: snmp snmpv2-trap reqid=2056682309 10.255.80.251:162 (TimeTicks sysUpTime=9984565)(OBJECT IDENTIFIER snmpTrapOID=speed)(OCTET STRING alertSource=interface-5.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-10-18 19:05:22.889472944 UTC)(OCTET STRING alertDescription=Port speed change event)
+    <INFO> 18-Oct-2024::15:05:23.143 r4800-1-gsa confd[171]: snmp snmpv2-trap reqid=2056682311 10.255.80.251:162 (TimeTicks sysUpTime=9984580)(OBJECT IDENTIFIER snmpTrapOID=speed)(OCTET STRING alertSource=interface-6.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-10-18 19:05:22.913603986 UTC)(OCTET STRING alertDescription=Port speed change event)
+    <INFO> 18-Oct-2024::15:05:23.297 r4800-1-gsa confd[171]: snmp snmpv2-trap reqid=2056682313 10.255.80.251:162 (TimeTicks sysUpTime=9984595)(OBJECT IDENTIFIER snmpTrapOID=speed)(OCTET STRING alertSource=interface-8.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-10-18 19:05:22.955638145 UTC)(OCTET STRING alertDescription=Port speed change event)
+    <INFO> 18-Oct-2024::15:05:24.098 r4800-1-gsa confd[171]: snmp snmpv2-trap reqid=2056682316 10.255.80.251:162 (TimeTicks sysUpTime=9984676)(OBJECT IDENTIFIER snmpTrapOID=speed)(OCTET STRING alertSource=interface-7.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-10-18 19:05:24.000236063 UTC)(OCTET STRING alertDescription=Port speed change event)
+    r4800-1-gsa# 
+
+You can the view the **platform.log** to get more details about the port speed change.
+
+.. code-block:: bash
+
+    r4800-1-gsa# file show log/system/platform.log | include 2024-10-18 | include speed
+    2024-10-18T15:05:22.886492-04:00 r4800-1-gsa.cpt.f5net.com nic-manager[8]: priority="Info" version=1.0 msgid=0x7209000000000024 msg="Updating interface link speed" ifname="5.0" speed="10GB".
+    2024-10-18T15:05:22.910927-04:00 r4800-1-gsa.cpt.f5net.com nic-manager[8]: priority="Info" version=1.0 msgid=0x7209000000000024 msg="Updating interface link speed" ifname="6.0" speed="10GB".
+    2024-10-18T15:05:22.939901-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="5.0" status="UP" speed=25000.
+    2024-10-18T15:05:22.939931-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="5.0" status="UP" speed=10000.
+    2024-10-18T15:05:22.939951-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="6.0" status="UP" speed=25000.
+    2024-10-18T15:05:22.939977-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="6.0" status="UP" speed=10000.
+    2024-10-18T15:05:22.953194-04:00 r4800-1-gsa.cpt.f5net.com nic-manager[8]: priority="Info" version=1.0 msgid=0x7209000000000024 msg="Updating interface link speed" ifname="8.0" speed="10GB".
+    2024-10-18T15:05:22.985660-04:00 r4800-1-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="263170 interface-5.0 speed EVENT NA 'Port speed change event' '2024-10-18 19:05:22.889472944 UTC'".
+    2024-10-18T15:05:23.139945-04:00 r4800-1-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="263170 interface-6.0 speed EVENT NA 'Port speed change event' '2024-10-18 19:05:22.913603986 UTC'".
+    2024-10-18T15:05:23.194065-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="8.0" status="UP" speed=25000.
+    2024-10-18T15:05:23.194095-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="8.0" status="UP" speed=10000.
+    2024-10-18T15:05:23.293870-04:00 r4800-1-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="263170 interface-8.0 speed EVENT NA 'Port speed change event' '2024-10-18 19:05:22.955638145 UTC'".
+    2024-10-18T15:05:23.997592-04:00 r4800-1-gsa.cpt.f5net.com nic-manager[8]: priority="Info" version=1.0 msgid=0x7209000000000024 msg="Updating interface link speed" ifname="7.0" speed="10GB".
+    2024-10-18T15:05:24.094880-04:00 r4800-1-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="263170 interface-7.0 speed EVENT NA 'Port speed change event' '2024-10-18 19:05:24.000236063 UTC'".
+    2024-10-18T15:05:24.213947-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="7.0" status="UP" speed=25000.
+    2024-10-18T15:05:24.213976-04:00 r4800-1-gsa.cpt.f5net.com lacpd[14]: priority="Info" version=1.0 msgid=0x3401000000000084 msg="Interface link state changed." name="7.0" status="UP" speed=10000.
+    r4800-1-gsa# 
 
 
 Enabling SNMP Traps
@@ -2564,7 +2605,7 @@ Enabling SNMP Traps
 Enabling SNMP Traps in the CLI for F5OS-A 1.2.0 or Later
 --------------------------------------------------------
 
-The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release and later. Use the **system snmp target** command to configure the SNMP trap destination. The example below uses SNMP v2c and a community string.
+The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release and later. Use the **system snmp target** command to configure the SNMP trap destination. The example below uses SNMPv2c and a community string.
 
 .. code-block:: bash
 
@@ -2573,7 +2614,7 @@ The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release 
     Commit complete.
     r5900-2(config-target-v2c-target)# 
 
-This example below uses SNMP v3 and uses an SNMP user instead of a community string.
+This example below uses SNMPv3 and uses an SNMP user instead of a community string.
 
 .. code-block:: bash
 
