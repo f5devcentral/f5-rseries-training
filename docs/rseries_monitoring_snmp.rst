@@ -2605,7 +2605,7 @@ Enabling SNMP Traps
 Enabling SNMP Traps in the CLI for F5OS-A 1.2.0 or Later
 --------------------------------------------------------
 
-The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release and later. Use the **system snmp target** command to configure the SNMP trap destination. The example below uses SNMP v2c and a community string.
+The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release and later. Use the **system snmp target** command to configure the SNMP trap destination. The example below uses SNMPv2c and a community string.
 
 .. code-block:: bash
 
@@ -2614,7 +2614,7 @@ The SNMP trap CLI configuration has been simplified in the F5OS-A 1.2.0 release 
     Commit complete.
     r5900-2(config-target-v2c-target)# 
 
-This example below uses SNMP v3 and uses an SNMP user instead of a community string.
+This example below uses SNMPv3 and uses an SNMP user instead of a community string.
 
 .. code-block:: bash
 
