@@ -191,10 +191,10 @@ You may also transfer from the CLI using SCP or SFTP protocols. Below is an exam
 
 .. code-block:: bash
 
-    r5900-1-gsa# file export local-file configs/GSA-Daily_GSA-rSeries-4_20230330070500 remote-host 172.22.50.56 protocol scp remote-file GSA-Daily_GSA-rSeries-4_20230330070500 username admin
+    r5900-1-gsa# file export local-file configs/F5OS-BACKUP-APPLIANCE42022-01-22 remote-host 172.22.50.57 remote-file /home/user1 username user1 insecure protocol scp
     Value for 'password' (<string>): **************
-    result File transfer is initiated.(configs/GSA-Daily_GSA-rSeries-4_20230330070500)
-    operation-id EXPORT-PMmrbkLl
+    result File transfer is initiated.(configs/F5OS-BACKUP-APPLIANCE42022-01-22)
+    operation-id EXPORT-fjpe5YEt
     r5900-1-gsa#
 
 The **file transfer-status** command will show the upload of the SCP transfer as well as HTTPS or SFTP:
@@ -203,10 +203,11 @@ The **file transfer-status** command will show the upload of the SCP transfer as
 
     appliance-1# file transfer-status
     result 
-    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status            |Time                
-    1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed|Sat Jan 15 20:45:29 2022
-    2    |Export file|SCP     |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/var/www/server/1/upload/rSeries-59002-backup-1-16-2022     |         Completed|Sat Jan 15 20:48:29 2022
+    S.No.|Operation  |Protocol|Local File Path                                             |Remote Host         |Remote File Path                                            |Status                    |Time                
+    1    |Export file|HTTPS   |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/upload/upload.php                                          |         Completed        |Sat Jan 15 20:45:29 2022
+    2    |Export file|SCP     |configs/rSeries-59002-backup-1-15-2022                      |10.255.0.142        |/var/www/server/1/upload/rSeries-59002-backup-1-16-2022     |         Completed        |Sat Jan 15 20:48:29 2022
     3    |Export file|SCP     |configs/GSA-Daily_GSA-rSeries-4_20230330070500              |172.22.50.56        |GSA-Daily_GSA-rSeries-4_20230330070500                      |Couldn't connect to server|Wed Jul 23 17:13:08 2025
+    4    |Export file|SCP     |configs/F5OS-BACKUP-APPLIANCE42022-01-22                    |172.22.50.57        |/home/user1                                                 |         Completed        |Thu Jul 24 16:21:10 2025
 
 If you don’t have an external HTTPS server that allows uploads, then you can log into the rSeries F5OS address with root access and scp the file from the shell. Go to the **/var/confd/configs** directory and scp the file to an external location. Note in the CLI and webUI the path is simplified to configs, but in the underlying file system it is stored in the **/var/F5/system/configs** directory. Note that this is not an option if the appliance has been configured in Appliance Mode, which disables bash/shell access.
 
