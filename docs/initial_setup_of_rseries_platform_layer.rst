@@ -969,7 +969,7 @@ To license the rSeries appliance manually you’ll need to get the dossier first
   Boston-r10900-1(config)# system licensing get-dossier
   b9a9936886bada077d93843a281ce4c34bf78db0d6c32c40adea3a5329db15edd413fe7d7f8143fd128ebe2d97642b4ed9192b530788fe3965593e3b42131c66220401b16843476159414ceeba8af5fb67a39fe2a2f408b9…
 
-You can then access the F5 licensing server (license.f5.com) and paste in the dossier when prompted:
+You can then access the F5 licensing server (https://activate.f5.com/license/dossier.jsp) and paste in the dossier when prompted:
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image9.png
   :align: center
