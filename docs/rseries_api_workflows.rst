@@ -54,17 +54,6 @@ Deploying an rSeries Tenant
 `Deleting a Tenant via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_tenant.html#deleting-a-tenant-via-the-api>`_
 
 
-Deploying an rSeries BIG-IP Next Tenant
----------------------------------------
-
-`Loading BIG-IP Next Tenant Images from a Remote Server via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#loading-big-ip-next-tenant-images-from-a-remote-server-via-f5os-api>`_
-
-`Uploading BIG-IP Next Tenant Images from a Client Machine via the F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#uploading-big-ip-next-tenant-images-from-a-client-machine-via-the-f5os-api>`_
-
-`Creating a BIG-IP Next Tenant via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#creating-a-big-ip-next-tenant-via-f5os-api>`_
-
-`Validating BIG-IP Next Tenant Status via F5OS API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_deploying_a_bigip_next_tenant.html#validating-big-ip-next-tenant-status-via-f5os-api>`_
-
 Securing / Hardening F5OS on rSeries
 ------------------------------------
 
