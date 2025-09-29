@@ -195,19 +195,19 @@ Below are the current rSeries optic SKUs:
 The following breakout cable SKU’s are support in conjunction with F5OS-A 1.8.0, and only for 4 x 10Gb support. 
 
 +---------------------+--------------------------------------------------------------------------------------------+
-| F5-UPG-SR4XSR3M  | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (3 Meter 2 Pack)     |
+| F5-UPG-SR4XSR3M     | Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (3 Meter 2 Pack)        |
 +---------------------+--------------------------------------------------------------------------------------------+
-| F5-UPG-SR4XSR1M  | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (1 Meter 2 Pack)     |
+| F5-UPG-SR4XSR1M     | Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (1 Meter 2 Pack)        |
 +---------------------+--------------------------------------------------------------------------------------------+
-| F5-UPG-SR4XSR10M | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (10 Meter 2 Pack)    |
+| F5-UPG-SR4XSR10M    | Field Upgrade: QSFP28-QSFP+ Breakout Cable for SR4 ONLY MPO to 4LC (10 Meter 2 Pack)       |
 +---------------------+--------------------------------------------------------------------------------------------+
 
 Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pack):
 
 +----------------------+----------------------------------------------------------------------------------------------+
-| F5-UPG-PSM4XLR10M | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)       |
+| F5-UPG-PSM4XLR10M    | Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (10 Meter)          |
 +----------------------+----------------------------------------------------------------------------------------------+
-| F5-UPG-PSM4XLR3M  | VELOS Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (3 Meter)        |
+| F5-UPG-PSM4XLR3M     | Field Upgrade: QSFP28-QSFP+ Breakout Cable for PSM4 ONLY. MPO/APC to 4LC (3 Meter)           |
 +----------------------+----------------------------------------------------------------------------------------------+
 
 VLANs
