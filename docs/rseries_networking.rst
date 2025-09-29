@@ -199,6 +199,7 @@ Below are the current rSeries optic SKUs:
 | F5-UPG-QSFP28-BD     |	Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       | `F5-UPG-QSFP28-BD (OPT-0047-XX) - QSFP28 TRANSCEIVER (100G BIDI, 850-910 nm, 100M, MMF, Duplex LC, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0047>`_                 |
 +----------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
+test
 
 The following breakout cable SKU’s are support in conjunction with F5OS-A 1.8.0, and only for 4 x 10Gb support. 
 
