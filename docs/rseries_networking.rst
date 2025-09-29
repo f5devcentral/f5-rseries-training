@@ -160,6 +160,9 @@ rSeries 100Gb QSFP28 SKU's
 Below are the current rSeries optic SKUs:
 
 
+.. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
+
+
 +----------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | F5-UPG-SFP-R         |  Field Upgrade: SFP Fiber Connector (1G - LC/850nm) ROHS                               | `F5-UPG-SFP-R (OPT-0010-00) - 1000Base-SX (Short Range) Ethernet Transceiver with DDM Support <https://my.f5.com/manage/s/article/K6097#OPT0010>`_                           |
 +----------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
@@ -195,8 +198,6 @@ Below are the current rSeries optic SKUs:
 +----------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-BD     |	Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)       | `F5-UPG-QSFP28-BD (OPT-0047-XX) - QSFP28 TRANSCEIVER (100G BIDI, 850-910 nm, 100M, MMF, Duplex LC, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0047>`_                 |
 +----------------------+----------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-
-.. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
 
 The following breakout cable SKU’s are support in conjunction with F5OS-A 1.8.0, and only for 4 x 10Gb support. 
