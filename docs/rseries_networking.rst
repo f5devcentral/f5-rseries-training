@@ -157,7 +157,11 @@ rSeries 100Gb QSFP28 SKU's
 +----------------------+-----------+----------------------------------------------------------------------------------------------+
 
 
-Below are the current rSeries optic SKUs:
+Below are the **current** rSeries optic SKUs:
+
+.. Note:: Some older SKU's may operate in rSeries, but are no longer available to purchase. They are listed in the following document.
+  
+`K6097: Specifications of the Fiber Gigabit Ethernet SFP, XFP, SFP+, QSFP+, and QSFP28 module ports on BIG-IP system platforms <https://my.f5.com/manage/s/article/K6097>`_
 
 .. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
@@ -191,13 +195,11 @@ Below are the current rSeries optic SKUs:
 +----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-LR4    | Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, 4.5W, DDM)                       | `F5-UPG-QSFP28-LR4 (OPT-0039-01) - QSFP28 TRANSCEIVER (100G-LR4, 10KM, LC, SMF, 4.5W, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0039>`_                              |
 +----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| F5-UPG-QSFP28-BD     | Field Upgrade: Transceiver QSFP28, 100G BIDI, 100M, LC, MMF, DDM (rSeries ONLY)              | `F5-UPG-QSFP28-BD (OPT-0047-XX) - QSFP28 TRANSCEIVER (100G BIDI, 850-910 nm, 100M, MMF, Duplex LC, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0047>`_                 |
-+----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-SR12   | Field Upgrade: QSFP28 Transceiver (100G-SR1.2 BiDi, 150M OM5, LC, MMF) (rSeries ONLY)        | `F5-UPG-QSFP28-SR12 (OPT-0048-XX) - Transceiver, QSFP28, 100G-SR1.2 BIDI, 100M, LC UPC, MMF <https://my.f5.com/manage/s/article/K6097#OPT0048>`_                             |
 +----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| F5-UPGVELQSFP28LR4B  | Field Upgrade: ----------                                                                    | `F5-UPGVELQSFP28LR4B (OPT-0052-01) - QSFP28 TRANSCEIVER  (100G-LR4, 1295-1310 nm, 10KM, LC, SMF, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0052>`_                   |
+| F5-UPG-VELQSFP28LR4B | VELOS Field Upgrade: QSFP28 Transceiver (100G-LR4, 10KM, LC, SMF, DDM)                       | `F5-UPGVELQSFP28LR4B (OPT-0052-01) - QSFP28 TRANSCEIVER  (100G-LR4, 1295-1310 nm, 10KM, LC, SMF, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0052>`_                   |
 +----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| F5-UPGVELQSFP28PSM4  | Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS                  | `F5-UPGVELQSFP28PSM4 (OPT-0055-01) - QSFP28 TRANSCEIVER (100G-PSM4, 1310nm, 500M, MPO/MTP, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0055>`_                         |
+| F5-UPG-QSFP28-PSM4   | Field Upgrade: QSFP28 Transceiver (100G-PSM4, 500M, MPO/APC, SMF, DDM) ROHS                  | `F5-UPGVELQSFP28PSM4 (OPT-0055-01) - QSFP28 TRANSCEIVER (100G-PSM4, 1310nm, 500M, MPO/MTP, DDM) <https://my.f5.com/manage/s/article/K6097#OPT0055>`_                         |
 +----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | F5-UPG-QSFP28-FR     | Field Upgrade: QSFP28 Transceiver (100G-FR Single Lambda, 2KM, LC, SMF, DDM) (rSeries ONLY)  | `F5-UPG-QSFP28-FR (OPT-0056-01) - TRANSCEIVER, QSFP28, 100G-FR, SINGLE LAMBDA, 2KM, LC UPC, SMF, F5 BRANDED <https://my.f5.com/manage/s/article/K6097#OPT0056>`_             |
 +----------------------+----------------------------------------------------------------------------------------------+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
