@@ -11,7 +11,7 @@ The capacity advertised for disk sizes are larger than what is seen inside the s
 
 `K000135513: F5OS platform (rSeries/VELOS) shows different disk size compared to platform data sheet <https://my.f5.com/manage/s/article/K000135513>`_
 
-Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size. The system has dual 1TB disk, but due to over provisioning the actual usable space is ~735GB.
+Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size. The system has dual 1TB disks, but due to over provisioning the actual usable space is ~735GB.
 
 .. code-block:: bash
 
