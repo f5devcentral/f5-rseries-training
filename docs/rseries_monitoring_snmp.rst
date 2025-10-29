@@ -3976,6 +3976,43 @@ The table below shows the current status and health of the rSeries power supply 
 
 **F5-PLATFORM-STATS-MIB:psuStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.9.1**
 
+As noted in the **F5-PLATFORM-STATS-MIB**, Temperature values are displayed as an **Interger32** and the **DISPLAY-HINT** is set for **d-1** meaning one decimal point place as noted in https://www.rfc-editor.org/rfc/rfc2579#page-21
+
+If present, the second part starts with a hyphen and is followed by a decimal number, which defines the implied decimal point when rendering the value.
+
+.. code-block:: bash
+
+   For example:
+
+        Hundredths ::= TEXTUAL-CONVENTION
+            DISPLAY-HINT "d-2"
+            ...
+            SYNTAX     INTEGER (0..10000)
+
+   suggests that a Hundredths value of 1234 be rendered as "12.34"
+
+In the F5 MIB, the value is set as **d-1** meaning a value of **350** should be rendered as **35.0** for Temperature values.
+
+.. code-block:: bash
+
+    TemperatureType ::= TEXTUAL-CONVENTION
+        DISPLAY-HINT "d-1"
+        STATUS      current
+        DESCRIPTION "display temperature stats in integer value"
+        SYNTAX      Integer32
+
+For **PSUStatsType** the **DISPLAY-HINT** is set for **d-3** meaning 3 decimal places meaning a value of **42625** should be rendered as **42.625** for current, voltage and power stats values.
+
+.. code-block:: bash
+
+    PSUStatsType ::= TEXTUAL-CONVENTION
+        DISPLAY-HINT "d-3"
+        STATUS      current
+        DESCRIPTION "display type for PSU stats like current, voltage and power stats in decimals value"
+        SYNTAX      Integer32
+
+Below is an example if the **psuStatsTable** on an rSeries unit with one power supply installed.
+
 .. code-block:: bash
 
     prompt% snmptable -v 2c  -c public -m ALL 10.255.2.41 F5-PLATFORM-STATS-MIB:psuStatsTable
@@ -4135,6 +4172,32 @@ Temperature Stats Table
 The tables below show the temperature stats for the entire rSeries appliance. For monitoring purposes, the Lower Limit = 0, Alert >= 42, Emergency >= 60
 
 **F5-PLATFORM-STATS-MIB:temperatureStatsTable OID: .1.3.6.1.4.1.12276.1.2.1.3.1**
+
+As noted in the **F5-PLATFORM-STATS-MIB**, Temperature values are displayed as an **Interger32** and the **DISPLAY-HINT** is set for **d-1** meaning one decimal point place as noted in https://www.rfc-editor.org/rfc/rfc2579#page-21
+
+If present, the second part starts with a hyphen and is followed by a decimal number, which defines the implied decimal point when rendering the value.
+
+.. code-block:: bash
+       
+   For example:
+
+        Hundredths ::= TEXTUAL-CONVENTION
+            DISPLAY-HINT "d-2"
+            ...
+            SYNTAX     INTEGER (0..10000)
+
+   suggests that a Hundredths value of 1234 be rendered as "12.34"
+
+In the F5 MIB, the value is set as **d-1** meaning a value of **272** should be rendered as **27.2** for Temperature values.
+
+.. code-block:: bash
+
+    TemperatureType ::= TEXTUAL-CONVENTION
+        DISPLAY-HINT "d-1"
+        STATUS      current
+        DESCRIPTION "display temperature stats in integer value"
+        SYNTAX      Integer32
+
 
 Below is example output from an r5900 rSeries appliance.
 
