@@ -3978,16 +3978,18 @@ The table below shows the current status and health of the rSeries power supply 
 
 As noted in the **F5-PLATFORM-STATS-MIB**, Temperature values are displayed as an **Interger32** and the **DISPLAY-HINT** is set for **d-1** meaning one decimal point place as noted in https://www.rfc-editor.org/rfc/rfc2579#page-21
 
-*If present, the second part starts with a hyphen and is followed by a decimal number, which defines the implied decimal point when rendering the value.
-   
-   *For example:
+If present, the second part starts with a hyphen and is followed by a decimal number, which defines the implied decimal point when rendering the value.
 
-        *Hundredths ::= TEXTUAL-CONVENTION
+.. code-block:: bash
+       
+   For example:
+
+        Hundredths ::= TEXTUAL-CONVENTION
             DISPLAY-HINT "d-2"
             ...
             SYNTAX     INTEGER (0..10000)
 
-   *suggests that a Hundredths value of 1234 be rendered as "12.34"
+   suggests that a Hundredths value of 1234 be rendered as "12.34"
 
 In the F5 MIB, the value is set as **d-1** meaning a value of **714** should be rendered as **71.4** for Temperature values.
 
