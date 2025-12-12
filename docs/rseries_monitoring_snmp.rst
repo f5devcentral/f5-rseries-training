@@ -1286,10 +1286,11 @@ F5OS Specific Traps
 Device Fault Traps
 ------------------
 
-**hardware-device-fault**
-^^^^^^^^^^^^^^^^^^^^^
+
+
 
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**  
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 +------------------+-----------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                     |
@@ -1472,10 +1473,10 @@ Below is another example of informational events noted by **alertEffect=2**.
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.145:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.144:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
 
-**firmware-fault**
-^^^^^^^^^^^^^^
+
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 +------------------+----------------------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                                        |
@@ -1504,10 +1505,10 @@ In the example below, note the messages are all informational **alertEffect=2** 
     <INFO> 11-Jul-2022::06:29:28.939 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440769 10.255.0.145:161 (TimeTicks sysUpTime=9466)(OBJECT IDENTIFIER snmpTrapOID=firmware-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:19.908471420 UTC)(OCTET STRING alertDescription=Deasserted: Watchdog timer warning)
 
 
-**unknown-alarm**
-^^^^^^^^^^^^^
+
 
 **unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
