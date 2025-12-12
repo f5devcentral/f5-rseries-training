@@ -2316,7 +2316,7 @@ Notification indicating unusable hugepage memory.
 **Firmware Update Status Traps**
 ----------------------------
 
-firmware-update-status
+**firmware-update-status**
 ^^^^^^^^^^^^^^^^^^^^^^
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
@@ -2365,7 +2365,7 @@ The CLI command below shows how to filter the **snmp.log** file to only show fir
 **Drive Utilization Traps**
 -----------------------
 
-drive-utilization
+**drive-utilization**
 ^^^^^^^^^^^^^^^^^
 
 **drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551**
