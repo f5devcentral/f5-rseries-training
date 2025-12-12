@@ -2310,6 +2310,7 @@ Critical issue in fpga and datapath initialization process.
 
     r5900-1-gsa# file show log/system/snmp.log | include initialization  
 
+
 **ePVA**
 ^^^^^
 
@@ -2325,7 +2326,9 @@ Could not initialize ePVA
 
 .. code-block:: bash
 
-    r5900-1-gsa# file show log/system/snmp.log | include epva 
+    r5900-1-gsa# file show log/system/snmp.log | include epva
+
+
 
 **inaccessible-memory**
 ^^^^^^^^^^^^^^^^^^^^
@@ -2516,7 +2519,6 @@ If you would like to look deeper into the usage of the other parts of the filesy
     <INFO> 12-Apr-2023::12:00:52.838 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130745 10.255.8.22:6011 (TimeTicks sysUpTime=127307)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:52.834736965 UTC)(OCTET STRING alertDescription=Drive utilization growth rate is high)
 
     This trap is an alertEffect=2 providing deeper information that the usage growth is back within range.
-
 
     <INFO> 12-Apr-2023::12:00:52.888 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130746 10.255.8.22:6011 (TimeTicks sysUpTime=127312)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:52.834754109 UTC)(OCTET STRING alertDescription=Drive usage growth rate with in range, growth=-10268%)
 
