@@ -1720,8 +1720,8 @@ Below is an example of an **aom-fault** being raised and then cleared.
     <INFO> 8-Apr-2023::07:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337682 10.255.0.143:162 (TimeTicks sysUpTime=59069793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852594292 UTC)(OCTET STRING alertDescription=Bmc Health Self test passed)
  
 
-drive-capacity-fault
-^^^^^^^^^^^^^^^^^^^^
+**drive-capacity-fault**
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
 
