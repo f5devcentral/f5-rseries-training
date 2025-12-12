@@ -1723,6 +1723,86 @@ Below is an example of an **aom-fault** being raised and then cleared.
 drive-capacity-fault
 ^^^^^^^^^^^^^^^^^^^^
 
+The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster disk-usage-threshold 
+    cluster disk-usage-threshold state warning-limit 85
+    cluster disk-usage-threshold state error-limit 90
+    cluster disk-usage-threshold state critical-limit 97
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 60
+    r5900-1-gsa# 
+
+You can view the current utilization by issuing the command **show cluster nodes node node-1 state disk-data **. This will display the raw storage values.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster nodes node node-1 state disk-data 
+    DISK DATA  DISK DATA     
+    NAME       VALUE         
+    -------------------------
+    available  65014710272   
+    capacity   117430194176  
+    used       46423502848   
+
+To get a further breakdown showing the growth rate and percenatge used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42%.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster nodes node node-1 state disk-usage         
+    state disk-usage used-percent 42
+    state disk-usage growth-rate 1
+    state disk-usage status in-range
+    r5900-1-gsa#
+
+If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll nottice 4 main areas highlighted:
+
+- F5OS System - This is the **/sysroot** part of the filesystem used by F5OS.
+- F5OS Tenant Disks -  This is **big-ip-tenant-disks** part of the filesystem which is dedicated and shared by all F5OS based tenants.
+- F5OS Images - This is the **images** part of the filesystem which is dedicated to F5OS and F5OS Tenant base images.
+- BIG-IP Tenant - This is the space allocated to each individual tenant **tenant/<tenant-name>**. There should be one entry for each tenant deployed on the system.
+
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform        
+    components component platform
+    fantray fan-stats fan-1-speed 16277
+    fantray fan-stats fan-2-speed 16339
+    fantray fan-stats fan-3-speed 16260
+    fantray fan-stats fan-4-speed 16224
+    fantray fan-stats fan-5-speed 16198
+    fantray fan-stats fan-6-speed 16366
+    fantray fan-stats fan-7-speed 16330
+    fantray fan-stats fan-8-speed 16242
+    state description    r5900
+    state serial-no      f5-vdvh-bfwi
+    state part-no        "200-0411-02 REV 2"
+    state empty          false
+    state tpm-integrity-status Valid
+    state memory total    134606934016
+    state memory available 9235505152
+    state memory free     1108242432
+    state memory used-percent 93
+    state memory platform-total 16107360256
+    state memory platform-used 6051057664
+    state memory platform-used-percent 37
+    state temperature current 26.2
+    state temperature average 25.8
+    state temperature minimum 25.6
+    state temperature maximum 26.2
+                                                                                            USED     
+    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
+    ---------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System        117430194176  65010388992   46427824128  41       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks  481021091840  427498086400  29060988928  6        
+    tenant/big-ip                 BIG-IP Tenant      88046829568   69774471168   18272358400  20       
+    tenant/big-ip2                BIG-IP Tenant      88046829568   79926988800   8119840768   9        
+    platform/images               F5OS Images        240417513472  174332252160  53845864448  23       
+
+
 **drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
 
 +------------------+------------------------------------------------------------------------------------+
