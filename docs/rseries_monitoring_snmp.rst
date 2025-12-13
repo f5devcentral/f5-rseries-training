@@ -1855,7 +1855,17 @@ The **show system events** CLI command will provide more details of the drive ev
     system events event
     log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
 
-Below are example SNMP traps for a drive-capacity-fault. 
+Below are example SNMP traps for a drive-capacity-fault event. In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster disk-usage-threshold 
+    cluster disk-usage-threshold state warning-limit 10
+    cluster disk-usage-threshold state error-limit 15
+    cluster disk-usage-threshold state critical-limit 20
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 1
+    r5900-1-gsa# 
 
 .. code-block:: bash
 
@@ -1863,19 +1873,19 @@ Below are example SNMP traps for a drive-capacity-fault.
 
     This trap is an alertEffect=1 signifying an alarm condition:
 
-    <INFO> 12-Apr-2023::11:54:10.563 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130731 10.255.8.22:6011 (TimeTicks sysUpTime=87079)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2023-04-12 11:54:10.558711877 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
+    <INFO> 12-Dec-2025::12:23:24.159 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500385 172.22.50.57:162 (TimeTicks sysUpTime=188936994)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153709836 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
 
     The follow-on trap is an alertEffect=2 providing deeper details of what caused the alarm condition:
 
-    <INFO> 12-Apr-2023::11:54:10.613 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130732 10.255.8.22:6011 (TimeTicks sysUpTime=87084)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:54:10.558725204 UTC)(OCTET STRING alertDescription=Drive usage exceeded 97%, used=100%)
+    <INFO> 12-Dec-2025::12:23:24.208 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500386 172.22.50.57:162 (TimeTicks sysUpTime=188936999)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153723853 UTC)(OCTET STRING alertDescription=Drive usage exceeded 20%, used=42%)
 
     This trap is an alertEffect=0 signifying that the alarm condition has cleared:
 
-    <INFO> 12-Apr-2023::11:54:35.167 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130733 10.255.8.22:6011 (TimeTicks sysUpTime=89540)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:54:35.162718848 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
+    <INFO> 12-Dec-2025::12:34:20.196 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500387 172.22.50.57:162 (TimeTicks sysUpTime=189002598)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192390678 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
 
     The follow-on trap is an alertEffect=2 providing deeper details indicating the drive-capacity is now in range:
 
-    <INFO> 12-Apr-2023::11:54:35.217 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130734 10.255.8.22:6011 (TimeTicks sysUpTime=89545)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:54:35.162734807 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=54%)
+    <INFO> 12-Dec-2025::12:34:20.246 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500388 10.255.0.139:161 (TimeTicks sysUpTime=189002603)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192404197 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=42%)
 
 **power-fault**
 ^^^^^^^^^^^
