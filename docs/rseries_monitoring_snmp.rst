@@ -1700,6 +1700,10 @@ Unregistered alarm detected.
 | CLEAR            | Fault detected in the AOM                                                          |
 +------------------+------------------------------------------------------------------------------------+
 
+AOM is rSeries Always-On Management. The Always-On Management (AOM) subsystem enables you to manage the system remotely from a serial console, even if the host is powered down. The AOM Command Menu operates independently of F5OS. For more details about the AOM subsystem see the following solution article:
+
+`K000148736: Overview of the AOM subsystem in F5OS <https://my.f5.com/manage/s/article/K000148736>`_
+
 Below is an example of an **aom-fault** being raised and then cleared.
 
 .. code-block:: bash
@@ -1854,8 +1858,7 @@ The **show system events** CLI command will provide more details of the drive ev
     log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
     system events event
     log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
-
-Below are example SNMP traps for a drive-capacity-fault event. In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
+In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
 
 .. code-block:: bash
 
@@ -1866,6 +1869,9 @@ Below are example SNMP traps for a drive-capacity-fault event. In the example be
     cluster disk-usage-threshold state growth-rate-limit 10
     cluster disk-usage-threshold state interval 1
     r5900-1-gsa# 
+
+
+Below are example SNMP traps for a drive-capacity-fault event. 
 
 .. code-block:: bash
 
@@ -2511,6 +2517,7 @@ If you would like to look deeper into the usage of the other parts of the filesy
     tenant/big-ip2                BIG-IP Tenant      88046829568   79926988800   8119840768   9        
     platform/images               F5OS Images        240417513472  174332252160  53845864448  23       
 
+Below are examples of the drive-utilization SNMP traps.
 
 .. code-block:: bash
 
@@ -2786,9 +2793,14 @@ The transmit power threshold for a specific transceiver has reached a threshold 
 
 .. code-block:: bash
 
-    r10900-2# file show log/system/snmp.log | include tx
+    r10900-2# file show log/system/snmp.log | include txPwr
+
     <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
 
+    <INFO> 11-Aug-2025::08:45:32.869 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208496 172.22.50.57:162 (TimeTicks sysUpTime=10255)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.606284595 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 11-Aug-2025::08:45:33.177 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
+    <INFO> 11-Aug-2025::08:45:34.239 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
+    <INFO> 11-Aug-2025::08:45:55.402 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208630 172.22.50.57:162 (TimeTicks sysUpTime=12510)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 12)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:54.918903630 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
 **rxPwr**
 ^^^^^
@@ -2803,20 +2815,21 @@ The transmit power threshold for a specific transceiver has reached a threshold 
 
 The receive power threshold for a specific transceiver has reached a threshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low warning on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
+Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low warning** on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
 
 .. code-block:: bash
 
+    r10900-1# file show log/system/snmp.log | include rxPwr
     <INFO> 21-Jun-2024::16:17:27.898 r10900-1 confd[142]: snmp snmpv2-trap reqid=36800019 10.255.0.144:161 (TimeTicks sysUpTime=60958582)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-06-21 20:17:27.893594602 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
 
 
     <INFO> 31-Jul-2024::09:11:20.182 r10900-1 confd[155]: snmp snmpv2-trap reqid=1965264689 10.255.80.251:162 (TimeTicks sysUpTime=311262596)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-07-31 13:11:20.106635916 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power low alarm on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
+Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include rx
+    r10900-1# file show log/system/snmp.log | include rxPwr
     <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
     
     <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
