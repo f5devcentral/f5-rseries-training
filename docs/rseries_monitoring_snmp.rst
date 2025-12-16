@@ -2690,8 +2690,11 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 | AlertEffect      | Possible Description in SNMP Trap                                                         |
 +==================+===========================================================================================+
 | EVENT            | Unsupported platform <Platform Type>                                                      |
+|                  |                                                                                           |
 |                  | import file <file path and name> removed incorrect file name                              |
+|                  |                                                                                           |
 |                  | import file <file path and name> removed File name has special characters                 |
+|                  |                                                                                           |
 |                  | Unexpected error processing Command '<command details>' returned non-zero exit status 32. |
 +------------------+-------------------------------------------------------------------------------------------+
 
