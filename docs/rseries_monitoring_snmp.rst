@@ -2850,31 +2850,46 @@ Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAla
 
 +----------------------------+-------------------------------------+
 | Traps Prior to version 2.0 | New Traps with Version 2.0 or later |
-|       Now Deprecated       |                                     |
+| Now Deprecated             |                                     |
 +============================+=====================================+
 | txPwr	                     | txPwrHiAlarm                        |
+|                            |                                     |
 |    	                     | txPwrHiWarn                         |
+|                            |                                     |
 |       	                 | txPwrLoAlarm                        |
+|                            |                                     |
 |	                         | txPwrLoWarn                         |
 +----------------------------+-------------------------------------+
 | rxPwr	                     | rxPwrHiAlarm                        |
+|                            |                                     |
 |      	                     | rxPwrHiWarn                         |
+|                            |                                     |
 |      	                     | rxPwrLoAlarm                        |
+|                            |                                     |
 |      	                     | rxPwrLoWarn                         |
 +----------------------------+-------------------------------------+
 | txBias      	             | txBiasHiAlarm                       |
+|                            |                                     |
 |      	                     | txBiasHiWarn                        |
+|                            |                                     |
 |      	                     | txBiasLoAlarm                       |
+|                            |                                     |
 |      	                     | txBiasLoWarn                        |
 +----------------------------+-------------------------------------+
 | ddmTemp      	             | ddmTempHiAlarm                      |
+|                            |                                     |
 |      	                     | ddmTempHiWarn                       |
+|                            |                                     |
 |      	                     | ddmTempLoAlarm                      |
+|                            |                                     |
 |      	                     | ddmTempLoWarn                       |
 +----------------------------+-------------------------------------+
 | ddmVcc	                 | ddmVccHiAlarm                       |
+|                            |                                     |
 |      	                     | ddmVccHiWarn                        |
+|                            |                                     |
 |      	                     | ddmVccLoAlarm                       |
+|                            |                                     |
 |      	                     | ddmVccLoWarn                        |
 +----------------------------+-------------------------------------+
    
