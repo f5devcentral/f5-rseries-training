@@ -2851,45 +2851,45 @@ Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAla
 +----------------------------+-------------------------------------+
 | Traps Prior to version 2.0 | New Traps with Version 2.0 or later |
 +============================+=====================================+
-| txPwr	                     | txPwrHiAlarm                        |
+| txPwr                      | txPwrHiAlarm                        |
 |                            |                                     |
-|    	                     | txPwrHiWarn                         |
+|                            | txPwrHiWarn                         |
 |                            |                                     |
-|       	                 | txPwrLoAlarm                        |
+|                            | txPwrLoAlarm                        |
 |                            |                                     |
-|	                         | txPwrLoWarn                         |
+|                            | txPwrLoWarn                         |
 +----------------------------+-------------------------------------+
-| rxPwr	                     | rxPwrHiAlarm                        |
+| rxPwr                      | rxPwrHiAlarm                        |
 |                            |                                     |
-|      	                     | rxPwrHiWarn                         |
+|                            | rxPwrHiWarn                         |
 |                            |                                     |
-|      	                     | rxPwrLoAlarm                        |
+|                            | rxPwrLoAlarm                        |
 |                            |                                     |
-|      	                     | rxPwrLoWarn                         |
+|                            | rxPwrLoWarn                         |
 +----------------------------+-------------------------------------+
-| txBias      	             | txBiasHiAlarm                       |
+| txBias                     | txBiasHiAlarm                       |
 |                            |                                     |
-|      	                     | txBiasHiWarn                        |
+|                            | txBiasHiWarn                        |
 |                            |                                     |
-|      	                     | txBiasLoAlarm                       |
+|                            | txBiasLoAlarm                       |
 |                            |                                     |
-|      	                     | txBiasLoWarn                        |
+|                            | txBiasLoWarn                        |
 +----------------------------+-------------------------------------+
-| ddmTemp      	             | ddmTempHiAlarm                      |
+| ddmTemp                    | ddmTempHiAlarm                      |
 |                            |                                     |
-|      	                     | ddmTempHiWarn                       |
+|                            | ddmTempHiWarn                       |
 |                            |                                     |
-|      	                     | ddmTempLoAlarm                      |
+|                            | ddmTempLoAlarm                      |
 |                            |                                     |
-|      	                     | ddmTempLoWarn                       |
+|                            | ddmTempLoWarn                       |
 +----------------------------+-------------------------------------+
-| ddmVcc	                 | ddmVccHiAlarm                       |
+| ddmVcc                     | ddmVccHiAlarm                       |
 |                            |                                     |
-|      	                     | ddmVccHiWarn                        |
+|                            | ddmVccHiWarn                        |
 |                            |                                     |
-|      	                     | ddmVccLoAlarm                       |
+|                            | ddmVccLoAlarm                       |
 |                            |                                     |
-|      	                     | ddmVccLoWarn                        |
+|                            | ddmVccLoWarn                        |
 +----------------------------+-------------------------------------+
 
 
