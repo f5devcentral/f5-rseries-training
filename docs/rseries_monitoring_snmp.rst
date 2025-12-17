@@ -2920,7 +2920,7 @@ The transmit power threshold for a specific transceiver has reached a threshold 
     <INFO> 11-Aug-2025::08:45:55.402 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208630 172.22.50.57:162 (TimeTicks sysUpTime=12510)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 12)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:54.918903630 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
 
-txPwrHiAlarm
+**txPwrHiAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -2939,7 +2939,7 @@ This trap is for F5OS versions 2.0 and later.
     <INFO> 11-Aug-2025::08:45:34.239 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
 
 
-txPwrHiWarn
+**txPwrHiWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -2959,7 +2959,7 @@ This trap is for F5OS versions 2.0 and later.
     <INFO> 22-Sep-2025::10:42:04.343 r5900-1-gsa confd[170]: snmp snmpv2-trap reqid=1412769040 10.255.0.139:161 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
     <INFO> 22-Sep-2025::10:42:04.343 r5900-1-gsa confd[170]: snmp snmpv2-trap reqid=1412769041 10.255.0.144:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
-txPwrLoAlarm
+**txPwrLoAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -2980,7 +2980,7 @@ This trap is for F5OS versions 2.0 and later.
 
 
 
-txPwrLoWarn
+**txPwrLoWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3031,7 +3031,7 @@ Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low alarm
     
     <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
 
-rxPwrHiAlarm
+**rxPwrHiAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3048,7 +3048,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include rxPwrHiAlarm
 
-rxPwrHiWarn
+**rxPwrHiWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3065,7 +3065,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include rxPwrHiWarn
 
-rxPwrLoAlarm
+**xPwrLoAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3087,7 +3087,7 @@ This trap is for F5OS versions 2.0 and later.
     <INFO> 20-Nov-2025::15:34:37.692 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500371 10.255.0.139:161 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
 
 
-rxPwrLoWarn
+**rxPwrLoWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3130,7 +3130,7 @@ The transmit bias threshold for a specific transceiver has reached a threshold i
     r10900-2# file show log/system/snmp.log | include tx
     <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
 
-txBiasHiAlarm
+**txBiasHiAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3147,7 +3147,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include txBiasHiAlarm
 
-txBiasHiWarn
+**txBiasHiWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3164,7 +3164,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include txBiasHiWarn
 
-txBiasLoAlarm
+**txBiasLoAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3181,7 +3181,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include txBiasLoAlarm
 
-txBiasLoWarn
+**txBiasLoWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3217,7 +3217,7 @@ The ddm temperature threshold for a specific transceiver has reached a threshold
 
     r10900-2# file show log/system/snmp.log | include ddmTemp
 
-ddmTempHiAlarm
+**ddmTempHiAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3234,7 +3234,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include ddmTempHiAlarm
 
-ddmtempHiWarn
+**ddmtempHiWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3251,7 +3251,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include ddmTempHiWarn
 
-ddmTempLoAlarm
+**ddmTempLoAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3268,7 +3268,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include ddmTempLoAlarm
 
-ddmTempLoWarn
+**ddmTempLoWar**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3307,7 +3307,7 @@ The ddm vcc (Voltage) threshold for a specific transceiver has reach a threshold
 
     r10900-2# file show log/system/snmp.log | include ddmVcc
 
-ddmVccHiAlarm
+**ddmVccHiAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3324,7 +3324,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include ddmVccHiAlarm
 
-ddmVccHiWarn
+**ddmVccHiWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3341,7 +3341,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include ddmVccHiWarn
 
-ddmVccLoAlarm
+**ddmVccLoAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
@@ -3358,7 +3358,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include ddmVccLoAlarm
 
-ddmVccLoWarn
+**ddmVccLoWarn**
 ^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
