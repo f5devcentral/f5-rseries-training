@@ -2891,7 +2891,8 @@ Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAla
 |                            |                                     |
 |      	                     | ddmVccLoWarn                        |
 +----------------------------+-------------------------------------+
-   
+
+
 **txPwr** 
 ^^^^^
 
