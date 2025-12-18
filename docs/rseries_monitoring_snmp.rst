@@ -1011,7 +1011,8 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
-
+| be2Training                | .1.3.6.1.4.1.12276.1.1.1.262913  |
++----------------------------+----------------------------------+
 
 
 SNMP Trap Details
@@ -2412,7 +2413,33 @@ Notification indicating unusable hugepage memory.
     Alarm cleared (alertEffect=0) indicating the amount of unusable memory.
 
     <INFO> 18-Dec-2024::15:51:01.892 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721993 172.22.50.57:162 (TimeTicks sysUpTime=554686274)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-12-18 20:51:01.887434900 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
+
+
+**be2Training**
+^^^^^^^^^^^^^^^
+
+**be2Training                 .1.3.6.1.4.1.12276.1.1.1.262913**
+
++------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                                        |
++==================+==========================================================================================================+
+| ASSERT           | Critical Bandwidth Engine link training failure                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+| EVENT            |                                                                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+| CLEAR            | Critical Bandwidth Engine link training failure                                                          |
++------------------+----------------------------------------------------------------------------------------------------------+
+
+
+.. code-block:: bash
+
+    <INFO> 14-Aug-2025::13:20:41.692 partition1 confd[130]: snmp snmpv2-trap reqid=396983949 1.1.1.1:162 (TimeTicks sysUpTime=208143)(OBJECT IDENTIFIER snmpTrapOID=be2Training)(OCTET STRING alertSource=ATSE-0 Port 0)(INTEGER alertEffect=1)(INTEGER alertSeverity=0)(OCTET STRING alertTimeStamp=2025-09-30 15:40:41.624043656 UTC)(OCTET STRING alertDescription=Critical Bandwidth Engine link training failure)
    
+    <INFO> 14-Aug-2025::13:20:43.803 partition1 confd[130]: snmp snmpv2-trap reqid=396983950 1.1.1.1:162 (TimeTicks sysUpTime=208354)(OBJECT IDENTIFIER snmpTrapOID=be2Training)(OCTET STRING alertSource=ATSE-0 Port 1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-30 15:40:43.624213146 UTC)(OCTET STRING alertDescription=Critical Bandwidth Engine link training failure)
+   
+
+
+
 
 **Firmware Update Status Traps**
 ----------------------------
@@ -3066,7 +3093,7 @@ This trap is for F5OS versions 2.0 and later.
 
     r10900-2# file show log/system/snmp.log | include rxPwrHiWarn
 
-**xPwrLoAlarm**
+**rxPwrLoAlarm**
 ^^^^^^^^^^^^
 
 This trap is for F5OS versions 2.0 and later.
