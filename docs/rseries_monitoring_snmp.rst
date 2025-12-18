@@ -977,6 +977,14 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | fips-fault                 | .1.3.6.1.4.1.12276.1.1.1.66308   |
 +----------------------------+----------------------------------+
+| kmip-server-fault          | .1.3.6.1.4.1.12276.1.1.1.66309   |
++----------------------------+----------------------------------+
+| kmip-managed-object-error  | .1.3.6.1.4.1.12276.1.1.1.66310   |
++----------------------------+----------------------------------+
+| drive-sed-error            | .1.3.6.1.4.1.12276.1.1.1.66311   |
++----------------------------+----------------------------------+
+| uefi-communication-error   | .1.3.6.1.4.1.12276.1.1.1.66312   |
++----------------------------+----------------------------------+
 | fipsError                  | .1.3.6.1.4.1.12276.1.1.1.196608  |
 +----------------------------+----------------------------------+
 | core-dump                  | .1.3.6.1.4.1.12276.1.1.1.327680  |
@@ -1003,6 +1011,8 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | ePVA                       | .1.3.6.1.4.1.12276.1.1.1.262912  |
 +----------------------------+----------------------------------+
+| be2Training                | .1.3.6.1.4.1.12276.1.1.1.262913  |
++----------------------------+----------------------------------+
 | interface-up               | .1.3.6.1.4.1.12276.1.1.1.263168  |
 +----------------------------+----------------------------------+
 | interface-down             | .1.3.6.1.4.1.12276.1.1.1.263169  |
@@ -1011,8 +1021,7 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
-| be2Training                | .1.3.6.1.4.1.12276.1.1.1.262913  |
-+----------------------------+----------------------------------+
+
 
 
 SNMP Trap Details
@@ -2430,6 +2439,7 @@ Notification indicating unusable hugepage memory.
 | CLEAR            | Critical Bandwidth Engine link training failure                                                          |
 +------------------+----------------------------------------------------------------------------------------------------------+
 
+The example below is from a VELOS chassis, but similar messages would be seen for rSeries.
 
 .. code-block:: bash
 
@@ -2612,6 +2622,111 @@ Below are examples of the drive-utilization SNMP traps.
     This trap is an alertEffect=2 providing deeper information that the usage growth is back within range.
 
     <INFO> 12-Apr-2023::12:00:52.888 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130746 10.255.8.22:6011 (TimeTicks sysUpTime=127312)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:52.834754109 UTC)(OCTET STRING alertDescription=Drive usage growth rate with in range, growth=-10268%)
+
+
+**kmip-server-fault**
+^^^^^^^^^^^^^^^^^^^^^^
+
+**kmip-server-fault            .1.3.6.1.4.1.12276.1.1.1.66309**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           | KMIP server communication error detected                          |
++------------------+-------------------------------------------------------------------+
+| EVENT            | All servers are down                                              |
+|                  |                                                                   |
+|                  | Atleast 1 server is up and running                                |
+|                  |                                                                   |
+|                  |                                                                   |
++------------------+-------------------------------------------------------------------+
+| CLEAR            |                                                                   |
++------------------+-------------------------------------------------------------------+
+
+KMIP server communication error detected.
+
+.. code-block:: bash
+
+    <INFO> 30-Oct-2025::07:00:06.064 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131312 10.144.142.34:162 (TimeTicks sysUpTime=538642083)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-10-30 07:00:06.007484496 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
+    
+    <INFO> 30-Oct-2025::07:00:06.108 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131313 10.144.142.34:162 (TimeTicks sysUpTime=538642087)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-10-30 07:00:06.007493629 UTC)(OCTET STRING alertDescription=All servers are down)
+
+
+    <INFO> 6-Sep-2025::07:00:04.157 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131250 10.144.142.34:162 (TimeTicks sysUpTime=72081892)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-09-06 07:00:04.106457399 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
+    <INFO> 6-Sep-2025::07:00:04.207 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131251 10.144.142.34:162 (TimeTicks sysUpTime=72081897)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-06 07:00:04.106465682 UTC)(OCTET STRING alertDescription=All servers are down)
+    <INFO> 8-Sep-2025::07:00:01.284 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131252 10.144.142.34:162 (TimeTicks sysUpTime=89361605)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-08 07:00:01.232055180 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
+    <INFO> 8-Sep-2025::07:00:01.335 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131253 10.144.142.34:162 (TimeTicks sysUpTime=89361610)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-08 07:00:01.232063195 UTC)(OCTET STRING alertDescription=Atleast 1 server is up and running)
+
+**kmip-managed-object-error**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**kmip-managed-object-error    .1.3.6.1.4.1.12276.1.1.1.66310**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           |                                                                   |
++------------------+-------------------------------------------------------------------+
+| EVENT            |                                                                   |
+|                  |                                                                   |
+|                  |                                                                   |
+|                  |                                                                   |
++------------------+-------------------------------------------------------------------+
+| CLEAR            |                                                                   |
++------------------+-------------------------------------------------------------------+
+
+KMIP managed object error detected.
+
+.. code-block:: bash
+
+
+
+
+**drive-sed-error**
+^^^^^^^^^^^^^^^^^^^
+
+**drive-sed-error              .1.3.6.1.4.1.12276.1.1.1.66311**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           |                                                                   |
++------------------+-------------------------------------------------------------------+
+| EVENT            |                                                                   |
+|                  |                                                                   |
+|                  |                                                                   |
+|                  |                                                                   |
++------------------+-------------------------------------------------------------------+
+| CLEAR            |                                                                   |
++------------------+-------------------------------------------------------------------+
+
+Drive SED error detected.
+
+.. code-block:: bash
+
+
+
+**uefi-communication-error**
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**uefi-communication-error     .1.3.6.1.4.1.12276.1.1.1.66312**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           |                                                                   |
++------------------+-------------------------------------------------------------------+
+| EVENT            |                                                                   |
+|                  |                                                                   |
+|                  |                                                                   |
+|                  |                                                                   |
++------------------+-------------------------------------------------------------------+
+| CLEAR            |                                                                   |
++------------------+-------------------------------------------------------------------+
+
+UEFI communication error detected.
+
+.. code-block:: bash
 
 
 
