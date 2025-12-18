@@ -1019,6 +1019,8 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | speed                      | .1.3.6.1.4.1.12276.1.1.1.263170  |
 +----------------------------+----------------------------------+
+| disabled                   | .1.3.6.1.4.1.12276.1.1.1.263171  |
++----------------------------+----------------------------------+
 | inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
 +----------------------------+----------------------------------+
 
@@ -1297,6 +1299,19 @@ Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that wil
     <INFO> 3-May-2024::15:51:52.365 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214841 10.255.80.251:162 (TimeTicks sysUpTime=27847659)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554453)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
 
     <INFO> 3-May-2024::15:51:52.363 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214840 10.255.80.251:162 (TimeTicks sysUpTime=27847658)(OBJECT IDENTIFIER snmpTrapOID=down)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-05-03 19:51:52.350979671 UTC)(OCTET STRING alertDescription=Interface down)
+
+disabled
+-------
+
+**disabled                     .1.3.6.1.4.1.12276.1.1.1.263171**
+
+The **disabled** SNMP trap will be sent whenever an interface is aministratively disabled. In the example below, port 6.0 is administratively disabled, and then another **linkdown** trap is sent. 
+
+.. code-block:: bash
+
+    <INFO> 16-Oct-2025::09:48:25.727 r10900-2 confd[148]: snmp snmpv2-trap reqid=766207016 10.255.80.251:162 (TimeTicks sysUpTime=232865433)(OBJECT IDENTIFIER snmpTrapOID=disabled)(OCTET STRING alertSource=interface-6.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 15:48:25.687635218 UTC)(OCTET STRING alertDescription=Interface disabled)
+    <INFO> 16-Oct-2025::09:48:25.737 r10900-2 confd[148]: snmp snmpv2-trap reqid=766207017 10.255.80.251:162 (TimeTicks sysUpTime=232865434)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554456)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
+
 
 link up
 -------
@@ -1906,6 +1921,7 @@ The **show system events** CLI command will provide more details of the drive ev
     log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
     system events event
     log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
+
 In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
 
 .. code-block:: bash
@@ -2193,6 +2209,11 @@ In the example below, the SNMP traps are informational in nature because they al
     <INFO> 10-Jul-2023::13:43:27.554 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423964 10.255.0.144:161 (TimeTicks sysUpTime=15336)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.295486581 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
     <INFO> 10-Jul-2023::13:43:28.708 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423977 10.255.0.144:161 (TimeTicks sysUpTime=15451)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:23.951104145 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 input OK)
 
+
+    <INFO> 17-Oct-2025::19:00:02.545 r10900 confd[148]: snmp snmpv2-trap reqid=2110878459 1.1.1.1:162 (TimeTicks sysUpTime=513349334)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-17 18:00:02.541517212 UTC)(OCTET STRING alertDescription=PSU voltage out value < lower limit, value=1.515)
+    <INFO> 17-Oct-2025::19:00:02.545 r10900 confd[148]: snmp snmpv2-trap reqid=2110878459 1.1.1.1:162 (TimeTicks sysUpTime=513349334)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-17 18:00:02.541517212 UTC)(OCTET STRING alertDescription=PSU voltage out value < lower limit, value=1.515)
+        
+        
 In the example below, you can see a power supply fail and then recover. 
 
 
@@ -2726,9 +2747,13 @@ Drive SED error detected.
 
 UEFI communication error detected.
 
+Error log:
+
 .. code-block:: bash
-
-
+    66312 disk-encryption-uefi uefi-communication-error ASSERT ERROR "UEFI communication error detected" "2025-12-17 19:24:35.459911781 UTC"    
+    66312 disk-encryption-uefi uefi-communication-error EVENT NA "UEFI communication error detected" "2025-12-17 19:24:35.459927420 UTC"   
+    66312 disk-encryption-uefi uefi-communication-error EVENT NA "Attribute health reset" "2025-12-17 19:33:24.029122136 UTC"                   
+    66312 disk-encryption-uefi uefi-communication-error CLEAR INFO "UEFI communication error detected" "2025-12-17 19:33:24.034811862 UTC"   
 
 FIPS Related Traps
 ------------------
@@ -3045,7 +3070,11 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 The transmit power threshold for a specific transceiver has reached a threshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
@@ -3073,7 +3102,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Transmitter power high alarm                                                             |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            | Transmitter power high alarm                                                             |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3092,7 +3125,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Transmitter power high warning                                                           |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            | Transmitter power high warning                                                           |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3112,7 +3149,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Transmitter power low alarm                                                              |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            | Transmitter power low alarm                                                              |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3133,7 +3174,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3150,7 +3195,13 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Lanes: <# or #'s> Receiver power low warning                                             |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Receiver power low alarm                                                |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 The receive power threshold for a specific transceiver has reached a threshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
@@ -3174,6 +3225,12 @@ Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low alarm
     
     <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
 
+
+    <INFO> 16-Oct-2025::06:25:40.967 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206996 1.1.1.1:162 (TimeTicks sysUpTime=231648957)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 7)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-12-16 12:25:40.961128052 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 16-Oct-2025::06:25:41.070 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206997 1.1.1.1:162 (TimeTicks sysUpTime=231648968)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 8)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-12-16 12:25:40.982858728 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 16-Oct-2025::06:30:40.968 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206998 1.1.1.1:162 (TimeTicks sysUpTime=231678958)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 7)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 12:30:40.961499652 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 16-Oct-2025::06:30:41.077 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206999 1.1.1.1:162 (TimeTicks sysUpTime=231678968)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 8)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 12:30:40.982480126 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+
 **rxPwrHiAlarm**
 ^^^^^^^^^^^^
 
@@ -3184,7 +3241,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3201,7 +3262,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3218,7 +3283,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Lanes: <#> Receiver power low alarm                                                      |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            | Receiver power low alarm                                                                 |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3240,7 +3309,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Lanes: <#> Receiver power low warning                                                    |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            | Receiver power low warning                                                               |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3262,7 +3335,11 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           | Lanes: <#> Transmitter bias low alarm                                                    |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 The transmit bias threshold for a specific transceiver has reached a threshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
@@ -3270,7 +3347,7 @@ The transmit bias threshold for a specific transceiver has reached a threshold i
 
 .. code-block:: bash
 
-    r10900-2# file show log/system/snmp.log | include tx
+    r10900-2# file show log/system/snmp.log | include txBias
     <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
 
 **txBiasHiAlarm**
@@ -3283,7 +3360,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3300,7 +3381,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3313,11 +3398,14 @@ This trap is for F5OS versions 2.0 and later.
 This trap is for F5OS versions 2.0 and later.
 
 **txBiasloAlarm                  .1.3.6.1.4.1.12276.1.1.1.262402**
-
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3334,7 +3422,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3351,7 +3443,11 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 The ddm temperature threshold for a specific transceiver has reached a threshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
@@ -3370,7 +3466,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3387,7 +3487,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3404,7 +3508,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3421,7 +3529,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3441,7 +3553,11 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 The ddm vcc (Voltage) threshold for a specific transceiver has reach a threshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
@@ -3460,7 +3576,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3477,7 +3597,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3494,7 +3618,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3511,7 +3639,11 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
@@ -3529,7 +3661,11 @@ The **speed** SNMP trap indicates that a port speed change event has occured on 
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
-| EVENT            | Port speed change event                                                                  |
+| ASSERT           |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
