@@ -2703,6 +2703,7 @@ KMIP server communication error detected.
 
 .. code-block:: bash
 
+    r10900-1# file show log/system/snmp.log | include kmip-server-fault
     <INFO> 30-Oct-2025::07:00:06.064 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131312 10.144.142.34:162 (TimeTicks sysUpTime=538642083)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-10-30 07:00:06.007484496 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
     
     <INFO> 30-Oct-2025::07:00:06.108 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131313 10.144.142.34:162 (TimeTicks sysUpTime=538642087)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-10-30 07:00:06.007493629 UTC)(OCTET STRING alertDescription=All servers are down)
@@ -2735,7 +2736,7 @@ KMIP managed object error detected.
 
 .. code-block:: bash
 
-
+    r10900-1# file show log/system/snmp.log | include kmip-managed-object-error
 
 
 drive-sed-error
@@ -2760,7 +2761,7 @@ Drive SED error detected.
 
 .. code-block:: bash
 
-
+    r10900-1# file show log/system/snmp.log | include drive-sed-error
 
 uefi-communication-error
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -2785,10 +2786,17 @@ UEFI communication error detected.
 Error log:
 
 .. code-block:: bash
+  
     66312 disk-encryption-uefi uefi-communication-error ASSERT ERROR "UEFI communication error detected" "2025-12-17 19:24:35.459911781 UTC"    
     66312 disk-encryption-uefi uefi-communication-error EVENT NA "UEFI communication error detected" "2025-12-17 19:24:35.459927420 UTC"   
     66312 disk-encryption-uefi uefi-communication-error EVENT NA "Attribute health reset" "2025-12-17 19:33:24.029122136 UTC"                   
     66312 disk-encryption-uefi uefi-communication-error CLEAR INFO "UEFI communication error detected" "2025-12-17 19:33:24.034811862 UTC"   
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include uefi-communication-error
+
+
 
 FIPS Related Traps
 ------------------
