@@ -1794,169 +1794,6 @@ Below is an example of an **aom-fault** being raised and then cleared.
     <INFO> 8-Apr-2023::07:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337682 10.255.0.143:162 (TimeTicks sysUpTime=59069793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852594292 UTC)(OCTET STRING alertDescription=Bmc Health Self test passed)
  
 
-drive-capacity-fault
-^^^^^^^^^^^^^^^^^^^^
-
-**drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
-
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Running out of drive capacity                                                      |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Drive usage exceeded 97%, used={{.usedPercent}}%                                   |
-|                  |                                                                                    |
-|                  | Drive usage with in range, used={{.usedPercent}}%                                  |
-|                  |                                                                                    |
-|                  | Example:                                                                           |
-|                  |                                                                                    |
-|                  | Drive usage exceeded 97%, used=99%                                                 |
-|                  |                                                                                    |
-|                  | Drive usage exceeded 90%, used=91%                                                 |
-|                  |                                                                                    |
-|                  | Drive usage exceeded 85%, used=86%                                                 |
-|                  |                                                                                    |
-|                  | Drive usage with in range, used=80%                                                |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Running out of drive capacity                                                      |
-+------------------+------------------------------------------------------------------------------------+
-
-The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster disk-usage-threshold 
-    cluster disk-usage-threshold state warning-limit 85
-    cluster disk-usage-threshold state error-limit 90
-    cluster disk-usage-threshold state critical-limit 97
-    cluster disk-usage-threshold state growth-rate-limit 10
-    cluster disk-usage-threshold state interval 60
-    r5900-1-gsa# 
-
-You can view the current utilization by issuing the command **show cluster nodes node node-1 state disk-data**. This will display the raw storage values.
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster nodes node node-1 state disk-data 
-    DISK DATA  DISK DATA     
-    NAME       VALUE         
-    -------------------------
-    available  65014710272   
-    capacity   117430194176  
-    used       46423502848   
-
-To get a further breakdown showing the growth rate and percenatge used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42%.
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster nodes node node-1 state disk-usage         
-    state disk-usage used-percent 42
-    state disk-usage growth-rate 1
-    state disk-usage status in-range
-    r5900-1-gsa#
-
-If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll nottice 4 main areas highlighted:
-
-- F5OS System - This is the **/sysroot** part of the filesystem used by F5OS.
-- F5OS Tenant Disks -  This is **big-ip-tenant-disks** part of the filesystem which is dedicated and shared by all F5OS based tenants.
-- F5OS Images - This is the **images** part of the filesystem which is dedicated to F5OS and F5OS Tenant base images.
-- BIG-IP Tenant - This is the space allocated to each individual tenant **tenant/<tenant-name>**. There should be one entry for each tenant deployed on the system.
-
-
-.. code-block:: bash
-
-    r5900-1-gsa# show components component platform        
-    components component platform
-    fantray fan-stats fan-1-speed 16277
-    fantray fan-stats fan-2-speed 16339
-    fantray fan-stats fan-3-speed 16260
-    fantray fan-stats fan-4-speed 16224
-    fantray fan-stats fan-5-speed 16198
-    fantray fan-stats fan-6-speed 16366
-    fantray fan-stats fan-7-speed 16330
-    fantray fan-stats fan-8-speed 16242
-    state description    r5900
-    state serial-no      f5-vdvh-bfwi
-    state part-no        "200-0411-02 REV 2"
-    state empty          false
-    state tpm-integrity-status Valid
-    state memory total    134606934016
-    state memory available 9235505152
-    state memory free     1108242432
-    state memory used-percent 93
-    state memory platform-total 16107360256
-    state memory platform-used 6051057664
-    state memory platform-used-percent 37
-    state temperature current 26.2
-    state temperature average 25.8
-    state temperature minimum 25.6
-    state temperature maximum 26.2
-                                                                                            USED     
-    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
-    ---------------------------------------------------------------------------------------------------
-    platform/sysroot              F5OS System        117430194176  65010388992   46427824128  41       
-    platform/big-ip-tenant-disks  F5OS Tenant Disks  481021091840  427498086400  29060988928  6        
-    tenant/big-ip                 BIG-IP Tenant      88046829568   69774471168   18272358400  20       
-    tenant/big-ip2                BIG-IP Tenant      88046829568   79926988800   8119840768   9        
-    platform/images               F5OS Images        240417513472  174332252160  53845864448  23       
-
-
-
-The system will monitor the storage utilization of the rSeries disks and warn if the disk capacity gets too high. This is measured hourly. There are 3 levels of events that can occur as seen below:
-
-- drive-capacity:critical-limit - Drive Usage exceeded 97%
-- drive-capacity:failure-limit  - Drive Usage exceeded 90%
-- drive-capacity:warning-limit  - Drive Usage exceeded 85%
-
-The **show system events** CLI command will provide more details of the drive events that have occurred.
-
-.. code-block:: bash
-
-    appliance-1# show system events | nomore
-    system events event
-    log "65544 appliance drive-capacity-fault ASSERT CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:41:37.847817761 UTC\""
-    system events event
-    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage exceeded 97%, used=100%\" \"2023-03-27 15:41:37.847831437 UTC\""
-    system events event
-    log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
-    system events event
-    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
-
-In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster disk-usage-threshold 
-    cluster disk-usage-threshold state warning-limit 10
-    cluster disk-usage-threshold state error-limit 15
-    cluster disk-usage-threshold state critical-limit 20
-    cluster disk-usage-threshold state growth-rate-limit 10
-    cluster disk-usage-threshold state interval 1
-    r5900-1-gsa# 
-
-
-Below are example SNMP traps for a drive-capacity-fault event. 
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include drive-capacity-fault
-
-    This trap is an alertEffect=1 signifying an alarm condition:
-
-    <INFO> 12-Dec-2025::12:23:24.159 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500385 172.22.50.57:162 (TimeTicks sysUpTime=188936994)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153709836 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
-
-    The follow-on trap is an alertEffect=2 providing deeper details of what caused the alarm condition:
-
-    <INFO> 12-Dec-2025::12:23:24.208 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500386 172.22.50.57:162 (TimeTicks sysUpTime=188936999)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153723853 UTC)(OCTET STRING alertDescription=Drive usage exceeded 20%, used=42%)
-
-    This trap is an alertEffect=0 signifying that the alarm condition has cleared:
-
-    <INFO> 12-Dec-2025::12:34:20.196 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500387 172.22.50.57:162 (TimeTicks sysUpTime=189002598)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192390678 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
-
-    The follow-on trap is an alertEffect=2 providing deeper details indicating the drive-capacity is now in range:
-
-    <INFO> 12-Dec-2025::12:34:20.246 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500388 10.255.0.139:161 (TimeTicks sysUpTime=189002603)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192404197 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=42%)
-
 power-fault
 ^^^^^^^^^^^
 
@@ -2032,43 +1869,6 @@ In the example below, note the messages are all informational **alertEffect=2** 
     <INFO> 10-Jul-2023::13:43:28.558 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423974 10.255.0.144:161 (TimeTicks sysUpTime=15436)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.311144082 UTC)(OCTET STRING alertDescription=Deasserted: EPO VNN VR Hot)
     <INFO> 10-Jul-2023::13:45:26.004 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423994 10.255.0.144:161 (TimeTicks sysUpTime=27181)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:45:25.950878479 UTC)(OCTET STRING alertDescription=CPU TCTL-Delta at -34.0 degC)
     <INFO> 10-Jul-2023::13:45:26.104 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423995 10.255.0.144:161 (TimeTicks sysUpTime=27191)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:45:25.954328495 UTC)(OCTET STRING alertDescription=CPU at +53.0 degC)
-
-drive-thermal-throttle
-^^^^^^^^^^^^^^^^^^^^^^
-
-**drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547**
-
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Drive has entered a thermal throttle condition                                     |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Drive's thermal throttling is more than <<value>> percent                          |
-|                  |                                                                                    |
-|                  | Drive has entered a thermal throttle condition                                     |
-|                  |                                                                                    |
-|                  | Examples:                                                                          |
-|                  |                                                                                    |
-|                  | Drive's thermal throttling is more than 15 percent                                 |
-|                  |                                                                                    |
-|                  | Drive's thermal throttling is more than 80 percent                                 | 
-|                  |                                                                                    |
-|                  | Drive has entered a thermal throttle condition                                     |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Drive has entered a thermal throttle condition                                     |
-+------------------+------------------------------------------------------------------------------------+
-
-
-65547(.*) drive-thermal-throttle(.*) ASSERT(.*)Drive has entered a thermal throttle condition
-
-
-
-65547(.*) drive-thermal-throttle(.*) Drive’s thermal throttling is more than (.*) percent
-
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include drive-thermal-throttle
 
 sensor-fault
 ^^^^^^^^^^^^
@@ -2521,7 +2321,7 @@ The CLI command below shows how to filter the **snmp.log** file to only show fir
 
 
 
-Drive Utilization Traps
+Disk and Storage Traps
 -----------------------
 
 drive-utilization
@@ -2643,6 +2443,241 @@ Below are examples of the drive-utilization SNMP traps.
     This trap is an alertEffect=2 providing deeper information that the usage growth is back within range.
 
     <INFO> 12-Apr-2023::12:00:52.888 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130746 10.255.8.22:6011 (TimeTicks sysUpTime=127312)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:52.834754109 UTC)(OCTET STRING alertDescription=Drive usage growth rate with in range, growth=-10268%)
+
+
+drive-capacity-fault
+^^^^^^^^^^^^^^^^^^^^
+
+**drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Running out of drive capacity                                                      |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | Drive usage exceeded 97%, used={{.usedPercent}}%                                   |
+|                  |                                                                                    |
+|                  | Drive usage with in range, used={{.usedPercent}}%                                  |
+|                  |                                                                                    |
+|                  | Example:                                                                           |
+|                  |                                                                                    |
+|                  | Drive usage exceeded 97%, used=99%                                                 |
+|                  |                                                                                    |
+|                  | Drive usage exceeded 90%, used=91%                                                 |
+|                  |                                                                                    |
+|                  | Drive usage exceeded 85%, used=86%                                                 |
+|                  |                                                                                    |
+|                  | Drive usage with in range, used=80%                                                |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Running out of drive capacity                                                      |
++------------------+------------------------------------------------------------------------------------+
+
+The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster disk-usage-threshold 
+    cluster disk-usage-threshold state warning-limit 85
+    cluster disk-usage-threshold state error-limit 90
+    cluster disk-usage-threshold state critical-limit 97
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 60
+    r5900-1-gsa# 
+
+You can view the current utilization by issuing the command **show cluster nodes node node-1 state disk-data**. This will display the raw storage values.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster nodes node node-1 state disk-data 
+    DISK DATA  DISK DATA     
+    NAME       VALUE         
+    -------------------------
+    available  65014710272   
+    capacity   117430194176  
+    used       46423502848   
+
+To get a further breakdown showing the growth rate and percenatge used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42%.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster nodes node node-1 state disk-usage         
+    state disk-usage used-percent 42
+    state disk-usage growth-rate 1
+    state disk-usage status in-range
+    r5900-1-gsa#
+
+If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll nottice 4 main areas highlighted:
+
+- F5OS System - This is the **/sysroot** part of the filesystem used by F5OS.
+- F5OS Tenant Disks -  This is **big-ip-tenant-disks** part of the filesystem which is dedicated and shared by all F5OS based tenants.
+- F5OS Images - This is the **images** part of the filesystem which is dedicated to F5OS and F5OS Tenant base images.
+- BIG-IP Tenant - This is the space allocated to each individual tenant **tenant/<tenant-name>**. There should be one entry for each tenant deployed on the system.
+
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform        
+    components component platform
+    fantray fan-stats fan-1-speed 16277
+    fantray fan-stats fan-2-speed 16339
+    fantray fan-stats fan-3-speed 16260
+    fantray fan-stats fan-4-speed 16224
+    fantray fan-stats fan-5-speed 16198
+    fantray fan-stats fan-6-speed 16366
+    fantray fan-stats fan-7-speed 16330
+    fantray fan-stats fan-8-speed 16242
+    state description    r5900
+    state serial-no      f5-vdvh-bfwi
+    state part-no        "200-0411-02 REV 2"
+    state empty          false
+    state tpm-integrity-status Valid
+    state memory total    134606934016
+    state memory available 9235505152
+    state memory free     1108242432
+    state memory used-percent 93
+    state memory platform-total 16107360256
+    state memory platform-used 6051057664
+    state memory platform-used-percent 37
+    state temperature current 26.2
+    state temperature average 25.8
+    state temperature minimum 25.6
+    state temperature maximum 26.2
+                                                                                            USED     
+    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
+    ---------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System        117430194176  65010388992   46427824128  41       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks  481021091840  427498086400  29060988928  6        
+    tenant/big-ip                 BIG-IP Tenant      88046829568   69774471168   18272358400  20       
+    tenant/big-ip2                BIG-IP Tenant      88046829568   79926988800   8119840768   9        
+    platform/images               F5OS Images        240417513472  174332252160  53845864448  23       
+
+
+
+The system will monitor the storage utilization of the rSeries disks and warn if the disk capacity gets too high. This is measured hourly. There are 3 levels of events that can occur as seen below:
+
+- drive-capacity:critical-limit - Drive Usage exceeded 97%
+- drive-capacity:failure-limit  - Drive Usage exceeded 90%
+- drive-capacity:warning-limit  - Drive Usage exceeded 85%
+
+The **show system events** CLI command will provide more details of the drive events that have occurred.
+
+.. code-block:: bash
+
+    appliance-1# show system events | nomore
+    system events event
+    log "65544 appliance drive-capacity-fault ASSERT CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:41:37.847817761 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage exceeded 97%, used=100%\" \"2023-03-27 15:41:37.847831437 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
+
+In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster disk-usage-threshold 
+    cluster disk-usage-threshold state warning-limit 10
+    cluster disk-usage-threshold state error-limit 15
+    cluster disk-usage-threshold state critical-limit 20
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 1
+    r5900-1-gsa# 
+
+
+Below are example SNMP traps for a drive-capacity-fault event. 
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include drive-capacity-fault
+
+    This trap is an alertEffect=1 signifying an alarm condition:
+
+    <INFO> 12-Dec-2025::12:23:24.159 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500385 172.22.50.57:162 (TimeTicks sysUpTime=188936994)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153709836 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
+
+    The follow-on trap is an alertEffect=2 providing deeper details of what caused the alarm condition:
+
+    <INFO> 12-Dec-2025::12:23:24.208 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500386 172.22.50.57:162 (TimeTicks sysUpTime=188936999)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153723853 UTC)(OCTET STRING alertDescription=Drive usage exceeded 20%, used=42%)
+
+    This trap is an alertEffect=0 signifying that the alarm condition has cleared:
+
+    <INFO> 12-Dec-2025::12:34:20.196 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500387 172.22.50.57:162 (TimeTicks sysUpTime=189002598)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192390678 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
+
+    The follow-on trap is an alertEffect=2 providing deeper details indicating the drive-capacity is now in range:
+
+    <INFO> 12-Dec-2025::12:34:20.246 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500388 10.255.0.139:161 (TimeTicks sysUpTime=189002603)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192404197 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=42%)
+
+
+drive-thermal-throttle
+^^^^^^^^^^^^^^^^^^^^^^
+
+**drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547**
+
++------------------+------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                  |
++==================+====================================================================================+
+| ASSERT           | Drive has entered a thermal throttle condition                                     |
++------------------+------------------------------------------------------------------------------------+
+| EVENT            | Drive's thermal throttling is more than <<value>> percent                          |
+|                  |                                                                                    |
+|                  | Drive has entered a thermal throttle condition                                     |
+|                  |                                                                                    |
+|                  | Examples:                                                                          |
+|                  |                                                                                    |
+|                  | Drive's thermal throttling is more than 15 percent                                 |
+|                  |                                                                                    |
+|                  | Drive's thermal throttling is more than 80 percent                                 | 
+|                  |                                                                                    |
+|                  | Drive has entered a thermal throttle condition                                     |
++------------------+------------------------------------------------------------------------------------+
+| CLEAR            | Drive has entered a thermal throttle condition                                     |
++------------------+------------------------------------------------------------------------------------+
+
+
+65547(.*) drive-thermal-throttle(.*) ASSERT(.*)Drive has entered a thermal throttle condition
+
+
+
+65547(.*) drive-thermal-throttle(.*) Drive’s thermal throttling is more than (.*) percent
+
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include drive-thermal-throttle
+
+
+raid-event
+^^^^^^^^^^
+
+**raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
+
++------------------+------------------------------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                                        |
++==================+==========================================================================================+
+| ASSERT           | RAID STATUS:raid_failed SSD:ssd<#>                                                                                         |
++------------------+------------------------------------------------------------------------------------------+
+| EVENT            |                                                                                          |
++------------------+------------------------------------------------------------------------------------------+
+| CLEAR            | RAID STATUS:raid_ok SSD:ssd<#>                                                                                         |
++------------------+------------------------------------------------------------------------------------------+
+
+SNMP traps for **raid-event** are only applicable to rSeries systems that support dual RAID mirrored disks. The r5000, r4000, and r2000 systems only have a single disk, and no RAID mirroring, therefore these traps do not apply to those systems. The r10000, and r12000 systems have dual RAID mirrored disks, and these traps should only apply to these systems.
+
+
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include raid-event
+
+    This trap is an alertEffect=1 signifying that a raid-event alarm condition has been raised:
+
+    <INFO> 10-Nov-2023::15:05:09.223 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680977 10.255.0.144:161 (TimeTicks sysUpTime=261782586)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.216697040 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+
+    This trap is an alertEffect=1 signifying that a raid-event alarm condition has been cleared:
+
+    <INFO> 10-Nov-2023::15:05:09.274 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680978 10.255.0.144:161 (TimeTicks sysUpTime=261782591)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.264314422 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+ 
 
 
 kmip-server-fault
@@ -2779,7 +2814,7 @@ Fault detected in FIPS module.
     <INFO> 14-Apr-2023::13:56:57.930 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695918 10.255.8.22:6011 (TimeTicks sysUpTime=545537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-14 13:56:57.925072069 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
     <INFO> 14-Apr-2023::13:57:27.924 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695919 10.255.8.22:6011 (TimeTicks sysUpTime=548537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-14 13:57:27.919985256 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
 
-**fipsError**
+fipsError
 ^^^^^^^^^
 
 **fipsError                      .1.3.6.1.4.1.12276.1.1.1.196608**
@@ -2910,38 +2945,6 @@ The system will send a trap anytime there is a failed login to one of the F5OS u
 
     <INFO> 28-Aug-2024::10:43:31.003 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902947 10.255.80.251:162 (TimeTicks sysUpTime=134357)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:43:31.000008955 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.104.35)
 
-
-raid-event
-^^^^^^^^^^
-
-**raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
-
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| ASSERT           | RAID STATUS:raid_failed SSD:ssd<#>                                                                                         |
-+------------------+------------------------------------------------------------------------------------------+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
-| CLEAR            | RAID STATUS:raid_ok SSD:ssd<#>                                                                                         |
-+------------------+------------------------------------------------------------------------------------------+
-
-SNMP traps for **raid-event** are only applicable to rSeries systems that support dual RAID mirrored disks. The r5000, r4000, and r2000 systems only have a single disk, and no RAID mirroring, therefore these traps do not apply to those systems. The r10000, and r12000 systems have dual RAID mirrored disks, and these traps should only apply to these systems.
-
-
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include raid-event
-
-    This trap is an alertEffect=1 signifying that a raid-event alarm condition has been raised:
-
-    <INFO> 10-Nov-2023::15:05:09.223 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680977 10.255.0.144:161 (TimeTicks sysUpTime=261782586)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.216697040 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
-
-    This trap is an alertEffect=1 signifying that a raid-event alarm condition has been cleared:
-
-    <INFO> 10-Nov-2023::15:05:09.274 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680978 10.255.0.144:161 (TimeTicks sysUpTime=261782591)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.264314422 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
- 
 
 
 Interface / Optic Related Traps
