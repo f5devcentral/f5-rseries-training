@@ -2859,7 +2859,7 @@ This trap will indicate that the system has generated a core-dump file. A suppor
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include dump
+    r10900-1# file show log/system/snmp.log | include core-dump
 
     <INFO> 27-Apr-2023::07:59:10.169 appliance-1 confd[115]: snmp snmpv2-trap reqid=627600425 10.255.0.144:161 (TimeTicks sysUpTime=223591142)(OBJECT IDENTIFIER snmpTrapOID=core-dump)(OCTET STRING alertSource=Appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-27 11:59:10.166591016 UTC)(OCTET STRING alertDescription=Core dumped on Appliance. process=appliance_orche, location=/var/shared/core/container/core.appliance_orch.appliance_orchestration_manager.18120.1682596749.core.gz)
 
@@ -2912,7 +2912,7 @@ An SNMP Trap will be generated when an admin attempts to upload the wrong F5OS i
 
 .. code-block:: bash
 
-    r4800-2-gsa# file show log/system/snmp.log | include incompatible
+    r4800-2-gsa# file show log/system/snmp.log | include incompatible-image
     
     Informational event (alertEffect=2) indicating Unsupported platform R5R10
 
