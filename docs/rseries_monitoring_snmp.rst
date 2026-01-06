@@ -1361,7 +1361,7 @@ hardware-device-fault
 +=========================+=======================================================================+
 | ASSERT (AlertEffect=1)  | Hardware device fault detected                                        |
 +-------------------------+-----------------------------------------------------------------------+
-| EVENT  (AlertEffect=2)  | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
+| EVENT (AlertEffect=2)   | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
 |                         |                                                                       |
 |                         | Example:                                                              | 
 |                         |                                                                       |
