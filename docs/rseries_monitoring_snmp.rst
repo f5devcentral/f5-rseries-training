@@ -2504,7 +2504,7 @@ drive-capacity-fault
 |                          | Drive usage exceeded 85%, used=86%                                |
 |                          |                                                                   |
 |                          | Drive usage with in range, used=80%                               |
-+------------------+---------------------------------------------------------------------------+
++--------------------------+-------------------------------------------------------------------+
 | CLEAR   (AlertEffect=0)  | Running out of drive capacity                                     |
 +--------------------------+-------------------------------------------------------------------+
 
@@ -3452,9 +3452,9 @@ This trap is for F5OS versions prior to 2.0.
 |                         |                                                                                          |
 |                         | Lanes: <# or #'s> Transmitter bias hi alarm                                              |
 +-------------------------+------------------------------------------------------------------------------------------+
-| EVENT  (AlertEffect=1)  |                                                                                          |
+| EVENT  (AlertEffect=2)  |                                                                                          |
 +-------------------------+------------------------------------------------------------------------------------------+
-| CLEAR  (AlertEffect=1)  | Lanes: <# or #'s> Transmitter bias low warning                                           |
+| CLEAR  (AlertEffect=0)  | Lanes: <# or #'s> Transmitter bias low warning                                           |
 |                         |                                                                                          |
 |                         | Lanes: <# or #'s> Transmitter bias low alarm                                             |
 |                         |                                                                                          |
