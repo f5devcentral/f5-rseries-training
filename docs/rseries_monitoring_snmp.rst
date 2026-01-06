@@ -2133,22 +2133,22 @@ module-communication-error
 **module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307**
 
 
-+------------------+-----------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                         |
-+==================+===========================================================+
-| ASSERT           | Module communication error detected                       |
-+------------------+-----------------------------------------------------------+
-| EVENT            | <<module>> communication error detected                   |
-|                  |                                                           |
-|                  | <<module>> communication is OK                            |
-|                  |                                                           |
-|                  | Example:                                                  |
-|                  |                                                           |
-|                  | lcd communication error detected.                         |
-|                  |                                                           |
-+------------------+-----------------------------------------------------------+
-| CLEAR            | Module communication error detected                       |
-+------------------+-----------------------------------------------------------+
++-------------------------+-----------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                         |
++=========================+===========================================================+
+| ASSERT  (AlertEffect=1) | Module communication error detected                       |
++-------------------------+-----------------------------------------------------------+
+| EVENT   (AlertEffect=2) | <<module>> communication error detected                   |
+|                         |                                                           |
+|                         | <<module>> communication is OK                            |
+|                         |                                                           |
+|                         | Example:                                                  |
+|                         |                                                           |
+|                         | lcd communication error detected.                         |
+|                         |                                                           |
++-------------------------+-----------------------------------------------------------+
+| CLEAR   (AlertEffect=0) | Module communication error detected                       |
++-------------------------+-----------------------------------------------------------+
 
 SNMP traps will be generated for communication errors between subsystems. As an example, if the LCD module or PSU module cannot be contacted, the system will generate a **module-communication-error** trap. 
 
@@ -2234,11 +2234,11 @@ ePVA
 
 **ePVA	                           .1.3.6.1.4.1.12276.1.1.1.262912**
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            |                                                                                                          |
-+------------------+----------------------------------------------------------------------------------------------------------+
++------------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                                        |
++========================+==========================================================================================================+
+| EVENT  (AlertEffect=2) |                                                                                                          |
++------------------------+----------------------------------------------------------------------------------------------------------+
 
 Could not initialize ePVA
 
@@ -2316,13 +2316,13 @@ firmware-update-status
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            | Firmware update is <<running | completed >> for <<module>>                                               |
-|                  |                                                                                                          |
-|                  | Example: Firmware update is running for vqf 0                                                            |
-+------------------+----------------------------------------------------------------------------------------------------------+
++------------------------+----------------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                                  |
++========================+====================================================================================================+
+| EVENT  (AlertEffect=2) | Firmware update is <<running | completed >> for <<module>>                                         |
+|                        |                                                                                                    |
+|                        | Example: Firmware update is running for vqf 0                                                      |
++------------------------+----------------------------------------------------------------------------------------------------+
 
 
 These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the status of the firmware updates as seen below.
