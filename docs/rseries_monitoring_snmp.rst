@@ -1582,17 +1582,25 @@ unknown-alarm
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
-| EVENT            |                                                                                          |
+| EVENT            | alertDescription=<string>                                                                |
 +------------------+------------------------------------------------------------------------------------------+
 
-Unregistered alarm detected.
+Unregistered alarm detected. Some events sent from lower level monitoring may not have SNMP traps defined for them at this time, therefore it is possible an event based **alertEffect=2** SNMP trap could be sent which would include the details from underlying subsystem as a string ib the body of the SNMP trap.
+
+Below are some examples of unregistered alarms.
 
 .. code-block:: bash
 
-    r4800-2-gsa# file show log/system/snmp.log | include unknown
+    r4800-2-gsa# file show log/system/snmp.log | include unknown-alarm
     <INFO> 30-Jan-2023::09:33:17.616 appliance-1 confd[151]: snmp snmpv2-trap reqid=1133821928 10.255.0.143:162 (TimeTicks sysUpTime=25343)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-01-30 14:33:17.611415038 UTC)(OCTET STRING alertDescription=FW Update)
     <INFO> 11-Jul-2023::10:12:39.643 appliance-1 confd[159]: snmp snmpv2-trap reqid=1955459347 10.255.0.143:162 (TimeTicks sysUpTime=31172)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-11 14:12:39.638211376 UTC)(OCTET STRING alertDescription=FW Update)
     r4800-2-gsa#
+
+In the example below, an infromation event trap is sent indicating an inlet temperature.
+
+.. code-block:: bash
+
+    <INFO> 21-Jan-2025::07:35:47.915 appliance-1 confd[138]: snmp snmpv2-trap reqid=1891770904 10.1.1.254:162 (TimeTicks sysUpTime=619680588)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-07-01 22:35:47.912867405 UTC)(OCTET STRING alertDescription=inlet at +25.8 degC)
 
 memory-fault
 ^^^^^^^^^^^^
@@ -2814,13 +2822,15 @@ fips-fault
 
 Fault detected in FIPS module.
 
+Below is an example of a fips-fault trap being raised **alertEffect=1**, with a follow-on event trap providing more details **alertEffect=2** on what the fault was *FIPS temperature at or exceeded shutdown limit, value=97 C*. Then the fips-fault is cleared **alertEffect=0**, with a follow-on event trap providing more details **alertEffect=2** on the current status *FIPS temperature ok, value=53 C*.
+
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include fips-fault
-    <INFO> 14-Apr-2023::13:42:57.915 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695914 10.255.8.22:6011 (TimeTicks sysUpTime=461536)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-14 13:42:57.910341089 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
-    <INFO> 14-Apr-2023::13:43:27.924 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695915 10.255.8.22:6011 (TimeTicks sysUpTime=464537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-14 13:43:27.917797625 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
-    <INFO> 14-Apr-2023::13:56:57.930 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695918 10.255.8.22:6011 (TimeTicks sysUpTime=545537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-14 13:56:57.925072069 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
-    <INFO> 14-Apr-2023::13:57:27.924 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695919 10.255.8.22:6011 (TimeTicks sysUpTime=548537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-14 13:57:27.919985256 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
+    <INFO> 22-Apr-2024::04:06:17.400 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732100 10.255.8.22:6011 (TimeTicks sysUpTime=765371725)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2024-05-22 01:06:17.396026452 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
+    <INFO> 22-Apr-2024::04:06:17.450 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732101 10.255.8.22:6011 (TimeTicks sysUpTime=765371730)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-22 01:06:17.396042970 UTC)(OCTET STRING alertDescription=FIPS temperature at or exceeded shutdown limit, value=97 C)
+    <INFO> 22-Apr-2024::04:06:47.400 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732102 10.255.8.22:6011 (TimeTicks sysUpTime=765374725)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-22 01:06:47.396108771 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
+    <INFO> 22-Apr-2024::04:06:47.450 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732103 10.255.8.22:6011 (TimeTicks sysUpTime=765374730)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-22 01:06:47.396122556 UTC)(OCTET STRING alertDescription=FIPS temperature ok, value=53 C)
 
 fipsError
 ^^^^^^^^^
@@ -2881,11 +2891,11 @@ This trap will indicate that the system has rebooted. It's possible this was a p
 
 .. code-block:: bash
 
-    r5800-2-gsa# file show log/system/snmp.log | include reboot
+    r10900-1-gsa# file show log/system/snmp.log | include reboot
 
     Informational event (alertEffect=2) indicating a System reboot is triggered by user.
 
-    <INFO> 28-Aug-2024::10:18:46.110 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993932 10.255.80.251:162 (TimeTicks sysUpTime=40194737)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:18:46.105502772 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
+    <INFO> 28-Aug-2024::10:18:46.110 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1325993932 10.255.80.251:162 (TimeTicks sysUpTime=40194737)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:18:46.105502772 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
 
     Informational event (alertEffect=2) indicating a System reboot with the F5OS version that booted.
 
@@ -2949,7 +2959,7 @@ The system will send a trap anytime there is a failed login to one of the F5OS u
 
 .. code-block:: bash
 
-    r4800-2-gsa# file show log/system/snmp.log | include login-failed
+    r0900-1-gsa# file show log/system/snmp.log | include login-failed
 
     <INFO> 28-Aug-2024::10:43:31.003 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902947 10.255.80.251:162 (TimeTicks sysUpTime=134357)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:43:31.000008955 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.104.35)
 
@@ -3081,14 +3091,32 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
-| ASSERT           |                                                                                          |
+| ASSERT           | Lanes: <# or #'s> Transmitter power low warning                                          |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter power low alarm                                            |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter power hi warning                                           |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter power hi alarm                                             |
 +------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
-| CLEAR            |                                                                                          |
+| CLEAR            | Lanes: <# or #'s> Transmitter power low warning                                          |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter power low alarm                                            |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter power hi warning                                           |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter power hi alarm                                             |
 +------------------+------------------------------------------------------------------------------------------+
 
-The transmit power threshold for a specific transceiver has reached a threshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating either a tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 
 .. code-block:: bash
@@ -3097,10 +3125,10 @@ The transmit power threshold for a specific transceiver has reached a threshold 
 
     <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
 
-    <INFO> 11-Aug-2025::08:45:32.869 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208496 172.22.50.57:162 (TimeTicks sysUpTime=10255)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.606284595 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
-    <INFO> 11-Aug-2025::08:45:33.177 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
-    <INFO> 11-Aug-2025::08:45:34.239 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
-    <INFO> 11-Aug-2025::08:45:55.402 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208630 172.22.50.57:162 (TimeTicks sysUpTime=12510)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 12)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:54.918903630 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 11-Aug-2025::08:45:32.869 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208496 172.22.50.57:162 (TimeTicks sysUpTime=10255)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.606284595 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 11-Aug-2025::08:45:33.177 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
+    <INFO> 11-Aug-2025::08:45:34.239 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
+    <INFO> 11-Aug-2025::08:45:55.402 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208630 172.22.50.57:162 (TimeTicks sysUpTime=12510)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 12)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:54.918903630 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
 
 txPwrHiAlarm
@@ -3120,10 +3148,18 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            | Transmitter power high alarm                                                             |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating a tx pwr high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwrHiAlarm
-    <INFO> 11-Aug-2025::08:45:34.239 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
+    <INFO> 11-Aug-2025::08:45:34.239 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
 
 
 txPwrHiWarn
@@ -3143,12 +3179,20 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            | Transmitter power high warning                                                           |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating either a tx pwr high warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwrHiWarn
-    <INFO> 22-Sep-2025::10:42:04.342 r5900-1-gsa confd[170]: snmp snmpv2-trap reqid=1412769040 172.22.50.57:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
-    <INFO> 22-Sep-2025::10:42:04.343 r5900-1-gsa confd[170]: snmp snmpv2-trap reqid=1412769040 10.255.0.139:161 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
-    <INFO> 22-Sep-2025::10:42:04.343 r5900-1-gsa confd[170]: snmp snmpv2-trap reqid=1412769041 10.255.0.144:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 22-Sep-2025::10:42:04.342 r10900-2 confd[170]: snmp snmpv2-trap reqid=1412769040 172.22.50.57:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 22-Sep-2025::10:42:04.343 r10900-2 confd[170]: snmp snmpv2-trap reqid=1412769040 10.255.0.139:161 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 22-Sep-2025::10:42:04.343 r10900-2 confd[170]: snmp snmpv2-trap reqid=1412769041 10.255.0.144:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
 txPwrLoAlarm
 ^^^^^^^^^^^^
@@ -3167,11 +3211,19 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            | Transmitter power low alarm                                                              |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating either a tx pwr low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwrLoAlarm
 
-    <INFO> 11-Aug-2025::08:45:33.177 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
+    <INFO> 11-Aug-2025::08:45:33.177 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
 
 
 
@@ -3192,6 +3244,14 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating either a tx pwr low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwrLoWarn
@@ -3208,39 +3268,48 @@ This trap is for F5OS versions prior to 2.0.
 +==================+==========================================================================================+
 | ASSERT           | Lanes: <# or #'s> Receiver power low warning                                             |
 |                  |                                                                                          |
-|                  | Lanes: <# or #'s> Receiver power low alarm                                                |
+|                  | Lanes: <# or #'s> Receiver power low alarm                                               |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Receiver power hi warning                                              |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Receiver power hi alarm                                                |
 +------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
-| CLEAR            |                                                                                          |
+| CLEAR            | Lanes: <# or #'s> Receiver power low warning                                             |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Receiver power low alarm                                               |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Receiver power hi warning                                              |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Receiver power hi alarm                                                |
 +------------------+------------------------------------------------------------------------------------------+
 
-The receive power threshold for a specific transceiver has reached a threshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating either an rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low warning** on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
+Below is an example of a rxPwr low warning trap for Lanes: 1,2,3,4 Receiver power **low warning** on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include rxPwr
     <INFO> 21-Jun-2024::16:17:27.898 r10900-1 confd[142]: snmp snmpv2-trap reqid=36800019 10.255.0.144:161 (TimeTicks sysUpTime=60958582)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-06-21 20:17:27.893594602 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
-
-
     <INFO> 31-Jul-2024::09:11:20.182 r10900-1 confd[155]: snmp snmpv2-trap reqid=1965264689 10.255.80.251:162 (TimeTicks sysUpTime=311262596)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-07-31 13:11:20.106635916 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
+Below is an example of a rxPwr low alarm trap for Lanes: 1,2,3,4 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include rxPwr
-    <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    
+    <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)  
     <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
 
+Below is an example of a rxPwr low alarm trap for Lanes: 1 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
+
+.. code-block:: bash
 
     <INFO> 16-Oct-2025::06:25:40.967 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206996 1.1.1.1:162 (TimeTicks sysUpTime=231648957)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 7)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-12-16 12:25:40.961128052 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-    <INFO> 16-Oct-2025::06:25:41.070 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206997 1.1.1.1:162 (TimeTicks sysUpTime=231648968)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 8)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-12-16 12:25:40.982858728 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
     <INFO> 16-Oct-2025::06:30:40.968 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206998 1.1.1.1:162 (TimeTicks sysUpTime=231678958)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 7)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 12:30:40.961499652 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-    <INFO> 16-Oct-2025::06:30:41.077 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206999 1.1.1.1:162 (TimeTicks sysUpTime=231678968)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 8)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 12:30:40.982480126 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+
 
 rxPwrHiAlarm
 ^^^^^^^^^^^^
@@ -3258,6 +3327,8 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
+
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
 
 .. code-block:: bash
 
@@ -3280,6 +3351,8 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr high warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include rxPwrHiWarn
@@ -3301,13 +3374,15 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            | Receiver power low alarm                                                                 |
 +------------------+------------------------------------------------------------------------------------------+
 
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include rxPwrLoAlarm
    
-    <INFO> 20-Nov-2025::15:23:12.366 r5900-1-gsa confd[171]: snmp snmpv2-trap reqid=746899779 172.22.50.57:162 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:23:12.366 r10900-2 confd[171]: snmp snmpv2-trap reqid=746899779 172.22.50.57:162 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
 
-    <INFO> 20-Nov-2025::15:34:37.692 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500371 10.255.0.139:161 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:34:37.692 r10900-2 confd[158]: snmp snmpv2-trap reqid=879500371 10.255.0.139:161 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
 
 
 rxPwrLoWarn
@@ -3327,39 +3402,64 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            | Receiver power low warning                                                               |
 +------------------+------------------------------------------------------------------------------------------+
 
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr low warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include rxPwrLoWarn
     
-    <INFO> 20-Nov-2025::15:23:12.418 r5900-1-gsa confd[171]: snmp snmpv2-trap reqid=746899780 172.22.50.57:162 (TimeTicks sysUpTime=7079)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.373277933 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low warning)
+    <INFO> 20-Nov-2025::15:23:12.418 r10900-2 confd[171]: snmp snmpv2-trap reqid=746899780 172.22.50.57:162 (TimeTicks sysUpTime=7079)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.373277933 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low warning)
 
 
-    <INFO> 20-Nov-2025::15:34:37.794 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500372 10.255.0.139:161 (TimeTicks sysUpTime=4358)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.678511059 UTC)(OCTET STRING alertDescription=Receiver power low warning)
+    <INFO> 20-Nov-2025::15:34:37.794 r10900-2 confd[158]: snmp snmpv2-trap reqid=879500372 10.255.0.139:161 (TimeTicks sysUpTime=4358)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.678511059 UTC)(OCTET STRING alertDescription=Receiver power low warning)
 
 txBias
 ^^^^^^^
 
 This trap is for F5OS versions prior to 2.0.
 
+
 **txBias                  .1.3.6.1.4.1.12276.1.1.1.262402**
 
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
-| ASSERT           | Lanes: <#> Transmitter bias low alarm                                                    |
+| ASSERT           | Lanes: <# or #'s> Transmitter bias low warning                                           |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter bias low alarm                                             |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter bias hi warning                                            |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter bias hi alarm                                              |
 +------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
-| CLEAR            |                                                                                          |
+| CLEAR            | Lanes: <# or #'s> Transmitter bias low warning                                           |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter bias low alarm                                             |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter bias hi warning                                            |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> Transmitter bias hi alarm                                              |
 +------------------+------------------------------------------------------------------------------------------+
 
-The transmit bias threshold for a specific transceiver has reached a threshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating either a txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txBias
     <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
+
+    VELOS Example:
+
+    5-Jan-2026::14:10:20.516 partition2 confd[133]: snmp snmpv2-trap reqid=480390971 10.255.80.251:162 (TimeTicks sysUpTime=648743216)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2026-01-05 06:10:20.500961768 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Transmitter bias low warning)
+
+    5-Jan-:2026::14:10:20.572 partition2 confd[133]: snmp snmpv2-trap reqid=480390972 10.255.80.251:162 (TimeTicks sysUpTime=648743222)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2026-01-05 06:10:20.501049107 UTC)(OCTET STRING alertDescription=Lanes: 3,4 Transmitter bias low warning)
+
+    5-Jan-:2026::14:29:20.975 partition2 confd[133]: snmp snmpv2-trap reqid=480390973 10.255.80.251:162 (TimeTicks sysUpTime=648857262)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2026-01-05 06:29:20.961851112 UTC)(OCTET STRING alertDescription=Lanes: 3,4 Transmitter bias low warning)
+
+    5-Jan-:2026::14:29:21.032 partition2 confd[133]: snmp snmpv2-trap reqid=480390974 10.255.80.251:162 (TimeTicks sysUpTime=648857268)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2026-01-05 06:29:20.961943827 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Transmitter bias low warning)
 
 txBiasHiAlarm
 ^^^^^^^^^^^^
@@ -3377,6 +3477,8 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 .. code-block:: bash
 
@@ -3399,6 +3501,8 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias high warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txBiasHiWarn
@@ -3409,6 +3513,7 @@ txBiasLoAlarm
 This trap is for F5OS versions 2.0 and later.
 
 **txBiasloAlarm                  .1.3.6.1.4.1.12276.1.1.1.262402**
+
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
@@ -3418,6 +3523,8 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 .. code-block:: bash
 
@@ -3440,6 +3547,8 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txBiasLoWarn
@@ -3454,14 +3563,31 @@ This trap is for F5OS versions prior to 2.0.
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
-| ASSERT           |                                                                                          |
+| ASSERT           | Lanes: <# or #'s> ddm temperature low warning                                            |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm temperature low alarm                                              |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm temperature hi warning                                             |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm temperature hi alarm                                               |
 +------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
-| CLEAR            |                                                                                          |
+| CLEAR            | Lanes: <# or #'s> ddm temperature low warning                                            |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm temperature low alarm                                              |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm temperature hi warning                                             |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm temperature hi alarm                                               |
 +------------------+------------------------------------------------------------------------------------------+
 
-The ddm temperature threshold for a specific transceiver has reached a threshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating either a high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
 
 .. code-block:: bash
 
@@ -3484,6 +3610,13 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a high temp alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include ddmTempHiAlarm
@@ -3504,6 +3637,13 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a high temp warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
 
 .. code-block:: bash
 
@@ -3526,6 +3666,13 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a low temp alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include ddmTempLoAlarm
@@ -3547,10 +3694,16 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a low temp warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include ddmTempLoWarn
-
 
 
 
@@ -3559,19 +3712,32 @@ ddmVcc
 
 This trap is for F5OS versions prior to 2.0.
 
+
 **ddmVcc                  .1.3.6.1.4.1.12276.1.1.1.262404**
 
 +------------------+------------------------------------------------------------------------------------------+
 | AlertEffect      | Possible Description in SNMP Trap                                                        |
 +==================+==========================================================================================+
-| ASSERT           |                                                                                          |
+| ASSERT           | Lanes: <# or #'s> ddm vcc low warning                                                    |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm vcc low alarm                                                      |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm vcc hi warning                                                     |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm vcc hi alarm                                                       |
 +------------------+------------------------------------------------------------------------------------------+
 | EVENT            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
-| CLEAR            |                                                                                          |
+| CLEAR            | Lanes: <# or #'s> ddm vcc low warning                                                    |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm vcc low alarm                                                      |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm vcc hi warning                                                     |
+|                  |                                                                                          |
+|                  | Lanes: <# or #'s> ddm vcc hi alarm                                                       |
 +------------------+------------------------------------------------------------------------------------------+
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reach a threshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating either a high alarm status, high warn status, low alarm status, or low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 .. code-block:: bash
 
@@ -3594,6 +3760,8 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include ddmVccHiAlarm
@@ -3614,6 +3782,8 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
+
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a high warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 .. code-block:: bash
 
@@ -3636,6 +3806,8 @@ This trap is for F5OS versions 2.0 and later.
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
 
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include ddmVccLoAlarm
@@ -3656,6 +3828,8 @@ This trap is for F5OS versions 2.0 and later.
 +------------------+------------------------------------------------------------------------------------------+
 | CLEAR            |                                                                                          |
 +------------------+------------------------------------------------------------------------------------------+
+
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a low warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 .. code-block:: bash
 
