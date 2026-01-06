@@ -1915,6 +1915,28 @@ A sensor fault can apply to an rSeries or a VELOS device. The example below show
     <INFO> 9-Nov-2023::19:26:08.990 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244114 10.255.0.144:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
     <INFO> 9-Nov-2023::19:26:08.991 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244114 10.255.0.143:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
 
+
+datapath-fault
+^^^^^^^^^^^^
+
+**datapath-fault                   .1.3.6.1.4.1.12276.1.1.1.65578**
+
++------------------+-------------------------------------------------------------------+
+| AlertEffect      | Possible Description in SNMP Trap                                 |
++==================+===================================================================+
+| ASSERT           |                                                                   |
++------------------+-------------------------------------------------------------------+
+| EVENT            |                                                                   |
++------------------+-------------------------------------------------------------------+
+| CLEAR            |                                                                   |
++------------------+-------------------------------------------------------------------+
+ 
+Hardware datapath fault.
+
+.. code-block:: bash
+
+    r10900-gsa-1# file show log/confd/snmp.log | include datapath-fault    
+
 module-present
 ^^^^^^^^^^^^^^
 
