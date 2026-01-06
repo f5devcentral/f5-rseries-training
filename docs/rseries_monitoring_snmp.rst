@@ -3034,7 +3034,7 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
     state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
 
-Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAlarm, and LoWarn state for each of the following txPwr, rxPwr, txBias, ddmTemp, and ddmVcc. This proved to be insufficent because two possible states could be true at the same time, especially for optics using multi-lane. There was no way to clear certain alarms when multiple conditions were met because of this. In F5OS 2.0 and later, more granular traps have been introduced for each of the following txPwr, rxPwr, txBias, ddmTemp, and ddmVcc to address this problem. The table below shows the new SNMP traps that are introdcued on the right, and the old deprecated traps on the left. You should reload the new 2.0 SNMP MIBs into yor SNMP manager or trap receiver to pick up these new changes. 
+Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAlarm, and LoWarn state for each of the following txPwr, rxPwr, txBias, ddmTemp, and ddmVcc. This proved to be insufficent because two possible states could be true at the same time, especially for optics using multi-lane. There was no way to clear certain alarms when multiple conditions were met because of this. In F5OS 2.0 and later, more granular traps have been introduced for each of the following txPwr, rxPwr, txBias, ddmTemp, and ddmVcc to address this problem. The table below shows the new SNMP traps that are introdcued on the right, and the old deprecated traps on the left. You should reload the new 2.0 SNMP MIBs into your SNMP manager or trap receiver to pick up these new changes. 
 
 +----------------------------+-------------------------------------+
 | Traps Prior to version 2.0 | New Traps with Version 2.0 or later |
@@ -3122,13 +3122,7 @@ The transmit power threshold for a specific transceiver has reached a threshold 
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwr
-
     <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
-
-    <INFO> 11-Aug-2025::08:45:32.869 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208496 172.22.50.57:162 (TimeTicks sysUpTime=10255)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.606284595 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
-    <INFO> 11-Aug-2025::08:45:33.177 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
-    <INFO> 11-Aug-2025::08:45:34.239 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
-    <INFO> 11-Aug-2025::08:45:55.402 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208630 172.22.50.57:162 (TimeTicks sysUpTime=12510)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 12)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:54.918903630 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
 
 txPwrHiAlarm
@@ -3222,7 +3216,6 @@ The transmit power threshold for a specific transceiver has reached a threshold 
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwrLoAlarm
-
     <INFO> 11-Aug-2025::08:45:33.177 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
 
 
@@ -3378,11 +3371,11 @@ rxPwr measures the amount of optical power (light) received by the transceiver o
 
 .. code-block:: bash
 
-    r10900-2# file show log/system/snmp.log | include rxPwrLoAlarm
-   
-    <INFO> 20-Nov-2025::15:23:12.366 r10900-2 confd[171]: snmp snmpv2-trap reqid=746899779 172.22.50.57:162 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
-
-    <INFO> 20-Nov-2025::15:34:37.692 r10900-2 confd[158]: snmp snmpv2-trap reqid=879500371 10.255.0.139:161 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
+    r5900-1-gsa# file show log/system/snmp.log | include rxPwrLoAlarm
+    <INFO> 20-Nov-2025::15:23:12.366 r5900-1-gsa confd[171]: snmp snmpv2-trap reqid=746899779 172.22.50.57:162 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:23:12.367 r5900-1-gsa confd[171]: snmp snmpv2-trap reqid=746899779 10.255.0.139:161 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:34:37.692 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500371 172.22.50.57:162 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:34:37.692 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500371 10.255.0.139:161 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
 
 
 rxPwrLoWarn
@@ -3407,10 +3400,7 @@ rxPwr measures the amount of optical power (light) received by the transceiver o
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include rxPwrLoWarn
-    
     <INFO> 20-Nov-2025::15:23:12.418 r10900-2 confd[171]: snmp snmpv2-trap reqid=746899780 172.22.50.57:162 (TimeTicks sysUpTime=7079)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.373277933 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low warning)
-
-
     <INFO> 20-Nov-2025::15:34:37.794 r10900-2 confd[158]: snmp snmpv2-trap reqid=879500372 10.255.0.139:161 (TimeTicks sysUpTime=4358)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.678511059 UTC)(OCTET STRING alertDescription=Receiver power low warning)
 
 txBias
