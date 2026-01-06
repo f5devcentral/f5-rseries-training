@@ -1356,20 +1356,20 @@ hardware-device-fault
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**  
 
 
-+------------------+-----------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                     |
-+==================+=======================================================================+
-| ASSERT           | Hardware device fault detected                                        |
-+------------------+-----------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
-|                  |                                                                       |
-|                  | Example:                                                              | 
-|                  |                                                                       |
-|                  | Asserted: CPU machine check error                                     |
-|                  |                                                                       |
-+------------------+-----------------------------------------------------------------------+
-| CLEAR            | Hardware device fault detected                                        |
-+------------------+-----------------------------------------------------------------------+
++-------------------------+-----------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                     |
++=========================+=======================================================================+
+| ASSERT (AlertEffect=1)  | Hardware device fault detected                                        |
++-------------------------+-----------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
+|                         |                                                                       |
+|                         | Example:                                                              | 
+|                         |                                                                       |
+|                         | Asserted: CPU machine check error                                     |
+|                         |                                                                       |
++-------------------------+-----------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)   | Hardware device fault detected                                        |
++-------------------------+-----------------------------------------------------------------------+
 
 This set of traps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
 
@@ -1546,11 +1546,11 @@ firmware-fault
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
 
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            | <<ARM Exception data available | Heap running low | Task stack usage warning | Watchdog timer warning >> |
-+------------------+----------------------------------------------------------------------------------------------------------+
++------------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                                        |
++========================+==========================================================================================================+
+| EVENT  (AlertEffect=2) | <<ARM Exception data available | Heap running low | Task stack usage warning | Watchdog timer warning >> |
++------------------------+----------------------------------------------------------------------------------------------------------+
 
 This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
 
@@ -1579,11 +1579,11 @@ unknown-alarm
 **unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538**
 
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            | alertDescription=<string>                                                                |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) | alertDescription=<string>                                                                |
++------------------------+------------------------------------------------------------------------------------------+
 
 Unregistered alarm detected. Some events sent from lower level monitoring may not have SNMP traps defined for them at this time, therefore it is possible an event based **alertEffect=2** SNMP trap could be sent which would include the details from underlying subsystem as a string ib the body of the SNMP trap.
 
@@ -1607,11 +1607,11 @@ memory-fault
 
 **memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1623,63 +1623,63 @@ drive-fault
 
 **drive-fault                    .1.3.6.1.4.1.12276.1.1.1.65540**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Fault in drive detected                                                            |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Event can either of these below issues:                                            |
-|                  |                                                                                    |
-|                  |  Drive Available Spare is below threshold                                          |
-|                  |                                                                                    |
-|                  |  Drive Volatile Memory Backup System has failed                                    |
-|                  |                                                                                    |
-|                  |  Drive Endurance consumed has exceeded threshold                                   |
-|                  |                                                                                    |
-|                  |  Drive has encountered Media Errors                                                |
-|                  |                                                                                    |
-|                  |  Allowable program fail count is below 50 percent                                  |
-|                  |                                                                                    |
-|                  |  Allowable program fail count is below 80 percent                                  |
-|                  |                                                                                    |
-|                  |  Allowable erase fail count is below 50 percent                                    |
-|                  |                                                                                    |
-|                  |  Allowable erase fail count is below 80 percent                                    |
-|                  |                                                                                    |
-|                  |  Drive Reliability is degraded due to excessive media or internal errors           |
-|                  |                                                                                    |
-|                  |  More number of CRC errors encountered                                             |
-|                  |                                                                                    |
-|                  |  Less than 50 Percentage of erase cycles remaining                                 |
-|                  |                                                                                    |
-|                  |  Less than 80 Percentage of erase cycles remaining                                 |
-|                  |                                                                                    |
-|                  |  Drive Media is not in read-only mode                                              |
-|                  |                                                                                    |
-|                  | Clear descriptions:                                                                |
-|                  |                                                                                    |
-|                  |  Event can either of these below issues:                                           |
-|                  |                                                                                    |
-|                  |  Drive Available Spare is as expected                                              |
-|                  |                                                                                    |
-|                  |  Drive Volatile Memory Backup System is healthy                                    |
-|                  |                                                                                    |
-|                  |  Drive Endurance consumed is normal                                                |
-|                  |                                                                                    |
-|                  |  Drive has no Internal or Media Errors / Drive has no Media Errors                 |
-|                  |                                                                                    |
-|                  |  Allowable program fail count is above 80 percent                                  |
-|                  |                                                                                    |
-|                  |  Allowable erase fail count is above 80 percent                                    |
-|                  |                                                                                    |
-|                  |  Number of CRC errors are in allowed range                                         |
-|                  |                                                                                    |
-|                  |  More than 80 Percentage of erase cycles remaining                                 |
-|                  |                                                                                    |
-|                  |  Drive Media is placed in read-only mode                                           |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Fault in drive detected                                                            |
-+------------------+------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                  |
++=========================+====================================================================================+
+| ASSERT  (AlertEffect=1) | Fault in drive detected                                                            |
++-------------------------+------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2) | Event can either of these below issues:                                            |
+|                         |                                                                                    |
+|                         |  Drive Available Spare is below threshold                                          |
+|                         |                                                                                    |
+|                         |  Drive Volatile Memory Backup System has failed                                    |
+|                         |                                                                                    |
+|                         |  Drive Endurance consumed has exceeded threshold                                   |
+|                         |                                                                                    |
+|                         |  Drive has encountered Media Errors                                                |
+|                         |                                                                                    |
+|                         |  Allowable program fail count is below 50 percent                                  |
+|                         |                                                                                    |
+|                         |  Allowable program fail count is below 80 percent                                  |
+|                         |                                                                                    |
+|                         |  Allowable erase fail count is below 50 percent                                    |
+|                         |                                                                                    |
+|                         |  Allowable erase fail count is below 80 percent                                    |
+|                         |                                                                                    |
+|                         |  Drive Reliability is degraded due to excessive media or internal errors           |
+|                         |                                                                                    |
+|                         |  More number of CRC errors encountered                                             |
+|                         |                                                                                    |
+|                         |  Less than 50 Percentage of erase cycles remaining                                 |
+|                         |                                                                                    |
+|                         |  Less than 80 Percentage of erase cycles remaining                                 |
+|                         |                                                                                    |
+|                         |  Drive Media is not in read-only mode                                              |
+|                         |                                                                                    |
+|                         | Clear descriptions:                                                                |
+|                         |                                                                                    |
+|                         |  Event can either of these below issues:                                           |
+|                         |                                                                                    |
+|                         |  Drive Available Spare is as expected                                              |
+|                         |                                                                                    |
+|                         |  Drive Volatile Memory Backup System is healthy                                    |
+|                         |                                                                                    |
+|                         |  Drive Endurance consumed is normal                                                |
+|                         |                                                                                    |
+|                         |  Drive has no Internal or Media Errors / Drive has no Media Errors                 |
+|                         |                                                                                    |
+|                         |  Allowable program fail count is above 80 percent                                  |
+|                         |                                                                                    |
+|                         |  Allowable erase fail count is above 80 percent                                    |
+|                         |                                                                                    |
+|                         |  Number of CRC errors are in allowed range                                         |
+|                         |                                                                                    |
+|                         |  More than 80 Percentage of erase cycles remaining                                 |
+|                         |                                                                                    |
+|                         |  Drive Media is placed in read-only mode                                           |
++-------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0) | Fault in drive detected                                                            |
++-------------------------+------------------------------------------------------------------------------------+
 
 
 .. code-block:: bash
@@ -1691,11 +1691,11 @@ cpu-fault
 
 **cpu-fault                      .1.3.6.1.4.1.12276.1.1.1.65541**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT (AlertEffect=2)  |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1707,11 +1707,11 @@ pcie-fault
 
 **pcie-fault                     .1.3.6.1.4.1.12276.1.1.1.65542**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT (AlertEffect=2)  |                                                                                          |
++----------------======--+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -1723,53 +1723,53 @@ aom-fault
 **aom-fault                      .1.3.6.1.4.1.12276.1.1.1.65543**
 
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Fault detected in the AOM                                                          |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >>: <<sensor name>>                                       |
-|                  |                                                                                    |
-|                  | Sensor names include:                                                              |
-|                  |                                                                                    |
-|                  | I2C-1 PEL EEPROM Ack Fault                                                         |
-|                  |                                                                                    |
-|                  | I2C-1 CPLD EEPROM Ack Fault                                                        |
-|                  |                                                                                    |
-|                  | I2C-1 Platform EEPROM Ack Fault                                                    |
-|                  |                                                                                    |
-|                  | I2C-3 TMP421 Outlet Ack Fault                                                      |
-|                  |                                                                                    |
-|                  | I2C-3 MAX31730 VQF Ack Fault                                                       |
-|                  |                                                                                    |
-|                  | I2C-3 TMP423 Ack Fault                                                             |
-|                  |                                                                                    |
-|                  | I2C-3 MAX31730 ATSE1 Ack Fault                                                     |
-|                  |                                                                                    |
-|                  | I2C-3 MAX31730 ATSE2 Ack Fault                                                     |
-|                  |                                                                                    |
-|                  | I2C-3 LM25066 Hotswap Controller Ack Fault                                         |
-|                  |                                                                                    |
-|                  | I2C-4 TMP468 ATSE Ack Fault                                                        |
-|                  |                                                                                    |
-|                  | I2C-4 TMP421 Inlet Ack Fault                                                       |
-|                  |                                                                                    |
-|                  | I2C-1 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | I2C-2 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | I2C-3 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | I2C-4 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | LOP FIT Forced Bad Health                                                          |
-|                  |                                                                                    |
-|                  | Blade-LOP NC-SI / RMII Failure                                                     |
-|                  |                                                                                    |
-|                  | Power-On Self Test (POST) failure                                                  |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Fault detected in the AOM                                                          |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT  (AlertEffect=1)  | Fault detected in the AOM                                                          |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | << Asserted | Deasserted >>: <<sensor name>>                                       |
+|                          |                                                                                    |
+|                          | Sensor names include:                                                              |
+|                          |                                                                                    |
+|                          | I2C-1 PEL EEPROM Ack Fault                                                         |
+|                          |                                                                                    |
+|                          | I2C-1 CPLD EEPROM Ack Fault                                                        |
+|                          |                                                                                    |
+|                          | I2C-1 Platform EEPROM Ack Fault                                                    |
+|                          |                                                                                    |
+|                          | I2C-3 TMP421 Outlet Ack Fault                                                      |
+|                          |                                                                                    |
+|                          | I2C-3 MAX31730 VQF Ack Fault                                                       |
+|                          |                                                                                    |
+|                          | I2C-3 TMP423 Ack Fault                                                             |
+|                          |                                                                                    |
+|                          | I2C-3 MAX31730 ATSE1 Ack Fault                                                     |
+|                          |                                                                                    |
+|                          | I2C-3 MAX31730 ATSE2 Ack Fault                                                     |
+|                          |                                                                                    |
+|                          | I2C-3 LM25066 Hotswap Controller Ack Fault                                         |
+|                          |                                                                                    |
+|                          | I2C-4 TMP468 ATSE Ack Fault                                                        |
+|                          |                                                                                    |
+|                          | I2C-4 TMP421 Inlet Ack Fault                                                       |
+|                          |                                                                                    |
+|                          | I2C-1 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | I2C-2 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | I2C-3 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | I2C-4 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | LOP FIT Forced Bad Health                                                          |
+|                          |                                                                                    |
+|                          | Blade-LOP NC-SI / RMII Failure                                                     |
+|                          |                                                                                    |
+|                          | Power-On Self Test (POST) failure                                                  |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Fault detected in the AOM                                                          |
++--------------------------+------------------------------------------------------------------------------------+
 
 AOM is rSeries Always-On Management. The Always-On Management (AOM) subsystem enables you to manage the system remotely from a serial console, even if the host is powered down. The AOM Command Menu operates independently of F5OS. For more details about the AOM subsystem see the following solution article:
 
@@ -1807,19 +1807,19 @@ power-fault
 
 **power-fault                    .1.3.6.1.4.1.12276.1.1.1.65545**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Power fault detected in hardware                                                   |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >>: <<sensor name>>                                       |
-|                  |                                                                                    |
-|                  | Example:                                                                           |
-|                  |                                                                                    |
-|                  | Asserted: +5.0V_STBY power fault                                                   |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Power fault detected in hardware                                                   |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT   (AlertEffect=1) | Power fault detected in hardware                                                   |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT    (AlertEffect=2) | << Asserted | Deasserted >>: <<sensor name>>                                       |
+|                          |                                                                                    |
+|                          | Example:                                                                           |
+|                          |                                                                                    |
+|                          | Asserted: +5.0V_STBY power fault                                                   |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR    (AlertEffect=0) | Power fault detected in hardware                                                   |
++--------------------------+------------------------------------------------------------------------------------+
 
 In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, meaning there is no alarm associated with these events.
 
@@ -1839,17 +1839,17 @@ thermal-fault
 
 **thermal-fault                  .1.3.6.1.4.1.12276.1.1.1.65546**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Thermal fault detected in hardware                                                 |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Thermal sensor >> at <<temperature>>                                            |
-|                  |                                                                                    |
-|                  | Example: VQF at +38.1 degC                                                         |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Thermal fault detected in hardware                                                 |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT  (AlertEffect=1)  | Thermal fault detected in hardware                                                 |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | << Thermal sensor >> at <<temperature>>                                            |
+|                          |                                                                                    |
+|                          | Example: VQF at +38.1 degC                                                         |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Thermal fault detected in hardware                                                 |
++--------------------------+------------------------------------------------------------------------------------+
 
 In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, meaning there is no alarm associated with these events.
 
@@ -1883,15 +1883,15 @@ sensor-fault
 
 **sensor-fault                   .1.3.6.1.4.1.12276.1.1.1.65577**
 
-+------------------+-------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                 |
-+==================+===================================================================+
-| ASSERT           | Sensor fault detected in hardware                                 |
-+------------------+-------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >> : sensor fault: <<sensor name>>       |
-+------------------+-------------------------------------------------------------------+
-| CLEAR            | Sensor fault detected in hardware                                 |
-+------------------+-------------------------------------------------------------------+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Sensor fault detected in hardware                                 |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | << Asserted | Deasserted >> : sensor fault: <<sensor name>>       |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Sensor fault detected in hardware                                 |
++--------------------------+-------------------------------------------------------------------+
 
 A sensor fault can apply to an rSeries or a VELOS device. The example below shows SNMP traps of sensor failures from a VELOS system controller, however rSeries would follow a similar format. 
 
@@ -1921,15 +1921,15 @@ datapath-fault
 
 **datapath-fault                   .1.3.6.1.4.1.12276.1.1.1.65578**
 
-+------------------+-------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                 |
-+==================+===================================================================+
-| ASSERT           |                                                                   |
-+------------------+-------------------------------------------------------------------+
-| EVENT            |                                                                   |
-+------------------+-------------------------------------------------------------------+
-| CLEAR            |                                                                   |
-+------------------+-------------------------------------------------------------------+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  |                                                                   |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  |                                                                   |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  |                                                                   |
++--------------------------+-------------------------------------------------------------------+
  
 Hardware datapath fault.
 
@@ -1943,13 +1943,13 @@ module-present
 **module-present                 .1.3.6.1.4.1.12276.1.1.1.66304**
 
 
-+------------------+-----------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                         |
-+==================+===========================================================+
-| EVENT            | <<module>> <<present|removed>>                            |
-|                  |                                                           |
-|                  | Example: fan tray present                                 |
-+------------------+-----------------------------------------------------------+
++--------------------------+-----------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                         |
++==========================+===========================================================+
+| EVENT   (AlertEffect=2)  | <<module>> <<present|removed>>                            |
+|                          |                                                           |
+|                          | Example: fan tray present                                 |
++--------------------------+-----------------------------------------------------------+
 
 Traps will be generated for components being present (Asserted) or removed (Deasserted). If the LCD module, fan tray, or SSD are present or removed are some examples. This trap only provides informational/event messages alertEffect=2 as they are indicating the presence or removal of a module or part. It does not indicate a failure. Failures are tracked with module-communication-error traps.
 
@@ -1971,49 +1971,49 @@ psu-fault
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | PSU fault detected                                                                 |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | <<< Asserted| Deasserted >>: PSU <<psu number>> << sensor that caused the issue>>  |
-|                  |                                                                                    |
-|                  | Examples:                                                                          |
-|                  |                                                                                    |
-|                  | Asserted: PSU 1 input under-voltage warning                                        |
-|                  |                                                                                    |
-|                  | Deasserted: PSU 1 input under-voltage warning                                      |
-|                  |                                                                                    |
-|                  | Sensor could be:                                                                   |
-|                  |                                                                                    |
-|                  | input over-power warning                                                           |
-|                  |                                                                                    |
-|                  | input over-current warning                                                         |
-|                  |                                                                                    |
-|                  | input over-current fault                                                           |
-|                  |                                                                                    |
-|                  | unit off for low input voltage                                                     |
-|                  |                                                                                    |
-|                  | input under-voltage fault                                                          |
-|                  |                                                                                    |
-|                  | input under-voltage warning                                                        |
-|                  |                                                                                    |
-|                  | input over-voltage warning                                                         | 
-|                  |                                                                                    |
-|                  | input over-voltage fault                                                           |
-|                  |                                                                                    |
-|                  | PSU present                                                                        |
-|                  |                                                                                    |
-|                  | PSU input-ok                                                                       |
-|                  |                                                                                    |
-|                  | PSU output-ok                                                                      |
-|                  |                                                                                    |
-|                  | PSU unsupported                                                                    |
-|                  |                                                                                    |
-|                  | PSU mismatch                                                                       |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | PSU fault detected                                                                 |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT   (AlertEffect=1) | PSU fault detected                                                                 |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT    (AlertEffect=2) | <<< Asserted| Deasserted >>: PSU <<psu number>> << sensor that caused the issue>>  |
+|                          |                                                                                    |
+|                          | Examples:                                                                          |
+|                          |                                                                                    |
+|                          | Asserted: PSU 1 input under-voltage warning                                        |
+|                          |                                                                                    |
+|                          | Deasserted: PSU 1 input under-voltage warning                                      |
+|                          |                                                                                    |
+|                          | Sensor could be:                                                                   |
+|                          |                                                                                    |
+|                          | input over-power warning                                                           |
+|                          |                                                                                    |
+|                          | input over-current warning                                                         |
+|                          |                                                                                    |
+|                          | input over-current fault                                                           |
+|                          |                                                                                    |
+|                          | unit off for low input voltage                                                     |
+|                          |                                                                                    |
+|                          | input under-voltage fault                                                          |
+|                          |                                                                                    |
+|                          | input under-voltage warning                                                        |
+|                          |                                                                                    |
+|                          | input over-voltage warning                                                         | 
+|                          |                                                                                    |
+|                          | input over-voltage fault                                                           |
+|                          |                                                                                    |
+|                          | PSU present                                                                        |
+|                          |                                                                                    |
+|                          | PSU input-ok                                                                       |
+|                          |                                                                                    |
+|                          | PSU output-ok                                                                      |
+|                          |                                                                                    |
+|                          | PSU unsupported                                                                    |
+|                          |                                                                                    |
+|                          | PSU mismatch                                                                       |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | PSU fault detected                                                                 |
++--------------------------+------------------------------------------------------------------------------------+
 
 This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not if an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
