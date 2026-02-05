@@ -142,13 +142,13 @@ The r12900-DS has 72 vCPUs total, 12 vCPUs reserved for F5OS, and 60 vCPUs left 
   :align: center
   :scale: 60%
 
-The r12800-DS has 72 vCPUs total, 16 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 52 vCPUs left over for use by tenants:
+The r12800-DS has 72 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 52 vCPUs left over for use by tenants:
 
 .. image:: images/rseries_performance_and_sizing/image11r12000.png
   :align: center
   :scale: 60%
 
-The r10600 has 48 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 44 vCPUs left over for use by tenants:  
+The r12600-DS has 72 vCPUs total, 16 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 44 vCPUs left over for use by tenants:  
 
 .. image:: images/rseries_performance_and_sizing/image12r12000.png
   :align: center
