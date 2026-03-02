@@ -3,7 +3,7 @@ rSeries Multitenancy
 ====================
 
 
-In previous generation chassis and appliances F5 supported **vCMP** as a means of providing multitenancy and virtualization. vCMP allowed for configuration of **Guests** which were independent virtualized instances of BIG-IP. rSeries provides a similar type of virtualization experience, however it is not based on vCMP.  Instead rSeries will allow for **Tenants** to be created which are virtualized instances of BIG-IP on top of the containerized F5OS layer. 
+In previous generation chassis and appliances, F5 supported **vCMP** as a means of providing multitenancy and virtualization. vCMP allowed for configuration of **Guests** which were independent virtualized instances of BIG-IP. rSeries provides a similar type of virtualization experience, however it is not based on vCMP.  Instead rSeries will allow for **Tenants** to be created which are virtualized instances of BIG-IP on top of the containerized F5OS layer. 
 
 Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by default. There is no option for a “bare metal” configuration. You may configure one large tenant to emulate a “bare-metal” type BIG-IP configuration if required, but it is running one large tenant. Below is a depiction of BIG-IP tenants running on top of the F5OS layer. 
 
