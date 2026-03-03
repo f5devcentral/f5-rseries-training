@@ -1924,14 +1924,29 @@ datapath-fault
 +--------------------------+-------------------------------------------------------------------+
 | AlertEffect              | Possible Description in SNMP Trap                                 |
 +==========================+===================================================================+
-| ASSERT  (AlertEffect=1)  |                                                                   |
+| ASSERT  (AlertEffect=1)  | Hardware datapath fault                                           |
 +--------------------------+-------------------------------------------------------------------+
-| EVENT   (AlertEffect=2)  |                                                                   |
+| EVENT   (AlertEffect=2)  | dma-agent service reported overall health: value=Unhealthy        |
+|                          |                                                                   |
+|                          | dma-agent service reported overall health: value=Ok               | 
 +--------------------------+-------------------------------------------------------------------+
-| CLEAR   (AlertEffect=0)  |                                                                   |
+| CLEAR   (AlertEffect=0)  | Hardware datapath fault                                           |
 +--------------------------+-------------------------------------------------------------------+
  
 Hardware datapath fault.
+
+Below are some sample logs from the **show system events** CLI command:
+
+.. code-block:: bash
+
+    r10900-gsa-1# show system events | include datapath-fault
+    65578 appliance datapath-fault ASSERT CRITICAL "Hardware datapath fault" "2025-04-23 21:36:40.210399400 UTC"                       
+    65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Unhealthy" "2025-04-23 21:36:40.210411741 UTC"                           
+    65578 appliance datapath-fault CLEAR EMERGENCY "Hardware datapath fault" "2025-04-23 21:58:17.576705606 UTC"                           
+    65578 appliance datapath-fault ASSERT CRITICAL "Hardware datapath fault" "2025-04-23 21:58:41.313914516 UTC"                       
+    65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Unhealthy" "2025-04-23 21:58:41.313929456 UTC" 
+    65578 appliance datapath-fault CLEAR CRITICAL "Hardware datapath fault" "2025-04-23 21:58:57.189482206 UTC"                        
+    65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Ok" "2025-04-23 21:58:57.189493672 UTC"  
 
 .. code-block:: bash
 
