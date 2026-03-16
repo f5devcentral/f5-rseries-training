@@ -1948,6 +1948,8 @@ Below are some sample logs from the **show system events** CLI command:
     65578 appliance datapath-fault CLEAR CRITICAL "Hardware datapath fault" "2025-04-23 21:58:57.189482206 UTC"                        
     65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Ok" "2025-04-23 21:58:57.189493672 UTC"  
 
+Below is an example of SNMP traps for datapath-fault:
+
 .. code-block:: bash
 
     r10900-gsa-1# file show log/confd/snmp.log | include datapath-fault    
@@ -1991,7 +1993,7 @@ psu-fault
 +==========================+====================================================================================+
 | ASSERT   (AlertEffect=1) | PSU fault detected                                                                 |
 +--------------------------+------------------------------------------------------------------------------------+
-| EVENT    (AlertEffect=2) | <<< Asserted| Deasserted >>: PSU <<psu number>> << sensor that caused the issue>>  |
+| EVENT    (AlertEffect=2) | <<< Asserted | Deasserted >>: PSU <<psu number>> << sensor that caused the issue>> |
 |                          |                                                                                    |
 |                          | Examples:                                                                          |
 |                          |                                                                                    |
@@ -2017,13 +2019,17 @@ psu-fault
 |                          |                                                                                    |
 |                          | input over-voltage fault                                                           |
 |                          |                                                                                    |
-|                          | PSU present                                                                        |
+|                          | PSU voltage out value < lower limit, value=<value>                                 |
 |                          |                                                                                    |
-|                          | PSU input-ok                                                                       |
+|                          | PSU voltage out value within allowed range, value=<value>                          |
 |                          |                                                                                    |
-|                          | PSU output-ok                                                                      |
+|                          | PSU <<psu number>> present                                                         |
 |                          |                                                                                    |
-|                          | PSU unsupported                                                                    |
+|                          | PSU <<psu number>> input OK                                                        |
+|                          |                                                                                    |
+|                          | PSU <<psu number>> output OK                                                       |
+|                          |                                                                                    |
+|                          | PSU <<psu number>> unsupported                                                     |
 |                          |                                                                                    |
 |                          | PSU mismatch                                                                       |
 +--------------------------+------------------------------------------------------------------------------------+
