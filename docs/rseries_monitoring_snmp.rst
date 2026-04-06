@@ -967,6 +967,8 @@ SNMP Trap events that note a fault should also trigger an alert that can be view
 +----------------------------+----------------------------------+
 | datapath-fault             | .1.3.6.1.4.1.12276.1.1.1.65578   |
 +----------------------------+----------------------------------+
+| boot-time-integrity-status | .1.3.6.1.4.1.12276.1.1.1.65579   |
++----------------------------+----------------------------------+ 
 | module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
 +----------------------------+----------------------------------+
 | psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
@@ -1953,6 +1955,39 @@ Below is an example of SNMP traps for datapath-fault:
 .. code-block:: bash
 
     r10900-gsa-1# file show log/confd/snmp.log | include datapath-fault    
+
+boot-time-integrity-status
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**boot-time-integrity-status                   .1.3.6.1.4.1.12276.1.1.1.65579**
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| EVENT   (AlertEffect=2)  | Deasserted: OS boot time integrity check failure                  |
+|                          |                                                                   |
+|                          | Deasserted: OS boot time integrity check complete                 | 
++--------------------------+-------------------------------------------------------------------+
+
+Checks are run at boot time and on-demand.
+
+F5OS historically provided the boot-time integrity check and on-demand integrity check functionality only when the system was operating with a valid FIPS license installed on F5OS-A and F5OS-C platforms. This restriction aligned with the system’s FIPS 140-3 boundary, where integrity checking was a mandatory security function.
+
+Starting with F5OS v2.0.0, the F5OS-A and F5OS-C software lines have been unified into a single operating system image. As part of the unified platform’s roadmap, F5OS is being prepared for Common Criteria (CC) certification. CC requires system integrity verification mechanisms similar in spirit to FIPS (e.g., pre-operational self-tests, runtime integrity assurance mechanisms).
+
+To align with CC certification requirements and to ensure functional parity across secure operating modes, the existing integrity-check mechanisms are now extended to operate in Common-Criteria mode as well.
+
+
+
+Boot time integrity failure detected.
+
+<INFO> 17-Jun-2024::17:06:12.992 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239385 10.255.80.251:162 (TimeTicks sysUpTime=2588)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-3)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.038536850 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check complete)
+<INFO> 17-Jun-2024::17:06:13.121 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239386 10.255.80.251:162 (TimeTicks sysUpTime=2601)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.044855786 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check complete)
+<INFO> 17-Jun-2024::17:06:13.237 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239387 10.255.80.251:162 (TimeTicks sysUpTime=2613)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-3)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.052817609 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check failure)
+<INFO> 17-Jun-2024::17:06:13.383 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239388 10.255.80.251:162 (TimeTicks sysUpTime=2627)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.058460353 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check failure)
+<INFO> 17-Jun-2024::17:06:13.559 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239389 10.255.80.251:162 (TimeTicks sysUpTime=2645)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.074260559 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check complete)
+<INFO> 17-Jun-2024::17:06:13.711 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239390 10.255.80.251:162 (TimeTicks sysUpTime=2660)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.078563910 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check failure)
+
 
 module-present
 ^^^^^^^^^^^^^^
@@ -3083,7 +3118,7 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
     state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
 
-Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAlarm, and LoWarn state for each of the following txPwr, rxPwr, txBias, ddmTemp, and ddmVcc. This proved to be insufficent because two possible states could be true at the same time, especially for optics using multi-lane. There was no way to clear certain alarms when multiple conditions were met because of this. In F5OS 2.0 and later, more granular traps have been introduced for each of the following txPwr, rxPwr, txBias, ddmTemp, and ddmVcc to address this problem. The table below shows the new SNMP traps that are introdcued on the right, and the old deprecated traps on the left. You should reload the new 2.0 SNMP MIBs into your SNMP manager or trap receiver to pick up these new changes. 
+Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAlarm, and LoWarn state for each of the following: txPwr, rxPwr, txBias, ddmTemp, and ddmVcc. This proved to be insufficent because two possible states could be true at the same time, especially for optics using multi-lane. There was no way to clear certain alarms when multiple conditions were met because of this. In F5OS 2.0 and later, more granular traps have been introduced for each of the following: txPwr, rxPwr, txBias, ddmTemp, and ddmVcc to address this problem. The table below shows the new SNMP traps that are introduced on the right, and the old deprecated traps on the left. You should reload the new 2.0 SNMP MIBs into your SNMP manager or trap receiver to pick up these new changes. 
 
 +----------------------------+-------------------------------------+
 | Traps Prior to version 2.0 | New Traps with Version 2.0 or later |
