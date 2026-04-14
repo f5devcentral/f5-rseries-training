@@ -11,52 +11,169 @@ The capacity advertised for disk sizes are larger than what is seen inside the s
 
 `K000135513: F5OS platform (rSeries/VELOS) shows different disk size compared to platform data sheet <https://my.f5.com/manage/s/article/K000135513>`_
 
-Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size. The system has dual 1TB disks, but due to over provisioning the actual usable space is ~735GB.
+Below is an example of an r12900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size. The system has dual 2TB disks, but due to SSD manufacturer over provisioning the actual usable space is ~1397GB.
 
 .. code-block:: bash
 
-  r10900-2# show components component storage 
-                                                                                                                                          READ                                       WRITE    
-            DISK                                                                                TOTAL     READ      READ                  LATENCY  WRITE      WRITE      WRITE       LATENCY  
-  NAME      NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS      IOPS      MERGED    READ BYTES  MS       IOPS       MERGED     BYTES       MS       
-  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  platform  nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ915001YZ1P0FGN  735.00GB  nvme  38910844  11468112  11302039  2878981018  1139890  220046227  197568554  4049259703  7379344  
-            nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ0065030H1P0FGN  735.00GB  nvme  38756488  11286173  11290150  2875544998  1176491  220046227  197568554  4049259703  7029212  
+  r12900-1-gsa# show components component platform storage 
+                                                                                                                                     READ                                              WRITE     
+  DISK                                                                                     TOTAL  READ      READ                       LATENCY               WRITE                       LATENCY   
+  NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE       TYPE  IOPS   IOPS      MERGED     READ BYTES      MS        WRITE IOPS  MERGED      WRITE BYTES     MS        
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nvme0n1  SAMSUNG MZQL21T9HCJR-00A07  Samsung  GDC5602Q  S64GNA0T705200  1397.00GB  nvme  0      28825879  224134195  16512452025856  23632018  1444502017  1387157591  16087772092416  98794194  
+  nvme1n1  SAMSUNG MZQL21T9HCJR-00A07  Samsung  GDC5602Q  S64GNA0T704659  1397.00GB  nvme  0      28087419  224084243  16505188468224  24632030  1444501617  1387157991  16087772092416  89736314  
 
-  r10900-2#
+  r12900-1-gsa# 
 
-Below is an example of an r5900 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size.
 
-.. code-block:: bash
-
-  r5900-2# show components component storage 
-                                                                                                                                        READ                                       WRITE     
-            DISK                                                                                    TOTAL     READ    READ    READ      LATENCY  WRITE      WRITE      WRITE       LATENCY   
-  NAME      NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE      TYPE  IOPS      IOPS    MERGED  BYTES     MS       IOPS       MERGED     BYTES       MS        
-  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  platform  nvme0n1  SAMSUNG MZ1LB960HAJQ-00007  Samsung  EDA7602Q  S435NA0NA05748  733.00GB  nvme  12255833  273605  141930  12519719  82978    119699693  129417442  2563679947  15206038  
-
-  r5900-2#
-
-Below is an example of an r4800 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size.
+Below is an example of an r10900 appliance with RAID-1 mirrored disks. You can use the CLI command **show components component storage** to see the disks and their overall size. The system has dual 1TB disks, but due to SSD manufacturer over provisioning the actual usable space is ~684GB.
 
 .. code-block:: bash
 
-  r4800-2# show components component storage 
-                                                                                                                                READ                                     WRITE     
-            DISK                                                                            TOTAL     READ    READ    READ      LATENCY  WRITE     WRITE     WRITE       LATENCY   
-  NAME      NAME     MODEL             VENDOR         VERSION  SERIAL NO    SIZE      TYPE  IOPS      IOPS    MERGED  BYTES     MS       IOPS      MERGED    BYTES       MS        
-  ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-  platform  nvme0n1  SRMP8480GF1S1B71  SMART Modular  FW1354   SPG214106FA  480.00GB  nvme  10017534  252256  136998  10803713  227583   61683460  41269084  1106606207  11972055  
+  r10900-1-gsa# show components component platform storage 
+                                                                                                                                                                                        READ  READ   WRITE           
+                                                                                                                                READ                                           WRITE     IOPS  BYTES  IOPS   WRITE    
+  DISK                                                                                TOTAL  READ      READ                     LATENCY   WRITE      WRITE                     LATENCY   PER   PER    PER    BYTES    
+  NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS      MERGED    READ BYTES     MS        IOPS       MERGED     WRITE BYTES    MS        SEC   SEC    SEC    PER SEC  
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ915001YZ1P0FGN  684.00GB  nvme  0      20936513  13531343  2218081166848  18885099  448920360  395321175  4628093784576  43435137  0     18841  121    1119072  
+  nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ0065030H1P0FGN  684.00GB  nvme  0      20410425  13519690  2211503181824  19624241  448920315  395321220  4628093784576  41446861  0     6553   121    1119072  
 
-  r4800-2#
+  r10900-1-gsa#
+
+Below is an example of an r5900 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size. The system has a single 1TB disk, but due to SSD manufacturer over provisioning the actual usable space is ~683GB.
+
+.. code-block:: bash
+
+  r5900-1-gsa# show components component platform storage 
+                                                                                                                                                                                        READ  READ   WRITE           
+                                                                                                                                READ                                          WRITE     IOPS  BYTES  IOPS   WRITE    
+  DISK                                                                                    TOTAL  READ     READ                   LATENCY  WRITE      WRITE                     LATENCY   PER   PER    PER    BYTES    
+  NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE      TYPE  IOPS   IOPS     MERGED   READ BYTES    MS       IOPS       MERGED     WRITE BYTES    MS        SEC   SEC    SEC    PER SEC  
+  --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nvme0n1  SAMSUNG MZ1LB960HAJQ-00007  Samsung  EDA7602Q  S435NA0NA05748  683.00GB  nvme  0      3567466  1355195  120958355968  2096727  289016249  276223058  3408011746304  48246578  0     0      109    1175548  
+
+  r5900-1-gsa# 
+
+Below is an example of an r4800 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size. The system has a single 480GB disk, but due to SSD manufacturer over provisioning the actual usable space is ~447GB.
+
+
+.. code-block:: bash
+
+  r4800-1-gsa# show components component platform storage
+                                                                                                                      READ                                          WRITE      
+  DISK                                                                            TOTAL  READ    READ                 LATENCY  WRITE      WRITE                     LATENCY    
+  NAME     MODEL             VENDOR         VERSION  SERIAL NO    SIZE      TYPE  IOPS   IOPS    MERGED  READ BYTES   MS       IOPS       MERGED     WRITE BYTES    MS         
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nvme0n1  SRMP8480GF1S1B71  SMART Modular  FW1354   SPG214106FA  447.00GB  nvme  0      782328  723369  17346635776  1709225  535868303  420793606  4948687782912  114139966  
+
+  r4800-1-gsa# 
+
+Below is an example of an r2800 appliance with a single disk. You can use the CLI command **show components component storage** to see the disk and its overall size. The system has a single 480GB disk, but due to SSD manufacturer over provisioning the actual usable space is ~447GB.
+
+
+.. code-block:: bash
+
+  rr800-1-gsa# show components component platform storage 
+                                                                                                                     READ                                          WRITE     
+  DISK                                                                            TOTAL  READ     READ                 LATENCY  WRITE      WRITE                     LATENCY   
+  NAME     MODEL             VENDOR         VERSION  SERIAL NO    SIZE      TYPE  IOPS   IOPS     MERGED  READ BYTES   MS       IOPS       MERGED     WRITE BYTES    MS        
+  -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nvme0n1  SRMP8480GF1S1B71  SMART Modular  FW1354   SPG214106H8  447.00GB  nvme  0      2737342  49      41487474176  1176773  479738508  365657419  4491211809280  86089293  
+
+  r2800-1-gsa#
+
 
 How the Disk is Partitioned
 ---------------------------
 
+When trying to calculate freespace for the system or one of the underlying volumes there are a few factors that have to be taken into consideration. First, as covered above, the advertised disk size in the rSeries data sheet is what the SSD manufacturer markets their drive capacity as. What is actually consumable by the F5OS filesystem is much less (68-93%) than what is advertised due to the manufacturer over provisioning process. The sizes you see above are what is really available to F5OS. 
+
+Next, rSeries systems separate important parts of the file system into separate partitions on the file system, and then logical volume management is used on top of that. Run the following command **sudo fdisk -l** in the bash shell to see how the usable storage is allocated. Below is the example truncated output from an r12900.  Notice there are 5 main **nvme1n1px** locations (where x = p1-p5).  To understand the naming convention: nvme stands for nonvolatile memory express which is the transport protocol for flash and SSDs. The **nvme1n1p1** is decoded as: The nvme drive 1, namespace 1, partition 1. In this case there are 5 partitions (p1-p5) on the drive nvme1, on namespace 1. 
+
+.. code-block:: bash
+
+  [root@appliance-1(rSeries_pme_1):Active] ~ #  sudo fdisk -l
+  Disk /dev/nvme1n1: 1.4 TiB, 1500301910016 bytes, 2930277168 sectors
+  Units: sectors of 1 * 512 = 512 bytes
+  Sector size (logical/physical): 512 bytes / 4096 bytes
+  I/O size (minimum/optimal): 131072 bytes / 131072 bytes
+  Disklabel type: gpt
+  Disk identifier: 297A92B7-E803-493A-B9A2-CC4C76CC8609
+  
+  Device              Start        End    Sectors   Size Type
+  /dev/nvme1n1p1       2048 1953146879 1953144832 931.3G Linux RAID
+  /dev/nvme1n1p2 1953146880 2441433087  488286208 232.9G Linux RAID
+  /dev/nvme1n1p3 2441433088 2443530239    2097152     1G Linux RAID
+  /dev/nvme1n1p4 2443530240 2445627391    2097152     1G Linux RAID
+  /dev/nvme1n1p5 2445627392 2930276351  484648960 231.1G Linux RAID
+
+If you add up the size of these 5 locations (931.3+232.9+1+1+231.1=1397.3GB) it is the same value as reported as usable in the **show components component platform storage** command for the r12900.
+
+.. code-block:: bash
+
+  r12900-1-gsa# show components component platform storage 
+                                                                                                                                     READ                                              WRITE     
+  DISK                                                                                     TOTAL  READ      READ                       LATENCY               WRITE                       LATENCY   
+  NAME     MODEL                       VENDOR   VERSION   SERIAL NO       SIZE       TYPE  IOPS   IOPS      MERGED     READ BYTES      MS        WRITE IOPS  MERGED      WRITE BYTES     MS        
+  -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  nvme0n1  SAMSUNG MZQL21T9HCJR-00A07  Samsung  GDC5602Q  S64GNA0T705200  1397.00GB  nvme  0      28825879  224134195  16512452025856  23632018  1444502017  1387157591  16087772092416  98794194  
+  nvme1n1  SAMSUNG MZQL21T9HCJR-00A07  Samsung  GDC5602Q  S64GNA0T704659  1397.00GB  nvme  0      28087419  224084243  16505188468224  24632030  1444501617  1387157991  16087772092416  89736314  
+
+  r12900-1-gsa# 
+
+To find out what file systems these map to run lsblk command in the bash shell:
+
+.. code-block:: bash
+
+  [root@appliance-1(rSeries_pme_1):Active] ~ # lsblk
+  ..
+  sda                                      8:0    1  28.8G  0 disk  
+  ├─sda1                                   8:1    1   4.3G  0 part  
+  └─sda2                                   8:2    1   8.9M  0 part  
+  nvme1n1                                259:0    0   1.4T  0 disk  
+  ├─nvme1n1p1                            259:1    0 931.3G  0 part  
+  │ └─md124                                9:124  0 931.2G  0 raid1 
+  │   └─partition_tenant-root            253:2    0 931.2G  0 lvm   /var/F5/system/cbip-disks
+  ├─nvme1n1p2                            259:2    0 232.9G  0 part  
+  │ └─md125                                9:125  0 232.7G  0 raid1 
+  │   └─vdo_vol                          253:3    0 465.4G  0 vdo   
+  │     └─partition_image-export_chassis 253:4    0 465.4G  0 lvm   /var/export/chassis
+  ├─nvme1n1p3                            259:3    0     1G  0 part  
+  │ └─md121                                9:121  0  1022M  0 raid1 /boot
+  ├─nvme1n1p4                            259:4    0     1G  0 part  
+  │ └─md122                                9:122  0  1024M  0 raid1 /boot/efi
+  └─nvme1n1p5                            259:5    0 231.1G  0 part  
+    └─md123                                9:123  0   231G  0 raid1 
+      ├─velocity-root                    253:0    0   230G  0 lvm   /sysroot
+      └─velocity-swap                    253:1    0     1G  0 lvm   
 
 
-Determining Free Space
+Note that the nvme1n1p2 partition above is 232.9Gb in size, but within it, it has a vdo / lvm with a size of 465.4Gb which is bigger than the physical capacity of that partition. VDO is a Virtual Data Optimizier, it is a device mapper target that provides inline data reduction services on block storage, specifically targeting data deduplication, compression, and thin provisioning. 
+
+Here is what VDO does:
+•	Zero-Block Elimination: VDO scans for and eliminates blocks consisting entirely of zeros, only recording them in metadata.
+•	Deduplication: The Universal Deduplication Service (UDS) kernel module checks for redundant data. If data has already been written, VDO creates a reference to the existing block rather than writing it again.
+•	Compression: VDO uses the LZ4 algorithm to compress individual data blocks, allowing more data to fit into a physical block.
+•	Thin Provisioning: VDO allows the logical size of a device to be larger than its physical size, presenting more storage to applications than is actually available on the disk. 
+More details here: `Understanding the Concepts Behind Virtual Data Optimizer (VDO) in RHEL 7.5 Beta <https://www.redhat.com/en/blog/understanding-concepts-behind-virtual-data-optimizer-vdo-rhel-75-beta#:~:text=In%20the%20Red%20Hat%20Enterprise,been%20written%20before)%20or%20not>`_
+
+You can see that both compression and deduplication is enabled on this volume, and what the current space savings is from using those options:
+
+.. code-block:: bash
+
+  [root@appliance-1(rSeries_pme_1):Active] ~ # vdo status -n vdo_vol | grep Deduplication
+      Deduplication: enabled
+  
+  [root@appliance-1(rSeries_pme_1):Active] ~ # vdo status -n vdo_vol | grep Compression
+      Compression: enabled
+  
+  [root@appliance-1(rSeries_pme_1):Active] ~ # vdostats --hu
+  Device                    Size      Used Available Use% Space saving%
+  /dev/mapper/vdo_vol     232.7G     66.7G    166.0G  28%           11%
+  [root@appliance-1(rSeries_pme_1):Active] ~ #
+
+
 
 F5OS Configuration Backups
 --------------------------
