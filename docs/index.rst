@@ -21,6 +21,7 @@ Planning for rSeries Guide
    rseries_software_upgrades.rst
    rseries_f5os_configuration_backup_and_restore.rst
    rseries_diagnostics.rst
+   rseries_troubleshooting.rst
    bigiq_support_for_rseries.rst
    monitoring_rseries_health_status.rst
    monitoring_rseries.rst
