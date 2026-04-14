@@ -152,11 +152,12 @@ To find out how these volumes maps to points in the F5OS filesystem run the **ls
 Note that the nvme1n1p2 partition above is 232.9Gb in size, but within it, it has a vdo / lvm with a size of 465.4Gb which is bigger than the physical capacity of that partition. VDO is a Virtual Data Optimizier, it is a device mapper target that provides inline data reduction services on block storage, specifically targeting data deduplication, compression, and thin provisioning. 
 
 Here is what VDO does:
-•	Zero-Block Elimination: VDO scans for and eliminates blocks consisting entirely of zeros, only recording them in metadata.
-•	Deduplication: The Universal Deduplication Service (UDS) kernel module checks for redundant data. If data has already been written, VDO creates a reference to the existing block rather than writing it again.
-•	Compression: VDO uses the LZ4 algorithm to compress individual data blocks, allowing more data to fit into a physical block.
-•	Thin Provisioning: VDO allows the logical size of a device to be larger than its physical size, presenting more storage to applications than is actually available on the disk. 
-More details here: `Understanding the Concepts Behind Virtual Data Optimizer (VDO) in RHEL 7.5 Beta <https://www.redhat.com/en/blog/understanding-concepts-behind-virtual-data-optimizer-vdo-rhel-75-beta#:~:text=In%20the%20Red%20Hat%20Enterprise,been%20written%20before)%20or%20not>`_
+-	Zero-Block Elimination: VDO scans for and eliminates blocks consisting entirely of zeros, only recording them in metadata.
+-	Deduplication: The Universal Deduplication Service (UDS) kernel module checks for redundant data. If data has already been written, VDO creates a reference to the existing block rather than writing it again.
+-	Compression: VDO uses the LZ4 algorithm to compress individual data blocks, allowing more data to fit into a physical block.
+-	Thin Provisioning: VDO allows the logical size of a device to be larger than its physical size, presenting more storage to applications than is actually available on the disk. 
+
+More details can be found here: `Understanding the Concepts Behind Virtual Data Optimizer (VDO) in RHEL 7.5 Beta <https://www.redhat.com/en/blog/understanding-concepts-behind-virtual-data-optimizer-vdo-rhel-75-beta#:~:text=In%20the%20Red%20Hat%20Enterprise,been%20written%20before)%20or%20not>`_
 
 You can see that both compression and deduplication is enabled on this volume, and what the current space savings is from using those options:
 
