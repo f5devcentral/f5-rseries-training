@@ -87,7 +87,7 @@ Below is an example of an r2800 appliance with a single disk. You can use the CL
 How the Disk is Partitioned
 ---------------------------
 
-When trying to calculate freespace for the system or one of the underlying volumes there are a few factors that have to be taken into consideration. First, as covered above, the advertised disk size in the rSeries data sheet is what the SSD manufacturer markets their drive capacity as. What is actually consumable by the F5OS filesystem is much less (68-93%) than what is advertised due to the manufacturer over provisioning process. The sizes you see above are what is really available to F5OS. 
+When trying to calculate freespace for the system or one of the underlying volumes there are a few factors that have to be taken into consideration. First, as covered above, the advertised disk size in the rSeries data sheet is what the SSD manufacturer markets their drive capacity as. What is actually consumable by the F5OS filesystem is much less (typically 68-93% of advertised capacity) due to the manufacturer over provisioning process. The sizes you see above are what is really available to F5OS. 
 
 Next, rSeries systems separate important parts of the file system into separate partitions on the file system, and then logical volume management is used on top of that. Run the following command **sudo fdisk -l** in the bash shell to see how the usable storage is allocated. Below is the example truncated output from an r12900.  Notice there are 5 main **nvme1n1px** locations (where x = p1-p5).  To understand the naming convention: nvme stands for nonvolatile memory express which is the transport protocol for flash and SSDs. The **nvme1n1p1** is decoded as: The nvme drive 1, namespace 1, partition 1. In this case there are 5 partitions (p1-p5) on the drive nvme1, on namespace 1. 
 
@@ -122,7 +122,7 @@ If you add up the size of these 5 locations (931.3+232.9+1+1+231.1=1397.3GB) it 
 
   r12900-1-gsa# 
 
-To find out what file systems these map to run lsblk command in the bash shell:
+To find out how these volumes maps to points in the F5OS filesystem run the **lsblk** command in the bash shell. In the output below you can see that the nvme1n1p1 partition maps to an lvm **/var/F5/system/cbip-disks** and it is 931.3GB. The nvme1n1p2 partition maps to an lvm **/var/export/chassis** the partition is only 232.9GB, but it has a **vdo** that is 465.4GB and the lvm reports having 465.4GB for capacity as well. This is because the VDO uses dedupe, compression, and thin provisioning. Then there are two boot partitions (nvme1n1p3 & p4) that map to lvm's **/boot** and **/boot/efi** which are both about 1GB each. Finally there is the **nvme1n1p5** partition which is 231.1GB in size and it maps to the **/sysroot** location.
 
 .. code-block:: bash
 
@@ -173,7 +173,21 @@ You can see that both compression and deduplication is enabled on this volume, a
   /dev/mapper/vdo_vol     232.7G     66.7G    166.0G  28%           11%
   [root@appliance-1(rSeries_pme_1):Active] ~ #
 
+Below is a description for each of the filesystem locations.
 
++----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Filesystem Location        | Description                                                                                                                                                                     |
++============================+=================================================================================================================================================================================+
+| /var/F5/system/cbip-disks  | Location of F5OS tenant virtual disks                                                                                                                                           |
++----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /var/export/chassis        | F5OS ISO images, tenant images, ostree repo                                                                                                                                     |
++----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /boot                      | Boot location. After the UEFI firmware hands off to the GRUB EFI binary (from /boot/efi), GRUB reads its configuration from /boot to load the kernel and initramfs into memory. |
++----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /boot/efi                  | Boot location. The system firmware (UEFI BIOS) reads this partition at power-on to locate and launch the bootloader. It is the first stage of the boot process.                 |
++----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /sysroot                   | F5OS OS/data partition: F5OS OS, containers, config, logs                                                                                                                       |
++----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 F5OS Configuration Backups
 --------------------------
