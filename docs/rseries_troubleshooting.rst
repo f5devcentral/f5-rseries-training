@@ -176,7 +176,7 @@ You can see that both compression and deduplication is enabled on this volume, a
   [root@appliance-1(rSeries_pme_1):Active] ~ #
 
 
-You may also view storage utilization from within the F5OS CLI, API, or WebUI. Below is an example of using the CLI command **show components component platform | begin AREA | until platform/images**, which filters most of the output of the command so that only the file system information is displayed. This output doesn't show the /boot and /boot/efi locations, but it does show the three major file system locations that should be monitored as well as the utilization of each virtual disk associated with each tenant. The output below is displayed in raq Bytes. Currently there is no option to convert this to human readable output form the CLI, but you can do that in the bash shell, or using the webUI.
+You may also view storage utilization from within the F5OS CLI, API, or WebUI. Below is an example of using the CLI command **show components component platform | begin AREA | until platform/images**, which filters most of the output of the command so that only the file system information is displayed. This output doesn't show the /boot and /boot/efi locations, but it does show the three major file system locations that should be monitored as well as the utilization of each virtual disk associated with each tenant. The output below is displayed in raw Bytes. Currently there is no option to convert this to human readable output from the CLI, but you can do that in the bash shell, or using the webUI.
 
 .. code-block:: bash
 
