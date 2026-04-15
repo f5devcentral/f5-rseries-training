@@ -152,6 +152,7 @@ To find out how these volumes maps to points in the F5OS filesystem run the **ls
 Note that the nvme1n1p2 partition above is 232.9Gb in size, but within it, it has a vdo / lvm with a size of 465.4Gb which is bigger than the physical capacity of that partition. VDO is a Virtual Data Optimizier, it is a device mapper target that provides inline data reduction services on block storage, specifically targeting data deduplication, compression, and thin provisioning. 
 
 Here is what VDO does:
+
 -	Zero-Block Elimination: VDO scans for and eliminates blocks consisting entirely of zeros, only recording them in metadata.
 -	Deduplication: The Universal Deduplication Service (UDS) kernel module checks for redundant data. If data has already been written, VDO creates a reference to the existing block rather than writing it again.
 -	Compression: VDO uses the LZ4 algorithm to compress individual data blocks, allowing more data to fit into a physical block.
@@ -174,21 +175,36 @@ You can see that both compression and deduplication is enabled on this volume, a
   /dev/mapper/vdo_vol     232.7G     66.7G    166.0G  28%           11%
   [root@appliance-1(rSeries_pme_1):Active] ~ #
 
-Below is a description for each of the filesystem locations.
 
-+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| Filesystem Location        | Description                                                                                                                                                                     |
-+============================+=================================================================================================================================================================================+
-| /var/F5/system/cbip-disks  | Location of F5OS tenant virtual disks                                                                                                                                           |
-+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| /var/export/chassis        | F5OS ISO images, tenant images, ostree repo                                                                                                                                     |
-+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| /boot                      | Boot location. After the UEFI firmware hands off to the GRUB EFI binary (from /boot/efi), GRUB reads its configuration from /boot to load the kernel and initramfs into memory. |
-+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| /boot/efi                  | Boot location. The system firmware (UEFI BIOS) reads this partition at power-on to locate and launch the bootloader. It is the first stage of the boot process.                 |
-+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
-| /sysroot                   | F5OS OS/data partition: F5OS OS, containers, config, logs                                                                                                                       |
-+----------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+You may also view storage utilization from within the F5OS CLI, API, or WebUI. Below is an example of using the CLI command **show components component platform | begin AREA | until platform/images**, which filters most of the output of the command so that only the file system information is displayed. This output doesn't show the /boot and /boot/efi locations, but it does show the three major file system locations that should be monitored as well as the utilization of each virtual disk associated with each tenant. The output below is displayed in raq Bytes. Currently there is no option to convert this to human readable output form the CLI, but you can do that in the bash shell, or using the webUI.
+
+.. code-block:: bash
+
+  rSeries_pme_1# show components component platform | begin AREA | until platform/images             
+  AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
+  ---------------------------------------------------------------------------------------------------
+  platform/sysroot              F5OS System        242854256640  162985357312  67505770496  29       
+  platform/big-ip-tenant-disks  F5OS Tenant Disks  983963836416  893875208192  40078266368  4        
+  tenant/app1-tenant            BIG-IP Tenant      88046829568   79463706624   8583122944   9        
+  tenant/rseries-pme-ce2        Generic Tenant     107374182400  75880927232   31493255168  29       
+  platform/images               F5OS Images        491675910144  399683796992  66988818432  14       
+  rSeries_pme_1#
+
+Below is a description for each of the filesystem locations. Note that the locations in F5OS are simplified and display a virtual location vs. the actual file system location in the bash shell.
+
++----------------------------+-------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| Bash Filesystem Location   | F5OS Filesystem Location      | Description                                                                                                                                                                     |
++============================+===============================+=================================================================================================================================================================================+
+| /var/F5/system/cbip-disks  | platform/big-ip-tenant-disks  | Location of F5OS tenant virtual disks                                                                                                                                           |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /var/export/chassis        | platform/images               | F5OS ISO images, tenant images, ostree repo                                                                                                                                     |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /boot                      | N/A                           | Boot location. After the UEFI firmware hands off to the GRUB EFI binary (from /boot/efi), GRUB reads its configuration from /boot to load the kernel and initramfs into memory. |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /boot/efi                  | N/A                           | Boot location. The system firmware (UEFI BIOS) reads this partition at power-on to locate and launch the bootloader. It is the first stage of the boot process.                 |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+| /sysroot                   | platform/sysroot              | F5OS OS/data partition: F5OS OS, containers, config, logs                                                                                                                       |
++----------------------------+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 
 F5OS Configuration Backups
 --------------------------
