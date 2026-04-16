@@ -5983,7 +5983,7 @@ All OIDs below are prexied with: .1.3.6.1.4.1.12276.1.2.1.6.1.1
 
 
 
-SNMP Fantray Stats Table
+Fantray Stats Table
 ----------------------
 
 Query the following SNMP OID to get detailed information on the rSeries fan speeds. Note, that there are different numbers of fans installed for the various rSeries platforms.

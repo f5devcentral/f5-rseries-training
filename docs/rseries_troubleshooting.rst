@@ -176,7 +176,7 @@ You can see that both compression and deduplication is enabled on this volume, a
   [root@appliance-1(rSeries_pme_1):Active] ~ #
 
 
-You may also view storage utilization from within the F5OS CLI, API, or WebUI. Below is an example of using the CLI command **show components component platform | begin AREA | until platform/images**, which filters most of the output of the command so that only the file system information is displayed. This output doesn't show the /boot and /boot/efi locations, but it does show the three major file system locations that should be monitored as well as the utilization of each virtual disk associated with each tenant. The output below is displayed in raw Bytes. Currently there is no option to convert this to human readable output from the CLI, but you can do that in the bash shell, or using the webUI. The values below are in BiBytes or measurements of 1024. While the GUI is converting these values to decimal or measurements of 1000. To convert the raw values to human readable / decimal take the raw number and divide by 1024 three times to get a human readable GByte value. As an example, for **platform/big-ip-tenant-disks** take the value from the **TOTAL** column: 983963836416/1024/1024/1024 = 916.38GB. This is the total space displayed in the WebUI for this location. You can repeat this for all the values below to understand how the WebUI converts this into human readable format. 
+You may also view storage utilization from within the F5OS CLI, API, or WebUI. Below is an example of using the CLI command **show components component platform | begin AREA | until platform/images**, which filters most of the output of the command so that only the file system information is displayed. This output doesn't show the /boot and /boot/efi locations, but it does show the three major file system locations that should be monitored as well as the utilization of each virtual disk associated with each tenant. The output below is displayed in raw Bytes (1024/metric format). Currently there is no option to convert this to human readable output from the CLI, but you can do that in the bash shell, or using the webUI. The values below are in metric BiBytes or measurements of 1024, while the GUI is converting these values to decimal or measurements of 1000 (human readable). To convert the raw values below to human readable / decimal, take the raw number value and divide by 1024 three times to get a human readable GByte value. As an example, for **platform/big-ip-tenant-disks** take the value from the **TOTAL** column: 983963836416/1024/1024/1024 = 916.38GB. This (916GB) is the total space displayed in the WebUI for this location. You can repeat this for all the values below to understand how the WebUI converts into human readable format. 
 
 
 .. code-block:: bash
@@ -206,6 +206,8 @@ Below is a description for each of the filesystem locations. Note that the locat
 +----------------------------+-------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
 | /sysroot                   | platform/sysroot              | F5OS OS/data partition: F5OS OS, containers, config, logs                                                                                                                       |
 +----------------------------+-------------------------------+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+
+
 
 F5OS Configuration Backups
 --------------------------
@@ -274,6 +276,11 @@ Below is an example showing various images on an r4000 system.
   [root@appliance-1(r4800-2.demo.f5net.com) ~]# ls /var/images/R2R4/
   1.4.0-10138  1.4.0-10281  1.4.0-8382  1.4.0-8622  1.4.0-8882  1.4.0-8939  1.4.0-9386
   [root@appliance-1(r4800-2.demo.f5net.com) ~]# 
+
+
+Disk Utilization Reporting and Alerting
+---------------------------------------
+
 
 
 
