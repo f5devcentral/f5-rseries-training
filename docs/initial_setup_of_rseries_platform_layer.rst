@@ -1600,7 +1600,7 @@ You can go back and review or edit various settings for the F5OS layer System Se
 Alarms and Events
 =================
 
-Alarms and Events can be viewed via the **System Settings > Alarms & Events** webUI page. You may optionally choose different severity levels to see more or fewer events. 
+Alarms and Events can be viewed via the **System Monitoring > Alarms & Events** webUI page. You may optionally choose different severity levels to see more or fewer events. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image12.png
   :align: center
@@ -1618,18 +1618,25 @@ Management Interface
 
 Under **System Settings -> Management Interface** you can view/edit the IP address and port settings for the F5OS out-of-band management interface. If you would prefer to use DHCP for automatic assignment of these addresses, this may also be configured. IPv4/IPv6 dual stack support can also be configured. At the bottom of the page, stats for the out-of-band port can be displayed.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image14.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
   :scale: 70%
 
 Software Management
 ===================
 
-The F5OS-A platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade the F5OS-A to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
+The F5OS platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade F5OS to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image15.png
   :align: center
   :scale: 70%
+
+If you scroll further down the page you can monitor the status of cluster install and firmware upgrades:
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image15.png
+  :align: center
+  :scale: 70%
+
 
 DNS
 ===
