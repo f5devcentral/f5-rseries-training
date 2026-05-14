@@ -215,45 +215,55 @@ Prior to F5OS 2.0, only a single default gateway was configurable for the out-of
 System Settings
 ---------------
 
-Once the IP address has been defined, system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, webUI, or API.
+Once the IP address has been defined, system settings such as hostname, DNS servers, NTP, and external logging should be defined. This can be done from the CLI, webUI, or API.
 
 System Settings via the CLI
 ===========================
 
 .. code-block:: bash
 
-  Boston-r10900-1# config
+  appliance-1 # config
   Entering configuration mode terminal
-  Boston-r10900-1(config)# system dns servers server 192.168.10.1 config address 192.168.10.1
-  Boston-r10900-1(config-server-192.168.19.1)# exit
-  Boston-r10900-1(config)# system dns config search olympus.f5net.com
-  Boston-r10900-1(config)# system ntp config enabled 
-  Boston-r10900-1(config)# system ntp servers server time.olympus.f5net.com
-  Boston-r10900-1(config-server-time.f5net.com)# exit
-  Boston-r10900-1(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
-  Boston-r10900-1(config-remote-server-10.255.0.142)# exit
-  Boston-r10900-1(config)# commit
+  appliance-1(config)# system config hostname r5900-1-gsa.cpt.f5net.com
+  appliance-1(config)# system dns servers server 192.168.10.1 config address 192.168.10.1
+  appliance-1(config-server-192.168.19.1)# exit
+  appliance-1(config)# system dns config search olympus.f5net.com
+  appliance-1(config)# system ntp config enabled 
+  appliance-1(config)# system ntp servers server time.olympus.f5net.com
+  appliance-1(config-server-time.f5net.com)# exit
+  appliance-1(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
+  appliance-1(config-remote-server-10.255.0.142)# exit
+  appliance-1(config)# commit
+  r5900-1-gsa(config)#
 
 System Settings via the webUI
 ===========================
 
-You can configure the DNS and Time settings from the webUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like NTP, authentication servers, licensing, or to reach iHealth for qkview uploads.
+You can configure the DNS and Time settings from the webUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers and optional search domains as well as static host entries if needed. The ability to reach DNS services will be required for the rSeries appliance to resolve hostnames that may be used for external services like NTP, authentication servers, licensing, or to reach iHealth for qkview uploads.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
   :scale: 70%
 
-Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is synchronized and accurate. In addition to configuring NTP time sources, you can set the local time zone for this appliance's location.
+Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is synchronized and accurate. In addition to configuring NTP time sources and security keys, you can set the local time zone for this appliance's location.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
   :scale: 70%
 
-It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure the logging subsystem level individually. The remote logging severity level will override the component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Monitoring > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure the logging subsystem level individually. The remote logging severity level will override the component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
   :scale: 70%
+
+If you scroll down on the screen above you can open up the **Software Component Logging Levels** configuration. You can also configure the logging subsystem level individually. The remote logging severity level will override the component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+ 
+
+.. image:: images/initial_setup_of_rseries_platform_layer/software-logging.png
+  :align: center
+  :scale: 70%
+
 
 System Settings via the API
 ===========================
