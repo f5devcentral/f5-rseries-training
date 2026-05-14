@@ -13,13 +13,37 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
 
 Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed like how a vCMP guest is managed on an iSeries appliance. 
 
-Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a supported TMOS tenant image, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer.
+Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a tenant *Name*, tenant *Type* (BIG-IP) a supported TMOS tenant *Image**, out-of-band IP addressing/mask and gateway. In version 2.0 there is a new option for *Management VLAN** if you choose to use 802.1Q VLAN tagging on rSeries Management port. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer. Here, you can specify which *VLANs* you want the tenant to inherit. For SSLO configurations there is a *Virtual Wire* option where previously defined Virtual Wires in the F5OS layer can be assigned to this specific tenant. 
 
 .. image:: images/rseries_multitenancy/image2.png
   :align: center
   :scale: 70%
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs (future, currently max tenants is 58) for tenancy.
+There is an optional *MAC Data/MAC Block Size* option which allows an administrator to specify how many unique MAC addresses can be assigned to the tenant. The default is *One* and that is sufficient for most configurations as the same MAC address can be re-used across multiple VLANs. There are use cases like Layer2 SSLO/SSL Break and Inspect where VLANs may be externally bridged together and brought back into the same tenant as a service chain. This may require unique MAC addresses per VLAN to avoid conflicts. There is a limited pool of MAC address that vary by rSeries appliance type, so you may choose *One*, *Small (8)*, *Medium (16)*, *Large (32)*, or *Extra Large (96)*. The Extra Large option was added in F5OS 2.0.
+
+For additional detail on how many MAC addresses are supported per rSeries platform se the following solution article:
+
+`K000133655: MAC address assignment in VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000133655>`_
+
+.. image:: images/rseries_multitenancy/mac-data.png
+  :align: center
+  :scale: 70%
+
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. You can assign a specific number of vCPUs to the tenant and the memory will auto-adjust, or utilize Advanced mode if you'd like to customize the memory. You can also customize the *Virtual Disk Size*, but it must match at least the minimum size for the Image Type that was chosen.
+
+See the following for more details on Image Type requirements:
+
+`K45191957: Overview of the BIG-IP tenant image types <https://my.f5.com/manage/s/article/K45191957>`_
+
+Next, you can specify the tenant *State* (Deployed, Configured, or Provisioned), whether you want to use *Crytpo/Compresssion Acceleration* (Recommended Enabled), and whether or not you want the tenant to come up in *Appliance Mode*. F5OS 2.0 also adds the option to tie a *Cloud-Init Reference* to the tenant which can preconfigure certain parameters inside of TMOS as the tenant boots (common examples would be default username/password pairs or login banners). The cloud-init reference would be configured prior to the tenant being provisioned and referenced within the tenant configuration.
+
+.. image:: images/rseries_multitenancy/advanced-provision.png
+  :align: center
+  :scale: 70%
+
+
+
+ The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for multitenancy.
 
 +------------------------+--------------------+--------------------------+-------------------+-----------------+
 | **Tenant Size**        | **Physical Cores** | **Logical Cores (vCPU)** | **Min Bytes RAM** | **RAM/vCPU**    |

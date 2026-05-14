@@ -230,7 +230,7 @@ Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pac
 VLANs
 =====
 
-rSeries supports both 802.1Q tagged and untagged VLAN interfaces. In the current F5OS releases, double VLAN tagging (802.1Q-in-Q) is not supported. VLANs can be added to any individual port, or to a Link Aggregation Group. BIG-IP tenants can share the same VLANs if needed.
+rSeries supports both 802.1Q tagged and untagged VLAN interfaces. Double VLAN tagging (802.1Q-in-Q) for data plane ports has been added in the F5OS 2.0 release. VLANs can be added to any individual port, or to a Link Aggregation Group. BIG-IP tenants can share the same VLANs if needed.
 
 
 Link Aggregation Groups
