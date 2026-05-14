@@ -1633,7 +1633,7 @@ The F5OS platform software can be managed under the **System Settings -> Softwar
 
 If you scroll further down the page you can monitor the status of cluster install and firmware upgrades:
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image15.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image15-monitor.png
   :align: center
   :scale: 70%
 
