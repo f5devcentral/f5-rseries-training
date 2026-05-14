@@ -1618,7 +1618,7 @@ Management Interface
 
 Under **System Settings -> Management Interface** you can view/edit the IP address and port settings for the F5OS out-of-band management interface. If you would prefer to use DHCP for automatic assignment of these addresses, this may also be configured. IPv4/IPv6 dual stack support can also be configured. At the bottom of the page, stats for the out-of-band port can be displayed.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image1.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
   :scale: 70%
 
