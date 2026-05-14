@@ -25,9 +25,11 @@ For additional detail on how many MAC addresses are supported per rSeries platfo
 
 `K000133655: MAC address assignment in VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000133655>`_
 
+
 .. image:: images/rseries_multitenancy/mac-data.png
   :align: center
   :scale: 70%
+
 
 For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. You can assign a specific number of vCPUs to the tenant and the memory will auto-adjust, or utilize Advanced mode if you'd like to customize the memory. You can also customize the *Virtual Disk Size*, but it must match at least the minimum size for the Image Type that was chosen.
 
