@@ -1572,6 +1572,8 @@ To get the current licensing status via API use the following API call. Issue a 
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing
 
+The reponse will be similar to the output below:
+
 .. code-block:: json
 
   {
@@ -1618,7 +1620,7 @@ Management Interface
 
 Under **System Settings -> Management Interface** you can view/edit the IP address and port settings for the F5OS out-of-band management interface. If you would prefer to use DHCP for automatic assignment of these addresses, this may also be configured. IPv4/IPv6 dual stack support can also be configured. At the bottom of the page, stats for the out-of-band port can be displayed.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image3.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image1-ver2.png
   :align: center
   :scale: 70%
 
@@ -1643,7 +1645,7 @@ DNS
 
 External **DNS Lookup Servers** and **Search Domains** can be configured in the **System Settings -> DNS** page. This will be required for things like automatic license activation, NTP server domain resolution, and iHealth integration and it is recommended to be configured. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
   :scale: 70%
 
@@ -1651,7 +1653,7 @@ External **DNS Lookup Servers** and **Search Domains** can be configured in the 
 Log Settings
 ============
 
-Under **System Settings > Log Settings** you may add remote log servers for the F5OS platform layer. You can also specify the **Software Component Log Levels** which may be useful when troubleshooting specific issues.
+Under **System Monitoring > Log Settings** you may add remote log servers for the F5OS platform layer. You can also specify the **Software Component Log Levels** which may be useful when troubleshooting specific issues.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
@@ -1660,7 +1662,7 @@ Under **System Settings > Log Settings** you may add remote log servers for the 
 File Utilities
 ==============
 
-The **System Settings > File Utilities** page allows for importing or exporting specific types of files to and from the F5OS platform layer. Logs from the various log directories can be exported, cores and qkviews and system backups can be imported/exported, and F5OS-A software images can be imported into **import/staging**.
+The **System Monitoring > File Utilities** page allows for importing or exporting specific types of files to and from the F5OS platform layer. Logs from the various log directories can be exported, cores and qkviews and system backups can be imported/exported, and F5OS-A software images can be imported into **import/staging**.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image18.png
   :align: center
