@@ -1705,7 +1705,7 @@ Device certificates and keys used for device management can be created via the *
 System Reports
 ==============
 
-The **Diagnostics > System Reports** page allows an admin to generate qkviews and optionally upload them to iHealth. To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  
+The **System Monitoring > System Reports** page allows an admin to generate qkviews and optionally upload them to iHealth. To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image24.png
   :align: center
@@ -1764,7 +1764,7 @@ Licensing for the rSeries appliance is handled at the F5OS level. This is simila
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image30.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
   :align: center
   :scale: 70%
 
