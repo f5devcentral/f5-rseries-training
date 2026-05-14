@@ -129,6 +129,40 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
 
 **Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies so the unit is powered off, using the AOM menus is not sufficient.**
 
+F5OS 2.0 adds an additional option for customers who can't use RFC6598 address space or one of the RFC1918 address spaces above. A new option of 172.16.0.0/12 is now available as seen below.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system network config network-range-type RFC1918 prefix ?
+    Description:
+    The network prefix index is used to select the range of IP addresses
+    used internally within the appliance. The network prefix should be
+    selected such that internal appliance addresses do not overlap with
+    site-local addresses that are accessible to the appliance.
+
+    Network Prefix Index       Appliance Network Range
+    0                          10.[0-15].0.0/12
+    1                          10.[16-31].0.0/12
+    2                          10.[32-47].0.0/12
+    3                          10.[48-63].0.0/12
+    4                          10.[64-79].0.0/12
+    5                          10.[80-95].0.0/12
+    6                          10.[96-111].0.0/12
+    7                          10.[112-127].0.0/12
+    8                          10.[128-143].0.0/12
+    9                          10.[144-159].0.0/12
+    10                         10.[160-175].0.0/12
+    11                         10.[176-191].0.0/12
+    12                         10.[192-207].0.0/12
+    13                         10.[208-223].0.0/12
+    14                         10.[224-239].0.0/12
+    15                         10.[240-255].0.0/12
+    16                         172.16.0.0/12
+    Possible completions:
+      <unsignedByte, 0 .. 16>[0]
+    r5900-1-gsa(config)# system network config network-range-type RFC1918 prefix
+
+
 -------------------------------
 IP Address Assignment & Routing
 -------------------------------
@@ -149,17 +183,33 @@ To make these changes active you must commit the changes. No configuration chang
 
   Boston-r10900-1(config)# commit
 
-Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
+Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below (If you are running a version prior to F5OS 2.0), and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
   :scale: 70%
 
-Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. 
+If you are running F5OS 2.0 or later then a new more modernized WebUI has been implemented and will look similar to the screenshot below. All subsequent screenshots in this rSeries planning guide will reference the new F5OS 2.0 interface but they are very similar from a navigation standpoint. 
+
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image1-ver2.png
+  :align: center
+  :scale: 70%
+
+
+Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. Click the icons in the upper right hand corner of any section to edit any of the settings. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
   :scale: 50%
+
+Prior to F5OS 2.0, only a single default gateway was configurable for the out-of-band management port from the F5OS layer. Multiple static routes can now be added starting with the F5OS 2.0 version. This is useful if you have services that F5OS relies on or needs to communicate with such as DNS, NTP, Syslog or SNMP services that are behind different routers.
+
+.. code-block:: bash
+
+    appliance-1(config)# system routes route dns config network 10.238.160.22/24 gateway 10.238.170.254
+    appliance-1(config)# system routes route ntp config network 10.238.150.22/24 gateway 10.238.170.253
+    appliance-1(config)# commit
 
 ---------------
 System Settings
