@@ -197,11 +197,11 @@ If you are running F5OS 2.0 or later then a new more modernized WebUI has been i
   :scale: 70%
 
 
-Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. Click the icons in the upper right hand corner of any section to edit any of the settings. 
+If you navigate to **System Settings -> Management Interface** Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. If you want to utilize the 802.1Q VLAN tagging support on the Management port that was added in F5OS 2.0 you can configure **Management VLANs**. You can also view the management interface stats on the bottom of this page. Click the icons in the upper right hand corner of any section to edit any of the settings. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 Prior to F5OS 2.0, only a single default gateway was configurable for the out-of-band management port from the F5OS layer. Multiple static routes can now be added starting with the F5OS 2.0 version. This is useful if you have services that F5OS relies on or needs to communicate with such as DNS, NTP, Syslog or SNMP services that are behind different routers.
 
