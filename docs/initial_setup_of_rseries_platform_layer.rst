@@ -251,7 +251,7 @@ Configuring Network Time Protocol is highly recommended so that the rSeries syst
   :align: center
   :scale: 70%
 
-It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Monitoring > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure the logging subsystem level individually. The remote logging severity level will override the component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Monitoring > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
@@ -268,7 +268,7 @@ If you scroll down on the screen above you can open up the **Software Component 
 System Settings via the API
 ===========================
 
-If you would prefer to automate the setup of the rSeries appliance, there are F5OS-A API calls for all of the examples above. rSeries supports token-based authentication for the F5OS API's. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the initial path will be **/api**, while API calls to port 8888 will start with **/restconf**. F5OS also listens on port 80 and will redirect to TCP port 443. For the API it will not preserve the source URI when redirecting. 
+If you would prefer to automate the setup of the rSeries appliance, there are F5OS API calls for all of the examples above. rSeries supports token-based authentication for the F5OS API's. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the initial path will be **/api**, while API calls to port 8888 will start with **/restconf**. F5OS also listens on port 80 and will redirect to TCP port 443. For the API it will not preserve the source URI when redirecting. 
  
 
 Example of API call using port 8888.  
@@ -435,6 +435,8 @@ To confirm the clock and NTP settings, use the following API commands. First que
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
 
+Below is an example response.
+
 .. code-block:: json
 
 
@@ -498,11 +500,13 @@ Below is the output showing the date/time and time zone:
   }
 
 
-Next a remote logging destination will be set up for the F5OS logging. To set a Remote Logging destination:
+Next a remote logging destination will be set up for the F5OS logging. To set a Remote Logging destination via API:
 
 .. code-block:: bash
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
+
+Enter the following in the body of the API request.
 
 .. code-block:: json
 
@@ -995,7 +999,7 @@ When done examining the logs, you can run the same API call, but the body will b
 Licensing the rSeries Appliance
 -------------------------------
 
-Licensing for the rSeries device is handled at the F5OS level. This is like how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
+Licensing for the rSeries device is handled at the F5OS level. This is similar to vCMP licensing where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
