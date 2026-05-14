@@ -44,8 +44,7 @@ Next, you can specify the tenant *State* (Deployed, Configured, or Provisioned),
   :scale: 70%
 
 
-
- The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for multitenancy.
+The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for multitenancy.
 
 +------------------------+--------------------+--------------------------+-------------------+-----------------+
 | **Tenant Size**        | **Physical Cores** | **Logical Cores (vCPU)** | **Min Bytes RAM** | **RAM/vCPU**    |
