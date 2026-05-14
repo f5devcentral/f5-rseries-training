@@ -13,7 +13,7 @@ This allows customers to run a secure/locked-down out-of-band management network
 .. image:: images/rseries_networking/image1.png
   :align: center
 
-In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band management ports on rSeries. This new option allows for the F5OS platform layer and tenants to be assigned to specific VLANs. This will allow for greater separation on the management VLAN which in previous releases had to be a single shared VLAN. The external ports are configured with specific tagged or untagged VLANs and then those VLANs are presented to the F5OS platform layer and tenants as untagged, meaning no special configuration is needed to convert to tagged management VLANs inside tenants.
+In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band management port on rSeries. This new option allows for the F5OS platform layer and tenants to be assigned to specific VLANs. This will allow for greater separation for the management VLANs of tenants and the F5OS platform layer which in previous releases had to be on a single shared VLAN. The external ports can be configured with specific tagged or untagged VLANs and then those VLANs are presented to the F5OS platform layer and tenants as untagged, meaning no special configuration is needed to convert to tagged management VLANs inside tenants.
 
 .. image:: images/rseries_networking/vlan-tagged-mgmt.png
   :align: center
