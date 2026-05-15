@@ -2633,6 +2633,8 @@ The following command will list the configuration and status of all VLANs within
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-vlan:vlans
 
+Output from the request above:
+
 .. code-block:: json
 
     {
@@ -2715,6 +2717,12 @@ Once you have configured the **LAG Type** and LACP options, you can add any phys
 .. image:: images/initial_setup_of_rseries_network_layer/image15.png
   :align: center
   :scale: 70%
+
+
+.. image:: images/initial_setup_of_rseries_network_layer/image15a.png
+  :align: center
+  :scale: 70%
+
 
 Configuring LAGs from the CLI
 -----------------------------
