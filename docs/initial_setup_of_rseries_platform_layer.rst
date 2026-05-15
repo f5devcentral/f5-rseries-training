@@ -1784,11 +1784,24 @@ User Management
 Auth Settings
 =============
 
-The F5OS platform has its own user and authentication management configured under the **User Management** section of the webUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
+The F5OS platform has its own user and authentication management configured under the **Authentication & Access -> Users & Roles** section of the webUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image32.png
   :align: center
   :scale: 70%
+
+You may define remote authentication via LDAP, RADIUS, or TACACS+: 
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image32a.png
+  :align: center
+  :scale: 70%
+
+Also, password policies can be set.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image32b.png
+  :align: center
+  :scale: 70%
+
 
 
 Server Groups
