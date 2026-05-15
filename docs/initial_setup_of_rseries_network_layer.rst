@@ -29,6 +29,12 @@ There is also more granularity showing **Storage Utilization**. In the below exa
   :align: center
   :scale: 70% 
 
+The **Tenant Overview** tab will provide a visual representation of all tenants on the system.
+
+.. image:: images/initial_setup_of_rseries_network_layer/tenant-overview.png
+  :align: center
+  :scale: 70% 
+
 The **Network** tab will provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
@@ -65,7 +71,7 @@ The  **Active Alarms** tab will display any active alerts or alarms for the syst
 F5OS Networking Configuration
 -----------------------------
 
-Before configuring any tenants, you’ll need to set up networking for the F5OS platform layer. All in-band networking (interfaces, VLANs, Link Aggregation Groups) is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar to how vCMP guests work on previous generations of BIG-IP like iSeries and VIPRION. 
+Before configuring any tenants, you’ll need to set up networking for the F5OS platform layer. All in-band networking objects (interfaces, VLANs, Link Aggregation Groups) are configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar vCMP guests operation on previous generations of BIG-IP like iSeries and VIPRION. 
 
 
 Network Settings - > Port Groups
@@ -976,13 +982,19 @@ Below is an example configuration change in the body of the API call, this is ch
 Network Settings -> Interfaces
 ==============================
 
-Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 has a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 and r12000 appliances have a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
   :scale: 70% 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image8.png
+  :align: center
+  :scale: 70% 
+
+The r2000 and r4000 appliances have a total of 8 ports labeled **1.0** - **8.0**
+
+.. image:: images/initial_setup_of_rseries_network_layer/image8-2k4k.png
   :align: center
   :scale: 70% 
 
