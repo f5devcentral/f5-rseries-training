@@ -1784,7 +1784,7 @@ User Management
 Auth Settings
 =============
 
-The F5OS platform has its own user and authentication management configured under the **Authentication & Access -> Users & Roles** section of the webUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
+The F5OS platform has its own user and authentication management configured under the **Authentication & Access** section of the webUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image32.png
   :align: center
@@ -1828,7 +1828,7 @@ Under the **User Management -> Server Groups*** page you may define **Server Gro
 Users
 =====
 
-Under the **User Management -> Users*** page Local Users may be defined, and passwords set or changed, and then assigned to specific roles (Admin or Operator). An account may also be locked, and that may be changed here.
+Under the **Authentication & apm_access_sessions -> Users & Roles** page Local Users may be defined, and passwords set or changed, and then assigned to specific roles (Admin, Operator, Guest, SuperUser etc...). An account may also be locked, and that may be changed here.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image38.png
   :align: center
