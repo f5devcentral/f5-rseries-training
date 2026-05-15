@@ -1828,7 +1828,7 @@ Under the **User Management -> Server Groups*** page you may define **Server Gro
 Users
 =====
 
-Under the **Authentication & apm_access_sessions -> Users & Roles** page Local Users may be defined, and passwords set or changed, and then assigned to specific roles (Admin, Operator, Guest, SuperUser etc...). An account may also be locked, and that may be changed here.
+Under the **Authentication & Access -> Users & Roles** page Local Users may be defined, and passwords set or changed, and then assigned to specific roles (Admin, Operator, Guest, SuperUser etc...). An account may also be locked, and that may be changed here.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image38.png
   :align: center
