@@ -30,6 +30,10 @@ There are 4 different types of tenant images to choose from as seen below; pleas
   :align: center
   :scale: 70% 
 
+.. Note:: F5 changed the way that tenant images are signed in October 2025. You should ensure you download the proper image format based on the version of F5OS you are running. Going forward the **qcow2.zip.bundle** is being replaced in favor of the **tar.bundle** format. Please see the following solution article for more details.
+
+`K000157005: F5 signing certificate and key rotation, October 2025 <https://my.f5.com/manage/s/article/K000157005>`_
+
 The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume (boot location) for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
 
 .. image:: images/rseries_deploying_a_tenant/image4.png

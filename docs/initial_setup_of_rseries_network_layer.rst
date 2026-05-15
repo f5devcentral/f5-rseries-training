@@ -2455,10 +2455,10 @@ All in-band networking, including VLANs, is configured in the F5OS layer, and ju
 
 rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, webUI, or API.
 
-**Note: 802.1Q-in-Q (double VLAN tagging) was not supported on previous versions of the rSeries platform until F5OS 2.0.**
+**Note: 802.1Q-in-Q (double VLAN tagging) was not supported in previous versions of the rSeries platform, but has since been added in F5OS 2.0.**
 
 Configuring VLANs from the webUI
-------------------------------
+--------------------------------
 
 VLANs can be created in the F5OS webUI under **Network Settings > VLANs**. When adding a new VLAN you will define a **Name** and a **VLAN ID**. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a **Native VLAN** or tagged by adding it as a **Trunked VLAN**.
 
