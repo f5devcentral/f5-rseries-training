@@ -251,9 +251,11 @@ Tenant software images are loaded directly into the F5OS platform layer. For the
 
 `K86001294: F5OS hardware/software support matrix <https://my.f5.com/manage/s/article/K86001294>`_
 
-No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions of TMOS happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x and later.
+No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions of TMOS happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x, 21.x and later.
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using SCP directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client.
+
+.. Note:: F5 changed the way that tenant images are signed in October 2025. You should ensure you download the proper image format based on the version of F5OS you are running. Going forward the **qcow2.zip.bundle** is being replaced in favor of the **tar.bundle** format. Please see the following solution article for more details.
 
 .. code-block:: bash
 
@@ -297,30 +299,21 @@ You can view the current tenant images and their status in the F5OS CLI by using
 
 .. code-block:: bash
 
-    r10900-1# show images
-                                                    IN                                    
-    NAME                                             USE    TYPE                STATUS     
-    ---------------------------------------------------------------------------------------
-    BIG-IP-Next-20.0.2-2.139.10+0.0.165              false  helm-image          processed  
-    BIG-IP-Next-20.0.2-2.139.10+0.0.165.tar.bundle   false  helm-bundle         verified   
-    BIG-IP-Next-20.0.2-2.139.10+0.0.165.yaml         false  helm-specification  verified   
-    BIG-IP-Next-20.1.0-2.263.4                       false  helm-image          processed  
-    BIG-IP-Next-20.1.0-2.263.4.tar.bundle            false  helm-bundle         verified   
-    BIG-IP-Next-20.1.0-2.263.4.yaml                  false  helm-specification  verified   
-    BIG-IP-Next-20.2.1-2.429.1                       false  helm-image          processed  
-    BIG-IP-Next-20.2.1-2.429.1.tar.bundle            false  helm-bundle         verified   
-    BIG-IP-Next-20.2.1-2.429.1.yaml                  false  helm-specification  verified   
-    BIG-IP-Next-20.2.1-2.429.4                       true   helm-image          processed  
-    BIG-IP-Next-20.2.1-2.429.4.tar.bundle            true   helm-bundle         verified   
-    BIG-IP-Next-20.2.1-2.429.4.yaml                  true   helm-specification  verified   
-    BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
-    BIGIP-15.1.10.2-0.0.2.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
-    BIGIP-15.1.6.1-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
-    BIGIP-17.1.1.1-0.0.2.T4-F5OS.qcow2.zip.bundle    true   vm-image            verified   
-    BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle    true   vm-image            verified   
-    BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
+    r5900-1-gsa# show images
+                                                    IN                              
+    NAME                                               USE    TYPE      REV  STATUS    
+    -----------------------------------------------------------------------------------
+    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle       true   vm-image  -    verified  
+    BIGIP-15.1.6.1-0.0.6.ALL-F5OS.qcow2.zip.bundle     false  vm-image  -    verified  
+    BIGIP-17.1.0.1-0.0.4.ALL-F5OS.qcow2.zip.bundle     false  vm-image  -    verified  
+    BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle    true   vm-image  -    verified  
+    BIGIP-17.5.1.3-0.0.19.ALL-F5OS.tar.bundle          false  vm-image  -    verified  
+    BIGIP-21.0.0-0.0.10.ALL-F5OS.tar.bundle            false  vm-image  -    verified  
+    BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle            true   vm-image  -    verified  
+    BIGIP-bigip21.1.0-21.1.0-0.0.1.T2-F5OS.tar.bundle  false  vm-image  -    verified  
 
-    r10900-1# 
+    r5900-1-gsa#
+
 
 
 
@@ -331,13 +324,16 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
 
 .. code-block:: bash
 
-    Boston-r10900-1(config)# tenants tenant tenant2
-    Value for 'config image' (<string>): BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    r5900-1-gsa# config
+    Entering configuration mode terminal
+    r5900-1-gsa(config)# tenants tenant tenant1
+    Value for 'config image' (<A file name accepts alphanumeric and any of
+    '( ) + - . _' characters>): BIGIP-bigip21.1.0-21.1.0-0.0.1.T2-F5OS.tar.bundle
     Value for 'config nodes' (list): 1
-    Value for 'config mgmt-ip' (<IP address>): 10.255.0.136
-    Value for 'config prefix-length' (<unsignedByte, 0 .. 128>): 24
-    Value for 'config gateway' (<IP address>): 10.255.0.1
-    Boston-r10900-1(config-tenant-tenant2)# 
+    Value for 'config mgmt-ip' (<IP address>): 172.22.50.45
+    Value for 'config prefix-length' (<unsignedByte, 0 .. 128>): 26
+    Value for 'config gateway' (<IP address>): 172.22.50.1
+    r5900-1-gsa(config-tenant-tenant1)#
 
 **NOTE: The nodes value is currently required in the interactive CLI mode to remain consistent with VELOS but should be set for 1 for rSeries tenant deployments.** 
 
@@ -345,54 +341,54 @@ When inside the tenant config mode, you can enter each configuration item one li
 
 .. code-block:: bash
 
-    Boston-r10900-1# config
-    Entering configuration mode terminal
-    Boston-r10900-1(config)# tenants tenant tenant2 
-    Boston-r10900-1(config-tenant-test-tenant)# config ?
+    r5900-1-gsa(config-tenant-tenant1)# config ?
     Possible completions:
-        appliance-mode           Appliance mode can be enabled/disabled at tenant level
-        cryptos                  Enable crypto devices for the tenant.
-        dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
-        gateway                  User-specified gateway for the tenant static mgmt-ip.
-        image                    User-specified image for tenant.
-        mac-data                 
-        memory                   User-specified memory in MBs for the tenant.
-        mgmt-ip                  User-specified mgmt-ip for the tenant management access.
-        nodes                    User-specified node-number(s) in the partition to schedule the tenant.
-        prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
-        running-state            User-specified desired state for the tenant.
-        storage                  User-specified storage information
-        type                     Tenant type.
-        vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
-        virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
-        vlans                    User-specified vlan-id from vlan table for the tenant.
-    Boston-r10900-1(config-tenant-tenant2)# config ?
-    Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
-    Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
-    Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
-    Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
-    Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
-    Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
-    Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
-    Boston-r10900-1(config-tenant-tenant2)# config memory 14848
+    appliance-mode           Appliance mode can be enabled/disabled at tenant level
+    cloud-init               Reference to a Cloud-Init config object.
+    cryptos                  Enable crypto devices for the tenant.
+    dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
+    gateway                  User-specified gateway for the tenant static mgmt-ip.
+    image                    User-specified image for tenant.
+    mac-data                 
+    max-nodes                User-specified maximum nodes mapping modality for this tenant.
+    memory                   User-specified memory in MBs for the tenant.
+    mgmt-ip                  User-specified mgmt-ip for the tenant management access.
+    mgmt-vlan                Mgmt-vlan for tenant mgmt.
+    nodes                    User-specified node-number(s) in the partition to schedule the tenant.
+    prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
+    running-state            User-specified desired state for the tenant.
+    storage                  User-specified storage information
+    tcp-cop                  User specified rx buffer fill threshold at which to-tenant TCP SYNs will be dropped.
+    type                     Tenant type.
+    vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
+    virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
+    vlans                    User-specified vlan-id from vlan table for the tenant.
+    r5900-1-gsa(config-tenant-tenant1)# config cryptos enabled 
+    r5900-1-gsa(config-tenant-tenant1)# config vcpu-cores-per-node 4
+    r5900-1-gsa(config-tenant-tenant1)# config type BIG-IP 
+    r5900-1-gsa(config-tenant-tenant1)# config vlans 500            
+    r5900-1-gsa(config-tenant-tenant1)# config vlans 3010
+    r5900-1-gsa(config-tenant-tenant1)# config vlans 3011
+    r5900-1-gsa(config-tenant-tenant1)# config running-state deployed 
+    r5900-1-gsa(config-tenant-tenant1)# config memory 14848
   
 
 Any changes must be committed for them to be executed:
 
 .. code-block:: bash
 
-  Boston-r10900-1(config-tenant-tenant2)# commit
+  r5900-1-gsa(config-tenant-tenant1)# commit
   Commit complete.
-  Boston-r10900-1(config-tenant-tenant2)# 
+  r5900-1-gsa(config-tenant-tenant1)# 
 	
 You may alternatively put all the parameters on one line instead of using the interactive mode above:
 
 .. code-block:: bash
 
-    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
-    Boston-r10900-1(config-tenant-tenant2)# commit
+    r5900-1-gsa(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
+    r5900-1-gsa(config-tenant-tenant2)# commit
     Commit complete.
-    Boston-r10900-1(config-tenant-tenant2)#
+    r5900-1-gsa(config-tenant-tenant2)#
 
 
 Validating Tenant Status via CLI
@@ -402,68 +398,216 @@ After the tenant is created you can run the command **show running-config tenant
 
 .. code-block:: bash
 
-    Boston-r10900-1# show running-config tenants 
-    tenants tenant tenant2
-    config name         tenant2
-    config type         BIG-IP
-    config image        BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
-    config nodes        [ 1 ]
-    config mgmt-ip      10.255.0.136
-    config prefix-length 24
-    config gateway      10.255.0.1
-    config vlans        [ 500 3010 3011 ]
-    config cryptos      enabled
-    config vcpu-cores-per-node 4
-    config memory       14848
-    config storage size 76
-    config running-state deployed
+    r5900-1-gsa# show running-config tenants 
+    tenants tenant big-ip1
+    config type            BIG-IP
+    config image           BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         172.22.50.24
+    config prefix-length   26
+    config gateway         172.22.60.62
+    config dag-ipv6-prefix-length 128
+    config vlans           [ 500 501 502 504 ]
+    config cryptos         enabled
+    config vcpu-cores-per-node 10
+    config memory          36352
+    config storage size 82
+    config running-state   deployed
+    config mac-data mac-block-size one
     config appliance-mode disabled
+    config tcp-cop disabled
     !
-    Boston-r10900-1# 
+    tenants tenant big-ip2
+    config type            BIG-IP
+    config image           BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         172.22.50.30
+    config prefix-length   26
+    config gateway         172.22.50.62
+    config dag-ipv6-prefix-length 128
+    config vlans           [ 500 501 502 ]
+    config cryptos         enabled
+    config vcpu-cores-per-node 4
+    config memory          14848
+    config storage size 82
+    config running-state   deployed
+    config mac-data mac-block-size one
+    config appliance-mode disabled
+    config tcp-cop disabled
+    !
+    tenants tenant cloud-init3
+    config type            BIG-IP
+    config image           BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle
+    config cloud-init      cloudinit3
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         172.22.50.49
+    config prefix-length   26
+    config gateway         172.22.50.62
+    config dag-ipv6-prefix-length 128
+    config vlans           [ 500 501 ]
+    config cryptos         enabled
+    config vcpu-cores-per-node 4
+    config memory          14848
+    config storage size 86
+    config running-state   deployed
+    config mac-data mac-block-size one
+    config appliance-mode disabled
+    config tcp-cop disabled
+    config mgmt-vlan       500
+    !
+    tenants tenant e2etest
+    config type            BIG-IP
+    config image           BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         1.1.1.1
+    config prefix-length   32
+    config gateway         1.2.3.4
+    config dag-ipv6-prefix-length 128
+    config cryptos         enabled
+    config vcpu-cores-per-node 4
+    config memory          14848
+    config storage size 76
+    config running-state   provisioned
+    config mac-data mac-block-size one
+    config appliance-mode disabled
+    config tcp-cop disabled
+    config mgmt-vlan       untagged
+    !
+
 
 
 To see the actual status of the tenants, issue the CLI command **show tenants**.
 
 .. code-block:: bash
 
-    Boston-r10900-1# show tenants 
-    tenants tenant test-tenant
-        state unit-key-hash    IHJti+ctR9YrfmTuj3F7dElBgXtFyOBFpa+7AudyYif3neHybBiP5v3tyt5AMd7WwDypOCz58US8I9NXzvgqnQ==
-        state type             BIG-IP
-        state image            BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle
-        state mgmt-ip          10.255.2.12
-        state prefix-length    24
-        state gateway          10.255.2.252
-        state dag-ipv6-prefix-length 128
-        state vlans            [ 3010 3011 ]
-        state cryptos          enabled
-        state vcpu-cores-per-node 4
-        state qat-vf-count     6
-        state memory           14848
-        state storage size 82
-        state running-state    deployed
-        state appliance-mode disabled
-        state feature-flags stats-stream-capable true
-        state namespace        default
-        state status           Running
-        state primary-slot     1
-        state image-version    "BIG-IP 17.1.1.2 0.0.1"
-        state mac-data base-mac 00:94:a1:69:59:2b
-        state mac-data mac-pool-size 1
+    r5900-1-gsa# show tenants 
+    tenants tenant big-ip
+    state unit-key-hash    ldCb3qyXb0s71zpJ5mQHVHafPksHT8FB5Qgox1eokXwGpqcRaz/CNvcg67cFfNDAbG9MfmvJzaRoOPMGxX0HNg==
+    state type             BIG-IP
+    state image            BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    state max-nodes        8
+    state mgmt-ip          172.22.50.24
+    state prefix-length    26
+    state gateway          172.22.60.62
+    state dag-ipv6-prefix-length 128
+    state vlans            [ 500 501 502 504 ]
+    state cryptos          enabled
+    state vcpu-cores-per-node 10
+    state qat-vf-count     15
+    state memory           36352
+    state storage size 82
+    state running-state    deployed
+    state appliance-mode disabled
+    state namespace        default
+    state status           Running
+    state primary-slot     1
+    state image-version    "BIG-IP 17.1.3 0.0.11"
+    state feature-flags clustering-as-service false
+    state feature-flags stats-stream-capable true
+    state tcp-cop disabled
+    state mgmt-vlan        untagged
+    state mgmt-vlan-accessible true
+    state mac-data base-mac 00:94:a1:69:35:14
+    state mac-data mac-pool-size 1
     MAC                
     -------------------
-    00:94:a1:69:59:2b  
+    00:94:a1:69:35:14  
+
+    NODE  CPUS                          
+    ------------------------------------
+    1     [ 20 4 24 8 5 21 7 23 19 3 ]  
+
+                    INSTANCE  TENANT                                                                                                   
+    NODE  POD NAME  ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+    -----------------------------------------------------------------------------------------------------------------------------------
+    1     big-ip-1  1         1       Running  2026-04-29T22:42:54Z  2026-04-29T22:44:51Z  Started tenant instance  00:94:a1:69:35:15  
+
+    tenants tenant big-ip2
+    state unit-key-hash    VfkI7Nhog2NbPPoeL9RyyCR9HCrBy1thJ59lRid0VR+JfY1jkQB4W9ders9TWR/nlNIp6oC0ZPfUVD71fTm9Qg==
+    state type             BIG-IP
+    state image            BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    state max-nodes        8
+    state mgmt-ip          172.22.50.30
+    state prefix-length    26
+    state gateway          172.22.50.62
+    state dag-ipv6-prefix-length 128
+    state vlans            [ 500 501 502 ]
+    state cryptos          enabled
+    state vcpu-cores-per-node 4
+    state qat-vf-count     6
+    state memory           14848
+    state storage size 82
+    state running-state    deployed
+    state appliance-mode disabled
+    state namespace        default
+    state status           Running
+    state primary-slot     1
+    state image-version    "BIG-IP 17.1.1.2 0.0.10"
+    state feature-flags clustering-as-service false
+    state feature-flags stats-stream-capable true
+    state tcp-cop disabled
+    state mgmt-vlan        untagged
+    state mgmt-vlan-accessible true
+    state mac-data base-mac 00:94:a1:69:35:18
+    state mac-data mac-pool-size 1
+    MAC                
+    -------------------
+    00:94:a1:69:35:18  
 
     NODE  CPUS             
     -----------------------
-    1     [ 16 19 40 43 ]  
+    1     [ 13 29 14 30 ]  
+
+                    INSTANCE  TENANT                                                                                                   
+    NODE  POD NAME   ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+    ------------------------------------------------------------------------------------------------------------------------------------
+    1     big-ip2-1  1         1       Running  2026-04-29T22:42:54Z  2026-04-29T22:45:00Z  Started tenant instance  00:94:a1:69:35:19  
+
+    tenants tenant cloud-init3
+    state unit-key-hash    ODy2ApiUC8B5NMlVe3bcWotI3ekxYgXOf/07774gMwBBxwC59n0HvE6oat7LA2dMOUGgmqyHyX/L9NqfSMW1IA==
+    state type             BIG-IP
+    state image            BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle
+    state cloud-init       cloudinit3
+    state max-nodes        8
+    state mgmt-ip          172.22.50.49
+    state prefix-length    26
+    state gateway          172.22.50.62
+    state dag-ipv6-prefix-length 128
+    state vlans            [ 500 501 ]
+    state cryptos          enabled
+    state vcpu-cores-per-node 4
+    state qat-vf-count     6
+    state memory           14848
+    state storage size 86
+    state running-state    deployed
+    state appliance-mode disabled
+    state namespace        default
+    state status           Running
+    state primary-slot     1
+    state image-version    "BIG-IP 21.1.0 0.0.38"
+    state feature-flags clustering-as-service false
+    state feature-flags stats-stream-capable true
+    state tcp-cop disabled
+    state mgmt-vlan        500
+    state mgmt-vlan-accessible true
+    state mac-data base-mac 00:94:a1:69:35:1a
+    state mac-data mac-pool-size 1
+    MAC                
+    -------------------
+    00:94:a1:69:35:1a  
+
+    NODE  CPUS           
+    ---------------------
+    1     [ 22 6 25 9 ]  
 
                         INSTANCE  TENANT                                                                                                   
     NODE  POD NAME       ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
     ----------------------------------------------------------------------------------------------------------------------------------------
-    1     test-tenant-1  1         1       Running  2024-08-01T16:23:56Z  2024-08-01T16:24:38Z  Started tenant instance  00:94:a1:69:59:2c  
-
-    Boston-r10900-1#
+    1     cloud-init3-1  1         1       Running  2026-05-05T23:41:14Z  2026-05-05T23:41:16Z  Started tenant instance  00:94:a1:69:35:1b  
 
 
 Tenant Deployment via webUI
