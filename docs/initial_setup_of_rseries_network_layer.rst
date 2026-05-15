@@ -982,11 +982,13 @@ Below is an example configuration change in the body of the API call, this is ch
 Network Settings -> Interfaces
 ==============================
 
-Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 and r12000 appliances have a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 and r12000 appliances have a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**. Below is an r5000 appliance.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
   :scale: 70% 
+
+Below is an r10000/r12000 appliance.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image8.png
   :align: center
