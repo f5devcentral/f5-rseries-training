@@ -2455,7 +2455,7 @@ All in-band networking, including VLANs, is configured in the F5OS layer, and ju
 
 rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, webUI, or API.
 
-**Note: 802.1Q-in-Q (double VLAN tagging) is not currently supported on the rSeries platform.**
+**Note: 802.1Q-in-Q (double VLAN tagging) was not supported on previous versions of the rSeries platform until F5OS 2.0.**
 
 Configuring VLANs from the webUI
 ------------------------------
