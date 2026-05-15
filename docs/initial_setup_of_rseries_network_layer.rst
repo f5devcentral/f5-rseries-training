@@ -35,19 +35,19 @@ The **Network** tab will provide a visual representation of all networking ports
   :align: center
   :scale: 70% 
 
-The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r10900 which has 12 vCPUs dedicated to the F5OS/Datamover functions. 
+The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r5900 which has 6 vCPUs dedicated to the F5OS/Datamover functions. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
   :scale: 70% 
 
-For reference below is the architecture of the r10900. Note that there are 12 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
+For reference below is the architecture of the r5900. Note that there are 6 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
 
-.. image:: images/initial_setup_of_rseries_network_layer/r10900-arch.png
+.. image:: images/initial_setup_of_rseries_network_layer/r5900-arch.png
   :align: center
   :scale: 70% 
 
-Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU's available for F5OS to use as needed. 
+Currently 56% of the vCPUs are in use by tenants, 9% for F5OS Dedicated, 9% for F5OS Datamover, and this leaves 25% of the CPU's available for F5OS to use as needed. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/cpu-allocation.png
   :align: center
