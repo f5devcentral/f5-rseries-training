@@ -1009,7 +1009,7 @@ Within the F5OS webUI, the physical ports of the appliance will be visible by go
   :align: center
   :scale: 70% 
 
-You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) if the interface is not part of a LAG. If the interface is part of a LAG, then the VLAN configuration is done within the LAG rather than the interface.
+You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) if the interface is not part of a LAG. If the interface is part of a LAG, then the VLAN configuration is done within the LAG rather than the interface. You may also set a **Description**, and configure **Subinterfaces** if you are going to utilize 802.1Q-in-Q double VLAN tagging.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center
