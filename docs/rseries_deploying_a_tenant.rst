@@ -257,6 +257,9 @@ Before deploying any tenant, you must ensure you have a proper tenant software r
 
 .. Note:: F5 changed the way that tenant images are signed in October 2025. You should ensure you download the proper image format based on the version of F5OS you are running. Going forward the **qcow2.zip.bundle** is being replaced in favor of the **tar.bundle** format. Please see the following solution article for more details.
 
+`K000157005: F5 signing certificate and key rotation, October 2025 <https://my.f5.com/manage/s/article/K000157005>`_
+
+
 .. code-block:: bash
 
     scp BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle admin@10.255.0.132:IMAGES
@@ -608,6 +611,46 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
     NODE  POD NAME       ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
     ----------------------------------------------------------------------------------------------------------------------------------------
     1     cloud-init3-1  1         1       Running  2026-05-05T23:41:14Z  2026-05-05T23:41:16Z  Started tenant instance  00:94:a1:69:35:1b  
+
+Levergaing Cloud-Init via CLI
+=============================
+
+Cloud-Init is the industry standard start-up agent installed on virtual machines to facilitate cloud deployments. F5OS v2.0 added the capability of leveraging **cloud-init** to define certain BIG-IP configuration items via a cloud-init script that is run when the TMOS tenant boots. You can speed up the initialization of your BIG-IP instance by passing user-data to perform tasks like onboarding and configuring BIG-IP. For example, to pass user-data you can use a bash startup script or cloud-init’s built-in yaml-based configuration file, a cloud-config file. More details on cloud-init usgae on BIG-IP VE can be found here:
+
+`Cloud-Init and F5 BIG-IP Virtual Edition <https://clouddocs.f5.com/cloud/public/v1/shared/cloudinit.html>`_
+
+In F5OS, you can define a cloud-init script via the CLI, API, or WebUI or alternatively you can upluad or import a cloud-init script into F5OS which has been created externally. 
+
+Before applying a cloud-init script to an F5OS tenant you must create a cloud-init configuration object, then that cloud-init object can be referenced within a tenant configuration. Below is an example of creating a cloud-init script and giving it a name of **test** via the F5OS CLI using the **cloud-inits cloud-init test config user-data** command:
+
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# cloud-inits cloud-init test-cloud-init config user-data
+    (<Cloud-init user data>):
+    [Multiline mode, exit with ctrl-D.]
+    > #cloud-config
+    > write_files:
+    >  - path: /tmp/custom-config.sh
+    >  permissions: 0755
+    >  owner: root:root
+    >  content: "#!/bin/bash\n\necho \"Hello World\" >> /var/tmp/cloud-init-output1\n\n# Wait for MCPD to be up before running tmsh commands\nsource /usr/lib/bigstart/bigip-ready-functions\nwait_bigip_ready\n\n# Begin BIG-IP configuration\ntmsh modify sys global-settings gui-setup disabled\ntmsh modify sys global-settings gui-security-banner-text \"Configured now with cloud-init\"\n\ntmsh save /sys config\necho \"Hello World END\" >> /var/tmp/cloud-init-output2\n"
+    > runcmd:
+    >  - /tmp/custom-config.sh &
+    > chpasswd:
+    >  list: "root:********\nadmin:********\n"
+    >  expire: False
+    >
+    r5900-1-gsa(config)#
+
+Once the named cloud-init object has been created you can then reference it within the tenant configuration, and it will be executed upon boot. 
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# tenants tenant tenant1 config cloud-init test-cloud-init
+    r5900-1-gsa(config-tenant-tenant1)# commit
+    
+
 
 
 Tenant Deployment via webUI
