@@ -612,16 +612,14 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
     ----------------------------------------------------------------------------------------------------------------------------------------
     1     cloud-init3-1  1         1       Running  2026-05-05T23:41:14Z  2026-05-05T23:41:16Z  Started tenant instance  00:94:a1:69:35:1b  
 
-Levergaing Cloud-Init via CLI
+Leveraging Cloud-Init via CLI
 =============================
 
 Cloud-Init is the industry standard start-up agent installed on virtual machines to facilitate cloud deployments. F5OS v2.0 added the capability of leveraging **cloud-init** to define certain BIG-IP configuration items via a cloud-init script that is run when the TMOS tenant boots. You can speed up the initialization of your BIG-IP instance by passing user-data to perform tasks like onboarding and configuring BIG-IP. For example, to pass user-data you can use a bash startup script or cloud-init’s built-in yaml-based configuration file, a cloud-config file. More details on cloud-init usgae on BIG-IP VE can be found here:
 
 `Cloud-Init and F5 BIG-IP Virtual Edition <https://clouddocs.f5.com/cloud/public/v1/shared/cloudinit.html>`_
 
-In F5OS, you can define a cloud-init script via the CLI, API, or WebUI or alternatively you can upluad or import a cloud-init script into F5OS which has been created externally. 
-
-Before applying a cloud-init script to an F5OS tenant you must create a cloud-init configuration object, then that cloud-init object can be referenced within a tenant configuration. Below is an example of creating a cloud-init script and giving it a name of **test** via the F5OS CLI using the **cloud-inits cloud-init test config user-data** command:
+In F5OS, you can define a cloud-init script via the CLI, API, or WebUI. Before applying a cloud-init script to an F5OS tenant you must create a cloud-init configuration object, then that cloud-init object can be referenced within a tenant configuration. Below is an example of creating a cloud-init script and giving it a name of **test** via the F5OS CLI using the **cloud-inits cloud-init test config user-data** command:
 
 
 .. code-block:: bash
@@ -649,7 +647,7 @@ Once the named cloud-init object has been created you can then reference it with
 
     r5900-1-gsa(config)# tenants tenant tenant1 config cloud-init test-cloud-init
     r5900-1-gsa(config-tenant-tenant1)# commit
-    
+
 
 
 
