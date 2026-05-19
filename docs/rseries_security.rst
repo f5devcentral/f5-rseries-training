@@ -11,20 +11,107 @@ This section will focus on how to harden/secure the F5OS layer of the rSeries ap
 F5OS Platform Layer Isolation
 =============================
 
-When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
+When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
 
 This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through the **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. Tenants are prevented from talking to each other over the internal management VLAN using MACVLAN interfaces which encapsulate tenant traffic, restricting traffic visibility between different tenants on the same rSeries appliance.
 
 .. image:: images/rseries_security/image1.png
   :align: center
 
-Out of Band Management Port
-===========================
+Out of Band Management Port and VLAN Tagging
+============================================
 
 In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band management port on rSeries. This new option allows for the F5OS platform layer and tenants to be assigned to specific VLANs. This will allow for greater separation for the management VLANs of tenants and the F5OS platform layer which in previous releases had to be on a single shared VLAN. The external ports can be configured with specific tagged or untagged VLANs and then those VLANs are presented to the F5OS platform layer and tenants as untagged, meaning no special configuration is needed to convert to tagged management VLANs inside tenants. Customers also have the option to put the Always On Management (AOM) capability on its own unique VLAN for an additional layer of separation if required.
 
 .. image:: images/rseries_security/vlan-tagged-mgmt.png
   :align: center  
+
+VLAN Tagging for the Management Port via CLI
+--------------------------------------------
+
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object using the **mgmt-vlans** CLI command. In the example below, a tagged VLAN using the VLAN tag 501 is added. 
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# mgmt-vlans mgmt-vlan 500 config mgmt-vlan-tag 500 name mgmt-vlan-500
+    r5900-1-gsa(config-mgmt-vlan-500)# commit
+    Commit complete.
+    r5900-1-gsa(config-mgmt-vlan-500)# 
+
+You may add tagged or untagged VLANs, and also VLAN ranges:
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# mgmt-vlans mgmt-vlan ?
+    Possible completions:
+    <Configured mgmt vlan tag>  500  1010  1111  range  untagged
+    r5900-1-gsa(config)#
+
+Once the VLAN object is created it can be added to the **mgmt-ip** configuration.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system mgmt-ip config mgmt-vlan 500
+
+.. code-block:: bash
+
+    r5900-1-gsa# show running-config system mgmt-ip
+    system mgmt-ip config dhcp-enabled false
+    system mgmt-ip config ipv4 system address 172.22.50.1
+    system mgmt-ip config ipv4 prefix-length 26
+    system mgmt-ip config ipv4 gateway 172.22.50.62
+    system mgmt-ip config ipv6 system address ::
+    system mgmt-ip config ipv6 prefix-length 0
+    system mgmt-ip config ipv6 gateway ::
+    system mgmt-ip config mgmt-vlan 500
+    r5900-1-gsa#
+
+.. code-block:: bash
+
+    r5900-1-gsa# show mgmt-vlans 
+    MGMT      MGMT                      
+    VLAN TAG  VLAN TAG  NAME            
+    ------------------------------------
+    untagged  untagged  mgmt-untagged   
+    500       500       mgmt-vlan-500   
+    501       501       mgmt-vlan-501   
+    1010      1010      mgmt-vlan-1010  
+    1111      1111      mgmt-vlan-1111  
+
+    r5900-1-gsa#
+
+.. code-block:: bash
+
+    r5900-1-gsa# show system mgmt-ip 
+    system mgmt-ip state ipv4 system address 172.22.50.1
+    system mgmt-ip state ipv4 prefix-length 26
+    system mgmt-ip state ipv4 gateway 172.22.50.62
+    system mgmt-ip state mgmt-vlan 500
+    system mgmt-ip state ipv6 system address ::
+    system mgmt-ip state ipv6 prefix-length 0
+    system mgmt-ip state ipv6 gateway ::
+    r5900-1-gsa#
+
+VLAN Tagging for the Management Port via WebUI
+--------------------------------------------
+
+
+
+.. image:: images/rseries_security/mgmt-vlans-webui.png
+  :align: center 
+
+
+.. image:: images/rseries_security/mgmt-vlans-webui2.png
+  :align: center 
+
+.. image:: images/rseries_security/mgmt-interface.png
+  :align: center
+
+.. image:: images/rseries_security/mgmt-interface2.png
+  :align: center
+
+VLAN Tagging for the Management Port via API
+--------------------------------------------
 
 Allow List for F5OS Management
 ===============================
