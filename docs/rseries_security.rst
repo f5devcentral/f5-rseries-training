@@ -53,6 +53,8 @@ Once the mgmt-vlan object is created it can be added to the **mgmt-ip** configur
 
     r5900-1-gsa(config)# system mgmt-ip config mgmt-vlan 500
 
+You may view the mgmt-ip configuration using the **show running-config system mgmt-ip** command: or optionally the **show system mgmt-ip** command.
+
 .. code-block:: bash
 
     r5900-1-gsa# show running-config system mgmt-ip
@@ -65,6 +67,22 @@ Once the mgmt-vlan object is created it can be added to the **mgmt-ip** configur
     system mgmt-ip config ipv6 gateway ::
     system mgmt-ip config mgmt-vlan 500
     r5900-1-gsa#
+
+or optionally the **show system mgmt-ip** command.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show system mgmt-ip 
+    system mgmt-ip state ipv4 system address 172.22.50.1
+    system mgmt-ip state ipv4 prefix-length 26
+    system mgmt-ip state ipv4 gateway 172.22.50.62
+    system mgmt-ip state mgmt-vlan 500
+    system mgmt-ip state ipv6 system address ::
+    system mgmt-ip state ipv6 prefix-length 0
+    system mgmt-ip state ipv6 gateway ::
+    r5900-1-gsa#
+
+If you would like to view the **mgmt-vlan** object configuration use the **show mgmt-vlans** command:
 
 .. code-block:: bash
 
@@ -80,17 +98,7 @@ Once the mgmt-vlan object is created it can be added to the **mgmt-ip** configur
 
     r5900-1-gsa#
 
-.. code-block:: bash
 
-    r5900-1-gsa# show system mgmt-ip 
-    system mgmt-ip state ipv4 system address 172.22.50.1
-    system mgmt-ip state ipv4 prefix-length 26
-    system mgmt-ip state ipv4 gateway 172.22.50.62
-    system mgmt-ip state mgmt-vlan 500
-    system mgmt-ip state ipv6 system address ::
-    system mgmt-ip state ipv6 prefix-length 0
-    system mgmt-ip state ipv6 gateway ::
-    r5900-1-gsa#
 
 VLAN Tagging for the Management Port via WebUI
 --------------------------------------------
@@ -100,10 +108,11 @@ To add 802.1Q VLAN tagging to the management port you must first create a **mgmt
 .. image:: images/rseries_security/mgmt-vlans-webui.png
   :align: center 
 
-In the example below, a tagged VLAN using the VLAN tag 501 is added. 
+In the example below, a tagged VLAN using the VLAN tag 500 is added. 
 
 .. image:: images/rseries_security/mgmt-vlans-webui2.png
-  :align: center 
+  :align: center
+    :scale: 60% 
 
 Once the mgmt-vlan object is created it can be added to the **System Settings > Management Interface** configuration.
 
