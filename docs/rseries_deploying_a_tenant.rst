@@ -729,12 +729,6 @@ The tenant will then go from **Starting** to **Running**.
   :align: center
   :scale: 70% 
 
-Finally, when the tenant is fully operational you can click the arrow button on the far right to get more detailed status of the tenant. The Running Version should display the actual software version of the tenant.
-
-.. image:: images/rseries_deploying_a_tenant/image79.png
-  :align: center
-  :scale: 70% 
-
 You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a tenant to view and refresh period, to monitor in deeper detail. As of F5OS-A 1.8.0 this page will display real time and historical tenant CPU, Memory, and Disk usage.
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
@@ -813,58 +807,77 @@ Below is output generated from the previous command:
         "f5-tenant-images:images": {
             "image": [
                 {
-                    "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
                     "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": true,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "1.88 GB"
                 },
                 {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle",
+                    "name": "BIGIP-15.1.6.1-0.0.6.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "1.99 GB"
                 },
                 {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle",
+                    "name": "BIGIP-17.1.0.1-0.0.4.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.28 GB"
                 },
                 {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
+                    "name": "BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": true,
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.34 GB"
                 },
                 {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle",
+                    "name": "BIGIP-17.5.1.3-0.0.19.ALL-F5OS.tar.bundle",
+                    "version": "17.5.1.3-0.0.19",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.57 GB"
                 },
                 {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle",
+                    "name": "BIGIP-21.0.0-0.0.10.ALL-F5OS.tar.bundle",
+                    "version": "21.0.0-0.0.10",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.73 GB"
                 },
                 {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
+                    "name": "BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle",
+                    "version": "21.1.0-0.0.38",
+                    "in-use": true,
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-5-5",
+                    "size": "3.08 GB"
                 },
                 {
-                    "name": "F5OS-A-1.0.0-11432.R5R10.iso",
+                    "name": "BIGIP-bigip21.1.0-21.1.0-0.0.1.T2-F5OS.tar.bundle",
+                    "version": "21.1.0-0.0.1",
                     "in-use": false,
-                    "status": "verification-failed"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "3.09 GB"
                 }
             ]
         }
     }
+
 
 
 Uploading Tenant Images from a Client Machine via the API
