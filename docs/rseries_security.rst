@@ -112,7 +112,7 @@ In the example below, a tagged VLAN using the VLAN tag 500 is added.
 
 .. image:: images/rseries_security/mgmt-vlans-webui2.png
   :align: center
-    :scale: 60% 
+  :scale: 60% 
 
 Once the mgmt-vlan object is created it can be added to the **System Settings > Management Interface** configuration.
 
