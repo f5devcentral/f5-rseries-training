@@ -47,7 +47,7 @@ You may add tagged or untagged VLANs, and also VLAN ranges:
     <Configured mgmt vlan tag>  500  1010  1111  range  untagged
     r5900-1-gsa(config)#
 
-Once the VLAN object is created it can be added to the **mgmt-ip** configuration.
+Once the mgmt-vlan object is created it can be added to the **mgmt-ip** configuration.
 
 .. code-block:: bash
 
@@ -95,14 +95,17 @@ Once the VLAN object is created it can be added to the **mgmt-ip** configuration
 VLAN Tagging for the Management Port via WebUI
 --------------------------------------------
 
-
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object under the **System Settings > Management VLANs** page. Click the **Add** button in the upper right hand corner to add a new mgmt-vlan.
 
 .. image:: images/rseries_security/mgmt-vlans-webui.png
   :align: center 
 
+In the example below, a tagged VLAN using the VLAN tag 501 is added. 
 
 .. image:: images/rseries_security/mgmt-vlans-webui2.png
   :align: center 
+
+Once the mgmt-vlan object is created it can be added to the **System Settings > Management Interface** configuration.
 
 .. image:: images/rseries_security/mgmt-interface.png
   :align: center
