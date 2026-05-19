@@ -1187,23 +1187,27 @@ A pop-up will appear letting you know this will stop the tenant and disrupt traf
   :align: center
   :scale: 70% 
 
-This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping**, and finally to the **Provisioned** Status.
-
-.. image:: images/rseries_deploying_a_tenant/image84.png
-  :align: center
-  :scale: 70% 
+This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running** to the **Provisioned** Status.
 
 .. image:: images/rseries_deploying_a_tenant/image85.png
   :align: center
   :scale: 70%   
 
-Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
+Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant. 
 
 .. image:: images/rseries_deploying_a_tenant/image86.png
   :align: center
   :scale: 70% 
 
+Click on the **Edit** button to alter the configuration onf the tenant.
+
 .. image:: images/rseries_deploying_a_tenant/image87.png
+  :align: center
+  :scale: 70% 
+
+Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
+
+.. image:: images/rseries_deploying_a_tenant/image87a.png
   :align: center
   :scale: 70% 
 
