@@ -619,7 +619,7 @@ Cloud-Init is the industry standard start-up agent installed on virtual machines
 
 `Cloud-Init and F5 BIG-IP Virtual Edition <https://clouddocs.f5.com/cloud/public/v1/shared/cloudinit.html>`_
 
-In F5OS, you can define a cloud-init script via the CLI, API, or WebUI. Before applying a cloud-init script to an F5OS tenant you must create a cloud-init configuration object, then that cloud-init object can be referenced within a tenant configuration. Below is an example of creating a cloud-init script and giving it a name of **test** via the F5OS CLI using the **cloud-inits cloud-init test config user-data** command:
+In F5OS, you can define a cloud-init script via the CLI, API, or WebUI. Before applying a cloud-init script to an F5OS tenant you must create a cloud-init configuration object, then that cloud-init object can be referenced within a tenant configuration. Below is an example of creating a cloud-init script and giving it a name of **test-cloud-init** via the F5OS CLI using the **cloud-inits cloud-init test-cloud-init config user-data** command:
 
 
 .. code-block:: bash
@@ -676,7 +676,7 @@ The second option is to click the **Upload** button to select an image file that
   :align: center
   :scale: 70% 
 
-After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Monitoring > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_tenant/image50.png
   :align: center
@@ -703,6 +703,15 @@ The tenant deployment options are almost identical to deploying a vCMP guest, wi
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
   :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image75a.png
+  :align: center
+  :scale: 70% 
+
+.. image:: images/rseries_deploying_a_tenant/image75b.png
+  :align: center
+  :scale: 70% 
+
 
 
 Validating Tenant Status via webUI
