@@ -29,7 +29,7 @@ In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band managemen
 VLAN Tagging for the Management Port via CLI
 --------------------------------------------
 
-To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object using the **mgmt-vlans** CLI command. In the example below, a tagged VLAN using the VLAN tag 501 is added. 
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object using the **mgmt-vlans** CLI command. In the example below, a tagged VLAN using the VLAN tag 500 is added. 
 
 .. code-block:: bash
 
@@ -112,7 +112,7 @@ In the example below, a tagged VLAN using the VLAN tag 500 is added.
 
 .. image:: images/rseries_security/mgmt-vlans-webui2.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 Once the mgmt-vlan object is created it can be added to the **System Settings > Management Interface** configuration. Click the **Edit** button in the upper right hand corner. 
 
@@ -123,10 +123,33 @@ Under the **Management VLAN** section, select the VLAN that you configured in th
 
 .. image:: images/rseries_security/mgmt-interface2.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 VLAN Tagging for the Management Port via API
 --------------------------------------------
+
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object using the API. In the example below, a tagged VLAN using the VLAN tag 1112 is added. 
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-mgmt-vlan:mgmt-vlans
+
+In the body of the API request add the details of the mgmt-vlan you would like to create:
+
+.. code-block:: json
+
+    {
+        "mgmt-vlan": [
+            {
+                "mgmt-vlan-tag": 1112,
+                "config": {
+                    "mgmt-vlan-tag": 1112,
+                    "name": "mgmt-vlan-1112"
+                }
+            }
+        ]
+    }
+
 
 To view the current mgmt-vlan configuration, enter the following API request:
 
@@ -195,10 +218,30 @@ The output will display all the configured mgmt-vlan objects along with their VL
                         "mgmt-vlan-tag": 1111,
                         "name": "mgmt-vlan-1111"
                     }
+                },
+                {
+                    "mgmt-vlan-tag": 1112,
+                    "config": {
+                        "mgmt-vlan-tag": 1112,
+                        "name": "mgmt-vlan-1112"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 1112,
+                        "name": "mgmt-vlan-1112"
+                    }
                 }
             ]
         }
     }
+
+Once the mgmt-vlan object is defined with the proper VLAN ID, you can then assign it to the system management IP configuration.
+
+.. code-block:: bash
+
+
+.. code-block:: json
+
+
 
 To view the current system management IP configuration, enter the following API call.
 
