@@ -238,9 +238,34 @@ Once the mgmt-vlan object is defined with the proper VLAN ID, you can then assig
 
 .. code-block:: bash
 
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system
+
+In the body of the API request add the **mgmt-vlan** object:
 
 .. code-block:: json
 
+    {
+        "f5-mgmt-ip:mgmt-ip": {
+            "config": {
+                "dhcp-enabled": false,
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.1"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                },
+                "mgmt-vlan": 500
+            }
+        }
+    }
 
 
 To view the current system management IP configuration, enter the following API call.
