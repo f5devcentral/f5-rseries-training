@@ -1191,7 +1191,7 @@ The webUI also supports the assignment of the **resource-admin** role or **guest
   :align: center
   :scale: 70%
 
-You can click on any user that has been defined, and assing the appropriate role ot them.
+You can click on any user that has been defined, and assign the appropriate role ot them.
 
 .. image:: images/rseries_security/imageres-admin2.png
   :align: center
