@@ -51,7 +51,7 @@ For reference below is the architecture of the r5900. Note that there are 6 vCPU
 
 .. image:: images/initial_setup_of_rseries_network_layer/r5900-arch.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Currently 56% of the vCPUs are in use by tenants, 9% for F5OS Dedicated, 9% for F5OS Datamover, and this leaves 25% of the CPU's available for F5OS to use as needed. 
 
@@ -92,13 +92,13 @@ To configure portgroups go to **Network Settings > Port Groups** in the F5OS web
 
 .. image:: images/initial_setup_of_rseries_network_layer/image6.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 If you do make a change, the appliance will be forced to reboot to load a new bitstream image into the FPGA.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image7.png
   :align: center
-  :scale: 70% 
+  :scale: 60% 
 
 Configuring PortGroups from the CLI
 -----------------------------------
@@ -1007,13 +1007,13 @@ Within the F5OS webUI, the physical ports of the appliance will be visible by go
 
 .. image:: images/initial_setup_of_rseries_network_layer/image10.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) if the interface is not part of a LAG. If the interface is part of a LAG, then the VLAN configuration is done within the LAG rather than the interface. You may also set a **Description**, and configure **Subinterfaces** if you are going to utilize 802.1Q-in-Q double VLAN tagging.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 Configuring Interfaces from the CLI
 -----------------------------------
@@ -2464,11 +2464,11 @@ VLANs can be created in the F5OS webUI under **Network Settings > VLANs**. When 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image12.png
   :align: center
-  :scale: 60%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_network_layer/image13.png
   :align: center
-  :scale: 60%
+  :scale: 50%
 
 
 Configuring VLANs from the CLI
@@ -2699,7 +2699,7 @@ Link Aggregation Groups (LAGs) can be configured in the F5OS webUI via the **Net
 
 .. image:: images/initial_setup_of_rseries_network_layer/image14.png
   :align: center
-  :scale: 60%
+  :scale: 50%
 
 You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term **Trunks** is used in place of LAG which is used in F5OS: 
 
@@ -2716,12 +2716,12 @@ Once you have configured the **LAG Type** and LACP options, you can add any phys
 
 .. image:: images/initial_setup_of_rseries_network_layer/image15.png
   :align: center
-  :scale: 60%
+  :scale: 50%
 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image15a.png
   :align: center
-  :scale: 60%
+  :scale: 50%
 
 
 Configuring LAGs from the CLI
