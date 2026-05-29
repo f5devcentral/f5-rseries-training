@@ -839,13 +839,7 @@ To disable appliance mode.
 Enabling F5OS Appliance Mode via the webUI
 ------------------------------------------ 
 
-Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page.
-
-.. image:: images/rseries_security/image4.png
-  :align: center
-  :scale: 70%
-
-In newer F5OS releases, Appliance Mode configuration has been moved to the **System Settings** -> **System Security** page.
+Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page. In newer F5OS releases, Appliance Mode configuration has been moved to the **System Settings** -> **System Security** page.
 
 .. image:: images/rseries_security/image4-new.png
   :align: center
