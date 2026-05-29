@@ -38,7 +38,7 @@ The **T1-F5OS** image type should be used with extreme caution. It is the smalle
 
 .. image:: images/rseries_deploying_a_tenant/image4.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in-place upgrades (they support multiple boot locations); however, they each default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage. Although you can expand the virtual disk, you cannot shrink it, so it is best to not overestimate the image type you need. 
 
@@ -55,19 +55,19 @@ Note that the image sizes in the chart are the default amount of space a tenant 
 
 .. image:: images/rseries_deploying_a_tenant/image5.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 This means the disk consumption on the rSeries disk is much smaller than what appears inside the tenant. In the example below the tenant believes it has 77GB of disk allocated:
 
 .. image:: images/rseries_deploying_a_tenant/image6.png
   :align: center
-  :scale: 70% 
+  :scale: 90% 
 
 However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is consuming only 6.4GB on the disk. You can confirm this by logging into the bash shell of F5OS as root. Then listing the contents of the directory **/var/F5/system/cbip-disks**, here you will see directories for each tenant. Enter the command **ls -lsh <tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (in this case 6.4GB).
 
 .. image:: images/rseries_deploying_a_tenant/image7.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc… There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
 
@@ -75,7 +75,7 @@ The Dashboard in the webUI has been enhanced in F5OS-A 1.8.0 to provide more vis
 
 .. image:: images/rseries_deploying_a_tenant/dashboard.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 57% of the 109.4GB of disk it has dedicated. You can also see that there is 448GB available for **F5OS Tenant Disks** (BIG-IP Tenant virtual disks), and that currently only 12% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality, it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are five BIG-IP tenants. The first one listed has been allocated 82GB of disk, however the actual size on disk is much lower (17.2GB). Most of the other tenants are utilizing less than 10GB of actual space even though they have been allocated much more.
 
@@ -84,7 +84,7 @@ There is also more granularity showing **Storage Utilization**. In the below exa
 
 .. image:: images/rseries_deploying_a_tenant/storage-utilization.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 You may also view the storage utilization from the F5OS CLI using the command **show components**.
 
@@ -664,23 +664,23 @@ You can upload a tenant image via the webUI in two different places. The first i
 
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 .. image:: images/rseries_deploying_a_tenant/image72.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The second option is to click the **Upload** button to select an image file that you have previously downloaded directly from your computer via the browser.
 
 .. image:: images/rseries_deploying_a_tenant/image73.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Monitoring > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_tenant/image50.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using SCP directly to the appliance. Simply SCP an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
 
@@ -696,21 +696,21 @@ You can deploy a tenant from the webUI using the **Add** button in the **Tenant 
 
 .. image:: images/rseries_deploying_a_tenant/image74.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 .. image:: images/rseries_deploying_a_tenant/image75a.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 .. image:: images/rseries_deploying_a_tenant/image75b.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 
@@ -721,13 +721,13 @@ Once the tenant is deployed you can monitor its status in the **Tenant Managemen
 
 .. image:: images/rseries_deploying_a_tenant/image77.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The tenant will then go from **Starting** to **Running**.
 
 .. image:: images/rseries_deploying_a_tenant/image78.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a tenant to view and refresh period, to monitor in deeper detail. As of F5OS-A 1.8.0 this page will display real time and historical tenant CPU, Memory, and Disk usage.
 
@@ -744,23 +744,23 @@ At this point, the tenant should be running and can be accessed via its out-of-b
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Clicking on one of the hyperlinks will bring you to the BIG-IP webUI of that tenant, and you'll need to login with default credentials of admin/admin. You will be prompted to change the password for the admin account.
 
 .. image:: images/rseries_deploying_a_tenant/image40.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 .. image:: images/rseries_deploying_a_tenant/image41.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 Now login with the new admin password, and you'll be brought into the initial setup wizard of the BIG-IP tenant. 
 
 .. image:: images/rseries_deploying_a_tenant/image42.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.    
 
@@ -1179,7 +1179,7 @@ Below is webUI output of a single tenant that is in the deployed and running sta
 
 .. image:: images/rseries_deploying_a_tenant/image82.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 A pop-up will appear letting you know this will stop the tenant and disrupt traffic. Click **OK**. 
 
@@ -1191,25 +1191,25 @@ This will move the tenant from **Deployed** to **Provisioned** state. You will s
 
 .. image:: images/rseries_deploying_a_tenant/image85.png
   :align: center
-  :scale: 70%   
+  :scale: 50%   
 
 Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant. 
 
 .. image:: images/rseries_deploying_a_tenant/image86.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Click on the **Edit** button to alter the configuration onf the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image87.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
 
 .. image:: images/rseries_deploying_a_tenant/image87a.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 Expanding a Tenant via CLI
