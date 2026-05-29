@@ -36,7 +36,7 @@ Below is an example of the F5OS webUI **Port Groups** screen on a r10000 Series 
 
 .. image:: images/rseries_networking/image3.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 .. image:: images/rseries_networking/image4.png
   :align: center
