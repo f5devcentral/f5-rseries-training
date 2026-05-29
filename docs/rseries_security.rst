@@ -1185,11 +1185,19 @@ The **user** role will also prevent the user from running **file** operations fr
 Resource Admin & Guest User Role via webUI
 --------------------------------
 
-The webUI also supports the assignment of the **resource-admin** role to any user.
+The webUI also supports the assignment of the **resource-admin** role or **guest** user role to any user. in the webUI navigate to **Authentication & Access > Users & Roles**. Here you can see all the pre-defined user roles.
 
 .. image:: images/rseries_security/imageres-admin.png
   :align: center
   :scale: 70%
+
+You can click on any user that has been defined, and assing the appropriate role ot them.
+
+.. image:: images/rseries_security/imageres-admin2.png
+  :align: center
+  :scale: 70%
+
+
 
 When logging in as the resource-admin user, any attempt to configure the restricted items above will result in an **Access Denied** error like the one below.
 
