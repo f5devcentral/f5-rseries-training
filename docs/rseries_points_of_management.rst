@@ -74,13 +74,13 @@ In the example below, a tenant on an r4000 appliance sees 4 interfaces, although
 
 .. image:: images/rseries_points_of_management/image8.png
   :align: center
-  :scale: 50%
+  :scale: 40%
 
 Those same 4 interfaces can be seen at the F5OS layer, but they are numbered 5.0, 6.0, 7.0 & 8.0.
 
 .. image:: images/rseries_points_of_management/image9.png
   :align: center
-  :scale: 50%
+  :scale: 60%
 
 Since the r2000/r4000 architecture allows the tenant to see the physical interface, this means that the tenant's interface stats will reflect the physical interfaces stats, although the numbers may not be in sync as the interface may have been up longer than the tenant's interfaces.
 
@@ -88,10 +88,10 @@ This can be seen in the F5OS interface stats below.
 
 .. image:: images/rseries_points_of_management/image10.png
   :align: center
-  :scale: 50%
+  :scale: 60%
 
 Inside the tenant, interfaces 1.5 and 1.7 show statistics incrementing. Note that the stats may not be equal between the tenant and the F5OS layer.
 
 .. image:: images/rseries_points_of_management/image11.png
   :align: center
-  :scale: 50%
+  :scale: 60%
