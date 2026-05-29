@@ -136,7 +136,7 @@ In the webUI, use the **System Settings -> File Utilities** page and from the dr
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image3.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image4.png
   :align: center
@@ -639,7 +639,7 @@ You can use the **System Settings -> File Utilities** page to import an archived
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image9.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/image10.png
   :align: center
