@@ -1899,7 +1899,7 @@ Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU
 
 
 
-The  **Active Alarms** tab will display any active alerts or alarms for the system. 
+The **Active Alarms** tab will display any active alerts or alarms for the system. 
 
 .. image:: images/monitoring_rseries/image4a.png
   :align: center
