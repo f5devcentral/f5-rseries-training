@@ -56,13 +56,13 @@ Those same 4 interfaces can be seen at the F5OS layer, but they are numbered 5.0
 
 .. image:: images/rseries_inside_the_tenant/image9.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 Since the r2000/r4000 architecture allows the tenant to see the physical interface, this means that the tenant's interface stats will reflect the physical interfaces stats, although the numbers may not be in sync as the interface may have been up longer than the tenant.
 
 .. image:: images/rseries_inside_the_tenant/image10.png
   :align: center
-  :scale: 50%
+  :scale: 70%
 
 Inside the tenant, interfaces 1.5 and 1.7 show statistics incrementing. Note that the stats may not be equal between the tenant and the F5OS layer.
 
