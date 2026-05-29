@@ -25,6 +25,8 @@ In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band managemen
 
 .. image:: images/rseries_security/vlan-tagged-mgmt.png
   :align: center  
+  :scale: 50% 
+
 
 VLAN Tagging for the Management Port via CLI
 --------------------------------------------
@@ -107,6 +109,7 @@ To add 802.1Q VLAN tagging to the management port you must first create a **mgmt
 
 .. image:: images/rseries_security/mgmt-vlans-webui.png
   :align: center 
+  :scale: 50% 
 
 In the example below, a tagged VLAN using the VLAN tag 500 is added. 
 
@@ -118,6 +121,7 @@ Once the mgmt-vlan object is created it can be added to the **System Settings > 
 
 .. image:: images/rseries_security/mgmt-interface.png
   :align: center
+  :scale: 50% 
 
 Under the **Management VLAN** section, select the VLAN that you configured in the previous step.
 
@@ -462,20 +466,15 @@ You can configure **Allow List** entries in the webUI under the **System Setting
 
 .. image:: images/rseries_security/image2.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
 
 .. image:: images/rseries_security/image3.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
-In newer releases, the allowed IP functionality has been moved to the **System Settings -> Security** page as seen below.
-
-.. image:: images/rseries_monitoring_snmp/image1a.png
-  :align: center
-  :scale: 70%  
 
 Setting F5OS Primary Key
 ======================== 
@@ -569,7 +568,7 @@ The management interface will now use the self-signed certificate you just creat
 
 .. image:: images/rseries_security/imagecert.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
 To create a Certificate Signing Request (CSR) via the CLI use the **system aaa tls create-csr** command.
@@ -664,14 +663,14 @@ In newer versions of F5OS the Certificate Management is now under the **Authenti
 
 .. image:: images/rseries_security/imagecert2a.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
 The screen below shows the options when creating a self-signed certificate. 
 
 .. image:: images/rseries_security/imagecert3.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 If you choose the **Store TLS** option of **False** then the certificate details will be displayed, and you will be given the option to copy them to the clipboard. If you want to store them on the system, then set the **Store TLS** option to **True**.
 
@@ -679,7 +678,7 @@ If you choose the **Store TLS** option of **False** then the certificate details
   :align: center
   :scale: 70%
 
-You can then use the **Show** options to display the current certificate, key, and details. Paste the text into the respective text boxes to add a certificate. TLS Key Passphrase is only required if TLS Key is in encrypted format. 
+You can then use the slider option on the right hand side to review the current certificate, or the edit button in the upper right hand corner to see the certificate and key. 
 
 .. image:: images/rseries_security/imagecert5.png
   :align: center
@@ -701,9 +700,13 @@ After clicking **Save** the CSR will appear, and you will be able to **Copy to C
   :align: center
   :scale: 70%
 
-When you install an SSL certificate on the system, you also install a certificate authority (CA) bundle, which is a file that contains root and intermediate certificates. The combination of these two files completes the SSL chain of trust.
+When you install an SSL certificate on the system, you can also install a certificate authority (CA) bundle, which is a file that contains root and intermediate certificates. The combination of these two files completes the SSL chain of trust.
 
 .. image:: images/rseries_security/imageca1.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_security/imageca2.png
   :align: center
   :scale: 70%
 
