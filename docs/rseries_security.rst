@@ -3177,7 +3177,7 @@ See the section above about configuration of the certificate before moving on. I
 
 .. image:: images/rseries_security/client-cert1.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 **More Details to Come**
@@ -3218,7 +3218,7 @@ To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics
 
 .. image:: images/rseries_security/imageproxy1.png
   :align: center
-  :scale: 70%  
+  :scale: 50%  
 
 To add a proxy server for license activation via the webUI, go to the **System Settings -> Licensing** page. 
 
@@ -3326,7 +3326,7 @@ First you must configure the remote syslog destination. As part of that configur
 
 .. image:: images/rseries_security/audit-logging.png
   :align: center
-  :scale: 70%  
+  :scale: 50%  
 
 Configuration of Audit Logs via F5OS API (F5OS-A 1.4.0 and Later)
 -----------------------------------------------------------------
@@ -3538,14 +3538,14 @@ In the current F5OS releases, you cannot view the F5OS audit.log file directly f
 
 .. image:: images/rseries_security/image10.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 If you want to download the main **audit.log**, select the directory **/log/system**.
 
 
 .. image:: images/rseries_security/image11.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 
 Viewing Audit Logs via F5OS API
@@ -3864,16 +3864,16 @@ You can download either of the audit.log files from the **System -> File Utiliti
 
 .. image:: images/rseries_security/imageaudit1.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 Inside the audit directory you can then select the audit.log and then either **Download** to copy the file to your local machine via the browser or select **Export** to copy to a remote HTTPS server.
 
 .. image:: images/rseries_security/imageaudit2.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 You can also select the **log/system** path to download the system audit.log.
 
 .. image:: images/rseries_security/imageaudit3.png
   :align: center
-  :scale: 70%
+  :scale: 90%
