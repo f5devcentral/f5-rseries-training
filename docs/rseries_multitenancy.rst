@@ -9,7 +9,7 @@ Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by
 
 .. image:: images/rseries_multitenancy/image1.png
   :align: center
-  :scale: 80%
+  :scale: 70%
 
 Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed like how a vCMP guest is managed on an iSeries appliance. 
 
@@ -28,7 +28,7 @@ For additional detail on how many MAC addresses are supported per rSeries platfo
 
 .. image:: images/rseries_multitenancy/mac-data.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
 
 For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. You can assign a specific number of vCPUs to the tenant and the memory will auto-adjust, or utilize Advanced mode if you'd like to customize the memory. You can also customize the *Virtual Disk Size*, but it must match at least the minimum size for the Image Type that was chosen.
@@ -254,7 +254,7 @@ The r5920-DF has 32 vCPUs total, 6 vCPUs reserved for F5OS, and 26 vCPUs left ov
 
 .. image:: images/rseries_multitenancy/image-r5920-DF.png
   :align: center
-  :scale: 60%
+  :scale: 70%
 
 r4000 Series Multitenancy
 ==========================
