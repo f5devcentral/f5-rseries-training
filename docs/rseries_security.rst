@@ -1215,7 +1215,7 @@ When a user logs in with the **user** role assigned, they can view configuration
 
 .. image:: images/rseries_security/guest-user-restricted.png
   :align: center
-  :scale: 70%  
+  :scale: 90%  
 
 
 Resource-Admin & Guest User Role via API
@@ -1926,9 +1926,15 @@ You'll see output similar to the example below.
 Configuring SSH and CLI Timeouts & Deny Root SSH Settings via webUI
 ------------------------------------------
 
-The CLI timeout and deny-root-ssh settings are both configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
+The CLI and SSH timeouts and deny-root-ssh settings are all configurable in the webUI. The **deny-root-ssh** option can be configured in the **Shell & LCD Access** section of the **System Settings -> System Security** page.
 
 .. image:: images/rseries_security/deny-root-ssh.png
+  :align: center
+  :scale: 70%
+
+The CLI and SSH timeouts are configurable under the **Services** section of the **System Settings -> System Security** page.
+
+.. image:: images/rseries_security/cli-ssh-timeouts.png
   :align: center
   :scale: 70%
 
@@ -2181,7 +2187,7 @@ With basic authentication enabled (default setting), you can make any API call u
 
 .. image:: images/rseries_security/imagebasicauth.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 While basic auth is enabled, any API call using username/password will complete successfully. After disabling basic auth, any attempt to access an API endpoint other than the root /api URI using basic auth will fail with a message like the one below indicating **access denied**.
 
@@ -2423,7 +2429,7 @@ Local Password Policies can be set in the CLI using the **system aaa password-po
 Setting Password Policies via webUI
 ---------------------------------
 
-Local Password Policies can be set in the **User Management -> Authentication Settings** page in the webUI.
+Local Password Policies can be set in the **Password Configuration** section of the **Authentication & Access -> Authentication Settings** page in the webUI.
 
 .. image:: images/rseries_security/passwordpolicy1.png
   :align: center
@@ -2999,9 +3005,11 @@ You can configure which ciphers are used when connecting to the F5OS management 
   :align: center
   :scale: 70%  
 
+For F5OS 2.0 you can now configure different TLS versions such as **TLS1.2** or **TLS1.3** for httpd access. There is more granular access to individual ciphers if needed. For sshd you can configure **sshd ciphers**, **sshd KEX Algorithms**, **sshd MAC Algorithms** and **sshd Host Key Algorithms**.
 
-
-
+.. image:: images/rseries_security/security-ciphers1.png
+  :align: center
+  :scale: 70%  
 
 Configuring Management Ciphers via API
 --------------------------------------
