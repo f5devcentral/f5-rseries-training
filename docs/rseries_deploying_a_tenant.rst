@@ -733,11 +733,11 @@ You can view a more detailed tenant status using the **Tenant Management > Tenan
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 .. image:: images/rseries_deploying_a_tenant/image80-a.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 At this point, the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI and then click on **Tenant Overview** to see the running tenants. There is a hyperlink that will connect to the tenant's webUI IP address as seen below.
@@ -1601,13 +1601,13 @@ To delete a tenant from the webUI, go to the **Tenant Management > Tenant Deploy
 
 .. image:: images/rseries_deploying_a_tenant/image88.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 You will be prompted before confirming the delete:  
 
 .. image:: images/rseries_deploying_a_tenant/image89.png
   :align: center
-  :scale: 70%   
+  :scale: 60%   
 
 Deleting a Tenant via the API
 -----------------------------
