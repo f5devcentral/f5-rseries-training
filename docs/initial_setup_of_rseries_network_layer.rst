@@ -33,19 +33,19 @@ The **Tenant Overview** tab will provide a visual representation of all tenants 
 
 .. image:: images/initial_setup_of_rseries_network_layer/tenant-overview.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 The **Network** tab will provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r5900 which has 6 vCPUs dedicated to the F5OS/Datamover functions. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 For reference below is the architecture of the r5900. Note that there are 6 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
 
@@ -65,7 +65,7 @@ The  **Active Alarms** tab will display any active alerts or alarms for the syst
 
 .. image:: images/initial_setup_of_rseries_network_layer/image4.png
   :align: center
-  :scale: 60% 
+  :scale: 50% 
 
 -----------------------------
 F5OS Networking Configuration
@@ -83,7 +83,7 @@ Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) y
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
-  :scale: 70% 
+  :scale: 60% 
 
 Configuring PortGroups from the webUI
 -----------------------------------
@@ -986,13 +986,13 @@ Interface numbering will vary depending on which rSeries model is being used. In
 
 .. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
-  :scale: 80% 
+  :scale: 90% 
 
 Below is an r10000/r12000 appliance.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image8.png
   :align: center
-  :scale: 80% 
+  :scale: 90% 
 
 The r2000 and r4000 appliances have a total of 8 ports labeled **1.0** - **8.0**
 
