@@ -2771,7 +2771,7 @@ To enable NTP authentication in the webUI use the **System Settings -> Time Sett
 
 .. image:: images/rseries_security/ntpauth1.png
   :align: center
-  :scale: 70%  
+  :scale: 60%  
 
 Enabling NTP Authentication via API
 -----------------------------------
@@ -3003,7 +3003,7 @@ You can configure which ciphers are used when connecting to the F5OS management 
 
 .. image:: images/rseries_security/security-ciphers.png
   :align: center
-  :scale: 70%  
+  :scale: 60%  
 
 For F5OS 2.0 you can now configure different TLS versions such as **TLS1.2** or **TLS1.3** for httpd access. There is more granular access to individual ciphers if needed. For sshd you can configure **sshd ciphers**, **sshd KEX Algorithms**, **sshd MAC Algorithms** and **sshd Host Key Algorithms**.
 
