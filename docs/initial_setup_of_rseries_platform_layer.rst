@@ -1715,7 +1715,7 @@ Once the qkview is generated, you can click the checkbox next to it, and then se
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image25.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image26.png
   :align: center
@@ -1815,15 +1815,15 @@ Under the **User Management -> Server Groups*** page you may define **Server Gro
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image35.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image36.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image37.png
   :align: center
-  :scale: 70%  
+  :scale: 50%  
 
 Users
 =====
@@ -1836,9 +1836,9 @@ Under the **Authentication & Access -> Users & Roles** page Local Users may be d
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image39.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image40.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
