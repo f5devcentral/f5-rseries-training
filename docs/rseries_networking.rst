@@ -351,4 +351,4 @@ To configure the port profiles in the WebUI go to the **Network Settings > Port 
 
 .. image:: images/rseries_networking/image13.png
   :align: center
-  :scale: 100% 
+  :scale: 70% 
