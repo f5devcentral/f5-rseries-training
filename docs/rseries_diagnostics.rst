@@ -30,7 +30,7 @@ qkview Creation and Upload via webUI
 ----------------------------------
 
 
-A qkview file for the F5OS layer can be generated from the **System Settings > System Reports** page.I newer F5OS releases this has been relocated to the **Diagnostics** -> **System Reports** page.  Once finished it can also be uploaded to iHealth. 
+A qkview file for the F5OS layer can be generated from the **Diagnostics > System Reports** page. In newer F5OS releases this has been relocated to the **System Monitoring** -> **System Reports** page.  Once finished it can also be uploaded to iHealth. 
 
 .. image:: images/rseries_diagnostics/image1.png
   :align: center
@@ -43,9 +43,7 @@ To generate a qkview, click on the button in the upper right-hand corner. It wil
   :align: center
   :scale: 70%
 
-.. image:: images/rseries_diagnostics/image3.png
-  :align: center
-  :scale: 70%
+
 
 qkview Creation and Upload via CLI
 ----------------------------------
