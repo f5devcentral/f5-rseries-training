@@ -17,13 +17,13 @@ rSeries follows a similar behavior as far as tenants inheriting VLANs from the F
 
 .. image:: images/rseries_inside_the_tenant/image1.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 These are the VLANs as they appear in the F5OS platform layer. Notice that the tenant does not see all VLAN’s, only the ones that are assigned to it by the administrator:
 
 .. image:: images/rseries_inside_the_tenant/image2.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
 Interface Behavior
@@ -36,7 +36,7 @@ Generally, the r2000/r4000 appliances follow these same principles, but due to s
 
 .. image:: images/rseries_inside_the_tenant/image4.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 If you were to look inside the tenant, you'll notice that the number of interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer, and you do not configure interfaces or LAGS inside and F5OS tenant.
 
@@ -59,8 +59,6 @@ Those same 4 interfaces can be seen at the F5OS layer, but they are numbered 5.0
   :scale: 50%
 
 Since the r2000/r4000 architecture allows the tenant to see the physical interface, this means that the tenant's interface stats will reflect the physical interfaces stats, although the numbers may not be in sync as the interface may have been up longer than the tenant.
-
-This can be seen in the F5OS interface stats below. Note interfaces 5.0 and 7.0 show statistics incrementing.
 
 .. image:: images/rseries_inside_the_tenant/image10.png
   :align: center
