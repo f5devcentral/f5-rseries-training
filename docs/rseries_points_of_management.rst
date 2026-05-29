@@ -33,7 +33,7 @@ Comparing the management of a non-VCMP (bare metal) iSeries or VIPRION to rSerie
 
 .. image:: images/rseries_points_of_management/image4.png
   :align: center
-  :scale: 50%
+  :scale: 80%
 
 VLANs are created in the F5OS platform layer, and then they can be assigned to separate interfaces or LAGs. When a tenant is created, the administrator can then assign one or more of those VLANs to be accessible by the F5OS tenant. Once the tenant is deployed the configured VLANs will automatically be inherited and will show up in the VLAN configuration inside TMOS. VLANs will automatically show up in Route Domain 0 by default. If you need to assign these VLANs to another Route Domain inside the tenant, then you may delete them from Route Domain 0 inside TMOS and then recreate them with the same VLAN ID inside the proper Route Domain, and connectivity will be restored to the lower F5OS layer. This is the same behavior a vCMP guest would have inside of VIPRION or iSeries as outlined in the following link.
 
@@ -50,7 +50,7 @@ Monitoring for a bare metal iSeries of VIPRION is all done within TMOS, whereas 
 
 .. image:: images/rseries_points_of_management/image6.png
   :align: center
-  :scale: 50%
+  :scale: 80%
 
 
 There are some architectural differences between the r5000/r10000 appliances and the r2000/r4000 appliances that manifest slightly different behavior inside an F5OS tenant. In general, F5OS tenants in the r5000/r10000 platforms have no visibility into the underlying physical interfaces or LAGs that are configured at the F5OS layer. The tenant will be connected to specific interfaces or LAGs based on its VLAN membership. The only exception to this is the HA Group functionality inside the tenant, which has visibility into LAG state and membership to facilitate proper redundancy/failover. 
@@ -60,7 +60,7 @@ Generally, the r2000/r4000 appliances follow these same principles, but due to s
 
 .. image:: images/rseries_inside_the_tenant/image4.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 If you were to look inside the tenant, you'll notice that the number of Interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer.  
 
