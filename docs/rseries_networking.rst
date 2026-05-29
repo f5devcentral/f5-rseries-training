@@ -253,19 +253,19 @@ Below is an example of the total external front panel theoretical bandwidth exce
 
 .. image:: images/rseries_networking/image5.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 There are static mappings of external ports to specific internal pipelines. If you are not using all ports, you can spread the used ports over the different pipelines by choosing different front panel ports to avoid possible oversubscription scenarios. Below shows the total pipelines and ports for the r5000 appliances.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 the diagram below shows the 4 total pipelines and ports for the r10000 appliances.
 
 .. image:: images/rseries_networking/image7.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
  
 
@@ -273,7 +273,7 @@ You can view the front panel port to pipeline mapping in the CLI, webUI, or API 
 
 .. image:: images/rseries_networking/image8.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
 Below is the CLI command to display the pipelines:
 
@@ -298,7 +298,7 @@ The hardware architecture in the r2000 and r4000 appliances is different than th
 
 .. image:: images/rseries_networking/image9.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 The r2000 and r4000 appliances support the configuration of 3 different port profiles. 
 
@@ -349,4 +349,4 @@ To configure the port profiles in the WebUI go to the **Network Settings > Port 
 
 .. image:: images/rseries_networking/image13.png
   :align: center
-  :scale: 80% 
+  :scale: 100% 
