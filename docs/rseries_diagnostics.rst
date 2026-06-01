@@ -400,14 +400,14 @@ In the current release you cannot view the F5OS logs directly from the webUI, al
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 If you want to download the main **platform.log**, select the directory **/log/system**.
 
 
 .. image:: images/rseries_diagnostics/image5.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 Downloading Logs from the API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

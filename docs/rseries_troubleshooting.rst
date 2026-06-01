@@ -2085,7 +2085,7 @@ Within the webUI there are multiple locations where you can see the individual i
 
 .. image:: images/rseries_troubleshooting/dashboard_network.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 To see the full interface status, along with configuration items like Enable State, Operational Status, Speed, MAC Address, Native VLAN, and Trunk VLANs go to the **Network Settings -> Interfaces** page.
 
