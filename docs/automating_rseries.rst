@@ -38,6 +38,14 @@ Ansible collections have been created for F5OS for some of the more common tasks
 
 `F5 Professional Services F5OS modules Ansible collection <https://f5devcentral.github.io/f5-ps-ansible/>`_
 
+
+Migration Ansible Collection
+============================
+
+In addition to the Journeys tool and the platform-migrate utility, there is a migration based Ansible collection that can be leveraged to both setup F5OS on a target rSeries system, and migrate a configuration into an F5OS based TMOS tenant:
+
+`Modernizing F5 Platforms with Ansible <https://community.f5.com/kb/technicalarticles/modernizing-f5-platforms-with-ansible/341973>`_
+
 F5OS Terraform Provider
 =======================
 
