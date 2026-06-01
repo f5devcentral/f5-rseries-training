@@ -3073,7 +3073,7 @@ The system will send a trap anytime there is a failed login to one of the F5OS u
 
 .. code-block:: bash
 
-    r0900-1-gsa# file show log/system/snmp.log | include login-failed
+    r10900-1-gsa# file show log/system/snmp.log | include login-failed
 
     <INFO> 28-Aug-2024::10:43:31.003 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902947 10.255.80.251:162 (TimeTicks sysUpTime=134357)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:43:31.000008955 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.104.35)
 
@@ -3094,7 +3094,7 @@ The self-signed-key failed to be decrypted when the platform key is corrupted. T
 
 .. code-block:: bash
 
-    r0900-1-gsa# file show log/system/snmp.log | include self-signed-key-decryption-failure
+    r10900-1-gsa# file show log/system/snmp.log | include self-signed-key-decryption-failure
 
 
 Interface / Optic Related Traps
