@@ -225,7 +225,7 @@ rSeries systems ship from the factory with a specific power cord type based on t
 
 For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**. This is a 10A cable.
 
-The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that there is no notch in the plug. 
 
 .. image:: images/rseries_appliances/c13c15.png
   :align: center
@@ -285,7 +285,7 @@ rSeries systems ship from the factory with a specific power cord type based on t
 
 For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**. This is a 10A cable.
 
-The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that there is no notch in the plug. 
 
 .. image:: images/rseries_appliances/c13c15.png
   :align: center
@@ -336,7 +336,7 @@ rSeries systems ship from the factory with a specific power cord type based on t
 
 For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**. This is a 10A cable.
 
-The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that there is no notch in the plug. 
 
 .. image:: images/rseries_appliances/c13c15.png
   :align: center
@@ -388,7 +388,7 @@ rSeries systems ship from the factory with a specific power cord type based on t
 
 For customers that have C13 style rack power distribution, you may want to consider ordering a special C13 to C14 style power plug as the standard power plugs shipped with the r5000 units will not work with C13 style outlets. The SKU for the C13 to C14 style power plug is **F5-UPG-CBL-C13TOC14**. This is a 10A cable.
 
-The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that their is no notch in the plug. 
+The r5000, r5920-DF, r4000, and r2000 units have a locking **C13** style connector on its power supplies. You can confirm this is a C13 connector by observing that there is no notch in the plug. 
 
 .. image:: images/rseries_appliances/c13c15.png
   :align: center

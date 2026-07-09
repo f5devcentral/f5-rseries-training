@@ -15,7 +15,7 @@ F5OS Based Platform Layer
 
 A major difference between rSeries and iSeries is the introduction of a new platform layer called F5OS. F5OS allows for some exciting new capabilities and provides a hardware abstraction layer that allows rSeries appliances to run in a multitenant mode similar to how vCMP operated in some iSeries appliances. Multitenancy is now enabled throughout the entire rSeries family (with the exception of the r2600) at no additional cost. This will allow more customers to take advantage of the benefits of multitenancy. With the previous generation iSeries appliances there was a **virtualization tax** where published data sheet numbers would be adjusted down 10-20% to account for the overhead of enabling vCMP/Virtualization. With rSeries, the published data sheet numbers are inclusive of virtualization being enabled, so there is no virtualization tax to adjust for.
 
-From a high level, the new F5OS layer can be compared to the vCMP host layer in iSeries, as it has many similarities. The F5OS layer handles licensing for all **tenants** (in iSeries these were called vCMP Guests), as well as all networking for the appliance, and system parameters. Then, one or more BIG-IP (TMOS)tenants can be deployed and they will operate as completely independent virtualized BIG-IP instances. 
+From a high level, the new F5OS layer can be compared to the vCMP host layer in iSeries, as it has many similarities. The F5OS layer handles licensing for all **tenants** (in iSeries these were called vCMP Guests), as well as all networking for the appliance, and system parameters. Then, one or more BIG-IP (TMOS)tenants can be deployed, and they will operate as completely independent virtualized BIG-IP instances. 
 
 rSeries continues to provide hardware acceleration and offload capabilities in a similar way that iSeries does, however, more modern Field Programmable Gate Arrays (FPGA's), CPU, and crypto offload capabilities have been introduced allowing for greater scalability. The new F5OS platform layer is 100% automatable, with F5OS APIs for every configuration parameter and there are also Ansible and Terraform playbooks/providers to allow for easy initial deployment.
 
@@ -54,7 +54,7 @@ For the 2000 and 4000 models, the number of PAYG tiers remains the same as the c
   :align: center
   :scale: 40%
 
-The r12000-DS family are positioned as turbo SSL appliances, and have a similar 3 tier PAYG structure as the r10000 family.
+The r12000-DS family are positioned as turbo SSL appliances and have a similar 3 tier PAYG structure as the r10000 family.
 
 .. image:: images/rseries_introduction/r12k.png
   :align: center
