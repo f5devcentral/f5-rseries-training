@@ -53,16 +53,24 @@ To set the F5OS primary-key issue the following command in config mode.
 
 .. code-block:: bash
 
-    system aaa primary-key set passphrase <passphrase string> confirm-passphrase <passphrase string> salt <salt string> confirm-salt <salt string>
+    r4800-1-gsa(config)# system aaa primary-key set passphrase 
+    Value for 'passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'salt' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-salt' (<string, min: 6 chars, max: 255 chars>): **************
+    response Info: Key migration is initiated. Use 'show system aaa primary-key state status' to get status
+
+
+r4800-1-gsa(config)#
 
 Note that the hash key can be used to check and compare the status of the primary-key on both the source and the replacement devices if restoring to a different device. To view the current primary-key hash, issue the following CLI command.
 
 .. code-block:: bash
 
-    r10900-1# show system aaa primary-key 
-    system aaa primary-key state hash IWDanp1tcAO+PJPH2Hti6BSvpFKgRvvFpXNZRIAk3JoXhypflBofHc+IJp8LA2SDGCQ2IgE8Z628lGjCWVjBxg==
-    system aaa primary-key state status "COMPLETE        Initiated: Mon Feb 27 13:38:02 2023"
-    r10900-1# 
+    r4800-1-gsa# show system aaa primary-key
+    system aaa primary-key state hash ydXIAhLMIygky3kZ+5dMqYJt9WYw0WjRda7cTBs3fa8clXObzfQbSVPwKAQ9RuPDO0kAqMVxSfrTXlVQTL4iUg==
+    system aaa primary-key state status "COMPLETE        Initiated: Tue Jun 23 11:05:13 EDT 2026"
+    r4800-1-gsa#
 
 Backing Up F5OS
 ===============

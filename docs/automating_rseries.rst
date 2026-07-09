@@ -57,6 +57,17 @@ The github location of the Terraform provider files is at the following location
 
 `Terraform Provider F5OS v1.4.0 <https://github.com/F5Networks/terraform-provider-F5OS/releases>`_
 
+
+Zero Touch Provisioning (ZTP)
+====================================
+
+F5OS 2.0 adds Zero Touch Provisioning (ZTP) capabilities to rSeries to help automate initial installation and RMA use cases. With ZTP, the system can acquire a management port IP address via DHCP, and load a preferred software image and basic configuration settings. The system must be running F5OS 2.0 or later in order for ZTP to be enabled and for DHCP to become the default behavior. 
+
+More details on the ZTP implementation for rSeries can be found in the **F5OS 2.0 rSeries Systems: Administration and Configuration Guide** System Settings section :
+
+`Zero Touch Provisioning (ZTP) <https://techdocs.f5.com/en-us/f5os-2-0-0/f5-rseries-systems-administration-configuration/title-system-settings.html#zero-touch-provisioning-ztp>`_
+
+
 Getting Started with F5OS Automation
 ====================================
 
