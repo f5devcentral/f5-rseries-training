@@ -69,7 +69,7 @@ However, the 76GB image is allocated in a sparse manner meaning the tenant is on
   :align: center
   :scale: 80% 
 
-This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc… There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
+This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc.. There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
 
 The Dashboard in the webUI has been enhanced in F5OS-A 1.8.0 to provide more visibility into the tenants usage of disk vs. what they think they have available to them. 
 
@@ -323,7 +323,7 @@ You can view the current tenant images and their status in the F5OS CLI by using
 Creating a Tenant via CLI
 =========================
 
-Tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
+Tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information, you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
 .. code-block:: bash
 
@@ -615,7 +615,7 @@ To see the actual status of the tenants, issue the CLI command **show tenants**.
 Leveraging Cloud-Init via CLI
 =============================
 
-Cloud-Init is the industry standard start-up agent installed on virtual machines to facilitate cloud deployments. F5OS v2.0 added the capability of leveraging **cloud-init** to define certain BIG-IP configuration items via a cloud-init script that is run when the TMOS tenant boots. You can speed up the initialization of your BIG-IP instance by passing user-data to perform tasks like onboarding and configuring BIG-IP. For example, to pass user-data you can use a bash startup script or cloud-init’s built-in yaml-based configuration file, a cloud-config file. More details on cloud-init usgae on BIG-IP VE can be found here:
+Cloud-Init is the industry standard start-up agent installed on virtual machines to facilitate cloud deployments. F5OS v2.0 added the capability of leveraging **cloud-init** to define certain BIG-IP configuration items via a cloud-init script that is run when the TMOS tenant boots. You can speed up the initialization of your BIG-IP instance by passing user-data to perform tasks like onboarding and configuring BIG-IP. For example, to pass user-data you can use a bash startup script or cloud-init’s built-in yaml-based configuration file, a cloud-config file. More details on cloud-init usage on BIG-IP VE can be found here:
 
 `Cloud-Init and F5 BIG-IP Virtual Edition <https://clouddocs.f5.com/cloud/public/v1/shared/cloudinit.html>`_
 
@@ -762,7 +762,7 @@ Now login with the new admin password, and you'll be brought into the initial se
   :align: center
   :scale: 80% 
 
-At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.    
+At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings and then use AS3 to automate application deployments.    
 
 Tenant Deployment via API
 ---------------------------
@@ -1199,7 +1199,7 @@ Next click on the hyperlink for tenant1. This will bring you into the configurat
   :align: center
   :scale: 50% 
 
-Click on the **Edit** button to alter the configuration onf the tenant.
+Click on the **Edit** button to alter the configuration on the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image87.png
   :align: center

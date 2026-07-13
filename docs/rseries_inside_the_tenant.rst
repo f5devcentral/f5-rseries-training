@@ -38,7 +38,7 @@ Generally, the r2000/r4000 appliances follow these same principles, but due to s
   :align: center
   :scale: 50%
 
-If you were to look inside the tenant, you'll notice that the number of interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer, and you do not configure interfaces or LAGS inside and F5OS tenant.
+If you were to look inside the tenant, you'll notice that the number of interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer, and you do not configure interfaces or LAGs inside and F5OS tenant.
 
 .. image:: images/rseries_inside_the_tenant/image3.png
   :align: center

@@ -127,7 +127,7 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
     Commit complete.
 
 
-**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies so the unit is powered off, using the AOM menus is not sufficient.**
+**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies, so the unit is powered off, using the AOM menus is not sufficient.**
 
 F5OS 2.0 adds an additional option for customers who can't use RFC6598 address space or one of the RFC1918 address spaces above. A new option of 172.16.0.0/12 is now available as seen below.
 
@@ -197,7 +197,7 @@ If you are running F5OS 2.0 or later then a new more modernized WebUI has been i
   :scale: 70%
 
 
-If you navigate to **System Settings -> Management Interface** Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. If you want to utilize the 802.1Q VLAN tagging support on the Management port that was added in F5OS 2.0 you can configure **Management VLANs**. You can also view the management interface stats on the bottom of this page. Click the icons in the upper right hand corner of any section to edit any of the settings. 
+If you navigate to **System Settings -> Management Interface** Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. If you want to utilize the 802.1Q VLAN tagging support on the Management port that was added in F5OS 2.0 you can configure **Management VLANs**. You can also view the management interface stats on the bottom of this page. Click the icons in the upper right-hand corner of any section to edit any of the settings. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
@@ -284,7 +284,7 @@ Example of API call using port 443. Replace **/restconf** with **/api**.
     https://{{rseries_rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
 
  
-You can send a standard API call with user/password-based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
+You can send a standard API call with user/password-based authentication (basic auth) and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5a.png
   :align: center
@@ -999,7 +999,7 @@ When done examining the logs, you can run the same API call, but the body will b
 Licensing the rSeries Appliance
 -------------------------------
 
-Licensing for the rSeries device is handled at the F5OS level. This is similar to vCMP licensing where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
+Licensing for the rSeries device is handled at the F5OS level. This is similar to vCMP licensing where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP and instead runs tenancy on top of F5OS.
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
@@ -1572,7 +1572,7 @@ To get the current licensing status via API use the following API call. Issue a 
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing
 
-The reponse will be similar to the output below:
+The response will be similar to the output below:
 
 .. code-block:: json
 
@@ -1627,7 +1627,7 @@ Under **System Settings -> Management Interface** you can view/edit the IP addre
 Software Management
 ===================
 
-The F5OS platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade F5OS to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
+The F5OS platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade F5OS to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now, F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image15.png
   :align: center
@@ -1668,7 +1668,7 @@ The **System Monitoring > File Utilities** page allows for importing or exportin
   :align: center
   :scale: 70%
 
-The **Import/Export** utility requires an external HTTPS server to copy to/from or you may **Upload/Download** directly to your browser. For Import/Export, a pop-up will be displayed asking for remote HTTPS server information. 
+The **Import/Export** utility requires an external HTTPS server to copy to/from, or you may **Upload/Download** directly to your browser. For Import/Export, a pop-up will be displayed asking for remote HTTPS server information. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image19.png
   :align: center
@@ -1727,7 +1727,7 @@ Once the qkview is generated, you can click the checkbox next to it, and then se
   :align: center
   :scale: 70%
 
-If you would like to store iHealth credentials within the configuration you may do so via the CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a username and password.
+If you would like to store iHealth credentials within the configuration you may do so via the CLI. Enter config mode and then use the **system diagnostics ihealth config** command to configure a username and password.
 
 .. code-block:: bash
 

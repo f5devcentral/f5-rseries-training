@@ -162,7 +162,7 @@ rSeries 100Gb QSFP28 SKU's
 
 Below are the **current** rSeries optic SKUs:
 
-.. Note:: Some older SKU's may operate in rSeries, but are no longer available to purchase. They are listed in the following document.
+.. Note:: Some older SKU's may operate in rSeries but are no longer available to purchase. They are listed in the following document.
   
 `K6097: Specifications of the Fiber Gigabit Ethernet SFP, XFP, SFP+, QSFP+, and QSFP28 module ports on BIG-IP system platforms <https://my.f5.com/manage/s/article/K6097>`_
 
@@ -247,7 +247,7 @@ An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP M
 Pipelines (r5000 and r10000 only)
 =================================
 
-The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowledge of pipelines and planning will avoid any possible internal oversubscription scenarios.
+The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's, and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load; ideally proper knowledge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
 If all ports are utilized and running at max bandwidth capacity simultaneously this may result in an over-subscription if the maximum bandwidth for one of the internal pipelines is achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal pipelines is static and not configurable, although F5 may make this a configurable option in the future.
 

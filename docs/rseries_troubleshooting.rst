@@ -149,7 +149,7 @@ To find out how these volumes maps to points in the F5OS filesystem run the **ls
       └─velocity-swap                    253:1    0     1G  0 lvm   
 
 
-Note that the nvme1n1p2 partition above is 232.9Gb in size, but within it, it has a vdo / lvm with a size of 465.4Gb which is bigger than the physical capacity of that partition. VDO is a Virtual Data Optimizier, it is a device mapper target that provides inline data reduction services on block storage, specifically targeting data deduplication, compression, and thin provisioning. 
+Note that the nvme1n1p2 partition above is 232.9Gb in size, but within it, it has a vdo / lvm with a size of 465.4Gb which is bigger than the physical capacity of that partition. VDO is a Virtual Data Optimizer, it is a device mapper target that provides inline data reduction services on block storage, specifically targeting data deduplication, compression, and thin provisioning. 
 
 Here is what VDO does:
 
@@ -523,7 +523,7 @@ There is one Kubernetes node in the rSeries K3S architecture. You can view the s
 Namespaces
 ---------
 
-In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example, services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsonsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace. Run the command **kubectl describe node** to see all the pods and their associated namespaces.
+In rSeries, everything runs within a Kubernetes namespace. Different namespaces are used for different functions. As an example, services such as flannel, multus, and coredns run inside the **kube-system** namespace. The **kube-virt** namespace is repsponsible for the management of F5OS tenants. The F5OS tenants themselves run inside the **default** namespace. Run the command **kubectl describe node** to see all the pods and their associated namespaces.
 
 .. code-block:: bash
 
@@ -825,7 +825,7 @@ To view console logs of a pod issue the command **kubectl logs <podname> -n <nam
   default       virt-launcher-tenant2-1-99b54                 1/1     Running   0          6h9m
   [root@appliance-1(r10900.f5demo.net) ~]#
 
-An example gettings logs for the pod **virt-launcher-dummy-1-5z55d** in the **default** namespace.
+An example; getting logs for the pod **virt-launcher-dummy-1-5z55d** in the **default** namespace.
 
 .. code-block:: bash
 
@@ -2093,7 +2093,7 @@ To see the full interface status, along with configuration items like Enable Sta
   :align: center
   :scale: 70%
 
-To see interface statistics, go to the **Network Settings -> Interface Statistics Page** page. Hre you can manually, or automatically refresh the stats during troubleshooting.
+To see interface statistics, go to the **Network Settings -> Interface Statistics Page** page. Here, you can manually or automatically refresh the stats during troubleshooting.
 
 .. image:: images/rseries_troubleshooting/webui_interface_stats.png
   :align: center
@@ -2105,7 +2105,7 @@ You may also want to verify the portgroup configuration matches the optics that 
   :align: center
   :scale: 70%   
 
-Link Aggreagation Groups
+Link Aggregation Groups
 ------------------------
 
 
@@ -2122,7 +2122,7 @@ LLDP
 Tenants
 =======
 
-- How to determine which vCPU's Tenants are running on?
+- How to determine which vCPUs Tenants are running on?
 
 
 Performance and Utilization

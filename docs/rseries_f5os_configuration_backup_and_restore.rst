@@ -6,7 +6,7 @@ rSeries Configuration Backup and Restore
 F5OS & TMOS Configuration Backup Overview
 =========================================
 
-To completely backup the rSeries system, you’ll need to backup each tenant TMOS configuration first, and then back up the F5OS configuration. Tenant backup utilizes the same backup and recovery procedures as existing BIG-IP devices/guests because the tenants themselves are running TMOS. For the F5OS layer a different backup mechanism is utilized because F5OS configuration management is based on ConfD.  
+To completely backup the rSeries system, you’ll need to backup each tenant TMOS configuration first and then back up the F5OS configuration. Tenant backup utilizes the same backup and recovery procedures as existing BIG-IP devices/guests because the tenants themselves are running TMOS. For the F5OS layer a different backup mechanism is utilized because F5OS configuration management is based on ConfD.  
 
 The ConfD process manages the F5OS configuration on an rSeries system. The system stores the configuration in its configuration database (CDB).
 
@@ -150,7 +150,7 @@ In the webUI, use the **System Settings -> File Utilities** page and from the dr
   :align: center
   :scale: 70%
 
-Additionally, in newer F5OS releases you can download right from the **Configuration Backup** page. Each file will have a **Download** option next ot it.
+Additionally, in newer F5OS releases you can download right from the **Configuration Backup** page. Each file will have a **Download** option next to it.
 
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/download.png
@@ -344,13 +344,13 @@ To download a specific config file, use the following API call.
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
 
-For the **Headers** secion of the Postman request be sure to add the following headers:
+For the **Headers** section of the Postman request be sure to add the following headers:
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/configheaders.png
   :align: center
   :scale: 70%
 
-In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the configuration file named **jim-july** file that resides in the **configs/** directory.
+In the body of the API call select **form-data** and then enter the key/value pairs as seen below. The example provided will download the configuration file named **jim-july** file that resides in the **configs/** directory.
 
 .. image:: images/rseries_f5os_configuration_backup_and_restore/configfile.png
   :align: center
