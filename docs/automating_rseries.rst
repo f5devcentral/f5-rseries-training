@@ -2,7 +2,7 @@
 Automating F5OS on rSeries 
 ===========================================
 
-Since F5OS is an API first architecture, everything is automatable at the F5OS layer. There are F5OS API's for every function, and the GUI and CLI are built on top of the API. API reference materials are published on clouddocs.f5.com in addition to the most common API workflows. In addition, Terraform providers and Ansible collections are also available for F5OS, and more functionality is being added with each release of those packages.
+Since F5OS is an API first architecture, everything is automatable at the F5OS layer. There are F5OS API's for every function, and the webUI and CLI are built on top of the API. API reference materials are published on clouddocs.f5.com in addition to the most common API workflows. In addition, Terraform providers and Ansible collections are also available for F5OS, and more functionality is being added with each release of those packages.
 
 If you want to see what API functions are available you can view the API reference documentation for the specific F5OS version you are running. As you can see, rSeries / F5OS-A have its own API reference pages and F5OS-C / VELOS have similar pages, most of the API calls are common except for those that are specific to the platform.
 
@@ -38,6 +38,14 @@ Ansible collections have been created for F5OS for some of the more common tasks
 
 `F5 Professional Services F5OS modules Ansible collection <https://f5devcentral.github.io/f5-ps-ansible/>`_
 
+
+Migration Ansible Collection
+============================
+
+In addition to the Journeys tool and the platform-migrate utility, there is a migration based Ansible collection that can be leveraged to both setup F5OS on a target rSeries system, and migrate a configuration into an F5OS based TMOS tenant:
+
+`Modernizing F5 Platforms with Ansible <https://community.f5.com/kb/technicalarticles/modernizing-f5-platforms-with-ansible/341973>`_
+
 F5OS Terraform Provider
 =======================
 
@@ -48,6 +56,17 @@ Terraform providers have been created for F5OS for some of the more common tasks
 The github location of the Terraform provider files is at the following location.
 
 `Terraform Provider F5OS v1.4.0 <https://github.com/F5Networks/terraform-provider-F5OS/releases>`_
+
+
+Zero Touch Provisioning (ZTP)
+====================================
+
+F5OS 2.0 adds Zero Touch Provisioning (ZTP) capabilities to rSeries to help automate initial installation and RMA use cases. With ZTP, the system can acquire a management port IP address via DHCP and load a preferred software image and basic configuration settings. The system must be running F5OS 2.0 or later in order for ZTP to be enabled and for DHCP to become the default behavior. 
+
+More details on the ZTP implementation for rSeries can be found in the **F5OS 2.0 rSeries Systems: Administration and Configuration Guide** System Settings section :
+
+`Zero Touch Provisioning (ZTP) <https://techdocs.f5.com/en-us/f5os-2-0-0/f5-rseries-systems-administration-configuration/title-system-settings.html#zero-touch-provisioning-ztp>`_
+
 
 Getting Started with F5OS Automation
 ====================================
@@ -68,7 +87,7 @@ Example of API call using port 443. Replace **/restconf** with **/api**.
     https://{{rseries_rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
 
  
-You can send a standard API call with user/password-based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
+You can send a standard API call with user/password-based authentication (basic auth) and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5a.png
   :align: center

@@ -3,23 +3,48 @@ rSeries Multitenancy
 ====================
 
 
-In previous generation chassis and appliances F5 supported **vCMP** as a means of providing multitenancy and virtualization. vCMP allowed for configuration of **Guests** which were independent virtualized instances of BIG-IP. rSeries provides a similar type of virtualization experience, however it is not based on vCMP.  Instead rSeries will allow for **Tenants** to be created which are virtualized instances of BIG-IP on top of the containerized F5OS layer. 
+In previous generation chassis and appliances, F5 supported **vCMP** as a means of providing multitenancy and virtualization. vCMP allowed for configuration of **Guests** which were independent virtualized instances of BIG-IP. rSeries provides a similar type of virtualization experience, however it is not based on vCMP.  Instead rSeries will allow for **Tenants** to be created which are virtualized instances of BIG-IP on top of the containerized F5OS layer. 
 
 Unlike iSeries, where vCMP is included on some models, rSeries is multitenant by default. There is no option for a “bare metal” configuration. You may configure one large tenant to emulate a “bare-metal” type BIG-IP configuration if required, but it is running one large tenant. Below is a depiction of BIG-IP tenants running on top of the F5OS layer. 
 
 .. image:: images/rseries_multitenancy/image1.png
   :align: center
-  :scale: 80%
+  :scale: 70%
 
 Each tenant will run as a Virtual Machine via a technology called Kubevirt which allows Virtual Machines to run on top of a containerized architecture. The tenant itself will run TMOS, and it will be managed like how a vCMP guest is managed on an iSeries appliance. 
 
-Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a name, a supported TMOS tenant image, out-of-band IP addressing/mask and gateway, and which VLANs the tenant should inherit. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer.
+Creating a tenant on rSeries is nearly identical to creating a vCMP guest on iSeries with a few exceptions. When creating an rSeries tenant, you’ll provide a tenant *Name*, tenant *Type* (BIG-IP) a supported TMOS tenant *Image*, out-of-band IP addressing/mask and gateway. In version 2.0 there is a new option for *Management VLAN* if you choose to use 802.1Q VLAN tagging on rSeries Management port. Just like a vCMP guest the VLANs are configured at provision time and not within the tenant itself, the tenant will inherit specific VLANs configured by the admin that were previously configured at the F5OS platform layer. Here, you can specify which *VLANs* you want the tenant to inherit. For SSLO configurations there is a *Virtual Wire* option where previously defined Virtual Wires in the F5OS layer can be assigned to this specific tenant. 
 
 .. image:: images/rseries_multitenancy/image2.png
   :align: center
   :scale: 70%
 
-For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs (future, currently max tenants is 58) for tenancy.
+There is an optional *MAC Data/MAC Block Size* option which allows an administrator to specify how many unique MAC addresses can be assigned to the tenant. The default is *One* and that is sufficient for most configurations as the same MAC address can be re-used across multiple VLANs. There are use cases like Layer2 SSLO/SSL Break and Inspect where VLANs may be externally bridged together and brought back into the same tenant as a service chain. This may require unique MAC addresses per VLAN to avoid conflicts. There is a limited pool of MAC address that vary by rSeries appliance type, so you may choose *One*, *Small (8)*, *Medium (16)*, *Large (32)*, or *Extra Large (96)*. The Extra Large option was added in F5OS 2.0.
+
+For additional detail on how many MAC addresses are supported per rSeries platform se the following solution article:
+
+`K000133655: MAC address assignment in VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000133655>`_
+
+
+.. image:: images/rseries_multitenancy/mac-data.png
+  :align: center
+  :scale: 80%
+
+
+For resource provisioning you can use **Recommended** settings or **Advanced** settings. Recommended will allocate memory in proportion the number of vCPUs assigned to the tenant. Advanced mode will allow you to customize the memory allocation for this tenant. This is something not possible in previous generation iSeries appliances, but now you can over provision memory assigned to the tenant. You can assign a specific number of vCPUs to the tenant, and the memory will auto-adjust, or utilize Advanced mode if you'd like to customize the memory. You can also customize the *Virtual Disk Size*, but it must match at least the minimum size for the Image Type that was chosen.
+
+See the following for more details on Image Type requirements:
+
+`K45191957: Overview of the BIG-IP tenant image types <https://my.f5.com/manage/s/article/K45191957>`_
+
+Next, you can specify the tenant *State* (Deployed, Configured, or Provisioned), whether you want to use *Crypto/Compression Acceleration* (Recommended Enabled), and whether or not you want the tenant to come up in *Appliance Mode*. F5OS 2.0 also adds the option to tie a *Cloud-Init Reference* to the tenant which can preconfigure certain parameters inside of TMOS as the tenant boots (common examples would be default username/password pairs or login banners). The cloud-init reference would be configured prior to the tenant being provisioned and referenced within the tenant configuration.
+
+.. image:: images/rseries_multitenancy/advanced-provision.png
+  :align: center
+  :scale: 70%
+
+
+The default memory allocations for recommended mode are shown below. Note: Not all rSeries appliances support the maximum number of vCPUs, this will vary by platform. Below is for the r12900-DS platform which supports up to 60 vCPUs for multitenancy.
 
 +------------------------+--------------------+--------------------------+-------------------+-----------------+
 | **Tenant Size**        | **Physical Cores** | **Logical Cores (vCPU)** | **Min Bytes RAM** | **RAM/vCPU**    |
@@ -142,13 +167,13 @@ The r12900-DS has 72 vCPUs total, 12 vCPUs reserved for F5OS, and 60 vCPUs left 
   :align: center
   :scale: 60%
 
-The r12800-DS has 72 vCPUs total, 16 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 52 vCPUs left over for use by tenants:
+The r12800-DS has 72 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 52 vCPUs left over for use by tenants:
 
 .. image:: images/rseries_performance_and_sizing/image11r12000.png
   :align: center
   :scale: 60%
 
-The r10600 has 48 vCPUs total, 8 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 44 vCPUs left over for use by tenants:  
+The r12600-DS has 72 vCPUs total, 16 vCPUs are disabled via licensing, 12 vCPUs reserved for F5OS, and 44 vCPUs left over for use by tenants:  
 
 .. image:: images/rseries_performance_and_sizing/image12r12000.png
   :align: center
@@ -229,7 +254,7 @@ The r5920-DF has 32 vCPUs total, 6 vCPUs reserved for F5OS, and 26 vCPUs left ov
 
 .. image:: images/rseries_multitenancy/image-r5920-DF.png
   :align: center
-  :scale: 60%
+  :scale: 70%
 
 r4000 Series Multitenancy
 ==========================
@@ -283,7 +308,7 @@ Since all r2000 models are running on the same hardware appliance, you can easil
 Tenant Sizing
 =============
 
-Single vCPU (Skinny) tenants are supported on the r5000, r10000, and r12000 appliances, but that option is hidden under **Advanced** mode.This would allow for 60 single vCPU tenants per r12900 appliance, 52 tenants for the r12800, and 44 tenants for the r12600. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. For the r5000 platforms this would allow for 26 single vCPU tenants per r5900 appliance, 18 tenants for the r5800, however the r5600 supports a max of 8 tenants. While single vCPU tenants are supported, they are not recommended for most environments. This is because a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option and ideally for non-production environments. As always proper sizing should be done to ensure the tenant has enough resources. 
+Single vCPU (Skinny) tenants are supported on the r5000, r10000, and r12000 appliances, but that option is hidden under **Advanced** mode. This would allow for 60 single vCPU tenants per r12900 appliance, 52 tenants for the r12800, and 44 tenants for the r12600. This would allow for 36 single vCPU tenants per r10900 appliance, 28 tenants for the r10800, and 24 tenants for the r10600. For the r5000 platforms this would allow for 26 single vCPU tenants per r5900 appliance, 18 tenants for the r5800, however the r5600 supports a max of 8 tenants. While single vCPU tenants are supported, they are not recommended for most environments. This is because a single vCPU tenant is running on a single hyperthread, and performance of a single thread can be influenced by other services running on the other hyperthread of a CPU. Since this can lead to unpredictable behavior only a very lightly loaded LTM/DNS only type tenant should be considered for this option and ideally for non-production environments. As always proper sizing should be done to ensure the tenant has enough resources. 
 
 Tenant States
 =============
@@ -310,6 +335,6 @@ In some previous generation hardware platforms, there is an option to configure 
 
 If you currently utilize the SSL Mode feature where SSL resources can be **Dedicated, Shared, or Isolated** for each vCMP guest, this configuration option is not supported on rSeries at initial release. vCMP guests operate in the default shared mode meaning all guests get equal access to the shared SSL hardware resources. You may configure the SSL Mode to **dedicated** where SSL hardware resources are dedicated to a guest in proportion to the vCPUs assigned to a guest. You may also configure **none**, meaning all SSL processing is done in software.  
   
-In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPUs assigned to the tenant. This is conceptually like how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant and all processing is done in software. An environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
+In rSeries there is no SSL Mode configuration option. By default, you may configure the **Crypto/Compression Acceleration** option when deploying an rSeries tenant. The choices are **enabled** or **disabled**. When enabled the system will assign SSL hardware resources in proportion to the number of vCPUs assigned to the tenant. This is conceptually like how SSL Mode **Dedicated** works on vCMP guests but not 100% the same implementation.  When disabled no SSL hardware resources are assigned to the tenant, and all processing is done in software. An environment currently running in the default shared mode will now be running in a mode that essentially mimics the SSL Mode Dedicated. 
 
 Lastly the tenant may be configured to support **Appliance Mode** which is a security option which disables root and bash access to the tenant.

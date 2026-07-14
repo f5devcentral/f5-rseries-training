@@ -30,17 +30,21 @@ There are 4 different types of tenant images to choose from as seen below; pleas
   :align: center
   :scale: 70% 
 
+.. Note:: F5 changed the way that tenant images are signed in October 2025. You should ensure you download the proper image format based on the version of F5OS you are running. Going forward the **qcow2.zip.bundle** is being replaced in favor of the **tar.bundle** format. Please see the following solution article for more details.
+
+`K000157005: F5 signing certificate and key rotation, October 2025 <https://my.f5.com/manage/s/article/K000157005>`_
+
 The **T1-F5OS** image type should be used with extreme caution. It is the smallest of the image sizes, but it only has one slot/volume (boot location) for TMOS software, meaning it does not support upgrades (not even for hotfixes). This type of image is geared towards more modern environments where pave and nuke strategies are preferred over in-place upgrades.   
 
 .. image:: images/rseries_deploying_a_tenant/image4.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The remaining images (T2-F5OS, ALL-F5OS, T4-F5OS) all support in-place upgrades (they support multiple boot locations); however, they each default to different consumption of disk space that can be used by the tenant. No matter which image you chose you can always expand tenant disk space later using the **Virtual Disk Size** parameter in the tenant deployment options. This will require an outage. Although you can expand the virtual disk, you cannot shrink it, so it is best to not overestimate the image type you need. 
 
 The **T2-F5OS** image is intended for a tenant that will run LTM and or DNS only, it is not suitable for tenants needing other modules provisioned (AVR may be an exception). This type of image is best suited in a high-density tenant environment where the number of tenants is going to be high per appliance and using minimum CPU resources (1 or 2 vCPUs per tenant). You may want to limit the amount of disk space each tenant can use as a means of ensuring the filesystem on the appliance does not become full. As an example, there is 1TB of disk space per r5000 and r10000 appliance, and 36 tenants each using the 142GB T4-F5OS image would lead to an over-provisioning situation. Because tenants are deployed in sparse mode which allows over-provisioning, this may not be an issue initially but could become a problem later in the tenant’s lifespan as it writes more data to the disk. To keep the tenants in check, you can deploy smaller T2-F5OS images which can consume 45GB each. LTM/DNS deployments use much less disk space than other BIG-IP modules, which do extensive local logging and utilize databases on disk.
 
-The **All-F5OS** image is suitable for any module configuration and supports a default of 77GB or 82GB (depending on the TMOS version) for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk space typically require more CPU/memory which will artificially reduce the tenant count per appliance. Having a handful of 76GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space, and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach; it may be best to default using the T4-F5OS image (if tenant density is not too dense) as that is essentially the default size for vCMP deployments today. 
+The **All-F5OS** image is suitable for any module configuration and supports a default of 77GB, with newer releases requiring either 82GB or 83GB (depending on the TMOS version) for the tenant. It is expected that the number of tenants per blade would be much less, as the module combinations that drive the need for more disk space typically require more CPU/memory which will artificially reduce the tenant count per appliance. Having a handful of 83GB or 156GB images per appliance should not lead to an out of space condition. There are some environments where some tenants may need more disk space, and the T4-F5OS image can provide for that. Now that Virtual Disk expansion utilities are available you can always grow the disk consumption later so starting small and expanding later is a good approach; it may be best to default using the T4-F5OS image (if tenant density is not too dense) as that is essentially the default size for vCMP deployments today. 
 
 The **T4-F5OS** image also supports any module combination but has additional disk capacity. If you intend to have lot of software images, databases for modules, run modules like SWG which utilize a lot of disk space, and local logging then the added capacity is recommended. More detail on the image types can be found in the following solution article.
 
@@ -51,36 +55,36 @@ Note that the image sizes in the chart are the default amount of space a tenant 
 
 .. image:: images/rseries_deploying_a_tenant/image5.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 This means the disk consumption on the rSeries disk is much smaller than what appears inside the tenant. In the example below the tenant believes it has 77GB of disk allocated:
 
 .. image:: images/rseries_deploying_a_tenant/image6.png
   :align: center
-  :scale: 70% 
+  :scale: 90% 
 
 However, the 76GB image is allocated in a sparse manner meaning the tenant is only utilizing what it needs and on the filesystem of the appliance it is consuming only 6.4GB on the disk. You can confirm this by logging into the bash shell of F5OS as root. Then listing the contents of the directory **/var/F5/system/cbip-disks**, here you will see directories for each tenant. Enter the command **ls -lsh <tenant-directory-name>** and the output will show the size the tenant thinks it has (76GB) and the actual size used on disk (in this case 6.4GB).
 
 .. image:: images/rseries_deploying_a_tenant/image7.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
-This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc… There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
+This is analogous to thin provisioning in a hypervisor where you can over-allocate resources. vCMP as an example today uses an image similar in size to the T4-F5OS image. There may be rare instances where a tenant running in production for a long time can end up with a lot of extra space consumed on disk. This could be due to many in-place software upgrades, local logging, core files, database use etc.. There is no utility available to reclaim that space that may have been used at one point but is no longer used. If the disk utilization becomes over-utilized, you could back up the tenant configuration, create a new fresh tenant, and restore the configuration from the old tenant, and then delete the old tenant. This would free up all the unused space again.
 
 The Dashboard in the webUI has been enhanced in F5OS-A 1.8.0 to provide more visibility into the tenants usage of disk vs. what they think they have available to them. 
 
 .. image:: images/rseries_deploying_a_tenant/dashboard.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
-There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for **F5OS Tenant Disks** (BIG-IP Tenant) virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality, it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each). Lastly, there is a single BIG-IP Next tenant that has 25GB allocated to it but is currently utilizing 7% of that space.
+There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 57% of the 109.4GB of disk it has dedicated. You can also see that there is 448GB available for **F5OS Tenant Disks** (BIG-IP Tenant virtual disks), and that currently only 12% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality, it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are five BIG-IP tenants. The first one listed has been allocated 82GB of disk, however the actual size on disk is much lower (17.2GB). Most of the other tenants are utilizing less than 10GB of actual space even though they have been allocated much more.
 
 .. NOTE:: Storage utilization and allocation may be different on various rSeries platforms.
 
 
 .. image:: images/rseries_deploying_a_tenant/storage-utilization.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 You may also view the storage utilization from the F5OS CLI using the command **show components**.
 
@@ -247,9 +251,14 @@ Tenant software images are loaded directly into the F5OS platform layer. For the
 
 `K86001294: F5OS hardware/software support matrix <https://my.f5.com/manage/s/article/K86001294>`_
 
-No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions of TMOS happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x and later.
+No other TMOS versions are supported other than hotfixes or rollups based on those versions of software, and upgrades to newer versions of TMOS happen within the tenant itself, not in the F5OS layer. The images inside F5OS are for initial deployment only. rSeries tenants do not support versions 16.0, 16.0 or 17.0, you can run either the minimum 15.1.x release or later for a given platform or any versions 17.1.x, 21.x and later.
 
 Before deploying any tenant, you must ensure you have a proper tenant software release loaded into the F5OS platform layer. If an HTTPS/SCP/SFTP server is not available, you may upload a tenant image using SCP directly to the F5OS platform layer. Simply SCP an image to the out-of-band management IP address using the admin account and a path of **IMAGES**. There are also other upload options available in the webUI (Upload from Browser) or API (HTTPS/SCP/SFTP). Below is an example of using SCP from a remote client.
+
+.. Note:: F5 changed the way that tenant images are signed in October 2025. You should ensure you download the proper image format based on the version of F5OS you are running. Going forward the **qcow2.zip.bundle** is being replaced in favor of the **tar.bundle** format. Please see the following solution article for more details.
+
+`K000157005: F5 signing certificate and key rotation, October 2025 <https://my.f5.com/manage/s/article/K000157005>`_
+
 
 .. code-block:: bash
 
@@ -293,47 +302,41 @@ You can view the current tenant images and their status in the F5OS CLI by using
 
 .. code-block:: bash
 
-    r10900-1# show images
-                                                    IN                                    
-    NAME                                             USE    TYPE                STATUS     
-    ---------------------------------------------------------------------------------------
-    BIG-IP-Next-20.0.2-2.139.10+0.0.165              false  helm-image          processed  
-    BIG-IP-Next-20.0.2-2.139.10+0.0.165.tar.bundle   false  helm-bundle         verified   
-    BIG-IP-Next-20.0.2-2.139.10+0.0.165.yaml         false  helm-specification  verified   
-    BIG-IP-Next-20.1.0-2.263.4                       false  helm-image          processed  
-    BIG-IP-Next-20.1.0-2.263.4.tar.bundle            false  helm-bundle         verified   
-    BIG-IP-Next-20.1.0-2.263.4.yaml                  false  helm-specification  verified   
-    BIG-IP-Next-20.2.1-2.429.1                       false  helm-image          processed  
-    BIG-IP-Next-20.2.1-2.429.1.tar.bundle            false  helm-bundle         verified   
-    BIG-IP-Next-20.2.1-2.429.1.yaml                  false  helm-specification  verified   
-    BIG-IP-Next-20.2.1-2.429.4                       true   helm-image          processed  
-    BIG-IP-Next-20.2.1-2.429.4.tar.bundle            true   helm-bundle         verified   
-    BIG-IP-Next-20.2.1-2.429.4.yaml                  true   helm-specification  verified   
-    BIGIP-15.1.10.1-0.0.9.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
-    BIGIP-15.1.10.2-0.0.2.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
-    BIGIP-15.1.6.1-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
-    BIGIP-17.1.1.1-0.0.2.T4-F5OS.qcow2.zip.bundle    true   vm-image            verified   
-    BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle    true   vm-image            verified   
-    BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image            verified   
+    r5900-1-gsa# show images
+                                                    IN                              
+    NAME                                               USE    TYPE      REV  STATUS    
+    -----------------------------------------------------------------------------------
+    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle       true   vm-image  -    verified  
+    BIGIP-15.1.6.1-0.0.6.ALL-F5OS.qcow2.zip.bundle     false  vm-image  -    verified  
+    BIGIP-17.1.0.1-0.0.4.ALL-F5OS.qcow2.zip.bundle     false  vm-image  -    verified  
+    BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle    true   vm-image  -    verified  
+    BIGIP-17.5.1.3-0.0.19.ALL-F5OS.tar.bundle          false  vm-image  -    verified  
+    BIGIP-21.0.0-0.0.10.ALL-F5OS.tar.bundle            false  vm-image  -    verified  
+    BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle            true   vm-image  -    verified  
+    BIGIP-bigip21.1.0-21.1.0-0.0.1.T2-F5OS.tar.bundle  false  vm-image  -    verified  
 
-    r10900-1# 
+    r5900-1-gsa#
+
 
 
 
 Creating a Tenant via CLI
 =========================
 
-Tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
+Tenant lifecycle can be fully managed via the CLI using the **tenants** command in **config** mode. Using command tab completion and question marks will help display all the tenant options. Enter **config** mode and enter the command **tenants tenant <tenant-name>** where **<tenant-name>** is the name of the tenant you would like to create. This will put you into a mode for that tenant and you will be prompted for some basic information to create the tenant via a CLI wizard. After answering basic information, you may configure additional tenant parameters by entering **config ?** within the tenant mode, and that will provide all the additional configuration options:
 
 .. code-block:: bash
 
-    Boston-r10900-1(config)# tenants tenant tenant2
-    Value for 'config image' (<string>): BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    r5900-1-gsa# config
+    Entering configuration mode terminal
+    r5900-1-gsa(config)# tenants tenant tenant1
+    Value for 'config image' (<A file name accepts alphanumeric and any of
+    '( ) + - . _' characters>): BIGIP-bigip21.1.0-21.1.0-0.0.1.T2-F5OS.tar.bundle
     Value for 'config nodes' (list): 1
-    Value for 'config mgmt-ip' (<IP address>): 10.255.0.136
-    Value for 'config prefix-length' (<unsignedByte, 0 .. 128>): 24
-    Value for 'config gateway' (<IP address>): 10.255.0.1
-    Boston-r10900-1(config-tenant-tenant2)# 
+    Value for 'config mgmt-ip' (<IP address>): 172.22.50.45
+    Value for 'config prefix-length' (<unsignedByte, 0 .. 128>): 26
+    Value for 'config gateway' (<IP address>): 172.22.50.1
+    r5900-1-gsa(config-tenant-tenant1)#
 
 **NOTE: The nodes value is currently required in the interactive CLI mode to remain consistent with VELOS but should be set for 1 for rSeries tenant deployments.** 
 
@@ -341,54 +344,54 @@ When inside the tenant config mode, you can enter each configuration item one li
 
 .. code-block:: bash
 
-    Boston-r10900-1# config
-    Entering configuration mode terminal
-    Boston-r10900-1(config)# tenants tenant tenant2 
-    Boston-r10900-1(config-tenant-test-tenant)# config ?
+    r5900-1-gsa(config-tenant-tenant1)# config ?
     Possible completions:
-        appliance-mode           Appliance mode can be enabled/disabled at tenant level
-        cryptos                  Enable crypto devices for the tenant.
-        dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
-        gateway                  User-specified gateway for the tenant static mgmt-ip.
-        image                    User-specified image for tenant.
-        mac-data                 
-        memory                   User-specified memory in MBs for the tenant.
-        mgmt-ip                  User-specified mgmt-ip for the tenant management access.
-        nodes                    User-specified node-number(s) in the partition to schedule the tenant.
-        prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
-        running-state            User-specified desired state for the tenant.
-        storage                  User-specified storage information
-        type                     Tenant type.
-        vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
-        virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
-        vlans                    User-specified vlan-id from vlan table for the tenant.
-    Boston-r10900-1(config-tenant-tenant2)# config ?
-    Boston-r10900-1(config-tenant-tenant2)# config cryptos enabled 
-    Boston-r10900-1(config-tenant-tenant2)# config vcpu-cores-per-node 4
-    Boston-r10900-1(config-tenant-tenant2)# config type BIG-IP 
-    Boston-r10900-1(config-tenant-tenant2)# config vlans 500            
-    Boston-r10900-1(config-tenant-tenant2)# config vlans 3010
-    Boston-r10900-1(config-tenant-tenant2)# config vlans 3011
-    Boston-r10900-1(config-tenant-tenant2)# config running-state deployed 
-    Boston-r10900-1(config-tenant-tenant2)# config memory 14848
+    appliance-mode           Appliance mode can be enabled/disabled at tenant level
+    cloud-init               Reference to a Cloud-Init config object.
+    cryptos                  Enable crypto devices for the tenant.
+    dag-ipv6-prefix-length   Tenant default value of IPv6 networking mask used by disaggregator algorithms
+    gateway                  User-specified gateway for the tenant static mgmt-ip.
+    image                    User-specified image for tenant.
+    mac-data                 
+    max-nodes                User-specified maximum nodes mapping modality for this tenant.
+    memory                   User-specified memory in MBs for the tenant.
+    mgmt-ip                  User-specified mgmt-ip for the tenant management access.
+    mgmt-vlan                Mgmt-vlan for tenant mgmt.
+    nodes                    User-specified node-number(s) in the partition to schedule the tenant.
+    prefix-length            User-specified prefix-length for the tenant static mgmt-ip.
+    running-state            User-specified desired state for the tenant.
+    storage                  User-specified storage information
+    tcp-cop                  User specified rx buffer fill threshold at which to-tenant TCP SYNs will be dropped.
+    type                     Tenant type.
+    vcpu-cores-per-node      User-specified number of logical cpu cores for the tenant.
+    virtual-wires            User-specified virtual-wires from virtual-wire table for the tenant.
+    vlans                    User-specified vlan-id from vlan table for the tenant.
+    r5900-1-gsa(config-tenant-tenant1)# config cryptos enabled 
+    r5900-1-gsa(config-tenant-tenant1)# config vcpu-cores-per-node 4
+    r5900-1-gsa(config-tenant-tenant1)# config type BIG-IP 
+    r5900-1-gsa(config-tenant-tenant1)# config vlans 500            
+    r5900-1-gsa(config-tenant-tenant1)# config vlans 3010
+    r5900-1-gsa(config-tenant-tenant1)# config vlans 3011
+    r5900-1-gsa(config-tenant-tenant1)# config running-state deployed 
+    r5900-1-gsa(config-tenant-tenant1)# config memory 14848
   
 
 Any changes must be committed for them to be executed:
 
 .. code-block:: bash
 
-  Boston-r10900-1(config-tenant-tenant2)# commit
+  r5900-1-gsa(config-tenant-tenant1)# commit
   Commit complete.
-  Boston-r10900-1(config-tenant-tenant2)# 
+  r5900-1-gsa(config-tenant-tenant1)# 
 	
 You may alternatively put all the parameters on one line instead of using the interactive mode above:
 
 .. code-block:: bash
 
-    Boston-r10900-1(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
-    Boston-r10900-1(config-tenant-tenant2)# commit
+    r5900-1-gsa(config)# tenants tenant tenant2 config image BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle vcpu-cores-per-node 2 nodes 1 vlans [ 500 3010 3011 ] mgmt-ip 10.255.0.136 prefix-length 24 gateway 10.255.0.1 name tenant2 running-state deployed
+    r5900-1-gsa(config-tenant-tenant2)# commit
     Commit complete.
-    Boston-r10900-1(config-tenant-tenant2)#
+    r5900-1-gsa(config-tenant-tenant2)#
 
 
 Validating Tenant Status via CLI
@@ -398,68 +401,254 @@ After the tenant is created you can run the command **show running-config tenant
 
 .. code-block:: bash
 
-    Boston-r10900-1# show running-config tenants 
-    tenants tenant tenant2
-    config name         tenant2
-    config type         BIG-IP
-    config image        BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
-    config nodes        [ 1 ]
-    config mgmt-ip      10.255.0.136
-    config prefix-length 24
-    config gateway      10.255.0.1
-    config vlans        [ 500 3010 3011 ]
-    config cryptos      enabled
-    config vcpu-cores-per-node 4
-    config memory       14848
-    config storage size 76
-    config running-state deployed
+    r5900-1-gsa# show running-config tenants 
+    tenants tenant big-ip1
+    config type            BIG-IP
+    config image           BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         172.22.50.24
+    config prefix-length   26
+    config gateway         172.22.60.62
+    config dag-ipv6-prefix-length 128
+    config vlans           [ 500 501 502 504 ]
+    config cryptos         enabled
+    config vcpu-cores-per-node 10
+    config memory          36352
+    config storage size 82
+    config running-state   deployed
+    config mac-data mac-block-size one
     config appliance-mode disabled
+    config tcp-cop disabled
     !
-    Boston-r10900-1# 
+    tenants tenant big-ip2
+    config type            BIG-IP
+    config image           BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         172.22.50.30
+    config prefix-length   26
+    config gateway         172.22.50.62
+    config dag-ipv6-prefix-length 128
+    config vlans           [ 500 501 502 ]
+    config cryptos         enabled
+    config vcpu-cores-per-node 4
+    config memory          14848
+    config storage size 82
+    config running-state   deployed
+    config mac-data mac-block-size one
+    config appliance-mode disabled
+    config tcp-cop disabled
+    !
+    tenants tenant cloud-init3
+    config type            BIG-IP
+    config image           BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle
+    config cloud-init      cloudinit3
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         172.22.50.49
+    config prefix-length   26
+    config gateway         172.22.50.62
+    config dag-ipv6-prefix-length 128
+    config vlans           [ 500 501 ]
+    config cryptos         enabled
+    config vcpu-cores-per-node 4
+    config memory          14848
+    config storage size 86
+    config running-state   deployed
+    config mac-data mac-block-size one
+    config appliance-mode disabled
+    config tcp-cop disabled
+    config mgmt-vlan       500
+    !
+    tenants tenant e2etest
+    config type            BIG-IP
+    config image           BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle
+    config nodes           [ 1 ]
+    config max-nodes       8
+    config mgmt-ip         1.1.1.1
+    config prefix-length   32
+    config gateway         1.2.3.4
+    config dag-ipv6-prefix-length 128
+    config cryptos         enabled
+    config vcpu-cores-per-node 4
+    config memory          14848
+    config storage size 76
+    config running-state   provisioned
+    config mac-data mac-block-size one
+    config appliance-mode disabled
+    config tcp-cop disabled
+    config mgmt-vlan       untagged
+    !
+
 
 
 To see the actual status of the tenants, issue the CLI command **show tenants**.
 
 .. code-block:: bash
 
-    Boston-r10900-1# show tenants 
-    tenants tenant test-tenant
-        state unit-key-hash    IHJti+ctR9YrfmTuj3F7dElBgXtFyOBFpa+7AudyYif3neHybBiP5v3tyt5AMd7WwDypOCz58US8I9NXzvgqnQ==
-        state type             BIG-IP
-        state image            BIGIP-17.1.1.2-0.0.1.T2-F5OS.qcow2.zip.bundle
-        state mgmt-ip          10.255.2.12
-        state prefix-length    24
-        state gateway          10.255.2.252
-        state dag-ipv6-prefix-length 128
-        state vlans            [ 3010 3011 ]
-        state cryptos          enabled
-        state vcpu-cores-per-node 4
-        state qat-vf-count     6
-        state memory           14848
-        state storage size 82
-        state running-state    deployed
-        state appliance-mode disabled
-        state feature-flags stats-stream-capable true
-        state namespace        default
-        state status           Running
-        state primary-slot     1
-        state image-version    "BIG-IP 17.1.1.2 0.0.1"
-        state mac-data base-mac 00:94:a1:69:59:2b
-        state mac-data mac-pool-size 1
+    r5900-1-gsa# show tenants 
+    tenants tenant big-ip
+    state unit-key-hash    ldCb3qyXb0s71zpJ5mQHVHafPksHT8FB5Qgox1eokXwGpqcRaz/CNvcg67cFfNDAbG9MfmvJzaRoOPMGxX0HNg==
+    state type             BIG-IP
+    state image            BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    state max-nodes        8
+    state mgmt-ip          172.22.50.24
+    state prefix-length    26
+    state gateway          172.22.60.62
+    state dag-ipv6-prefix-length 128
+    state vlans            [ 500 501 502 504 ]
+    state cryptos          enabled
+    state vcpu-cores-per-node 10
+    state qat-vf-count     15
+    state memory           36352
+    state storage size 82
+    state running-state    deployed
+    state appliance-mode disabled
+    state namespace        default
+    state status           Running
+    state primary-slot     1
+    state image-version    "BIG-IP 17.1.3 0.0.11"
+    state feature-flags clustering-as-service false
+    state feature-flags stats-stream-capable true
+    state tcp-cop disabled
+    state mgmt-vlan        untagged
+    state mgmt-vlan-accessible true
+    state mac-data base-mac 00:94:a1:69:35:14
+    state mac-data mac-pool-size 1
     MAC                
     -------------------
-    00:94:a1:69:59:2b  
+    00:94:a1:69:35:14  
+
+    NODE  CPUS                          
+    ------------------------------------
+    1     [ 20 4 24 8 5 21 7 23 19 3 ]  
+
+                    INSTANCE  TENANT                                                                                                   
+    NODE  POD NAME  ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+    -----------------------------------------------------------------------------------------------------------------------------------
+    1     big-ip-1  1         1       Running  2026-04-29T22:42:54Z  2026-04-29T22:44:51Z  Started tenant instance  00:94:a1:69:35:15  
+
+    tenants tenant big-ip2
+    state unit-key-hash    VfkI7Nhog2NbPPoeL9RyyCR9HCrBy1thJ59lRid0VR+JfY1jkQB4W9ders9TWR/nlNIp6oC0ZPfUVD71fTm9Qg==
+    state type             BIG-IP
+    state image            BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle
+    state max-nodes        8
+    state mgmt-ip          172.22.50.30
+    state prefix-length    26
+    state gateway          172.22.50.62
+    state dag-ipv6-prefix-length 128
+    state vlans            [ 500 501 502 ]
+    state cryptos          enabled
+    state vcpu-cores-per-node 4
+    state qat-vf-count     6
+    state memory           14848
+    state storage size 82
+    state running-state    deployed
+    state appliance-mode disabled
+    state namespace        default
+    state status           Running
+    state primary-slot     1
+    state image-version    "BIG-IP 17.1.1.2 0.0.10"
+    state feature-flags clustering-as-service false
+    state feature-flags stats-stream-capable true
+    state tcp-cop disabled
+    state mgmt-vlan        untagged
+    state mgmt-vlan-accessible true
+    state mac-data base-mac 00:94:a1:69:35:18
+    state mac-data mac-pool-size 1
+    MAC                
+    -------------------
+    00:94:a1:69:35:18  
 
     NODE  CPUS             
     -----------------------
-    1     [ 16 19 40 43 ]  
+    1     [ 13 29 14 30 ]  
+
+                    INSTANCE  TENANT                                                                                                   
+    NODE  POD NAME   ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
+    ------------------------------------------------------------------------------------------------------------------------------------
+    1     big-ip2-1  1         1       Running  2026-04-29T22:42:54Z  2026-04-29T22:45:00Z  Started tenant instance  00:94:a1:69:35:19  
+
+    tenants tenant cloud-init3
+    state unit-key-hash    ODy2ApiUC8B5NMlVe3bcWotI3ekxYgXOf/07774gMwBBxwC59n0HvE6oat7LA2dMOUGgmqyHyX/L9NqfSMW1IA==
+    state type             BIG-IP
+    state image            BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle
+    state cloud-init       cloudinit3
+    state max-nodes        8
+    state mgmt-ip          172.22.50.49
+    state prefix-length    26
+    state gateway          172.22.50.62
+    state dag-ipv6-prefix-length 128
+    state vlans            [ 500 501 ]
+    state cryptos          enabled
+    state vcpu-cores-per-node 4
+    state qat-vf-count     6
+    state memory           14848
+    state storage size 86
+    state running-state    deployed
+    state appliance-mode disabled
+    state namespace        default
+    state status           Running
+    state primary-slot     1
+    state image-version    "BIG-IP 21.1.0 0.0.38"
+    state feature-flags clustering-as-service false
+    state feature-flags stats-stream-capable true
+    state tcp-cop disabled
+    state mgmt-vlan        500
+    state mgmt-vlan-accessible true
+    state mac-data base-mac 00:94:a1:69:35:1a
+    state mac-data mac-pool-size 1
+    MAC                
+    -------------------
+    00:94:a1:69:35:1a  
+
+    NODE  CPUS           
+    ---------------------
+    1     [ 22 6 25 9 ]  
 
                         INSTANCE  TENANT                                                                                                   
     NODE  POD NAME       ID        SLOT    PHASE    CREATION TIME         READY TIME            STATUS                   MGMT MAC           
     ----------------------------------------------------------------------------------------------------------------------------------------
-    1     test-tenant-1  1         1       Running  2024-08-01T16:23:56Z  2024-08-01T16:24:38Z  Started tenant instance  00:94:a1:69:59:2c  
+    1     cloud-init3-1  1         1       Running  2026-05-05T23:41:14Z  2026-05-05T23:41:16Z  Started tenant instance  00:94:a1:69:35:1b  
 
-    Boston-r10900-1#
+Leveraging Cloud-Init via CLI
+=============================
+
+Cloud-Init is the industry standard start-up agent installed on virtual machines to facilitate cloud deployments. F5OS v2.0 added the capability of leveraging **cloud-init** to define certain BIG-IP configuration items via a cloud-init script that is run when the TMOS tenant boots. You can speed up the initialization of your BIG-IP instance by passing user-data to perform tasks like onboarding and configuring BIG-IP. For example, to pass user-data you can use a bash startup script or cloud-init’s built-in yaml-based configuration file, a cloud-config file. More details on cloud-init usage on BIG-IP VE can be found here:
+
+`Cloud-Init and F5 BIG-IP Virtual Edition <https://clouddocs.f5.com/cloud/public/v1/shared/cloudinit.html>`_
+
+In F5OS, you can define a cloud-init script via the CLI, API, or WebUI. Before applying a cloud-init script to an F5OS tenant you must create a cloud-init configuration object, then that cloud-init object can be referenced within a tenant configuration. Below is an example of creating a cloud-init script and giving it a name of **test-cloud-init** via the F5OS CLI using the **cloud-inits cloud-init test-cloud-init config user-data** command:
+
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# cloud-inits cloud-init test-cloud-init config user-data
+    (<Cloud-init user data>):
+    [Multiline mode, exit with ctrl-D.]
+    > #cloud-config
+    > write_files:
+    >  - path: /tmp/custom-config.sh
+    >  permissions: 0755
+    >  owner: root:root
+    >  content: "#!/bin/bash\n\necho \"Hello World\" >> /var/tmp/cloud-init-output1\n\n# Wait for MCPD to be up before running tmsh commands\nsource /usr/lib/bigstart/bigip-ready-functions\nwait_bigip_ready\n\n# Begin BIG-IP configuration\ntmsh modify sys global-settings gui-setup disabled\ntmsh modify sys global-settings gui-security-banner-text \"Configured now with cloud-init\"\n\ntmsh save /sys config\necho \"Hello World END\" >> /var/tmp/cloud-init-output2\n"
+    > runcmd:
+    >  - /tmp/custom-config.sh &
+    > chpasswd:
+    >  list: "root:********\nadmin:********\n"
+    >  expire: False
+    >
+    r5900-1-gsa(config)#
+
+Once the named cloud-init object has been created you can then reference it within the tenant configuration, and it will be executed upon boot. 
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# tenants tenant tenant1 config cloud-init test-cloud-init
+    r5900-1-gsa(config-tenant-tenant1)# commit
+
+
 
 
 Tenant Deployment via webUI
@@ -475,23 +664,23 @@ You can upload a tenant image via the webUI in two different places. The first i
 
 .. image:: images/rseries_deploying_a_tenant/image71.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 .. image:: images/rseries_deploying_a_tenant/image72.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The second option is to click the **Upload** button to select an image file that you have previously downloaded directly from your computer via the browser.
 
 .. image:: images/rseries_deploying_a_tenant/image73.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
-After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Settings > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
+After the image is uploaded, you need to wait until it shows **Verified** status before deploying a tenant. The second option in the webUI to upload files is via the **System Monitoring > File Utilities** page. In the drop down for the **Base Directory** select **images/tenant**, and here you will see all the available tenant images on the system. You can use the same **Import** and **Upload** options as outlined in the previous example.
 
 .. image:: images/rseries_deploying_a_tenant/image50.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 If an HTTPS server is not available and uploading from a client machine is not an option, you may upload a tenant image using SCP directly to the appliance. Simply SCP an image to the F5OS out-of-band management IP address using the admin account and a path of **IMAGES**. 
 
@@ -507,13 +696,22 @@ You can deploy a tenant from the webUI using the **Add** button in the **Tenant 
 
 .. image:: images/rseries_deploying_a_tenant/image74.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
+
+.. image:: images/rseries_deploying_a_tenant/image75a.png
+  :align: center
+  :scale: 50% 
+
+.. image:: images/rseries_deploying_a_tenant/image75b.png
+  :align: center
+  :scale: 50% 
+
 
 
 Validating Tenant Status via webUI
@@ -523,54 +721,48 @@ Once the tenant is deployed you can monitor its status in the **Tenant Managemen
 
 .. image:: images/rseries_deploying_a_tenant/image77.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 The tenant will then go from **Starting** to **Running**.
 
 .. image:: images/rseries_deploying_a_tenant/image78.png
   :align: center
-  :scale: 70% 
-
-Finally, when the tenant is fully operational you can click the arrow button on the far right to get more detailed status of the tenant. The Running Version should display the actual software version of the tenant.
-
-.. image:: images/rseries_deploying_a_tenant/image79.png
-  :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 You can view a more detailed tenant status using the **Tenant Management > Tenant Details** webUI page. You may select a tenant to view and refresh period, to monitor in deeper detail. As of F5OS-A 1.8.0 this page will display real time and historical tenant CPU, Memory, and Disk usage.
 
 .. image:: images/rseries_deploying_a_tenant/image80.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 .. image:: images/rseries_deploying_a_tenant/image80-a.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 At this point, the tenant should be running and can be accessed via its out-of-band management IP address. You can go to the **Dashboard** page in the webUI and then click on **Tenant Overview** to see the running tenants. There is a hyperlink that will connect to the tenant's webUI IP address as seen below.
 
 .. image:: images/rseries_deploying_a_tenant/image81.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Clicking on one of the hyperlinks will bring you to the BIG-IP webUI of that tenant, and you'll need to login with default credentials of admin/admin. You will be prompted to change the password for the admin account.
 
 .. image:: images/rseries_deploying_a_tenant/image40.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 .. image:: images/rseries_deploying_a_tenant/image41.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
 Now login with the new admin password, and you'll be brought into the initial setup wizard of the BIG-IP tenant. 
 
 .. image:: images/rseries_deploying_a_tenant/image42.png
   :align: center
-  :scale: 70% 
+  :scale: 80% 
 
-At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings, and then use AS3 to automate application deployments.    
+At this point you can configure the tenant as you normally would any BIG-IP device. You could use Declarative Onboarding (DO) to configure all the lower-level network and system settings and then use AS3 to automate application deployments.    
 
 Tenant Deployment via API
 ---------------------------
@@ -615,58 +807,77 @@ Below is output generated from the previous command:
         "f5-tenant-images:images": {
             "image": [
                 {
-                    "name": "BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
-                    "name": "BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
-                },
-                {
                     "name": "BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": true,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "1.88 GB"
                 },
                 {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.210.ALL-F5OS.qcow2.zip.bundle",
+                    "name": "BIGIP-15.1.6.1-0.0.6.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "1.99 GB"
                 },
                 {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.222.ALL-F5OS.qcow2.zip.bundle",
+                    "name": "BIGIP-17.1.0.1-0.0.4.ALL-F5OS.qcow2.zip.bundle",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.28 GB"
                 },
                 {
-                    "name": "BIGIP-bigip15.1.x-europa-15.1.5-0.0.225.ALL-F5OS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
+                    "name": "BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle",
+                    "in-use": true,
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.34 GB"
                 },
                 {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.171.ALL-VELOS.qcow2.zip.bundle",
+                    "name": "BIGIP-17.5.1.3-0.0.19.ALL-F5OS.tar.bundle",
+                    "version": "17.5.1.3-0.0.19",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.57 GB"
                 },
                 {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.173.ALL-VELOS.qcow2.zip.bundle",
+                    "name": "BIGIP-21.0.0-0.0.10.ALL-F5OS.tar.bundle",
+                    "version": "21.0.0-0.0.10",
                     "in-use": false,
-                    "status": "verified"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "2.73 GB"
                 },
                 {
-                    "name": "BIGIP-bigip151x-miranda-15.1.4.1-0.0.176.ALL-VELOS.qcow2.zip.bundle",
-                    "in-use": false,
-                    "status": "verified"
+                    "name": "BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle",
+                    "version": "21.1.0-0.0.38",
+                    "in-use": true,
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-5-5",
+                    "size": "3.08 GB"
                 },
                 {
-                    "name": "F5OS-A-1.0.0-11432.R5R10.iso",
+                    "name": "BIGIP-bigip21.1.0-21.1.0-0.0.1.T2-F5OS.tar.bundle",
+                    "version": "21.1.0-0.0.1",
                     "in-use": false,
-                    "status": "verification-failed"
+                    "type": "vm-image",
+                    "status": "verified",
+                    "date": "2026-4-29",
+                    "size": "3.09 GB"
                 }
             ]
         }
     }
+
 
 
 Uploading Tenant Images from a Client Machine via the API
@@ -968,7 +1179,7 @@ Below is webUI output of a single tenant that is in the deployed and running sta
 
 .. image:: images/rseries_deploying_a_tenant/image82.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 A pop-up will appear letting you know this will stop the tenant and disrupt traffic. Click **OK**. 
 
@@ -976,25 +1187,29 @@ A pop-up will appear letting you know this will stop the tenant and disrupt traf
   :align: center
   :scale: 70% 
 
-This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running**, to **Stopping**, and finally to the **Provisioned** Status.
-
-.. image:: images/rseries_deploying_a_tenant/image84.png
-  :align: center
-  :scale: 70% 
+This will move the tenant from **Deployed** to **Provisioned** state. You will see the tenant go from **Running** to the **Provisioned** Status.
 
 .. image:: images/rseries_deploying_a_tenant/image85.png
   :align: center
-  :scale: 70%   
+  :scale: 50%   
 
-Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant.  Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
+Next click on the hyperlink for tenant1. This will bring you into the configuration page for that tenant. 
 
 .. image:: images/rseries_deploying_a_tenant/image86.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
+
+Click on the **Edit** button to alter the configuration on the tenant.
 
 .. image:: images/rseries_deploying_a_tenant/image87.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
+
+Change the **vCPUs** to **4**, and the **Memory** to **14848** and set the state back to **Deployed**. When finished, click **Save** and the tenant will start up again with the new configuration.
+
+.. image:: images/rseries_deploying_a_tenant/image87a.png
+  :align: center
+  :scale: 50% 
 
 
 Expanding a Tenant via CLI
@@ -1386,13 +1601,13 @@ To delete a tenant from the webUI, go to the **Tenant Management > Tenant Deploy
 
 .. image:: images/rseries_deploying_a_tenant/image88.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 You will be prompted before confirming the delete:  
 
 .. image:: images/rseries_deploying_a_tenant/image89.png
   :align: center
-  :scale: 70%   
+  :scale: 60%   
 
 Deleting a Tenant via the API
 -----------------------------

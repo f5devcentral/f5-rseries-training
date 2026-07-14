@@ -8,11 +8,11 @@ Initial Setup of the rSeries Network Layer
 rSeries Dashboard
 -----------------
 
-The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Tenant Overview**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. New in version F5OS-A 1.8.0 is more granular **Memory Utilization** and **Storage Utilization** Details.
+The rSeries Dashboard will provide a visual system summary of the appliance, including **System Summary**, **Tenant Overview**, **Network**, **CPU**, and **Active Alarms**. It will also list the total number of vCPUs available for multitenancy and how many are currently in use. There is also a tenant overview showing a quick summary of tenant status and basic parameters. In version F5OS-A 1.8.0 a new, more granular **Memory Utilization** and **Storage Utilization** detail was added.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image1.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 More granular **Memory Utilization** is displayed showing how much memory is dedicated and in use by **F5OS System** vs. **F5OS Tenants**.
 
@@ -20,38 +20,44 @@ More granular **Memory Utilization** is displayed showing how much memory is ded
   :align: center
   :scale: 70% 
 
-There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 60% of the 109.7GB of disk it has dedicated. You can also see that there is 448.6GB available for **F5OS Tenant Disks** (BIG-IP Tenant) virtual disks, and that currently only 5% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are two BIG-IP tenants (fix-ll & test-tenant). One has been allocated 80GB of disk while the other has been allocated 82GB of disk, however the actual size on disk is much lower (~5-7GB each). Lastly, there is a single BIG-IP Next tenant that has 25GB allocated to it, but is currently utilizing 7% of that space.
+There is also more granularity showing **Storage Utilization**. In the below example, you can see that F5OS has utilized 43% of the 109.4GB of disk it has dedicated. You can also see that there is 448GB available for **F5OS Tenant Disks** (BIG-IP Tenant) virtual disks, and that currently only 12% is used. This is the space shared by all BIG-IP Tenants virtual disks. It is important to remember that TMOS based BIG-IP virtual disks utilize thin provisioning, so the TMOS tenant may think it has more storage but in reality it is using much less capacity on the physical disk. You can see this by the **BIG-IP Tenant** utilizations. In the output below, there are five BIG-IP tenants. Two have been allocated 82GB of disk, two others have been allocated 76GB, and the final tenant has been allocated 86GB. The actual size on disk for each tenant is much lower (~5-7GB each) due to thin provisioning.
 
 .. NOTE:: Storage utilization and allocation may be different on various rSeries platforms.
 
 
 .. image:: images/initial_setup_of_rseries_network_layer/storage-utilization.png
   :align: center
-  :scale: 70% 
+  :scale: 60% 
+
+The **Tenant Overview** tab will provide a visual representation of all tenants on the system.
+
+.. image:: images/initial_setup_of_rseries_network_layer/tenant-overview.png
+  :align: center
+  :scale: 50% 
 
 The **Network** tab will provide a visual representation of all networking ports on the system. Each port will be color coded **Green** for **Up** status, and **Red** for **Down** status. The current **Pipeline** mapping is also displayed, which shows the external port mapping to internal pipelines.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image2.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
-The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r10900 which has 12 vCPUs dedicated to the F5OS/Datamover functions. 
+The **CPU** tab shows all the available CPUs in the system, along with their current utilization. It also displays what functionality is using the CPU. It could be **Tenants**, **F5OS Data Mover**, **F5OS Dedicated** or **F5OS**. The image below depicts an r5900 which has 6 vCPUs dedicated to the F5OS/Datamover functions. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/image3.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
-For reference below is the architecture of the r10900. Note that there are 12 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
+For reference below is the architecture of the r5900. Note that there are 6 vCPUs dedicated to the F5OS/Datamover functions. Half of those vCPUs are dedicated for F5OS while the other half provide datamover functionality, which is the CPU to FPGA interconnect. 
 
-.. image:: images/initial_setup_of_rseries_network_layer/r10900-arch.png
+.. image:: images/initial_setup_of_rseries_network_layer/r5900-arch.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
-Currently 25% of the vCPUs are in use by tenants, and this leaves 50% of the CPU's available for F5OS to use as needed. 
+Currently 56% of the vCPUs are in use by tenants, 9% for F5OS Dedicated, 9% for F5OS Datamover, and this leaves 25% of the CPU's available for F5OS to use as needed. 
 
 .. image:: images/initial_setup_of_rseries_network_layer/cpu-allocation.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 
@@ -59,25 +65,25 @@ The  **Active Alarms** tab will display any active alerts or alarms for the syst
 
 .. image:: images/initial_setup_of_rseries_network_layer/image4.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 -----------------------------
 F5OS Networking Configuration
 -----------------------------
 
-Before configuring any tenants, you’ll need to set up networking for the F5OS platform layer. All in-band networking (interfaces, VLANs, Link Aggregation Groups) is configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar to how vCMP guests work on previous generations of BIG-IP like iSeries and VIPRION. 
+Before configuring any tenants, you’ll need to set up networking for the F5OS platform layer. All in-band networking objects (interfaces, VLANs, Link Aggregation Groups) are configured within the F5OS layer, and selected VLANs are passed through to the tenant layer by the admin when deploying a tenant. This is very similar vCMP guests operation on previous generations of BIG-IP like iSeries and VIPRION. 
 
 
 Network Settings - > Port Groups
 ================================
 
-Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled, and the port speed. Currently the high-speed ports do not support unbundling. Adjacent high-speed ports (**1.0** and **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb or both are configured for 100Gb; you cannot mix and match on the adjacent high-speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term, **portgroup** is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
+Before configuring any interfaces, VLANs, or Link Aggregation Groups (LAG’s) you’ll need to configure the portgroups so that physical interfaces on the appliance are configured for the proper speed and bundling. The portgroup component is used to control the mode of the physical ports. This controls whether a port is bundled or unbundled, and the port speed. Currently the high-speed ports do not support unbundling. Adjacent high-speed ports (**1.0** and **2.0** on both the r5000/r10000 series) and (**11.0** & **12.0** on the r10000 series) must be configured in the same mode and speed currently. Either both are configured for 40Gb, or both are configured for 100Gb; you cannot mix and match on the adjacent high-speed ports. You cannot break out these ports to lower speeds (25Gb or 10Gb) via a breakout cable as this is currently unsupported. Low speed 25Gb/10Gb ports (**3.0** - **10.0** on both the r5000/r10000 series and **13.0*** - **20.0** on the r10000 series) can be configured independently, and adjacent low speed ports can have different speed values (10Gb or 25Gb). The term, **portgroup** is used rather than simply “port” because some front panel ports may accept different types of SFPs. Depending on the portgroup mode value, a different FPGA version is loaded, and the speed of the port is adjusted accordingly. Changing the portgroup configuration will require a reboot of the appliance to load a new FPGA bitstream. The user can modify the portgroup mode as needed through the F5OS CLI, webUI or API.
 
 .. Note:: The QSFP+ & QSFP28 optics cannot be configured for unbundled mode prior to F5OS-A 1.8.0 - 4 x 25Gb (with a 100Gb QSFP28 optic) or 4 x 10Gb (with a 40Gb QSFP+ optic). F5OS-A 1.8.0 added breakout cable support for 4 x 10Gb on the high-speed ports (**1.0**, **2.0**, **11.0**, **12.0** on the r10000, r12000) & (**1.0**, **2.0** on the r5000). These ports do not support 4 x 25Gb at this time.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image5.png
   :align: center
-  :scale: 70% 
+  :scale: 60% 
 
 Configuring PortGroups from the webUI
 -----------------------------------
@@ -86,13 +92,13 @@ To configure portgroups go to **Network Settings > Port Groups** in the F5OS web
 
 .. image:: images/initial_setup_of_rseries_network_layer/image6.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 If you do make a change, the appliance will be forced to reboot to load a new bitstream image into the FPGA.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image7.png
   :align: center
-  :scale: 70% 
+  :scale: 60% 
 
 Configuring PortGroups from the CLI
 -----------------------------------
@@ -976,13 +982,21 @@ Below is an example configuration change in the body of the API call, this is ch
 Network Settings -> Interfaces
 ==============================
 
-Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 has a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**.
+Interface numbering will vary depending on which rSeries model is being used. Interfaces will always be numbered by **<port#>.0** for rSeries appliances. The r10000 and r12000 appliances have a total of 20 ports labeled **1.0** - **20.0**, and the r5000 has 10 ports labeled **1.0** - **10.0**. Below is an r5000 appliance.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image9.png
   :align: center
-  :scale: 70% 
+  :scale: 90% 
+
+Below is an r10000/r12000 appliance.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image8.png
+  :align: center
+  :scale: 90% 
+
+The r2000 and r4000 appliances have a total of 8 ports labeled **1.0** - **8.0**
+
+.. image:: images/initial_setup_of_rseries_network_layer/image8-2k4k.png
   :align: center
   :scale: 70% 
 
@@ -993,13 +1007,13 @@ Within the F5OS webUI, the physical ports of the appliance will be visible by go
 
 .. image:: images/initial_setup_of_rseries_network_layer/image10.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
-You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) if the interface is not part of a LAG. If the interface is part of a LAG, then the VLAN configuration is done within the LAG rather than the interface.
+You can click on any interface to view its settings or edit them. You can currently change the interface state via the webUI or the **Native VLAN** (untagged) and **Trunk VLANs** (tagged) if the interface is not part of a LAG. If the interface is part of a LAG, then the VLAN configuration is done within the LAG rather than the interface. You may also set a **Description** and configure **Subinterfaces** if you are going to utilize 802.1Q-in-Q double VLAN tagging.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image11.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 Configuring Interfaces from the CLI
 -----------------------------------
@@ -2441,20 +2455,20 @@ All in-band networking, including VLANs, is configured in the F5OS layer, and ju
 
 rSeries supports both tagged (802.1Q) and untagged VLAN interfaces externally. VLANs can be configured from the CLI, webUI, or API.
 
-**Note: 802.1Q-in-Q (double VLAN tagging) is not currently supported on the rSeries platform.**
+**Note: 802.1Q-in-Q (double VLAN tagging) was not supported in previous versions of the rSeries platform but has since been added in F5OS 2.0.**
 
 Configuring VLANs from the webUI
-------------------------------
+--------------------------------
 
 VLANs can be created in the F5OS webUI under **Network Settings > VLANs**. When adding a new VLAN you will define a **Name** and a **VLAN ID**. When you assign this VLAN to an interface or LAG you will determine if you want it to be untagged by configuring it as a **Native VLAN** or tagged by adding it as a **Trunked VLAN**.
 
 .. image:: images/initial_setup_of_rseries_network_layer/image12.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_network_layer/image13.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
 Configuring VLANs from the CLI
@@ -2619,6 +2633,8 @@ The following command will list the configuration and status of all VLANs within
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-vlan:vlans
 
+Output from the request above:
+
 .. code-block:: json
 
     {
@@ -2683,7 +2699,7 @@ Link Aggregation Groups (LAGs) can be configured in the F5OS webUI via the **Net
 
 .. image:: images/initial_setup_of_rseries_network_layer/image14.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 You can add a new LAG or edit an existing one. For **LAG Type** the options are **LACP** or **STATIC**. If you choose LACP then you have additional options for **LACP Interval** (**SLOW** or **FAST**) and **LACP Mode** (**ACTIVE** or **PASSIVE**). LACP best practices should follow previous BIG-IP examples as outlined in the links below. Note in BIG-IP the term **Trunks** is used in place of LAG which is used in F5OS: 
 
@@ -2700,7 +2716,13 @@ Once you have configured the **LAG Type** and LACP options, you can add any phys
 
 .. image:: images/initial_setup_of_rseries_network_layer/image15.png
   :align: center
-  :scale: 70%
+  :scale: 50%
+
+
+.. image:: images/initial_setup_of_rseries_network_layer/image15a.png
+  :align: center
+  :scale: 50%
+
 
 Configuring LAGs from the CLI
 -----------------------------

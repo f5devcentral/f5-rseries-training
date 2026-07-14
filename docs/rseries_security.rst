@@ -11,12 +11,317 @@ This section will focus on how to harden/secure the F5OS layer of the rSeries ap
 F5OS Platform Layer Isolation
 =============================
 
-When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the new F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
+When looking at management of the rSeries platform, it is important to separate the in-band (data plane) networking from the out-of-band (management) networking. Management of the F5OS platform layer is completely isolated from in-band data-plane traffic, networking, and VLANs. It is managed via the out-of-band management network only. It is purposely isolated so that F5OS is only accessible via the out-of-band management network. In fact, there are no in-band (data-plane) IP addresses assigned to the F5OS layer, only tenants will have in-band (data-plane) IP addresses and access. Tenants also have out-of-band connectivity so they can be managed via the out-of-band network.
 
 This allows customers to run a secure/locked-down out-of-band management network where access is tightly restricted. The diagram below shows the out-of-band management access entering the rSeries appliance through the **MGMT** port. The external MGMT port is bridged to an internal out-of-band network that connects to all tenants within the rSeries appliance. Tenants are prevented from talking to each other over the internal management VLAN using MACVLAN interfaces which encapsulate tenant traffic, restricting traffic visibility between different tenants on the same rSeries appliance.
 
 .. image:: images/rseries_security/image1.png
   :align: center
+
+Out of Band Management Port and VLAN Tagging
+============================================
+
+In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band management port on rSeries. This new option allows for the F5OS platform layer and tenants to be assigned to specific VLANs. This will allow for greater separation for the management VLANs of tenants and the F5OS platform layer which in previous releases had to be on a single shared VLAN. The external ports can be configured with specific tagged or untagged VLANs and then those VLANs are presented to the F5OS platform layer and tenants as untagged, meaning no special configuration is needed to convert to tagged management VLANs inside tenants. Customers also have the option to put the Always On Management (AOM) capability on its own unique VLAN for an additional layer of separation if required.
+
+.. image:: images/rseries_security/vlan-tagged-mgmt.png
+  :align: center  
+  :scale: 70% 
+
+
+VLAN Tagging for the Management Port via CLI
+--------------------------------------------
+
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object using the **mgmt-vlans** CLI command. In the example below, a tagged VLAN using the VLAN tag 500 is added. 
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# mgmt-vlans mgmt-vlan 500 config mgmt-vlan-tag 500 name mgmt-vlan-500
+    r5900-1-gsa(config-mgmt-vlan-500)# commit
+    Commit complete.
+    r5900-1-gsa(config-mgmt-vlan-500)# 
+
+You may add tagged or untagged VLANs, and also VLAN ranges:
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# mgmt-vlans mgmt-vlan ?
+    Possible completions:
+    <Configured mgmt vlan tag>  500  1010  1111  range  untagged
+    r5900-1-gsa(config)#
+
+Once the mgmt-vlan object is created it can be added to the **mgmt-ip** configuration.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system mgmt-ip config mgmt-vlan 500
+
+You may view the mgmt-ip configuration using the **show running-config system mgmt-ip** command: or optionally the **show system mgmt-ip** command.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show running-config system mgmt-ip
+    system mgmt-ip config dhcp-enabled false
+    system mgmt-ip config ipv4 system address 172.22.50.1
+    system mgmt-ip config ipv4 prefix-length 26
+    system mgmt-ip config ipv4 gateway 172.22.50.62
+    system mgmt-ip config ipv6 system address ::
+    system mgmt-ip config ipv6 prefix-length 0
+    system mgmt-ip config ipv6 gateway ::
+    system mgmt-ip config mgmt-vlan 500
+    r5900-1-gsa#
+
+or optionally the **show system mgmt-ip** command.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show system mgmt-ip 
+    system mgmt-ip state ipv4 system address 172.22.50.1
+    system mgmt-ip state ipv4 prefix-length 26
+    system mgmt-ip state ipv4 gateway 172.22.50.62
+    system mgmt-ip state mgmt-vlan 500
+    system mgmt-ip state ipv6 system address ::
+    system mgmt-ip state ipv6 prefix-length 0
+    system mgmt-ip state ipv6 gateway ::
+    r5900-1-gsa#
+
+If you would like to view the **mgmt-vlan** object configuration use the **show mgmt-vlans** command:
+
+.. code-block:: bash
+
+    r5900-1-gsa# show mgmt-vlans 
+    MGMT      MGMT                      
+    VLAN TAG  VLAN TAG  NAME            
+    ------------------------------------
+    untagged  untagged  mgmt-untagged   
+    500       500       mgmt-vlan-500   
+    501       501       mgmt-vlan-501   
+    1010      1010      mgmt-vlan-1010  
+    1111      1111      mgmt-vlan-1111  
+
+    r5900-1-gsa#
+
+
+
+VLAN Tagging for the Management Port via WebUI
+--------------------------------------------
+
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object under the **System Settings > Management VLANs** page. Click the **Add** button in the upper right-hand corner to add a new mgmt-vlan.
+
+.. image:: images/rseries_security/mgmt-vlans-webui.png
+  :align: center 
+  :scale: 50% 
+
+In the example below, a tagged VLAN using the VLAN tag 500 is added. 
+
+.. image:: images/rseries_security/mgmt-vlans-webui2.png
+  :align: center
+  :scale: 50% 
+
+Once the mgmt-vlan object is created it can be added to the **System Settings > Management Interface** configuration. Click the **Edit** button in the upper right-hand corner. 
+
+.. image:: images/rseries_security/mgmt-interface.png
+  :align: center
+  :scale: 50% 
+
+Under the **Management VLAN** section, select the VLAN that you configured in the previous step.
+
+.. image:: images/rseries_security/mgmt-interface2.png
+  :align: center
+  :scale: 50% 
+
+VLAN Tagging for the Management Port via API
+--------------------------------------------
+
+To add 802.1Q VLAN tagging to the management port you must first create a **mgmt-vlan** object using the API. In the example below, a tagged VLAN using the VLAN tag 1112 is added. 
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-mgmt-vlan:mgmt-vlans
+
+In the body of the API request add the details of the mgmt-vlan you would like to create:
+
+.. code-block:: json
+
+    {
+        "mgmt-vlan": [
+            {
+                "mgmt-vlan-tag": 1112,
+                "config": {
+                    "mgmt-vlan-tag": 1112,
+                    "name": "mgmt-vlan-1112"
+                }
+            }
+        ]
+    }
+
+
+To view the current mgmt-vlan configuration, enter the following API request:
+
+.. code-block:: bash
+
+ GET https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-mgmt-vlan:mgmt-vlans
+
+The output will display all the configured mgmt-vlan objects along with their VLAN tag information.
+
+.. code-block:: json
+
+    {
+        "f5-mgmt-vlan:mgmt-vlans": {
+            "mgmt-vlan": [
+                {
+                    "mgmt-vlan-tag": "untagged",
+                    "config": {
+                        "mgmt-vlan-tag": "untagged",
+                        "name": "mgmt-untagged"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": "untagged",
+                        "name": "mgmt-untagged"
+                    }
+                },
+                {
+                    "mgmt-vlan-tag": 500,
+                    "config": {
+                        "mgmt-vlan-tag": 500,
+                        "name": "mgmt-vlan-500"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 500,
+                        "name": "mgmt-vlan-500"
+                    }
+                },
+                {
+                    "mgmt-vlan-tag": 501,
+                    "config": {
+                        "mgmt-vlan-tag": 501,
+                        "name": "mgmt-vlan-501"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 501,
+                        "name": "mgmt-vlan-501"
+                    }
+                },
+                {
+                    "mgmt-vlan-tag": 1010,
+                    "config": {
+                        "mgmt-vlan-tag": 1010,
+                        "name": "mgmt-vlan-1010"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 1010,
+                        "name": "mgmt-vlan-1010"
+                    }
+                },
+                {
+                    "mgmt-vlan-tag": 1111,
+                    "config": {
+                        "mgmt-vlan-tag": 1111,
+                        "name": "mgmt-vlan-1111"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 1111,
+                        "name": "mgmt-vlan-1111"
+                    }
+                },
+                {
+                    "mgmt-vlan-tag": 1112,
+                    "config": {
+                        "mgmt-vlan-tag": 1112,
+                        "name": "mgmt-vlan-1112"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 1112,
+                        "name": "mgmt-vlan-1112"
+                    }
+                }
+            ]
+        }
+    }
+
+Once the mgmt-vlan object is defined with the proper VLAN ID, you can then assign it to the system management IP configuration.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system
+
+In the body of the API request add the **mgmt-vlan** object:
+
+.. code-block:: json
+
+    {
+        "f5-mgmt-ip:mgmt-ip": {
+            "config": {
+                "dhcp-enabled": false,
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.1"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                },
+                "mgmt-vlan": 500
+            }
+        }
+    }
+
+
+To view the current system management IP configuration, enter the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-mgmt-ip:mgmt-ip
+
+In the response below, you'll notice the configured management IP address, gateway, and prefix along with the **mgmt-vlan** configuration.
+
+.. code-block:: json
+
+    {
+        "f5-mgmt-ip:mgmt-ip": {
+            "config": {
+                "dhcp-enabled": false,
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.1"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                },
+                "mgmt-vlan": 500
+            },
+            "state": {
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.1"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "mgmt-vlan": 500,
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                }
+            }
+        }
+    }
+
 
 Allow List for F5OS Management
 ===============================
@@ -25,7 +330,7 @@ F5OS only allows management access via a single out-of-band management interface
 
 By default, all ports except for 161 (SNMP) are enabled for access, meaning ports 80, 443, 8888, 7001, and 22 are allowed access. Port 80 is only open to allow a redirect to port 443 in case someone tries to access the webUI over port 80. The webUI itself is not accessible over port 80. Port 161 (SNMP) is typically viewed as un-secure and is therefore not accessible until an allow list entry is created for the endpoint trying to access F5OS using SNMP queries. Ideally SNMPv3 should be utilized to provide additional layers of security on an otherwise un-secure protocol. VCONSOLE access also must be explicitly configured before access to the tenants is possible over port 7001. 
 
-To further lock down access, you may add an Allow List entry including an IP address and optional prefix for each of the protocols listed above. As an example, if you wanted to restrict API and webUI access to a particular IP address and/or subnet, you can add an Allow List entry for the desired IP or subnet (using the prefix length), specify port 443 and all access from other IP endpoints will be prevented.
+To further lock down access, you may add an Allow List entry including an IP address and optional prefix for each of the protocols listed above. As an example, if you wanted to restrict API and webUI access to a particular IP address and/or subnet, you could add an Allow List entry for the desired IP or subnet (using the prefix length), specify port 443 and all access from other IP endpoints will be prevented.
 
 
 Adding Allow List Entries via CLI
@@ -170,11 +475,6 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
   :scale: 70%
 
 
-In newer releases, the allowed IP functionality has been moved to the **System Settings -> Security** page as seen below.
-
-.. image:: images/rseries_monitoring_snmp/image1a.png
-  :align: center
-  :scale: 70%  
 
 Setting F5OS Primary Key
 ======================== 
@@ -268,7 +568,7 @@ The management interface will now use the self-signed certificate you just creat
 
 .. image:: images/rseries_security/imagecert.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
 To create a Certificate Signing Request (CSR) via the CLI use the **system aaa tls create-csr** command.
@@ -308,7 +608,7 @@ To create a Client Revocation List (CRL) via the CLI issue the following command
     <Reference to configured name of the CRL.>
     r10900-1(config)# system aaa tls crls crl
 
-You can display the current certificate, keys, and passphrases using the CLI command **show system aaa tls**.
+You can display the current certificate, keys and passphrases using the CLI command **show system aaa tls**.
 
 .. code-block:: bash
 
@@ -376,9 +676,9 @@ If you choose the **Store TLS** option of **False** then the certificate details
 
 .. image:: images/rseries_security/imagecert4.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
-You can then use the **Show** options to display the current certificate, key, and details. Paste the text into the respective text boxes to add a certificate. TLS Key Passphrase is only required if TLS Key is in encrypted format. 
+You can then use the slider option on the right-hand side to review the current certificate, or the edit button in the upper right-hand corner to see the certificate and key. 
 
 .. image:: images/rseries_security/imagecert5.png
   :align: center
@@ -386,23 +686,27 @@ You can then use the **Show** options to display the current certificate, key, a
 
 .. image:: images/rseries_security/imagecert6.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
 If you do not want to use a self-signed certificate, you can create a Certificate Signing Request (CSR) for use when submitting the certificate to a Certificate Authority (CA)..
 
 .. image:: images/rseries_security/imagecsr1.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
 After clicking **Save** the CSR will appear, and you will be able to **Copy to Clipboard** so you can submit the signing request.
 
 .. image:: images/rseries_security/imagecsr2.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
-When you install an SSL certificate on the system, you also install a certificate authority (CA) bundle, which is a file that contains root and intermediate certificates. The combination of these two files completes the SSL chain of trust.
+When you install an SSL certificate on the system, you can also install a certificate authority (CA) bundle, which is a file that contains root and intermediate certificates. The combination of these two files completes the SSL chain of trust.
 
 .. image:: images/rseries_security/imageca1.png
+  :align: center
+  :scale: 70%
+
+.. image:: images/rseries_security/imageca2.png
   :align: center
   :scale: 70%
 
@@ -499,7 +803,7 @@ Previously, F5OS allowed an admin to import a TLS certificate and key in clear t
 Appliance Mode for F5OS
 =======================
 
-If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
+If you would like to prevent root / bash level access to the F5OS layer, you can enable **Appliance Mode**, which operates in a similar manner as TMOS appliance mode. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled. The admin account to the F5OS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting and then re-enabled when finished.
 
 Enabling F5OS Appliance Mode via the CLI
 -----------------------------------
@@ -535,13 +839,7 @@ To disable appliance mode.
 Enabling F5OS Appliance Mode via the webUI
 ------------------------------------------ 
 
-Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page.
-
-.. image:: images/rseries_security/image4.png
-  :align: center
-  :scale: 70%
-
-In newer F5OS releases, Appliance Mode configuration has been moved to the **System Settings** -> **System Security** page.
+Appliance mode can be enabled or disabled via the webUI under the **System Settings -> General** page. In newer F5OS releases, Appliance Mode configuration has been moved to the **System Settings** -> **System Security** page.
 
 .. image:: images/rseries_security/image4-new.png
   :align: center
@@ -550,7 +848,7 @@ In newer F5OS releases, Appliance Mode configuration has been moved to the **Sys
 Enabling F5OS Appliance Mode via the API
 -----------------------------------
 
-Appliance mode can be enabled or disabled via the API. To view the current status of appliance mode use the following API call.
+Appliance mode can be enabled or disabled via the API. To view the current status of appliance mode, use the following API call.
 
 .. code-block:: bash
 
@@ -591,7 +889,7 @@ In the body of the API call add the following:
 Appliance Mode for BIG-IP Tenants
 =================================
 
-If you would like to prevent root / bash level access to the BIG-IP tenants, you can enable **Appliance Mode**. in the tenant settings. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled for BIG-IP. The admin account to the TMOS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting, and then re-enabled when finished.
+If you would like to prevent root / bash level access to the BIG-IP tenants, you can enable **Appliance Mode**. in the tenant settings. Enabling Appliance mode will disable the root account, and access to the underlying bash shell is disabled for BIG-IP. The admin account to the TMOS CLI is still enabled. This is viewed as a more secure setting as many vulnerabilities can be avoided by not allowing access to the bash shell. In some heavily audited environments, this setting may be mandatory, but it may prevent lower-level debugging from occurring directly in the bash shell. It can be disabled on a temporary basis to do advanced troubleshooting and then re-enabled when finished.
 
 Enabling BIG-IP Tenant Appliance Mode via the CLI
 --------------------------------------------------
@@ -789,9 +1087,9 @@ The output of the above API call shows the state and status of the tenant.
 Resource Admin & Guest User Role
 ========================
 
-The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to role **resource-admin**, their access will be restricted as noted above.
+The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role, but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to role **resource-admin**, their access will be restricted as noted above.
 
-F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations, however users can change account passwords.
+F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations; however users can change account passwords.
 
 
 Resource Admin & Guest User Role via CLI
@@ -887,11 +1185,19 @@ The **user** role will also prevent the user from running **file** operations fr
 Resource Admin & Guest User Role via webUI
 --------------------------------
 
-The webUI also supports the assignment of the **resource-admin** role to any user.
+The webUI also supports the assignment of the **resource-admin** role or **guest** user role to any user. in the webUI navigate to **Authentication & Access > Users & Roles**. Here you can see all the pre-defined user roles.
 
 .. image:: images/rseries_security/imageres-admin.png
   :align: center
   :scale: 70%
+
+You can click on any user that has been defined and assign the appropriate role to them.
+
+.. image:: images/rseries_security/imageres-admin2.png
+  :align: center
+  :scale: 70%
+
+
 
 When logging in as the resource-admin user, any attempt to configure the restricted items above will result in an **Access Denied** error like the one below.
 
@@ -909,7 +1215,7 @@ When a user logs in with the **user** role assigned, they can view configuration
 
 .. image:: images/rseries_security/guest-user-restricted.png
   :align: center
-  :scale: 70%  
+  :scale: 90%  
 
 
 Resource-Admin & Guest User Role via API
@@ -1276,11 +1582,11 @@ In the body of the API call add the username and role as seen below.
 Superuser Role
 ===============
 
-F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commands can now be executed from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell, but also provides an audit trail of the users interactions with the new f5sh utility in bash shell. 
+F5OS-A 1.8.0 adds a new role called **superuser**. The new **superuser** role available at the F5OS-A system level provides **sudo** privileges and bash access to the system (if enabled). This role is intended for environments where appliance mode (prevent bash level access) is disabled. Some customers prefer to manage BIG-IP from the bash shell and leverage tmsh commands to pipe into various Unix utilities to parse output. A similar feature has been added to F5OS 1.8.0 where F5OS commands can now be executed from the bash shell via the new f5sh utility. This new role provides a way for a user with "sudo" privileges to be able to be remotely authenticated into the F5OS bash shell but also provides an audit trail of the users interactions with the new f5sh utility in bash shell. 
 
 RBAC on F5OS has been implemented in a way where **Roles** provide slices of privileges that can be composed with each other. There are **Primary Roles** and **Secondary Roles** which can be combined together to give a particular user multiple privileges. 
 
-Users must be assigned to a single primary group/role, and can become members of further supplementary groups/roles by adding them to the users list for that group/role.
+Users must be assigned to a single primary group/role and can become members of further supplementary groups/roles by adding them to the users list for that group/role.
 The roles can be combined together to give a particular user multiple privileges. The **superuser** role is intended to be assigned as a supplementary role in addition to another role like **admin**, whether the role is primary or supplementary does not matter (order does not matter), if only the superuser role was applied it would restrict access to services like the webUI, granting the admin role as a supplemental role will provide normal webUI access.
 
 As an example, assigning a Primary Role of **admin** to a user and then adding that same user to the  **superuser** role will give the user access to the webUI via the admin privileges, and if the **system aaa authentication config superuser-bash-access true** command is set (to true) the default CLI login for this user will be the bash shell. The superuser role does not grant webUI access or Confd CLI access on its own. 
@@ -1290,7 +1596,7 @@ Superuser Role via CLI using Named Groups on LDAP/Active Directory
 -----------------------------------------------------------------
 
 
-To enable LDAP remote authentication see an example configuration below.
+To enable LDAP remote authentication, see an example configuration below.
 
 .. code-block:: bash
 
@@ -1394,7 +1700,7 @@ In F5OS-A 1.4.0, a new **sshd-idle-timeout** option was added that will control 
 
 For SSH sessions connecting using root or super-user access direct to the bash shell, then the idle-timeout does not apply, as that only applies to sessions to the F5OS confd CLI. If a root or super-user connects directly to the bash shell then only the ssh-idle-timeout applies. If that user then issues an su admin command to access the confd CLI or uses f5sh commands from the bash shell, then the idle-timeout setting will apply for the confd CLI session, the user will then be timed out of confd back to the bash shell, and then the sshd-idle-timeout setting would dictate how long before the bash sessions times out.
 
-To demonstrate the interaction between the **idle-timeout** and the **sshd-idle-timeout**, testing was done on F5OS-A 1.8.0 with different logins (root and admin) using both console and ssh access. In the first test, the idle-timeout is set for 30 seconds and the sshd-idle-timeout is set for 60 seconds. 
+To demonstrate the interaction between the **idle-timeout** and the **sshd-idle-timeout**, testing was done on F5OS-A 1.8.0 with different logins (root and admin) using both console and ssh access. In the first test, the idle-timeout is set for 30 seconds, and the sshd-idle-timeout is set for 60 seconds. 
 
 .. code-block:: bash
 
@@ -1436,7 +1742,7 @@ For SSH sessions:
     - The sshd-idle-timeout will control how long before the bash session times out ( 60 seconds)
 
 
-In the second test, the idle-timeout is set for 60 seconds and the sshd-idle-timeout is set for 30 seconds. 
+In the second test, the idle-timeout is set for 60 seconds, and the sshd-idle-timeout is set for 30 seconds. 
 
 .. code-block:: bash
 
@@ -1620,9 +1926,15 @@ You'll see output similar to the example below.
 Configuring SSH and CLI Timeouts & Deny Root SSH Settings via webUI
 ------------------------------------------
 
-The CLI timeout and deny-root-ssh settings are both configurable in the webUI. SSH timeouts are not currently configurable via the webUI. The deny-root-ssh and CLI timeout options can be configured in the **System Settings -> System Security** page.
+The CLI and SSH timeouts and deny-root-ssh settings are all configurable in the webUI. The **deny-root-ssh** option can be configured in the **Shell & LCD Access** section of the **System Settings -> System Security** page.
 
 .. image:: images/rseries_security/deny-root-ssh.png
+  :align: center
+  :scale: 70%
+
+The CLI and SSH timeouts are configurable under the **Services** section of the **System Settings -> System Security** page.
+
+.. image:: images/rseries_security/cli-ssh-timeouts.png
   :align: center
   :scale: 70%
 
@@ -1875,7 +2187,7 @@ With basic authentication enabled (default setting), you can make any API call u
 
 .. image:: images/rseries_security/imagebasicauth.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 While basic auth is enabled, any API call using username/password will complete successfully. After disabling basic auth, any attempt to access an API endpoint other than the root /api URI using basic auth will fail with a message like the one below indicating **access denied**.
 
@@ -2117,7 +2429,7 @@ Local Password Policies can be set in the CLI using the **system aaa password-po
 Setting Password Policies via webUI
 ---------------------------------
 
-Local Password Policies can be set in the **User Management -> Authentication Settings** page in the webUI.
+Local Password Policies can be set in the **Password Configuration** section of the **Authentication & Access -> Authentication Settings** page in the webUI.
 
 .. image:: images/rseries_security/passwordpolicy1.png
   :align: center
@@ -2430,7 +2742,7 @@ NTP Authentication can be enabled to provide a secure communication channel for 
 Enabling NTP Authentication via CLI
 -----------------------------------
 
-To enable NTP authentication use the **system ntp config enable-ntp-auth true** command in the CLI, and then commit the change.
+To enable NTP authentication use the **system ntp config enable-ntp-auth true** command in the CLI and then commit the change.
 
 .. code-block:: bash
 
@@ -2455,11 +2767,11 @@ The key ID, key type, and key value on this client system must match the server 
 Enabling NTP Authentication via webUI
 -------------------------------------
 
-To enable NTP authentication in the webUI use the **System Settings -> Time Settings** page. You'll need to enable NTP authentication then add the appropriate keys, and then associate those keys with an NTP server.
+To enable NTP authentication in the webUI use the **System Settings -> Time Settings** page. You'll need to enable NTP authentication then add the appropriate keys and then associate those keys with an NTP server.
 
 .. image:: images/rseries_security/ntpauth1.png
   :align: center
-  :scale: 70%  
+  :scale: 60%  
 
 Enabling NTP Authentication via API
 -----------------------------------
@@ -2550,13 +2862,13 @@ The output will display the current NTP configuration state including authentica
         }
     }
 
-To enable NTP authentication via the F5OS API use the following API call.
+To enable NTP authentication via the F5OS API, use the following API call.
 
 .. code-block:: bash
 
     PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
 
-In the body of the API call you can enable NTP authentication, add keys, and associate those keys with an NTP server using the key-id.
+In the body of the API call you can enable NTP authentication, add keys and associate those keys with an NTP server using the key-id.
 
 .. code-block:: json
 
@@ -2622,7 +2934,7 @@ F5OS-A 1.4.0 added the ability to display and configure the ciphers used for the
     state kexalgorithms [ diffie-hellman-group14-sha1 diffie-hellman-group14-sha256 diffie-hellman-group16-sha512 ecdh-sha2-nistp256 ecdh-sha2-nistp384 ecdh-sha2-nistp521 ]
     r5900-1-gsa# 
 
-You can change the ciphers offered by F5OS to clients connecting to the httpd service by using the **system security services service httpd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
+You can change the ciphers offered by F5OS to clients connecting to the httpd service by using the **system security services service httpd config ssl-ciphersuite** CLI command and then choosing the ciphers you would like to enable. Be sure to commit any changes.
 
 .. code-block:: bash
 
@@ -2691,16 +3003,18 @@ You can configure which ciphers are used when connecting to the F5OS management 
 
 .. image:: images/rseries_security/security-ciphers.png
   :align: center
+  :scale: 60%  
+
+For F5OS 2.0 you can now configure different TLS versions such as **TLS1.2** or **TLS1.3** for httpd access. There is more granular access to individual ciphers if needed. For sshd you can configure **sshd ciphers**, **sshd KEX Algorithms**, **sshd MAC Algorithms** and **sshd Host Key Algorithms**.
+
+.. image:: images/rseries_security/security-ciphers1.png
+  :align: center
   :scale: 70%  
-
-
-
-
 
 Configuring Management Ciphers via API
 --------------------------------------
 
-You can configure which ciphers are used when connecting to the F5OS managament interface using SSH or HTTPS. Use the following API call to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
+You can configure which ciphers are used when connecting to the F5OS management interface using SSH or HTTPS. Use the following API call to configure both httpd and sshd ciphers suites, sshd KEX algorithms, sshd MAC algorithms, and sshd host key algorithms.
 
 .. code-block:: bash
 
@@ -2857,13 +3171,13 @@ https://techdocs.f5.com/en-us/f5os-a-1-8-0/f5-rseries-systems-administration-con
 Configuring Client Certificate Authentication via webUI
 -------------------------------------------------------
 
-Although you can enable client certificate authentication via the webUI, you must upload or create your certificate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full configuraton is completed.
+Although you can enable client certificate authentication via the webUI, you must upload or create your certificate via the CLI or API first. Otherwise, you will end up being locked out of the webUI, until the full configuration is completed.
 
 See the section above about configuration of the certificate before moving on. If you have loaded a certificate, then you can enable client certificate authentication via the webUI as seen below.
 
 .. image:: images/rseries_security/client-cert1.png
   :align: center
-  :scale: 70% 
+  :scale: 50% 
 
 
 **More Details to Come**
@@ -2904,7 +3218,7 @@ To add a proxy server for iHealth uploads via the webUI, go to the **Diagnostics
 
 .. image:: images/rseries_security/imageproxy1.png
   :align: center
-  :scale: 70%  
+  :scale: 50%  
 
 To add a proxy server for license activation via the webUI, go to the **System Settings -> Licensing** page. 
 
@@ -2937,7 +3251,7 @@ In the body of the API call add the username, password, and proxy server configu
     }
 
 
-To view the current proxy configuration via the API use the following call.
+To view the current proxy configuration via the API, use the following call.
 
 .. code-block:: bash
 
@@ -3012,7 +3326,7 @@ First you must configure the remote syslog destination. As part of that configur
 
 .. image:: images/rseries_security/audit-logging.png
   :align: center
-  :scale: 70%  
+  :scale: 50%  
 
 Configuration of Audit Logs via F5OS API (F5OS-A 1.4.0 and Later)
 -----------------------------------------------------------------
@@ -3196,7 +3510,7 @@ Within the bash shell if you are logged in as root, the path for the logging is 
     [root@appliance-1(r10900.f5demo.net) ~]# 
 
 
-Some audit events don't make it into the main audit.log file in the /log/system directory. An example would be certain login failure events that happen at a lower layer and are instead captured in the /log/host/audit/audit.log file.
+Some audit events don't make it into the main audit.log file in the /log/system directory. An example would be certain login failure events that happen at a lower-layer and are instead captured in the /log/host/audit/audit.log file.
 
 .. code-block:: bash
 
@@ -3224,14 +3538,14 @@ In the current F5OS releases, you cannot view the F5OS audit.log file directly f
 
 .. image:: images/rseries_security/image10.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 If you want to download the main **audit.log**, select the directory **/log/system**.
 
 
 .. image:: images/rseries_security/image11.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 
 Viewing Audit Logs via F5OS API
@@ -3448,7 +3762,7 @@ The path below is the main audit.log.
     }
     r10900-1#
 
-The path below is for lower level audit log events like account lockouts.
+The path below is for lower-level audit log events like account lockouts.
 
 .. code-block:: bash
 
@@ -3550,16 +3864,16 @@ You can download either of the audit.log files from the **System -> File Utiliti
 
 .. image:: images/rseries_security/imageaudit1.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 Inside the audit directory you can then select the audit.log and then either **Download** to copy the file to your local machine via the browser or select **Export** to copy to a remote HTTPS server.
 
 .. image:: images/rseries_security/imageaudit2.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 You can also select the **log/system** path to download the system audit.log.
 
 .. image:: images/rseries_security/imageaudit3.png
   :align: center
-  :scale: 70%
+  :scale: 90%

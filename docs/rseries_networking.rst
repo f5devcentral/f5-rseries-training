@@ -12,6 +12,13 @@ This allows customers to run a secure/locked-down out-of-band management network
 
 .. image:: images/rseries_networking/image1.png
   :align: center
+  :scale: 80%
+
+In F5OS 2.0, 802.1Q VLAN tagging support was added for the out-of-band management port on rSeries. This new option allows for the F5OS platform layer and tenants to be assigned to specific VLANs. This will allow for greater separation for the management VLANs of tenants and the F5OS platform layer which in previous releases had to be on a single shared VLAN. The external ports can be configured with specific tagged or untagged VLANs and then those VLANs are presented to the F5OS platform layer and tenants as untagged, meaning no special configuration is needed to convert to tagged management VLANs inside tenants.
+
+.. image:: images/rseries_networking/vlan-tagged-mgmt.png
+  :align: center
+  :scale: 60%
 
 
 Port Groups
@@ -29,6 +36,7 @@ Below is an example of the F5OS webUI **Port Groups** screen on a r10000 Series 
 
 .. image:: images/rseries_networking/image3.png
   :align: center
+  :scale: 90%
 
 .. image:: images/rseries_networking/image4.png
   :align: center
@@ -154,7 +162,7 @@ rSeries 100Gb QSFP28 SKU's
 
 Below are the **current** rSeries optic SKUs:
 
-.. Note:: Some older SKU's may operate in rSeries, but are no longer available to purchase. They are listed in the following document.
+.. Note:: Some older SKU's may operate in rSeries but are no longer available to purchase. They are listed in the following document.
   
 `K6097: Specifications of the Fiber Gigabit Ethernet SFP, XFP, SFP+, QSFP+, and QSFP28 module ports on BIG-IP system platforms <https://my.f5.com/manage/s/article/K6097>`_
 
@@ -226,7 +234,7 @@ Breakout for 40G PSM4 or 100G PSM4 transceivers *ONLY* (Note these are not 2 pac
 VLANs
 =====
 
-rSeries supports both 802.1Q tagged and untagged VLAN interfaces. In the current F5OS releases, double VLAN tagging (802.1Q-in-Q) is not supported. VLANs can be added to any individual port, or to a Link Aggregation Group. BIG-IP tenants can share the same VLANs if needed.
+rSeries supports both 802.1Q tagged and untagged VLAN interfaces. Double VLAN tagging (802.1Q-in-Q) for data plane ports has been added in the F5OS 2.0 release. VLANs can be added to any individual port, or to a Link Aggregation Group. BIG-IP tenants can share the same VLANs if needed.
 
 
 Link Aggregation Groups
@@ -239,7 +247,7 @@ An admin can configure the **LACP Type** to **LACP** or **Static**, the **LACP M
 Pipelines (r5000 and r10000 only)
 =================================
 
-The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load, ideally proper knowledge of pipelines and planning will avoid any possible internal oversubscription scenarios.
+The r10000 and r5000 series of appliances expose internal pipelines (connection paths between internal FPGA's) to the user so that they can plan for the most optimal network connectivity to rSeries to avoid oversubscription. rSeries appliances will have multiple pipelines between FPGA's, and each pipeline supports a max bandwidth of 100Gb. Front panel ports are statically mapped to different internal pipelines to distribute load; ideally proper knowledge of pipelines and planning will avoid any possible internal oversubscription scenarios.
 
 If all ports are utilized and running at max bandwidth capacity simultaneously this may result in an over-subscription if the maximum bandwidth for one of the internal pipelines is achieved. By exposing the internal pipelines to the user, they can plan ahead and spread external network connections into specific ports to maximize pipeline bandwidth and avoid oversubscription. Currently the mapping of ports to internal pipelines is static and not configurable, although F5 may make this a configurable option in the future.
 
@@ -247,19 +255,19 @@ Below is an example of the total external front panel theoretical bandwidth exce
 
 .. image:: images/rseries_networking/image5.png
   :align: center
-  :scale: 50%
+  :scale: 90%
 
 There are static mappings of external ports to specific internal pipelines. If you are not using all ports, you can spread the used ports over the different pipelines by choosing different front panel ports to avoid possible oversubscription scenarios. Below shows the total pipelines and ports for the r5000 appliances.
 
 .. image:: images/rseries_networking/image6.png
   :align: center
-  :scale: 50%
+  :scale: 90%
 
 the diagram below shows the 4 total pipelines and ports for the r10000 appliances.
 
 .. image:: images/rseries_networking/image7.png
   :align: center
-  :scale: 40%
+  :scale: 90%
 
  
 
@@ -267,7 +275,7 @@ You can view the front panel port to pipeline mapping in the CLI, webUI, or API 
 
 .. image:: images/rseries_networking/image8.png
   :align: center
-  :scale: 50%
+  :scale: 80%
 
 Below is the CLI command to display the pipelines:
 
@@ -292,7 +300,7 @@ The hardware architecture in the r2000 and r4000 appliances is different than th
 
 .. image:: images/rseries_networking/image9.png
   :align: center
-  :scale: 50%
+  :scale: 90%
 
 The r2000 and r4000 appliances support the configuration of 3 different port profiles. 
 
@@ -343,4 +351,4 @@ To configure the port profiles in the WebUI go to the **Network Settings > Port 
 
 .. image:: images/rseries_networking/image13.png
   :align: center
-  :scale: 80% 
+  :scale: 70% 

@@ -17,28 +17,28 @@ rSeries follows a similar behavior as far as tenants inheriting VLANs from the F
 
 .. image:: images/rseries_inside_the_tenant/image1.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 These are the VLANs as they appear in the F5OS platform layer. Notice that the tenant does not see all VLAN’s, only the ones that are assigned to it by the administrator:
 
 .. image:: images/rseries_inside_the_tenant/image2.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 
 Interface Behavior
 ==================
 
-There are some architectural differences between the r5000/r10000 appliances and the r2000/r4000 appliances that manifest slightly different behavior inside an F5OS tenant. In general, F5OS tenants on the r5000/r10000 platforms have no visibility into the underlying physical interfaces or LAGs that are configured at the F5OS layer. The tenant will be connected to specific interfaces or LAGs based on its VLAN membership. The only exception to this is the HA Group functionality inside the tenant, which has visibility into LAG state and membership to facilitate proper redundancy/failover.
+There are some architectural differences between the r5000/r10000/r12000 appliances and the r2000/r4000 appliances that manifest slightly different behavior inside an F5OS tenant. In general, F5OS tenants on the r5000/r10000/r12000 platforms have no visibility into the underlying physical interfaces or LAGs that are configured at the F5OS layer. The tenant will be connected to specific interfaces or LAGs based on its VLAN membership. The only exception to this is the HA Group functionality inside the tenant, which has visibility into LAG state and membership to facilitate proper redundancy/failover.
 
-Generally, the r2000/r4000 appliances follow these same principles, but due to some architectural differences these platforms have more visibility into the lower layer interfaces and LAGs that are configured at the F5OS layer. As an example, an F5OS tenant on an r5000/r10000 appliance has no visibility into the physical interfaces at the F5OS layer. Instead, the tenant will see virtual interfaces and the number of interfaces within a tenant will be based upon the number of vCPUs assigned to the tenant. The r5000 and higher platforms will have one virtual interface per TMM since there is one TMM per physical core. This interface is not an Ethernet interface it is an internal virtual NIC interface that is capable of high speeds. The screenshot below shows the interfaces inside the tenant lining up with the number of physical CPU cores per tenant. In the example there are 36 vCPUs assigned to a single F5OS tenant, this will equate to 18 physical CPUs due to hyperthreading. Since TMOS runs HT-Split, there is one TMM per physical core as TMM's run on the even numbered hyperthreads. As seen in the output below, the tenant has 36 total vCPUs assigned. 
+Generally, the r2000/r4000 appliances follow these same principles, but due to some architectural differences these platforms have more visibility into the lower layer interfaces and LAGs that are configured at the F5OS layer. As an example, an F5OS tenant on an r5000/r10000/r12000 appliance has no visibility into the physical interfaces at the F5OS layer. Instead, the tenant will see virtual interfaces and the number of interfaces within a tenant will be based upon the number of vCPUs assigned to the tenant. The r5000 and higher platforms will have one virtual interface per TMM since there is one TMM per physical core. This interface is not an Ethernet interface it is an internal virtual NIC interface that is capable of high speeds. The screenshot below shows the interfaces inside the tenant lining up with the number of physical CPU cores per tenant. In the example there are 36 vCPUs assigned to a single F5OS tenant, this will equate to 18 physical CPUs due to hyperthreading. Since TMOS runs HT-Split, there is one TMM per physical core as TMM's run on the even numbered hyperthreads. As seen in the output below, the tenant has 36 total vCPUs assigned. 
 
 
 .. image:: images/rseries_inside_the_tenant/image4.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
-If you were to look inside the tenant, you'll notice that the number of interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer, and you do not configure interfaces or LAGS inside and F5OS tenant.
+If you were to look inside the tenant, you'll notice that the number of interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer, and you do not configure interfaces or LAGs inside and F5OS tenant.
 
 .. image:: images/rseries_inside_the_tenant/image3.png
   :align: center
@@ -59,8 +59,6 @@ Those same 4 interfaces can be seen at the F5OS layer, but they are numbered 5.0
   :scale: 50%
 
 Since the r2000/r4000 architecture allows the tenant to see the physical interface, this means that the tenant's interface stats will reflect the physical interfaces stats, although the numbers may not be in sync as the interface may have been up longer than the tenant.
-
-This can be seen in the F5OS interface stats below. Note interfaces 5.0 and 7.0 show statistics incrementing.
 
 .. image:: images/rseries_inside_the_tenant/image10.png
   :align: center

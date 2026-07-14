@@ -33,7 +33,7 @@ Comparing the management of a non-VCMP (bare metal) iSeries or VIPRION to rSerie
 
 .. image:: images/rseries_points_of_management/image4.png
   :align: center
-  :scale: 50%
+  :scale: 60%
 
 VLANs are created in the F5OS platform layer, and then they can be assigned to separate interfaces or LAGs. When a tenant is created, the administrator can then assign one or more of those VLANs to be accessible by the F5OS tenant. Once the tenant is deployed the configured VLANs will automatically be inherited and will show up in the VLAN configuration inside TMOS. VLANs will automatically show up in Route Domain 0 by default. If you need to assign these VLANs to another Route Domain inside the tenant, then you may delete them from Route Domain 0 inside TMOS and then recreate them with the same VLAN ID inside the proper Route Domain, and connectivity will be restored to the lower F5OS layer. This is the same behavior a vCMP guest would have inside of VIPRION or iSeries as outlined in the following link.
 
@@ -50,17 +50,17 @@ Monitoring for a bare metal iSeries of VIPRION is all done within TMOS, whereas 
 
 .. image:: images/rseries_points_of_management/image6.png
   :align: center
-  :scale: 50%
+  :scale: 60%
 
 
-There are some architectural differences between the r5000/r10000 appliances and the r2000/r4000 appliances that manifest slightly different behavior inside an F5OS tenant. In general, F5OS tenants in the r5000/r10000 platforms have no visibility into the underlying physical interfaces or LAGs that are configured at the F5OS layer. The tenant will be connected to specific interfaces or LAGs based on its VLAN membership. The only exception to this is the HA Group functionality inside the tenant, which has visibility into LAG state and membership to facilitate proper redundancy/failover.
+There are some architectural differences between the r5000/r10000 appliances and the r2000/r4000 appliances that manifest slightly different behavior inside an F5OS tenant. In general, F5OS tenants in the r5000/r10000 platforms have no visibility into the underlying physical interfaces or LAGs that are configured at the F5OS layer. The tenant will be connected to specific interfaces or LAGs based on its VLAN membership. The only exception to this is the HA Group functionality inside the tenant, which has visibility into LAG state and membership to facilitate proper redundancy/failover. 
 
-Generally, the r2000/r4000 appliances follow these same principles, but due to some architectural differences these platforms have more visibility into the lower layer interfaces and LAGs that are configured at the F5OS layer. As an example, an F5OS tenant on an r5000/r10000 appliance has no visibility into the physical interfaces at the F5OS layer. Instead, the tenant will see virtual interfaces and the number of interfaces within a tenant will be based upon the number of CPUs assigned to the tenant. The screenshot below shows the interfaces inside the tenant lining up with the number of physical CPU cores per tenant. In the example there are 36 vCPUs assigned to a single F5OS tenant, this will equate to 18 physical CPUs due to hyperthreading. As seen in the output below, the tenant has 36 vCPUs assigned. 
+Generally, the r2000/r4000 appliances follow these same principles, but due to some architectural differences these platforms have more visibility into the lower layer interfaces and LAGs that are configured at the F5OS layer. As an example, an F5OS tenant on an r5000/r10000 appliance has no visibility into the physical interfaces at the F5OS layer. Instead, the tenant will see virtual interfaces and the number of interfaces within a tenant will be based upon the number of CPUs assigned to the tenant. The screenshot below shows the interfaces inside the tenant lining up with the number of physical CPU cores per tenant. Each CPU core has two hyperthreads and the TMM will run on one of those hyperthreads. The interfaces inside the tenant are not physical interfaces, they are high speed virtual interfaces that map to each TMM. In the example there are 36 vCPUs assigned to a single F5OS tenant, this will equate to 18 physical CPUs due to hyperthreading. As seen in the output below, the tenant has 36 vCPUs assigned. 
 
 
 .. image:: images/rseries_inside_the_tenant/image4.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 If you were to look inside the tenant, you'll notice that the number of Interfaces corelates to the number of CPU cores assigned to the tenant, in this case 18. Note how the tenant does not see the physical interfaces at the F5OS layer.  
 
@@ -74,24 +74,24 @@ In the example below, a tenant on an r4000 appliance sees 4 interfaces, although
 
 .. image:: images/rseries_points_of_management/image8.png
   :align: center
-  :scale: 50%
+  :scale: 40%
 
 Those same 4 interfaces can be seen at the F5OS layer, but they are numbered 5.0, 6.0, 7.0 & 8.0.
 
 .. image:: images/rseries_points_of_management/image9.png
   :align: center
-  :scale: 50%
+  :scale: 60%
 
-Since the r2000/r4000 architecture allows the tenant to see the physical interface, this means that the tenant's interface stats will reflect the physical interfaces stats, although the numbers may not be in sync as the interface may have been up longer than the tenant.
+Since the r2000/r4000 architecture allows the tenant to see the physical interface, this means that the tenant's interface stats will reflect the physical interfaces stats, although the numbers may not be in sync as the interface may have been up longer than the tenant's interfaces.
 
-This can be seen in the F5OS interface stats below. Note interfaces 5.0 and 7.0 show statistics incrementing.
+This can be seen in the F5OS interface stats below. 
 
 .. image:: images/rseries_points_of_management/image10.png
   :align: center
-  :scale: 50%
+  :scale: 60%
 
 Inside the tenant, interfaces 1.5 and 1.7 show statistics incrementing. Note that the stats may not be equal between the tenant and the F5OS layer.
 
 .. image:: images/rseries_points_of_management/image11.png
   :align: center
-  :scale: 50%
+  :scale: 60%

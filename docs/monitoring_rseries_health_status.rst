@@ -1,8 +1,8 @@
 =====================================
-Monitoring rSeries Health & Alert Status
+rSeries Health & Alert Status
 =====================================
 
-rSeries has many components and subsystems which can be monitored via CLI, webUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quicky provide health of the chassis. This section will provide guidance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
+rSeries has many components and subsystems which can be monitored via CLI, webUI, API, and SNMP. It may be difficult to sift through all the end points to determine which are the key ones that can quickly provide health of the chassis. This section will provide guidance on how to quickly get health and alert status of the rSeries system, while other sections will focus on getting deeper detail.
 
 Active Alerts
 =============
@@ -269,7 +269,7 @@ To see past events use the command **show system events**.
 Checking Active Alerts via webUI
 ------------------------------
 
-In the F5OS webUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts, and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold, then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the rSeries F5OS SNMP Monitoring and Alerting section.
+In the F5OS webUI you can go to the **System Events > Alarms & Events** page to see if there are any known alerts for the system. The alerting page is focused on **Active** alerts and not issues that have cleared. If for example the temperature rises beyond an acceptable threshold, then a temperature alert will be raised. It will be seen in this page. If the temperature then falls back into a safe range then the alert will be removed. Each of these alerts will also generate a corresponding SNMP Trap. Please see the rSeries F5OS SNMP Monitoring and Alerting section.
 
 .. image:: images/monitoring_rseries_health_status/image1.png
   :align: center
@@ -1008,7 +1008,7 @@ rSeries also has a very robust **system health** utility where all the various h
 Checking System Health via CLI
 ------------------------------
 
-Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high-level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher-level health status for that section. As an example you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher-level status.
+Below is the full output from an rSeries appliance. There is a lot of info in the output when unfiltered, but everything is broken into sections, within each section you'll get a high-level status of that subsection with the **state name** and **state health**. You can then see all the subcomponenets that bubble up into the higher-level health status for that section. As an example, you don't need to know what thresholds will trigger an event, the system health will monitor that for you. If any component is out of tolerance, it will change status so that is not OK, and then it will bubble up to the higher-level status.
 
 After the full output below some CLI examples of how to filter all this information down into a high-level status will be provided.
 
@@ -18164,9 +18164,13 @@ Filter to Get a Summary of System Health via API
 
 You can filter the above output in many ways. Below is an example of how to only get the system health data for a specific component. In this case lcd, or psu-1. This will still result in a lot of data output in the response:
 
+This example will get the health of the lcd.
+
 .. code-block:: bash
 
     GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-health:health/f5-system-health:components/f5-system-health:component=lcd
+
+This example will get the health of the psu-1.
 
 .. code-block:: bash
 

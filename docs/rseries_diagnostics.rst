@@ -30,7 +30,7 @@ qkview Creation and Upload via webUI
 ----------------------------------
 
 
-A qkview file for the F5OS layer can be generated from the **System Settings > System Reports** page.I newer F5OS releases this has been relocated to the **Diagnostics** -> **System Reports** page.  Once finished it can also be uploaded to iHealth. 
+A qkview file for the F5OS layer can be generated from the **Diagnostics > System Reports** page. In newer F5OS releases this has been relocated to the **System Monitoring** -> **System Reports** page.  Once finished it can also be uploaded to iHealth. 
 
 .. image:: images/rseries_diagnostics/image1.png
   :align: center
@@ -43,9 +43,7 @@ To generate a qkview, click on the button in the upper right-hand corner. It wil
   :align: center
   :scale: 70%
 
-.. image:: images/rseries_diagnostics/image3.png
-  :align: center
-  :scale: 70%
+
 
 qkview Creation and Upload via CLI
 ----------------------------------
@@ -235,13 +233,13 @@ To download one of the qkview files to the local client machine enter the follow
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
 
-For the **Headers** secion of the Postman request be sure to add the following headers:
+For the **Headers** section of the Postman request be sure to add the following headers:
 
 .. image:: images/rseries_diagnostics/headers.png
   :align: center
   :scale: 70%
 
-If you are using Postman, in the body of the API call select **Body**, then selct **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
+If you are using Postman, in the body of the API call select **Body**, then select **form-data**. Then enter the **file-name**, **path**, and **token** as seen below.
 
 .. image:: images/rseries_diagnostics/downloadqkviewapi.png
   :align: center
@@ -361,7 +359,7 @@ The example below shows the last 20 lines of the platform.log file.
     2022-01-18T01:46:40.247870+00:00 appliance-1 sys-host-config[10328]: priority="Err" version=1.0 msgid=0x7001000000000031 msg="" func_name="static int SystemDateTimeOperHdlr::s_finish(confd_trans_ctx*)".
     appliance-1# 
 
-Within the bash shell, the actual underlying path for logging is different; it is at the following location: **/var/F5/system/log**. The non-bash shell user interfaces (CLI,webUI,API) do not use the real paths, and instead use the virtual paths to simplify things for administrators. 
+Within the bash shell, the actual underlying path for logging is different; it is at the following location: **/var/F5/system/log**. The non-bash shell user interfaces (CLI,webUI,API) do not use the real paths and instead use the virtual paths to simplify things for administrators. 
 
 .. code-block:: bash
 
@@ -402,14 +400,14 @@ In the current release you cannot view the F5OS logs directly from the webUI, al
 
 .. image:: images/rseries_diagnostics/image4.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 If you want to download the main **platform.log**, select the directory **/log/system**.
 
 
 .. image:: images/rseries_diagnostics/image5.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 Downloading Logs from the API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -428,20 +426,20 @@ In the body of the API call, add the virtual path you want to list.
     "f5-utils-file-transfer:path": "log/system/"
     }
 
-To download a specific log file use the following API call.
+To download a specific log file, use the following API call.
 
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
-In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **platform.log** file that resides in the **log/system** directory.
+In the body of the API call select **form-data** and then enter the key/value pairs as seen below. The example provided will download the **platform.log** file that resides in the **log/system** directory.
 
 .. image:: images/rseries_diagnostics/platformlog.png
   :align: center
   :scale: 70%
 
 
-For the **Headers** secion of the Postman request be sure to add the following headers:
+For the **Headers** section of the Postman request be sure to add the following headers:
 
 .. image:: images/rseries_diagnostics/headers.png
   :align: center
@@ -1199,7 +1197,7 @@ Currently F5OS webUI’s logging levels can be configured for local logging, and
   :align: center
   :scale: 70%
 
-Changing the Software Componenet Log Levels via API
+Changing the Software Component Log Levels via API
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 You can display all the logging subsystem's logging levels via the following API call:
@@ -1998,7 +1996,7 @@ To copy one of the tcpdump files to the local client machine enter the following
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
-For the **Headers** secion of the Postman request be sure to add the following headers:
+For the **Headers** section of the Postman request be sure to add the following headers:
 
 .. image:: images/rseries_diagnostics/headers.png
   :align: center

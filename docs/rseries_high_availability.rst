@@ -18,26 +18,26 @@ Tenants on different appliances should have the same number of vCPUs and identic
 
 .. image:: images/rseries_high_availability/image2.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 In some customer environments they may not want to run the HA VLANs over a dedicated LAG between the rSeries units. In this case the HA VLAN's are running over the in-band LAG's going to the upstream layer2 switches. This deployment mode may use less ports on rSeries, but now HA traffic and some heartbeat traffic is intermingled on the same links as in-band traffic and under certain conditions might not get prioritized in the L2 switching infrastructure if the network is saturated. This might not be an issue for most customers, but in heavily utilized environments this is something that should be considered. Depending on the amount and type of mirroring, you are also adding additional latency between the HA pairs, and this will increase the time for acknowledgements to be sent and received and ultimately for a transaction to be acknowledged to a client. 
 
 .. image:: images/rseries_high_availability/image3.png
   :align: center
-  :scale: 40%
+  :scale: 50%
 
 If VPC style interconnects are not used, then the same concepts from above are used but slightly altered. In the first case LAGs are not dual homed due to lack of VPC support and instead are configured as point-to-point LAGs between one rSeries device and one upstream layer2 switch. Again, a dedicated HA link is optional but preferred.
 
 .. image:: images/rseries_high_availability/image4.png
   :align: center
-  :scale: 40%  
+  :scale: 50%  
 
 This deployment mode is identical to the one above but lacks the dedicated HA interconnect LAG. This will have the same caveats as listed in the VPC with no dedicated LAG design.
 
 
 .. image:: images/rseries_high_availability/image5.png
   :align: center
-  :scale: 40%   
+  :scale: 50%   
 
 Tenant Level HA within the Same Appliance
 =========================================

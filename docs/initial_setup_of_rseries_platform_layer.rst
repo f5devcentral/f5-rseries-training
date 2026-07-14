@@ -96,37 +96,72 @@ If changing to one of the RFC1918 address spaces, you will need to choose from o
 
 .. code-block:: bash
 
-  Boston-r10900-1(config)# system network config network-range-type RFC1918 prefix ?
-  Description: 
-  The network prefix index is used to select the range of IP addresses
-  used internally within the appliance. The network prefix should be
-  selected such that internal appliance addresses do not overlap with
-  site-local addresses that are accessible to the appliance.
-
-  Network Prefix Index       Appliance Network Range
-  0                          10.[0-15].0.0/16
-  1                          10.[16-31].0.0/16
-  2                          10.[32-47].0.0/16
-  3                          10.[48-63].0.0/16
-  4                          10.[64-79].0.0/16
-  5                          10.[80-95].0.0/16
-  6                          10.[96-111].0.0/16
-  7                          10.[112-127].0.0/16
-  8                          10.[128-143].0.0/16
-  9                          10.[144-159].0.0/16
-  10                         10.[160-175].0.0/16
-  11                         10.[176-191].0.0/16
-  12                         10.[192-207].0.0/16
-  13                         10.[208-223].0.0/16
-  14                         10.[224-239].0.0/16
-  15                         10.[240-255].0.0/16
-  Possible completions:
+    r5900-2-gsa(config)# system network config network-range-type RFC1918 prefix ?
+    Description: 
+    The network prefix index is used to select the range of IP addresses
+    used internally within the appliance. The network prefix should be
+    selected such that internal appliance addresses do not overlap with
+    site-local addresses that are accessible to the appliance.
+    Network Prefix Index       Appliance Network Range
+    0                          10.[0-15].0.0/12
+    1                          10.[16-31].0.0/12
+    2                          10.[32-47].0.0/12
+    3                          10.[48-63].0.0/12
+    4                          10.[64-79].0.0/12
+    5                          10.[80-95].0.0/12
+    6                          10.[96-111].0.0/12
+    7                          10.[112-127].0.0/12
+    8                          10.[128-143].0.0/12
+    9                          10.[144-159].0.0/12
+    10                         10.[160-175].0.0/12
+    11                         10.[176-191].0.0/12
+    12                         10.[192-207].0.0/12
+    13                         10.[208-223].0.0/12
+    14                         10.[224-239].0.0/12
+    15                         10.[240-255].0.0/12
+    Possible completions:
     <unsignedByte, 0 .. 15>[0]
-  Boston-r10900-1(config)# system network config network-range-type RFC1918 prefix 15
-  Boston-r10900-1(config)# commit
-  Commit complete.
+    r5900-2-gsa(config)#
+    5900-2-gsa(config)# system network config network-range-type RFC1918 prefix 15
+    r5900-2-gsa(config)# commit
+    Commit complete.
 
-**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies so the unit is powered off, using the AOM menus is not sufficient.**
+
+**Note: This change will not take effect until the appliance is power cycled. A complete power cycle is required to convert existing internal address space to the new address space; a reboot is not sufficient. You will need to remove power from all power supplies, so the unit is powered off, using the AOM menus is not sufficient.**
+
+F5OS 2.0 adds an additional option for customers who can't use RFC6598 address space or one of the RFC1918 address spaces above. A new option of 172.16.0.0/12 is now available as seen below.
+
+.. code-block:: bash
+
+    r5900-1-gsa(config)# system network config network-range-type RFC1918 prefix ?
+    Description:
+    The network prefix index is used to select the range of IP addresses
+    used internally within the appliance. The network prefix should be
+    selected such that internal appliance addresses do not overlap with
+    site-local addresses that are accessible to the appliance.
+
+    Network Prefix Index       Appliance Network Range
+    0                          10.[0-15].0.0/12
+    1                          10.[16-31].0.0/12
+    2                          10.[32-47].0.0/12
+    3                          10.[48-63].0.0/12
+    4                          10.[64-79].0.0/12
+    5                          10.[80-95].0.0/12
+    6                          10.[96-111].0.0/12
+    7                          10.[112-127].0.0/12
+    8                          10.[128-143].0.0/12
+    9                          10.[144-159].0.0/12
+    10                         10.[160-175].0.0/12
+    11                         10.[176-191].0.0/12
+    12                         10.[192-207].0.0/12
+    13                         10.[208-223].0.0/12
+    14                         10.[224-239].0.0/12
+    15                         10.[240-255].0.0/12
+    16                         172.16.0.0/12
+    Possible completions:
+      <unsignedByte, 0 .. 16>[0]
+    r5900-1-gsa(config)# system network config network-range-type RFC1918 prefix
+
 
 -------------------------------
 IP Address Assignment & Routing
@@ -148,66 +183,92 @@ To make these changes active you must commit the changes. No configuration chang
 
   Boston-r10900-1(config)# commit
 
-Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below, and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
+Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below (If you are running a version prior to F5OS 2.0), and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image1.png
   :align: center
   :scale: 70%
 
-Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. You can also view the management interface stats on the bottom of this page. 
+If you are running F5OS 2.0 or later then a new more modernized WebUI has been implemented and will look similar to the screenshot below. All subsequent screenshots in this rSeries planning guide will reference the new F5OS 2.0 interface but they are very similar from a navigation standpoint. 
+
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image1-ver2.png
+  :align: center
+  :scale: 70%
+
+
+If you navigate to **System Settings -> Management Interface** Here you can switch from static to DHCP address assignment, configure optional IPv6 addresses, and configure interface state, speed, and duplex. If you want to utilize the 802.1Q VLAN tagging support on the Management port that was added in F5OS 2.0 you can configure **Management VLANs**. You can also view the management interface stats on the bottom of this page. Click the icons in the upper right-hand corner of any section to edit any of the settings. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image2.png
   :align: center
-  :scale: 50%
+  :scale: 70%
+
+Prior to F5OS 2.0, only a single default gateway was configurable for the out-of-band management port from the F5OS layer. Multiple static routes can now be added starting with the F5OS 2.0 version. This is useful if you have services that F5OS relies on or needs to communicate with such as DNS, NTP, Syslog or SNMP services that are behind different routers.
+
+.. code-block:: bash
+
+    appliance-1(config)# system routes route dns config network 10.238.160.22/24 gateway 10.238.170.254
+    appliance-1(config)# system routes route ntp config network 10.238.150.22/24 gateway 10.238.170.253
+    appliance-1(config)# commit
 
 ---------------
 System Settings
 ---------------
 
-Once the IP address has been defined, system settings such as DNS servers, NTP, and external logging should be defined. This can be done from the CLI, webUI, or API.
+Once the IP address has been defined, system settings such as hostname, DNS servers, NTP, and external logging should be defined. This can be done from the CLI, webUI, or API.
 
 System Settings via the CLI
 ===========================
 
 .. code-block:: bash
 
-  Boston-r10900-1# config
+  appliance-1 # config
   Entering configuration mode terminal
-  Boston-r10900-1(config)# system dns servers server 192.168.10.1 config address 192.168.10.1
-  Boston-r10900-1(config-server-192.168.19.1)# exit
-  Boston-r10900-1(config)# system dns config search olympus.f5net.com
-  Boston-r10900-1(config)# system ntp config enabled 
-  Boston-r10900-1(config)# system ntp servers server time.olympus.f5net.com
-  Boston-r10900-1(config-server-time.f5net.com)# exit
-  Boston-r10900-1(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
-  Boston-r10900-1(config-remote-server-10.255.0.142)# exit
-  Boston-r10900-1(config)# commit
+  appliance-1(config)# system config hostname r5900-1-gsa.cpt.f5net.com
+  appliance-1(config)# system dns servers server 192.168.10.1 config address 192.168.10.1
+  appliance-1(config-server-192.168.19.1)# exit
+  appliance-1(config)# system dns config search olympus.f5net.com
+  appliance-1(config)# system ntp config enabled 
+  appliance-1(config)# system ntp servers server time.olympus.f5net.com
+  appliance-1(config-server-time.f5net.com)# exit
+  appliance-1(config)# system logging remote-servers remote-server 10.255.0.142 selectors selector LOCAL0 WARNING
+  appliance-1(config-remote-server-10.255.0.142)# exit
+  appliance-1(config)# commit
+  r5900-1-gsa(config)#
 
 System Settings via the webUI
 ===========================
 
-You can configure the DNS and Time settings from the webUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers and optional search domains. This will be needed for the rSeries appliance to resolve hostnames that may be used for external services like NTP, authentication servers, licensing, or to reach iHealth for qkview uploads.
+You can configure the DNS and Time settings from the webUI if preferred. DNS is configured under **System Settings > DNS**. Here you can add DNS lookup servers and optional search domains as well as static host entries if needed. The ability to reach DNS services will be required for the rSeries appliance to resolve hostnames that may be used for external services like NTP, authentication servers, licensing, or to reach iHealth for qkview uploads.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
   :scale: 70%
 
-Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is synchronized and accurate. In addition to configuring NTP time sources, you can set the local time zone for this appliance's location.
+Configuring Network Time Protocol is highly recommended so that the rSeries systems clock is synchronized and accurate. In addition to configuring NTP time sources and security keys, you can set the local time zone for this appliance's location.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image4.png
   :align: center
   :scale: 70%
 
-It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Settings > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. You can also configure the logging subsystem level individually. The remote logging severity level will override the component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+It’s also a good idea to have the rSeries appliance send logs for the F5OS platform layer to an external syslog server. This can be configured in the **System Monitoring > Log Settings** screen. Here you can configure remote servers, the logging facility, and severity levels. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
   :scale: 70%
 
+If you scroll down on the screen above you can open up the **Software Component Logging Levels** configuration. You can also configure the logging subsystem level individually. The remote logging severity level will override the component logging levels if they are higher, but only for logs sent remotely. Local logging levels will follow however the component levels are configured here.
+ 
+
+.. image:: images/initial_setup_of_rseries_platform_layer/software-logging.png
+  :align: center
+  :scale: 70%
+
+
 System Settings via the API
 ===========================
 
-If you would prefer to automate the setup of the rSeries appliance, there are F5OS-A API calls for all of the examples above. rSeries supports token-based authentication for the F5OS API's. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the initial path will be **/api**, while API calls to port 8888 will start with **/restconf**. F5OS also listens on port 80 and will redirect to TCP port 443. For the API it will not preserve the source URI when redirecting. 
+If you would prefer to automate the setup of the rSeries appliance, there are F5OS API calls for all of the examples above. rSeries supports token-based authentication for the F5OS API's. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the initial path will be **/api**, while API calls to port 8888 will start with **/restconf**. F5OS also listens on port 80 and will redirect to TCP port 443. For the API it will not preserve the source URI when redirecting. 
  
 
 Example of API call using port 8888.  
@@ -223,7 +284,7 @@ Example of API call using port 443. Replace **/restconf** with **/api**.
     https://{{rseries_rseries_appliance1_ip}}/api/data/openconfig-system:system/aaa
 
  
-You can send a standard API call with user/password-based authentication (basic auth), and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
+You can send a standard API call with user/password-based authentication (basic auth) and then store the token for subsequent API calls. The X-Auth-Token has a lifetime of fifteen minutes and can be renewed a maximum of five times before you need to authenticate again using basic auth. The renewal period begins at the ten-minute point, where the API will start sending a new X-Auth-Token in the response for the next five minutes. If your API calls fail to start using the new token by the 15-minute point, API calls will start returning 401 Not Authorized. All the API examples in this guide were generated using the Postman utility. Below is an example of using password-based authentication to the rSeries F5OS management IP address. Be sure to go to the **Auth** tab and set the *Type** to **Basic Auth** and enter the username and password to log into your rSeries appliance.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5a.png
   :align: center
@@ -374,6 +435,8 @@ To confirm the clock and NTP settings, use the following API commands. First que
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/ntp
 
+Below is an example response.
+
 .. code-block:: json
 
 
@@ -437,11 +500,13 @@ Below is the output showing the date/time and time zone:
   }
 
 
-Next a remote logging destination will be set up for the F5OS logging. To set a Remote Logging destination:
+Next a remote logging destination will be set up for the F5OS logging. To set a Remote Logging destination via API:
 
 .. code-block:: bash
 
   PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/
+
+Enter the following in the body of the API request.
 
 .. code-block:: json
 
@@ -934,7 +999,7 @@ When done examining the logs, you can run the same API call, but the body will b
 Licensing the rSeries Appliance
 -------------------------------
 
-Licensing for the rSeries device is handled at the F5OS level. This is like how vCMP licensing is implemented where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP, and instead runs tenancy on top of F5OS.
+Licensing for the rSeries device is handled at the F5OS level. This is similar to vCMP licensing where the system is licensed once, and all subsystems inherit their licensing from the appliance or chassis. With rSeries, licensing is applied at the F5OS platform layer, and all tenants will inherit their licenses from the base system. There is no need to procure add-on licenses for tenancy/vCMP. This is different from iSeries where only certain models supported virtualization/vCMP. For rSeries this is included in the base license at no extra cost; however, there are different levels of performance based on the Pay-as-you-Grow licensing. rSeries does not run vCMP and instead runs tenancy on top of F5OS.
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
@@ -1507,6 +1572,8 @@ To get the current licensing status via API use the following API call. Issue a 
 
   GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/f5-system-licensing:licensing
 
+The response will be similar to the output below:
+
 .. code-block:: json
 
   {
@@ -1535,7 +1602,7 @@ You can go back and review or edit various settings for the F5OS layer System Se
 Alarms and Events
 =================
 
-Alarms and Events can be viewed via the **System Settings > Alarms & Events** webUI page. You may optionally choose different severity levels to see more or fewer events. 
+Alarms and Events can be viewed via the **System Monitoring > Alarms & Events** webUI page. You may optionally choose different severity levels to see more or fewer events. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image12.png
   :align: center
@@ -1553,25 +1620,32 @@ Management Interface
 
 Under **System Settings -> Management Interface** you can view/edit the IP address and port settings for the F5OS out-of-band management interface. If you would prefer to use DHCP for automatic assignment of these addresses, this may also be configured. IPv4/IPv6 dual stack support can also be configured. At the bottom of the page, stats for the out-of-band port can be displayed.
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image14.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image1-ver2.png
   :align: center
   :scale: 70%
 
 Software Management
 ===================
 
-The F5OS-A platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade the F5OS-A to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
+The F5OS platform software can be managed under the **System Settings -> Software Management** page. Here you can **Upload** or **Import** approved F5OS-A (for Appliance) images and upgrade F5OS to a new release. The system can support **Bundled** (ISO) based upgrades, or **Unbundled** (Separate **Service** & **OS**) based upgrades. For now, F5 recommends using ISO based upgrades but in the future partial/incremental upgrades of either Service or OS may be utilized.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image15.png
   :align: center
   :scale: 70%
+
+If you scroll further down the page you can monitor the status of cluster install and firmware upgrades:
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image15-monitor.png
+  :align: center
+  :scale: 70%
+
 
 DNS
 ===
 
 External **DNS Lookup Servers** and **Search Domains** can be configured in the **System Settings -> DNS** page. This will be required for things like automatic license activation, NTP server domain resolution, and iHealth integration and it is recommended to be configured. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image16.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image3.png
   :align: center
   :scale: 70%
 
@@ -1579,7 +1653,7 @@ External **DNS Lookup Servers** and **Search Domains** can be configured in the 
 Log Settings
 ============
 
-Under **System Settings > Log Settings** you may add remote log servers for the F5OS platform layer. You can also specify the **Software Component Log Levels** which may be useful when troubleshooting specific issues.
+Under **System Monitoring > Log Settings** you may add remote log servers for the F5OS platform layer. You can also specify the **Software Component Log Levels** which may be useful when troubleshooting specific issues.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image5.png
   :align: center
@@ -1588,13 +1662,13 @@ Under **System Settings > Log Settings** you may add remote log servers for the 
 File Utilities
 ==============
 
-The **System Settings > File Utilities** page allows for importing or exporting specific types of files to and from the F5OS platform layer. Logs from the various log directories can be exported, cores and qkviews and system backups can be imported/exported, and F5OS-A software images can be imported into **import/staging**.
+The **System Monitoring > File Utilities** page allows for importing or exporting specific types of files to and from the F5OS platform layer. Logs from the various log directories can be exported, cores and qkviews and system backups can be imported/exported, and F5OS-A software images can be imported into **import/staging**.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image18.png
   :align: center
   :scale: 70%
 
-The **Import/Export** utility requires an external HTTPS server to copy to/from or you may **Upload/Download** directly to your browser. For Import/Export, a pop-up will be displayed asking for remote HTTPS server information. 
+The **Import/Export** utility requires an external HTTPS server to copy to/from, or you may **Upload/Download** directly to your browser. For Import/Export, a pop-up will be displayed asking for remote HTTPS server information. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image19.png
   :align: center
@@ -1631,7 +1705,7 @@ Device certificates and keys used for device management can be created via the *
 System Reports
 ==============
 
-The **Diagnostics > System Reports** page allows an admin to generate qkviews and optionally upload them to iHealth. To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  
+The **System Monitoring > System Reports** page allows an admin to generate qkviews and optionally upload them to iHealth. To generate a qkview click on the button in the upper right-hand corner. It will take some time for the qkview to be generated.  
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image24.png
   :align: center
@@ -1641,7 +1715,7 @@ Once the qkview is generated, you can click the checkbox next to it, and then se
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image25.png
   :align: center
-  :scale: 70%
+  :scale: 80%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image26.png
   :align: center
@@ -1653,7 +1727,7 @@ Once the qkview is generated, you can click the checkbox next to it, and then se
   :align: center
   :scale: 70%
 
-If you would like to store iHealth credentials within the configuration you may do so via the CLI. Enter config mode, and then use the **system diagnostics ihealth config** command to configure a username and password.
+If you would like to store iHealth credentials within the configuration you may do so via the CLI. Enter config mode and then use the **system diagnostics ihealth config** command to configure a username and password.
 
 .. code-block:: bash
 
@@ -1690,7 +1764,7 @@ Licensing for the rSeries appliance is handled at the F5OS level. This is simila
 
 Licenses can be applied via CLI, webUI, or API. A base registration key and optional add-on keys are needed, and it follows the same manual or automatic licensing capabilities of other BIG-IP systems. 
 
-.. image:: images/initial_setup_of_rseries_platform_layer/image30.png
+.. image:: images/initial_setup_of_rseries_platform_layer/image6.png
   :align: center
   :scale: 70%
 
@@ -1710,11 +1784,24 @@ User Management
 Auth Settings
 =============
 
-The F5OS platform has its own user and authentication management configured under the **User Management** section of the webUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
+The F5OS platform has its own user and authentication management configured under the **Authentication & Access** section of the webUI. This allows for a separate set of users that have access to the F5OS layer, which is configured separately from tenant authentication. You may define local users and/or remote authentication via LDAP, RADIUS, or TACACS+. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image32.png
   :align: center
   :scale: 70%
+
+You may define remote authentication via LDAP, RADIUS, or TACACS+: 
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image32a.png
+  :align: center
+  :scale: 70%
+
+Also, password policies can be set.
+
+.. image:: images/initial_setup_of_rseries_platform_layer/image32b.png
+  :align: center
+  :scale: 70%
+
 
 
 Server Groups
@@ -1728,20 +1815,20 @@ Under the **User Management -> Server Groups*** page you may define **Server Gro
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image35.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image36.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image37.png
   :align: center
-  :scale: 70%  
+  :scale: 50%  
 
 Users
 =====
 
-Under the **User Management -> Users*** page Local Users may be defined, and passwords set or changed, and then assigned to specific roles (Admin or Operator). An account may also be locked, and that may be changed here.
+Under the **Authentication & Access -> Users & Roles** page Local Users may be defined, and passwords set or changed, and then assigned to specific roles (Admin, Operator, Guest, SuperUser etc...). An account may also be locked, and that may be changed here.
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image38.png
   :align: center
@@ -1749,9 +1836,9 @@ Under the **User Management -> Users*** page Local Users may be defined, and pas
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image39.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image40.png
   :align: center
-  :scale: 70%
+  :scale: 50%
 

@@ -136,7 +136,7 @@ You'll notice there are two separate MIB files, one is for Enterprise MIBs, whil
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
-For the **Headers** secion of the Postman request, be sure to add the following headers:
+For the **Headers** section of the Postman request, be sure to add the following headers:
 
 .. image:: images/rseries_monitoring_snmp/snmpheaders.png
   :align: center
@@ -237,7 +237,7 @@ Currently you can add one IP address/port pair per **allowed-ip** name with an o
 Adding Allowed IPs for SNMP via API
 -----------------------------------
 
-By default, SNMP queries are not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing an multiple SNMP endpoints at to access SNMP on the system on port 161.
+By default, SNMP queries are not allowed into the F5OS layer. Before enabling SNMP, you'll need to open up the out-of-band management port on F5OS-A to allow SNMP queries. Below is an example of allowing multiple SNMP endpoints at to access SNMP on the system on port 161.
 
 .. code-block:: bash
 
@@ -597,7 +597,7 @@ You can configure the SNMP System parameters including the **System Contact**, *
 
 SNMP configuration was only available in the CLI and API prior to F5OS-A 1.3.0, and the CLI configuration was not intuitive. F5OS-A 1.2.0 has improved and streamlined SNMP configuration in the CLI and then configuration via the webUI was also added in F5OS-A 1.3.0. The example below is utilizing the new and improved SNMP CLI configuration for rSeries systems running F5OS-A 1.2.0 or later. 
 
-Enabling SNMP can be done from the CLI by configuring the **public** SNMP community, and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may choose to enable both security models or only one.
+Enabling SNMP can be done from the CLI by configuring the **public** SNMP community and then configuring a **security-model**. The command below sets up an SNMP community of **public** with v1 and v2c security models. You may choose to enable both security models or only one model.
 
 .. code-block:: bash
 
@@ -653,7 +653,7 @@ Below is the SNMP CLI configuration for systems running a version prior to F5OS-
     Commit complete.
     appliance-1(config)# 
 
-Enabling SNMP can be done from the CLI by configuring the public SNMP community, and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring.
+Enabling SNMP can be done from the CLI by configuring the public SNMP community and then configuring a Security Access Group. Below is an example of enabling SNMP monitoring at the F5OS layer. F5OS only supports read-only access for SNMP monitoring.
 
 .. code-block:: bash
 
@@ -682,7 +682,7 @@ Configuring SNMP Access via API
 
 SNMP Communities, Users, and Targets can be setup via the API. An admin can enable access for SNMP monitoring of the system through either a community for SNMPv1/v2c, or through users for SNMPv3. In addition, remote SNMP Trap receiver locations can be enabled for alerting.
 
-To configure the SNMP system parameters via API use the following API call:
+To configure the SNMP system parameters via API, use the following API call:
 
 .. code-block:: bash
 
@@ -700,7 +700,7 @@ In the body of the API add the SNMP sysContact, sysName, and sysLocation.
         }
     }
 
-To view the SNMP system parameters use the following API call:
+To view the SNMP system parameters, use the following API call:
 
 .. code-block:: bash
 
@@ -916,7 +916,7 @@ SNMP users can be added for environments which utilize SNMPv3.
   :align: center
   :scale: 100%
 
-SNMP Trap receivers may be added and a community or a user is added depending on the security model.
+SNMP Trap receivers may be added, and a community or a user is added depending on the security model.
 
 .. image:: images/rseries_monitoring_snmp/image5.png
   :align: center
@@ -932,97 +932,141 @@ You can enable SNMP traps for the F5OS-A platform layer. The **F5OS-APPLIANCE-AL
 
 SNMP Trap events that note a fault should also trigger an alert that can be viewed in the show alerts output in the CLI, WebUI, and API. They are also logged in the snmp.log file. Once a clear SNMP Trap is sent, it should clear the event from the **show events** output.
 
-+----------------------------+----------------------------------+
-| **Alert**                  | **OID**                          |
-+============================+==================================+
-| hardware-device-fault      | .1.3.6.1.4.1.12276.1.1.1.65536   |
-+----------------------------+----------------------------------+
-| firmware-fault             | .1.3.6.1.4.1.12276.1.1.1.65537   |
-+----------------------------+----------------------------------+
-| unknown-alarm              | .1.3.6.1.4.1.12276.1.1.1.65538   |
-+----------------------------+----------------------------------+
-| memory-fault               | .1.3.6.1.4.1.12276.1.1.1.65539   |
-+----------------------------+----------------------------------+
-| drive-fault                | .1.3.6.1.4.1.12276.1.1.1.65540   |
-+----------------------------+----------------------------------+
-| cpu-fault                  | .1.3.6.1.4.1.12276.1.1.1.65541   |
-+----------------------------+----------------------------------+
-| pcie-fault                 | .1.3.6.1.4.1.12276.1.1.1.65542   |
-+----------------------------+----------------------------------+
-| aom-fault                  | .1.3.6.1.4.1.12276.1.1.1.65543   |
-+----------------------------+----------------------------------+
-| drive-capacity-fault       | .1.3.6.1.4.1.12276.1.1.1.65544   |
-+----------------------------+----------------------------------+
-| power-fault                | .1.3.6.1.4.1.12276.1.1.1.65545   |
-+----------------------------+----------------------------------+
-| thermal-fault              | .1.3.6.1.4.1.12276.1.1.1.65546   |
-+----------------------------+----------------------------------+
-| drive-thermal-throttle     | .1.3.6.1.4.1.12276.1.1.1.65547   |
-+----------------------------+----------------------------------+
-| firmware-update-status     | .1.3.6.1.4.1.12276.1.1.1.65550   |
-+----------------------------+----------------------------------+
-| drive-utilization          | .1.3.6.1.4.1.12276.1.1.1.65551   |
-+----------------------------+----------------------------------+
-| sensor-fault               | .1.3.6.1.4.1.12276.1.1.1.65577   |
-+----------------------------+----------------------------------+
-| datapath-fault             | .1.3.6.1.4.1.12276.1.1.1.65578   |
-+----------------------------+----------------------------------+
-| module-present             | .1.3.6.1.4.1.12276.1.1.1.66304   |
-+----------------------------+----------------------------------+
-| psu-fault                  | .1.3.6.1.4.1.12276.1.1.1.66305   |
-+----------------------------+----------------------------------+
-| lcd-fault                  | .1.3.6.1.4.1.12276.1.1.1.66306   |
-+----------------------------+----------------------------------+
-| module-communication-error | .1.3.6.1.4.1.12276.1.1.1.66307   |
-+----------------------------+----------------------------------+
-| fips-fault                 | .1.3.6.1.4.1.12276.1.1.1.66308   |
-+----------------------------+----------------------------------+
-| fipsError                  | .1.3.6.1.4.1.12276.1.1.1.196608  |
-+----------------------------+----------------------------------+
-| core-dump                  | .1.3.6.1.4.1.12276.1.1.1.327680  |
-+----------------------------+----------------------------------+
-| reboot                     | .1.3.6.1.4.1.12276.1.1.1.327681  |
-+----------------------------+----------------------------------+
-| incompatible-image         | .1.3.6.1.4.1.12276.1.1.1.327682  |
-+----------------------------+----------------------------------+
-| login-failed               | .1.3.6.1.4.1.12276.1.1.1.327683  |
-+----------------------------+----------------------------------+
-| raid-event                 | .1.3.6.1.4.1.12276.1.1.1.393216  |
-+----------------------------+----------------------------------+
-| txPwr                      | .1.3.6.1.4.1.12276.1.1.1.262400  |
-+----------------------------+----------------------------------+
-| rxPwr                      | .1.3.6.1.4.1.12276.1.1.1.262401  |
-+----------------------------+----------------------------------+
-| txBias                     | .1.3.6.1.4.1.12276.1.1.1.262402  |
-+----------------------------+----------------------------------+
-| ddmTemp                    | .1.3.6.1.4.1.12276.1.1.1.262403  |
-+----------------------------+----------------------------------+
-| ddmVcc                     | .1.3.6.1.4.1.12276.1.1.1.262404  |
-+----------------------------+----------------------------------+
-| initialization             | .1.3.6.1.4.1.12276.1.1.1.262656  |
-+----------------------------+----------------------------------+
-| ePVA                       | .1.3.6.1.4.1.12276.1.1.1.262912  |
-+----------------------------+----------------------------------+
-| interface-up               | .1.3.6.1.4.1.12276.1.1.1.263168  |
-+----------------------------+----------------------------------+
-| interface-down             | .1.3.6.1.4.1.12276.1.1.1.263169  |
-+----------------------------+----------------------------------+
-| speed                      | .1.3.6.1.4.1.12276.1.1.1.263170  |
-+----------------------------+----------------------------------+
-| inaccessible-memory        | .1.3.6.1.4.1.12276.1.1.1.458752  |
-+----------------------------+----------------------------------+
-
-
++------------------------------------+----------------------------------+
+| **Alert**                          | **OID**                          |
++====================================+==================================+
+| hardware-device-fault              | .1.3.6.1.4.1.12276.1.1.1.65536   |
++------------------------------------+----------------------------------+
+| firmware-fault                     | .1.3.6.1.4.1.12276.1.1.1.65537   |
++------------------------------------+----------------------------------+
+| unknown-alarm                      | .1.3.6.1.4.1.12276.1.1.1.65538   |
++------------------------------------+----------------------------------+
+| memory-fault                       | .1.3.6.1.4.1.12276.1.1.1.65539   |
++------------------------------------+----------------------------------+
+| drive-fault                        | .1.3.6.1.4.1.12276.1.1.1.65540   |
++------------------------------------+----------------------------------+
+| cpu-fault                          | .1.3.6.1.4.1.12276.1.1.1.65541   |
++------------------------------------+----------------------------------+
+| pcie-fault                         | .1.3.6.1.4.1.12276.1.1.1.65542   |
++------------------------------------+----------------------------------+
+| aom-fault                          | .1.3.6.1.4.1.12276.1.1.1.65543   |
++------------------------------------+----------------------------------+
+| drive-capacity-fault               | .1.3.6.1.4.1.12276.1.1.1.65544   |
++------------------------------------+----------------------------------+
+| power-fault                        | .1.3.6.1.4.1.12276.1.1.1.65545   |
++------------------------------------+----------------------------------+
+| thermal-fault                      | .1.3.6.1.4.1.12276.1.1.1.65546   |
++------------------------------------+----------------------------------+
+| drive-thermal-throttle             | .1.3.6.1.4.1.12276.1.1.1.65547   |
++------------------------------------+----------------------------------+
+| firmware-update-status             | .1.3.6.1.4.1.12276.1.1.1.65550   |
++------------------------------------+----------------------------------+
+| drive-utilization                  | .1.3.6.1.4.1.12276.1.1.1.65551   |
++------------------------------------+----------------------------------+
+| sensor-fault                       | .1.3.6.1.4.1.12276.1.1.1.65577   |
++------------------------------------+----------------------------------+
+| datapath-fault                     | .1.3.6.1.4.1.12276.1.1.1.65578   |
++------------------------------------+----------------------------------+
+| boot-time-integrity-status         | .1.3.6.1.4.1.12276.1.1.1.65579   |
++------------------------------------+----------------------------------+ 
+| module-present                     | .1.3.6.1.4.1.12276.1.1.1.66304   |
++------------------------------------+----------------------------------+
+| psu-fault                          | .1.3.6.1.4.1.12276.1.1.1.66305   |
++------------------------------------+----------------------------------+
+| lcd-fault                          | .1.3.6.1.4.1.12276.1.1.1.66306   |
++------------------------------------+----------------------------------+
+| module-communication-error         | .1.3.6.1.4.1.12276.1.1.1.66307   |
++------------------------------------+----------------------------------+
+| fips-fault                         | .1.3.6.1.4.1.12276.1.1.1.66308   |
++------------------------------------+----------------------------------+
+| kmip-server-fault                  | .1.3.6.1.4.1.12276.1.1.1.66309   |
++------------------------------------+----------------------------------+
+| kmip-managed-object-error          | .1.3.6.1.4.1.12276.1.1.1.66310   |
++------------------------------------+----------------------------------+
+| drive-sed-error                    | .1.3.6.1.4.1.12276.1.1.1.66311   |
++------------------------------------+----------------------------------+
+| uefi-communication-error           | .1.3.6.1.4.1.12276.1.1.1.66312   |
++------------------------------------+----------------------------------+
+| fipsError                          | .1.3.6.1.4.1.12276.1.1.1.196608  |
++------------------------------------+----------------------------------+
+| core-dump                          | .1.3.6.1.4.1.12276.1.1.1.327680  |
++------------------------------------+----------------------------------+
+| reboot                             | .1.3.6.1.4.1.12276.1.1.1.327681  |
++------------------------------------+----------------------------------+
+| incompatible-image                 | .1.3.6.1.4.1.12276.1.1.1.327682  |
++------------------------------------+----------------------------------+
+| login-failed                       | .1.3.6.1.4.1.12276.1.1.1.327683  |
++------------------------------------+----------------------------------+
+| raid-event                         | .1.3.6.1.4.1.12276.1.1.1.393216  |
++------------------------------------+----------------------------------+
+| txPwrHiAlarm                       | .1.3.6.1.4.1.12276.1.1.1.262400  |
++------------------------------------+----------------------------------+
+| txPwrHiWarn                        | .1.3.6.1.4.1.12276.1.1.1.262401  |
++------------------------------------+----------------------------------+
+| txPwrLoAlarm                       | .1.3.6.1.4.1.12276.1.1.1.262402  |
++------------------------------------+----------------------------------+
+| txPwrLoWarn                        | .1.3.6.1.4.1.12276.1.1.1.262403  |
++------------------------------------+----------------------------------+
+| rxPwrHiAlarm                       | .1.3.6.1.4.1.12276.1.1.1.262404  |
++------------------------------------+----------------------------------+
+| rxPwrHiWarn                        | .1.3.6.1.4.1.12276.1.1.1.262405  |
++------------------------------------+----------------------------------+
+| rxPwrLoAlarm                       | .1.3.6.1.4.1.12276.1.1.1.262406  |
++------------------------------------+----------------------------------+
+| rxPwrloWarn                        | .1.3.6.1.4.1.12276.1.1.1.262407  |
++------------------------------------+----------------------------------+
+| txBiasHiAlarm                      | .1.3.6.1.4.1.12276.1.1.1.262408  |
++------------------------------------+----------------------------------+
+| txBiasHiWarn                       | .1.3.6.1.4.1.12276.1.1.1.262409  |
++------------------------------------+----------------------------------+
+| txBiasLoAlarm                      | .1.3.6.1.4.1.12276.1.1.1.262410  |
++------------------------------------+----------------------------------+
+| txBiasLoWarn                       | .1.3.6.1.4.1.12276.1.1.1.262411  |
++------------------------------------+----------------------------------+
+| ddmTempHiAlarm                     | .1.3.6.1.4.1.12276.1.1.1.262412  |
++------------------------------------+----------------------------------+
+| ddmTempHiWarn                      | .1.3.6.1.4.1.12276.1.1.1.262413  |
++------------------------------------+----------------------------------+
+| ddmTempLoAlarm                     | .1.3.6.1.4.1.12276.1.1.1.262414  |
++------------------------------------+----------------------------------+
+| ddmTempLoWarn                      | .1.3.6.1.4.1.12276.1.1.1.262415  |
++------------------------------------+----------------------------------+
+| ddmVccHiAlarm                      | .1.3.6.1.4.1.12276.1.1.1.262416  |
++------------------------------------+----------------------------------+
+| ddmVccHiWarn                       | .1.3.6.1.4.1.12276.1.1.1.262417  |
++------------------------------------+----------------------------------+
+| ddmVccLoAlarm                      | .1.3.6.1.4.1.12276.1.1.1.262418  |
++------------------------------------+----------------------------------+
+| ddmVccLoWarn                       | .1.3.6.1.4.1.12276.1.1.1.262419  |
++------------------------------------+----------------------------------+
+| initialization                     | .1.3.6.1.4.1.12276.1.1.1.262656  |
++------------------------------------+----------------------------------+
+| ePVA                               | .1.3.6.1.4.1.12276.1.1.1.262912  |
++------------------------------------+----------------------------------+
+| be2Training                        | .1.3.6.1.4.1.12276.1.1.1.262913  |
++------------------------------------+----------------------------------+
+| interface-up                       | .1.3.6.1.4.1.12276.1.1.1.263168  |
++------------------------------------+----------------------------------+
+| interface-down                     | .1.3.6.1.4.1.12276.1.1.1.263169  |
++------------------------------------+----------------------------------+
+| speed                              | .1.3.6.1.4.1.12276.1.1.1.263170  |
++------------------------------------+----------------------------------+
+| disabled                           | .1.3.6.1.4.1.12276.1.1.1.263171  |
++------------------------------------+----------------------------------+
+| inaccessible-memory                | .1.3.6.1.4.1.12276.1.1.1.458752  |
++------------------------------------+----------------------------------+
+| self-signed-key-decryption-failure | .1.3.6.1.4.1.12276.1.1.1.721153  | 
++------------------------------------+----------------------------------+
 
 SNMP Trap Details
 =================
 
-Inside of F5OS there are different categories of diagnostic information that the system captures: **System Alerts** and **System Events**. Both System Alerts and System Events can trigger SNMP traps. This section will provide background on the differences between the two types, and make recommendations of how to monitor and interpret the different types of SNMP traps. Before getting into the SNMP Trap implementation, it is important to understand how F5OS categorizes the different types of messages. 
+Inside of F5OS there are different categories of diagnostic information that the system captures: **System Alerts** and **System Events**. Both System Alerts and System Events can trigger SNMP traps. This section will provide background on the differences between the two types and make recommendations of how to monitor and interpret the different types of SNMP traps. Before getting into the SNMP Trap implementation, it is important to understand how F5OS categorizes the different types of messages. 
 
-System Alerts
+System Alarms
 -------------
 
-A system alert is typically associated with some sort of fault in the system and it will have two states: An **alarm** condition indicating that some threshold has been crossed or some failure has occurred, and then a corresponding **clear** condition that indicates the fault has cleared or the threshold condition has gone back to an acceptable level. System alerts are high-level categories like: psu-fault, drive-fault, thermal-fault etc... These type of messages are what traditional SNMP systems monitor in order to alert someone when there is a failure condition or a threshold that has been crossed requiring attention. 
+A system alarm is typically associated with some sort of fault in the system, and it will have two states: An **alarm** condition indicating that some threshold has been crossed or some failure has occurred, and then a corresponding **clear** condition that indicates the fault has cleared or the threshold condition has gone back to an acceptable level. System alarms are high-level categories like: psu-fault, drive-fault, thermal-fault etc... These type of messages are what traditional SNMP systems monitor in order to alert someone when there is a failure condition or a threshold that has been crossed requiring attention. 
 
 If a system is healthy and there are no active alarms, then the output of **show system alarms** will report **No entries found**.
 
@@ -1057,7 +1101,7 @@ When translated into SNMP traps the states for these types of messages are:
 System Events
 -------------
 
-A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm or clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addition to many more low-level details. Many times, a system event will provide more detailed lower-level information that corresponds to an alarm or clear condition. As an example a PSU-Fault alarm, may have corresponding events messages that provide more details as to whay the PSU is in a fault alarm condition.
+A system event is an informational message which doesn't have an alarm or clear condition by itself, but it may provide deeper information on what caused an alarm or clear condition. A System Event is a lower-level message that could include information about firmware upgrade status, presence of a PSU, or DDM diagnostic level on an optic in addition to many more low-level details. Many times, a system event will provide more detailed lower-level information that corresponds to an alarm or clear condition. As an example, a PSU-Fault alarm, may have corresponding events messages that provide more details as to why the PSU is in a fault alarm condition.
 
 Often times, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: PSU mismatch** message, means all the PSU's **are not** mismatched because the value is zero or Deasserted. The wording may not be intuitive, and F5 is looking into making improvements to make the wording clearer. The example below shows the **show system events** for the message described above.
 
@@ -1082,11 +1126,11 @@ This in turn can generate an SNMP trap which is informational in nature (alertEf
 
 Normally, an SNMP trap will be sent only when a critical status is encountered or cleared, or some threshold is being crossed. F5OS however, also sends informational traps that are merely EVENTS. The AOM subsystem tracks state of many components within the system, and if that state changes an EVENT or trap may be triggered. The AOM subsystem will also generate a burst of messages when the AOM subsystem is first powered on or cycled, this is normal as it is re-discovering the state of all those components. This has been viewed as the SNMP traps being too chatty or verbose and F5 is looking into reducing the amount of chatter under these conditions in the future. For now, many of those EVENT messages or **alertEffect=2** can be safely ignored, but they may provide value as they provide additional information alongside an **alertEffect=0** or an or **alertEffect=1** SNMP trap. 
 
-There may be cases where an alertEffect=2 message might signal something needs more attention. Some examples would be **firmware-update-status** that would let you know that the system is unavailable while a firmware upgrade occurs. Another example would be a **core-dump** SNMP trap that is logged as an **alertEffect=2**.
+There may be cases where an **alertEffect=2** message might signal something needs more attention. Some examples would be **firmware-update-status** that would let you know that the system is unavailable while a firmware upgrade occurs. Another example would be a **core-dump** SNMP trap that is logged as an **alertEffect=2**. 
 
-The **show systems events** output will also display past and current **ASSERT** and **CLEAR** System Alerts.
+The **show systems events** output will display past and current **ASSERT** and **CLEAR** System Alerts in addition to system events.
 
-Below are some examples of PSU related events.
+Below are some examples of PSU related system events.
 
 .. code-block:: bash
 
@@ -1141,8 +1185,8 @@ Below are some examples of thermal related events.
     65546 appliance thermal-fault EVENT NA "NSE_1 at +31.3 degC" "2024-06-14 15:02:03.775933897 UTC" 
 
 
-Alarms (Alerts) - Events
-------------------------
+SNMP Alarms (Alerts) and Events
+-------------------------------
 
 This section provides examples of SNMP traps and their associated log messages, and what troubleshooting steps are recommended. Traps will be sent with either an **assert** when an alarm occurs, a **clear** when the alarm is cleared, or an **event** which is providing an update to a raised or cleared alarm event.
 
@@ -1150,11 +1194,46 @@ This section provides examples of SNMP traps and their associated log messages, 
 - clear(0) is reported in alertEffect when alarm is cleared.
 - event(2) is updated in alertEffect when event notification is reported.
 
+This is defined in the F5-ALERT-DEF-MIB as seen below.
+
+.. code-block:: bash
+
+    --=====================================================================--
+    -- Local Textual Conventions
+    --=====================================================================--
+    F5Severity ::= TEXTUAL-CONVENTION
+        STATUS      current
+        DESCRIPTION
+            "The severity of the alerts."
+        SYNTAX      INTEGER{
+            emergency     (0),     -- system is unusable
+            alert         (1),     -- action must be taken immediately
+            critical      (2),     -- critical conditions
+            error         (3),     -- error conditions
+            warning       (4),     -- Warning conditions
+            notice        (5),     -- normal but significant condition
+            info          (6),     -- informational
+            debug         (7),     -- debug-level messages
+            na            (8)      -- Severity is not-applicable for cleared alerts
+        }
+
+    F5CondEffect ::= TEXTUAL-CONVENTION
+        STATUS      current
+        DESCRIPTION
+            "The effect of the condition."
+        SYNTAX      INTEGER{
+            clear      (0),         -- Condition is Cleared
+            assert     (1),         -- Condition is Asserted
+            event      (2),         -- Condition is Event
+            other      (9999)       -- Other
+        }
+
+
 From an SNMP trap monitoring/fault perspective it is recommended to focus on traps that have either an **alertEffect=1** indicating that an alert is being raised, or an **alertEffect=0** indicating that an alert is being cleared. These SNMP traps should correspond to output in the **show system alarms** output when there is an active alarm. 
 
 All other traps with **alertEffect=2** are providing additional detail that may be useful and may also corelate to an assert or clear alarm, but from a fault monitoring perspective may be ignored.
 
-Currently, when an rSeries device has powered removed the AOM module will discard any state it has and when powered back on it may send many informational SNMP traps indicating the current status of certain sensors. These will all be sent with **alertEffect=2**, which can be ignored from an SNMP fault perspective. 
+Currently, when an rSeries device has power removed, the AOM module will discard any state it has and when powered back on it may send many informational SNMP traps indicating the current status of certain sensors. These will all be sent with **alertEffect=2**, which can be ignored from an SNMP fault perspective. 
 
 Below is a typical example where there is an alert, along with other informational detail, and then a clear event with more additional info. As an example, the following set of traps are from an LCD failure and recovery on an F5OS based rSeries device. Note, that first there are a bunch of alarms being raised noted by **(INTEGER alertEffect=1)**. Then there are follow-on events, which provide additional updates to those alarms that have been raised noted by **(INTEGER alertEffect=2)**. Finally, the alarms are cleared as noted by **(INTEGER alertEffect=0)**, as well as additional informational events related to the clear noted by **(INTEGER alertEffect=2)**.
 
@@ -1177,7 +1256,7 @@ Below is a typical example where there is an alert, along with other information
 
     <INFO> 15-Feb-2023::15:58:42.071 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418313 10.255.0.144:161 (TimeTicks sysUpTime=18944)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-02-15 20:58:42.066037341 UTC)(OCTET STRING alertDescription=Module communication error detected)
 
-    LCD Module Commuication Error status message - Event (alertEffect=2):
+    LCD Module Communication Error status message - Event (alertEffect=2):
 
     <INFO> 15-Feb-2023::15:58:42.120 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418314 10.255.0.144:161 (TimeTicks sysUpTime=18949)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-02-15 20:58:42.066055066 UTC)(OCTET STRING alertDescription=LCD module communication error detected)
 
@@ -1197,7 +1276,7 @@ Below is a typical example where there is an alert, along with other information
 
     <INFO> 15-Feb-2023::15:59:14.590 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418322 10.255.0.144:161 (TimeTicks sysUpTime=22196)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-02-15 20:59:14.579441541 UTC)(OCTET STRING alertDescription=Module communication error detected)
 
-    LCD Module Commuication OK status message  - Event (alertEffect=2):
+    LCD Module Communication OK status message  - Event (alertEffect=2):
 
     <INFO> 15-Feb-2023::15:59:14.635 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418323 10.255.0.144:161 (TimeTicks sysUpTime=22200)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-02-15 20:59:14.579463512 UTC)(OCTET STRING alertDescription=LCD module communication is OK)
 
@@ -1211,6 +1290,7 @@ Below is a typical example where there is an alert, along with other information
 Generic SNMP Traps
 ==================
 
+rSeries supports both generic SNMP traps as well as Enterprise specific F5OS traps. This section covers the generic traps that are supported.
 
 coldStart
 ---------
@@ -1252,6 +1332,19 @@ Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that wil
 
     <INFO> 3-May-2024::15:51:52.363 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214840 10.255.80.251:162 (TimeTicks sysUpTime=27847658)(OBJECT IDENTIFIER snmpTrapOID=down)(OCTET STRING alertSource=interface-13.0)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-05-03 19:51:52.350979671 UTC)(OCTET STRING alertDescription=Interface down)
 
+disabled
+-------
+
+**disabled                     .1.3.6.1.4.1.12276.1.1.1.263171**
+
+The **disabled** SNMP trap will be sent whenever an interface is administratively disabled. In the example below, port 6.0 is administratively disabled, and then another **linkdown** trap is sent. 
+
+.. code-block:: bash
+
+    <INFO> 16-Oct-2025::09:48:25.727 r10900-2 confd[148]: snmp snmpv2-trap reqid=766207016 10.255.80.251:162 (TimeTicks sysUpTime=232865433)(OBJECT IDENTIFIER snmpTrapOID=disabled)(OCTET STRING alertSource=interface-6.0)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 15:48:25.687635218 UTC)(OCTET STRING alertDescription=Interface disabled)
+    <INFO> 16-Oct-2025::09:48:25.737 r10900-2 confd[148]: snmp snmpv2-trap reqid=766207017 10.255.80.251:162 (TimeTicks sysUpTime=232865434)(OBJECT IDENTIFIER snmpTrapOID=linkDown)(INTEGER ifIndex.0.=33554456)(INTEGER ifAdminStatus.0.=2)(INTEGER ifOperStatus.0.=2)
+
+
 link up
 -------
 
@@ -1283,30 +1376,32 @@ Note: In F5OS-A 1.8.0 an additional F5OS enterprise trap has been added that wil
 F5OS Specific Traps
 ===================
 
+rSeries supports both generic SNMP traps as well as Enterprise specific F5OS traps. This section covers the Enterprise F5OS traps that are supported.
+
 Device Fault Traps
 ------------------
 
 
-**hardware-device-fault**
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+hardware-device-fault
+^^^^^^^^^^^^^^^^^^^^^
 
 **hardware-device-fault          .1.3.6.1.4.1.12276.1.1.1.65536**  
 
 
-+------------------+-----------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                     |
-+==================+=======================================================================+
-| ASSERT           | Hardware device fault detected                                        |
-+------------------+-----------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
-|                  |                                                                       |
-|                  | Example:                                                              | 
-|                  |                                                                       |
-|                  | Asserted: CPU machine check error                                     |
-|                  |                                                                       |
-+------------------+-----------------------------------------------------------------------+
-| CLEAR            | Hardware device fault detected                                        |
-+------------------+-----------------------------------------------------------------------+
++-------------------------+-----------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                     |
++=========================+=======================================================================+
+| ASSERT (AlertEffect=1)  | Hardware device fault detected                                        |
++-------------------------+-----------------------------------------------------------------------+
+| EVENT (AlertEffect=2)   | << Asserted | Deasserted >> :  << hardware sensor or machine error >> |
+|                         |                                                                       |
+|                         | Example:                                                              | 
+|                         |                                                                       |
+|                         | Asserted: CPU machine check error                                     |
+|                         |                                                                       |
++-------------------------+-----------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)   | Hardware device fault detected                                        |
++-------------------------+-----------------------------------------------------------------------+
 
 This set of traps may indicate a fault with various hardware components on the rSeries appliance like CPUs or fans. The hardware-device-fault label of this trap can be somewhat misleading because not all the traps generated under this section are actual faults. Many of the traps are informational in nature, and do not indicate an actionable fault. 
 
@@ -1335,7 +1430,7 @@ Below a **hardware-device-fault** SNMP trap alarm has been raised for two separa
 1. CPU machine check error 
 2. CPU internal error
 
-Both of these alarms have the same severity **Emergency** noted by **alertSeverity=0** in the hardware-device-fault alarm being raised. The AlertSeverity levels below only apply to Alarm (**alertEffect=1**) or Clear (**alertEffect=0**) messages. Event messages (**alertEffect=2**) will always show Info severity (**alertSeverity=8**) as they are only used for informative purposes. 
+Both of these alarms have the same severity **Emergency** noted by **alertSeverity=0** in the hardware-device-fault alarm being raised. The AlertSeverity levels below only apply to Alarm (**alertEffect=1**) ASSERT messages. Event messages (**alertEffect=2**), and CLEAR messages (**alertEffect=0**) will always show Not Applicable severity (**alertSeverity=8**). 
 
 +-----------+--------------------+-----------------------------------+
 | Severity  | Severity Level     | Details                           |
@@ -1360,7 +1455,7 @@ Both of these alarms have the same severity **Emergency** noted by **alertSeveri
 +-----------+--------------------+-----------------------------------+
 
 
-In this case, instead of raising the **hardware-device-fault** SNMP trap twice (once for each event), it is raised only one time becuase of two separate concurrent sub events. Take note of the **alertSeverity=0** in the SNMP alarm indicating an **Emergency** status.
+In this case, instead of raising the **hardware-device-fault** SNMP trap twice (once for each event), it is raised only one time because of two separate concurrent sub events. Take note of the **alertSeverity=0** in the SNMP alarm indicating an **Emergency** status.
 
 .. code-block:: bash
 
@@ -1394,14 +1489,14 @@ The hardware-device-fault alarm will only be cleared when both the issues are re
 
     <INFO> 19-Jun-2025::11:46:00.786 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254533 10.10.10.10:5000 (TimeTicks sysUpTime=96475)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:46:00.729332433 UTC)(OCTET STRING alertDescription=Deasserted: CPU internal error)
 
-When multiple concurrent issues within the hardware-device-fault category raise an alarm, the diag-agent will compare the severities of the alarms and it will only raise an alarm for the one with the highest severity (Lowest number alertEffect).
+When multiple concurrent issues within the hardware-device-fault category raise an alarm, the diag-agent will compare the severities of the alarms, and it will only raise an alarm for the one with the highest severity (Lowest number alertEffect).
  
 In the example below, a hardware-device-fault is triggered by two issues:
 
 1. CPU fatal error, which has a critical severity (alertSeverity=2) and 
 2. CPU non-fatal error which has an error severity (alertSeverity=3).
 
-Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **alertEffect=1** will be raised with severity **alertSeverity=2**. There will be follow on event traps **alertEffect=2** providing the detials of both errors.
+Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **alertEffect=1** will be raised with severity **alertSeverity=2**. There will be follow on event traps **alertEffect=2** providing the details of both errors.
 
 .. code-block:: bash
 
@@ -1417,7 +1512,7 @@ Since the CPU fatal error has the lowest number alertSeverity, the alarm trap **
 
     <INFO> 19-Jun-2025::11:37:12.290 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254518 10.10.10.10:5000 (TimeTicks sysUpTime=43626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:37:12.284934061 UTC)(OCTET STRING alertDescription=Asserted: CPU non-fatal error)
 
-If the **CPU fatal error** is resolved but the system still has a **non-fatal error** still active it will clear the fatal alarm, and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap **alertEffect=0** and then issues a new SNMP fault trap **alertEffect=1** with **Error** severity (**alertSeverity=3**). The system will also issue an informational event **alertEffect=2** deasserting the event for **CPU fatal error**.
+If the **CPU fatal error** is resolved but the system still has a **non-fatal error** still active it will clear the fatal alarm and then raise a new non-fatal alarm. In this case, the system sends an SNMP clear trap **alertEffect=0** and then issues a new SNMP fault trap **alertEffect=1** with **Error** severity (**alertSeverity=3**). The system will also issue an informational event **alertEffect=2** deasserting the event for **CPU fatal error**.
 
 .. code-block:: bash
 
@@ -1441,14 +1536,14 @@ When the remaining **non-fatal error** gets cleared, the system will clear the *
 
     <INFO> 19-Jun-2025::11:38:22.493 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254522 10.10.10.10:5000 (TimeTicks sysUpTime=50646)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:38:22.484721760 UTC)(OCTET STRING alertDescription=Hardware device fault detected)
 
-    Addtional informational message (alertEffect=2) provides addtional details. In this case **CPU non-fatal error** has **Deasserted**.
+    Additional informational message (alertEffect=2) provides additional details. In this case **CPU non-fatal error** has **Deasserted**.
 
     <INFO> 19-Jun-2025::11:38:22.545 appliance-1 confd[154]: snmp snmpv2-trap reqid=520254523 10.10.10.10:5000 (TimeTicks sysUpTime=50651)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-06-19 11:38:22.484728451 UTC)(OCTET STRING alertDescription=Deasserted: CPU non-fatal error)
 
 
 Other messages are binary messages indicating the state of some hardware component, the AOM system may provide status of some hardware components on power up or re-cycle. The **Deasserted: CPU HW correctable error** is indicating that there is **not** an issue with the CPU HW correctable error. This is un-intuitive because this is issued as a hardware-device-fault trap.
 
-Often, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: CPU HW correctable error** message, means that there **are not** CPU HW correctable errors because the value is zero or Deasserted. The wording may not be not intuitive, and F5 is looking into making improvements to make the wording clearer. The example below shows the **show system events** for the message described above.
+Often, many of these messages or traps are just providing state of a component in a binary fashion. i.e. it's either a one (ASSERTED) or zero (DEASSERTED) state based on the AOM subsystem tracking status. This should not be viewed as a positive or a negative status, it is merely communicating state of a component. As an example, in the system events a **Deasserted: CPU HW correctable error** message, means that there **are not** CPU HW correctable errors because the value is zero or Deasserted. The wording may not be intuitive, and F5 is looking into making improvements to make the wording clearer. The example below shows the **show system events** for the message described above.
 
 .. code-block:: bash
 
@@ -1477,17 +1572,17 @@ Below is another example of informational events noted by **alertEffect=2**.
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.145:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
     <INFO> 11-Jul-2022::06:29:20.546 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440684 10.255.0.144:161 (TimeTicks sysUpTime=8626)(OBJECT IDENTIFIER snmpTrapOID=hardware-device-fault)(OCTET STRING alertSource=fan-4)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:16.202497586 UTC)(OCTET STRING alertDescription=fan 4 at 26954 RPM)
 
-**firmware-fault**
-^^^^^^^^^^^^^^^^^^^
+firmware-fault
+^^^^^^^^^^^^^^
 
 **firmware-fault                 .1.3.6.1.4.1.12276.1.1.1.65537**
 
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            | <<ARM Exception data available | Heap running low | Task stack usage warning | Watchdog timer warning >> |
-+------------------+----------------------------------------------------------------------------------------------------------+
++------------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                                        |
++========================+==========================================================================================================+
+| EVENT  (AlertEffect=2) | <<ARM Exception data available | Heap running low | Task stack usage warning | Watchdog timer warning >> |
++------------------------+----------------------------------------------------------------------------------------------------------+
 
 This set of taps may indicate a fault or temporary warning with the firmware upgrade process. Monitor the firmware upgrade process via SNMP traps, or via the CLI, API, or webUI alerts. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the current status of the firmware updates as seen below.
 
@@ -1510,195 +1605,203 @@ In the example below, note the messages are all informational **alertEffect=2** 
     <INFO> 11-Jul-2022::06:29:28.939 appliance-1 confd[127]: snmp snmpv2-trap reqid=1257440769 10.255.0.145:161 (TimeTicks sysUpTime=9466)(OBJECT IDENTIFIER snmpTrapOID=firmware-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2022-07-11 06:29:19.908471420 UTC)(OCTET STRING alertDescription=Deasserted: Watchdog timer warning)
 
 
-**unknown-alarm**
-^^^^^^^^^^^^^^^^^
+unknown-alarm
+^^^^^^^^^^^^^
 
 **unknown-alarm                  .1.3.6.1.4.1.12276.1.1.1.65538**
 
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) | alertDescription=<string>                                                                |
++------------------------+------------------------------------------------------------------------------------------+
 
-Unregistered alarm detected.
+Unregistered alarm detected. Some events sent from lower level monitoring may not have SNMP traps defined for them at this time, therefore it is possible an event based **alertEffect=2** SNMP trap could be sent which would include the details from underlying subsystem as a string in the body of the SNMP trap.
+
+Below are some examples of unregistered alarms.
 
 .. code-block:: bash
 
-    r4800-2-gsa# file show log/system/snmp.log | include unknown
+    r4800-2-gsa# file show log/system/snmp.log | include unknown-alarm
     <INFO> 30-Jan-2023::09:33:17.616 appliance-1 confd[151]: snmp snmpv2-trap reqid=1133821928 10.255.0.143:162 (TimeTicks sysUpTime=25343)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-01-30 14:33:17.611415038 UTC)(OCTET STRING alertDescription=FW Update)
     <INFO> 11-Jul-2023::10:12:39.643 appliance-1 confd[159]: snmp snmpv2-trap reqid=1955459347 10.255.0.143:162 (TimeTicks sysUpTime=31172)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-11 14:12:39.638211376 UTC)(OCTET STRING alertDescription=FW Update)
     r4800-2-gsa#
 
-**memory-fault**
+In the example below, an information event trap is sent indicating an inlet temperature.
+
+.. code-block:: bash
+
+    <INFO> 21-Jan-2025::07:35:47.915 appliance-1 confd[138]: snmp snmpv2-trap reqid=1891770904 10.1.1.254:162 (TimeTicks sysUpTime=619680588)(OBJECT IDENTIFIER snmpTrapOID=unknown-alarm)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-07-01 22:35:47.912867405 UTC)(OCTET STRING alertDescription=inlet at +25.8 degC)
+
+memory-fault
 ^^^^^^^^^^^^
 
 **memory-fault                   .1.3.6.1.4.1.12276.1.1.1.65539**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include memory-fault
 
-**drive-fault**
+drive-fault
 ^^^^^^^^^^^^
 
 
 **drive-fault                    .1.3.6.1.4.1.12276.1.1.1.65540**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Fault in drive detected                                                            |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Event can either of these below issues:                                            |
-|                  |                                                                                    |
-|                  |  Drive Available Spare is below threshold                                          |
-|                  |                                                                                    |
-|                  |  Drive Volatile Memory Backup System has failed                                    |
-|                  |                                                                                    |
-|                  |  Drive Endurance consumed has exceeded threshold                                   |
-|                  |                                                                                    |
-|                  |  Drive has encountered Media Errors                                                |
-|                  |                                                                                    |
-|                  |  Allowable program fail count is below 50 percent                                  |
-|                  |                                                                                    |
-|                  |  Allowable program fail count is below 80 percent                                  |
-|                  |                                                                                    |
-|                  |  Allowable erase fail count is below 50 percent                                    |
-|                  |                                                                                    |
-|                  |  Allowable erase fail count is below 80 percent                                    |
-|                  |                                                                                    |
-|                  |  Drive Reliability is degraded due to excessive media or internal errors           |
-|                  |                                                                                    |
-|                  |  More number of CRC errors encountered                                             |
-|                  |                                                                                    |
-|                  |  Less than 50 Percentage of erase cycles remaining                                 |
-|                  |                                                                                    |
-|                  |  Less than 80 Percentage of erase cycles remaining                                 |
-|                  |                                                                                    |
-|                  |  Drive Media is not in read-only mode                                              |
-|                  |                                                                                    |
-|                  | Clear descriptions:                                                                |
-|                  |                                                                                    |
-|                  |  Event can either of these below issues:                                           |
-|                  |                                                                                    |
-|                  |  Drive Available Spare is as expected                                              |
-|                  |                                                                                    |
-|                  |  Drive Volatile Memory Backup System is healthy                                    |
-|                  |                                                                                    |
-|                  |  Drive Endurance consumed is normal                                                |
-|                  |                                                                                    |
-|                  |  Drive has no Internal or Media Errors / Drive has no Media Errors                 |
-|                  |                                                                                    |
-|                  |  Allowable program fail count is above 80 percent                                  |
-|                  |                                                                                    |
-|                  |  Allowable erase fail count is above 80 percent                                    |
-|                  |                                                                                    |
-|                  |  Number of CRC errors are in allowed range                                         |
-|                  |                                                                                    |
-|                  |  More than 80 Percentage of erase cycles remaining                                 |
-|                  |                                                                                    |
-|                  |  Drive Media is placed in read-only mode                                           |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Fault in drive detected                                                            |
-+------------------+------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                  |
++=========================+====================================================================================+
+| ASSERT  (AlertEffect=1) | Fault in drive detected                                                            |
++-------------------------+------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2) | Event can either of these below issues:                                            |
+|                         |                                                                                    |
+|                         |  Drive Available Spare is below threshold                                          |
+|                         |                                                                                    |
+|                         |  Drive Volatile Memory Backup System has failed                                    |
+|                         |                                                                                    |
+|                         |  Drive Endurance consumed has exceeded threshold                                   |
+|                         |                                                                                    |
+|                         |  Drive has encountered Media Errors                                                |
+|                         |                                                                                    |
+|                         |  Allowable program fail count is below 50 percent                                  |
+|                         |                                                                                    |
+|                         |  Allowable program fail count is below 80 percent                                  |
+|                         |                                                                                    |
+|                         |  Allowable erase fail count is below 50 percent                                    |
+|                         |                                                                                    |
+|                         |  Allowable erase fail count is below 80 percent                                    |
+|                         |                                                                                    |
+|                         |  Drive Reliability is degraded due to excessive media or internal errors           |
+|                         |                                                                                    |
+|                         |  More number of CRC errors encountered                                             |
+|                         |                                                                                    |
+|                         |  Less than 50 Percentage of erase cycles remaining                                 |
+|                         |                                                                                    |
+|                         |  Less than 80 Percentage of erase cycles remaining                                 |
+|                         |                                                                                    |
+|                         |  Drive Media is not in read-only mode                                              |
+|                         |                                                                                    |
+|                         | Clear descriptions:                                                                |
+|                         |                                                                                    |
+|                         |  Event can either of these below issues:                                           |
+|                         |                                                                                    |
+|                         |  Drive Available Spare is as expected                                              |
+|                         |                                                                                    |
+|                         |  Drive Volatile Memory Backup System is healthy                                    |
+|                         |                                                                                    |
+|                         |  Drive Endurance consumed is normal                                                |
+|                         |                                                                                    |
+|                         |  Drive has no Internal or Media Errors / Drive has no Media Errors                 |
+|                         |                                                                                    |
+|                         |  Allowable program fail count is above 80 percent                                  |
+|                         |                                                                                    |
+|                         |  Allowable erase fail count is above 80 percent                                    |
+|                         |                                                                                    |
+|                         |  Number of CRC errors are in allowed range                                         |
+|                         |                                                                                    |
+|                         |  More than 80 Percentage of erase cycles remaining                                 |
+|                         |                                                                                    |
+|                         |  Drive Media is placed in read-only mode                                           |
++-------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0) | Fault in drive detected                                                            |
++-------------------------+------------------------------------------------------------------------------------+
 
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include drive-fault
 
-**cpu-fault**
+cpu-fault
 ^^^^^^^^^
 
 **cpu-fault                      .1.3.6.1.4.1.12276.1.1.1.65541**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT (AlertEffect=2)  |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include cpu-fault
 
-**pcie-fault**
+pcie-fault
 ^^^^^^^^^^^
 
 
 **pcie-fault                     .1.3.6.1.4.1.12276.1.1.1.65542**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT (AlertEffect=2)  |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include pcie-fault
 
-**aom-fault**
+aom-fault
 ^^^^^^^^^
 
 **aom-fault                      .1.3.6.1.4.1.12276.1.1.1.65543**
 
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Fault detected in the AOM                                                          |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >>: <<sensor name>>                                       |
-|                  |                                                                                    |
-|                  | Sensor names include:                                                              |
-|                  |                                                                                    |
-|                  | I2C-1 PEL EEPROM Ack Fault                                                         |
-|                  |                                                                                    |
-|                  | I2C-1 CPLD EEPROM Ack Fault                                                        |
-|                  |                                                                                    |
-|                  | I2C-1 Platform EEPROM Ack Fault                                                    |
-|                  |                                                                                    |
-|                  | I2C-3 TMP421 Outlet Ack Fault                                                      |
-|                  |                                                                                    |
-|                  | I2C-3 MAX31730 VQF Ack Fault                                                       |
-|                  |                                                                                    |
-|                  | I2C-3 TMP423 Ack Fault                                                             |
-|                  |                                                                                    |
-|                  | I2C-3 MAX31730 ATSE1 Ack Fault                                                     |
-|                  |                                                                                    |
-|                  | I2C-3 MAX31730 ATSE2 Ack Fault                                                     |
-|                  |                                                                                    |
-|                  | I2C-3 LM25066 Hotswap Controller Ack Fault                                         |
-|                  |                                                                                    |
-|                  | I2C-4 TMP468 ATSE Ack Fault                                                        |
-|                  |                                                                                    |
-|                  | I2C-4 TMP421 Inlet Ack Fault                                                       |
-|                  |                                                                                    |
-|                  | I2C-1 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | I2C-2 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | I2C-3 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | I2C-4 Stuck Bus Fault                                                              |
-|                  |                                                                                    |
-|                  | LOP FIT Forced Bad Health                                                          |
-|                  |                                                                                    |
-|                  | Blade-LOP NC-SI / RMII Failure                                                     |
-|                  |                                                                                    |
-|                  | Power-On Self Test (POST) failure                                                  |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Fault detected in the AOM                                                          |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT  (AlertEffect=1)  | Fault detected in the AOM                                                          |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | << Asserted | Deasserted >>: <<sensor name>>                                       |
+|                          |                                                                                    |
+|                          | Sensor names include:                                                              |
+|                          |                                                                                    |
+|                          | I2C-1 PEL EEPROM Ack Fault                                                         |
+|                          |                                                                                    |
+|                          | I2C-1 CPLD EEPROM Ack Fault                                                        |
+|                          |                                                                                    |
+|                          | I2C-1 Platform EEPROM Ack Fault                                                    |
+|                          |                                                                                    |
+|                          | I2C-3 TMP421 Outlet Ack Fault                                                      |
+|                          |                                                                                    |
+|                          | I2C-3 MAX31730 VQF Ack Fault                                                       |
+|                          |                                                                                    |
+|                          | I2C-3 TMP423 Ack Fault                                                             |
+|                          |                                                                                    |
+|                          | I2C-3 MAX31730 ATSE1 Ack Fault                                                     |
+|                          |                                                                                    |
+|                          | I2C-3 MAX31730 ATSE2 Ack Fault                                                     |
+|                          |                                                                                    |
+|                          | I2C-3 LM25066 Hotswap Controller Ack Fault                                         |
+|                          |                                                                                    |
+|                          | I2C-4 TMP468 ATSE Ack Fault                                                        |
+|                          |                                                                                    |
+|                          | I2C-4 TMP421 Inlet Ack Fault                                                       |
+|                          |                                                                                    |
+|                          | I2C-1 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | I2C-2 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | I2C-3 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | I2C-4 Stuck Bus Fault                                                              |
+|                          |                                                                                    |
+|                          | LOP FIT Forced Bad Health                                                          |
+|                          |                                                                                    |
+|                          | Blade-LOP NC-SI / RMII Failure                                                     |
+|                          |                                                                                    |
+|                          | Power-On Self Test (POST) failure                                                  |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Fault detected in the AOM                                                          |
++--------------------------+------------------------------------------------------------------------------------+
 
 AOM is rSeries Always-On Management. The Always-On Management (AOM) subsystem enables you to manage the system remotely from a serial console, even if the host is powered down. The AOM Command Menu operates independently of F5OS. For more details about the AOM subsystem see the following solution article:
 
@@ -1731,186 +1834,24 @@ Below is an example of an **aom-fault** being raised and then cleared.
     <INFO> 8-Apr-2023::07:00:00.909 appliance-1 confd[142]: snmp snmpv2-trap reqid=1722337682 10.255.0.143:162 (TimeTicks sysUpTime=59069793)(OBJECT IDENTIFIER snmpTrapOID=aom-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-08 11:00:00.852594292 UTC)(OCTET STRING alertDescription=Bmc Health Self test passed)
  
 
-**drive-capacity-fault**
-^^^^^^^^^^^^^^^^^^^^^^^^
-
-**drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
-
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Running out of drive capacity                                                      |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Drive usage exceeded 97%, used={{.usedPercent}}%                                   |
-|                  |                                                                                    |
-|                  | Drive usage with in range, used={{.usedPercent}}%                                  |
-|                  |                                                                                    |
-|                  | Example:                                                                           |
-|                  |                                                                                    |
-|                  | Drive usage exceeded 97%, used=99%                                                 |
-|                  |                                                                                    |
-|                  | Drive usage exceeded 90%, used=91%                                                 |
-|                  |                                                                                    |
-|                  | Drive usage exceeded 85%, used=86%                                                 |
-|                  |                                                                                    |
-|                  | Drive usage with in range, used=80%                                                |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Running out of drive capacity                                                      |
-+------------------+------------------------------------------------------------------------------------+
-
-The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster disk-usage-threshold 
-    cluster disk-usage-threshold state warning-limit 85
-    cluster disk-usage-threshold state error-limit 90
-    cluster disk-usage-threshold state critical-limit 97
-    cluster disk-usage-threshold state growth-rate-limit 10
-    cluster disk-usage-threshold state interval 60
-    r5900-1-gsa# 
-
-You can view the current utilization by issuing the command **show cluster nodes node node-1 state disk-data**. This will display the raw storage values.
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster nodes node node-1 state disk-data 
-    DISK DATA  DISK DATA     
-    NAME       VALUE         
-    -------------------------
-    available  65014710272   
-    capacity   117430194176  
-    used       46423502848   
-
-To get a further breakdown showing the growth rate and percenatge used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42%.
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster nodes node node-1 state disk-usage         
-    state disk-usage used-percent 42
-    state disk-usage growth-rate 1
-    state disk-usage status in-range
-    r5900-1-gsa#
-
-If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll nottice 4 main areas highlighted:
-
-- F5OS System - This is the **/sysroot** part of the filesystem used by F5OS.
-- F5OS Tenant Disks -  This is **big-ip-tenant-disks** part of the filesystem which is dedicated and shared by all F5OS based tenants.
-- F5OS Images - This is the **images** part of the filesystem which is dedicated to F5OS and F5OS Tenant base images.
-- BIG-IP Tenant - This is the space allocated to each individual tenant **tenant/<tenant-name>**. There should be one entry for each tenant deployed on the system.
-
-
-.. code-block:: bash
-
-    r5900-1-gsa# show components component platform        
-    components component platform
-    fantray fan-stats fan-1-speed 16277
-    fantray fan-stats fan-2-speed 16339
-    fantray fan-stats fan-3-speed 16260
-    fantray fan-stats fan-4-speed 16224
-    fantray fan-stats fan-5-speed 16198
-    fantray fan-stats fan-6-speed 16366
-    fantray fan-stats fan-7-speed 16330
-    fantray fan-stats fan-8-speed 16242
-    state description    r5900
-    state serial-no      f5-vdvh-bfwi
-    state part-no        "200-0411-02 REV 2"
-    state empty          false
-    state tpm-integrity-status Valid
-    state memory total    134606934016
-    state memory available 9235505152
-    state memory free     1108242432
-    state memory used-percent 93
-    state memory platform-total 16107360256
-    state memory platform-used 6051057664
-    state memory platform-used-percent 37
-    state temperature current 26.2
-    state temperature average 25.8
-    state temperature minimum 25.6
-    state temperature maximum 26.2
-                                                                                            USED     
-    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
-    ---------------------------------------------------------------------------------------------------
-    platform/sysroot              F5OS System        117430194176  65010388992   46427824128  41       
-    platform/big-ip-tenant-disks  F5OS Tenant Disks  481021091840  427498086400  29060988928  6        
-    tenant/big-ip                 BIG-IP Tenant      88046829568   69774471168   18272358400  20       
-    tenant/big-ip2                BIG-IP Tenant      88046829568   79926988800   8119840768   9        
-    platform/images               F5OS Images        240417513472  174332252160  53845864448  23       
-
-
-
-The system will monitor the storage utilization of the rSeries disks and warn if the disk capacity gets too high. This is measured hourly. There are 3 levels of events that can occur as seen below:
-
-- drive-capacity:critical-limit - Drive Usage exceeded 97%
-- drive-capacity:failure-limit  - Drive Usage exceeded 90%
-- drive-capacity:warning-limit  - Drive Usage exceeded 85%
-
-The **show system events** CLI command will provide more details of the drive events that have occurred.
-
-.. code-block:: bash
-
-    appliance-1# show system events | nomore
-    system events event
-    log "65544 appliance drive-capacity-fault ASSERT CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:41:37.847817761 UTC\""
-    system events event
-    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage exceeded 97%, used=100%\" \"2023-03-27 15:41:37.847831437 UTC\""
-    system events event
-    log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
-    system events event
-    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
-In the example below, the default **disk-usage-threshold** paremeters have been lowered to artificially generate a trap condition. 
-
-.. code-block:: bash
-
-    r5900-1-gsa# show cluster disk-usage-threshold 
-    cluster disk-usage-threshold state warning-limit 10
-    cluster disk-usage-threshold state error-limit 15
-    cluster disk-usage-threshold state critical-limit 20
-    cluster disk-usage-threshold state growth-rate-limit 10
-    cluster disk-usage-threshold state interval 1
-    r5900-1-gsa# 
-
-
-Below are example SNMP traps for a drive-capacity-fault event. 
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include drive-capacity-fault
-
-    This trap is an alertEffect=1 signifying an alarm condition:
-
-    <INFO> 12-Dec-2025::12:23:24.159 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500385 172.22.50.57:162 (TimeTicks sysUpTime=188936994)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153709836 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
-
-    The follow-on trap is an alertEffect=2 providing deeper details of what caused the alarm condition:
-
-    <INFO> 12-Dec-2025::12:23:24.208 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500386 172.22.50.57:162 (TimeTicks sysUpTime=188936999)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153723853 UTC)(OCTET STRING alertDescription=Drive usage exceeded 20%, used=42%)
-
-    This trap is an alertEffect=0 signifying that the alarm condition has cleared:
-
-    <INFO> 12-Dec-2025::12:34:20.196 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500387 172.22.50.57:162 (TimeTicks sysUpTime=189002598)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192390678 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
-
-    The follow-on trap is an alertEffect=2 providing deeper details indicating the drive-capacity is now in range:
-
-    <INFO> 12-Dec-2025::12:34:20.246 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500388 10.255.0.139:161 (TimeTicks sysUpTime=189002603)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192404197 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=42%)
-
-**power-fault**
+power-fault
 ^^^^^^^^^^^
 
 **power-fault                    .1.3.6.1.4.1.12276.1.1.1.65545**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Power fault detected in hardware                                                   |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >>: <<sensor name>>                                       |
-|                  |                                                                                    |
-|                  | Example:                                                                           |
-|                  |                                                                                    |
-|                  | Asserted: +5.0V_STBY power fault                                                   |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Power fault detected in hardware                                                   |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT   (AlertEffect=1) | Power fault detected in hardware                                                   |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT    (AlertEffect=2) | << Asserted | Deasserted >>: <<sensor name>>                                       |
+|                          |                                                                                    |
+|                          | Example:                                                                           |
+|                          |                                                                                    |
+|                          | Asserted: +5.0V_STBY power fault                                                   |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR    (AlertEffect=0) | Power fault detected in hardware                                                   |
++--------------------------+------------------------------------------------------------------------------------+
 
 In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, meaning there is no alarm associated with these events.
 
@@ -1925,22 +1866,22 @@ In the example below, note the messages are all informational **alertEffect=2** 
     <INFO> 10-Jul-2023::13:43:28.156 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423970 10.255.0.144:161 (TimeTicks sysUpTime=15396)(OBJECT IDENTIFIER snmpTrapOID=power-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.304281027 UTC)(OCTET STRING alertDescription=Deasserted: CPU +1.0V PVCCANA fault)
     <INFO> 10-Jul-2023::13:43:28.257 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423971 10.255.0.144:161 (TimeTicks sysUpTime=15406)(OBJECT IDENTIFIER snmpTrapOID=power-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.306889907 UTC)(OCTET STRING alertDescription=Deasserted: SUS +1.05V PCH fault)
 
-**thermal-fault**
+thermal-fault
 ^^^^^^^^^^^^^
 
 **thermal-fault                  .1.3.6.1.4.1.12276.1.1.1.65546**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Thermal fault detected in hardware                                                 |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | << Thermal sensor >> at <<temperature>>                                            |
-|                  |                                                                                    |
-|                  | Example: VQF at +38.1 degC                                                         |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Thermal fault detected in hardware                                                 |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT  (AlertEffect=1)  | Thermal fault detected in hardware                                                 |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | << Thermal sensor >> at <<temperature>>                                            |
+|                          |                                                                                    |
+|                          | Example: VQF at +38.1 degC                                                         |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Thermal fault detected in hardware                                                 |
++--------------------------+------------------------------------------------------------------------------------+
 
 In the example below, note the messages are all informational **alertEffect=2** and do not signify a fault. They are providing status for the state of various sensors, and they are all **Deasserted**, meaning there is no alarm associated with these events.
 
@@ -1969,57 +1910,20 @@ In the example below, note the messages are all informational **alertEffect=2** 
     <INFO> 10-Jul-2023::13:45:26.004 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423994 10.255.0.144:161 (TimeTicks sysUpTime=27181)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:45:25.950878479 UTC)(OCTET STRING alertDescription=CPU TCTL-Delta at -34.0 degC)
     <INFO> 10-Jul-2023::13:45:26.104 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423995 10.255.0.144:161 (TimeTicks sysUpTime=27191)(OBJECT IDENTIFIER snmpTrapOID=thermal-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:45:25.954328495 UTC)(OCTET STRING alertDescription=CPU at +53.0 degC)
 
-**drive-thermal-throttle**
-^^^^^^^^^^^^^^^^^^^^^^
-
-**drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547**
-
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | Drive has entered a thermal throttle condition                                     |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | Drive's thermal throttling is more than <<value>> percent                          |
-|                  |                                                                                    |
-|                  | Drive has entered a thermal throttle condition                                     |
-|                  |                                                                                    |
-|                  | Examples:                                                                          |
-|                  |                                                                                    |
-|                  | Drive's thermal throttling is more than 15 percent                                 |
-|                  |                                                                                    |
-|                  | Drive's thermal throttling is more than 80 percent                                 | 
-|                  |                                                                                    |
-|                  | Drive has entered a thermal throttle condition                                     |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | Drive has entered a thermal throttle condition                                     |
-+------------------+------------------------------------------------------------------------------------+
-
-
-65547(.*) drive-thermal-throttle(.*) ASSERT(.*)Drive has entered a thermal throttle condition
-
-
-
-65547(.*) drive-thermal-throttle(.*) Drive’s thermal throttling is more than (.*) percent
-
-
-.. code-block:: bash
-
-    r10900-1# file show log/system/snmp.log | include drive-thermal-throttle
-
-**sensor-fault**
+sensor-fault
 ^^^^^^^^^^^^
 
 **sensor-fault                   .1.3.6.1.4.1.12276.1.1.1.65577**
 
-+------------------+-------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                 |
-+==================+===================================================================+
-| ASSERT           | Sensor fault detected in hardware                                 |
-+------------------+-------------------------------------------------------------------+
-| EVENT            | << Asserted | Deasserted >> : sensor fault: <<sensor name>>       |
-+------------------+-------------------------------------------------------------------+
-| CLEAR            | Sensor fault detected in hardware                                 |
-+------------------+-------------------------------------------------------------------+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Sensor fault detected in hardware                                 |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | << Asserted | Deasserted >> : sensor fault: <<sensor name>>       |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Sensor fault detected in hardware                                 |
++--------------------------+-------------------------------------------------------------------+
 
 A sensor fault can apply to an rSeries or a VELOS device. The example below shows SNMP traps of sensor failures from a VELOS system controller, however rSeries would follow a similar format. 
 
@@ -2043,19 +1947,91 @@ A sensor fault can apply to an rSeries or a VELOS device. The example below show
     <INFO> 9-Nov-2023::19:26:08.990 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244114 10.255.0.144:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
     <INFO> 9-Nov-2023::19:26:08.991 controller-1 confd[604]: snmp snmpv2-trap reqid=1548244114 10.255.0.143:162 (TimeTicks sysUpTime=271139401)(OBJECT IDENTIFIER snmpTrapOID=sensor-fault)(OCTET STRING alertSource=controller-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 00:26:08.911332002 UTC)(OCTET STRING alertDescription=Deasserted: sensor fault: Inlet)
 
-**module-present**
+
+datapath-fault
+^^^^^^^^^^^^
+
+**datapath-fault                   .1.3.6.1.4.1.12276.1.1.1.65578**
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Hardware datapath fault                                           |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | dma-agent service reported overall health: value=Unhealthy        |
+|                          |                                                                   |
+|                          | dma-agent service reported overall health: value=Ok               | 
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Hardware datapath fault                                           |
++--------------------------+-------------------------------------------------------------------+
+ 
+Hardware datapath fault.
+
+Below are some sample logs from the **show system events** CLI command:
+
+.. code-block:: bash
+
+    r10900-gsa-1# show system events | include datapath-fault
+    65578 appliance datapath-fault ASSERT CRITICAL "Hardware datapath fault" "2025-04-23 21:36:40.210399400 UTC"                       
+    65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Unhealthy" "2025-04-23 21:36:40.210411741 UTC"                           
+    65578 appliance datapath-fault CLEAR EMERGENCY "Hardware datapath fault" "2025-04-23 21:58:17.576705606 UTC"                           
+    65578 appliance datapath-fault ASSERT CRITICAL "Hardware datapath fault" "2025-04-23 21:58:41.313914516 UTC"                       
+    65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Unhealthy" "2025-04-23 21:58:41.313929456 UTC" 
+    65578 appliance datapath-fault CLEAR CRITICAL "Hardware datapath fault" "2025-04-23 21:58:57.189482206 UTC"                        
+    65578 appliance datapath-fault EVENT NA "dma-agent service reported overall health: value=Ok" "2025-04-23 21:58:57.189493672 UTC"  
+
+Below is an example of SNMP traps for datapath-fault:
+
+.. code-block:: bash
+
+    r10900-gsa-1# file show log/confd/snmp.log | include datapath-fault    
+
+boot-time-integrity-status
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**boot-time-integrity-status                   .1.3.6.1.4.1.12276.1.1.1.65579**
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| EVENT   (AlertEffect=2)  | Deasserted: OS boot time integrity check failure                  |
+|                          |                                                                   |
+|                          | Deasserted: OS boot time integrity check complete                 | 
++--------------------------+-------------------------------------------------------------------+
+
+Checks are run at boot time and on-demand.
+
+F5OS historically provided the boot-time integrity check and on-demand integrity check functionality only when the system was operating with a valid FIPS license installed on F5OS-A and F5OS-C platforms. This restriction aligned with the system’s FIPS 140-3 boundary, where integrity checking was a mandatory security function.
+
+Starting with F5OS v2.0.0, the F5OS-A and F5OS-C software lines have been unified into a single operating system image. As part of the unified platform’s roadmap, F5OS is being prepared for Common Criteria (CC) certification. CC requires system integrity verification mechanisms similar in spirit to FIPS (e.g., pre-operational self-tests, runtime integrity assurance mechanisms).
+
+To align with CC certification requirements and to ensure functional parity across secure operating modes, the existing integrity-check mechanisms are now extended to operate in Common-Criteria mode as well.
+
+
+
+Boot time integrity failure detected.
+
+<INFO> 17-Jun-2024::17:06:12.992 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239385 10.255.80.251:162 (TimeTicks sysUpTime=2588)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-3)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.038536850 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check complete)
+<INFO> 17-Jun-2024::17:06:13.121 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239386 10.255.80.251:162 (TimeTicks sysUpTime=2601)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.044855786 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check complete)
+<INFO> 17-Jun-2024::17:06:13.237 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239387 10.255.80.251:162 (TimeTicks sysUpTime=2613)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-3)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.052817609 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check failure)
+<INFO> 17-Jun-2024::17:06:13.383 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239388 10.255.80.251:162 (TimeTicks sysUpTime=2627)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.058460353 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check failure)
+<INFO> 17-Jun-2024::17:06:13.559 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239389 10.255.80.251:162 (TimeTicks sysUpTime=2645)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.074260559 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check complete)
+<INFO> 17-Jun-2024::17:06:13.711 controller-1 confd[651]: snmp snmpv2-trap reqid=1333239390 10.255.80.251:162 (TimeTicks sysUpTime=2660)(OBJECT IDENTIFIER snmpTrapOID=boot-time-integrity-status)(OCTET STRING alertSource=blade-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-06-17 21:05:40.078563910 UTC)(OCTET STRING alertDescription=Deasserted: OS boot time integrity check failure)
+
+
+module-present
 ^^^^^^^^^^^^^^
 
 **module-present                 .1.3.6.1.4.1.12276.1.1.1.66304**
 
 
-+------------------+-----------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                         |
-+==================+===========================================================+
-| EVENT            | <<module>> <<present|removed>>                            |
-|                  |                                                           |
-|                  | Example: fan tray present                                 |
-+------------------+-----------------------------------------------------------+
++--------------------------+-----------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                         |
++==========================+===========================================================+
+| EVENT   (AlertEffect=2)  | <<module>> <<present|removed>>                            |
+|                          |                                                           |
+|                          | Example: fan tray present                                 |
++--------------------------+-----------------------------------------------------------+
 
 Traps will be generated for components being present (Asserted) or removed (Deasserted). If the LCD module, fan tray, or SSD are present or removed are some examples. This trap only provides informational/event messages alertEffect=2 as they are indicating the presence or removal of a module or part. It does not indicate a failure. Failures are tracked with module-communication-error traps.
 
@@ -2072,54 +2048,58 @@ Traps will be generated for components being present (Asserted) or removed (Deas
     <INFO> 1-Feb-2025::00:01:58.501 r5900-1-gsa confd[144]: snmp snmpv2-trap reqid=1061773154 10.255.0.139:161 (TimeTicks sysUpTime=3434)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-02-01 05:01:55.635171523 UTC)(OCTET STRING alertDescription=Deasserted: unsupported SATA M2 SSD present)
     <INFO> 1-Feb-2025::00:01:58.501 r5900-1-gsa confd[144]: snmp snmpv2-trap reqid=1061773155 10.255.0.144:162 (TimeTicks sysUpTime=3434)(OBJECT IDENTIFIER snmpTrapOID=module-present)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-02-01 05:01:55.635171523 UTC)(OCTET STRING alertDescription=Deasserted: unsupported SATA M2 SSD present)             
 
-**psu-fault**
+psu-fault
 ^^^^^^^^^
 
 **psu-fault                      .1.3.6.1.4.1.12276.1.1.1.66305**
 
-+------------------+------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                  |
-+==================+====================================================================================+
-| ASSERT           | PSU fault detected                                                                 |
-+------------------+------------------------------------------------------------------------------------+
-| EVENT            | <<< Asserted| Deasserted >>: PSU <<psu number>> << sensor that caused the issue>>  |
-|                  |                                                                                    |
-|                  | Examples:                                                                          |
-|                  |                                                                                    |
-|                  | Asserted: PSU 1 input under-voltage warning                                        |
-|                  |                                                                                    |
-|                  | Deasserted: PSU 1 input under-voltage warning                                      |
-|                  |                                                                                    |
-|                  | Sensor could be:                                                                   |
-|                  |                                                                                    |
-|                  | input over-power warning                                                           |
-|                  |                                                                                    |
-|                  | input over-current warning                                                         |
-|                  |                                                                                    |
-|                  | input over-current fault                                                           |
-|                  |                                                                                    |
-|                  | unit off for low input voltage                                                     |
-|                  |                                                                                    |
-|                  | input under-voltage fault                                                          |
-|                  |                                                                                    |
-|                  | input under-voltage warning                                                        |
-|                  |                                                                                    |
-|                  | input over-voltage warning                                                         | 
-|                  |                                                                                    |
-|                  | input over-voltage fault                                                           |
-|                  |                                                                                    |
-|                  | PSU present                                                                        |
-|                  |                                                                                    |
-|                  | PSU input-ok                                                                       |
-|                  |                                                                                    |
-|                  | PSU output-ok                                                                      |
-|                  |                                                                                    |
-|                  | PSU unsupported                                                                    |
-|                  |                                                                                    |
-|                  | PSU mismatch                                                                       |
-+------------------+------------------------------------------------------------------------------------+
-| CLEAR            | PSU fault detected                                                                 |
-+------------------+------------------------------------------------------------------------------------+
++--------------------------+------------------------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                                  |
++==========================+====================================================================================+
+| ASSERT   (AlertEffect=1) | PSU fault detected                                                                 |
++--------------------------+------------------------------------------------------------------------------------+
+| EVENT    (AlertEffect=2) | <<< Asserted | Deasserted >>: PSU <<psu number>> << sensor that caused the issue>> |
+|                          |                                                                                    |
+|                          | Examples:                                                                          |
+|                          |                                                                                    |
+|                          | Asserted: PSU 1 input under-voltage warning                                        |
+|                          |                                                                                    |
+|                          | Deasserted: PSU 1 input under-voltage warning                                      |
+|                          |                                                                                    |
+|                          | Sensor could be:                                                                   |
+|                          |                                                                                    |
+|                          | input over-power warning                                                           |
+|                          |                                                                                    |
+|                          | input over-current warning                                                         |
+|                          |                                                                                    |
+|                          | input over-current fault                                                           |
+|                          |                                                                                    |
+|                          | unit off for low input voltage                                                     |
+|                          |                                                                                    |
+|                          | input under-voltage fault                                                          |
+|                          |                                                                                    |
+|                          | input under-voltage warning                                                        |
+|                          |                                                                                    |
+|                          | input over-voltage warning                                                         | 
+|                          |                                                                                    |
+|                          | input over-voltage fault                                                           |
+|                          |                                                                                    |
+|                          | PSU voltage out value < lower limit, value=<value>                                 |
+|                          |                                                                                    |
+|                          | PSU voltage out value within allowed range, value=<value>                          |
+|                          |                                                                                    |
+|                          | PSU <<psu number>> present                                                         |
+|                          |                                                                                    |
+|                          | PSU <<psu number>> input OK                                                        |
+|                          |                                                                                    |
+|                          | PSU <<psu number>> output OK                                                       |
+|                          |                                                                                    |
+|                          | PSU <<psu number>> unsupported                                                     |
+|                          |                                                                                    |
+|                          | PSU mismatch                                                                       |
++--------------------------+------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | PSU fault detected                                                                 |
++--------------------------+------------------------------------------------------------------------------------+
 
 This set of SNMP traps will relate to the health of the power supplies in the rSeries appliances. You may see traps related to insertion or removal of power supplies, inputs, and voltage thresholds. It is best to determine if the trap was a temporary condition, and if not if an error state persists, then determine if the inputs of the power supplies have become disconnected or changed. If the problem only occurs on one power supply, then you can try swapping inputs/power supplies (assuming dual power is installed) during a maintenance window to see if the issue follows the power supply or the input source. 
 
@@ -2145,6 +2125,11 @@ In the example below, the SNMP traps are informational in nature because they al
     <INFO> 10-Jul-2023::13:43:27.554 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423964 10.255.0.144:161 (TimeTicks sysUpTime=15336)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-controller)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:22.295486581 UTC)(OCTET STRING alertDescription=Deasserted: PSU mismatch)
     <INFO> 10-Jul-2023::13:43:28.708 appliance-1 confd[130]: snmp snmpv2-trap reqid=1977423977 10.255.0.144:161 (TimeTicks sysUpTime=15451)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-07-10 17:43:23.951104145 UTC)(OCTET STRING alertDescription=Deasserted: PSU 2 input OK)
 
+
+    <INFO> 17-Oct-2025::19:00:02.545 r10900 confd[148]: snmp snmpv2-trap reqid=2110878459 1.1.1.1:162 (TimeTicks sysUpTime=513349334)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-17 18:00:02.541517212 UTC)(OCTET STRING alertDescription=PSU voltage out value < lower limit, value=1.515)
+    <INFO> 17-Oct-2025::19:00:02.545 r10900 confd[148]: snmp snmpv2-trap reqid=2110878459 1.1.1.1:162 (TimeTicks sysUpTime=513349334)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-2)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-17 18:00:02.541517212 UTC)(OCTET STRING alertDescription=PSU voltage out value < lower limit, value=1.515)
+        
+        
 In the example below, you can see a power supply fail and then recover. 
 
 
@@ -2193,20 +2178,21 @@ In the example below, you can see a power supply fail and then recover.
     <INFO> 12-May-2025::13:32:07.282 r10900-2-gsa confd[142]: snmp snmpv2-trap reqid=1867428658 10.255.0.144:161 (TimeTicks sysUpTime=398476487)(OBJECT IDENTIFIER snmpTrapOID=psu-fault)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-05-12 17:32:07.279138608 UTC)(OCTET STRING alertDescription=PSU fault detected)
 
 
-**lcd-fault**
+lcd-fault
 ^^^^^^^^^
 
 **lcd-fault                      .1.3.6.1.4.1.12276.1.1.1.66306**
 
-+------------------+-----------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                         |
-+==================+===========================================================+
-| ASSERT           | Fault detected in LCD module                              |
-+------------------+-----------------------------------------------------------+
-| EVENT            | <<LCD is in fault state | LCD is in healthy state >>      |
-+------------------+-----------------------------------------------------------+
-| CLEAR            | Fault detected in LCD module                              |
-+------------------+-----------------------------------------------------------+
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Fault detected in LCD module                                      |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | <<LCD is in fault state | LCD is in healthy state >>              |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Fault detected in LCD module                                      |
++--------------------------+-------------------------------------------------------------------+
 
 
 This set of SNMP traps will relate to the health of the LCD subsystem on rSeries appliances. You may notice lcd-fault traps as the firmware on the LCD is updated as part of an upgrade as seen below. These should be temporary states and eventually the system will generate an **LCD Health is OK** trap. If the system continues to show an LCD fault, a support case should be opened to determine if there is a legitimate hardware issue.
@@ -2227,28 +2213,28 @@ This set of SNMP traps will relate to the health of the LCD subsystem on rSeries
     <INFO> 15-Feb-2023::15:59:14.635 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418323 10.255.0.144:161 (TimeTicks sysUpTime=22200)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-02-15 20:59:14.579463512 UTC)(OCTET STRING alertDescription=LCD module communication is OK)
     <INFO> 15-Feb-2023::15:59:14.685 appliance-1 confd[126]: snmp snmpv2-trap reqid=1413418324 10.255.0.144:161 (TimeTicks sysUpTime=22205)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-02-15 20:59:14.588063311 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
-**module-communication-error**
+module-communication-error
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 **module-communication-error     .1.3.6.1.4.1.12276.1.1.1.66307**
 
 
-+------------------+-----------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                         |
-+==================+===========================================================+
-| ASSERT           | Module communication error detected                       |
-+------------------+-----------------------------------------------------------+
-| EVENT            | <<module>> communication error detected                   |
-|                  |                                                           |
-|                  | <<module>> communication is OK                            |
-|                  |                                                           |
-|                  | Example:                                                  |
-|                  |                                                           |
-|                  | lcd communication error detected.                         |
-|                  |                                                           |
-+------------------+-----------------------------------------------------------+
-| CLEAR            | Module communication error detected                       |
-+------------------+-----------------------------------------------------------+
++-------------------------+-----------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                         |
++=========================+===========================================================+
+| ASSERT  (AlertEffect=1) | Module communication error detected                       |
++-------------------------+-----------------------------------------------------------+
+| EVENT   (AlertEffect=2) | <<module>> communication error detected                   |
+|                         |                                                           |
+|                         | <<module>> communication is OK                            |
+|                         |                                                           |
+|                         | Example:                                                  |
+|                         |                                                           |
+|                         | lcd communication error detected.                         |
+|                         |                                                           |
++-------------------------+-----------------------------------------------------------+
+| CLEAR   (AlertEffect=0) | Module communication error detected                       |
++-------------------------+-----------------------------------------------------------+
 
 SNMP traps will be generated for communication errors between subsystems. As an example, if the LCD module or PSU module cannot be contacted, the system will generate a **module-communication-error** trap. 
 
@@ -2260,7 +2246,7 @@ SNMP traps will be generated for communication errors between subsystems. As an 
 
     r10900-1# file show log/system/snmp.log | include module-communication-error
 
-    An SNMP Alert (alertEffect=1) is raised indicating a moduule-communication-error.
+    An SNMP Alert (alertEffect=1) is raised indicating a module-communication-error.
 
     <INFO> 12-Apr-2023::11:48:24.877 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130717 10.255.8.22:6011 (TimeTicks sysUpTime=52511)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-12 11:48:24.872113844 UTC)(OCTET STRING alertDescription=Module communication error detected)
     
@@ -2268,7 +2254,7 @@ SNMP traps will be generated for communication errors between subsystems. As an 
 
     <INFO> 12-Apr-2023::11:48:24.926 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130718 10.255.8.22:6011 (TimeTicks sysUpTime=52516)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:48:24.872136218 UTC)(OCTET STRING alertDescription=PSU communication error detected)
 
-    An SNMP Alert (alertEffect=0) cleared the moduule-communication-error.  
+    An SNMP Alert (alertEffect=0) cleared the module-communication-error.  
 
     <INFO> 12-Apr-2023::11:48:37.139 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130719 10.255.8.22:6011 (TimeTicks sysUpTime=53737)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=psu-1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:48:37.136351907 UTC)(OCTET STRING alertDescription=Module communication error detected)
 
@@ -2283,7 +2269,7 @@ SNMP traps will be generated for communication errors between subsystems. As an 
 
     r10900-1# file show log/system/snmp.log | include module-communication-error
 
-    An SNMP Alert (alertEffect=1) is raised indicating a moduule-communication-error.
+    An SNMP Alert (alertEffect=1) is raised indicating a module-communication-error.
 
     <INFO> 12-Apr-2023::11:51:32.363 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130725 10.255.8.22:6011 (TimeTicks sysUpTime=71259)(OBJECT IDENTIFIER snmpTrapOID=module-communication-error)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-12 11:51:32.359013061 UTC)(OCTET STRING alertDescription=Module communication error detected)
 
@@ -2307,16 +2293,18 @@ SNMP traps will be generated for communication errors between subsystems. As an 
 
     <INFO> 12-Apr-2023::11:51:45.255 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130730 10.255.8.22:6011 (TimeTicks sysUpTime=72549)(OBJECT IDENTIFIER snmpTrapOID=lcd-fault)(OCTET STRING alertSource=lcd)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 11:51:45.156764576 UTC)(OCTET STRING alertDescription=LCD Health is OK)
 
-**initialization**
+initialization
 ^^^^^^^^^^^^^^^
 
 **initialization                 .1.3.6.1.4.1.12276.1.1.1.262656**
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            |                                                                                                          |
-+------------------+----------------------------------------------------------------------------------------------------------+
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| EVENT   (AlertEffect=2)  |                                                                   |
++--------------------------+-------------------------------------------------------------------+
+
 
 Critical issue in fpga and datapath initialization process.
 
@@ -2327,16 +2315,16 @@ Critical issue in fpga and datapath initialization process.
     r5900-1-gsa# file show log/system/snmp.log | include initialization  
 
 
-**ePVA**
+ePVA
 ^^^^^
 
 **ePVA	                           .1.3.6.1.4.1.12276.1.1.1.262912**
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            |                                                                                                          |
-+------------------+----------------------------------------------------------------------------------------------------------+
++------------------------+----------------------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                                        |
++========================+==========================================================================================================+
+| EVENT  (AlertEffect=2) |                                                                                                          |
++------------------------+----------------------------------------------------------------------------------------------------------+
 
 Could not initialize ePVA
 
@@ -2346,42 +2334,81 @@ Could not initialize ePVA
 
 
 
-**inaccessible-memory**
-^^^^^^^^^^^^^^^^^^^^
+inaccessible-memory
+^^^^^^^^^^^^^^^^^^^
 
 **inaccessible-memory	            .1.3.6.1.4.1.12276.1.1.1.458752**
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            |                                                                                                          |
-+------------------+----------------------------------------------------------------------------------------------------------+
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | xxxx MB unusable memory detected, reboot to reclaim.              |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  |                                                                   |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | xxxx MB unusable memory detected, reboot to reclaim.              |
++--------------------------+-------------------------------------------------------------------+
 
 Notification indicating unusable hugepage memory.
 
 .. code-block:: bash
 
     r5900-2-gsa# file show log/system/snmp.log | include inaccessibleMemory
-    <INFO> 18-Dec-2024::15:46:15.313 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721992 172.22.50.57:162 (TimeTicks sysUpTime=554657616)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-12-18 20:46:15.306524334 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
-    <INFO> 18-Dec-2024::15:51:01.892 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721993 172.22.50.57:162 (TimeTicks sysUpTime=554686274)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-12-18 20:51:01.887434900 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
-    <INFO> 20-Dec-2024::10:42:48.632 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207722014 172.22.50.57:162 (TimeTicks sysUpTime=570116948)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-12-20 15:42:48.625427838 UTC)(OCTET STRING alertDescription=1382 MB unusable memory detected, reboot to reclaim.)
-    r5900-2-gsa#
+   
+    Alarm raised (alertEffect=1) indicating the amount of unusable memory.
 
-**Firmware Update Status Traps**
+    <INFO> 18-Dec-2024::15:46:15.313 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721992 172.22.50.57:162 (TimeTicks sysUpTime=554657616)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-12-18 20:46:15.306524334 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
+    
+    Alarm cleared (alertEffect=0) indicating the amount of unusable memory.
+
+    <INFO> 18-Dec-2024::15:51:01.892 r5900-2-gsa confd[157]: snmp snmpv2-trap reqid=1207721993 172.22.50.57:162 (TimeTicks sysUpTime=554686274)(OBJECT IDENTIFIER snmpTrapOID=inaccessibleMemory)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-12-18 20:51:01.887434900 UTC)(OCTET STRING alertDescription=4268 MB unusable memory detected, reboot to reclaim.)
+
+
+be2Training
+^^^^^^^^^^^
+
+**be2Training                 .1.3.6.1.4.1.12276.1.1.1.262913**
+
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Critical Bandwidth Engine link training failure                   |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  |                                                                   |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Critical Bandwidth Engine link training failure                   |
++--------------------------+-------------------------------------------------------------------+
+
+
+The example below is from a VELOS chassis, but similar messages would be seen for rSeries.
+
+.. code-block:: bash
+
+    <INFO> 14-Aug-2025::13:20:41.692 partition1 confd[130]: snmp snmpv2-trap reqid=396983949 1.1.1.1:162 (TimeTicks sysUpTime=208143)(OBJECT IDENTIFIER snmpTrapOID=be2Training)(OCTET STRING alertSource=ATSE-0 Port 0)(INTEGER alertEffect=1)(INTEGER alertSeverity=0)(OCTET STRING alertTimeStamp=2025-09-30 15:40:41.624043656 UTC)(OCTET STRING alertDescription=Critical Bandwidth Engine link training failure)
+   
+    <INFO> 14-Aug-2025::13:20:43.803 partition1 confd[130]: snmp snmpv2-trap reqid=396983950 1.1.1.1:162 (TimeTicks sysUpTime=208354)(OBJECT IDENTIFIER snmpTrapOID=be2Training)(OCTET STRING alertSource=ATSE-0 Port 1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-30 15:40:43.624213146 UTC)(OCTET STRING alertDescription=Critical Bandwidth Engine link training failure)
+   
+
+
+
+
+Firmware Update Status Traps
 ----------------------------
 
-**firmware-update-status**
+firmware-update-status
 ^^^^^^^^^^^^^^^^^^^^^^
 
 **firmware-update-status         .1.3.6.1.4.1.12276.1.1.1.65550**
 
-+------------------+----------------------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                                        |
-+==================+==========================================================================================================+
-| EVENT            | Firmware update is <<running | completed >> for <<module>>                                               |
-|                  |                                                                                                          |
-|                  | Example: Firmware update is running for vqf 0                                                            |
-+------------------+----------------------------------------------------------------------------------------------------------+
++------------------------+----------------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                                  |
++========================+====================================================================================================+
+| EVENT  (AlertEffect=2) | Firmware update is <<running | completed >> for <<module>>                                         |
+|                        |                                                                                                    |
+|                        | Example: Firmware update is running for vqf 0                                                      |
++------------------------+----------------------------------------------------------------------------------------------------+
 
 
 These traps provide indication of the beginning (Firmware update is running) and end (Firmware upgrade has completed) of firmware upgrades for different parts of the system. These may occur as part of a software update to F5OS. Not every upgrade requires firmware to be updated. You may see different components having their firmware upgraded such as (lcd, bios, cpld, lop app, sirr, atse, asw, nso, nvme0, nvme1). It is important not to interrupt the firmware upgrade process. If you see a firmware update alert raised for a specific component, you should not make any changes to the system until each component returns a Firmware update completed message. In newer versions of F5OS, the webUI will display a banner at the top of the page while firmware updates run and will disappear when they complete. The banner will have a link to the **Alarms and Events** page which will show the status of the firmware updates as seen below.
@@ -2416,27 +2443,26 @@ The CLI command below shows how to filter the **snmp.log** file to only show fir
 
 
 
-**Drive Utilization Traps**
+Disk and Storage Traps
 -----------------------
 
-**drive-utilization**
+drive-utilization
 ^^^^^^^^^^^^^^^^^
 
 **drive-utilization              .1.3.6.1.4.1.12276.1.1.1.65551**
 
-+------------------+-------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                 |
-+==================+===================================================================+
-| ASSERT           | Drive utilization growth rate is high                             |
-+------------------+-------------------------------------------------------------------+
-| EVENT            | Drive usage growth rate exceeded 10%, growth={{.growthPercent}}   |
-|                  |                                                                   |
-|                  | Drive usage growth rate with in range, growth={{.growthPercent}}% |
-|                  |                                                                   |
-+------------------+-------------------------------------------------------------------+
-| CLEAR            | Drive utilization growth rate is high                             |
-+------------------+-------------------------------------------------------------------+
-
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Drive utilization growth rate is high                             |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | Drive usage growth rate exceeded 10%, growth={{.growthPercent}}   |
+|                          |                                                                   |
+|                          | Drive usage growth rate within range, growth={{.growthPercent}}%  |
+|                          |                                                                   |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Drive utilization growth rate is high                             |
++--------------------------+-------------------------------------------------------------------+
 
 The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap detailed here for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
 
@@ -2462,7 +2488,7 @@ You can view the current utilization by issuing the command **show cluster nodes
     capacity   117430194176  
     used       46423502848   
 
-To get a further breakdown showing the growth rate and percenatge used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42% and the growth rate is 1%. The default for the **drive-utilization** SNMP trap to be sent is 10% or more growth rate over the interval period (default 60 minutes).
+To get a further breakdown showing the growth rate and percentage used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42% and the growth rate is 1%. The default for the **drive-utilization** SNMP trap to be sent is 10% or more growth rate over the interval period (default 60 minutes).
 
 .. code-block:: bash
 
@@ -2472,7 +2498,7 @@ To get a further breakdown showing the growth rate and percenatge used, enter th
     state disk-usage status in-range
     r5900-1-gsa#
 
-If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll nottice 4 main areas highlighted:
+If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll notice 4 main areas highlighted:
 
 - F5OS System - This is the **/sysroot** part of the filesystem used by F5OS.
 - F5OS Tenant Disks -  This is **big-ip-tenant-disks** part of the filesystem which is dedicated and shared by all F5OS based tenants.
@@ -2540,43 +2566,398 @@ Below are examples of the drive-utilization SNMP traps.
     <INFO> 12-Apr-2023::12:00:52.888 appliance-1 confd[116]: snmp snmpv2-trap reqid=608130746 10.255.8.22:6011 (TimeTicks sysUpTime=127312)(OBJECT IDENTIFIER snmpTrapOID=drive-utilization)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-12 12:00:52.834754109 UTC)(OCTET STRING alertDescription=Drive usage growth rate with in range, growth=-10268%)
 
 
+drive-capacity-fault
+^^^^^^^^^^^^^^^^^^^^
+
+**drive-capacity-fault           .1.3.6.1.4.1.12276.1.1.1.65544**
+
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Running out of drive capacity                                     |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | Drive usage exceeded 97%, used={{.usedPercent}}%                  |
+|                          |                                                                   |
+|                          | Drive usage within range, used={{.usedPercent}}%                  |
+|                          |                                                                   |
+|                          | Example:                                                          |
+|                          |                                                                   |
+|                          | Drive usage exceeded 97%, used=99%                                |
+|                          |                                                                   |
+|                          | Drive usage exceeded 90%, used=91%                                |
+|                          |                                                                   |
+|                          | Drive usage exceeded 85%, used=86%                                |
+|                          |                                                                   |
+|                          | Drive usage within range, used=80%                                |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Running out of drive capacity                                     |
++--------------------------+-------------------------------------------------------------------+
+
+The system will monitor the storage utilization of **/sysroot** within the rSeries appliance's filesystem. There are default thresholds which can be changed if desired. By default, the system will issue **error**, **warning**, and **critical** SNMP traps when those thresholds are crossed. There is also a separate SNMP trap for the growth percentage. The default values can be displayed using the **show cluster disk-usage-threshold** command in the CLI.  
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster disk-usage-threshold 
+    cluster disk-usage-threshold state warning-limit 85
+    cluster disk-usage-threshold state error-limit 90
+    cluster disk-usage-threshold state critical-limit 97
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 60
+    r5900-1-gsa# 
+
+You can view the current utilization by issuing the command **show cluster nodes node node-1 state disk-data**. This will display the raw storage values.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster nodes node node-1 state disk-data 
+    DISK DATA  DISK DATA     
+    NAME       VALUE         
+    -------------------------
+    available  65014710272   
+    capacity   117430194176  
+    used       46423502848   
+
+To get a further breakdown showing the growth rate and percentage used, enter the **show cluster nodes node node-1 state disk-usage** command. In the example below, you can see that the current utilization of **/sysroot** is 42%.
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster nodes node node-1 state disk-usage         
+    state disk-usage used-percent 42
+    state disk-usage growth-rate 1
+    state disk-usage status in-range
+    r5900-1-gsa#
+
+If you would like to look deeper into the usage of the other parts of the filesystem, enter the command **show components component platform**. You'll notice 4 main areas highlighted:
+
+- F5OS System - This is the **/sysroot** part of the filesystem used by F5OS.
+- F5OS Tenant Disks -  This is **big-ip-tenant-disks** part of the filesystem which is dedicated and shared by all F5OS based tenants.
+- F5OS Images - This is the **images** part of the filesystem which is dedicated to F5OS and F5OS Tenant base images.
+- BIG-IP Tenant - This is the space allocated to each individual tenant **tenant/<tenant-name>**. There should be one entry for each tenant deployed on the system.
+
+
+.. code-block:: bash
+
+    r5900-1-gsa# show components component platform        
+    components component platform
+    fantray fan-stats fan-1-speed 16277
+    fantray fan-stats fan-2-speed 16339
+    fantray fan-stats fan-3-speed 16260
+    fantray fan-stats fan-4-speed 16224
+    fantray fan-stats fan-5-speed 16198
+    fantray fan-stats fan-6-speed 16366
+    fantray fan-stats fan-7-speed 16330
+    fantray fan-stats fan-8-speed 16242
+    state description    r5900
+    state serial-no      f5-vdvh-bfwi
+    state part-no        "200-0411-02 REV 2"
+    state empty          false
+    state tpm-integrity-status Valid
+    state memory total    134606934016
+    state memory available 9235505152
+    state memory free     1108242432
+    state memory used-percent 93
+    state memory platform-total 16107360256
+    state memory platform-used 6051057664
+    state memory platform-used-percent 37
+    state temperature current 26.2
+    state temperature average 25.8
+    state temperature minimum 25.6
+    state temperature maximum 26.2
+                                                                                            USED     
+    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
+    ---------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System        117430194176  65010388992   46427824128  41       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks  481021091840  427498086400  29060988928  6        
+    tenant/big-ip                 BIG-IP Tenant      88046829568   69774471168   18272358400  20       
+    tenant/big-ip2                BIG-IP Tenant      88046829568   79926988800   8119840768   9        
+    platform/images               F5OS Images        240417513472  174332252160  53845864448  23       
+
+
+
+The system will monitor the storage utilization of the rSeries disks and warn if the disk capacity gets too high. This is measured hourly. There are 3 levels of events that can occur as seen below:
+
+- drive-capacity:critical-limit - Drive Usage exceeded 97%
+- drive-capacity:failure-limit  - Drive Usage exceeded 90%
+- drive-capacity:warning-limit  - Drive Usage exceeded 85%
+
+The **show system events** CLI command will provide more details of the drive events that have occurred.
+
+.. code-block:: bash
+
+    appliance-1# show system events | nomore
+    system events event
+    log "65544 appliance drive-capacity-fault ASSERT CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:41:37.847817761 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage exceeded 97%, used=100%\" \"2023-03-27 15:41:37.847831437 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault CLEAR CRITICAL \"Running out of drive capacity\" \"2023-03-27 15:42:32.655591036 UTC\""
+    system events event
+    log "65544 appliance drive-capacity-fault EVENT NA \"Drive usage with in range, used=54%\" \"2023-03-27 15:42:32.655608659 UTC\""
+
+In the example below, the default **disk-usage-threshold** parameters have been lowered to artificially generate a trap condition. 
+
+.. code-block:: bash
+
+    r5900-1-gsa# show cluster disk-usage-threshold 
+    cluster disk-usage-threshold state warning-limit 10
+    cluster disk-usage-threshold state error-limit 15
+    cluster disk-usage-threshold state critical-limit 20
+    cluster disk-usage-threshold state growth-rate-limit 10
+    cluster disk-usage-threshold state interval 1
+    r5900-1-gsa# 
+
+
+Below are example SNMP traps for a drive-capacity-fault event. 
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include drive-capacity-fault
+
+    This trap is an alertEffect=1 signifying an alarm condition:
+
+    <INFO> 12-Dec-2025::12:23:24.159 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500385 172.22.50.57:162 (TimeTicks sysUpTime=188936994)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153709836 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
+
+    The follow-on trap is an alertEffect=2 providing deeper details of what caused the alarm condition:
+
+    <INFO> 12-Dec-2025::12:23:24.208 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500386 172.22.50.57:162 (TimeTicks sysUpTime=188936999)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:23:24.153723853 UTC)(OCTET STRING alertDescription=Drive usage exceeded 20%, used=42%)
+
+    This trap is an alertEffect=0 signifying that the alarm condition has cleared:
+
+    <INFO> 12-Dec-2025::12:34:20.196 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500387 172.22.50.57:162 (TimeTicks sysUpTime=189002598)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192390678 UTC)(OCTET STRING alertDescription=Running out of drive capacity)
+
+    The follow-on trap is an alertEffect=2 providing deeper details indicating the drive-capacity is now in range:
+
+    <INFO> 12-Dec-2025::12:34:20.246 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500388 10.255.0.139:161 (TimeTicks sysUpTime=189002603)(OBJECT IDENTIFIER snmpTrapOID=drive-capacity-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-12 17:34:20.192404197 UTC)(OCTET STRING alertDescription=Drive usage with in range, used=42%)
+
+
+drive-thermal-throttle
+^^^^^^^^^^^^^^^^^^^^^^
+
+**drive-thermal-throttle         .1.3.6.1.4.1.12276.1.1.1.65547**
+
+
++--------------------------+-------------------------------------------------------------------+
+| AlertEffect              | Possible Description in SNMP Trap                                 |
++==========================+===================================================================+
+| ASSERT  (AlertEffect=1)  | Drive has entered a thermal throttle condition                    |
++--------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2)  | Drive's thermal throttling is more than <<value>> percent         |
+|                          |                                                                   |
+|                          | Drive has entered a thermal throttle condition                    |
+|                          |                                                                   |
+|                          | Examples:                                                         |
+|                          |                                                                   |
+|                          | Drive's thermal throttling is more than 15 percent                |
+|                          |                                                                   |
+|                          | Drive's thermal throttling is more than 80 percent                | 
+|                          |                                                                   |
+|                          | Drive has entered a thermal throttle condition                    |
++--------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0)  | Drive has entered a thermal throttle condition                    |
++--------------------------+-------------------------------------------------------------------+
+
+65547(.*) drive-thermal-throttle(.*) ASSERT(.*)Drive has entered a thermal throttle condition
+
+
+
+65547(.*) drive-thermal-throttle(.*) Drive’s thermal throttling is more than (.*) percent
+
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include drive-thermal-throttle
+
+
+raid-event
+^^^^^^^^^^
+
+**raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | RAID STATUS:raid_failed SSD:ssd<#>                                                       |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT   (AlertEffect=2) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0) | RAID STATUS:raid_ok SSD:ssd<#>                                                           |
++-------------------------+------------------------------------------------------------------------------------------+
+
+SNMP traps for **raid-event** are only applicable to rSeries systems that support dual RAID mirrored disks. The r5000, r4000, and r2000 systems only have a single disk, and no RAID mirroring, therefore these traps do not apply to those systems. The r10000, and r12000 systems have dual RAID mirrored disks, and these traps should only apply to these systems.
+
+
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include raid-event
+
+    This trap is an alertEffect=1 signifying that a raid-event alarm condition has been raised:
+
+    <INFO> 10-Nov-2023::15:05:09.223 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680977 10.255.0.144:161 (TimeTicks sysUpTime=261782586)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.216697040 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
+
+    This trap is an alertEffect=1 signifying that a raid-event alarm condition has been cleared:
+
+    <INFO> 10-Nov-2023::15:05:09.274 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680978 10.255.0.144:161 (TimeTicks sysUpTime=261782591)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.264314422 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+ 
+
+
+kmip-server-fault
+^^^^^^^^^^^^^^^^^
+
+**kmip-server-fault            .1.3.6.1.4.1.12276.1.1.1.66309**
+
++-------------------------+-------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                 |
++=========================+===================================================================+
+| ASSERT  (AlertEffect=1) | KMIP server communication error detected                          |
++-------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2) | All servers are down                                              |
+|                         |                                                                   |
+|                         | At least 1 server is up and running                               |
+|                         |                                                                   |
+|                         |                                                                   |
++-------------------------+-------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                   |
++-------------------------+-------------------------------------------------------------------+
+
+KMIP server communication error detected.
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include kmip-server-fault
+    <INFO> 30-Oct-2025::07:00:06.064 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131312 10.144.142.34:162 (TimeTicks sysUpTime=538642083)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-10-30 07:00:06.007484496 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
+    
+    <INFO> 30-Oct-2025::07:00:06.108 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131313 10.144.142.34:162 (TimeTicks sysUpTime=538642087)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-10-30 07:00:06.007493629 UTC)(OCTET STRING alertDescription=All servers are down)
+
+
+    <INFO> 6-Sep-2025::07:00:04.157 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131250 10.144.142.34:162 (TimeTicks sysUpTime=72081892)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-09-06 07:00:04.106457399 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
+    <INFO> 6-Sep-2025::07:00:04.207 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131251 10.144.142.34:162 (TimeTicks sysUpTime=72081897)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-06 07:00:04.106465682 UTC)(OCTET STRING alertDescription=All servers are down)
+    <INFO> 8-Sep-2025::07:00:01.284 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131252 10.144.142.34:162 (TimeTicks sysUpTime=89361605)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-08 07:00:01.232055180 UTC)(OCTET STRING alertDescription=KMIP server communication error detected)
+    <INFO> 8-Sep-2025::07:00:01.335 appliance-1 confd[144]: snmp snmpv2-trap reqid=1715131253 10.144.142.34:162 (TimeTicks sysUpTime=89361610)(OBJECT IDENTIFIER snmpTrapOID=kmip-server-fault)(OCTET STRING alertSource=disk-encryption)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-08 07:00:01.232063195 UTC)(OCTET STRING alertDescription=Atleast 1 server is up and running)
+
+kmip-managed-object-error
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**kmip-managed-object-error    .1.3.6.1.4.1.12276.1.1.1.66310**
+
++-------------------------+-------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                 |
++=========================+===================================================================+
+| ASSERT  (AlertEffect=1) |                                                                   |
++-------------------------+-------------------------------------------------------------------+
+| EVENT   (AlertEffect=2) |                                                                   |
+|                         |                                                                   |
+|                         |                                                                   |
+|                         |                                                                   |
++-------------------------+-------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                   |
++-------------------------+-------------------------------------------------------------------+
+
+KMIP managed object error detected.
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include kmip-managed-object-error
+
+
+drive-sed-error
+^^^^^^^^^^^^^^^
+
+**drive-sed-error              .1.3.6.1.4.1.12276.1.1.1.66311**
+
++------------------------+-------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                 |
++========================+===================================================================+
+| ASSERT (AlertEffect=1) |                                                                   |
++------------------------+-------------------------------------------------------------------+
+| EVENT (AlertEffect=2)  |                                                                   |
+|                        |                                                                   |
+|                        |                                                                   |
+|                        |                                                                   |
++------------------------+-------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)  |                                                                   |
++------------------------+-------------------------------------------------------------------+
+
+Drive SED error detected.
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include drive-sed-error
+
+uefi-communication-error
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+**uefi-communication-error     .1.3.6.1.4.1.12276.1.1.1.66312**
+
++------------------------+-------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                 |
++========================+===================================================================+
+| ASSERT (AlertEffect=1) |                                                                   |
++------------------------+-------------------------------------------------------------------+
+| EVENT  (AlertEffect=2) |                                                                   |
+|                        |                                                                   |
+|                        |                                                                   |
+|                        |                                                                   |
++------------------------+-------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0) |                                                                   |
++------------------------+-------------------------------------------------------------------+
+
+UEFI communication error detected.
+
+Error log:
+
+.. code-block:: bash
+  
+    66312 disk-encryption-uefi uefi-communication-error ASSERT ERROR "UEFI communication error detected" "2025-12-17 19:24:35.459911781 UTC"    
+    66312 disk-encryption-uefi uefi-communication-error EVENT NA "UEFI communication error detected" "2025-12-17 19:24:35.459927420 UTC"   
+    66312 disk-encryption-uefi uefi-communication-error EVENT NA "Attribute health reset" "2025-12-17 19:33:24.029122136 UTC"                   
+    66312 disk-encryption-uefi uefi-communication-error CLEAR INFO "UEFI communication error detected" "2025-12-17 19:33:24.034811862 UTC"   
+
+.. code-block:: bash
+
+    r10900-1# file show log/system/snmp.log | include uefi-communication-error
+
+
 
 FIPS Related Traps
 ------------------
 
-**fips-fault**
+fips-fault
 ^^^^^^^^^^
 
 **fips-fault                     .1.3.6.1.4.1.12276.1.1.1.66308**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
 
 Fault detected in FIPS module.
+
+Below is an example of a fips-fault trap being raised **alertEffect=1**, with a follow-on event trap providing more details **alertEffect=2** on what the fault was *FIPS temperature at or exceeded shutdown limit, value=97 C*. Then the fips-fault is cleared **alertEffect=0**, with a follow-on event trap providing more details **alertEffect=2** on the current status *FIPS temperature ok, value=53 C*.
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include fips-fault
-    <INFO> 14-Apr-2023::13:42:57.915 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695914 10.255.8.22:6011 (TimeTicks sysUpTime=461536)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-14 13:42:57.910341089 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
-    <INFO> 14-Apr-2023::13:43:27.924 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695915 10.255.8.22:6011 (TimeTicks sysUpTime=464537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-14 13:43:27.917797625 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
-    <INFO> 14-Apr-2023::13:56:57.930 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695918 10.255.8.22:6011 (TimeTicks sysUpTime=545537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2023-04-14 13:56:57.925072069 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
-    <INFO> 14-Apr-2023::13:57:27.924 appliance-1 confd[115]: snmp snmpv2-trap reqid=1188695919 10.255.8.22:6011 (TimeTicks sysUpTime=548537)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-14 13:57:27.919985256 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
+    <INFO> 22-Apr-2024::04:06:17.400 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732100 10.255.8.22:6011 (TimeTicks sysUpTime=765371725)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=2)(OCTET STRING alertTimeStamp=2024-05-22 01:06:17.396026452 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
+    <INFO> 22-Apr-2024::04:06:17.450 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732101 10.255.8.22:6011 (TimeTicks sysUpTime=765371730)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-22 01:06:17.396042970 UTC)(OCTET STRING alertDescription=FIPS temperature at or exceeded shutdown limit, value=97 C)
+    <INFO> 22-Apr-2024::04:06:47.400 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732102 10.255.8.22:6011 (TimeTicks sysUpTime=765374725)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-22 01:06:47.396108771 UTC)(OCTET STRING alertDescription=Fault detected in FIPS module)
+    <INFO> 22-Apr-2024::04:06:47.450 r10900-1 confd[115]: snmp snmpv2-trap reqid=535732103 10.255.8.22:6011 (TimeTicks sysUpTime=765374730)(OBJECT IDENTIFIER snmpTrapOID=fips-fault)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-05-22 01:06:47.396122556 UTC)(OCTET STRING alertDescription=FIPS temperature ok, value=53 C)
 
-**fipsError**
+fipsError
 ^^^^^^^^^
 
 **fipsError                      .1.3.6.1.4.1.12276.1.1.1.196608**
 
-+------------------+-------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                 |
-+==================+===================================================================+
-| ASSERT           | FIPS error identified in one or more services                     |
-+------------------+-------------------------------------------------------------------+
-| CLEAR            | FIPS error identified in one or more services                     |
-+------------------+-------------------------------------------------------------------+
++-------------------------+-------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                 |
++=========================+===================================================================+
+| ASSERT  (AlertEffect=1) | FIPS error identified in one or more services                     |
++-------------------------+-------------------------------------------------------------------+
+| CLEAR   (AlertEffect=0) | FIPS error identified in one or more services                     |
++-------------------------+-------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -2585,16 +2966,16 @@ Fault detected in FIPS module.
 System Event Traps
 ------------------
 
-**core-dump**
+core-dump
 ^^^^^^^^^
 
 **core-dump                      .1.3.6.1.4.1.12276.1.1.1.327680**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            | Core dumped on Appliance. process=<service name> location=<core file location>           |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) | Core dumped on Appliance. process=<service name> location=<core file location>           |
++------------------------+------------------------------------------------------------------------------------------+
 
 
 
@@ -2602,48 +2983,67 @@ This trap will indicate that the system has generated a core-dump file. A suppor
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include dump
+    r10900-1# file show log/system/snmp.log | include core-dump
+
     <INFO> 27-Apr-2023::07:59:10.169 appliance-1 confd[115]: snmp snmpv2-trap reqid=627600425 10.255.0.144:161 (TimeTicks sysUpTime=223591142)(OBJECT IDENTIFIER snmpTrapOID=core-dump)(OCTET STRING alertSource=Appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-04-27 11:59:10.166591016 UTC)(OCTET STRING alertDescription=Core dumped on Appliance. process=appliance_orche, location=/var/shared/core/container/core.appliance_orch.appliance_orchestration_manager.18120.1682596749.core.gz)
 
-**reboot**
+reboot
 ^^^^^^
 
 **reboot                         .1.3.6.1.4.1.12276.1.1.1.327681**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            | reboot - appliance-1.chassis.local F5OS-A [R5R10 | R2R4 ] version <Version>              |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| EVENT  (AlertEffect=2) | System reboot is triggered by user                                                       |
+|                        |                                                                                          |
+|                        | reboot - appliance-1.chassis.local F5OS-A [R5R10 | R2R4 ] version <Version>              |
++------------------------+------------------------------------------------------------------------------------------+
 
 
 This trap will indicate that the system has rebooted. It's possible this was a planned reboot initiated by the administrator. Below is an example of a reboot trap.
 
 .. code-block:: bash
 
-    <INFO> 28-Aug-2024::10:18:46.110 r10900-1 confd[142]: snmp snmpv2-trap reqid=1325993932 10.255.80.251:162 (TimeTicks sysUpTime=40194737)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:18:46.105502772 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
+    r10900-1-gsa# file show log/system/snmp.log | include reboot
+
+    Informational event (alertEffect=2) indicating a System reboot is triggered by user.
+
+    <INFO> 28-Aug-2024::10:18:46.110 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1325993932 10.255.80.251:162 (TimeTicks sysUpTime=40194737)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:18:46.105502772 UTC)(OCTET STRING alertDescription=System reboot is triggered by user)
+
+    Informational event (alertEffect=2) indicating a System reboot with the F5OS version that booted.
+
     <INFO> 28-Aug-2024::10:21:37.059 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902909 10.255.80.251:162 (TimeTicks sysUpTime=2963)(OBJECT IDENTIFIER snmpTrapOID=reboot)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:21:37.056152494 UTC)(OCTET STRING alertDescription=reboot - appliance-1.chassis.local F5OS-A R5R10 version 1.8.0-13598)
 
-**incompatible-image**
+incompatible-image
 ^^^^^^^^^^^^^^^^^^
 
 **incompatible-image	         .1.3.6.1.4.1.12276.1.1.1.327682**
 
-+------------------+-------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                         |
-+==================+===========================================================================================+
-| EVENT            | Unsupported platform <Platform Type>                                                      |
-|                  | import file <file path and name> removed incorrect file name                              |
-|                  | import file <file path and name> removed File name has special characters                 |
-|                  | Unexpected error processing Command '<command details>' returned non-zero exit status 32. |
-+------------------+-------------------------------------------------------------------------------------------+
++------------------------+-------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                         |
++========================+===========================================================================================+
+| EVENT  (AlertEffect=2) | Unsupported platform <Platform Type>                                                      |
+|                        |                                                                                           |
+|                        | import file <file path and name> removed incorrect file name                              |
+|                        |                                                                                           |
+|                        | import file <file path and name> removed File name has special characters                 |
+|                        |                                                                                           |
+|                        | Unexpected error processing Command '<command details>' returned non-zero exit status 32. |
++------------------------+-------------------------------------------------------------------------------------------+
 
-An SNMP Trap will be generated when an admin attempts to upload the wrong F5OS image type into the system. In the example below, an F5OS **R5R10** image is being loaded into an r4000 series appliance. This image is not compatible with that system and a trap is generated. In this case, the proper **R2R4** image should be uploaded to run on the r4000 series platform.
+An SNMP Trap will be generated when an admin attempts to upload the wrong F5OS image type into the system. In the example below, an F5OS **R5R10** image is being loaded into an r4000 series appliance. This image is not compatible with that system, and a trap is generated. In this case, the proper **R2R4** image should be uploaded to run on the r4000 series platform.
 
 .. code-block:: bash
 
-    r4800-2-gsa# file show log/system/snmp.log | include incompatible
+    r4800-2-gsa# file show log/system/snmp.log | include incompatible-image
+    
+    Informational event (alertEffect=2) indicating Unsupported platform R5R10
+
     <INFO> 28-Aug-2024::17:51:57.265 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333161 10.255.80.251:162 (TimeTicks sysUpTime=42680703)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.254201062 UTC)(OCTET STRING alertDescription= Un supported platform R5R10)
+    
+    Informational event (alertEffect=2) indicating Unexpected error processing [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso
+
     <INFO> 28-Aug-2024::17:51:57.337 r4800-2 confd[171]: snmp snmpv2-trap reqid=1327333162 10.255.80.251:162 (TimeTicks sysUpTime=42680710)(OBJECT IDENTIFIER snmpTrapOID=incompatible-image)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 21:51:57.332980140 UTC)(OCTET STRING alertDescription= Unexpected error processing [Errno 2] No such file or directory: '/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso')
 
 Looking at the **platform.log** file will provide additional details.
@@ -2658,52 +3058,43 @@ Looking at the **platform.log** file will provide additional details.
     2024-08-28T17:51:57.334010-04:00 r4800-2-gsa.cpt.f5net.com alert-service[9]: priority="Notice" version=1.0 msgid=0x2201000000000029 msg="Received event." event="524545 appliance incompatible-image EVENT NA ' Unexpected error processing [Errno 2] No such file or directory: \'/var/export/chassis/import/iso/F5OS-A-1.8.0-13919.R5R10.CANDIDATE.iso\'' '2024-08-28 21:51:57.332980140 UTC'".
     r4800-2-gsa# 
 
-**login-failed**
+login-failed
 ^^^^^^^^^^^^
 
 **login-failed                   .1.3.6.1.4.1.12276.1.1.1.327683**
 
-+------------------+-------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                         |
-+==================+===========================================================================================+
-| EVENT            | F5OS login attempt failed for the user: <username>, rhost: <remote host IP>               |
-+------------------+-------------------------------------------------------------------------------------------+
++------------------------+-------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                         |
++========================+===========================================================================================+
+| EVENT  (AlertEffect=2) | F5OS login attempt failed for the user: <username>, rhost: <remote host IP>               |
++------------------------+-------------------------------------------------------------------------------------------+
 
 The system will send a trap anytime there is a failed login to one of the F5OS user interfaces. The **login-failed** trap will log the username and remote host from where the login was attempted.
 
 .. code-block:: bash
 
+    r10900-1-gsa# file show log/system/snmp.log | include login-failed
+
     <INFO> 28-Aug-2024::10:43:31.003 r10900-1-gsa confd[142]: snmp snmpv2-trap reqid=1068902947 10.255.80.251:162 (TimeTicks sysUpTime=134357)(OBJECT IDENTIFIER snmpTrapOID=login-failed)(OCTET STRING alertSource=appliance-1)(INTEGER alertEffect=2)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-08-28 14:43:31.000008955 UTC)(OCTET STRING alertDescription=F5OS login attempt failed for the user: admin, rhost: 172.18.104.35)
 
 
-**raid-event**
-^^^^^^^^^^
+self-signed-key-decryption-failure
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-**raid-event                     .1.3.6.1.4.1.12276.1.1.1.393216**
+**self-signed-key-decryption-failure                   .1.3.6.1.4.1.12276.1.1.1.721153**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+-------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                         |
++========================+===========================================================================================+
+| EVENT  (AlertEffect=2) |                                                                                           |
++------------------------+-------------------------------------------------------------------------------------------+
 
-SNMP traps for **raid-event** are only applicable to rSeries systems that support dual RAID mirrored disks. The r5000, r4000, and r2000 systems only have a single disk, and no RAID mirroring, therefore these traps do not apply to those systems. The r10000, and r12000 systems have dual RAID mirrored disks, and these traps should only apply to these systems.
-
+The self-signed-key failed to be decrypted when the platform key is corrupted. This will cause the tenants to be inoperable.
 
 
 .. code-block:: bash
 
-    r10900-1# file show log/system/snmp.log | include raid-event
-    <INFO> 10-Nov-2023::15:05:09.223 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680977 10.255.0.144:161 (TimeTicks sysUpTime=261782586)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.216697040 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
-    <INFO> 10-Nov-2023::15:05:09.274 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680978 10.255.0.144:161 (TimeTicks sysUpTime=261782591)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.264314422 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
-    <INFO> 10-Nov-2023::15:05:09.326 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680979 10.255.0.144:161 (TimeTicks sysUpTime=261782596)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.275871180 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
-    <INFO> 10-Nov-2023::15:05:09.377 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680980 10.255.0.144:161 (TimeTicks sysUpTime=261782602)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.318350942 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
-    <INFO> 10-Nov-2023::15:05:09.430 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680981 10.255.0.144:161 (TimeTicks sysUpTime=261782607)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.330028590 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
-    <INFO> 10-Nov-2023::15:05:09.481 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680982 10.255.0.144:161 (TimeTicks sysUpTime=261782612)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.373077858 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
-    <INFO> 10-Nov-2023::15:05:09.533 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680983 10.255.0.144:161 (TimeTicks sysUpTime=261782617)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.384442574 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
-    <INFO> 10-Nov-2023::15:05:09.584 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680984 10.255.0.144:161 (TimeTicks sysUpTime=261782622)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.425790569 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
-    <INFO> 10-Nov-2023::15:05:09.636 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680985 10.255.0.144:161 (TimeTicks sysUpTime=261782627)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=1)(INTEGER alertSeverity=1)(OCTET STRING alertTimeStamp=2023-11-10 20:05:09.437237512 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_failed SSD:ssd2)
-    <INFO> 10-Nov-2023::15:07:15.992 appliance-1 confd[130]: snmp snmpv2-trap reqid=1889680986 10.255.0.144:161 (TimeTicks sysUpTime=261795263)(OBJECT IDENTIFIER snmpTrapOID=raidEvent)(OCTET STRING alertSource=appliance)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2023-11-10 20:07:15.972123613 UTC)(OCTET STRING alertDescription=RAID STATUS:raid_ok SSD:ssd1)
+    r10900-1-gsa# file show log/system/snmp.log | include self-signed-key-decryption-failure
 
 
 Interface / Optic Related Traps
@@ -2775,127 +3166,817 @@ Below is an example of the rx-pwr ddm monitoring. There is a low warn threshold 
     state ddm rx-pwr high-threshold warn 2.4    <-- Will trigger SNMP Trap for High Warn
 
 
+Prior to F5OS 2.0 there was a single SNMP trap to signify HiAlarm, HiWarn, LoAlarm, and LoWarn state for each of the following: txPwr, rxPwr, txBias, ddmTemp, and ddmVcc. This proved to be insufficient because two possible states could be true at the same time, especially for optics using multi-lane. There was no way to clear certain alarms when multiple conditions were met because of this. In F5OS 2.0 and later, more granular traps have been introduced for each of the following: txPwr, rxPwr, txBias, ddmTemp, and ddmVcc to address this problem. The table below shows the new SNMP traps that are introduced on the right, and the old, deprecated traps on the left. You should reload the new 2.0 SNMP MIBs into your SNMP manager or trap receiver to pick up these new changes. 
 
-   
-**txPwr**
++----------------------------+-------------------------------------+
+| Traps Prior to version 2.0 | New Traps with Version 2.0 or later |
++============================+=====================================+
+| txPwr                      | txPwrHiAlarm                        |
+|                            |                                     |
+|                            | txPwrHiWarn                         |
+|                            |                                     |
+|                            | txPwrLoAlarm                        |
+|                            |                                     |
+|                            | txPwrLoWarn                         |
++----------------------------+-------------------------------------+
+| rxPwr                      | rxPwrHiAlarm                        |
+|                            |                                     |
+|                            | rxPwrHiWarn                         |
+|                            |                                     |
+|                            | rxPwrLoAlarm                        |
+|                            |                                     |
+|                            | rxPwrLoWarn                         |
++----------------------------+-------------------------------------+
+| txBias                     | txBiasHiAlarm                       |
+|                            |                                     |
+|                            | txBiasHiWarn                        |
+|                            |                                     |
+|                            | txBiasLoAlarm                       |
+|                            |                                     |
+|                            | txBiasLoWarn                        |
++----------------------------+-------------------------------------+
+| ddmTemp                    | ddmTempHiAlarm                      |
+|                            |                                     |
+|                            | ddmTempHiWarn                       |
+|                            |                                     |
+|                            | ddmTempLoAlarm                      |
+|                            |                                     |
+|                            | ddmTempLoWarn                       |
++----------------------------+-------------------------------------+
+| ddmVcc                     | ddmVccHiAlarm                       |
+|                            |                                     |
+|                            | ddmVccHiWarn                        |
+|                            |                                     |
+|                            | ddmVccLoAlarm                       |
+|                            |                                     |
+|                            | ddmVccLoWarn                        |
++----------------------------+-------------------------------------+
+
+
+txPwr
 ^^^^^
+
+This trap is for F5OS versions prior to 2.0.
 
 **txPwr                   .1.3.6.1.4.1.12276.1.1.1.262400**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT (AlertEffect=1)  | Lanes: <# or #'s> Transmitter power low warning                                          |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter power low alarm                                            |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter power hi warning                                           |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter power hi alarm                                             |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT (AlertEffect=2)   |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)   | Lanes: <# or #'s> Transmitter power low warning                                          |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter power low alarm                                            |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter power hi warning                                           |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter power hi alarm                                             |
++-------------------------+------------------------------------------------------------------------------------------+
 
-The transmit power threshold for a specific transceiver has reached a threshold indicating ether tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating a tx pwr high alarm status, tx pwr high warn status, tx pwr low alarm status, or tx pwr low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 
 .. code-block:: bash
 
     r10900-2# file show log/system/snmp.log | include txPwr
-
     <INFO> 3-May-2024::15:52:04.279 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214842 10.255.80.251:162 (TimeTicks sysUpTime=27848850)(OBJECT IDENTIFIER snmpTrapOID=txPwr)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263075276 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter power low alarm)
 
-    <INFO> 11-Aug-2025::08:45:32.869 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208496 172.22.50.57:162 (TimeTicks sysUpTime=10255)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.606284595 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
-    <INFO> 11-Aug-2025::08:45:33.177 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
-    <INFO> 11-Aug-2025::08:45:34.239 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
-    <INFO> 11-Aug-2025::08:45:55.402 r10900-1-gsa confd[168]: snmp snmpv2-trap reqid=973208630 172.22.50.57:162 (TimeTicks sysUpTime=12510)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 12)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:54.918903630 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
 
-**rxPwr**
+txPwrHiAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Transmitter power high alarm                                                             |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT (AlertEffect=2)   |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)   | Transmitter power high alarm                                                             |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating a tx pwr high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txPwrHiAlarm
+    <INFO> 11-Aug-2025::08:45:34.239 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208498 172.22.50.57:162 (TimeTicks sysUpTime=10390)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611051164 UTC)(OCTET STRING alertDescription=Transmitter power high alarm)
+
+
+txPwrHiWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txPwrHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262400**
+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| ASSERT (AlertEffect=1) | Transmitter power high warning                                                           |
++------------------------+------------------------------------------------------------------------------------------+
+| EVENT (AlertEffect=2)  |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)  | Transmitter power high warning                                                           |
++------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating a tx pwr high warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txPwrHiWarn
+    <INFO> 22-Sep-2025::10:42:04.342 r10900-2 confd[170]: snmp snmpv2-trap reqid=1412769040 172.22.50.57:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 22-Sep-2025::10:42:04.343 r10900-2 confd[170]: snmp snmpv2-trap reqid=1412769040 10.255.0.139:161 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+    <INFO> 22-Sep-2025::10:42:04.343 r10900-2 confd[170]: snmp snmpv2-trap reqid=1412769041 10.255.0.144:162 (TimeTicks sysUpTime=4262)(OBJECT IDENTIFIER snmpTrapOID=txPwrHiWarn)(OCTET STRING alertSource=Portgroup 4)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-09-22 14:42:04.327644628 UTC)(OCTET STRING alertDescription=Transmitter power high warning)
+
+txPwrLoAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262400**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Transmitter power low alarm                                                              |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  | Transmitter power low alarm                                                              |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating a tx pwr low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txPwrLoAlarm
+    <INFO> 11-Aug-2025::08:45:33.177 r10900-2 confd[168]: snmp snmpv2-trap reqid=973208497 172.22.50.57:162 (TimeTicks sysUpTime=10286)(OBJECT IDENTIFIER snmpTrapOID=txPwrLoAlarm)(OCTET STRING alertSource=Portgroup 14)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-08-11 15:45:32.611027889 UTC)(OCTET STRING alertDescription=Transmitter power low alarm)
+
+
+
+txPwrLoWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txPwrLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262400**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txPwr measures the real-time optical power output by the transceiver. Monitoring txPwr helps ensure reliable optical transmission and provides early warning of potential module or laser failures. txPwr indicates the strength of the outgoing optical signal. If the transmitted power is too low, it may indicate:
+
+- Laser degradation or failure
+- Faulty or aging transceiver
+- Power supply issues to the module
+
+The transmit power threshold for a specific transceiver has reached a threshold indicating a tx pwr low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txPwrLoWarn
+
+rxPwr
 ^^^^^
+
+This trap is for F5OS versions prior to 2.0.
 
 **rxPwr                   .1.3.6.1.4.1.12276.1.1.1.262401**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect            | Possible Description in SNMP Trap                                                        |
++========================+==========================================================================================+
+| ASSERT (AlertEffect=1) | Lanes: <# or #'s> Receiver power low warning                                             |
+|                        |                                                                                          |
+|                        | Lanes: <# or #'s> Receiver power low alarm                                               |
+|                        |                                                                                          |
+|                        | Lanes: <# or #'s> Receiver power hi warning                                              |
+|                        |                                                                                          |
+|                        | Lanes: <# or #'s> Receiver power hi alarm                                                |
++------------------------+------------------------------------------------------------------------------------------+
+| EVENT (AlertEffect=2)  |                                                                                          |
++------------------------+------------------------------------------------------------------------------------------+
+| CLEAR (AlertEffect=0)  | Lanes: <# or #'s> Receiver power low warning                                             |
+|                        |                                                                                          |
+|                        | Lanes: <# or #'s> Receiver power low alarm                                               |
+|                        |                                                                                          |
+|                        | Lanes: <# or #'s> Receiver power hi warning                                              |
+|                        |                                                                                          |
+|                        | Lanes: <# or #'s> Receiver power hi alarm                                                |
++------------------------+------------------------------------------------------------------------------------------+
 
-The receive power threshold for a specific transceiver has reached a threshold indicating ether rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the show portgroups command to see what the current values are for that transceiver. 
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating either an rx pwr high alarm status, rx pwr high warn status, rx pwr low alarm status, or rx pwr low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low warning** on portgroup2. The first trap is an **alertEffect=1** indicating an warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
+Below is an example of a rxPwr low warning trap for Lanes: 1,2,3,4 Receiver power **low warning** on portgroup2. The first trap is an **alertEffect=1** indicating a warning condition, and the second trap is an **alertEffect=0** indicating a warning clear condition.
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include rxPwr
     <INFO> 21-Jun-2024::16:17:27.898 r10900-1 confd[142]: snmp snmpv2-trap reqid=36800019 10.255.0.144:161 (TimeTicks sysUpTime=60958582)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2024-06-21 20:17:27.893594602 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
-
-
     <INFO> 31-Jul-2024::09:11:20.182 r10900-1 confd[155]: snmp snmpv2-trap reqid=1965264689 10.255.80.251:162 (TimeTicks sysUpTime=311262596)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-07-31 13:11:20.106635916 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low warning)
 
-Here is an example of a rxPwr trap for Lanes: 1,2,3,4 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
+Below is an example of a rxPwr low alarm trap for Lanes: 1,2,3,4 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
 
 .. code-block:: bash
 
     r10900-1# file show log/system/snmp.log | include rxPwr
-    <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    
+    <INFO> 12-Apr-2024::12:54:13.080 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579982 10.255.0.144:161 (TimeTicks sysUpTime=25624127)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-04-12 16:54:13.067672286 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)  
     <INFO> 12-Apr-2024::12:54:42.536 r10900-1 confd[137]: snmp snmpv2-trap reqid=789579983 10.255.80.251:162 (TimeTicks sysUpTime=25627073)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 2)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2024-04-12 16:54:42.526248136 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Receiver power low alarm)
-    
 
-**txBias**
+Below is an example of a rxPwr low alarm trap for Lanes: 1 Receiver power **low alarm** on portgroup2. The first trap is an **alertEffect=1** indicating an alarm condition, and the second trap is an **alertEffect=0** indicating an alarm clear condition.
+
+.. code-block:: bash
+
+    <INFO> 16-Oct-2025::06:25:40.967 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206996 1.1.1.1:162 (TimeTicks sysUpTime=231648957)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 7)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-12-16 12:25:40.961128052 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 16-Oct-2025::06:30:40.968 r10900-1 confd[148]: snmp snmpv2-trap reqid=766206998 1.1.1.1:162 (TimeTicks sysUpTime=231678958)(OBJECT IDENTIFIER snmpTrapOID=rxPwr)(OCTET STRING alertSource=Portgroup 7)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-12-16 12:30:40.961499652 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+
+
+rxPwrHiAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**rxPwrHiAlarm                   .1.3.6.1.4.1.12276.1.1.1.262401**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include rxPwrHiAlarm
+
+rxPwrHiWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**rxPwrHiWarn                   .1.3.6.1.4.1.12276.1.1.1.262401**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr high warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include rxPwrHiWarn
+
+rxPwrLoAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**rxPwrLoAlarm                   .1.3.6.1.4.1.12276.1.1.1.262401**
+
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Lanes: <#> Receiver power low alarm                                                      |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |  Receiver power low alarm                                                                |
++-------------------------+------------------------------------------------------------------------------------------+
+
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
+.. code-block:: bash
+
+    r5900-1-gsa# file show log/system/snmp.log | include rxPwrLoAlarm
+    <INFO> 20-Nov-2025::15:23:12.366 r5900-1-gsa confd[171]: snmp snmpv2-trap reqid=746899779 172.22.50.57:162 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:23:12.367 r5900-1-gsa confd[171]: snmp snmpv2-trap reqid=746899779 10.255.0.139:161 (TimeTicks sysUpTime=7074)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.363139334 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:34:37.692 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500371 172.22.50.57:162 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
+    <INFO> 20-Nov-2025::15:34:37.692 r5900-1-gsa confd[158]: snmp snmpv2-trap reqid=879500371 10.255.0.139:161 (TimeTicks sysUpTime=4347)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoAlarm)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.658372899 UTC)(OCTET STRING alertDescription=Receiver power low alarm)
+
+
+rxPwrLoWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**rxPwrLoWarn                   .1.3.6.1.4.1.12276.1.1.1.262401**
+
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Lanes: <#> Receiver power low warning                                                    |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  | Receiver power low warning                                                               |
++-------------------------+------------------------------------------------------------------------------------------+
+
+rxPwr measures the amount of optical power (light) received by the transceiver on the receive (Rx) side of the optical module. Monitoring rxPwr helps ensure reliable optical communication and provides early warning of potential link degradation or failure. The receive power threshold for a specific transceiver has reached a threshold indicating an rx pwr low warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup. 
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include rxPwrLoWarn
+    <INFO> 20-Nov-2025::15:23:12.418 r10900-2 confd[171]: snmp snmpv2-trap reqid=746899780 172.22.50.57:162 (TimeTicks sysUpTime=7079)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2025-11-20 20:23:12.373277933 UTC)(OCTET STRING alertDescription=Lanes: 1 Receiver power low warning)
+    <INFO> 20-Nov-2025::15:34:37.794 r10900-2 confd[158]: snmp snmpv2-trap reqid=879500372 10.255.0.139:161 (TimeTicks sysUpTime=4358)(OBJECT IDENTIFIER snmpTrapOID=rxPwrLoWarn)(OCTET STRING alertSource=Portgroup 6)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2025-11-20 20:34:37.678511059 UTC)(OCTET STRING alertDescription=Receiver power low warning)
+
+txBias
 ^^^^^^^
+
+This trap is for F5OS versions prior to 2.0.
+
 
 **txBias                  .1.3.6.1.4.1.12276.1.1.1.262402**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Lanes: <# or #'s> Transmitter bias low warning                                           |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter bias low alarm                                             |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter bias hi warning                                            |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter bias hi alarm                                              |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  | Lanes: <# or #'s> Transmitter bias low warning                                           |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter bias low alarm                                             |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter bias hi warning                                            |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> Transmitter bias hi alarm                                              |
++-------------------------+------------------------------------------------------------------------------------------+
 
-The transmit bias threshold for a specific transceiver has reached a threshold indicating ether txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating either a txbias high alarm status, txbias high warn status, txbias low alarm status, or txbias low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 
 .. code-block:: bash
 
-    r10900-2# file show log/system/snmp.log | include tx
+    r10900-2# file show log/system/snmp.log | include txBias
     <INFO> 3-May-2024::15:52:04.382 r10900-2 confd[152]: snmp snmpv2-trap reqid=961214843 10.255.80.251:162 (TimeTicks sysUpTime=27848860)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 13)(INTEGER alertEffect=1)(INTEGER alertSeverity=3)(OCTET STRING alertTimeStamp=2024-05-03 19:52:04.263208264 UTC)(OCTET STRING alertDescription=Lanes: 1 Transmitter bias low alarm)
 
-**ddmTemp**
+    VELOS Example:
+
+    5-Jan-2026::14:10:20.516 partition2 confd[133]: snmp snmpv2-trap reqid=480390971 10.255.80.251:162 (TimeTicks sysUpTime=648743216)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2026-01-05 06:10:20.500961768 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Transmitter bias low warning)
+
+    5-Jan-:2026::14:10:20.572 partition2 confd[133]: snmp snmpv2-trap reqid=480390972 10.255.80.251:162 (TimeTicks sysUpTime=648743222)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2026-01-05 06:10:20.501049107 UTC)(OCTET STRING alertDescription=Lanes: 3,4 Transmitter bias low warning)
+
+    5-Jan-:2026::14:29:20.975 partition2 confd[133]: snmp snmpv2-trap reqid=480390973 10.255.80.251:162 (TimeTicks sysUpTime=648857262)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=0)(INTEGER alertSeverity=8)(OCTET STRING alertTimeStamp=2026-01-05 06:29:20.961851112 UTC)(OCTET STRING alertDescription=Lanes: 3,4 Transmitter bias low warning)
+
+    5-Jan-:2026::14:29:21.032 partition2 confd[133]: snmp snmpv2-trap reqid=480390974 10.255.80.251:162 (TimeTicks sysUpTime=648857268)(OBJECT IDENTIFIER snmpTrapOID=txBias)(OCTET STRING alertSource=Portgroup 3/1)(INTEGER alertEffect=1)(INTEGER alertSeverity=4)(OCTET STRING alertTimeStamp=2026-01-05 06:29:20.961943827 UTC)(OCTET STRING alertDescription=Lanes: 1,2,3,4 Transmitter bias low warning)
+
+txBiasHiAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txBiasHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262402**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txBiasHiAlarm
+
+txBiasHiWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txBiasHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262402**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias high warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txBiasHiWarn
+
+txBiasLoAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txBiasloAlarm                  .1.3.6.1.4.1.12276.1.1.1.262402**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txBiasLoAlarm
+
+txBiasLoWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**txBiasLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262402**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, txBias measures the real-time electrical current supplied to the transmitter in each optical transceiver. Monitoring txBias helps ensure reliable optical transmission and provides early warning of potential module or laser failures. The transmit bias threshold for a specific transceiver has reached a threshold indicating txbias low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include txBiasLoWarn
+
+ddmTemp
 ^^^^^^^
+
+This trap is for F5OS versions prior to 2.0.
 
 **ddmTemp                 .1.3.6.1.4.1.12276.1.1.1.262403**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Lanes: <# or #'s> ddm temperature low warning                                            |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm temperature low alarm                                              |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm temperature hi warning                                             |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm temperature hi alarm                                               |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  | Lanes: <# or #'s> ddm temperature low warning                                            |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm temperature low alarm                                              |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm temperature hi warning                                             |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm temperature hi alarm                                               |
++-------------------------+------------------------------------------------------------------------------------------+
 
-The ddm temperature threshold for a specific transceiver has reached a threshold indicating ether high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the show portgroups command to see what the current values are for that transceiver.
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating either a high temp alarm status, high temp warn status, low temp alarm status, or low temp warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
 
 .. code-block:: bash
 
-**ddmVcc** 
+    r10900-2# file show log/system/snmp.log | include ddmTemp
+
+ddmTempHiAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmTempHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a high temp alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmTempHiAlarm
+
+ddmtempHiWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmTempHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a high temp warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmTempHiWarn
+
+ddmTempLoAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmTempLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a low temp alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmTempLoAlarm
+
+ddmTempLoWar
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmTempLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+On F5OS-based systems, ddmTemp measures the real-time internal temperature of each optical transceiver. Monitoring ddmTemp helps ensure reliable optical networking and provides early warning of potential overheating or environmental issues that could impact module performance or lifespan. The ddm temperature threshold for a specific transceiver has reached a threshold indicating a low temp warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+The temperature inside the transceiver affects the performance and reliability of the laser and other components. Excessive heat can cause:
+- Laser degradation or failure
+- Increased bit error rates
+- Module shutdown or damage
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmTempLoWarn
+
+
+
+ddmVcc
 ^^^^^^
+
+This trap is for F5OS versions prior to 2.0.
+
 
 **ddmVcc                  .1.3.6.1.4.1.12276.1.1.1.262404**
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            |                                                                                          |
-+------------------+------------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) | Lanes: <# or #'s> ddm vcc low warning                                                    |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm vcc low alarm                                                      |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm vcc hi warning                                                     |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm vcc hi alarm                                                       |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  | Lanes: <# or #'s> ddm vcc low warning                                                    |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm vcc low alarm                                                      |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm vcc hi warning                                                     |
+|                         |                                                                                          |
+|                         | Lanes: <# or #'s> ddm vcc hi alarm                                                       |
++-------------------------+------------------------------------------------------------------------------------------+
 
-The ddm vcc (Voltage) threshold for a specific transceiver has reach a threshold indicating ether high alarm status, high warn status, low alarm status, or low warn status. Run the show portgroups command to see what the current values are for that transceiver.
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating either a high alarm status, high warn status, low alarm status, or low warn status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
 
 .. code-block:: bash
 
-**speed** 
+    r10900-2# file show log/system/snmp.log | include ddmVcc
+
+ddmVccHiAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmVccHiAlarm                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a high alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmVccHiAlarm
+
+ddmVccHiWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmVccHiWarn                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a high warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmVccHiWarn
+
+ddmVccLoAlarm
+^^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmVccLoAlarm                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a low alarm status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmVccLoAlarm
+
+ddmVccLoWarn
+^^^^^^^^^^^
+
+This trap is for F5OS versions 2.0 and later.
+
+**ddmVccLoWarn                  .1.3.6.1.4.1.12276.1.1.1.262404**
+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+
+Monitoring VCC helps ensure the transceiver is receiving proper power. If the voltage is too low or too high, it can indicate a power supply issue, connector problem, or a failing transceiver. F5OS systems can generate warnings or alarms if the VCC reading goes outside the manufacturer’s recommended range. This can help preempt hardware failures or data transmission errors. The ddm vcc (Voltage) threshold for a specific transceiver has reached a threshold indicating a low warning status. Run the **show portgroups** command to see what the current values are for that transceiver / portgroup.
+
+.. code-block:: bash
+
+    r10900-2# file show log/system/snmp.log | include ddmVccLoWarn
+
+
+speed 
 ^^^^^
 
 **speed                  .1.3.6.1.4.1.12276.1.1.1.262404**
 
-The **speed** SNMP trap indicates that a port speed change event has occured on one of the in-band network interfaces. It will be sent with an **alertEffect=2** indicating that this is an informational event and not an alarm. 
+The **speed** SNMP trap indicates that a port speed change event has occurred on one of the in-band network interfaces. It will be sent with an **alertEffect=2** indicating that this is an informational event and not an alarm. 
 
-+------------------+------------------------------------------------------------------------------------------+
-| AlertEffect      | Possible Description in SNMP Trap                                                        |
-+==================+==========================================================================================+
-| EVENT            | Port speed change event                                                                  |
-+------------------+------------------------------------------------------------------------------------------+
++-------------------------+------------------------------------------------------------------------------------------+
+| AlertEffect             | Possible Description in SNMP Trap                                                        |
++=========================+==========================================================================================+
+| ASSERT  (AlertEffect=1) |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| EVENT  (AlertEffect=2)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
+| CLEAR  (AlertEffect=0)  |                                                                                          |
++-------------------------+------------------------------------------------------------------------------------------+
 
 .. code-block:: bash
 
@@ -3827,7 +4908,7 @@ As an example, for cpu0 to poll for the various time intervals:
 
 If you want to monitor cpu1 then change the last digit from 0 to 1 on the above OIDs:
 
-As an example for cpu1 to poll for the various time intervals: 
+As an example, for cpu1 to poll for the various time intervals: 
 
 .1.3.6.1.4.1.12276.1.2.1.1.3.1. **3** .8.112.108.97.116.102.111.114.109. **1** = cpu1 **CoreCurrent** 
 
@@ -3880,7 +4961,7 @@ Below is an example from an r4800 which has a single SSD disk.
     nvme0n1 SRMP8480GF1S1B71 SMART Modular      FW1354  SPG214106FA 447.00GB     nvme
     prompt%
 
-**Disk Info SNMP SNMP OIDs**
+**Disk Info SNMP OIDs**
 
 For systems with one SSD disk:
 
@@ -3977,7 +5058,7 @@ Below is an example from an r4800 appliance with a single SSD disk.
                     ?        0 IOPs  199123 IOPs         232555 4740655104 bytes         283257 ms 681016527 IOPs       535344878 6170457743872 bytes       124158717 ms
     prompt% 
 
-**Disk Info SNMP SNMP OIDs**
+**Disk Info SNMP OIDs**
 
 For systems with one SSD disk:
 
@@ -4250,7 +5331,7 @@ The virtual disks for the tenants are stored in the path **/var/F5/system/cbip-d
 Component Info Table
 ----------------------------
 
-The table below shows the current rSeries component information for the appliance. This includes the serial numbers for the LCD, power supplies and the platform itself. It also includes the platfrom type, and baude rate for the serial console.
+The table below shows the current rSeries component information for the appliance. This includes the serial numbers for the LCD, power supplies and the platform itself. It also includes the platform type, and baud rate for the serial console.
 
 **F5-PLATFORM-STATS-MIB:componentInfoTable OID: .1.3.6.1.4.1.12276.1.2.1.8.1**
 
@@ -4288,7 +5369,7 @@ Below is the component info table for an r5900 rSeries appliance.
 +-------------------------+--------------------------------------------------------------------+
 | psu-2 Serial Number     | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.5.112.115.117.45.50               |
 +-------------------------+--------------------------------------------------------------------+
-| Platfrom Serial Number  | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.8.112.108.97.116.102.111.114.109  |
+| Platform Serial Number  | .1.3.6.1.4.1.12276.1.2.1.8.1.1.1.8.112.108.97.116.102.111.114.109  |
 +-------------------------+--------------------------------------------------------------------+
 | Platform Type           | .1.3.6.1.4.1.12276.1.2.1.8.1.1.2.8.112.108.97.116.102.111.114.109  |
 +-------------------------+--------------------------------------------------------------------+
@@ -4677,7 +5758,7 @@ used-percent = ( ( MemTotal - MemAvailable ) / MemTotal ) * 100
 
 **memory platform-total**
 
-Total usable memory for F5OS platform services, in bytes (excludes memory allocated for hugepages). This represents the memory available to the F5OS platform layer which will vary based on the type of rSeries system in use. As an example, for the r12000 systems 42GB of memory is allocated to the F5OS platform layer, for the r10000 systems 25GB is allocated, for the r5000 systems 15GB is allocated, 14GB for the r4000 systems, and 6.9GB for the r2000 platforms. This is noted in the **Memory use by F5OS** column in the table below. The below values are rounded and not raw values, exact memory values seen in the system will vary slightly as the are presented as raw values. 
+Total usable memory for F5OS platform services, in bytes (excludes memory allocated for hugepages). This represents the memory available to the F5OS platform layer which will vary based on the type of rSeries system in use. As an example, for the r12000 systems 42GB of memory is allocated to the F5OS platform layer, for the r10000 systems 25GB is allocated, for the r5000 systems 15GB is allocated, 14GB for the r4000 systems, and 6.9GB for the r2000 platforms. This is noted in the **Memory use by F5OS** column in the table below. The below values are rounded and not raw values, exact memory values seen in the system will vary slightly as they are presented as raw values. 
 
 +-----------------------+-----------------------+-------------------------+----------------------------------+------------------------------------+---------------------------------------+-------------+
 | **rSeries Platform**  | **Memory per System** | **Memory use by F5OS**  | **Memory Available to Tenants**  | **Minimum RAM used (Max vCPU)**    |  **Extra RAM Available for Tenants**  |  Max vCPUs  |
@@ -4903,7 +5984,7 @@ Below is an example SNMP table output from an r10000 system:
 
 
 
-All OIDs below are prexied with: .1.3.6.1.4.1.12276.1.2.1.6.1.1
+All OIDs below are prefixed with: .1.3.6.1.4.1.12276.1.2.1.6.1.1
 
 +------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+-------------------------------------------------------------------------------------------------------------------------------------------+--------------------------------------------------------------------------------------------------------------------------------------------+
 |  Firmware Name               | Firmware Name OID                                                                                                                         | Firmware Version OID                                                                                                                      | Configurable OID                                                                                                                          | Firmware Update Status OID                                                                                                                 |
@@ -4950,7 +6031,7 @@ All OIDs below are prexied with: .1.3.6.1.4.1.12276.1.2.1.6.1.1
 
 
 
-SNMP Fantray Stats Table
+Fantray Stats Table
 ----------------------
 
 Query the following SNMP OID to get detailed information on the rSeries fan speeds. Note, that there are different numbers of fans installed for the various rSeries platforms.
@@ -5929,7 +7010,7 @@ SNMP information (requests/traps) are captured in the **snmp.log** file located 
 Downloading SNMP Logs from the API
 ----------------------------------
 
-You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory use the following API call.
+You can download various logs from the F5OS layer using the F5OS API. To list the current log files in the **log/system/** directory, use the following API call.
 
 .. code-block:: bash
 
@@ -5943,13 +7024,13 @@ In the body of the API call, add the virtual path you want to list.
     "f5-utils-file-transfer:path": "log/system/"
     }
 
-To download a specific log file use the following API call.
+To download a specific log file, use the following API call.
 
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/f5-file-download:download-file/f5-file-download:start-download
 
-In the body of the API call select **form-data**, and then enter the key/value pairs as seen below. The example provided will download the **snmp.log** file that resides in the **log/system** directory.
+In the body of the API call select **form-data** and then enter the key/value pairs as seen below. The example provided will download the **snmp.log** file that resides in the **log/system** directory.
 
 .. image:: images/rseries_monitoring_snmp/snmplogdownload.png
   :align: center
