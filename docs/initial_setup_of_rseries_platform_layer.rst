@@ -52,9 +52,9 @@ To alter any configuration, you must enter config mode:
 
 .. code-block:: bash
 
-  syscon-2-active# config
+  Boston-r10900-1# config
   Entering configuration mode terminal
-  syscon-2-active(config)#
+  Boston-r10900-1(config)#
 
 To save any configuration you must enter **commit**.
 
