@@ -1513,7 +1513,7 @@ This command will display the health of the underlying Kubernetes (K3S) cluster 
 
 .. code-block:: bash
 
-    r10900-1# show cluster 
+    r10900-1-gsa# show cluster
     cluster state
     cluster disk-usage-threshold state warning-limit 85
     cluster disk-usage-threshold state error-limit 90
@@ -1527,119 +1527,69 @@ This command will display the health of the underlying Kubernetes (K3S) cluster 
     state platform fpga-state FPGA_RDY
     state platform dma-agent-state DMA_AGENT_RDY
     state slot-number  1
-    state node-info creation-time 2024-02-29T17:25:40Z
+    state node-info creation-time 2026-03-25T17:50:48Z
     state node-info cpu        36
     state node-info pods       500
-    state node-info memory     263686040Ki
-    state node-info available-tenant-vcpu 20
-    state node-info available-tenant-memory 170912MB
-    state node-info available-tenant-disk 186GB
+    state node-info memory     263573336Ki
+    state node-info available-tenant-vcpu 30
+    state node-info available-tenant-memory 207776MB
+    state node-info available-tenant-disk 323GB
     state node-info inaccessible-tenant-memory 0MB
     state ready-info ready true
-    state ready-info last-transition-time 2024-08-01T16:22:49Z
+    state ready-info last-transition-time 2026-03-25T17:50:48Z
     state ready-info message "kubelet is posting ready status"
-    state out-of-disk-info out-of-disk false
-    state out-of-disk-info last-transition-time ""
-    state out-of-disk-info message ""
     state disk-pressure-info disk-pressure false
-    state disk-pressure-info last-transition-time 2024-02-29T17:25:40Z
+    state disk-pressure-info last-transition-time 2026-03-25T17:50:48Z
     state disk-pressure-info message "kubelet has no disk pressure"
     state tenant-memory tenant-reserved 243168968704
     state tenant-memory tenant-configured 0
     state tenant-memory tenant-provisioned 0
-    state tenant-memory tenant-deployed 15569256448
+    state tenant-memory tenant-deployed 23622320128
     state tenant-memory tenant-configured-percent 0
     state tenant-memory tenant-provisioned-percent 0
-    state tenant-memory tenant-deployed-percent 6
+    state tenant-memory tenant-deployed-percent 9
     state rate-limiting enabled
-    state disk-usage used-percent 61
-    state disk-usage growth-rate 0
+    state disk-usage used-percent 56
+    state disk-usage growth-rate 1
     state disk-usage status in-range
     DISK DATA  DISK DATA     
     NAME       VALUE         
     -------------------------
-    available  44112568320   
-    capacity   117807665152  
-    used       67687178240   
+    available  49546543104   
+    capacity   117744750592  
+    used       62190288896   
 
-                                            ASLA  ASLA  ASLA  SLA   SLA   SLA   
-    TENANT NAME  QAT DEVICE NAME   BDF      MIN   USED  UTIL  MIN   USED  UTIL  
-    ----------------------------------------------------------------------------
-    fix-ll       qat_dev_vf00pf00  53:01.0  2000  0     0     2000  0     0     
-                qat_dev_vf00pf01  54:01.0  2000  0     0     2000  0     0     
-                qat_dev_vf00pf02  55:01.0  2000  0     0     2000  0     0     
-                qat_dev_vf00pf03  c5:01.0  2000  0     0     2000  0     0     
-                qat_dev_vf00pf04  c6:01.0  2000  0     0     2000  0     0     
-                qat_dev_vf00pf05  c7:01.0  2000  0     0     2000  0     0     
-    tenant1      qat_dev_vf02pf00  53:01.2  2000  0     0     2000  0     0     
-                qat_dev_vf02pf01  54:01.2  2000  0     0     2000  0     0     
-                qat_dev_vf02pf02  55:01.2  2000  0     0     2000  0     0     
-                qat_dev_vf02pf03  c5:01.2  2000  0     0     2000  0     0     
-                qat_dev_vf02pf04  c6:01.2  2000  0     0     2000  0     0     
-                qat_dev_vf02pf05  c7:01.2  2000  0     0     2000  0     0     
-    test-tenant  qat_dev_vf01pf00  53:01.1  2000  0     0     2000  0     0     
-                qat_dev_vf01pf01  54:01.1  2000  0     0     2000  0     0     
-                qat_dev_vf01pf02  55:01.1  2000  0     0     2000  0     0     
-                qat_dev_vf01pf03  c5:01.1  2000  0     0     2000  0     0     
-                qat_dev_vf01pf04  c6:01.1  2000  0     0     2000  0     0     
-                qat_dev_vf01pf05  c7:01.1  2000  0     0     2000  0     0     
-
-    NAMESPACE       TYPE     REASON              OBJECT                                                               MESSAGE                                                                                  
-    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-ip-intelligence-5577b7489c-fdff9   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-cmsg-mq-7844f5b64d-xd8x8                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-mbip-post-install-hook-2ln8q            0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-eesv-vault-758bbc5fb-x7cd7              0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-policy-compiler-5f7c684d85-s2q86   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-icb-85fb7fccc4-f852q                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default         Normal   Created             VirtualMachineInstance/fix-ll-1                                      VirtualMachineInstance defined.                                                          
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-bird-56fffb4dd4-bqblm               0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-data-store-fb68486d9-8pfmr                 0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default         Normal   Created             VirtualMachineInstance/test-tenant-1                                 VirtualMachineInstance defined.                                                          
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-eesv-licensing-f5f45499b-s5gtd          0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-clientside-js-obfuscator-557zchhf  0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-asec-geo-location-kmlsb                 0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-appsvcs-77dd5549d8-jh2tp                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-logpull-5859768d58-9hqvf           0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-fcdn-sync-8598cf57d6-jkg7r              0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default         Normal   Created             VirtualMachineInstance/tenant1-1                                     VirtualMachineInstance defined.                                                          
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-qkview-6b84ccd599-tvxzd             0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-observer-5d74c88c88-zhhtf          0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  ProvisioningFailed  PersistentVolumeClaim/bigip-next-f5demo-net-data-store               storageclass.storage.k8s.io "bigip-next-f5demo-net-data-store-default-tid-75" not found  
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-onboarding-7d8dd97555-z8rdc             0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-platform-agent-6bcff86d59-zqlbj         0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-api-service-5bmzq                       0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-avcl-54f7b459cd-pck5x                   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-otel-collector-55fb999c76-tzx4c    0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-dssm-78df8cd7ff-9dpg6                   0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-csm-api-engine-5db85b6594-rtkwg         0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-toda-server-76866dbbcf-c9qgl            0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
-    default-tid-75  Warning  FailedScheduling    Pod/bigip-next-f5demo-net-f5-fsm-tmm-84c44c656d-p6qrm                0/1 nodes are available: 1 pod has unbound immediate PersistentVolumeClaims.             
+    TENANT                               ASLA  ASLA  ASLA  SLA   SLA   SLA   
+    NAME      QAT DEVICE NAME   BDF      MIN   USED  UTIL  MIN   USED  UTIL  
+    -------------------------------------------------------------------------
+    tenant1   qat_dev_vf00pf00  53:01.0  2000  0     0     2000  0     0     
+            qat_dev_vf00pf01  54:01.0  2000  0     0     2000  0     0     
+            qat_dev_vf00pf02  55:01.0  2000  0     0     2000  0     0     
+            qat_dev_vf00pf03  c5:01.0  2000  0     0     2000  0     0     
+            qat_dev_vf00pf04  c6:01.0  2000  0     0     2000  0     0     
+            qat_dev_vf00pf05  c7:01.0  2000  0     0     2000  0     0     
+    testttwo  qat_dev_vf01pf00  53:01.1  2000  0     0     2000  0     0     
+            qat_dev_vf01pf01  54:01.1  2000  0     0     2000  0     0     
+            qat_dev_vf01pf02  55:01.1  2000  0     0     2000  0     0     
 
     STAGE NAME         STATUS  TIMESTAMP                  VERSION        DESCRIPTION                                       
     -----------------------------------------------------------------------------------------------------------------------
-    FlannelInstall     done    2024-06-25 08:35:03-04:00  0.13.1         Flannel installation/verification is successful   
-    MultusInstall      done    2024-08-01 12:23:51-04:00  3.7.0          Multus installation/verification is successful    
-    KubevirtInstall    done    2024-08-01 12:23:54-04:00  2.9.1          Kubevirt installation/verification is successful  
-    K3SClusterUpgrade  done    2024-06-10 11:44:36-04:00  1.21.1.1.11.7  K3s RPM update is successful                      
-    K3SClusterInstall  done    2024-02-29 12:26:11-05:00  1.21.1.1.11.2  K3s installation/verification is successful       
-    clusterDeployment  done    2024-08-01 12:25:44-04:00  Not Available  Cluster deployment is successful                  
+    MultusInstall      done    2026-05-29 09:48:18-07:00  4.2.3_11       Multus installation/verification is successful    
+    KubevirtInstall    done    2026-05-29 09:48:32-07:00  1.6.3_120      Kubevirt installation/verification is successful  
+    K3SClusterInstall  done    2026-04-30 08:46:40-07:00  1.34.3_46      K3s RPM update is successful                      
+    clusterDeployment  done    2026-03-25 10:51:50-07:00  Not Available  Cluster deployment is successful                  
 
     cluster cluster-status summary-status "K3S cluster is initialized and ready for use."
     INDEX  STATUS                                                                                      
     ---------------------------------------------------------------------------------------------------
-    0      2024-08-01 12:21:42.848688-04:00 -  applianceMainEventLoop::Orchestration manager startup.  
-    1      2024-08-01 12:21:43.109500-04:00 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
-    2      2024-08-01 12:21:45.073224-04:00 -  Successfully ssh'd to appliance 127.0.0.1.              
-    3      2024-08-01 12:22:25.679918-04:00 -  Appliance 1 is ready in k3s cluster.                    
-    4      2024-08-01 12:22:48.438588-04:00 -  K3S cluster is ready.                                   
-    5      2024-08-01 12:22:51.551943-04:00 -  K3s IMAGE update is succeeded.                          
-    6      2024-08-03 21:27:49.352504-04:00 -  Can NOT ping appliance-1.chassis.local (100.65.60.1).   
-    7      2024-08-03 21:28:19.468686-04:00 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
-    8      2024-08-06 08:19:06.845065-04:00 -  Failed to ssh to 127.0.0.1.                             
-    9      2024-08-06 08:19:38.547020-04:00 -  Successfully ssh'd to appliance 127.0.0.1.              
+    0      2026-05-29 09:47:24.322721-07:00 -  applianceMainEventLoop::Orchestration manager startup.  
+    1      2026-05-29 09:47:39.887136-07:00 -  Can now ping appliance-1.chassis.local (100.65.60.1).   
+    2      2026-05-29 09:47:41.772669-07:00 -  Successfully ssh'd to appliance 127.0.0.1.              
+    3      2026-05-29 09:48:15.633193-07:00 -  Appliance 1 is ready in k3s cluster.                    
+    4      2026-05-29 09:48:53.589084-07:00 -  K3S cluster is ready.                                   
 
-    r10900-1#                   
+    r10900-1-gsa# 
+                  
 
 F5 DAG States via CLI
 -------------------------
@@ -1648,18 +1598,16 @@ The command below displays the current DAG-states. DAG stands for Disaggregation
 
 .. code-block:: bash
 
-    r10900-1# show dag-states 
+    r10900-1-gsa# show dag-states 
                                                                                                                                                                                 SDAG    
-                                                            COMMIT                         TENANT                                                                  SDAG   SDAG    MIRROR  
-                                    PUBLISHER  PUBLISH     TENANT    COMMIT      DAG      INSTANCE                                                                TABLE  MIRROR  TABLE   
-    TENANT NAME            PUBLISHER  INSTANCE   TIME        INSTANCE  TIME        VERSION  IDS        SDAG TABLE                                                   HASH   TABLE   HASH    
-    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    bigip-next-f5demo-net  dagc       1          1718391608  1         1718391608  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
-    fix-ll                 dagd       1          1722529518  1         1722529518  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
-    tenant1                dagd       1          1722868493  1         1722868493  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
-    test-tenant            dagd       1          1722529520  1         1722529520  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f  36876          0       
+                                                COMMIT                         TENANT                                                                              SDAG   SDAG    MIRROR  
+    TENANT               PUBLISHER  PUBLISH     TENANT    COMMIT      DAG      INSTANCE                                                                            TABLE  MIRROR  TABLE   
+    NAME      PUBLISHER  INSTANCE   TIME        INSTANCE  TIME        VERSION  IDS        SDAG TABLE                                                               HASH   TABLE   HASH    
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    tenant1   dagd       1          1782742257  1         1782742257  16       [ 15 63 ]  f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f f 3f              36876          0       
+    testttwo  dagd       1          1783602465  1         1783602465  16       [ 63 ]     3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f 3f  0              0       
 
-    r10900-1# 
+    r10900-1-gsa#
 
 Show FDB via CLI
 ----------------
@@ -1668,21 +1616,18 @@ The command below displays the Forwarding Database.
 
 .. code-block:: bash
 
-    r10900-1# show fdb
-                                                                                                        SUB                                                                  
-                                                                                                        MOD       NDI                                                        
-    MAC ADDRESS        VLAN  TAG TYPE      VLAN  TAG TYPE      VID   ENTRY TYPE   OWNER                  ID   AGE  ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  INTERFACE  
-    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    00:94:a1:69:59:26  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  bigip-next-f5demo-net  0    -    4095  64   -    -    -    -    1     -          -          
-    00:94:a1:69:59:26  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  bigip-next-f5demo-net  0    -    4095  64   -    -    -    -    1     -          -          
-    00:94:a1:69:59:29  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  fix-ll                 0    -    4095  10   -    -    -    -    1     -          -          
-    00:94:a1:69:59:29  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  fix-ll                 0    -    4095  10   -    -    -    -    1     -          -          
-    00:94:a1:69:59:2b  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  test-tenant            0    -    4095  11   -    -    -    -    1     -          -          
-    00:94:a1:69:59:2b  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  test-tenant            0    -    4095  11   -    -    -    -    1     -          -          
-    00:94:a1:69:59:2d  3010  tag_type_vid  3010  tag_type_vid  3010  L2-LISTENER  tenant1                0    -    4095  17   -    -    -    -    1     -          -          
-    00:94:a1:69:59:2d  3011  tag_type_vid  3011  tag_type_vid  3011  L2-LISTENER  tenant1                0    -    4095  17   -    -    -    -    1     -          -          
+    r10900-1-gsa# show fdb
+                                                                            SUB                                                       
+                                                                            MOD       NDI                                             
+    MAC ADDRESS        VLAN  TAG TYPE      VLAN  TAG TYPE      VID  OWNER     ID   AGE  ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  
+    ------------------------------------------------------------------------------------------------------------------------------------
+    00:94:a1:39:aa:25  500   tag_type_vid  500   tag_type_vid  500  tenant1   0    -    4095  9    -    -    -    -    1     disabled   
+    00:94:a1:39:aa:25  501   tag_type_vid  501   tag_type_vid  501  tenant1   0    -    4095  9    -    -    -    -    1     disabled   
+    00:94:a1:39:aa:25  502   tag_type_vid  502   tag_type_vid  502  tenant1   0    -    4095  9    -    -    -    -    1     disabled   
+    00:94:a1:39:aa:27  500   tag_type_vid  500   tag_type_vid  500  testttwo  0    -    4095  11   -    -    -    -    1     disabled   
+    00:94:a1:39:aa:27  501   tag_type_vid  501   tag_type_vid  501  testttwo  0    -    4095  11   -    -    -    -    1     disabled   
 
-    r10900-1# 
+    r10900-1-gsa# 
 
 
 Show FPGA Tables via CLI
@@ -1691,63 +1636,64 @@ Show FPGA Tables via CLI
 .. code-block:: bash
 
 
-    r10900-1# show fpga-tables
-                                                                                                                                    RX     RX     RX     RX     BAD     BAD     BAD     BAD     MIR     MIR     MIR     MIR                                                                                                                 VMIL    VMIL    VMIL    VMIL    ITW            ITW    ITW                      HLDP         
-                NMIL   NMIL 0  NMIL   NMIL   NMIL 1  NMIL                                                                           ROUTE  ROUTE  ROUTE  ROUTE  IFH     IFH     IFH     IFH     PKT     PKT     PKT     PKT                                                                                                                 RX      RX      RX      RX      RX     ITW RX  RX     TX     NTX               NTX    HLDP  
-                0 RX   RX MD   0 TX   1 RX   RX MD   1 TX   TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  0      1      2      3      CRC     CRC     CRC     CRC     DIS     DIS     DIS     DIS     BC          BC          BC          BC          BC          BC          MIR         MIR         MIR         RUNT    RUNT    RUNT    RUNT    RUNT   JABBER  ERR    ERR    MGR   NTX   NTX   MGR    NTX   
-                RUNT   PARITY  CONG   RUNT   PARITY  CONG   0 DRP   0 DRP   0 DRP   1 DRP   1 DRP   1 DRP   2 DRP   2 DRP   2 DRP   DROP   DROP   DROP   DROP   DROP    DROP    DROP    DROP    MIR     MIR     MIR     MIR     CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  DROP    DROP    DROP    DROP    DROP   DROP    DROP   DROP   DROP  MGR0  MGR1  DROP   MGR0  
-    SLOT  NAME   DROPS  DROPS   DROPS  DROPS  DROPS   DROPS  CNT 0   CNT 1   CNT 2   CNT 0   CNT 1   CNT 2   CNT 0   CNT 1   CNT 2   CNT    CNT    CNT    CNT    CNT 0   CNT 1   CNT 2   CNT 3   PORT 0  PORT 1  PORT 2  PORT 3  DROP 0      DROP 1      DROP 2      DROP HI 0   DROP HI 1   DROP HI 2   DROP 0      DROP 1      DROP 2      CNT 0   CNT 1   CNT 2   CNT 3   CNT    CNT     CNT    CNT    AGGR  DROP  DROP  AGGR   DROP  
-    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    1     nse_0  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
-    1     nse_1  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       25539  0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
-    1     nse_2  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
-    1     nse_3  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       34591  16560  0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0     0     0     0      0     
+    r10900-1-gsa# show fpga-tables
+                                                                                                                                    RX     RX     RX     RX     BAD     BAD     BAD     BAD     MIR     MIR     MIR     MIR                                                                                                                 VMIL    VMIL    VMIL    VMIL    ITW            ITW    ITW                        HLDP         
+                NMIL   NMIL 0  NMIL   NMIL   NMIL 1  NMIL                                                                           ROUTE  ROUTE  ROUTE  ROUTE  IFH     IFH     IFH     IFH     PKT     PKT     PKT     PKT                                                                                                                 RX      RX      RX      RX      RX     ITW RX  RX     TX     NTX                 NTX    HLDP  
+                0 RX   RX MD   0 TX   1 RX   RX MD   1 TX   TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  TX DAG  0      1      2      3      CRC     CRC     CRC     CRC     DIS     DIS     DIS     DIS     BC          BC          BC          BC          BC          BC          MIR         MIR         MIR         RUNT    RUNT    RUNT    RUNT    RUNT   JABBER  ERR    ERR    MGR    NTX    NTX   MGR    NTX   
+                RUNT   PARITY  CONG   RUNT   PARITY  CONG   0 DRP   0 DRP   0 DRP   1 DRP   1 DRP   1 DRP   2 DRP   2 DRP   2 DRP   DROP   DROP   DROP   DROP   DROP    DROP    DROP    DROP    MIR     MIR     MIR     MIR     CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  CONGESTION  DROP    DROP    DROP    DROP    DROP   DROP    DROP   DROP   DROP   MGR0   MGR1  DROP   MGR0  
+    SLOT  NAME   DROPS  DROPS   DROPS  DROPS  DROPS   DROPS  CNT 0   CNT 1   CNT 2   CNT 0   CNT 1   CNT 2   CNT 0   CNT 1   CNT 2   CNT    CNT    CNT    CNT    CNT 0   CNT 1   CNT 2   CNT 3   PORT 0  PORT 1  PORT 2  PORT 3  DROP 0      DROP 1      DROP 2      DROP HI 0   DROP HI 1   DROP HI 2   DROP 0      DROP 1      DROP 2      CNT 0   CNT 1   CNT 2   CNT 3   CNT    CNT     CNT    CNT    AGGR   DROP   DROP  AGGR   DROP  
+    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    1     nse_0  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0      0      0     0      0     
+    1     nse_1  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       201    0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      15274  15274  0     0      0     
+    1     nse_2  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       0      0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      0      0      0     0      0     
+    1     nse_3  0      0       0      0      0       0      0       0       0       0       0       0       0       0       0       23     0      0      0      0       0       0       0       0       0       0       0       0           0           0           0           0           0           0           0           0           0       0       0       0       0      0       0      0      129    129    0     0      0     
 
-                                                                                                RX                             
-                                                                        RX    RX    RX    RX    CTRL                     TX    
-                                                        RX    RX    RX    DROP  CTRL  CTRL  CTRL  L2LS   RX    TX    TX    DROP  
-                                    VLAN                DROP  DROP  DROP  BAD   DFLT  NLS   L2LS  DLF    DROP  DROP  DROP  BAD   
-    SLOT  NAME          STP STATE   PRIORITY  DSCP      DTD   STD   UTD   VLAN  DROP  DROP  DROP  DROP   STP   STD   UTD   NTI   
-    -----------------------------------------------------------------------------------------------------------------------------
-    1     1.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     10.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     11.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     12.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     13.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     14.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     15.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     16.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     17.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     18.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     19.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     2.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     20.0          forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     3.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     4.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     5.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     6.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     7.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     8.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     9.0           forwarding  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     nse_0.host20              disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
-    1     nse_2.host20              disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+                                                                                                        RX                             
+                                                                                RX    RX    RX    RX    CTRL                     TX    
+                                                                RX    RX    RX    DROP  CTRL  CTRL  CTRL  L2LS   RX    TX    TX    DROP  
+                                    TAG      VLAN                DROP  DROP  DROP  BAD   DFLT  NLS   L2LS  DLF    DROP  DROP  DROP  BAD   
+    SLOT  NAME          STP STATE   CONFIG   PRIORITY  DSCP      DTD   STD   UTD   VLAN  DROP  DROP  DROP  DROP   STP   STD   UTD   NTI   
+    --------------------------------------------------------------------------------------------------------------------------------------
+    1     1.0           forwarding  default  disabled  disabled  0     0     0     129   0     0     0     0      0     0     0     0     
+    1     10.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     11.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     12.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     13.0          forwarding  default  disabled  disabled  0     0     0     16    0     0     0     0      0     0     0     0     
+    1     14.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     15.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     16.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     17.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     18.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     19.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     2.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     20.0          forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     3.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     4.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     5.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     6.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     7.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     8.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     9.0           forwarding  default  disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     nse_0.host20                       disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
+    1     nse_2.host20                       disabled  disabled  0     0     0     0     0     0     0     0      0     0     0     0     
 
-                                                                                                                                                                                                                                    RX                     
-                                                            MCAST  MCAST                                                                                                                  RX     RX            TX     TX            DST                    
-                                                        TX     RX     TX     RX     RX     RX     RX     RX     RX     RX     RX     TX     TX     TX     TX     TX     TX     TX     TX     MCAST  MCAST  RX     MCAST  MCAST  TX     DIS    MIRROR  MIRROR  
-                RX PKT   RX BYTE    TX PKT   TX BYTE    OBUFF  FULL   FULL   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   PKT    BYTE   MCAST  PKT    BYTE   MCAST  PKT    PKTS    BYTES   
-    NAME        CNT      CNT        CNT      CNT        DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  CNT    CNT    DROPS  CNT    CNT    DROPS  CNT    CNT     CNT     
-    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    port0_mod0  1446140  215862822  1347598  196868007  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      135    13860  0      397    67514  0      0      0       0       
-    port1_mod0  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
-    port2_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      262    53654  0      397    67514  0      0      0       0       
-    port3_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
-    port4_mod4  0        0          34711    7142344    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
-    port5_mod5  0        0          38316    6587438    0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      397    67514  0      0      0       0       
-    port6_mod1  1347348  196842407  1372863  202107440  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0       0       
-    port7_mod2  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      397    67514  0      0      0       0       
+                                                                                                                                                                                                                                                RX                     
+                                                            MCAST  MCAST                                                                                                                                                                        DST                    
+                                                        TX     RX     TX     RX     RX     RX     RX     RX     RX     RX     RX     TX     TX     TX     TX     TX     TX     TX     TX     RX                  RX     TX                  TX     DIS    MIRROR  MIRROR  
+                RX PKT   RX BYTE    TX PKT   TX BYTE    OBUFF  FULL   FULL   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   COS0   COS1   COS2   COS3   COS4   COS5   COS6   COS7   MCAST    RX MCAST   MCAST  MCAST    TX MCAST   MCAST  PKT    PKTS    BYTES   
+    NAME        CNT      CNT        CNT      CNT        DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  DROPS  PKT CNT  BYTE CNT   DROPS  PKT CNT  BYTE CNT   DROPS  CNT    CNT     CNT     
+    ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    port0_mod0  677406   125541400  2529713  392040907  0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      90       9540       0      6755754  762638166  0      0      0       0       
+    port1_mod0  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0        0          0      0        0          0      0      0       0       
+    port2_mod3  0        0          6899     595886     0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      20       2120       0      6755754  762638166  0      0      0       0       
+    port3_mod3  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0        0          0      0        0          0      0      0       0       
+    port4_mod4  265619   52991011   265479   47780464   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      1449862  110672379  0      0        0          0      0      0       0       
+    port5_mod5  132819   33868845   265456   47778408   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0        0          0      6755754  762638166  0      0      0       0       
+    port6_mod1  2124580  304608885  132877   28814476   0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      5305782  651954127  0      0        0          0      0      0       0       
+    port7_mod2  0        0          0        0          0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0      0        0          0      6755754  762638166  0      0      0       0       
 
-    r10900-1#
+    r10900-1-gsa# 
+
 
 Show Port-Mappings via CLI
 ------------------------
@@ -1755,17 +1701,17 @@ Show Port-Mappings via CLI
 .. code-block:: bash
 
 
-    r10900-1# show port-mappings 
+    r10900-1-gsa# show port-mappings 
                                                                                 NUM                                             
                                             CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                                  
     NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                         
     -----------------------------------------------------------------------------------------------------------------------------
-    default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          16     [ 1.0 3.0 4.0 5.0 6.0 ]       
-            PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          16     [ 10.0 2.0 7.0 8.0 9.0 ]      
-    default-2  PIPELINE-3  PIPELINEGROUP-2  100       200        OVERSUBSCRIBED  5          16     [ 11.0 13.0 14.0 15.0 16.0 ]  
-            PIPELINE-4  PIPELINEGROUP-2  100       185        OVERSUBSCRIBED  5          16     [ 12.0 17.0 18.0 19.0 20.0 ]  
+    default-1  PIPELINE-1  PIPELINEGROUP-1  100       140        OVERSUBSCRIBED  5          16     [ 1.0 3.0 4.0 5.0 6.0 ]       
+            PIPELINE-2  PIPELINEGROUP-1  100       140        OVERSUBSCRIBED  5          16     [ 10.0 2.0 7.0 8.0 9.0 ]      
+    default-2  PIPELINE-3  PIPELINEGROUP-2  100       80         NOMINAL         5          16     [ 11.0 13.0 14.0 15.0 16.0 ]  
+            PIPELINE-4  PIPELINEGROUP-2  100       125        OVERSUBSCRIBED  5          16     [ 12.0 17.0 18.0 19.0 20.0 ]  
 
-    r10900-1# 
+    r10900-1-gsa#
 
 
 Show Service-Instances via CLI
@@ -1773,84 +1719,73 @@ Show Service-Instances via CLI
 
 .. code-block:: bash
 
-    r10900-1# show service-instances 
-                                    ATSE  SUB                                                           TOTAL                                                                                                                                                           
-                SLOT  INSTANCE    MOD   MOD                     TENANT  SERVICE    NUM   DM           NUM    SVC  DOS                                                                                                                                    VLAN         
-    TENANT NAME   ID    ID          ID    ID   SERVICE TYPE       ID      IDS        SEPS  OFFSET  DID  SEPS   GRP  GRP  TCO  WP  SP  TP  MSS  TC  WIN  WSCALE  SYNACKTTL  SYNACKHOPLIMIT  INDEX           S1          S2          S3          S4          ID    STATE  
-    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    L2HostLearn   1     2145616534  0     0    ST_SYSTEM_SERVICE  0       [ 2 ]      1     0       15   2      1    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
-    L2HostLearn   1     2145616535  3     0    ST_SYSTEM_SERVICE  0       [ 2 ]      1     0       63   2      1    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
-    SwRbcaster-1  1     1236993455  0     0    ST_SYSTEM_SERVICE  0       [ 5 ]      1     0       15   1      3    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
-    fix-ll        1     614204398   0     0    ST_TENANT_SERVICE  78      [ 8 10 ]   1     1       15   2      6    1    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_TWO  2081180134  1972787202  137951967   3196618858               
-    fix-ll        1     614204399   3     0    ST_TENANT_SERVICE  78      [ 8 10 ]   1     1       63   2      2    1    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_TWO  2081180134  1972787202  137951967   3196618858               
-    lacpd         1     1519468704  0     0    ST_SYSTEM_SERVICE  0       [ 1 ]      1     0       15   1      4    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
-    lldpd         1     672042957   0     0    ST_SYSTEM_SERVICE  0       [ 4 ]      1     0       15   1      2    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
-    stpd          1     1519468704  0     0    ST_SYSTEM_SERVICE  0       [ 3 ]      1     0       15   1      5    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                        
-    tenant1       1     515380303   0     0    ST_TENANT_SERVICE  81      [ 15 17 ]  1     1       15   2      8    3    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  3165290783  3340060162  800311922   2934689344               
-    tenant1       1     515380304   3     0    ST_TENANT_SERVICE  81      [ 15 17 ]  1     0       63   2      4    3    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  3165290783  3340060162  800311922   2934689344               
-    test-tenant   1     614204398   0     0    ST_TENANT_SERVICE  79      [ 9 11 ]   1     2       15   2      7    2    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  2502135663  1002484893  1104246011  3976888041               
-    test-tenant   1     614204399   3     0    ST_TENANT_SERVICE  79      [ 9 11 ]   1     2       63   2      3    2    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  2502135663  1002484893  1104246011  3976888041               
+    r10900-1-gsa# show service-instances 
+                                    ATSE  SUB                                                           TOTAL                                                                                                                                                          
+                SLOT  INSTANCE    MOD   MOD                     TENANT  SERVICE    NUM   DM           NUM    SVC  DOS                                                                                                                                   VLAN         
+    TENANT NAME   ID    ID          ID    ID   SERVICE TYPE       ID      IDS        SEPS  OFFSET  DID  SEPS   GRP  GRP  TCO  WP  SP  TP  MSS  TC  WIN  WSCALE  SYNACKTTL  SYNACKHOPLIMIT  INDEX           S1          S2          S3          S4         ID    STATE  
+    -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    L2HostLearn   1     3804511493  0     0    ST_SYSTEM_SERVICE  0       [ 2 ]      1     0       15   2      1    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                       
+    L2HostLearn   1     3804511494  3     0    ST_SYSTEM_SERVICE  0       [ 2 ]      1     0       63   2      1    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                       
+    SwRbcaster-1  1     3348520567  0     0    ST_SYSTEM_SERVICE  0       [ 5 ]      1     0       15   1      2    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                       
+    lacpd         1     3630995816  0     0    ST_SYSTEM_SERVICE  0       [ 1 ]      1     0       15   1      3    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                       
+    lldpd         1     3178363663  0     0    ST_SYSTEM_SERVICE  0       [ 4 ]      1     0       15   1      5    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                       
+    stpd          1     3630995816  0     0    ST_SYSTEM_SERVICE  0       [ 3 ]      1     0       15   1      4    -    -    -   -   -   -    -   -    -       -          -               -               -           -           -           -                       
+    tenant1       1     3800771065  0     0    ST_TENANT_SERVICE  58      [ 9 19 ]   1     1       15   2      6    1    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  1520486599  2476747444  4063522007  616091713               
+    tenant1       1     3800771066  3     0    ST_TENANT_SERVICE  58      [ 9 19 ]   1     1       63   2      2    1    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_ONE  1520486599  2476747444  4063522007  616091713               
+    testttwo      1     673711091   3     0    ST_TENANT_SERVICE  59      [ 10 11 ]  1     2       63   1      3    2    -    -   -   -   -    -   -    -       -          -               SECRET_IDX_TWO  3398315817  2939437704  2479811177  102190431               
 
-    r10900-1# 
+    r10900-1-gsa# 
 
 Show Service-Pods via CLI
 ------------------------------
 
 .. code-block:: bash
 
-    r10900-1# show service-pods     
-                                            SERVICE  POD           POD                                     POD      
-                            SERVICE         CLUSTER  SLOT  POD     RESTART  POD                            IMAGE    
-    SERVICE NAME            CLUSTER IP      PORT     ID    STATUS  COUNT    STATE    POD MESSAGE           VERSION  
-    ----------------------------------------------------------------------------------------------------------------
-    coredns                 -               -        1     true    0        Running  Running Successfully  1.8.33   
-    kube-flannel            -               -        1     true    0        Running  Running Successfully  0.13.1   
-    kube-multus             -               -        1     true    0        Running  Running Successfully  3.7.0    
-    lb-port-443             -               -        1     true    0        Running  Running Successfully  v0.2.0   
-    local-path-provisioner  -               -        1     true    0        Running  Running Successfully  v0.0.19  
-    metrics-server          100.75.96.137   443      1     true    0        Running  Running Successfully  v0.3.6   
-    pause                   -               -        1     true    0        Running  Running Successfully  3.1      
-    virt-api                100.75.116.218  443      1     true    0        Running  Running Successfully  2.9.1    
-    virt-controller         -               -        1     true    0        Running  Running Successfully  2.7.3    
-    virt-handler            -               -        1     true    0        Running  Running Successfully  2.9.1    
-    virt-operator           -               -        1     true    0        Running  Running Successfully  2.7.3    
+    r10900-1-gsa# show service-pods     
+                                    SERVICE  POD           POD                                                
+                    SERVICE        CLUSTER  SLOT  POD     RESTART  POD                            POD IMAGE  
+    SERVICE NAME     CLUSTER IP     PORT     ID    STATUS  COUNT    STATE    POD MESSAGE           VERSION    
+    ----------------------------------------------------------------------------------------------------------
+    coredns          -              -        1     true    3        Running  Running Successfully  1.13.1     
+    kube-multus      -              -        1     true    3        Running  Running Successfully  4.2.7      
+    virt-api         100.75.159.21  443      1     true    0        Running  Running Successfully  1.6.3-120  
+    virt-controller  -              -        1     true    0        Running  Running Successfully  1.6.3-120  
+    virt-handler     -              -        1     true    0        Running  Running Successfully  1.6.3-120  
+    virt-operator    -              -        1     true    0        Running  Running Successfully  1.6.3-120  
 
-    r10900-1#
+    r10900-1-gsa# 
 
 Show Services via CLI
 ---------------------
 
 .. code-block:: bash
 
-    r10900-1# show services    
-                                                USE                                             USE                                                  SUB  IPV6    
-    SERVICE  HASH   FIELD   FULL        TUNNEL  IP     L4    HASH   FIELD   FULL        TUNNEL  IP     L4                                            MOD  PREFIX  
-    ID       ALG    SELECT  MASK  MASK  SELECT  PROTO  EXC   ALG    SELECT  MASK  MASK  SELECT  PROTO  EXC   PORT ADJUST      TENANT NAME            ID   LENGTH  
-    --------------------------------------------------------------------------------------------------------------------------------------------------------------
-    8        dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             fix-ll                 0    128     
-    9        dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             test-tenant            0    128     
-    10       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  xor5mid-xor5low  fix-ll                 0    128     
-    11       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  xor5mid-xor5low  test-tenant            0    128     
-    15       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             tenant1                0    128     
-    17       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  xor5mid-xor5low  tenant1                0    128     
-    64       dagv2  port    true        outer   false  true  dagv2  port    true        outer   false  true  none             bigip-next-f5demo-net  0    128     
+    r10900-1-gsa# show services
+                                                USE    IP                                                USE    IP                                        SUB  IPV6           
+    SERVICE  HASH   FIELD   FULL        TUNNEL  IP     PROTO    L4    HASH   FIELD   FULL        TUNNEL  IP     PROTO    L4                     TENANT    MOD  PREFIX  UDP    
+    ID       ALG    SELECT  MASK  MASK  SELECT  PROTO  PROFILE  EXC   ALG    SELECT  MASK  MASK  SELECT  PROTO  PROFILE  EXC   PORT ADJUST      NAME      ID   LENGTH  PORTS  
+    --------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    9        dagv2  port    true        outer   false  none     true  dagv2  port    true        outer   false  none     true  xor5mid-xor5low  tenant1   0    128     -      
+    10       dagv2  port    true        outer   false  none     true  dagv2  port    true        outer   false  none     true  none             testttwo  0    128     -      
+    11       dagv2  port    true        outer   false  none     true  dagv2  port    true        outer   false  none     true  xor5mid-xor5low  testttwo  0    128     -      
+    19       dagv2  port    true        outer   false  none     true  dagv2  port    true        outer   false  none     true  none             tenant1   0    128     -      
 
-    r10900-1# 
+    r10900-1-gsa# 
 
 Show VLAN-Listeners via CLI
 ---------------------------
 
 .. code-block:: bash
 
-    r5900-2# show vlan-listeners 
-                                                NDI                                             SERVICE  
-    INTERFACE        VLAN  ENTRY TYPE     OWNER    ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  IDS      
-    --------------------------------------------------------------------------------------------------------
-    Arista           3010  VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
-    Arista           3011  VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
-    HA-Interconnect  500   VLAN-LISTENER  tenant1  4095  8    -    15   -    -    -     disabled   -        
+    r10900-1-gsa# show vlan-listeners 
+                                            NDI                                             SERVICE   
+    INTERFACE  VLAN  ENTRY TYPE       OWNER    ID    SVC  VTC  SEP  DMS  DID  CMDS  MIRRORING  IDS       
+    -----------------------------------------------------------------------------------------------------
+    0.host     502   VLAN-LISTENER    tenant1  4095  9    -    15   3    -    -     disabled   -         
+    Arista1    500   RBCAST-LISTENER  rbcast   4095  5    56   15   3    -    -     disabled   [ 9 11 ]  
+    Arista1    501   RBCAST-LISTENER  rbcast   4095  5    56   15   3    -    -     disabled   [ 9 11 ]  
 
-    r5900-2# 
+    r10900-1-gsa# 
 
 ---------------------------------------
 Software Health and Status from the webUI
