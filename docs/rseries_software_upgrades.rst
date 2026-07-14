@@ -97,21 +97,29 @@ You can view the current F5OS images and their status in the F5OS CLI by using t
 
 .. code-block:: bash
 
-    Boston-r10900-1# show system image 
-                                    IN    
-    VERSION OS   STATUS  DATE        USE   
-    ---------------------------------------
-    1.0.0-11432  ready   2021-12-03  true  
+    r10900-1-gsa# show system image 
+                                                IN           
+    VERSION OS   STATUS  DATE        SIZE       USE    TYPE  
+    ---------------------------------------------------------
+    2.0.0-22925  ready   2026-05-20  2167.80MB  true         
+    2.0.0-21845  ready   2026-04-28  2340.05MB  false        
+    2.0.0-18224  ready   2026-03-10  2371.73MB  false        
 
-    VERSION                          IN    
-    SERVICE      STATUS  DATE        USE   
-    ---------------------------------------
-    1.0.0-11432  ready   2021-12-03  true  
+    VERSION                                  IN           
+    SERVICE      STATUS  DATE        SIZE    USE    TYPE  
+    ------------------------------------------------------
+    2.0.0-22925  ready   2026-05-20  2.96GB  true         
+    2.0.0-21845  ready   2026-04-28  3.27GB  false        
+    2.0.0-18224  ready   2026-03-10  3.64GB  false        
 
-                                    IN     
-    VERSION ISO  STATUS  DATE        USE    
-    ----------------------------------------
-    1.0.0-11432  ready   2021-12-03  false  
+                                            IN           
+    VERSION ISO  STATUS  DATE        SIZE    USE    TYPE  
+    ------------------------------------------------------
+    2.0.0-22925  ready   2026-05-20  5.76GB  true         
+    2.0.0-21845  ready   2026-04-28  6.24GB  false        
+    2.0.0-18224  ready   2026-03-10  6.64GB  false        
+
+    r10900-1-gsa# 
 
 
 You can alternatively copy the F5OS images into the management IP address of F5OS from a client machine over SCP. You would use the **root** account and the target directory should be **/var/import/staging/**. Prior to F5OS-A 1.8.0 only the root account can copy F5OS images into the system over SCP. F5OS-A 1.8.0 has altered this behavior so that the admin account can copy F5OS images into the system over SCP, copying via the root account is no longer supported.
@@ -456,9 +464,10 @@ The command **show running-config system image** will show the current configura
 
 .. code-block:: bash
 
-    syscon-1-active(config)# system image set-version iso-version 1.0.0-11432 
+    
+    Boston-r10900-1(config)# system image set-version iso-version 1.0.0-11432 
     response iso version has been set
-    syscon-1-active(config)# 
+    Boston-r10900-1(config)# 
 
 
 An upgrade of F5OS should automatically start after the above command is entered. You can follow the upgrade progress by issuing the command **show system image**.
@@ -576,15 +585,18 @@ You can view the current tenant images and their status in the F5OS CLI using th
 
 .. code-block:: bash
 
-    Boston-r10900-1# show images
-                                                                        IN                          
-    NAME                                                                 USE    STATUS               
-    -------------------------------------------------------------------------------------------------
-    BIGIP-15.1.4-0.0.26.ALL-VELOS.qcow2.zip.bundle                       false  verified             
-    BIGIP-15.1.5-0.0.3.ALL-F5OS.qcow2.zip.bundle                         false  verified             
-    BIGIP-15.1.5-0.0.8.ALL-F5OS.qcow2.zip.bundle                         true   verified                        
+    r10900-1-gsa# show images 
+                                                    IN                                         
+    NAME                                             USE    TYPE      REV  STATUS               
+    --------------------------------------------------------------------------------------------
+    BIGIP-15.1.6.1-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image  -    verified             
+    BIGIP-17.1.1.2-0.0.10.ALL-F5OS.qcow2.zip.bundle  false  vm-image  -    verified             
+    BIGIP-17.5.1.3-0.0.19.ALL-F5OS.qcow2.zip.bundle  false  vm-image  -    verification-failed  
+    BIGIP-17.5.1.3-0.0.19.ALL-F5OS.tar.bundle        false  vm-image  -    verified             
+    BIGIP-21.1.0-0.0.38.ALL-F5OS.tar.bundle          true   vm-image  -    verified             
+    BIGIP-21.1.0-0.0.38.T2-F5OS.tar.bundle           true   vm-image  -    verified             
 
-    Boston-r10900-1# 
+    r10900-1-gsa# 
 
 
 Loading Tenant Images from a Remote Server via API
@@ -595,6 +607,8 @@ To copy a tenant image into F5OS over the API, use the following API call to the
 .. code-block:: bash
 
     POST https://{{rseries_appliance1_ip}}:8888/restconf/data/f5-utils-file-transfer:file/import
+
+Enter the following information in the body of the API call.
 
 .. code-block:: json
 
