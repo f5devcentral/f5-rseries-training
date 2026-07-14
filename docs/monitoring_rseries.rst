@@ -43,52 +43,48 @@ High level appliance status can be obtained by using the **show components** com
 
 .. code-block:: bash
 
-    r10900-1# show components 
+    r10900-1-gsa# show components 
     components component lcd
-    state serial-no sub0872g00du
+    state serial-no sub0872g00bt
     state part-no "SUB-0872-02 REV 1"
     state empty false
     state mode standard
     components component platform
-    fantray fan-stats fan-1-speed 16224
-    fantray fan-stats fan-2-speed 16268
-    fantray fan-stats fan-3-speed 16330
-    fantray fan-stats fan-4-speed 16251
-    fantray fan-stats fan-5-speed 16233
-    fantray fan-stats fan-6-speed 16286
-    fantray fan-stats fan-7-speed 16393
-    fantray fan-stats fan-8-speed 16224
-    fantray fan-stats fan-9-speed 16224
-    fantray fan-stats fan-10-speed 16268
-    fantray fan-stats fan-11-speed 16304
-    fantray fan-stats fan-12-speed 16357
+    fantray fan-stats fan-1-speed 26905
+    fantray fan-stats fan-2-speed 26833
+    fantray fan-stats fan-3-speed 26809
+    fantray fan-stats fan-4-speed 26785
+    fantray fan-stats fan-6-speed 26857
+    fantray fan-stats fan-7-speed 26737
+    fantray fan-stats fan-8-speed 26619
+    fantray fan-stats fan-9-speed 26857
+    fantray fan-stats fan-10-speed 26857
+    fantray fan-stats fan-11-speed 26857
+    fantray fan-stats fan-12-speed 27027
     state description    r10900
-    state serial-no      f5-xpdn-ngmu
+    state serial-no      f5-wjex-ngkt
     state part-no        "200-0413-02 REV 2"
     state empty          false
     state tpm-integrity-status Valid
-    state memory total    270014504960
-    state memory available 23690534912
-    state memory free     7309426688
-    state memory used-percent 91
-    state memory platform-total 34219122688
-    state memory platform-used 10030964736
-    state memory platform-used-percent 29
-    state temperature current 29.7
-    state temperature average 30.2
-    state temperature minimum 29.2
-    state temperature maximum 31.3
+    state memory total    269899096064
+    state memory available 18004709376
+    state memory free     6350913536
+    state memory used-percent 93
+    state memory platform-total 26730127360
+    state memory platform-used 7015354368
+    state memory platform-used-percent 26
+    state temperature current 27.4
+    state temperature average 26.3
+    state temperature minimum 24.9
+    state temperature maximum 27.8
                                                                                             USED     
-    AREA                          CATEGORY            TOTAL         FREE          USED         PERCENT  
-    ----------------------------------------------------------------------------------------------------
-    platform/sysroot              F5OS System         117807665152  44114337792   67685408768  60       
-    platform/big-ip-tenant-disks  F5OS Tenant Disks   481671176192  426911313920  30268694528  6        
-    tenant/fix-ll                 BIG-IP Tenant       0             0             8046321664   0        
-    tenant/tenant1                BIG-IP Tenant       88046829568   80804179968   7242649600   8        
-    tenant/tenant2                BIG-IP Tenant       152471339008  145266032640  7205306368   4        
-    tenant/test-tenant            BIG-IP Tenant       0             0             7834767360   0        
-    platform/images               F5OS Images         240700620800  179621085184  48829022208  21       
-    tenant/bigip-next-f5demo-net  BIG-IP Next Tenant  26830438400   24771969024   2058469376   7        
+    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
+    ---------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System        117744750592  49566158848   62170673152  55       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks  481595678720  417254768640  39849742336  8        
+    tenant/tenant1                BIG-IP Tenant      92341796864   73697689600   18644107264  20       
+    tenant/testttwo               BIG-IP Tenant      49392123904   39266963456   10125160448  20       
+    platform/images               F5OS Images        240637706240  172907163648  55480029184  24       
 
                                                                                 UPDATE  
     NAME                        VALUE                              CONFIGURABLE  STATUS  
@@ -99,171 +95,178 @@ High level appliance status can be obtained by using the **show components** com
     QAT3                        Lewisburg C62X Crypto/Compression  false         -       
     QAT4                        Lewisburg C62X Crypto/Compression  false         -       
     QAT5                        Lewisburg C62X Crypto/Compression  false         -       
-    fw-version-bios             2.02.145.1                         false         none    
-    fw-version-bios-me          4.4.4.603                          false         none    
+    fw-version-bios             2.03.235.1                         false         none    
+    fw-version-bios-me          4.4.4.925                          false         none    
     fw-version-cpld             02.0B.00                           false         none    
     fw-version-drive-nvme0      VDV10170                           false         none    
     fw-version-drive-nvme1      VDV10170                           false         none    
     fw-version-drive-u.2.slot1  VDV10184                           false         none    
     fw-version-drive-u.2.slot2  VDV10184                           false         none    
-    fw-version-lcd-app          1.01.069.00.1                      false         none    
+    fw-version-lcd-app          2.00.075.00.1                      false         none    
     fw-version-lcd-bootloader   1.01.027.00.1                      false         none    
-    fw-version-lcd-ui           1.13.12                            false         none    
-    fw-version-lop-app          2.00.357.0.1                       false         none    
-    fw-version-lop-bootloader   1.02.062.0.1                       false         none    
-    fw-version-sirr             1.1.72                             false         none    
+    fw-version-lcd-ui           2.0.0                              false         none    
+    fw-version-lop-app          4.01.376.0.1                       false         none    
+    fw-version-lop-bootloader   3.00.107.0.1                       false         none    
+    fw-version-sirr             1.1.101                            false         none    
 
-                                                                                                                            READ                                          WRITE     
-    DISK                                                                                TOTAL  READ     READ                   LATENCY  WRITE      WRITE                     LATENCY   
-    NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS     MERGED   READ BYTES    MS       IOPS       MERGED     WRITE BYTES    MS        
-    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ1082028K1P0FGN  684.00GB  nvme  0      6389572  6219783  750856005120  780538   150423059  148810905  1524410142208  19347042  
-    nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ108203XB1P0FGN  684.00GB  nvme  0      5879641  6157944  743701713408  730394   150423058  148810906  1524410142208  19650753  
+                                                                                                                                                                                            READ  READ   WRITE           
+                                                                                                                                READ                                             WRITE      IOPS  BYTES  IOPS   WRITE    
+    DISK                                                                                TOTAL  READ      READ                     LATENCY               WRITE                      LATENCY    PER   PER    PER    BYTES    
+    NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS      MERGED    READ BYTES     MS        WRITE IOPS  MERGED     WRITE BYTES     MS         SEC   SEC    SEC    PER SEC  
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ915001YZ1P0FGN  684.00GB  nvme  0      48811866  32119958  5189468864000  43365968  1043532918  899082757  10678737384960  103134184  0     0      149    1515359  
+    nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ0065030H1P0FGN  684.00GB  nvme  0      47389552  32110630  5169977363456  45270873  1043532082  899083593  10678737384960  104714148  0     0      149    1515359  
 
     cpu state cpu-utilization thread cpu
-    cpu state cpu-utilization current 4
-    cpu state cpu-utilization five-second-avg 3
-    cpu state cpu-utilization one-minute-avg 3
-    cpu state cpu-utilization five-minute-avg 3
+    cpu state cpu-utilization current 1
+    cpu state cpu-utilization five-second-avg 2
+    cpu state cpu-utilization one-minute-avg 2
+    cpu state cpu-utilization five-minute-avg 2
     cpu state cpu-utilization used-by ""
     CPU               CORE                           THREAD                                             
     INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                  
     ----------------------------------------------------------------------------------------------------
-    0      36864(KB)  24    3099.902(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
+    0      36864(KB)  24    2400.000(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
 
-                            FIVE    ONE     FIVE                           
-    THREAD                   SECOND  MINUTE  MINUTE                         
-    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY                
-    ------------------------------------------------------------------------
-    0       cpu0    0        0       1       1       F5OS Dedicated         
-    1       cpu1    0        0       1       1       F5OS Dedicated         
-    2       cpu2    0        0       1       1       F5OS Dedicated         
-    3       cpu3    0        0       1       1       F5OS Dedicated         
-    4       cpu4    0        0       1       1       F5OS Dedicated         
-    5       cpu5    0        0       0       1       F5OS Dedicated         
-    6       cpu6    3        3       5       4       F5OS                   
-    7       cpu7    0        0       0       1       bigip-next-f5demo-net  
-    8       cpu8    6        5       4       4       F5OS                   
-    9       cpu9    0        0       1       1       bigip-next-f5demo-net  
-    10      cpu10   5        3       4       4       F5OS                   
-    11      cpu11   1        4       4       5       fix-ll                 
-    12      cpu12   4        3       4       4       F5OS                   
-    13      cpu13   4        3       4       4       F5OS                   
-    14      cpu14   4        3       4       4       F5OS                   
-    15      cpu15   1        5       5       6       tenant1                
-    16      cpu16   6        3       5       5       test-tenant            
-    17      cpu17   5        4       4       5       fix-ll                 
-    18      cpu18   1        4       4       5       tenant1                
-    19      cpu19   6        5       4       5       test-tenant            
-    20      cpu20   3        3       4       4       F5OS                   
-    21      cpu21   3        3       4       4       F5OS                   
-    22      cpu22   3        4       4       4       F5OS                   
-    23      cpu23   7        7       5       5       F5OS                   
-    24      cpu24   1        1       1       1       F5OS Data Mover        
-    25      cpu25   0        0       1       1       F5OS Data Mover        
-    26      cpu26   0        1       1       1       F5OS Data Mover        
-    27      cpu27   1        1       1       1       F5OS Data Mover        
-    28      cpu28   0        1       1       1       F5OS Data Mover        
-    29      cpu29   0        0       1       1       F5OS Data Mover        
-    30      cpu30   7        6       6       6       F5OS                   
-    31      cpu31   0        0       0       1       bigip-next-f5demo-net  
-    32      cpu32   4        5       6       6       F5OS                   
-    33      cpu33   0        0       0       1       bigip-next-f5demo-net  
-    34      cpu34   1        3       5       6       F5OS                   
-    35      cpu35   1        4       5       6       fix-ll                 
-    36      cpu36   8        5       6       6       F5OS                   
-    37      cpu37   3        3       7       6       F5OS                   
-    38      cpu38   4        3       6       6       F5OS                   
-    39      cpu39   4        4       5       5       tenant1                
-    40      cpu40   6        6       5       5       test-tenant            
-    41      cpu41   1        4       4       5       fix-ll                 
-    42      cpu42   5        6       5       5       tenant1                
-    43      cpu43   13       13      5       6       test-tenant            
-    44      cpu44   3        2       6       6       F5OS                   
-    45      cpu45   9        5       8       7       F5OS                   
-    46      cpu46   1        3       5       6       F5OS                   
-    47      cpu47   55       23      8       7       F5OS                   
+                            FIVE    ONE     FIVE                     
+    THREAD                   SECOND  MINUTE  MINUTE                   
+    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY          
+    ------------------------------------------------------------------
+    0       cpu0    0        0       0       0       F5OS Dedicated   
+    1       cpu1    0        0       0       0       F5OS Dedicated   
+    2       cpu2    0        0       0       0       F5OS Dedicated   
+    3       cpu3    0        0       0       0       F5OS Dedicated   
+    4       cpu4    0        0       0       0       F5OS Dedicated   
+    5       cpu5    0        0       0       0       F5OS Dedicated   
+    6       cpu6    0        2       3       3       F5OS             
+    7       cpu7    5        6       5       5       tenant1          
+    8       cpu8    5        6       5       5       tenant1          
+    9       cpu9    1        1       1       2       F5OS             
+    10      cpu10   3        9       10      10      testttwo         
+    11      cpu11   1        2       1       2       F5OS             
+    12      cpu12   0        2       2       2       F5OS             
+    13      cpu13   1        1       2       2       F5OS             
+    14      cpu14   2        1       2       2       F5OS             
+    15      cpu15   1        1       1       2       F5OS             
+    16      cpu16   0        1       1       2       F5OS             
+    17      cpu17   0        1       2       2       F5OS             
+    18      cpu18   0        1       1       2       F5OS             
+    19      cpu19   0        1       2       2       F5OS             
+    20      cpu20   2        1       2       2       F5OS             
+    21      cpu21   2        2       2       2       F5OS             
+    22      cpu22   1        2       2       2       F5OS             
+    23      cpu23   1        1       2       2       F5OS             
+    24      cpu24   0        1       1       1       F5OS Data Mover  
+    25      cpu25   0        0       0       0       F5OS Data Mover  
+    26      cpu26   0        0       0       0       F5OS Data Mover  
+    27      cpu27   0        0       0       1       F5OS Data Mover  
+    28      cpu28   0        0       0       0       F5OS Data Mover  
+    29      cpu29   0        0       0       0       F5OS Data Mover  
+    30      cpu30   1        2       2       2       F5OS             
+    31      cpu31   1        12      10      10      tenant1          
+    32      cpu32   2        21      8       9       tenant1          
+    33      cpu33   0        2       2       2       F5OS             
+    34      cpu34   5        5       6       5       testttwo         
+    35      cpu35   1        1       2       2       F5OS             
+    36      cpu36   2        1       2       2       F5OS             
+    37      cpu37   2        1       2       2       F5OS             
+    38      cpu38   1        2       1       2       F5OS             
+    39      cpu39   2        2       2       2       F5OS             
+    40      cpu40   3        2       2       2       F5OS             
+    41      cpu41   2        2       2       2       F5OS             
+    42      cpu42   0        2       2       2       F5OS             
+    43      cpu43   3        3       2       2       F5OS             
+    44      cpu44   2        3       2       2       F5OS             
+    45      cpu45   0        1       1       2       F5OS             
+    46      cpu46   0        2       2       2       F5OS             
+    47      cpu47   0        3       2       2       F5OS             
 
     FPGA                            NUM  NUM   
     INDEX   VERSION  ID  SLOT  DID  DMS  SEPS  
     -------------------------------------------
-    asw_0   71.5.1                             
-    atse_0  72.5.4   0   1     15   3    64    
-    atse_1  72.5.4   1   1     63   3    64    
-    nso_0   70.5.1                             
+    asw_0   71.6.3                             
+    atse_0  72.6.2   0   1     15   3    64    
+    atse_1  72.6.2   1   1     63   3    64    
+    nso_0   70.6.3                             
 
     components component psu-1
-    psu-stats psu-power-in 526.0
-    psu-stats psu-power-out 514.0
-    psu-stats psu-current-in 2.578
-    psu-stats psu-current-out 42.875
-    psu-stats psu-voltage-in 205.0
+    psu-stats psu-power-in 584.0
+    psu-stats psu-power-out 588.0
+    psu-stats psu-current-in 2.796
+    psu-stats psu-current-out 48.0
+    psu-stats psu-voltage-in 204.5
     psu-stats psu-voltage-out 12.0
-    psu-stats psu-temperature-1 36.0
-    psu-stats psu-temperature-2 42.0
-    psu-stats psu-temperature-3 46.0
-    psu-stats psu-fan-1-speed 11680
-    state serial-no FZ2104Q70036
+    psu-stats psu-temperature-1 41.0
+    psu-stats psu-temperature-2 46.0
+    psu-stats psu-temperature-3 48.0
+    psu-stats psu-fan-1-speed 22144
+    state serial-no FZ2104Q70155
     state part-no PWR-0388-00
     state empty false
     components component psu-2
-    state serial-no "Not Available"
-    state part-no "Not Available"
-    state empty true
-    r10900-1# 
+    psu-stats psu-power-in 94.0
+    psu-stats psu-power-out 0.0
+    psu-stats psu-current-in 0.5
+    psu-stats psu-current-out 0.0
+    psu-stats psu-voltage-in 205.0
+    psu-stats psu-voltage-out 9.218
+    psu-stats psu-temperature-1 41.0
+    psu-stats psu-temperature-2 42.0
+    psu-stats psu-temperature-3 42.0
+    psu-stats psu-fan-1-speed 0
+    state serial-no FZ2104Q70065
+    state part-no PWR-0388-00
+    state empty false
+    r10900-1-gsa#
 
 Show Component State Only from the CLI
-----------------------------------------
+--------------------------------------
 
 If you just want the state and not all the details:
 
 .. code-block:: bash
 
-    r10900-1# show components component state
+    r10900-1-gsa# show components component state
     components component lcd
-    state serial-no sub0872g00du
+    state serial-no sub0872g00bt
     state part-no "SUB-0872-02 REV 1"
     state empty false
     state mode standard
     components component platform
     state description    r10900
-    state serial-no      f5-xpdn-ngmu
+    state serial-no      f5-wjex-ngkt
     state part-no        "200-0413-02 REV 2"
     state empty          false
     state tpm-integrity-status Valid
-    state memory total    270014504960
-    state memory available 23670415360
-    state memory free     7288745984
-    state memory used-percent 91
-    state memory platform-total 34219122688
-    state memory platform-used 10051108864
-    state memory platform-used-percent 29
-    state temperature current 29.9
-    state temperature average 30.2
-    state temperature minimum 29.2
-    state temperature maximum 31.3
+    state memory total    269899096064
+    state memory available 18009178112
+    state memory free     6353915904
+    state memory used-percent 93
+    state memory platform-total 26730127360
+    state memory platform-used 7010885632
+    state memory platform-used-percent 26
+    state temperature current 27.3
+    state temperature average 26.3
+    state temperature minimum 24.9
+    state temperature maximum 27.8
                                                                                             USED     
-    AREA                          CATEGORY            TOTAL         FREE          USED         PERCENT  
-    ----------------------------------------------------------------------------------------------------
-    platform/sysroot              F5OS System         117807665152  44113956864   67685789696  60       
-    platform/big-ip-tenant-disks  F5OS Tenant Disks   481671176192  426911305728  30268702720  6        
-    tenant/fix-ll                 BIG-IP Tenant       0             0             8046321664   0        
-    tenant/tenant1                BIG-IP Tenant       88046829568   80804171776   7242657792   8        
-    tenant/tenant2                BIG-IP Tenant       152471339008  145266032640  7205306368   4        
-    tenant/test-tenant            BIG-IP Tenant       0             0             7834767360   0        
-    platform/images               F5OS Images         240700620800  179621085184  48829022208  21       
-    tenant/bigip-next-f5demo-net  BIG-IP Next Tenant  26830438400   24771969024   2058469376   7        
+    AREA                          CATEGORY           TOTAL         FREE          USED         PERCENT  
+    ---------------------------------------------------------------------------------------------------
+    platform/sysroot              F5OS System        117744750592  49564340224   62172491776  55       
+    platform/big-ip-tenant-disks  F5OS Tenant Disks  481595678720  417254764544  39849746432  8        
+    tenant/tenant1                BIG-IP Tenant      92341796864   73697689600   18644107264  20       
+    tenant/testttwo               BIG-IP Tenant      49392123904   39266959360   10125164544  20       
+    platform/images               F5OS Images        240637706240  172907163648  55480029184  24       
 
     components component psu-1
-    state serial-no FZ2104Q70036
+    state serial-no FZ2104Q70155
     state part-no PWR-0388-00
     state empty false
     components component psu-2
-    state serial-no "Not Available"
-    state part-no "Not Available"
-    state empty true
-    r10900-1# 
-
+    state serial-no FZ2104Q70065
+    state part-no PWR-0388-00
+    state empty false
+    r10900-1-gsa# 
 
 Show Component Properties from the CLI
 ----------------------------------------
@@ -272,7 +275,7 @@ This command shows the firmware version of the various subsystems:
 
 .. code-block:: bash
 
-    r10900-1# show components component properties 
+    r10900-1-gsa# show components component properties 
                                                                                         UPDATE  
     NAME      NAME                        VALUE                              CONFIGURABLE  STATUS  
     -----------------------------------------------------------------------------------------------
@@ -282,21 +285,21 @@ This command shows the firmware version of the various subsystems:
             QAT3                        Lewisburg C62X Crypto/Compression  false         -       
             QAT4                        Lewisburg C62X Crypto/Compression  false         -       
             QAT5                        Lewisburg C62X Crypto/Compression  false         -       
-            fw-version-bios             2.02.145.1                         false         none    
-            fw-version-bios-me          4.4.4.603                          false         none    
+            fw-version-bios             2.03.235.1                         false         none    
+            fw-version-bios-me          4.4.4.925                          false         none    
             fw-version-cpld             02.0B.00                           false         none    
             fw-version-drive-nvme0      VDV10170                           false         none    
             fw-version-drive-nvme1      VDV10170                           false         none    
             fw-version-drive-u.2.slot1  VDV10184                           false         none    
             fw-version-drive-u.2.slot2  VDV10184                           false         none    
-            fw-version-lcd-app          1.01.069.00.1                      false         none    
+            fw-version-lcd-app          2.00.075.00.1                      false         none    
             fw-version-lcd-bootloader   1.01.027.00.1                      false         none    
-            fw-version-lcd-ui           1.13.12                            false         none    
-            fw-version-lop-app          2.00.357.0.1                       false         none    
-            fw-version-lop-bootloader   1.02.062.0.1                       false         none    
-            fw-version-sirr             1.1.72                             false         none    
+            fw-version-lcd-ui           2.0.0                              false         none    
+            fw-version-lop-app          4.01.376.0.1                       false         none    
+            fw-version-lop-bootloader   3.00.107.0.1                       false         none    
+            fw-version-sirr             1.1.101                            false         none    
 
-    r10900-1# 
+    r10900-1-gsa#
 
 
 Show Power Supply Status from the CLI
@@ -306,37 +309,37 @@ Or you can view individual subsystems. High level power supply status can be obt
 
 .. code-block:: bash
 
-    r10900-1# show components component psu-1    
+    r10900-1-gsa# show components component psu-1
     components component psu-1
-    psu-stats psu-power-in 528.0
-    psu-stats psu-power-out 516.0
-    psu-stats psu-current-in 2.593
-    psu-stats psu-current-out 43.0
-    psu-stats psu-voltage-in 205.0
-    psu-stats psu-voltage-out 12.0
-    psu-stats psu-temperature-1 36.0
-    psu-stats psu-temperature-2 42.0
-    psu-stats psu-temperature-3 46.0
-    psu-stats psu-fan-1-speed 11552
-    state serial-no FZ2104Q70036
+    psu-stats psu-power-in 572.0
+    psu-stats psu-power-out 568.0
+    psu-stats psu-current-in 2.843
+    psu-stats psu-current-out 47.375
+    psu-stats psu-voltage-in 204.5
+    psu-stats psu-voltage-out 11.984
+    psu-stats psu-temperature-1 41.0
+    psu-stats psu-temperature-2 46.0
+    psu-stats psu-temperature-3 48.0
+    psu-stats psu-fan-1-speed 22144
+    state serial-no FZ2104Q70155
     state part-no PWR-0388-00
     state empty false
-    r10900-1# 
+    r10900-1-gsa#
 
 
 High level power supply stats can be obtained by using the **show components component psu-stats** command:
 
 .. code-block:: bash
 
-    r10900-1# show components component psu-stats 
+    r10900-1-gsa# show components component psu-stats 
         PSU    PSU    PSU      PSU      PSU      PSU      PSU          PSU          PSU          PSU    
         POWER  POWER  CURRENT  CURRENT  VOLTAGE  VOLTAGE  TEMPERATURE  TEMPERATURE  TEMPERATURE  FAN 1  
     NAME   IN     OUT    IN       OUT      IN       OUT      1            2            3            SPEED  
     -------------------------------------------------------------------------------------------------------
-    psu-1  530.0  518.0  2.593    42.75    205.0    12.0     36.0         41.0         46.0         12192  
-    psu-2  -      -      -        -        -        -        -            -            -            -      
+    psu-1  576.0  574.0  2.625    47.875   204.5    12.0     41.0         46.0         48.0         22144  
+    psu-2  132.0  0.0    0.703    0.0      205.0    9.734    41.0         42.0         42.0         0      
 
-    r10900-1#
+    r10900-1-gsa# 
 
 Show LCD Status from the CLI
 --------------------------------------
@@ -345,13 +348,13 @@ High level chassis LCD status can be obtained by using the **show components com
 
 .. code-block:: bash
 
-    r10900-1# show components component lcd  
+    r10900-1-gsa# show components component lcd 
     components component lcd
-    state serial-no sub0872g00du
+    state serial-no sub0872g00bt
     state part-no "SUB-0872-02 REV 1"
     state empty false
     state mode standard
-    r10900-1# 
+    r10900-1-gsa#
 
 
 Show CPU Status from the CLI
@@ -361,73 +364,73 @@ You can view stats on the platform CPU and basic utilization with the command **
 
 .. code-block:: bash
 
-    r10900-1# show components component cpu
+    r10900-1-gsa# show components component cpu
     components component platform
     cpu state cpu-utilization thread cpu
-    cpu state cpu-utilization current 4
-    cpu state cpu-utilization five-second-avg 4
-    cpu state cpu-utilization one-minute-avg 3
-    cpu state cpu-utilization five-minute-avg 3
+    cpu state cpu-utilization current 2
+    cpu state cpu-utilization five-second-avg 3
+    cpu state cpu-utilization one-minute-avg 2
+    cpu state cpu-utilization five-minute-avg 2
     cpu state cpu-utilization used-by ""
     CPU               CORE                           THREAD                                             
     INDEX  CACHESIZE  CNT   FREQ           STEPPING  CNT     MODELNAME                                  
     ----------------------------------------------------------------------------------------------------
-    0      36864(KB)  24    3099.902(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
+    0      36864(KB)  24    2400.000(MHz)  6         48      Intel(R) Xeon(R) Gold 6312U CPU @ 2.40GHz  
 
-                            FIVE    ONE     FIVE                           
-    THREAD                   SECOND  MINUTE  MINUTE                         
-    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY                
-    ------------------------------------------------------------------------
-    0       cpu0    0        0       1       1       F5OS Dedicated         
-    1       cpu1    0        0       1       1       F5OS Dedicated         
-    2       cpu2    0        0       1       1       F5OS Dedicated         
-    3       cpu3    0        0       1       1       F5OS Dedicated         
-    4       cpu4    0        0       1       1       F5OS Dedicated         
-    5       cpu5    0        0       1       1       F5OS Dedicated         
-    6       cpu6    3        4       4       4       F5OS                   
-    7       cpu7    0        0       0       1       bigip-next-f5demo-net  
-    8       cpu8    4        5       5       4       F5OS                   
-    9       cpu9    0        0       1       1       bigip-next-f5demo-net  
-    10      cpu10   4        3       4       4       F5OS                   
-    11      cpu11   5        5       4       5       fix-ll                 
-    12      cpu12   5        3       4       4       F5OS                   
-    13      cpu13   3        3       5       4       F5OS                   
-    14      cpu14   4        4       4       4       F5OS                   
-    15      cpu15   0        3       5       6       tenant1                
-    16      cpu16   12       6       4       5       test-tenant            
-    17      cpu17   4        5       5       5       fix-ll                 
-    18      cpu18   0        5       4       4       tenant1                
-    19      cpu19   5        5       5       5       test-tenant            
-    20      cpu20   4        4       4       4       F5OS                   
-    21      cpu21   4        3       4       4       F5OS                   
-    22      cpu22   4        4       5       4       F5OS                   
-    23      cpu23   3        3       4       4       F5OS                   
-    24      cpu24   1        1       1       1       F5OS Data Mover        
-    25      cpu25   0        1       1       1       F5OS Data Mover        
-    26      cpu26   0        1       1       1       F5OS Data Mover        
-    27      cpu27   1        1       1       1       F5OS Data Mover        
-    28      cpu28   0        1       1       1       F5OS Data Mover        
-    29      cpu29   0        1       1       1       F5OS Data Mover        
-    30      cpu30   6        7       6       6       F5OS                   
-    31      cpu31   0        0       1       1       bigip-next-f5demo-net  
-    32      cpu32   20       12      8       6       F5OS                   
-    33      cpu33   0        0       1       1       bigip-next-f5demo-net  
-    34      cpu34   15       11      6       6       F5OS                   
-    35      cpu35   1        3       6       5       fix-ll                 
-    36      cpu36   10       9       6       5       F5OS                   
-    37      cpu37   6        9       9       6       F5OS                   
-    38      cpu38   7        7       5       6       F5OS                   
-    39      cpu39   5        5       5       5       tenant1                
-    40      cpu40   5        6       5       5       test-tenant            
-    41      cpu41   2        9       4       5       fix-ll                 
-    42      cpu42   6        4       5       5       tenant1                
-    43      cpu43   5        6       6       6       test-tenant            
-    44      cpu44   6        7       5       6       F5OS                   
-    45      cpu45   3        7       7       7       F5OS                   
-    46      cpu46   21       9       6       6       F5OS                   
-    47      cpu47   11       7       7       7       F5OS                   
+                            FIVE    ONE     FIVE                     
+    THREAD                   SECOND  MINUTE  MINUTE                   
+    INDEX   THREAD  CURRENT  AVG     AVG     AVG     USED BY          
+    ------------------------------------------------------------------
+    0       cpu0    0        0       0       0       F5OS Dedicated   
+    1       cpu1    0        0       0       0       F5OS Dedicated   
+    2       cpu2    0        0       0       0       F5OS Dedicated   
+    3       cpu3    0        0       0       0       F5OS Dedicated   
+    4       cpu4    0        0       0       0       F5OS Dedicated   
+    5       cpu5    0        0       0       1       F5OS Dedicated   
+    6       cpu6    3        4       2       2       F5OS             
+    7       cpu7    7        6       6       5       tenant1          
+    8       cpu8    5        6       5       5       tenant1          
+    9       cpu9    5        5       2       2       F5OS             
+    10      cpu10   2        10      10      10      testttwo         
+    11      cpu11   1        4       2       2       F5OS             
+    12      cpu12   0        2       2       2       F5OS             
+    13      cpu13   1        3       2       2       F5OS             
+    14      cpu14   4        5       2       2       F5OS             
+    15      cpu15   2        4       2       2       F5OS             
+    16      cpu16   1        6       2       2       F5OS             
+    17      cpu17   4        6       2       2       F5OS             
+    18      cpu18   8        4       2       2       F5OS             
+    19      cpu19   0        3       1       2       F5OS             
+    20      cpu20   3        3       1       2       F5OS             
+    21      cpu21   1        3       2       2       F5OS             
+    22      cpu22   0        4       2       2       F5OS             
+    23      cpu23   1        3       1       2       F5OS             
+    24      cpu24   0        0       1       1       F5OS Data Mover  
+    25      cpu25   0        0       0       0       F5OS Data Mover  
+    26      cpu26   0        0       0       0       F5OS Data Mover  
+    27      cpu27   0        0       0       1       F5OS Data Mover  
+    28      cpu28   0        0       0       0       F5OS Data Mover  
+    29      cpu29   0        0       0       0       F5OS Data Mover  
+    30      cpu30   1        5       2       2       F5OS             
+    31      cpu31   19       12      12      11      tenant1          
+    32      cpu32   9        4       11      10      tenant1          
+    33      cpu33   0        2       2       2       F5OS             
+    34      cpu34   6        6       5       5       testttwo         
+    35      cpu35   0        3       2       2       F5OS             
+    36      cpu36   1        2       1       2       F5OS             
+    37      cpu37   0        2       2       2       F5OS             
+    38      cpu38   1        3       2       2       F5OS             
+    39      cpu39   2        5       2       2       F5OS             
+    40      cpu40   1        4       3       2       F5OS             
+    41      cpu41   1        6       2       2       F5OS             
+    42      cpu42   0        5       2       2       F5OS             
+    43      cpu43   4        4       2       2       F5OS             
+    44      cpu44   4        5       2       2       F5OS             
+    45      cpu45   4        4       2       2       F5OS             
+    46      cpu46   3        5       2       2       F5OS             
+    47      cpu47   1        3       2       2       F5OS             
 
-    r10900-1# 
+    r10900-1-gsa#
 
 Show Storage Status from the CLI
 --------------------------------------
@@ -436,15 +439,16 @@ You can view stats on the storage subsystem:
 
 .. code-block:: bash
 
-    r10900-1# show components component storage 
-                                                                                                                                        READ                                          WRITE     
-            DISK                                                                                TOTAL  READ     READ                   LATENCY  WRITE      WRITE                     LATENCY   
-    NAME      NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS     MERGED   READ BYTES    MS       IOPS       MERGED     WRITE BYTES    MS        
-    ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-    platform  nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ1082028K1P0FGN  684.00GB  nvme  0      6389655  6219783  750856602624  780548   150509104  148896707  1525266036736  19350347  
-            nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ108203XB1P0FGN  684.00GB  nvme  0      5879651  6157944  743701819904  730397   150509103  148896708  1525266036736  19654081  
+    r10900-1-gsa# show components component storage
+                                                                                                                                                                                            READ  READ   WRITE           
+                                                                                                                                READ                                             WRITE      IOPS  BYTES  IOPS   WRITE    
+    DISK                                                                                TOTAL  READ      READ                     LATENCY               WRITE                      LATENCY    PER   PER    PER    BYTES    
+    NAME     MODEL                VENDOR  VERSION   SERIAL NO           SIZE      TYPE  IOPS   IOPS      MERGED    READ BYTES     MS        WRITE IOPS  MERGED     WRITE BYTES     MS         SEC   SEC    SEC    PER SEC  
+    -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    nvme0n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ915001YZ1P0FGN  684.00GB  nvme  0      48811953  32119958  5189469239296  43365975  1043654753  899191827  10680013511680  103145480  0     102    119    1050672  
+    nvme1n1  INTEL SSDPE2KX010T8  Intel   VDV10184  PHLJ0065030H1P0FGN  684.00GB  nvme  0      47389555  32110630  5169977375744  45270874  1043653917  899192663  10680013511680  104725539  0     0      119    1050672  
 
-    r10900-1# 
+    r10900-1-gsa# 
 
 -----------------------------------------------------
 Hardware and System Component Monitoring from the API
