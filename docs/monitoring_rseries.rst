@@ -10,7 +10,7 @@ Some admins may want CLI commands to monitor, or API calls to query the system, 
 Accessing the F5OS API
 ======================
 
-The F5OS platform API’s for the rSeries appliances can be reached on port 8888. In this document we will use the Postman tool to access rSeries F5OS platform layer API’s. You can download the Postman tool at:
+The F5OS platform API’s for the rSeries appliances can be reached on port 8888 or on port 443. You may send API calls to either port 8888 or port 443. The URI path will change slightly depending on which TCP port you choose to use. For API calls sent to port 443, the initial path will be /api, while API calls to port 8888 will start with /restconf. F5OS also listens on port 80 and will redirect to TCP port 443 for web based traffic. For the API it will not preserve the source URI when redirecting.In this document we will use the Postman tool to access rSeries F5OS platform layer API’s. You can download the Postman tool at:
 
 https://www.postman.com/downloads/
 
