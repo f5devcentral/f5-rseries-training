@@ -139,7 +139,7 @@ Diagnostics
 
 `Viewing Event Logs via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#viewing-event-logs-from-the-api>`_
 
-`Changing the Software Component Log Levels via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#changing-the-software-componenet-log-levels-via-api>`_
+`Changing the Software Component Log Levels via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#changing-the-software-component-log-levels-via-api>`_
 
 `Enabling AOM Access for SSH via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_diagnostics.html#enabling-aom-access-for-ssh-via-api>`_
 
