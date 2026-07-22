@@ -18,7 +18,7 @@ If you want to see what API functions are available you can view the API referen
 
 .. image:: images/automating_rseries/image1.png
   :align: center
-  :scale: 70%
+  :scale: 90%
 
 The API workflows section has an index which maps to all the common API workflow examples in the rSeries planning guide. In addition, there is an accompanying Postman collection which can be downloaded and used within your own environment if you want to become familiar with the F5OS API.
 
