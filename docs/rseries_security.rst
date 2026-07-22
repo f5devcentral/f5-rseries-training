@@ -1534,17 +1534,18 @@ In the body of the API call add the username and role as seen below.
 .. code-block:: bash
 
     {
-    "openconfig-system:aaa": {
-        "authentication": {
-            "f5-system-aaa:users": {
-                "user": [
-                    {
-                        "username": "resource-admin-user",
-                        "config": {
-                            "role": "resource-admin"
+        "openconfig-system:aaa": {
+            "authentication": {
+                "f5-system-aaa:users": {
+                    "user": [
+                        {
+                            "username": "resource-admin-user",
+                            "config": {
+                                "role": "resource-admin"
+                            }
                         }
-                    }
-                ]
+                    ]
+                }
             }
         }
     }
@@ -1562,17 +1563,18 @@ In the body of the API call add the username and role as seen below.
 .. code-block:: bash
 
     {
-    "openconfig-system:aaa": {
-        "authentication": {
-            "f5-system-aaa:users": {
-                "user": [
-                    {
-                        "username": "guest-user",
-                        "config": {
-                            "role": "user"
+        "openconfig-system:aaa": {
+            "authentication": {
+                "f5-system-aaa:users": {
+                    "user": [
+                        {
+                            "username": "guest-user",
+                            "config": {
+                                "role": "user"
+                            }
                         }
-                    }
-                ]
+                    ]
+                }
             }
         }
     }
@@ -1681,15 +1683,474 @@ You can view the current state of these parameters via the following CLI show co
 Superuser Role via WebUI using Named Groups on LDAP/Active Directory
 ---------------------------------------------------------------------
 
+Within the WebUI you can map the superuser role to a remote LDAP group. Go to the **Authentication and Access -> Users & Roles** page and then select **Roles**. Then click on the **superuser** role to edit it.
 
-Enable Superuser Bash Access
-Go to Authentication Settings screen. 
-Edit the Superuser Bash Access dropdown by selecting 'Enabled' option. 
-Click on Save.
+.. image:: images/rseries_security/super-user.png
+  :align: center
+  :scale: 70%  
+
+Here you can map the superuser role either to a UNIX GID or an LDAP Remote Group, it does not support the configuration of both, so you must pick one method.
+
+
+.. image:: images/rseries_security/super-user-config.png
+  :align: center
+  :scale: 70% 
+
+If you choose to use the LDAP Group mapping, then you must disable the unix attributes setting in the **Common LDAP Configuration** section.
+
+.. image:: images/rseries_security/unix-attributes.png
+  :align: center
+  :scale: 70% 
 
 
 Superuser Role via API using Named Groups on LDAP/Active Directory
 ------------------------------------------------------------------
+
+Within the API you can map the superuser role to a remote LDAP group. Send the following API GET call to view the current authentication roles:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-system-aaa:roles
+
+In the output, you'll see all the configured users and roles on the system.
+
+.. code-block:: json
+
+    {
+        "f5-system-aaa:roles": {
+            "role": [
+                {
+                    "rolename": "admin",
+                    "config": {
+                        "rolename": "admin",
+                        "gid": 9000,
+                        "description": "Unrestricted read/write access.",
+                        "users": [
+                            "bms"
+                        ]
+                    },
+                    "state": {
+                        "rolename": "admin",
+                        "gid": 9000,
+                        "remote-gid": "-",
+                        "ldap-group": "-",
+                        "description": "Unrestricted read/write access.",
+                        "users": [
+                            "bms"
+                        ]
+                    }
+                },
+                {
+                    "rolename": "operator",
+                    "config": {
+                        "rolename": "operator",
+                        "gid": 9001,
+                        "description": "Read-only access to system level data."
+                    },
+                    "state": {
+                        "rolename": "operator",
+                        "gid": 9001,
+                        "remote-gid": "-",
+                        "ldap-group": "-",
+                        "description": "Read-only access to system level data."
+                    }
+                },
+                {
+                    "rolename": "resource-admin",
+                    "config": {
+                        "rolename": "resource-admin",
+                        "gid": 9003,
+                        "description": "Restricted read/write access. No access to modify authentication configuration."
+                    },
+                    "state": {
+                        "rolename": "resource-admin",
+                        "gid": 9003,
+                        "remote-gid": "-",
+                        "ldap-group": "-",
+                        "description": "Restricted read/write access. No access to modify authentication configuration."
+                    }
+                },
+                {
+                    "rolename": "superuser",
+                    "config": {
+                        "rolename": "superuser",
+                        "gid": 9004,
+                        "description": "Sudo privileges and Bash access to the system (if enabled).",
+                        "users": [
+                            "f5shuser1",
+                            "f5shuser2"
+                        ]
+                    },
+                    "state": {
+                        "rolename": "superuser",
+                        "gid": 9004,
+                        "remote-gid": "-",
+                        "ldap-group": "-",
+                        "description": "Sudo privileges and Bash access to the system (if enabled).",
+                        "users": [
+                            "f5shuser1",
+                            "f5shuser2"
+                        ]
+                    }
+                },
+                {
+                    "rolename": "user",
+                    "config": {
+                        "rolename": "user",
+                        "gid": 9002,
+                        "description": "Read-only access to non-sensitive system level data.",
+                        "users": [
+                            "user-user"
+                        ]
+                    },
+                    "state": {
+                        "rolename": "user",
+                        "gid": 9002,
+                        "remote-gid": "-",
+                        "ldap-group": "-",
+                        "description": "Read-only access to non-sensitive system level data.",
+                        "users": [
+                            "user-user"
+                        ]
+                    }
+                }
+            ]
+        }
+    }
+
+
+
+
+The API also supports the assignment of the superuser role to any user.
+
+To view the current user roles:
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication
+
+The output will look similar to the response below. Note, the **superuser** role.
+
+.. code-block:: bash
+
+
+    {
+        "openconfig-system:authentication": {
+            "config": {
+                "f5-aaa-confd-restconf-token:basic": {
+                    "enabled": true
+                },
+                "f5-openconfig-aaa-clientcert:cert-auth": {
+                    "enabled": false
+                },
+                "f5-openconfig-aaa-superuser:superuser-bash-access": false
+            },
+            "state": {
+                "f5-aaa-confd-restconf-token:basic": {
+                    "enabled": true
+                },
+                "f5-openconfig-aaa-clientcert:cert-auth": {
+                    "enabled": false
+                },
+                "f5-openconfig-aaa-superuser:superuser-bash-access": false
+            },
+            "f5-aaa-confd-restconf-token:state": {
+                "basic": {
+                    "enabled": true
+                }
+            },
+            "f5-openconfig-aaa-clientcert:clientcert": {
+                "config": {
+                    "client-cert-name-field": "subjectname-cn",
+                    "OID": "UPN"
+                },
+                "state": {
+                    "client-cert-name-field": "subjectname-cn",
+                    "OID": "UPN"
+                }
+            },
+            "f5-openconfig-aaa-ldap:ldap": {
+                "bind_timelimit": 10,
+                "timelimit": 0,
+                "idle_timelimit": 0,
+                "ldap_version": 3,
+                "ssl": "off",
+                "active_directory": false,
+                "unix_attributes": true,
+                "tls_reqcert": "demand",
+                "chase-referrals": true
+            },
+            "f5-openconfig-aaa-ocsp:ocsp": {
+                "config": {
+                    "override-responder": "off",
+                    "response-max-age": -1,
+                    "response-time-skew": 300,
+                    "nonce-request": "on",
+                    "enabled": false
+                },
+                "state": {
+                    "override-responder": "off",
+                    "response-max-age": -1,
+                    "response-time-skew": 300,
+                    "nonce-request": "on",
+                    "enabled": false
+                }
+            },
+            "f5-openconfig-aaa-radius:radius": {
+                "require_message_authenticator": false
+            },
+            "f5-system-aaa:users": {
+                "user": [
+                    {
+                        "username": "admin",
+                        "config": {
+                            "username": "admin",
+                            "last-change": "2021-09-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "admin",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "authorized-keys": "-",
+                            "username": "admin",
+                            "last-change": "2021-09-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "admin",
+                            "expiry-status": "enabled"
+                        }
+                    },
+                    {
+                        "username": "operator",
+                        "config": {
+                            "username": "operator",
+                            "last-change": "2024-04-09",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "operator",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "authorized-keys": "-",
+                            "username": "operator",
+                            "last-change": "2024-04-09",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "operator",
+                            "expiry-status": "enabled"
+                        }
+                    },
+                    {
+                        "username": "root",
+                        "config": {
+                            "username": "root",
+                            "last-change": "2021-11-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "root",
+                            "expiry-status": "enabled"
+                        },
+                        "state": {
+                            "username": "root",
+                            "last-change": "2021-11-29",
+                            "tally-count": 0,
+                            "expiry-date": "-1",
+                            "role": "root",
+                            "expiry-status": "enabled"
+                        }
+                    }
+                ]
+            },
+            "f5-system-aaa:roles": {
+                "role": [
+                    {
+                        "rolename": "admin",
+                        "config": {
+                            "rolename": "admin",
+                            "gid": 9000,
+                            "description": "Unrestricted read/write access."
+                        },
+                        "state": {
+                            "rolename": "admin",
+                            "gid": 9000,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Unrestricted read/write access."
+                        }
+                    },
+                    {
+                        "rolename": "operator",
+                        "config": {
+                            "rolename": "operator",
+                            "gid": 9001,
+                            "description": "Read-only access to system level data."
+                        },
+                        "state": {
+                            "rolename": "operator",
+                            "gid": 9001,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Read-only access to system level data."
+                        }
+                    },
+                    {
+                        "rolename": "resource-admin",
+                        "config": {
+                            "rolename": "resource-admin",
+                            "gid": 9003,
+                            "description": "Restricted read/write access. No access to modify authentication configuration."
+                        },
+                        "state": {
+                            "rolename": "resource-admin",
+                            "gid": 9003,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Restricted read/write access. No access to modify authentication configuration."
+                        }
+                    },
+                    {
+                        "rolename": "superuser",
+                        "config": {
+                            "rolename": "superuser",
+                            "gid": 9004,
+                            "description": "Sudo privileges and Bash access to the system (if enabled)."
+                        },
+                        "state": {
+                            "rolename": "superuser",
+                            "gid": 9004,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Sudo privileges and Bash access to the system (if enabled)."
+                        }
+                    },
+                    {
+                        "rolename": "user",
+                        "config": {
+                            "rolename": "user",
+                            "gid": 9002,
+                            "description": "Read-only access to non-sensitive system level data."
+                        },
+                        "state": {
+                            "rolename": "user",
+                            "gid": 9002,
+                            "remote-gid": "-",
+                            "ldap-group": "-",
+                            "description": "Read-only access to non-sensitive system level data."
+                        }
+                    }
+                ]
+            }
+        }
+    }
+
+To see the current user accounts on the system.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-system-aaa:users
+
+The response will detail all the configured user accounts on the system.
+
+.. code-block:: bash
+
+
+    {
+        "f5-system-aaa:users": {
+            "user": [
+                {
+                    "username": "admin",
+                    "config": {
+                        "username": "admin",
+                        "last-change": "2021-09-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "admin",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "authorized-keys": "-",
+                        "username": "admin",
+                        "last-change": "2021-09-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "admin",
+                        "expiry-status": "enabled"
+                    }
+                },
+                {
+                    "username": "operator",
+                    "config": {
+                        "username": "operator",
+                        "last-change": "2024-04-09",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "operator",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "authorized-keys": "-",
+                        "username": "operator",
+                        "last-change": "2024-04-09",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "operator",
+                        "expiry-status": "enabled"
+                    }
+                },
+                {
+                    "username": "root",
+                    "config": {
+                        "username": "root",
+                        "last-change": "2021-11-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "root",
+                        "expiry-status": "enabled"
+                    },
+                    "state": {
+                        "username": "root",
+                        "last-change": "2021-11-29",
+                        "tally-count": 0,
+                        "expiry-date": "-1",
+                        "role": "root",
+                        "expiry-status": "enabled"
+                    }
+                }
+            ]
+        }
+    }
+
+
+To create a new user and assign it to the **superuser** role, use the following API call.
+
+.. code-block:: bash
+    
+    PATCH https://{{rseries_appliance1_ip}}:8888/restconf/data/openconfig-system:system/aaa
+
+
+In the body of the API call add the username and role as seen below.
+
+.. code-block:: bash
+
+    {
+        "openconfig-system:aaa": {
+            "authentication": {
+                "f5-system-aaa:users": {
+                    "user": [
+                        {
+                            "username": "super-user1",
+                            "config": {
+                                "role": "superuser"
+                            }
+                        }
+                    ]
+                }
+            }
+        }
+    }
+
+
 
 Session Timeouts and Token Lifetime
 ===================================
