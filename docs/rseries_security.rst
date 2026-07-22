@@ -2161,7 +2161,7 @@ In F5OS-A 1.4.0, a new **sshd-idle-timeout** option was added that will control 
 
 For SSH sessions connecting using root or super-user access direct to the bash shell, then the idle-timeout does not apply, as that only applies to sessions to the F5OS confd CLI. If a root or super-user connects directly to the bash shell then only the ssh-idle-timeout applies. If that user then issues an su admin command to access the confd CLI or uses f5sh commands from the bash shell, then the idle-timeout setting will apply for the confd CLI session, the user will then be timed out of confd back to the bash shell, and then the sshd-idle-timeout setting would dictate how long before the bash sessions times out.
 
-To demonstrate the interaction between the **idle-timeout** and the **sshd-idle-timeout**, testing was done on F5OS-A 1.8.0 with different logins (root and admin) using both console and ssh access. In the first test, the idle-timeout is set for 30 seconds, and the sshd-idle-timeout is set for 60 seconds. 
+To demonstrate the interaction between the **idle-timeout** and the **sshd-idle-timeout**, testing was done on F5OS 2.0 with different logins (root and admin) using both console and ssh access. In the first test, the idle-timeout is set for 30 seconds, and the sshd-idle-timeout is set for 60 seconds. 
 
 .. code-block:: bash
 
@@ -2176,10 +2176,10 @@ Below are the observed results and conclusions from the first test.
 
 - Timeout observed on Console port for root account logged into bash = 60 seconds
 - Timeout observed on Console port for admin account logged into F5OS Confd CLI = 30 seconds
-- Timeout observed on Console port for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds logged out of bash
+- Timeout observed on Console port for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds later logged out of bash
 - Timeout observed on root ssh access to bash = 60 seconds
 - Timeout observed on admin ssh access to F5OS confd CLI = 30 seconds 
-- Timeout observed on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds logged out of bash
+- Timeout observed on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and dropped to bash, then 60 seconds later logged out of bash
 
 Below are the conclusions from the first test that explain the interaction between the two idle timeout settings:
 
@@ -2217,10 +2217,10 @@ Below are the observed results and conclusions from the second test.
 
 - Timeout observed on Console port for root account logged into bash = 30 seconds
 - Timeout observed on Console port for admin account logged into F5OS Confd CLI = 60
-- Timeout observed on Console port for root account logged into bash, then issue su admin to F5OS Confd CLI = 60 seconds logged out of F5OS confd CLI and dropped to bash, then 30 seconds logged out of bash.
+- Timeout observed on Console port for root account logged into bash, then issue su admin to F5OS Confd CLI = 60 seconds logged out of F5OS confd CLI and dropped to bash, then 30 seconds later logged out of bash.
 - Timeout observed on root ssh access to bash = 30 seconds
-- Timeout observed on admin ssh access to F5OS confd CLI = 30 seconds
-- Timeout observed on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 30 seconds logged out of F5OS confd CLI and ssh session terminated. No drop to bash shell
+- Timeout observed on admin ssh access to F5OS confd CLI = 60 seconds
+- Timeout observed on ssh access for root account logged into bash, then issue su admin to F5OS Confd CLI = 60 seconds logged out of F5OS, then 30 seconds later logged out of bash.
 
 Below are the conclusions from the second test that explain the interaction between the two idle timeout settings:
 
@@ -2236,13 +2236,11 @@ For Console connections:
 For SSH sessions:
 
 - When logging in as root over SSH, the sshd-idle-timeout controls the timeout from bash ( 30 seconds)
-- When logging in as admin over SSH, the lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from F5OS Confd CLI (30 seconds)
+- When logging in as admin over SSH, the lower of the idle-timeout controls the timeout from F5OS Confd CLI (60 seconds)
 - When logging in as root to the console and then performing an su admin to access confd
-    - The lower of the two timeouts (sshd-idle-timeout, idle-timeout) controls the timeout from F5OS Confd CLI (30 seconds)
-    - The ssh session will be terminated. It will not drop to the bash shell
+    - The idle-timeout controls the timeout from F5OS Confd CLI (60 seconds)
+    - The sshd-idle-timeout will control how long before the bash session times out (30 seconds)
 
-
-There is one case that is not covered by either of the above idle-timeout settings until version F5OS-A 1.8.0. When connecting over the console to the bash shell as root, neither of these settings will disconnect an idle session in previous releases. Only console connections to the F5OS Confd CLI are covered via the idle-timeout setting in previous releases. 
 
 In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root access over SSH. However, root users can still access the system through the system’s console interface as long as appliance-mode is disabled. If appliance-mode is enabled it overrides this setting, and no root access is allowed via SSH or console. The table below provides more details on the behavior of the setting in conjunction with the appliance mode setting.
 
@@ -2268,7 +2266,7 @@ In F5OS-A 1.8.0 the new **deny-root-ssh** mode when enabled restricts root acces
 +----------------+----------------------+-------------------+
 
 
-For the webUI, a token-based timeout is now configurable under the **system aaa** settings. The default RESTCONF token lifetime is 15 minutes and can be configured for a maximum of 1440 minutes. RESTCONF token will be automatically renewed when the token’s lifetime is less than one-third of its original token lifetime. For example, if we set the token lifetime to two minutes, it will be renewed and a new token will be generated, when the token’s lifetime is less than one-third of its original lifetime, that is, anytime between 80 to 120 seconds. However, if a new RESTCONF request is not received within the buffer time (80 to 120 seconds), the token will expire and you will be logged out of the session. The RESTCONF token will be renewed up to five times, after that the token will not be renewed and you will need to log back in to the system.
+For the webUI, a token-based timeout is now configurable under the **system aaa** settings. The default RESTCONF token lifetime is 15 minutes and can be configured for a maximum of 1440 minutes. RESTCONF token will be automatically renewed when the token’s lifetime is less than one-third of its original token lifetime. For example, if the token lifetime is set to two minutes, it will be renewed and a new token will be generated, when the token’s lifetime is less than one-third of its original lifetime, that is, anytime between 80 to 120 seconds. However, if a new RESTCONF request is not received within the buffer time (80 to 120 seconds), the token will expire and you will be logged out of the session. The RESTCONF token will be renewed up to five times, after that the token will not be renewed and you will need to log back in to the system.
 
 Configuring SSH and CLI Timeouts & Deny Root SSH Settings via CLI
 ----------------------------------------------------------------
