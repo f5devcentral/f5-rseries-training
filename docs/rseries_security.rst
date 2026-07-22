@@ -1926,11 +1926,12 @@ You'll see output similar to the example below.
 Configuring SSH and CLI Timeouts & Deny Root SSH Settings via webUI
 ------------------------------------------
 
-The CLI and SSH timeouts and deny-root-ssh settings are all configurable in the webUI. The **deny-root-ssh** option can be configured in the **Shell & LCD Access** section of the **System Settings -> System Security** page.
+The CLI and SSH timeouts and deny-root-ssh settings are all configurable in the webUI. The **deny-root-ssh** option can be configured in the **Shell Access** section of the **System Settings -> System Security** page.
 
-.. image:: images/rseries_security/deny-root-ssh.png
+.. image:: images/rseries_security/deny-root-ssh-webui.png
   :align: center
   :scale: 70%
+
 
 The CLI and SSH timeouts are configurable under the **Services** section of the **System Settings -> System Security** page.
 
