@@ -270,26 +270,48 @@ the diagram below shows the 4 total pipelines and ports for the r10000 appliance
   :scale: 90%
 
  
-
-You can view the front panel port to pipeline mapping in the CLI, webUI, or API of F5OS.
+You can view the front panel port to pipeline mapping in the CLI, webUI, or API of F5OS. Below is an output example from an r10000 unit.
 
 .. image:: images/rseries_networking/image8.png
   :align: center
   :scale: 80%
 
-Below is the CLI command to display the pipelines:
+Below is an output example from an r5000 unit.
+
+.. image:: images/rseries_networking/image8a.png
+  :align: center
+  :scale: 80%
+
+Below is the CLI command to display the pipelines for an r10000 unit:
 
 .. code-block:: bash
 
-  Boston-r10900-1# show port-mappings 
+  r10900-1-gsa# show port-mappings
                                                                               NUM                                             
                                           CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                                  
   NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                         
   -----------------------------------------------------------------------------------------------------------------------------
-  default-1  PIPELINE-1  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 1.0 3.0 4.0 5.0 6.0 ]       
-             PIPELINE-2  PIPELINEGROUP-1  100       200        OVERSUBSCRIBED  5          8      [ 10.0 2.0 7.0 8.0 9.0 ]      
-  default-2  PIPELINE-3  PIPELINEGROUP-2  100       200        OVERSUBSCRIBED  5          8      [ 11.0 13.0 14.0 15.0 16.0 ]  
-             PIPELINE-4  PIPELINEGROUP-2  100       185        OVERSUBSCRIBED  5          8      [ 12.0 17.0 18.0 19.0 20.0 ]    
+  default-1  PIPELINE-1  PIPELINEGROUP-1  100       140        OVERSUBSCRIBED  5          16     [ 1.0 3.0 4.0 5.0 6.0 ]       
+             PIPELINE-2  PIPELINEGROUP-1  100       140        OVERSUBSCRIBED  5          16     [ 10.0 2.0 7.0 8.0 9.0 ]      
+  default-2  PIPELINE-3  PIPELINEGROUP-2  100       80         NOMINAL         5          16     [ 11.0 13.0 14.0 15.0 16.0 ]  
+             PIPELINE-4  PIPELINEGROUP-2  100       125        OVERSUBSCRIBED  5          16     [ 12.0 17.0 18.0 19.0 20.0 ]  
+
+  r10900-1-gsa# 
+
+
+Below is the CLI command to display the pipelines for an r5000 unit:
+
+.. code-block:: bash
+
+  r5900-2-gsa# show port-mappings 
+                                                                              NUM                                         
+                                          CAPACITY  ALLOCATED  OVERSUBSCRIBE   ALLOCATED  MAX                              
+  NAME       INDEX       PIPELINE GROUP   BW        BW         STATUS          PORTS      PORTS  PORTS                     
+  -------------------------------------------------------------------------------------------------------------------------
+  default-1  PIPELINE-1  PIPELINEGROUP-1  100       80         NOMINAL         5          16     [ 1.0 3.0 4.0 5.0 6.0 ]   
+             PIPELINE-2  PIPELINEGROUP-1  100       140        OVERSUBSCRIBED  5          16     [ 10.0 2.0 7.0 8.0 9.0 ]  
+
+  r5900-2-gsa#
 
 
 
