@@ -374,3 +374,27 @@ To configure the port profiles in the WebUI go to the **Network Settings > Port 
 .. image:: images/rseries_networking/image13.png
   :align: center
   :scale: 70% 
+
+
+Spanning Tree Protocol (STP) Support
+===========================
+
+The r5000, r10000, and r12000 platfroms all support standard spanning tree protocols as outlined below.
+
+- Spanning Tree Protocol (STP) - 802.1d
+- Rapid Spanning Tree Protocol (RSTP) - 802.1w
+- Multiple Spanning Tree Protocol (MSTP) - 802.1s
+- PassThrough
+
+More specific details can be found in the documentation below.
+
+`Spanning tree protocol (STP) overview <https://techdocs.f5.com/en-us/f5os-2-0-0/f5-rseries-systems-administration-configuration/title-network-settings.html#spanning-tree-protocol-stp-overview>`_
+
+The rSeries r2000 and r4000 models do not support spanning tree protocols as outlined in the solution article below.
+
+`K000151396: rSeries appliance support on STP <https://my.f5.com/manage/s/article/K000151396>`_
+
+Additional best practices for loop detection are covered below.
+
+`K000152319: Best Practices for VLAN Configuration on F5OS-Appliance (rSeries): Avoiding Layer 2 Loops <https://my.f5.com/manage/s/article/K000152319>`_
+
