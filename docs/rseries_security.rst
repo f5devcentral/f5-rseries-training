@@ -474,6 +474,91 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
   :align: center
   :scale: 70%
 
+Front Panel LCD Security
+========================
+
+The LCD panel on the front of every rSeries system can be used for initial configuration, checking health status, and viewing alarms. For environments that require Common Criteria security posture a new **Secure** mode for the LCD panel has been added, that omits customer data ad restricts access to allow only management and setup options. The functionality of the Status and Alarm LEDs is not affected by Secure Mode. 
+
+Front Panel LCD Security via CLI
+--------------------------------
+
+The LCD is put into "Secure Mode" via a configuration option in ConfD. In the example below you can see there are three modes for the lcd panel: **disabled**, **secure**, and **standard**. For Common Criteria environments set the config mode to **secure**.
+
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)#components component lcd config mode ?
+    Possible completions:
+    [standard]
+    disabled   LCD screen does not allow access to any options. Nothing is shown except an image to indicate it's disabled.
+    secure     LCD screen only allows access to management and setup options. No customer data is shown.
+    standard   LCD screen allows access to all options.
+    r10900-1-gsa(config)#components component lcd config mode secure
+    r10900-1-gsa(config)#commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+Front Panel LCD Security via WebUI
+--------------------------------
+
+The LCD is put into "Secure Mode" via a configuration option in the WebUI. NAvigate to the **System Settings** -> **System Security** page, and the edit the **Shell & LCD Access** section. 
+
+.. image:: images/rseries_security/secure-lcd.png
+  :align: center
+  :scale: 70%
+
+Front Panel LCD Security via API
+--------------------------------
+
+The LCD is put into "Secure Mode" via a configuration option in the F5OS API. In the example below you can see there are three modes for the lcd panel: **disabled**, **secure**, and **standard**. For Common Criteria environments set the config mode to **secure**. To view the LCD status via API, use the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-platform:components/component=lcd
+
+You'll see the **f5-platform-lcd:mode**.
+
+.. code-block:: json
+
+    {
+        "openconfig-platform:component": [
+            {
+                "name": "lcd",
+                "config": {
+                    "name": "lcd",
+                    "f5-platform-lcd:mode": "standard"
+                },
+                "state": {
+                    "serial-no": "sub0872g00bt",
+                    "part-no": "SUB-0872-02 REV 1",
+                    "empty": false,
+                    "f5-platform-lcd:mode": "standard"
+                }
+            }
+        ]
+    }    
+
+To set the mode via API use the following API call:
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-platform:components/component=lcd
+
+In the body of the API call, set the lcd mode to **secure**:
+
+.. code-block:: json
+
+    {
+        "openconfig-platform:component": [
+            {
+                "name": "lcd",
+                "config": {
+                    "name": "lcd",
+                    "f5-platform-lcd:mode": "secure"
+                }
+            }
+        ]
+    }
 
 
 Setting F5OS Primary Key
