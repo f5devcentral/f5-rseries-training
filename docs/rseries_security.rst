@@ -477,7 +477,7 @@ Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length o
 Front Panel LCD Security
 ========================
 
-The LCD panel on the front of every rSeries system can be used for initial configuration, checking health status, and viewing alarms. For environments that require Common Criteria security posture a new **Secure** mode for the LCD panel has been added, that omits customer data ad restricts access to allow only management and setup options. The functionality of the Status and Alarm LEDs is not affected by Secure Mode. 
+The LCD panel on the front of every rSeries system can be used for initial configuration, checking health status, and viewing alarms. For environments that require Common Criteria security posture a new **Secure** mode for the LCD panel has been added in F5OS 2.0. It omits customer data and restricts access to allow only management and setup options. The functionality of the Status and Alarm LEDs is not affected by Secure Mode. 
 
 Front Panel LCD Security via CLI
 --------------------------------
@@ -501,7 +501,7 @@ The LCD is put into "Secure Mode" via a configuration option in ConfD. In the ex
 Front Panel LCD Security via WebUI
 --------------------------------
 
-The LCD is put into "Secure Mode" via a configuration option in the WebUI. NAvigate to the **System Settings** -> **System Security** page, and the edit the **Shell & LCD Access** section. 
+The LCD is put into "Secure Mode" via a configuration option in the WebUI. Navigate to the **System Settings** -> **System Security** page, and the edit the **Shell & LCD Access** section. 
 
 .. image:: images/rseries_security/secure-lcd.png
   :align: center
@@ -2799,7 +2799,7 @@ Here is an example of the client issuing the same request with the auth token it
     X-Content-Type-Options: nosniff
     X-Frame-Options: DENY
     X-XSS-Protection: 1; mode=block
-    Transfer-Encoding: chunked 
+    Transfer-Encoding: chunked
 
     {
     "openconfig-system:config": {
