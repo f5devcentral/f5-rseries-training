@@ -538,7 +538,7 @@ You'll see the **f5-platform-lcd:mode**.
         ]
     }    
 
-To set the mode via API use the following API call:
+To set the mode via API, use the following API call:
 
 .. code-block:: bash
 
