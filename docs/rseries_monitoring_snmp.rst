@@ -621,7 +621,7 @@ You can then display the SNMP community configuration using the **show system sn
 
     r5900-2(config)# 
 
-You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides additional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password. F5OS 2.0 adds SHA-256 for authentication and AES-256 for encryption to strengthen SNMP communication.
+You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides additional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password. F5OS 2.0 adds SHA-256 and SHA-512 for authentication and AES-192 and AES-256 for encryption to strengthen SNMP communication.
 
 
 .. code-block:: bash
