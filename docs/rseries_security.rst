@@ -592,6 +592,90 @@ Note that the hash key can be used to check and compare the status of the primar
     system aaa primary-key state status "COMPLETE        Initiated: Mon Feb 27 13:38:02 2023"
     r10900-1# 
 
+Password Hashing Algorithm
+==========================
+
+Some environments require a different password hashing algorithm than the default sha512, and have requested support for Bcrypt/blowfish as the standard encryption for passwords stored on F5OS. this has been added as an option in F5OS 2.0. If enabled, the existing user passwords hashed by the old algorithm are unaffected. Only new passwords that come after the configuration change will be encrypted by the  newly chosen algorithm. Existing users' access privileges into the system will not be affected and users will not see any difference in their authentication experience. The F5OS system administrators can enforce password changes when a need arises to apply the new algorithm for all users
+
+Setting the Password Hashing Algorithm via CLI
+----------------------------------------------
+
+The **system aaa authentication password-hashing-algorithm config algorithm** command will allow you to select **sha512** or **blowfish** hashing algorithms.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)#system aaa authentication password-hashing-algorithm config algorithm ?
+    Possible completions:
+    blowfish   blowfish (min: 4, max: 15, default: 5)
+    sha512     sha512 (min: 1000, max: 999999999, default: 5000) - Note: Any algorithm change requires resetting existing passwords (applies to all algorithms, not just this entry)
+    
+    
+With blowfish you can select either **4**, **5**, or **15** rounds.   
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)#system aaa authentication password-hashing-algorithm config algorithm blowfish rounds ?
+    Possible completions:
+    4    
+    5    Note: Any rounds change requires resetting existing passwords (applies to all values, not just this entry)
+    15   
+    r10900-1-gsa(config)#
+
+Setting the Password Hashing Algorithm via webUI
+----------------------------------------------
+
+Navigate to **Authentication & Access** -> **Authentication Settings** page, and the edit the **Password Configuration** section to change the password hashing algorithm.
+
+.. image:: images/rseries_security/blowfish-webui.png
+  :align: center
+  :scale: 50%
+
+Setting the Password Hashing Algorithm via API
+----------------------------------------------
+
+You can set the password hashing algorithm via the API. You can set the **algorithm** to either **sha512** which is the default, or **blowfish** as well as specify the number of **rounds**.
+ 
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-openconfig-aaa-password-hashing:password-hashing-algorithm
+
+In the body of the API call, set the appropriate algorithm.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-password-hashing:password-hashing-algorithm": {
+            "config": {
+                "algorithm": "blowfish",
+                "rounds": 5
+            }
+        }
+    }
+
+You may then query the current configuration using the following API GET call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/aaa/authentication/f5-openconfig-aaa-password-hashing:password-hashing-algorithm
+
+The output should look similar to the example below.
+
+.. code-block:: json
+
+    {
+        "f5-openconfig-aaa-password-hashing:password-hashing-algorithm": {
+            "config": {
+                "algorithm": "blowfish",
+                "rounds": 5
+            },
+            "state": {
+                "algorithm": "blowfish",
+                "rounds": 5
+            }
+        }
+    }
+
 
 Certificates for Device Management
 ==================================

@@ -342,6 +342,10 @@ Tenant lifecycle can be fully managed via the CLI using the **tenants** command 
 
 When inside the tenant config mode, you can enter each configuration item one line at a time using tab completion and question mark for help. Type **config ?** to see all the available options.
 
+For more information on the Mac Data / MAC Address Block Size see the following Solution Article:
+
+`K000133655: MAC address assignment in VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000133655>`_
+
 .. code-block:: bash
 
     r5900-1-gsa(config-tenant-tenant1)# config ?
@@ -700,6 +704,10 @@ You can deploy a tenant from the webUI using the **Add** button in the **Tenant 
 
 The tenant deployment options are almost identical to deploying a vCMP guest, with a few minor differences. Supply a name for the tenant and choose the TMOS tenant image for it to run. Next you will assign an out-of-band management address, prefix, and gateway, and assign VLANs you want the tenant to inherit. There is also an option to adjust the virtual disk size if this tenant will need more space. There are **Recommended** and **Advanced** options for resource provisioning; choosing recommended will automatically adjust memory based on the vCPUs allocated to the tenant. Choosing Advanced will allow you to over-allocate memory which is something iSeries did not support. You can choose different states (Configured, Provisioned, Deployed) just like vCMP and there is an option to enable/disable HW Crypto and Compression Acceleration (recommended this stay enabled). And finally, there is an option to enable Appliance mode which will disable root/bash access to the tenant. Once you click **Save** the tenant will move to the desired state of **Configured**, **Provisioned**, or **Deployed**.
 
+For more information on the Mac Data / MAC Address Block Size see the following Solution Article:
+
+`K000133655: MAC address assignment in VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000133655>`_
+
 .. image:: images/rseries_deploying_a_tenant/image75.png
   :align: center
   :scale: 50% 
@@ -936,6 +944,11 @@ Creating a Tenant via API
 =========================
 
 Tenant creation via the API is as simple as defining the parameters below and sending the POST to the rSeries out-of-band IP address. The API call below will create a tenant; many of the fields are defined as variables in Postman. That way the API calls don't have to be rewritten for different tenant names or IP addressing, or images, and they can be reused easily and adapted to any environment. In the example below, the **running-state** will be set for **Configured** and then a subsequent API call will set it to **Deployed**, but this could all be done via a single API call. This is done to show how changes can be made to the tenant status after its created.
+
+
+For more information on the Mac Data / MAC Address Block Size see the following Solution Article:
+
+`K000133655: MAC address assignment in VELOS and rSeries systems <https://my.f5.com/manage/s/article/K000133655>`_
 
 .. code-block:: bash
 

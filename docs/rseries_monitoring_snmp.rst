@@ -1,5 +1,5 @@
 ===========================================
-rSeries F5OS-A SNMP Monitoring and Alerting
+rSeries F5OS SNMP Monitoring and Alerting
 ===========================================
 
 
@@ -211,6 +211,7 @@ Adding Allowed IPs for SNMP via CLI
 
 By default, SNMP queries are not allowed into the F5OS platform layer. Before enabling SNMP, you'll need to open the out-of-band management port on F5OS-A to allow SNMP queries from particular SNMP management endpoints. Below is an example of allowing any SNMP endpoint at 10.255.0.0 (prefix length of 24) to query the F5OS layer on port 161.
 
+.. note:: Configuring system allowed-ips for SNMP can affect access to the broader management plane. The existing management source IPs may need to be explicitly permitted for SSH/HTTPS and other required management services. The administrators should verify the required management access rules before committing the configuration.
 
 .. code-block:: bash
 
@@ -620,7 +621,8 @@ You can then display the SNMP community configuration using the **show system sn
 
     r5900-2(config)# 
 
-You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides additional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password.
+You may also configure SNMP users for SNMPv3 support, since SNMPv3 is a user-based security model. This provides additional support for authentication and privacy protocols. Authentication protocols of **md5**, **sha**, or **none** are supported. For privacy protocols **aes**, **des**, or **none** are supported. You'll then be prompted to enter the privacy-password. F5OS 2.0 adds SHA-256 for authentication and AES-256 for encryption to strengthen SNMP communication.
+
 
 .. code-block:: bash
 
@@ -725,7 +727,8 @@ A response similar to the one below will be displayed.
 
 
 
-To create an SNMPv3 user use the following API call.
+To create an SNMPv3 user use the following API call. F5OS 2.0 adds SHA-256 for authentication and AES-256 for encryption to strengthen SNMP communication.
+
 
 .. code-block:: bash
 
@@ -910,7 +913,8 @@ An SNMP Community may be added for v1, v2c, or both v1 and v2c.
   :align: center
   :scale: 100%
 
-SNMP users can be added for environments which utilize SNMPv3.
+SNMP users can be added for environments which utilize SNMPv3. F5OS 2.0 adds SHA-256 for authentication and AES-256 for encryption to strengthen SNMP communication.
+
 
 .. image:: images/rseries_monitoring_snmp/image4.png
   :align: center
