@@ -183,6 +183,29 @@ To make these changes active you must commit the changes. No configuration chang
 
   Boston-r10900-1(config)# commit
 
+If you are running tagged (802.1Q) VLANs on the management network, then you'll need to setup one or more management VLANs. You will then be able to assign the F5OS layer and/or tenants to different out-of-band VLANs (via the management port). 
+
+Add one or more vlans via the **mgmt-vlan** CLI command. In the case below, a tagged VLAN with an ID of 500 is being added to the system for use on the management port.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)#mgmt-vlans mgmt-vlan 500 config mgmt-vlan-tag 500 name mgmt-vlan-500 
+    r10900-1-gsa(config)#commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+You can then assign that VLAN to either the F5OS layer or to individual tenants. In the example below, the mgmt-vlan configured in the previous step will be assigned to the F5OS layer. 
+
+.. note:: If you are connected to the F5OS layer via SSH, changing the VLAN assignment will disconnect your management session and possibly lock you out of the system until the upstream management switch settings are aligned to the new configuration. It is best to make this type of change via the dedicated rSeries console port to avoid being locked out of the system.
+
+.. code-block:: bash
+
+    r10900-1-gsa(config)#system mgmt-ip config mgmt-vlan 500 
+    r10900-1-gsa(config)#commit
+    Commit complete.
+    r10900-1-gsa(config)#
+
+
 Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below (If you are running a version prior to F5OS 2.0), and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
 .. image:: images/initial_setup_of_rseries_platform_layer/image1.png
