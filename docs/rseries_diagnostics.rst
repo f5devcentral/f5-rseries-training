@@ -1757,7 +1757,7 @@ To remove the AOM configuration, enter the command **system aom clear-data**.
 Enabling AOM Access for SSH via API
 -----------------------------------
 
-To enable AOM access over SSH via the API, use the following PATCH API call.
+To enable AOM access over SSH via the API, use the following PATCH API call. There is an optional **mgmt-vlan** setting in version 2.0 and later if you wish to tie the AOM IP address to a tagged VLAN on the rSeries management port. 
 
 .. code-block:: bash
 
@@ -1778,6 +1778,90 @@ In the body of the API call, enter the following JSON data:
                     "f5-system-aom:dhcp-enabled": "false",
                     "f5-system-aom:address": "172.22.50.35"
                 }
+            }
+        }
+    }
+
+
+If you would like to bind the ip address above to a management VLAN. First you must create the mgmt-vlan via the API.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/f5-mgmt-vlan:mgmt-vlans
+
+In the body of the API call, specify the mgmt-vlan and ID you want to create.
+
+.. code-block:: json
+
+    {
+        "f5-mgmt-vlan:mgmt-vlans": {
+            "mgmt-vlan": [
+                {
+                    "mgmt-vlan-tag": 500,
+                    "config": {
+                        "mgmt-vlan-tag": 500,
+                        "name": "mgmt-vlan-500"
+                    }
+                }
+            ]
+        }
+    }
+
+
+To view the current mgmt-vlan configuration, use the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance3_ip}}:8888/restconf/data/f5-mgmt-vlan:mgmt-vlans
+
+In the body of the response, you'll see the currently configured mgmt-vlan entries.
+
+.. code-block:: json
+
+    {
+        "f5-mgmt-vlan:mgmt-vlans": {
+            "mgmt-vlan": [
+                {
+                    "mgmt-vlan-tag": "untagged",
+                    "config": {
+                        "mgmt-vlan-tag": "untagged",
+                        "name": "mgmt-untagged"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": "untagged",
+                        "name": "mgmt-untagged"
+                    }
+                },
+                {
+                    "mgmt-vlan-tag": 500,
+                    "config": {
+                        "mgmt-vlan-tag": 500,
+                        "name": "mgmt-vlan-500"
+                    },
+                    "state": {
+                        "mgmt-vlan-tag": 500,
+                        "name": "mgmt-vlan-500"
+                    }
+                }
+            ]
+        }
+    }
+
+
+Next, add the mgmt-vlan to the AOM configuration.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-system-aom:aom
+
+In the body of the API call, add the mgmt-vlan that was previously created.
+
+.. code-block:: json
+
+    {
+        "f5-system-aom:aom": {
+            "f5-system-aom:config": {
+                "f5-system-aom:mgmt-vlan": "500"
             }
         }
     }
@@ -1822,28 +1906,31 @@ In the body of the API call, there will be details of the current AOM setup.
     {
         "f5-system-aom:aom": {
             "state": {
-                "ssh-username": "ssh-aom-user",
+                "ssh-username": "aom-ssh-user",
                 "ssh-session-idle-timeout": 180,
-                "ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "ssh-session-banner": "",
+                "mgmt-vlan": "500",
                 "ipv4": {
                     "gateway": "172.22.50.62",
                     "prefix-length": 26,
                     "dhcp-enabled": false,
-                    "address": "172.22.50.35"
+                    "address": "172.22.50.47"
                 }
             },
             "config": {
                 "ssh-session-idle-timeout": 180,
-                "ssh-session-banner": "This is the AOM SSH Menu for r5900-1",
+                "ssh-session-banner": "",
+                "mgmt-vlan": "500",
                 "ipv4": {
+                    "dhcp-enabled": false,
                     "gateway": "172.22.50.62",
                     "prefix-length": 26,
-                    "dhcp-enabled": false,
-                    "address": "172.22.50.35"
+                    "address": "172.22.50.47"
                 }
             }
         }
     }
+
 
 If you need to delete the AOM configuration via API, use the following API call.
 

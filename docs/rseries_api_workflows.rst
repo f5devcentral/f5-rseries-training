@@ -22,6 +22,12 @@ Initial Setup of rSeries F5OS Platform Layer
 
 `Configure System Settings via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#system-settings-via-the-api>`_
 
+`Internal Appliance IP Ranges via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#internal-appliance-ip-ranges-via-api>`_
+
+`IP Address Assignment & Routing via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#ip-address-assignment-routing-via-api>`_
+
+`Setting the Primary Key via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#setting-the-primary-key-via-api>`_
+
 `Manual Licensing via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#manual-licensing-via-api>`_
 
 `Automatic Licensing via API <https://clouddocs.f5.com/training/community/rseries-training/html/initial_setup_of_rseries_platform_layer.html#automatic-licensing-via-api>`_
@@ -57,6 +63,7 @@ Deploying an rSeries Tenant
 Securing / Hardening F5OS on rSeries
 ------------------------------------
 
+`VLAN Tagging for the Management Port via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#vlan-tagging-for-the-management-port-via-api>`_
 
 `Adding Allow List Entries via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#adding-allow-list-entries-via-api>`_
 
@@ -73,6 +80,8 @@ Securing / Hardening F5OS on rSeries
 `Validating Tenant Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#validating-tenant-status-via-api>`_
 
 `Resource-Admin & Guest User Role via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#resource-admin-guest-user-role-via-api>`_
+
+`Superuser Role via API using Named Groups on LDAP/Active Directory <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#superuser-role-via-api-using-named-groups-on-ldap-active-directory>`_
 
 `Configuring SSH and CLI Timeouts & Deny Root SSH Settings via API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_security.html#configuring-ssh-and-cli-timeouts-deny-root-ssh-settings-via-api>`_
 

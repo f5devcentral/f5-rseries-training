@@ -67,6 +67,9 @@ To save any configuration you must enter **commit**.
 Internal Appliance IP Ranges
 ----------------------------
 
+Internal Appliance IP Ranges via CLI
+----------------------------------
+
 The rSeries appliances ship with a default internal RFC6598 address space of 100.64.0.0/12. This should be sufficient for most production environments. You can verify this with the following command.
 
 .. code-block:: bash
@@ -162,12 +165,65 @@ F5OS 2.0 adds an additional option for customers who can't use RFC6598 address s
       <unsignedByte, 0 .. 16>[0]
     r5900-1-gsa(config)# system network config network-range-type RFC1918 prefix
 
+Internal Appliance IP Ranges via API
+----------------------------------
+
+To view the currently configured internal network ranges via API use the following API call.
+
+.. code-block:: bash
+
+  GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-system-network:network
+
+The response will show the current configured network ranges for use internal to the VELOS chassis.
+
+
+.. code-block:: json
+
+
+    {
+        "f5-system-network:network": {
+            "config": {
+                "network-range-type": "RFC6598"
+            },
+            "state": {
+                "configured-network-range-type": "RFC6598",
+                "configured-network-range": "100.64.0.0/12",
+                "active-network-range-type": "RFC6598",
+                "active-network-range": "100.64.0.0/12"
+            }
+        }
+    }
+
+
+To configure the internal network ranges via CLI use the following API call.
+
+.. code-block:: bash
+
+  PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-system-network:network
+
+In the body of the API call, add the desired network-range-type as seen below.
+
+
+.. code-block:: json
+
+  {
+      "f5-system-network:network": {
+          "config": {
+              "network-range-type": "RFC6598"
+          }
+      }
+  }
 
 -------------------------------
 IP Address Assignment & Routing
 -------------------------------
 
 The rSeries appliance requires its own unique out-of-band IP address for the F5OS layer. The IP addresses can be statically defined or acquired via DHCP. In addition to the IP address, a default route and subnet mask/prefix length is defined. 
+
+
+IP Address Assignment & Routing via CLI
+---------------------------------------
+
 
 Once logged in you will configure the static IP addresses (unless DHCP is preferred).
 
@@ -205,6 +261,8 @@ You can then assign that VLAN to either the F5OS layer or to individual tenants.
     Commit complete.
     r10900-1-gsa(config)#
 
+IP Address Assignment & Routing via webUI
+---------------------------------------
 
 Now that the out-of-band address and routing are configured, you can attempt to access the F5OS webUI via the IP address that has been defined. You should see a screen like the one below (If you are running a version prior to F5OS 2.0), and you can verify your management interface settings by going to the **System Settings -> Management Interface** page. 
 
@@ -233,6 +291,276 @@ Prior to F5OS 2.0, only a single default gateway was configurable for the out-of
     appliance-1(config)# system routes route dns config network 10.238.160.22/24 gateway 10.238.170.254
     appliance-1(config)# system routes route ntp config network 10.238.150.22/24 gateway 10.238.170.253
     appliance-1(config)# commit
+
+IP Address Assignment & Routing via API
+---------------------------------------
+
+You may alter the configuration of the rSeries appliance out-of-band interface via the API. To view the current out-of-band interface IP settings enter the following API call:
+
+.. code-block:: bash
+
+  GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-mgmt-ip:mgmt-ip
+
+The API response will be similar to the output below:
+
+.. code-block:: json
+
+    {
+        "f5-mgmt-ip:mgmt-ip": {
+            "config": {
+                "dhcp-enabled": false,
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.3"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                },
+                "mgmt-vlan": 500
+            },
+            "state": {
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.3"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "mgmt-vlan": 500,
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                }
+            }
+        }
+    }
+
+
+To configure the out-of-band interface IP settings enter the following API call:
+
+.. Note:: Changing the IP address will disrupt connectivity to the out-of-band ports.
+
+
+.. code-block:: bash
+
+  PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-mgmt-ip:mgmt-ip
+
+In the body of the API call enter the following:
+
+.. code-block:: json
+
+   {
+        "f5-mgmt-ip:mgmt-ip": {
+            "config": {
+                "dhcp-enabled": false,
+                "ipv4": {
+                    "system": {
+                        "address": "172.22.50.3"
+                    },
+                    "prefix-length": 26,
+                    "gateway": "172.22.50.62"
+                },
+                "ipv6": {
+                    "system": {
+                        "address": "::"
+                    },
+                    "prefix-length": 0,
+                    "gateway": "::"
+                },
+                "mgmt-vlan": 500
+            }
+        }
+    }
+
+To view the current management routes, use the following API call.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-system-routes:routes
+
+The body of the API response will look similar to the output below.
+
+.. code-block:: json
+
+    {
+        "f5-system-routes:routes": {
+            "route": [
+                {
+                    "network": "10.10.10.0/24",
+                    "config": {
+                        "network": "10.10.10.0/24",
+                        "gateway": "172.22.50.62",
+                        "description": "route for DNS"
+                    },
+                    "state": {
+                        "network": "10.10.10.0/24",
+                        "gateway": "172.22.50.62",
+                        "description": "route for DNS"
+                    }
+                }
+            ]
+        }
+    }
+
+To configure a management route, issue the following API call.
+
+.. code-block:: bash
+
+    PATCH https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/f5-system-routes:routes
+
+In the body of the API call enter the following information.
+
+.. code-block:: json
+
+    {
+        "f5-system-routes:routes": {
+            "f5-system-routes:route": [
+                {
+                    "f5-system-routes:network": "10.10.10.0/24",
+                    "f5-system-routes:config": {
+                        "f5-system-routes:network": "10.10.10.0/24",
+                        "f5-system-routes:gateway": "172.22.50.62",
+                        "f5-system-routes:description": "route for DNS"
+                    }
+                }
+            ]
+        }
+    }
+
+-------------
+Primary Key
+-------------
+
+rSeries appliances use a primary key to encrypt highly sensitive passwords/passphrases in the configuration database, such as:
+
+- Tenant unit keys used for TMOS Secure Vault
+- The F5OS API Service Gateway TLS key
+- Stored iHealth credentials
+- Stored AAA server credentials
+
+The primary key is randomly generated by F5OS during initial installation. You should set the primary key to a known value prior to performing a configuration backup. If you restore a configuration backup on a different rSeries device, e.g. during an RMA replacement, you must first set the primary key passphrase and salt on the destination device to the same value as the source device. If this is not done correctly, the F5OS configuration restoration may appear to succeed but produce failures later when the system attempts to decrypt and use the secured parameters.
+
+You should periodically change the primary key for additional security. If doing so, please note that a configuration backup is tied to the primary key at the time it was generated. If you change the primary key, you cannot restore older configuration backups without first setting the primary key to the previous value, if it is known. More details are provided in the solution article below.
+
+**IMPORTANT: Be sure to make note and save the salt and passphrase in a safe location, as these will be needed to restore the configuration on a replacement system.** 
+
+
+Setting the Primary Key via CLI
+-------------------------------
+
+Below is an example of configuring the passphrase and salt for the primary-key.
+
+.. code-block:: bash
+
+    r10900-1-gsa# config
+    Entering configuration mode terminal
+    r10900-1-gsa(config)#system aaa primary-key set passphrase
+    Value for 'passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-passphrase' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'salt' (<string, min: 6 chars, max: 255 chars>): **************
+    Value for 'confirm-salt' (<string, min: 6 chars, max: 255 chars>): **************
+    response Info: Key migration is initiated. Use 'show system aaa primary-key state status' to get status
+
+    r10900-1-gsa(config)#
+
+You can view the status of the primary-key being set with the **show system aaa primary-key state status** CLI command.
+
+.. code-block:: bash
+
+    r10900-1-gsa# show system aaa primary-key state status
+    system aaa primary-key state status "IN_PROGRESS        Initiated: Tue Apr  9 19:46:14 2024"
+    
+    r10900-1-gsa# show system aaa primary-key state status
+    system aaa primary-key state status "COMPLETE        Initiated: Tue Apr  9 19:46:14 2024"
+    r10900-1-gsa# 
+
+Note that the hash key can be used to check and compare the status of the primary-key on both the source and the replacement devices if restoring to a different device. To view the current primary-key hash, issue the following CLI command.
+
+.. code-block:: bash
+
+    r10900-1-gsa# show system aaa primary-key state
+    system aaa primary-key state hash xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==
+    system aaa primary-key state status "COMPLETE        Initiated: Tue Apr  9 19:46:14 2024"
+    r10900-1-gsa#
+
+
+Setting the Primary Key via API
+-------------------------------
+
+Below is an example of viewing and configuring the passphrase and salt for the primary-key via the API:
+
+
+To view the key, use the following API call:
+
+.. code-block:: bash
+
+  GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-primary-key:primary-key
+
+
+The response will look similar to the output below.
+
+.. code-block:: json
+
+  {
+      "f5-primary-key:primary-key": {
+          "state": {
+              "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==",
+              "status": "NONE"
+          }
+      }
+  }
+ 
+Below is the API call to set the primary-key:
+
+.. code-block:: bash
+
+  POST https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-system:system/aaa/f5-primary-key:primary-key/f5-primary-key:set
+
+In the body of the API call provide the passphrase and salt. Be sure to save the passphrase and sale in a secure location so that a configuration can be restored if something needs to be replaced. 
+
+.. code-block:: json
+
+  {
+  "f5-primary-key:passphrase": "Pa$$w0rd!",
+  "f5-primary-key:confirm-passphrase": " Pa$$w0rd!",
+  "f5-primary-key:salt": " Pa$$w0rd!",
+  "f5-primary-key:confirm-salt": " Pa$$w0rd!"
+  }
+ 
+After setting the passphrase and salt for the primary-key, you'll see a response similar to the one below.
+
+.. code-block:: json
+
+  {
+      "f5-primary-key:output": {
+          "response": "Info: Key migration is initiated. Use 'show system aaa primary-key state status' to get status\n"
+      }
+  }
+ 
+ 
+You can then run the API GET command again to see status:
+
+.. code-block:: json
+
+  {
+      "f5-primary-key:primary-key": {
+          "state": {
+              "hash": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx==",
+              "status": "COMPLETE        Initiated: Thu May 30 19:22:13 2024"
+          }
+      }
+  }
+
 
 ---------------
 System Settings
