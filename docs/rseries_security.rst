@@ -1258,7 +1258,7 @@ Resource Admin & Guest User Role
 
 The F5OS-A 1.4.0 release introduced the **Resource Admin** user role, which is similar to the Admin user role, but it cannot create additional local user accounts, delete existing local users, change local user authorizations, or change the set of remotely authenticated users allowed to access the system. Below is an example creating a resource admin user via the CLI. When assigning a new user to role **resource-admin**, their access will be restricted as noted above.
 
-F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations; however users can change account passwords.
+F5OS-A 1.8.0 also adds a new "Guest" role called **user**. The new **user** role available at the F5OS-A system level restricts access to the logs similar to BIG-IP Guest user. F5OS has implemented a new role called **user** which provides read-only access to view all the non-sensitive information on the system. The user role cannot modify any system configurations; however, users can change account passwords.
 
 
 Resource Admin & Guest User Role via CLI
@@ -1795,7 +1795,7 @@ The admin will then need to enable the ldap-group filters for both the primary a
 
 The ldap-group mapping using the group's LDAP distinguished name is only necessary if the user/group records do not contain "posix/unix attributes" ('gidNumber') that identify the Linux GID of the group. If the records on the remote authentication server have Unix attributes, you can use 'system aaa authentication roles role <role> config remote-gid' to specify the remote group by GID, rather than mapping by name.  
 
-Because this particular configuration is using named LDAP groups, you must disable the **unix_attributes** via the following CLI command. You cannot mix named LDAP groups with GID based unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
+Because this particular configuration is using named LDAP groups, you must disable the **unix_attributes** via the following CLI command. You cannot mix named LDAP groups with GID based Unix groups, you must pick one or the other. In this example we are using the named LDAP groups.
 
 .. code-block:: bash
 
@@ -1858,14 +1858,14 @@ Within the WebUI you can map the superuser role to a remote LDAP group. Go to th
   :align: center
   :scale: 70%  
 
-Here you can map the superuser role either to a UNIX GID or an LDAP Remote Group, it does not support the configuration of both, so you must pick one method.
+Here you can map the superuser role either to a Unix GID or an LDAP Remote Group, it does not support the configuration of both, so you must pick one method.
 
 
 .. image:: images/rseries_security/super-user-config.png
   :align: center
   :scale: 70% 
 
-If you choose to use the LDAP Group mapping, then you must disable the unix attributes setting in the **Common LDAP Configuration** section.
+If you choose to use the LDAP Group mapping, then you must disable the Unix attributes setting in the **Common LDAP Configuration** section.
 
 .. image:: images/rseries_security/unix-attributes.png
   :align: center
@@ -3536,7 +3536,7 @@ You can change the ciphers offered by F5OS to clients connecting to the httpd se
     AES128-GCM-SHA256:ECDH-RSA-AES128-SHA256:ECDH-ECDSA-AES128-SHA256:ECDH-RSA-AES128-SHA:ECDH-ECDSA-AES128-SHA:AES128-GCM-SHA256:AES128-SHA256:AES128-SHA:CAMELLIA128-SHA:PSK-AES128-CBC-SHA
     r5900-1-gsa(config)# 
     
-You can change the ciphers and kexalgorithms offered by F5OS to clients connecting to the sshd service by using the **system security services service sshd config ssl-ciphersuite** CLI command, and then choosing the ciphers you would like to enable. Be sure to commit any changes.
+You can change the ciphers and kexalgorithms offered by F5OS to clients connecting to the sshd service by using the **system security services service sshd config ssl-ciphersuite** CLI command and then choosing the ciphers you would like to enable. Be sure to commit any changes.
 
 .. code-block:: bash
 
