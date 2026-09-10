@@ -2471,6 +2471,197 @@ The output will look similar to the JSON output below.
         }
     }
 
+
+
+File System Utilization via API
+------------------------------
+
+You can monitor the F5OS file system via the API. The following API call will provide storage utilization for **F5OS System**, **F5OS Images**, The overall **BIG-IP Tenant Disks** storage location, and for each individual **BIG-IP Tenant**.
+
+.. code-block:: bash
+
+    GET https://{{rseries_appliance3_ip}}:8888/restconf/data/openconfig-platform:components/component=platform/state/f5-platform:file-systems
+
+Below is an example reponse.
+
+.. code-block:: json
+
+    {
+        "f5-platform:file-systems": {
+            "file-system": [
+                {
+                    "area": "platform/sysroot",
+                    "category": "F5OS System",
+                    "total": "117744750592",
+                    "free": "44253650944",
+                    "used": "67483181056",
+                    "used-percent": 60
+                },
+                {
+                    "area": "platform/big-ip-tenant-disks",
+                    "category": "F5OS Tenant Disks",
+                    "total": "481595678720",
+                    "free": "238082236416",
+                    "used": "219022274560",
+                    "used-percent": 47
+                },
+                {
+                    "area": "tenant/tenant24",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82679386112",
+                    "used": "11809894400",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant25",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82744373248",
+                    "used": "11744907264",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant26",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82711019520",
+                    "used": "11778260992",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant27",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82761846784",
+                    "used": "11727433728",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant28",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82760667136",
+                    "used": "11728613376",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant29",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82769678336",
+                    "used": "11719602176",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant30",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82712305664",
+                    "used": "11776974848",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant31",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82744602624",
+                    "used": "11744677888",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant32",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82754310144",
+                    "used": "11734970368",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant33",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82597130240",
+                    "used": "11892150272",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant34",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82792828928",
+                    "used": "11696451584",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant35",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82750877696",
+                    "used": "11738402816",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant36",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82752266240",
+                    "used": "11737014272",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant37",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82785992704",
+                    "used": "11703287808",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant38",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82697564160",
+                    "used": "11791716352",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant39",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82758008832",
+                    "used": "11731271680",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant40",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "82778271744",
+                    "used": "11711008768",
+                    "used-percent": 12
+                },
+                {
+                    "area": "tenant/tenant41",
+                    "category": "BIG-IP Tenant",
+                    "total": "94489280512",
+                    "free": "86325129216",
+                    "used": "8164151296",
+                    "used-percent": 8
+                },
+                {
+                    "area": "platform/images",
+                    "category": "F5OS Images",
+                    "total": "240637706240",
+                    "free": "166244081664",
+                    "used": "62143111168",
+                    "used-percent": 27
+                }
+            ]
+        }
+    }
+
+
 System Health
 -------------
 
