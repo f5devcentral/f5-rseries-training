@@ -192,15 +192,17 @@ Monitoring
 
 `F5 Cluster Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-cluster-status-via-api>`_
 
-`F5 Service Instances Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-service-instances-status>`_
+`F5 Service Instances Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-service-instances-status-via-api>`_
 
-`F5 Services Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-services-status>`_
+`F5 Services Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-services-status-via-api>`_
 
-`Layer2 FDB Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#layer2-fdb-status>`_
+`Layer2 FDB Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#layer2-fdb-status-via-api>`_
 
-`F5 Service-Pods Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-service-pods-status>`_
+`F5 Service-Pods Status via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#f5-service-pods-status-via-api>`_
 
-`System Health via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#system-health>`_
+`File System Utilization via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#file-system-utilization-via-api>`_
+
+`System Health via API <https://clouddocs.f5.com/training/community/rseries-training/html/monitoring_rseries.html#system-health-via-api>`_
 
 rSeries F5OS-A SNMP Monitoring and Alerting
 -------------------------------------------
