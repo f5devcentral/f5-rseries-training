@@ -2030,8 +2030,8 @@ The output will look similar to the JSON output below.
     }
 
 
-F5 Service Instances Status
----------------------------
+F5 Service Instances Status via API
+----------------------------------
 
 This API call displays some of the software processes running within the F5OS platform layer for networking. You can see processes for lacpd, stpd,lldpd etc..
 
@@ -2152,8 +2152,8 @@ The output will look similar to the JSON output below.
     }
 
 
-F5 Services Status
-------------------
+F5 Services Status via API
+-------------------------
 
 
 .. code-block:: bash
@@ -2191,8 +2191,8 @@ The output will look similar to the JSON output below.
         }
     }
 
-Layer2 FDB Status
------------------
+Layer2 FDB Status via API
+-------------------------
 
 This API call displays the Forwarding Database:
 
@@ -2308,8 +2308,8 @@ The output will look similar to the JSON output below.
         }
     }
 
-F5 Service-Pods Status
-----------------------
+F5 Service-Pods Status via API
+------------------------------
 
 The following API call displays the service-pods running inside the F5OS layer:
 
@@ -2662,8 +2662,8 @@ Below is an example reponse.
     }
 
 
-System Health
--------------
+System Health via API
+---------------------
 
 The following API call displays the details used to feed the overall system health. Note this API call will return a lot of status details:
 
