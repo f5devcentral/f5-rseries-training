@@ -266,10 +266,22 @@ Prior to F5OS 2.0, only a single default gateway was configurable for the out-of
 
 .. code-block:: bash
 
-    appliance-1(config)# system routes route dns config network 10.238.160.22/24 gateway 10.238.170.254
-    appliance-1(config)# system routes route ntp config network 10.238.150.22/24 gateway 10.238.170.253
-    appliance-1(config)# commit
+    r10900-1-gsa(config)#system routes route 10.10.10.0/24 config gateway 172.22.50.62 description "route for DNS"
+    r10900-1-gsa(config)#system routes route 10.10.20.0/24 config gateway 172.22.50.61 description "route for NTP"
+    r10900-1-gsa(config)#commit
+    Commit complete.
 
+You may then view the routes with the following command:
+
+.. code-block:: bash
+
+    r10900-1-gsa# show system routes 
+    NETWORK        GATEWAY       DESCRIPTION    
+    --------------------------------------------
+    10.10.10.0/24  172.22.50.62  route for DNS  
+    10.10.20.0/24  172.22.50.61  route for NTP  
+
+    r10900-1-gsa#
     
 IP Address Assignment & Routing via webUI
 ---------------------------------------
