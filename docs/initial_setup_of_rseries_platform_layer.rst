@@ -261,6 +261,16 @@ You can then assign that VLAN to either the F5OS layer or to individual tenants.
     Commit complete.
     r10900-1-gsa(config)#
 
+
+Prior to F5OS 2.0, only a single default gateway was configurable for the out-of-band management port from the F5OS layer. Multiple static routes can now be added starting with the F5OS 2.0 version. This is useful if you have services that F5OS relies on or needs to communicate with such as DNS, NTP, Syslog or SNMP services that are behind different routers.
+
+.. code-block:: bash
+
+    appliance-1(config)# system routes route dns config network 10.238.160.22/24 gateway 10.238.170.254
+    appliance-1(config)# system routes route ntp config network 10.238.150.22/24 gateway 10.238.170.253
+    appliance-1(config)# commit
+
+    
 IP Address Assignment & Routing via webUI
 ---------------------------------------
 
@@ -284,13 +294,7 @@ If you navigate to **System Settings -> Management Interface** Here you can swit
   :align: center
   :scale: 70%
 
-Prior to F5OS 2.0, only a single default gateway was configurable for the out-of-band management port from the F5OS layer. Multiple static routes can now be added starting with the F5OS 2.0 version. This is useful if you have services that F5OS relies on or needs to communicate with such as DNS, NTP, Syslog or SNMP services that are behind different routers.
 
-.. code-block:: bash
-
-    appliance-1(config)# system routes route dns config network 10.238.160.22/24 gateway 10.238.170.254
-    appliance-1(config)# system routes route ntp config network 10.238.150.22/24 gateway 10.238.170.253
-    appliance-1(config)# commit
 
 IP Address Assignment & Routing via API
 ---------------------------------------
