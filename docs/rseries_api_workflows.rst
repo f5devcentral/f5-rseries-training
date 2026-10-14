@@ -122,6 +122,9 @@ rSeries Software Upgrades
 
 `Uploading Tenant Images from a Client Machine via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#uploading-tenant-images-from-a-client-machine-via-the-api>`_
 
+`Deleting F5OS Images via the API <https://clouddocs.f5.com/training/community/rseries-training/html/rseries_software_upgrades.html#deleting-f5os-images-via-the-api>`_
+
+
 rSeries Configuration Backup and Restore
 ----------------------------------------
 
