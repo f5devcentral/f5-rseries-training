@@ -359,29 +359,6 @@ The output will show the status for the OS, Service, ISO, and Install Status.
     }
 
 
-To delete an ISO image via the API, use the following API call.
-
-.. code-block:: bash
-
-    POST https://{{rseries_appliance2_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/remove
-
-In the body of the API call put the ISO you want to delete:
-
-.. code-block:: json
-
-    {
-    "f5-system-image:iso": "1.8.4-26491"
-    }
- 
-You'll then get a response like this:
- 
- .. code-block:: json
-
-    {
-        "f5-system-image:output": {
-            "response": "\n\tSuccess: Image 1.8.4-26491 is removed"
-        }
-    }
 
 Uploading F5OS-A Images from a Client Machine via the API
 ---------------------------------------------------------
@@ -433,6 +410,33 @@ In the **Headers** section ensure you add the **file-upload-id** header, with th
 .. image:: images/rseries_software_upgrades/file-upload-tenant-headers-f5os.png
   :align: center
   :scale: 70%
+
+Deleting F5OS Images via the API
+--------------------------------
+
+To delete an ISO image via the API, use the following API call.
+
+.. code-block:: bash
+
+    POST https://{{rseries_appliance2_ip}}:8888/restconf/data/openconfig-system:system/f5-system-image:image/remove
+
+In the body of the API call put the ISO you want to delete:
+
+.. code-block:: json
+
+    {
+    "f5-system-image:iso": "1.8.4-26491"
+    }
+ 
+You'll then get a response like this:
+ 
+.. code-block:: json
+
+    {
+        "f5-system-image:output": {
+            "response": "\n\tSuccess: Image 1.8.4-26491 is removed"
+        }
+    }
 
 Upgrading F5OS
 ==============
